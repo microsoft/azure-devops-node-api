@@ -17,22 +17,24 @@
 /// <reference path="./definitions/Q.d.ts"/>
 
 import Q = require('q');
+import http = require('http');
 import BuildInterfaces = require("./interfaces/BuildInterfaces");
+import CoreInterfaces = require("./interfaces/common/CoreInterfaces");
 import httpm = require("./httpclient");
-import interfaces = require("./interfaces/common/CoreInterfaces");
 import restm = require("./restclient");
+import vsom = require("./VsoClient");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
-import vssutility = require("./ext/RestClient");
 
 export interface IBuildApi {
 	baseUrl: string;
 	userAgent: string;
-	httpClient: interfaces.IHttpClient;
-	restClient: interfaces.IRestClient;
+	httpClient: CoreInterfaces.IHttpClient;
+	restClient: CoreInterfaces.IRestClient;
+	vsoClient: vsom.VsoClient;
     connect(onResult: (err: any, statusCode: number, obj: any) => void): void;
 	createArtifact(artifact: BuildInterfaces.BuildArtifact, buildId: number, project: string, onResult: (err: any, statusCode: number, artifact: BuildInterfaces.BuildArtifact) => void): void;
 	getArtifact(buildId: number, artifactName: string, project: string, onResult: (err: any, statusCode: number, artifact: BuildInterfaces.BuildArtifact) => void): void;
-	getArtifactContentZip(filePath: string, buildId: number, artifactName: string, project: string, onResult: (err: any, statusCode: number) => void): void;
+	getArtifactContentZip(buildId: number, artifactName: string, project: string, onResult: (err: any, statusCode: number, res: http.ClientResponse) => void): void;
 	getArtifacts(buildId: number, project: string, onResult: (err: any, statusCode: number, artifacts: BuildInterfaces.BuildArtifact[]) => void): void;
 	getBadge(project: string, definitionId: number, branchName: string, onResult: (err: any, statusCode: number, badge: string) => void): void;
 	deleteBuild(buildId: number, project: string, onResult: (err: any, statusCode: number) => void): void;
@@ -49,9 +51,9 @@ export interface IBuildApi {
 	getDefinitions(project: string, name: string, type: BuildInterfaces.DefinitionType, onResult: (err: any, statusCode: number, definitions: BuildInterfaces.DefinitionReference[]) => void): void;
 	updateDefinition(definition: BuildInterfaces.BuildDefinition, definitionId: number, project: string, secretsSourceDefinitionId: number, secretsSourceDefinitionRevision: number, onResult: (err: any, statusCode: number, definition: BuildInterfaces.BuildDefinition) => void): void;
 	getBuildDeployments(project: string, buildId: number, onResult: (err: any, statusCode: number, deployments: BuildInterfaces.Deployment[]) => void): void;
-	getBuildLog(filePath: string, project: string, buildId: number, logId: number, startLine: number, endLine: number, onResult: (err: any, statusCode: number) => void): void;
+	getBuildLog(project: string, buildId: number, logId: number, startLine: number, endLine: number, onResult: (err: any, statusCode: number, res: http.ClientResponse) => void): void;
 	getBuildLogs(project: string, buildId: number, onResult: (err: any, statusCode: number, logs: BuildInterfaces.BuildLog[]) => void): void;
-	getBuildLogsZip(filePath: string, project: string, buildId: number, onResult: (err: any, statusCode: number) => void): void;
+	getBuildLogsZip(project: string, buildId: number, onResult: (err: any, statusCode: number, res: http.ClientResponse) => void): void;
 	getBuildOptionDefinitions(onResult: (err: any, statusCode: number, options: BuildInterfaces.BuildOptionDefinition[]) => void): void;
 	createQueue(queue: BuildInterfaces.AgentPoolQueue, onResult: (err: any, statusCode: number, queue: BuildInterfaces.AgentPoolQueue) => void): void;
 	deleteQueue(id: number, onResult: (err: any, statusCode: number) => void): void;
@@ -119,11 +121,13 @@ export class BuildApi implements IBuildApi {
 	userAgent: string;
 	httpClient: httpm.HttpClient;
 	restClient: restm.RestClient;
+	vsoClient: vsom.VsoClient
 
-	constructor(baseUrl: string, handlers: interfaces.IRequestHandler[]) {
+	constructor(baseUrl: string, handlers: CoreInterfaces.IRequestHandler[]) {
 		this.baseUrl = baseUrl;
 		this.httpClient = new httpm.HttpClient('node-Build-api', handlers);
-		this.restClient = new restm.RestClient(baseUrl, this.httpClient);
+		this.restClient = new restm.RestClient(this.httpClient);
+		this.vsoClient = new vsom.VsoClient(baseUrl, this.restClient);
 	}
 
 	setUserAgent(userAgent: string) {
@@ -132,7 +136,7 @@ export class BuildApi implements IBuildApi {
     }
 	
 	connect(onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this.restClient.getJson('/_apis/connectionData', "", onResult);
+        this.restClient.getJson(this.vsoClient.resolveUrl('/_apis/connectionData'), "", onResult);
     }
 
 	/**
@@ -155,8 +159,7 @@ export class BuildApi implements IBuildApi {
 			buildId: buildId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -185,8 +188,7 @@ export class BuildApi implements IBuildApi {
 			artifactName: artifactName
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -203,11 +205,10 @@ export class BuildApi implements IBuildApi {
 	 * @param onResult callback function with the resulting any
 	 */
 	public getArtifactContentZip(
-		filePath: string,
         buildId: number,
         artifactName: string,
         project: string,
-        onResult: (err: any, statusCode: number) => void
+        onResult: (err: any, statusCode: number, res: http.ClientResponse) => void
 		): void {
 
 		var routeValues = {
@@ -216,12 +217,11 @@ export class BuildApi implements IBuildApi {
 			artifactName: artifactName
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
-			this.restClient.downloadFile(path, apiVersion, filePath, "application/zip", onResult);
+			this.httpClient.getStream(path, apiVersion, "application/zip", onResult);
 		});
 	}
 
@@ -243,8 +243,7 @@ export class BuildApi implements IBuildApi {
 			buildId: buildId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -274,8 +273,7 @@ export class BuildApi implements IBuildApi {
 			branchName: branchName
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "de6a4df8-22cd-44ee-af2d-39f6aa7a4261", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "de6a4df8-22cd-44ee-af2d-39f6aa7a4261", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -301,8 +299,7 @@ export class BuildApi implements IBuildApi {
 			buildId: buildId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -334,8 +331,7 @@ export class BuildApi implements IBuildApi {
 			propertyFilters: propertyFilters
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -412,8 +408,7 @@ export class BuildApi implements IBuildApi {
 			queryOrder: queryOrder
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -444,8 +439,7 @@ export class BuildApi implements IBuildApi {
 			ignoreWarnings: ignoreWarnings
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -473,8 +467,7 @@ export class BuildApi implements IBuildApi {
 			buildId: buildId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -506,8 +499,7 @@ export class BuildApi implements IBuildApi {
 			top: top
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "54572c7b-bbd3-45d4-80dc-28be08941620", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "54572c7b-bbd3-45d4-80dc-28be08941620", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -530,8 +522,7 @@ export class BuildApi implements IBuildApi {
 			controllerId: controllerId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "fcac1932-2ee1-437f-9b6f-7f696be858f6", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "fcac1932-2ee1-437f-9b6f-7f696be858f6", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -557,8 +548,7 @@ export class BuildApi implements IBuildApi {
 			name: name
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "fcac1932-2ee1-437f-9b6f-7f696be858f6", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "fcac1932-2ee1-437f-9b6f-7f696be858f6", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -592,8 +582,7 @@ export class BuildApi implements IBuildApi {
 			definitionToCloneRevision: definitionToCloneRevision
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -619,8 +608,7 @@ export class BuildApi implements IBuildApi {
 			definitionId: definitionId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -655,8 +643,7 @@ export class BuildApi implements IBuildApi {
 			propertyFilters: propertyFilters
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -688,8 +675,7 @@ export class BuildApi implements IBuildApi {
 			type: type
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -726,8 +712,7 @@ export class BuildApi implements IBuildApi {
 			secretsSourceDefinitionRevision: secretsSourceDefinitionRevision
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -753,8 +738,7 @@ export class BuildApi implements IBuildApi {
 			buildId: buildId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "f275be9a-556a-4ee9-b72f-f9c8370ccaee", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "f275be9a-556a-4ee9-b72f-f9c8370ccaee", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -773,13 +757,12 @@ export class BuildApi implements IBuildApi {
 	 * @param onResult callback function with the resulting any
 	 */
 	public getBuildLog(
-		filePath: string,
         project: string,
         buildId: number,
         logId: number,
         startLine: number,
         endLine: number,
-        onResult: (err: any, statusCode: number) => void
+        onResult: (err: any, statusCode: number, res: http.ClientResponse) => void
 		): void {
 
 		var routeValues = {
@@ -793,12 +776,11 @@ export class BuildApi implements IBuildApi {
 			endLine: endLine
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
-			this.restClient.downloadFile(path, apiVersion, filePath, "application/octet-stream", onResult);
+			this.httpClient.getStream(path, apiVersion, "application/octet-stream", onResult);
 		});
 	}
 
@@ -820,8 +802,7 @@ export class BuildApi implements IBuildApi {
 			buildId: buildId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -837,10 +818,9 @@ export class BuildApi implements IBuildApi {
 	 * @param onResult callback function with the resulting any
 	 */
 	public getBuildLogsZip(
-		filePath: string,
         project: string,
         buildId: number,
-        onResult: (err: any, statusCode: number) => void
+        onResult: (err: any, statusCode: number, res: http.ClientResponse) => void
 		): void {
 
 		var routeValues = {
@@ -848,12 +828,11 @@ export class BuildApi implements IBuildApi {
 			buildId: buildId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
-			this.restClient.downloadFile(path, apiVersion, filePath, "application/zip", onResult);
+			this.httpClient.getStream(path, apiVersion, "application/zip", onResult);
 		});
 	}
 
@@ -867,8 +846,7 @@ export class BuildApi implements IBuildApi {
 		var routeValues = {
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "591cb5a4-2d46-4f3a-a697-5cd42b6bd332", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "591cb5a4-2d46-4f3a-a697-5cd42b6bd332", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -890,8 +868,7 @@ export class BuildApi implements IBuildApi {
 		var routeValues = {
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -917,8 +894,7 @@ export class BuildApi implements IBuildApi {
 			id: id
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -941,8 +917,7 @@ export class BuildApi implements IBuildApi {
 			controllerId: controllerId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -968,8 +943,7 @@ export class BuildApi implements IBuildApi {
 			name: name
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -995,8 +969,7 @@ export class BuildApi implements IBuildApi {
 			definitionId: definitionId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "7c116775-52e5-453e-8c5d-914d9762d8c4", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "7c116775-52e5-453e-8c5d-914d9762d8c4", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -1014,8 +987,7 @@ export class BuildApi implements IBuildApi {
 		var routeValues = {
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "build", "aa8c1c9c-ef8b-474a-b8c4-785c7b191d0d", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "build", "aa8c1c9c-ef8b-474a-b8c4-785c7b191d0d", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -1037,8 +1009,7 @@ export class BuildApi implements IBuildApi {
 		var routeValues = {
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "build", "aa8c1c9c-ef8b-474a-b8c4-785c7b191d0d", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "build", "aa8c1c9c-ef8b-474a-b8c4-785c7b191d0d", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -1067,8 +1038,7 @@ export class BuildApi implements IBuildApi {
 			tag: tag
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -1096,8 +1066,7 @@ export class BuildApi implements IBuildApi {
 			buildId: buildId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -1126,8 +1095,7 @@ export class BuildApi implements IBuildApi {
 			tag: tag
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -1153,8 +1121,7 @@ export class BuildApi implements IBuildApi {
 			buildId: buildId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -1175,8 +1142,7 @@ export class BuildApi implements IBuildApi {
 			project: project
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "d84ac5c6-edc7-43d5-adc9-1b34be5dea09", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "d84ac5c6-edc7-43d5-adc9-1b34be5dea09", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -1202,8 +1168,7 @@ export class BuildApi implements IBuildApi {
 			templateId: templateId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -1229,8 +1194,7 @@ export class BuildApi implements IBuildApi {
 			templateId: templateId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -1251,8 +1215,7 @@ export class BuildApi implements IBuildApi {
 			project: project
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -1280,8 +1243,7 @@ export class BuildApi implements IBuildApi {
 			templateId: templateId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -1316,8 +1278,7 @@ export class BuildApi implements IBuildApi {
 			changeId: changeId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "8baac422-4c6e-4de5-8532-db96d92acffa", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "8baac422-4c6e-4de5-8532-db96d92acffa", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -1349,8 +1310,7 @@ export class BuildApi implements IBuildApi {
 			top: top
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "5a21f5d2-5642-47e4-a0bd-1356e6731bee", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "5a21f5d2-5642-47e4-a0bd-1356e6731bee", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -1384,8 +1344,7 @@ export class BuildApi implements IBuildApi {
 			top: top
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.2", "build", "5a21f5d2-5642-47e4-a0bd-1356e6731bee", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.2", "build", "5a21f5d2-5642-47e4-a0bd-1356e6731bee", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -1398,7 +1357,7 @@ export class BuildApi implements IBuildApi {
 export class QBuildApi implements IQBuildApi {
 	BuildApi: IBuildApi;
 
-	constructor(baseUrl: string, handlers: interfaces.IRequestHandler[]) {
+	constructor(baseUrl: string, handlers: CoreInterfaces.IRequestHandler[]) {
 		this.BuildApi = new BuildApi(baseUrl, handlers);
 	}
 

@@ -2,20 +2,19 @@
 // significant portions of this file copied from: VSO\src\Vssf\WebPlatform\Platform\Scripts\VSS\WebApi\RestClient.ts
 //*******************************************************************************************************
 
-/// <reference path='../definitions/q.d.ts' />
-/// <reference path='../definitions/VSS.WebPlatform.Interfaces.d.ts' />
+/// <reference path='./definitions/q.d.ts' />
 
 /// Imports of 3rd Party ///
 import Q = require("q");
+import url = require("url");
+import path = require("path");
 /// Import base rest class ///
-import restm = require("../RestClient");
-import httpm = require("../HttpClient");
-import ifm = require("../interfaces/common/CoreInterfaces");
-/// Imports of VSS ///
-import WebApi_Contracts = require("./Contracts");
+import restm = require("./RestClient");
+import httpm = require("./HttpClient");
+import ifm = require("./interfaces/common/CoreInterfaces");
 
 interface VssApiResourceLocationLookup {
-    [locationId: string]: WebApi_Contracts.ApiResourceLocation;
+    [locationId: string]: ifm.ApiResourceLocation;
 }
 
 export interface ClientVersioningData {
@@ -42,26 +41,23 @@ export class InvalidApiResourceVersionError implements Error {
 /**
 * Base class that should be used (derived from) to make requests to VSS REST apis
 */
-export class VssClientUtility {
-
-    private static PREVIEW_INDICATOR = "-preview.";
-    restClient: ifm.IRestClient;
+export class VsoClient {
 
     private static APIS_RELATIVE_PATH = "_apis";
-    private static DEFAULT_REQUEST_TIMEOUT = 300000; // 5 minutes
-    private static _legacyDateRegExp: RegExp;
-
+    private static PREVIEW_INDICATOR = "-preview.";
     private _locationsByAreaPromises: { [areaName: string]: Q.Promise<VssApiResourceLocationLookup>; };
-
-    public _rootRequestPath: string;
-    public authTokenManager: IAuthTokenManager<any>;
     private _initializationPromise: Q.Promise<any>;
 
-    constructor(rootRequestPath: string, restClient: restm.RestClient) {
-        this._rootRequestPath = rootRequestPath;
+    restClient: ifm.IRestClient;
+    baseUrl: string;
+    basePath: string;
+
+    constructor(baseUrl: string, restClient: restm.RestClient) {
+        this.baseUrl = baseUrl;
+        this.basePath = url.parse(baseUrl).pathname;
+        this.restClient = restClient;
         this._locationsByAreaPromises = {};
         this._initializationPromise = Q.fcall(() => true);
-        this.restClient = restClient;
     }
 
     /**
@@ -76,8 +72,8 @@ export class VssClientUtility {
             return 0;
         }
         // otherwise replaces the '-preview' flag and compares each .-separated piece of the string individually
-        locationVersion = locationVersion.replace(VssClientUtility.PREVIEW_INDICATOR, "");
-        apiVersion = apiVersion.replace(VssClientUtility.PREVIEW_INDICATOR, "");
+        locationVersion = locationVersion.replace(VsoClient.PREVIEW_INDICATOR, "");
+        apiVersion = apiVersion.replace(VsoClient.PREVIEW_INDICATOR, "");
         var splitLocationVersion: string[] = locationVersion.split('.');
         var splitApiVersion: string[] = apiVersion.split('.');
         var i;
@@ -99,10 +95,10 @@ export class VssClientUtility {
         var requestUrl;
         var deferred = Q.defer<ClientVersioningData>();
 
-        this._beginGetLocation(area, locationId).then((location: WebApi_Contracts.ApiResourceLocation) => {
+        this._beginGetLocation(area, locationId).then((location: ifm.ApiResourceLocation) => {
             if (!apiVersion) {
                 // Use the latest version of the resource if the api version was not specified in the request.
-                apiVersion = location.maxVersion + VssClientUtility.PREVIEW_INDICATOR + location.resourceVersion;
+                apiVersion = location.maxVersion + VsoClient.PREVIEW_INDICATOR + location.resourceVersion;
             }
             else {
                 if (this.compareResourceVersions(location.minVersion, apiVersion) > 1) {
@@ -111,7 +107,7 @@ export class VssClientUtility {
                 }
                 else if (this.compareResourceVersions(location.maxVersion, apiVersion) < 1) {
                     // Client is newer than the server. Negotiate down to the latest version on the server
-                    apiVersion = location.maxVersion + VssClientUtility.PREVIEW_INDICATOR + location.resourceVersion;
+                    apiVersion = location.maxVersion + VsoClient.PREVIEW_INDICATOR + location.resourceVersion;
                 }
             }
 
@@ -143,7 +139,7 @@ export class VssClientUtility {
      * @param area resource area name
      * @param locationId Guid of the location to get
      */
-    public _beginGetLocation(area: string, locationId: string): Q.Promise<WebApi_Contracts.ApiResourceLocation> {
+    public _beginGetLocation(area: string, locationId: string): Q.Promise<ifm.ApiResourceLocation> {
         return this._initializationPromise.then(() => {
                 return this.beginGetAreaLocations(area);
             }).then((areaLocations: VssApiResourceLocationLookup) => {
@@ -162,7 +158,7 @@ export class VssClientUtility {
             var deferred = Q.defer<VssApiResourceLocationLookup>();
             areaLocationsPromise = deferred.promise;
 
-            var requestUrl = this._rootRequestPath + VssClientUtility.APIS_RELATIVE_PATH + "/" + area;
+            var requestUrl = this.resolveUrl(VsoClient.APIS_RELATIVE_PATH + "/" + area);
 
             this._issueOptionsRequest(requestUrl, (err: any, statusCode: number, locationsResult: any) => {
                 if (err) {
@@ -172,7 +168,7 @@ export class VssClientUtility {
                 else {
                     var locationsLookup: VssApiResourceLocationLookup = {};
 
-                    var resourceLocations: WebApi_Contracts.ApiResourceLocation[] = locationsResult.value;
+                    var resourceLocations: ifm.ApiResourceLocation[] = locationsResult.value;
 
                     var i;
                     for (i = 0; i < locationsResult.count; i++) {
@@ -188,6 +184,10 @@ export class VssClientUtility {
         }
 
         return areaLocationsPromise;
+    }
+
+    public resolveUrl(relativeUrl: string): string {
+        return url.resolve(this.baseUrl, path.join(this.basePath, relativeUrl));
     }
 
     /**
@@ -209,23 +209,24 @@ export class VssClientUtility {
         }
 
         // Replace templated route values
-        var url = this._rootRequestPath + this.replaceRouteValues(routeTemplate, routeValues);
+        var relativeUrl = this.replaceRouteValues(routeTemplate, routeValues);
 
         //append query parameters to the end
         var first = true;
         for (var queryValue in queryParams) {
             if (queryParams[queryValue] != null) {
                 if (first) {
-                    url += "?" + queryValue + "=" + queryParams[queryValue];
+                    relativeUrl += "?" + queryValue + "=" + queryParams[queryValue];
                     first = false;
                 }
                 else {
-                    url += "&" + queryValue + "=" + queryParams[queryValue];
+                    relativeUrl += "&" + queryValue + "=" + queryParams[queryValue];
                 }
             }
         }
 
-        return url;
+        //resolve the relative url with the base
+        return url.resolve(this.baseUrl, path.join(this.basePath, relativeUrl));
     }
 
     /*

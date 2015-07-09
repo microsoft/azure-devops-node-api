@@ -5,13 +5,13 @@
 
 var assert = require("assert");
 describe('Dummy test', function () {
-    describe('#indexOf()', function () {
-        it('should return -1 when the value is not present', function () {
-            assert.equal(0, [1, 2, 3].indexOf(1));
-        })
+    it('tests should run from gulp file', function () {
+        assert.equal(true, true);
     })
 })
 
+
+//  TODO: fix tests below to work with newest clients and structure
 
 //import agentifm = require('./interfaces/TaskAgentInterfaces');
 //import buildifm = require('./interfaces/BuildInterfaces');

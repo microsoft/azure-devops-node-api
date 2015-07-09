@@ -17,18 +17,20 @@
 /// <reference path="./definitions/Q.d.ts"/>
 
 import Q = require('q');
+import http = require('http');
+import CoreInterfaces = require("./interfaces/common/CoreInterfaces");
 import httpm = require("./httpclient");
-import interfaces = require("./interfaces/common/CoreInterfaces");
 import restm = require("./restclient");
 import TaskAgentInterfaces = require("./interfaces/TaskAgentInterfaces");
+import vsom = require("./VsoClient");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
-import vssutility = require("./ext/RestClient");
 
 export interface ITaskAgentApi {
 	baseUrl: string;
 	userAgent: string;
-	httpClient: interfaces.IHttpClient;
-	restClient: interfaces.IRestClient;
+	httpClient: CoreInterfaces.IHttpClient;
+	restClient: CoreInterfaces.IRestClient;
+	vsoClient: vsom.VsoClient;
     connect(onResult: (err: any, statusCode: number, obj: any) => void): void;
 	createAgent(agent: TaskAgentInterfaces.TaskAgent, poolId: number, onResult: (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => void): void;
 	deleteAgent(poolId: number, agentId: number, onResult: (err: any, statusCode: number) => void): void;
@@ -60,7 +62,7 @@ export interface ITaskAgentApi {
 	deleteSession(poolId: number, sessionId: string, onResult: (err: any, statusCode: number) => void): void;
 	deleteTaskDefinition(taskId: string, onResult: (err: any, statusCode: number) => void): void;
 	getTaskContent(taskId: string, versionString: string, onResult: (err: any, statusCode: number, tasks: TaskAgentInterfaces.TaskDefinition[]) => void): void;
-	getTaskContentZip(filePath: string, taskId: string, versionString: string, onResult: (err: any, statusCode: number) => void): void;
+	getTaskContentZip(taskId: string, versionString: string, onResult: (err: any, statusCode: number, res: http.ClientResponse) => void): void;
 	getTaskDefinitions(visibility: string[], onResult: (err: any, statusCode: number, tasks: TaskAgentInterfaces.TaskDefinition[]) => void): void;
 	uploadTaskDefinition(contentStream: NodeJS.ReadableStream, customHeaders: any, content: string, taskId: string, overwrite: boolean, onResult: (err: any, statusCode: number, obj: any) => void): void;
 	updateUserCapabilities(userCapabilities: { [key: string] : string; }, poolId: number, agentId: number, onResult: (err: any, statusCode: number, usercapabilitie: TaskAgentInterfaces.TaskAgent) => void): void;
@@ -98,11 +100,13 @@ export class TaskAgentApi implements ITaskAgentApi {
 	userAgent: string;
 	httpClient: httpm.HttpClient;
 	restClient: restm.RestClient;
+	vsoClient: vsom.VsoClient
 
-	constructor(baseUrl: string, handlers: interfaces.IRequestHandler[]) {
+	constructor(baseUrl: string, handlers: CoreInterfaces.IRequestHandler[]) {
 		this.baseUrl = baseUrl;
 		this.httpClient = new httpm.HttpClient('node-TaskAgent-api', handlers);
-		this.restClient = new restm.RestClient(baseUrl, this.httpClient);
+		this.restClient = new restm.RestClient(this.httpClient);
+		this.vsoClient = new vsom.VsoClient(baseUrl, this.restClient);
 	}
 
 	setUserAgent(userAgent: string) {
@@ -111,7 +115,7 @@ export class TaskAgentApi implements ITaskAgentApi {
     }
 	
 	connect(onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this.restClient.getJson('/_apis/connectionData', "", onResult);
+        this.restClient.getJson(this.vsoClient.resolveUrl('/_apis/connectionData'), "", onResult);
     }
 
 	/**
@@ -129,8 +133,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			poolId: poolId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -154,8 +157,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			agentId: agentId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -188,8 +190,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			propertyFilters: propertyFilters
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -225,8 +226,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			demands: demands
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -252,8 +252,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			agentId: agentId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -279,8 +278,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			agentId: agentId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -302,8 +300,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 		var routeValues = {
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "f223b809-8c33-4b7d-b53f-07232569b5d6", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "f223b809-8c33-4b7d-b53f-07232569b5d6", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -333,8 +330,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			lockToken: lockToken
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -358,8 +354,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			requestId: requestId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -382,8 +377,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			poolId: poolId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -415,8 +409,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			lockToken: lockToken
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -446,8 +439,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			sessionId: sessionId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -477,8 +469,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			lastMessageId: lastMessageId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -505,8 +496,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			agentId: agentId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -527,8 +517,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			poolId: poolId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -557,8 +546,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			requestId: requestId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -578,8 +566,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 		var routeValues = {
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -600,8 +587,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			poolId: poolId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -628,8 +614,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			properties: properties
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -656,8 +641,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			properties: properties
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -680,8 +664,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			poolId: poolId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -702,8 +685,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			poolId: poolId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "9e627af6-3635-4ddf-a275-dca904802338", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "9e627af6-3635-4ddf-a275-dca904802338", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -729,8 +711,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			endpointId: endpointId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "ca373c13-fec3-4b30-9525-35a117731384", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "ca373c13-fec3-4b30-9525-35a117731384", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -754,8 +735,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			endpointId: endpointId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "ca373c13-fec3-4b30-9525-35a117731384", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "ca373c13-fec3-4b30-9525-35a117731384", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -779,8 +759,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			endpointId: endpointId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "ca373c13-fec3-4b30-9525-35a117731384", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "ca373c13-fec3-4b30-9525-35a117731384", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -807,8 +786,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			type: type
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "ca373c13-fec3-4b30-9525-35a117731384", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "ca373c13-fec3-4b30-9525-35a117731384", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -831,8 +809,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			poolId: poolId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "134e239e-2df3-4794-a6f6-24f1f19ec8dc", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "134e239e-2df3-4794-a6f6-24f1f19ec8dc", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -856,8 +833,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			sessionId: sessionId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "134e239e-2df3-4794-a6f6-24f1f19ec8dc", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "134e239e-2df3-4794-a6f6-24f1f19ec8dc", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -878,8 +854,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			taskId: taskId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -903,8 +878,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			versionString: versionString
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -918,10 +892,9 @@ export class TaskAgentApi implements ITaskAgentApi {
 	 * @param onResult callback function with the resulting any
 	 */
 	public getTaskContentZip(
-		filePath: string,
         taskId: string,
         versionString: string,
-        onResult: (err: any, statusCode: number) => void
+        onResult: (err: any, statusCode: number, res: http.ClientResponse) => void
 		): void {
 
 		var routeValues = {
@@ -929,12 +902,11 @@ export class TaskAgentApi implements ITaskAgentApi {
 			versionString: versionString
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
-			this.restClient.downloadFile(path, apiVersion, filePath, "application/zip", onResult);
+			this.httpClient.getStream(path, apiVersion, "application/zip", onResult);
 		});
 	}
 
@@ -954,8 +926,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			visibility: visibility
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -986,8 +957,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			overwrite: overwrite
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues, queryValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -1013,8 +983,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 			agentId: agentId
 		};
 
-		var vsshelper = new vssutility.VssClientUtility("", this.restClient);
-		vsshelper.getVersioningData("3.0-preview.1", "distributedtask", "30ba3ada-fedf-4da8-bbb5-dacf2f82e176", routeValues).then((versioningData: vssutility.ClientVersioningData) => {
+		this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "30ba3ada-fedf-4da8-bbb5-dacf2f82e176", routeValues).then((versioningData: vsom.ClientVersioningData) => {
 			var path: string = versioningData.requestUrl;
 			var apiVersion: string = versioningData.apiVersion;
 			
@@ -1027,7 +996,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 export class QTaskAgentApi implements IQTaskAgentApi {
 	TaskAgentApi: ITaskAgentApi;
 
-	constructor(baseUrl: string, handlers: interfaces.IRequestHandler[]) {
+	constructor(baseUrl: string, handlers: CoreInterfaces.IRequestHandler[]) {
 		this.TaskAgentApi = new TaskAgentApi(baseUrl, handlers);
 	}
 

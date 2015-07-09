@@ -67,25 +67,24 @@ export class HttpClient implements ifm.IHttpClient {
         content.pipe(req);
     }
 
-    getFile(requestUrl: string, destination: NodeJS.WritableStream, headers: any, onResult: (err: any, res: http.ClientResponse) => void): void {
+    getStream(requestUrl: string, apiVersion: string, type: string, onResult: (err: any, statusCode: number, res: http.ClientResponse) => void): void {
+        var headers = {};
+        headers['Accept'] = this.makeAcceptHeader(type, apiVersion);
         var options = this._getOptions('GET', requestUrl, headers);
 
-        var req = options.protocol.request(options.options, function(res) {
-            // Wait on the pipe command closing the destination stream
-            // res could 'end' before it made it through the pipe
-            destination.on('finish', function() {
-                onResult(null, res);
-            });
-
-            res.pipe(destination)
+        var req = options.protocol.request(options.options, function (res) {
+            onResult(null, res.statusCode, res);
         });
 
-        req.on('error', function(err) {
-            destination.end();
-            onResult(err, null);
+        req.on('error', function (err) {
+            onResult(err, err.statusCode, null);
         });
 
         req.end();
+    }
+
+    makeAcceptHeader(type: string, apiVersion: string): string {
+        return type + (apiVersion ? (";api-version=" + apiVersion) : "");
     }
 
     _getOptions(method: string, requestUrl: string, headers: any): any {

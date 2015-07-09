@@ -13,8 +13,8 @@
 
 "use strict";
 
-import TfsInterfaces = require("../interfaces/common/TfsInterfaces");
-import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
+import TfsInterfaces = require("./common/TfsInterfaces");
+import VSSInterfaces = require("./common/VSSInterfaces");
 
 
 export interface AgentPoolQueue extends ShallowReference {
