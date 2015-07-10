@@ -13,8 +13,8 @@
 
 "use strict";
 
-import TfsInterfaces = require("./common/TfsInterfaces");
-import VSSInterfaces = require("./common/VSSInterfaces");
+import TfsInterfaces = require("../interfaces/common/TfsInterfaces");
+import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
 export interface AgentPoolQueue extends ShallowReference {
@@ -409,6 +409,10 @@ export interface BuildDefinitionVariable {
     value: string;
 }
 
+export interface BuildDeletedEvent extends RealtimeBuildEvent {
+    build: Build;
+}
+
 export interface BuildDeployment {
     deployment: BuildSummary;
     sourceBuild: ShallowReference;
@@ -631,9 +635,6 @@ export enum BuildResult {
      * The build was canceled before starting.
      */
     Canceled = 32,
-}
-
-export interface BuildsDeletedEvent {
 }
 
 export interface BuildServer {
@@ -1444,6 +1445,9 @@ export var TypeInfo = {
     BuildDefinitionVariable: {
         fields: <any>null
     },
+    BuildDeletedEvent: {
+        fields: <any>null
+    },
     BuildDeployment: {
         fields: <any>null
     },
@@ -1522,9 +1526,6 @@ export var TypeInfo = {
             "failed": 8,
             "canceled": 32,
         }
-    },
-    BuildsDeletedEvent: {
-        fields: <any>null
     },
     BuildServer: {
         fields: <any>null
@@ -2035,6 +2036,12 @@ TypeInfo.BuildDefinitionTemplate.fields = {
 TypeInfo.BuildDefinitionVariable.fields = {
 };
 
+TypeInfo.BuildDeletedEvent.fields = {
+    build: {
+        typeInfo: TypeInfo.Build
+    },
+};
+
 TypeInfo.BuildDeployment.fields = {
     deployment: {
         typeInfo: TypeInfo.BuildSummary
@@ -2101,9 +2108,6 @@ TypeInfo.BuildRequestValidationResult.fields = {
     result: {
         enumType: TypeInfo.ValidationResult
     },
-};
-
-TypeInfo.BuildsDeletedEvent.fields = {
 };
 
 TypeInfo.BuildServer.fields = {

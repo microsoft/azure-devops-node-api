@@ -1,6 +1,4 @@
-// TODO: port JQuery code to node
-
-///// <reference path='../definitions/VSS-Common.d.ts' />
+//// TODO: port JQuery code to node
 
 ///**
 // * Metadata for deserializing an enum field on a contract/type
@@ -34,6 +32,11 @@
 //    fields?: { [fieldName: string]: ContractFieldMetadata; };
 //}
 
+//export interface IWebApiArrayResult {
+//    count: number;
+//    value: any[];
+//}
+
 ///**
 // * Module for handling serialization and deserialization of data contracts
 // * (contracts sent from the server using the VSO default REST api serialization settings)
@@ -52,7 +55,7 @@
 //     */
 //    export function serialize(data: any, contractMetadata: ContractMetadata, preserveOriginal: boolean = true) {
 //        if (data && contractMetadata) {
-//            if ($.isArray(data)) {
+//            if (Array.isArray(data)) {
 //                return _getTranslatedArray(data, contractMetadata, true, preserveOriginal);
 //            }
 //            else {
@@ -76,13 +79,13 @@
 //     */
 //    export function deserialize(data: any, contractMetadata: ContractMetadata, preserveOriginal: boolean = true, unwrapWrappedCollections: boolean = false) {
 //        if (data) {
-//            if (unwrapWrappedCollections && $.isArray((<IWebApiArrayResult>data).value)) {
+//            if (unwrapWrappedCollections && Array.isArray((<IWebApiArrayResult>data).value)) {
 //                // Wrapped json array - unwrap it and send the array as the result
 //                data = (<IWebApiArrayResult>data).value;
 //            }
 
 //            if (contractMetadata) {
-//                if ($.isArray(data)) {
+//                if (Array.isArray(data)) {
 //                    data = _getTranslatedArray(data, contractMetadata, false, preserveOriginal);
 //                }
 //                else {
@@ -98,11 +101,13 @@
 
 //        var arrayCopy: any[] = [];
 
-//        $.each(array, (i: number, item: any) => {
+//        var i;
+//        for (i = 0; i < array.length; i++) {
+//            var item = array[i];
 //            var processedItem: any;
 
 //            // handle arrays of arrays
-//            if ($.isArray(item)) {
+//            if (Array.isArray(item)) {
 //                processedItem = _getTranslatedArray(item, typeMetadata, serialize, preserveOriginal);
 //            }
 //            else {
@@ -118,7 +123,7 @@
 //            else {
 //                array[i] = processedItem;
 //            }
-//        });
+//        }
 
 //        return resultArray;
 //    }
@@ -129,6 +134,10 @@
         
 //        if (typeObject && typeMetadata.fields) {
 //            $.each(typeMetadata.fields, (fieldName: string, fieldMetadata: ContractFieldMetadata) => {
+
+//            typeMetadata.fields.forEach(function (field) {
+//                var fieldName = field.fieldName;
+//                var fieldMetadata = field.fieldMetadata
 //                var fieldValue = typeObject[fieldName];
 //                var translatedValue = _getTranslatedField(fieldValue, fieldMetadata, serialize, preserveOriginal);
 //                if (fieldValue !== translatedValue) {
@@ -151,7 +160,7 @@
 //        }
 
 //        if (fieldMetadata.isArray) {
-//            if ($.isArray(fieldValue)) {
+//            if (Array.isArray(fieldValue)) {
 
 //                var newArray: any[] = [],                    
 //                    processedArray: any[] = fieldValue;
@@ -165,7 +174,7 @@
 //                        processedValue = _getTranslatedEnumValue(fieldMetadata.enumType, arrayValue, serialize);
 //                    }
 //                    else if (fieldMetadata.typeInfo) {
-//                        if ($.isArray(arrayValue)) {
+//                        if (Array.isArray(arrayValue)) {
 //                            processedValue = _getTranslatedArray(arrayValue, fieldMetadata.typeInfo, serialize, preserveOriginal);
 //                        }
 //                        else {

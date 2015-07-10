@@ -67,7 +67,7 @@ export class HttpClient implements ifm.IHttpClient {
         content.pipe(req);
     }
 
-    getStream(requestUrl: string, apiVersion: string, type: string, onResult: (err: any, statusCode: number, res: http.ClientResponse) => void): void {
+    getStream(requestUrl: string, apiVersion: string, type: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void {
         var headers = {};
         headers['Accept'] = this.makeAcceptHeader(type, apiVersion);
         var options = this._getOptions('GET', requestUrl, headers);
