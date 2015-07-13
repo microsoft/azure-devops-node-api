@@ -13,7 +13,7 @@
 
 "use strict";
 
-import VSSInterfaces = require("./common/VSSInterfaces");
+import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
 export interface AgentPoolEvent {

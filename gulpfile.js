@@ -3,20 +3,16 @@ var path = require('path');
 var gulp = require('gulp');
 var del = require('del');
 var mocha = require('gulp-mocha');
-var ts = require('gulp-typescript');
-var tar = require('gulp-tar');
+var typescript = require('gulp-tsc');
 var gzip = require('gulp-gzip');
 var merge = require('merge2');
-var minimist = require('minimist');
 
 var buildRoot = path.join(__dirname, '_build');
-var tarRoot = path.join(__dirname, '_tar');
-var packageRoot = path.join(__dirname, '_package');
 var testRoot = path.join(__dirname, '_test');
+var definitionRoot = path.join(__dirname, '_def');
 var buildPath = path.join(buildRoot, 'nodeapi');
-var packagePath = path.join(packageRoot, 'nodeapi');
-var binPath = path.join(buildPath, 'bin');
 var apiPath = path.join(buildPath, 'api');
+var testPath = path.join(testRoot, 'test');
 
 // grunt is 0, task is 1
 var mopts = {
@@ -25,26 +21,28 @@ var mopts = {
   default: { ci: false, suite: '*' }
 };
 
-var options = minimist(process.argv.slice(2), mopts);
-
-
-var tsProject = ts.createProject({
-	declartionFiles:false,
-	noExternalResolve: true,
-	module: 'commonjs'
-});
-
-
-gulp.task('build', ['clean'], function () { 
+// builds the whole api and drops definition files (.d.ts files) in place
+gulp.task('buildPrep', ['clean'], function () { 
 	var tsResult = gulp.src(['src/**/*.ts'])
-		.pipe(ts(tsProject))
+		.pipe(typescript({ declaration: true }))
 		.on('error', function (err) { process.exit(1) });
 	
 	return merge([
-		tsResult.js.pipe(gulp.dest(buildPath), null, ts.reporter.fullReporter(true)),
+		tsResult.pipe(gulp.dest(buildPath)),
 		gulp.src(['package.json']).pipe(gulp.dest(buildPath)),
-		gulp.src(['src/bin/install.js']).pipe(gulp.dest(binPath))
 	]);	
+});
+
+// copies the definition files to their own _def directory
+gulp.task('copyDefinitions', ['buildPrep'], function () {
+    return gulp.src([path.join(apiPath, '**/*.d.ts')])
+        .pipe(gulp.dest(definitionRoot))
+        .on('error', function (err) { process.exit(1) });
+});
+
+// sends built js files to _build and definition (.d.ts) files to _def
+gulp.task('build', ['copyDefinitions'], function () {
+    return del(path.join(buildPath, '**/*.d.ts'));
 });
 
 gulp.task('testPrep', function () {
@@ -60,28 +58,13 @@ gulp.task('testPrep', function () {
 
 gulp.task('test', ['testPrep'], function () {
 	var suitePath = path.join(testPath, '*.js');
-	if (options.suite !== '*') {
-		suitePath = path.join(testPath, options.suite + '.js');
-	}
 
 	return gulp.src([suitePath])
-		.pipe(mocha({ reporter: 'spec', ui: 'bdd', useColors: !options.ci }));
-});
-
-gulp.task('package', ['build'], function () {
-	return gulp.src([path.join(buildPath, '**'), 'README.md'])
-		.pipe(gulp.dest(packagePath));
-});
-
-gulp.task('tar', ['package'], function () {
-	return gulp.src(path.join(packagePath, '**'))
-        .pipe(tar('vsoxplat.tar'))
-        .pipe(gzip())
-        .pipe(gulp.dest(tarRoot));
+		.pipe(mocha({ reporter: 'spec', ui: 'bdd' }));
 });
 
 gulp.task('clean', function (done) {
-	del([buildRoot, tarRoot, packageRoot, testRoot], done);
+    del([buildRoot, testRoot, definitionRoot], done);
 });
 
-gulp.task('default', ['tar']);
+gulp.task('default', ['build']);
