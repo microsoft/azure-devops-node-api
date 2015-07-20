@@ -135,7 +135,7 @@ export class BuildApi implements IBuildApi {
     }
     
     connect(onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this.restClient.getJson(this.vsoClient.resolveUrl('/_apis/connectionData'), "", onResult);
+        this.restClient.getJson(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, onResult);
     }
 
     /**
@@ -161,8 +161,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.BuildArtifact, responseTypeMetadata: BuildInterfaces.TypeInfo.BuildArtifact, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, artifact, onResult);
+            this.restClient.create(path, apiVersion, artifact, serializationData, onResult);
         });
     }
 
@@ -190,8 +191,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildArtifact, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, onResult);
+            this.restClient.getJson(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -219,6 +221,7 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
             
             this.httpClient.getStream(path, apiVersion, "application/zip", onResult);
         });
@@ -245,8 +248,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildArtifact, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, onResult);
+            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -275,8 +279,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "de6a4df8-22cd-44ee-af2d-39f6aa7a4261", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, onResult);
+            this.restClient.getJson(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -301,8 +306,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, onResult);
+            this.restClient.delete(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -333,8 +339,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, onResult);
+            this.restClient.getJson(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -410,8 +417,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, onResult);
+            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -441,8 +449,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.Build, responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, build, onResult);
+            this.restClient.create(path, apiVersion, build, serializationData, onResult);
         });
     }
 
@@ -469,8 +478,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.Build, responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: false };
             
-            this.restClient.update(path, apiVersion, build, onResult);
+            this.restClient.update(path, apiVersion, build, serializationData, onResult);
         });
     }
 
@@ -501,8 +511,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "54572c7b-bbd3-45d4-80dc-28be08941620", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Change, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, onResult);
+            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -524,8 +535,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "fcac1932-2ee1-437f-9b6f-7f696be858f6", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildController, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, onResult);
+            this.restClient.getJson(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -550,8 +562,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "fcac1932-2ee1-437f-9b6f-7f696be858f6", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildController, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, onResult);
+            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -584,8 +597,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, definition, onResult);
+            this.restClient.create(path, apiVersion, definition, serializationData, onResult);
         });
     }
 
@@ -610,8 +624,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, onResult);
+            this.restClient.delete(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -645,8 +660,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.DefinitionReference, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, onResult);
+            this.restClient.getJson(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -677,8 +693,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.DefinitionReference, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, onResult);
+            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -714,8 +731,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseIsCollection: false };
             
-            this.restClient.replace(path, apiVersion, definition, onResult);
+            this.restClient.replace(path, apiVersion, definition, serializationData, onResult);
         });
     }
 
@@ -740,8 +758,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "f275be9a-556a-4ee9-b72f-f9c8370ccaee", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Deployment, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, onResult);
+            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -778,6 +797,7 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
             
             this.httpClient.getStream(path, apiVersion, "application/octet-stream", onResult);
         });
@@ -804,8 +824,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildLog, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, onResult);
+            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -830,6 +851,7 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
             
             this.httpClient.getStream(path, apiVersion, "application/zip", onResult);
         });
@@ -848,8 +870,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "591cb5a4-2d46-4f3a-a697-5cd42b6bd332", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildOptionDefinition, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, onResult);
+            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -870,8 +893,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.AgentPoolQueue, responseTypeMetadata: BuildInterfaces.TypeInfo.AgentPoolQueue, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, queue, onResult);
+            this.restClient.create(path, apiVersion, queue, serializationData, onResult);
         });
     }
 
@@ -896,8 +920,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, onResult);
+            this.restClient.delete(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -919,8 +944,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.AgentPoolQueue, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, onResult);
+            this.restClient.getJson(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -945,8 +971,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.AgentPoolQueue, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, onResult);
+            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -971,8 +998,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "7c116775-52e5-453e-8c5d-914d9762d8c4", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionRevision, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, onResult);
+            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -989,8 +1017,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "build", "aa8c1c9c-ef8b-474a-b8c4-785c7b191d0d", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildSettings, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, onResult);
+            this.restClient.getJson(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -1011,8 +1040,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "build", "aa8c1c9c-ef8b-474a-b8c4-785c7b191d0d", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.BuildSettings, responseTypeMetadata: BuildInterfaces.TypeInfo.BuildSettings, responseIsCollection: false };
             
-            this.restClient.update(path, apiVersion, settings, onResult);
+            this.restClient.update(path, apiVersion, settings, serializationData, onResult);
         });
     }
 
@@ -1040,8 +1070,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: true };
             
-            this.restClient.replace(path, apiVersion, null, onResult);
+            this.restClient.replace(path, apiVersion, null, serializationData, onResult);
         });
     }
 
@@ -1068,8 +1099,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: true };
             
-            this.restClient.createJsonWrappedArray(path, apiVersion, tags, onResult);
+            this.restClient.createJsonWrappedArray(path, apiVersion, tags, serializationData, onResult);
         });
     }
 
@@ -1097,8 +1129,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: true };
             
-            this.restClient.delete(path, apiVersion, onResult);
+            this.restClient.delete(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -1123,8 +1156,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, onResult);
+            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -1144,8 +1178,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "d84ac5c6-edc7-43d5-adc9-1b34be5dea09", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, onResult);
+            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -1170,8 +1205,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, onResult);
+            this.restClient.delete(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -1196,8 +1232,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionTemplate, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, onResult);
+            this.restClient.getJson(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -1217,8 +1254,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionTemplate, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, onResult);
+            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -1245,8 +1283,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionTemplate, responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionTemplate, responseIsCollection: false };
             
-            this.restClient.replace(path, apiVersion, template, onResult);
+            this.restClient.replace(path, apiVersion, template, serializationData, onResult);
         });
     }
 
@@ -1280,8 +1319,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "8baac422-4c6e-4de5-8532-db96d92acffa", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Timeline, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, onResult);
+            this.restClient.getJson(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -1312,8 +1352,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "5a21f5d2-5642-47e4-a0bd-1356e6731bee", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: VSSInterfaces.TypeInfo.ResourceRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, onResult);
+            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -1346,8 +1387,9 @@ export class BuildApi implements IBuildApi {
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "5a21f5d2-5642-47e4-a0bd-1356e6731bee", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: VSSInterfaces.TypeInfo.ResourceRef, responseIsCollection: true };
             
-            this.restClient.createJsonWrappedArray(path, apiVersion, commitIds, onResult);
+            this.restClient.createJsonWrappedArray(path, apiVersion, commitIds, serializationData, onResult);
         });
     }
 

@@ -1,5 +1,3 @@
-// TODO: port JQuery code to node
-
 /**
 * Metadata for deserializing an enum field on a contract/type
 */
@@ -8,8 +6,8 @@ export interface ContractEnumMetadata {
 }
 
 export interface SerializationData {
-    requestTypeMetadata: ContractMetadata;
-    responseTypeMetadata: ContractMetadata;
+    requestTypeMetadata?: ContractMetadata;
+    responseTypeMetadata?: ContractMetadata;
     responseIsCollection: boolean;
 }
 
@@ -300,10 +298,7 @@ export module ContractSerializer {
     }
 
     function _getTranslatedDateValue(valueToConvert: any, serialize: boolean): any {
-        if (serialize && (valueToConvert instanceof Date) && Date.prototype.toISOString) {
-            return (<Date>valueToConvert).toISOString();
-        }
-        else if (!serialize && typeof valueToConvert === "string") {
+        if (!serialize && typeof valueToConvert === "string") {
             // Deserialize: String --> Date
             var dateValue = new Date(valueToConvert);
             if (isNaN(<any>dateValue) && navigator.userAgent && /msie/i.test(navigator.userAgent)) {

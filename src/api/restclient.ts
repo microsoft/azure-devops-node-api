@@ -58,8 +58,10 @@ export function processResponse(url, res, contents, serializationData: Serializa
         try {
             var jsonObj = null;
             if (contents && contents.length > 0) {
-                jsonObj = Serialization.ContractSerializer.deserialize(contents, serializationData.responseTypeMetadata, false, serializationData.responseIsCollection);
-                //jsonObj = JSON.parse(contents);
+                jsonObj = JSON.parse(contents);
+                if (serializationData) {
+                    jsonObj = Serialization.ContractSerializer.deserialize(jsonObj, serializationData.responseTypeMetadata, false, serializationData.responseIsCollection);
+                }
             }
         } catch (e) {
 
@@ -117,8 +119,8 @@ export class RestClient implements ifm.IRestClient {
         this._getJson('OPTIONS', url, "", null, onResult);
     }
 
-    delete(url: string, apiVersion: string, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._getJson('DELETE', url, apiVersion, null, onResult);
+    delete(url: string, apiVersion: string, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        this._getJson('DELETE', url, apiVersion, serializationData, onResult);
     }
 
     create(url: string, apiVersion: string, resources: any, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
@@ -173,7 +175,7 @@ export class RestClient implements ifm.IRestClient {
     }
 
     _sendWrappedJson(verb: string, url: string, apiVersion: string, resources: any[], serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, resources: any[]) => void): void {
-        var wrapped = {
+        var wrapped = <Serialization.IWebApiArrayResult>{
             count: resources.length,
             value: resources
         }
@@ -208,7 +210,7 @@ export class RestClient implements ifm.IRestClient {
         headers["Accept"] = this.httpClient.makeAcceptHeader('application/json', apiVersion);
         headers["Content-Type"] = 'application/json; charset=utf-8';
         
-        if(data && serializationData.requestTypeMetadata) {
+        if(serializationData) {
             data = Serialization.ContractSerializer.serialize(data, serializationData.requestTypeMetadata, true);
         }
 
