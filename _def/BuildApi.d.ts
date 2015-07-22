@@ -110,7 +110,7 @@ export declare class BuildApi implements IBuildApi {
      * @param {BuildInterfaces.BuildArtifact} artifact
      * @param {number} buildId
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting BuildInterfaces.BuildArtifact
+     * @param onResult callback function with the resulting BuildInterfaces.BuildArtifact
      */
     createArtifact(artifact: BuildInterfaces.BuildArtifact, buildId: number, project: string, onResult: (err: any, statusCode: number, artifact: BuildInterfaces.BuildArtifact) => void): void;
     /**
@@ -119,7 +119,7 @@ export declare class BuildApi implements IBuildApi {
      * @param {number} buildId
      * @param {string} artifactName
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting BuildInterfaces.BuildArtifact
+     * @param onResult callback function with the resulting BuildInterfaces.BuildArtifact
      */
     getArtifact(buildId: number, artifactName: string, project: string, onResult: (err: any, statusCode: number, artifact: BuildInterfaces.BuildArtifact) => void): void;
     /**
@@ -128,7 +128,7 @@ export declare class BuildApi implements IBuildApi {
      * @param {number} buildId
      * @param {string} artifactName
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting ArrayBuffer
+     * @param onResult callback function with the resulting ArrayBuffer
      */
     getArtifactContentZip(buildId: number, artifactName: string, project: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     /**
@@ -136,14 +136,14 @@ export declare class BuildApi implements IBuildApi {
      *
      * @param {number} buildId
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting BuildInterfaces.BuildArtifact[]
+     * @param onResult callback function with the resulting BuildInterfaces.BuildArtifact[]
      */
     getArtifacts(buildId: number, project: string, onResult: (err: any, statusCode: number, artifacts: BuildInterfaces.BuildArtifact[]) => void): void;
     /**
      * @param {string} project
      * @param {number} definitionId
      * @param {string} branchName
-     * @param onResult cllback function with the resulting string
+     * @param onResult callback function with the resulting string
      */
     getBadge(project: string, definitionId: number, branchName: string, onResult: (err: any, statusCode: number, badge: string) => void): void;
     /**
@@ -151,7 +151,7 @@ export declare class BuildApi implements IBuildApi {
      *
      * @param {number} buildId
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     deleteBuild(buildId: number, project: string, onResult: (err: any, statusCode: number) => void): void;
     /**
@@ -160,7 +160,7 @@ export declare class BuildApi implements IBuildApi {
      * @param {number} buildId
      * @param {string} project - Project ID or project name
      * @param {string} propertyFilters - A comma-delimited list of properties to include in the results
-     * @param onResult cllback function with the resulting BuildInterfaces.Build
+     * @param onResult callback function with the resulting BuildInterfaces.Build
      */
     getBuild(buildId: number, project: string, propertyFilters: string, onResult: (err: any, statusCode: number, build: BuildInterfaces.Build) => void): void;
     /**
@@ -184,7 +184,7 @@ export declare class BuildApi implements IBuildApi {
      * @param {number} maxBuildsPerDefinition
      * @param {BuildInterfaces.QueryDeletedOption} deletedFilter
      * @param {BuildInterfaces.BuildQueryOrder} queryOrder
-     * @param onResult cllback function with the resulting BuildInterfaces.Build[]
+     * @param onResult callback function with the resulting BuildInterfaces.Build[]
      */
     getBuilds(project: string, definitions: number[], queues: number[], buildNumber: string, minFinishTime: Date, maxFinishTime: Date, requestedFor: string, reasonFilter: BuildInterfaces.BuildReason, statusFilter: BuildInterfaces.BuildStatus, resultFilter: BuildInterfaces.BuildResult, tagFilters: string[], properties: string[], type: BuildInterfaces.DefinitionType, top: number, continuationToken: string, maxBuildsPerDefinition: number, deletedFilter: BuildInterfaces.QueryDeletedOption, queryOrder: BuildInterfaces.BuildQueryOrder, onResult: (err: any, statusCode: number, builds: BuildInterfaces.Build[]) => void): void;
     /**
@@ -193,7 +193,7 @@ export declare class BuildApi implements IBuildApi {
      * @param {BuildInterfaces.Build} build
      * @param {string} project - Project ID or project name
      * @param {boolean} ignoreWarnings
-     * @param onResult cllback function with the resulting BuildInterfaces.Build
+     * @param onResult callback function with the resulting BuildInterfaces.Build
      */
     queueBuild(build: BuildInterfaces.Build, project: string, ignoreWarnings: boolean, onResult: (err: any, statusCode: number, build: BuildInterfaces.Build) => void): void;
     /**
@@ -202,7 +202,7 @@ export declare class BuildApi implements IBuildApi {
      * @param {BuildInterfaces.Build} build
      * @param {number} buildId
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting BuildInterfaces.Build
+     * @param onResult callback function with the resulting BuildInterfaces.Build
      */
     updateBuild(build: BuildInterfaces.Build, buildId: number, project: string, onResult: (err: any, statusCode: number, build: BuildInterfaces.Build) => void): void;
     /**
@@ -211,21 +211,21 @@ export declare class BuildApi implements IBuildApi {
      * @param {string} project - Project ID or project name
      * @param {number} buildId
      * @param {number} top - The maximum number of changes to return
-     * @param onResult cllback function with the resulting BuildInterfaces.Change[]
+     * @param onResult callback function with the resulting BuildInterfaces.Change[]
      */
     getBuildCommits(project: string, buildId: number, top: number, onResult: (err: any, statusCode: number, changes: BuildInterfaces.Change[]) => void): void;
     /**
      * Gets a controller
      *
      * @param {number} controllerId
-     * @param onResult cllback function with the resulting BuildInterfaces.BuildController
+     * @param onResult callback function with the resulting BuildInterfaces.BuildController
      */
     getBuildController(controllerId: number, onResult: (err: any, statusCode: number, Controller: BuildInterfaces.BuildController) => void): void;
     /**
      * Gets controller, optionally filtered by name
      *
      * @param {string} name
-     * @param onResult cllback function with the resulting BuildInterfaces.BuildController[]
+     * @param onResult callback function with the resulting BuildInterfaces.BuildController[]
      */
     getBuildControllers(name: string, onResult: (err: any, statusCode: number, Controllers: BuildInterfaces.BuildController[]) => void): void;
     /**
@@ -235,7 +235,7 @@ export declare class BuildApi implements IBuildApi {
      * @param {string} project - Project ID or project name
      * @param {number} definitionToCloneId
      * @param {number} definitionToCloneRevision
-     * @param onResult cllback function with the resulting BuildInterfaces.BuildDefinition
+     * @param onResult callback function with the resulting BuildInterfaces.BuildDefinition
      */
     createDefinition(definition: BuildInterfaces.BuildDefinition, project: string, definitionToCloneId: number, definitionToCloneRevision: number, onResult: (err: any, statusCode: number, definition: BuildInterfaces.BuildDefinition) => void): void;
     /**
@@ -243,7 +243,7 @@ export declare class BuildApi implements IBuildApi {
      *
      * @param {number} definitionId
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     deleteDefinition(definitionId: number, project: string, onResult: (err: any, statusCode: number) => void): void;
     /**
@@ -253,7 +253,7 @@ export declare class BuildApi implements IBuildApi {
      * @param {string} project - Project ID or project name
      * @param {number} revision
      * @param {string[]} propertyFilters
-     * @param onResult cllback function with the resulting BuildInterfaces.DefinitionReference
+     * @param onResult callback function with the resulting BuildInterfaces.DefinitionReference
      */
     getDefinition(definitionId: number, project: string, revision: number, propertyFilters: string[], onResult: (err: any, statusCode: number, definition: BuildInterfaces.DefinitionReference) => void): void;
     /**
@@ -262,7 +262,7 @@ export declare class BuildApi implements IBuildApi {
      * @param {string} project - Project ID or project name
      * @param {string} name
      * @param {BuildInterfaces.DefinitionType} type
-     * @param onResult cllback function with the resulting BuildInterfaces.DefinitionReference[]
+     * @param onResult callback function with the resulting BuildInterfaces.DefinitionReference[]
      */
     getDefinitions(project: string, name: string, type: BuildInterfaces.DefinitionType, onResult: (err: any, statusCode: number, definitions: BuildInterfaces.DefinitionReference[]) => void): void;
     /**
@@ -273,7 +273,7 @@ export declare class BuildApi implements IBuildApi {
      * @param {string} project - Project ID or project name
      * @param {number} secretsSourceDefinitionId
      * @param {number} secretsSourceDefinitionRevision
-     * @param onResult cllback function with the resulting BuildInterfaces.BuildDefinition
+     * @param onResult callback function with the resulting BuildInterfaces.BuildDefinition
      */
     updateDefinition(definition: BuildInterfaces.BuildDefinition, definitionId: number, project: string, secretsSourceDefinitionId: number, secretsSourceDefinitionRevision: number, onResult: (err: any, statusCode: number, definition: BuildInterfaces.BuildDefinition) => void): void;
     /**
@@ -281,7 +281,7 @@ export declare class BuildApi implements IBuildApi {
      *
      * @param {string} project - Project ID or project name
      * @param {number} buildId
-     * @param onResult cllback function with the resulting BuildInterfaces.Deployment[]
+     * @param onResult callback function with the resulting BuildInterfaces.Deployment[]
      */
     getBuildDeployments(project: string, buildId: number, onResult: (err: any, statusCode: number, deployments: BuildInterfaces.Deployment[]) => void): void;
     /**
@@ -292,7 +292,7 @@ export declare class BuildApi implements IBuildApi {
      * @param {number} logId
      * @param {number} startLine
      * @param {number} endLine
-     * @param onResult cllback function with the resulting ArrayBuffer
+     * @param onResult callback function with the resulting ArrayBuffer
      */
     getBuildLog(project: string, buildId: number, logId: number, startLine: number, endLine: number, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     /**
@@ -300,7 +300,7 @@ export declare class BuildApi implements IBuildApi {
      *
      * @param {string} project - Project ID or project name
      * @param {number} buildId
-     * @param onResult cllback function with the resulting BuildInterfaces.BuildLog[]
+     * @param onResult callback function with the resulting BuildInterfaces.BuildLog[]
      */
     getBuildLogs(project: string, buildId: number, onResult: (err: any, statusCode: number, logs: BuildInterfaces.BuildLog[]) => void): void;
     /**
@@ -308,39 +308,39 @@ export declare class BuildApi implements IBuildApi {
      *
      * @param {string} project - Project ID or project name
      * @param {number} buildId
-     * @param onResult cllback function with the resulting ArrayBuffer
+     * @param onResult callback function with the resulting ArrayBuffer
      */
     getBuildLogsZip(project: string, buildId: number, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     /**
-     * @param onResult cllback function with the resulting BuildInterfaces.BuildOptionDefinition[]
+     * @param onResult callback function with the resulting BuildInterfaces.BuildOptionDefinition[]
      */
     getBuildOptionDefinitions(onResult: (err: any, statusCode: number, options: BuildInterfaces.BuildOptionDefinition[]) => void): void;
     /**
      * Creates a build queue
      *
      * @param {BuildInterfaces.AgentPoolQueue} queue
-     * @param onResult cllback function with the resulting BuildInterfaces.AgentPoolQueue
+     * @param onResult callback function with the resulting BuildInterfaces.AgentPoolQueue
      */
     createQueue(queue: BuildInterfaces.AgentPoolQueue, onResult: (err: any, statusCode: number, queue: BuildInterfaces.AgentPoolQueue) => void): void;
     /**
      * Deletes a build queue
      *
      * @param {number} id
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     deleteQueue(id: number, onResult: (err: any, statusCode: number) => void): void;
     /**
      * Gets a queue
      *
      * @param {number} controllerId
-     * @param onResult cllback function with the resulting BuildInterfaces.AgentPoolQueue
+     * @param onResult callback function with the resulting BuildInterfaces.AgentPoolQueue
      */
     getAgentPoolQueue(controllerId: number, onResult: (err: any, statusCode: number, queue: BuildInterfaces.AgentPoolQueue) => void): void;
     /**
      * Gets queues, optionally filtered by name
      *
      * @param {string} name
-     * @param onResult cllback function with the resulting BuildInterfaces.AgentPoolQueue[]
+     * @param onResult callback function with the resulting BuildInterfaces.AgentPoolQueue[]
      */
     getQueues(name: string, onResult: (err: any, statusCode: number, queues: BuildInterfaces.AgentPoolQueue[]) => void): void;
     /**
@@ -348,18 +348,18 @@ export declare class BuildApi implements IBuildApi {
      *
      * @param {string} project - Project ID or project name
      * @param {number} definitionId
-     * @param onResult cllback function with the resulting BuildInterfaces.BuildDefinitionRevision[]
+     * @param onResult callback function with the resulting BuildInterfaces.BuildDefinitionRevision[]
      */
     getDefinitionRevisions(project: string, definitionId: number, onResult: (err: any, statusCode: number, revisions: BuildInterfaces.BuildDefinitionRevision[]) => void): void;
     /**
-     * @param onResult cllback function with the resulting BuildInterfaces.BuildSettings
+     * @param onResult callback function with the resulting BuildInterfaces.BuildSettings
      */
     getBuildSettings(onResult: (err: any, statusCode: number, setting: BuildInterfaces.BuildSettings) => void): void;
     /**
      * Updates the build settings
      *
      * @param {BuildInterfaces.BuildSettings} settings
-     * @param onResult cllback function with the resulting BuildInterfaces.BuildSettings
+     * @param onResult callback function with the resulting BuildInterfaces.BuildSettings
      */
     updateBuildSettings(settings: BuildInterfaces.BuildSettings, onResult: (err: any, statusCode: number, setting: BuildInterfaces.BuildSettings) => void): void;
     /**
@@ -368,7 +368,7 @@ export declare class BuildApi implements IBuildApi {
      * @param {string} project - Project ID or project name
      * @param {number} buildId
      * @param {string} tag
-     * @param onResult cllback function with the resulting string[]
+     * @param onResult callback function with the resulting string[]
      */
     addBuildTag(project: string, buildId: number, tag: string, onResult: (err: any, statusCode: number, tags: string[]) => void): void;
     /**
@@ -377,7 +377,7 @@ export declare class BuildApi implements IBuildApi {
      * @param {string[]} tags
      * @param {string} project - Project ID or project name
      * @param {number} buildId
-     * @param onResult cllback function with the resulting string[]
+     * @param onResult callback function with the resulting string[]
      */
     addBuildTags(tags: string[], project: string, buildId: number, onResult: (err: any, statusCode: number, tags: string[]) => void): void;
     /**
@@ -386,7 +386,7 @@ export declare class BuildApi implements IBuildApi {
      * @param {string} project - Project ID or project name
      * @param {number} buildId
      * @param {string} tag
-     * @param onResult cllback function with the resulting string[]
+     * @param onResult callback function with the resulting string[]
      */
     deleteBuildTag(project: string, buildId: number, tag: string, onResult: (err: any, statusCode: number, tags: string[]) => void): void;
     /**
@@ -394,12 +394,12 @@ export declare class BuildApi implements IBuildApi {
      *
      * @param {string} project - Project ID or project name
      * @param {number} buildId
-     * @param onResult cllback function with the resulting string[]
+     * @param onResult callback function with the resulting string[]
      */
     getBuildTags(project: string, buildId: number, onResult: (err: any, statusCode: number, tags: string[]) => void): void;
     /**
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting string[]
+     * @param onResult callback function with the resulting string[]
      */
     getTags(project: string, onResult: (err: any, statusCode: number, tags: string[]) => void): void;
     /**
@@ -407,7 +407,7 @@ export declare class BuildApi implements IBuildApi {
      *
      * @param {string} project - Project ID or project name
      * @param {string} templateId
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     deleteTemplate(project: string, templateId: string, onResult: (err: any, statusCode: number) => void): void;
     /**
@@ -415,12 +415,12 @@ export declare class BuildApi implements IBuildApi {
      *
      * @param {string} project - Project ID or project name
      * @param {string} templateId
-     * @param onResult cllback function with the resulting BuildInterfaces.BuildDefinitionTemplate
+     * @param onResult callback function with the resulting BuildInterfaces.BuildDefinitionTemplate
      */
     getTemplate(project: string, templateId: string, onResult: (err: any, statusCode: number, template: BuildInterfaces.BuildDefinitionTemplate) => void): void;
     /**
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting BuildInterfaces.BuildDefinitionTemplate[]
+     * @param onResult callback function with the resulting BuildInterfaces.BuildDefinitionTemplate[]
      */
     getTemplates(project: string, onResult: (err: any, statusCode: number, templates: BuildInterfaces.BuildDefinitionTemplate[]) => void): void;
     /**
@@ -429,7 +429,7 @@ export declare class BuildApi implements IBuildApi {
      * @param {BuildInterfaces.BuildDefinitionTemplate} template
      * @param {string} project - Project ID or project name
      * @param {string} templateId
-     * @param onResult cllback function with the resulting BuildInterfaces.BuildDefinitionTemplate
+     * @param onResult callback function with the resulting BuildInterfaces.BuildDefinitionTemplate
      */
     saveTemplate(template: BuildInterfaces.BuildDefinitionTemplate, project: string, templateId: string, onResult: (err: any, statusCode: number, template: BuildInterfaces.BuildDefinitionTemplate) => void): void;
     /**
@@ -439,7 +439,7 @@ export declare class BuildApi implements IBuildApi {
      * @param {number} buildId
      * @param {string} timelineId
      * @param {number} changeId
-     * @param onResult cllback function with the resulting BuildInterfaces.Timeline
+     * @param onResult callback function with the resulting BuildInterfaces.Timeline
      */
     getBuildTimeline(project: string, buildId: number, timelineId: string, changeId: number, onResult: (err: any, statusCode: number, Timeline: BuildInterfaces.Timeline) => void): void;
     /**
@@ -448,7 +448,7 @@ export declare class BuildApi implements IBuildApi {
      * @param {string} project - Project ID or project name
      * @param {number} buildId
      * @param {number} top - The maximum number of workitems to return
-     * @param onResult cllback function with the resulting VSSInterfaces.ResourceRef[]
+     * @param onResult callback function with the resulting VSSInterfaces.ResourceRef[]
      */
     getBuildWorkItemsRefs(project: string, buildId: number, top: number, onResult: (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => void): void;
     /**
@@ -458,7 +458,7 @@ export declare class BuildApi implements IBuildApi {
      * @param {string} project - Project ID or project name
      * @param {number} buildId
      * @param {number} top - The maximum number of workitems to return, also number of commits to consider if commitids are not sent
-     * @param onResult cllback function with the resulting VSSInterfaces.ResourceRef[]
+     * @param onResult callback function with the resulting VSSInterfaces.ResourceRef[]
      */
     getBuildWorkItemsRefsFromCommits(commitIds: string[], project: string, buildId: number, top: number, onResult: (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => void): void;
 }

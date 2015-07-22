@@ -110,7 +110,7 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {string} content
      * @param {string} fileName
      * @param {string} uploadType
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.AttachmentReference
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.AttachmentReference
      */
     createAttachment(contentStream: NodeJS.ReadableStream, customHeaders: any, content: string, fileName: string, uploadType: string, onResult: (err: any, statusCode: number, attachment: WorkItemTrackingInterfaces.AttachmentReference) => void): void;
     /**
@@ -118,7 +118,7 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      *
      * @param {string} id
      * @param {string} fileName
-     * @param onResult cllback function with the resulting ArrayBuffer
+     * @param onResult callback function with the resulting ArrayBuffer
      */
     getAttachmentContent(id: string, fileName: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     /**
@@ -126,13 +126,13 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      *
      * @param {string} id
      * @param {string} fileName
-     * @param onResult cllback function with the resulting ArrayBuffer
+     * @param onResult callback function with the resulting ArrayBuffer
      */
     getAttachmentZip(id: string, fileName: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     /**
      * @param {string} project - Project ID or project name
      * @param {number} depth
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemClassificationNode[]
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemClassificationNode[]
      */
     getRootNodes(project: string, depth: number, onResult: (err: any, statusCode: number, classificationNodes: WorkItemTrackingInterfaces.WorkItemClassificationNode[]) => void): void;
     /**
@@ -140,7 +140,7 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {string} project - Project ID or project name
      * @param {WorkItemTrackingInterfaces.TreeStructureGroup} structureGroup
      * @param {string} path
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemClassificationNode
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemClassificationNode
      */
     createOrUpdateClassificationNode(postedNode: WorkItemTrackingInterfaces.WorkItemClassificationNode, project: string, structureGroup: WorkItemTrackingInterfaces.TreeStructureGroup, path: string, onResult: (err: any, statusCode: number, classificationNode: WorkItemTrackingInterfaces.WorkItemClassificationNode) => void): void;
     /**
@@ -148,7 +148,7 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {WorkItemTrackingInterfaces.TreeStructureGroup} structureGroup
      * @param {string} path
      * @param {number} reclassifyId
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     deleteClassificationNode(project: string, structureGroup: WorkItemTrackingInterfaces.TreeStructureGroup, path: string, reclassifyId: number, onResult: (err: any, statusCode: number) => void): void;
     /**
@@ -156,7 +156,7 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {WorkItemTrackingInterfaces.TreeStructureGroup} structureGroup
      * @param {string} path
      * @param {number} depth
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemClassificationNode
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemClassificationNode
      */
     getClassificationNode(project: string, structureGroup: WorkItemTrackingInterfaces.TreeStructureGroup, path: string, depth: number, onResult: (err: any, statusCode: number, classificationNode: WorkItemTrackingInterfaces.WorkItemClassificationNode) => void): void;
     /**
@@ -164,16 +164,16 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {string} project - Project ID or project name
      * @param {WorkItemTrackingInterfaces.TreeStructureGroup} structureGroup
      * @param {string} path
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemClassificationNode
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemClassificationNode
      */
     updateClassificationNode(postedNode: WorkItemTrackingInterfaces.WorkItemClassificationNode, project: string, structureGroup: WorkItemTrackingInterfaces.TreeStructureGroup, path: string, onResult: (err: any, statusCode: number, classificationNode: WorkItemTrackingInterfaces.WorkItemClassificationNode) => void): void;
     /**
      * @param {string} field
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemField
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemField
      */
     getField(field: string, onResult: (err: any, statusCode: number, field: WorkItemTrackingInterfaces.WorkItemField) => void): void;
     /**
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemField[]
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemField[]
      */
     getFields(onResult: (err: any, statusCode: number, fields: WorkItemTrackingInterfaces.WorkItemField[]) => void): void;
     /**
@@ -182,7 +182,7 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {number} id
      * @param {number} top
      * @param {number} skip
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemHistory[]
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemHistory[]
      */
     getHistory(id: number, top: number, skip: number, onResult: (err: any, statusCode: number, history: WorkItemTrackingInterfaces.WorkItemHistory[]) => void): void;
     /**
@@ -190,7 +190,7 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      *
      * @param {number} id
      * @param {number} revisionNumber
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemHistory
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemHistory
      */
     getHistoryById(id: number, revisionNumber: number, onResult: (err: any, statusCode: number, history: WorkItemTrackingInterfaces.WorkItemHistory) => void): void;
     /**
@@ -199,13 +199,13 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {WorkItemTrackingInterfaces.QueryHierarchyItem} postedQuery - The query to create.
      * @param {string} project - Project ID or project name
      * @param {string} query - The parent path for the query to create.
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.QueryHierarchyItem
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.QueryHierarchyItem
      */
     createQuery(postedQuery: WorkItemTrackingInterfaces.QueryHierarchyItem, project: string, query: string, onResult: (err: any, statusCode: number, querie: WorkItemTrackingInterfaces.QueryHierarchyItem) => void): void;
     /**
      * @param {string} project - Project ID or project name
      * @param {string} query
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     deleteQuery(project: string, query: string, onResult: (err: any, statusCode: number) => void): void;
     /**
@@ -215,7 +215,7 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {WorkItemTrackingInterfaces.QueryExpand} expand
      * @param {number} depth
      * @param {boolean} includeDeleted
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.QueryHierarchyItem[]
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.QueryHierarchyItem[]
      */
     getQueries(project: string, expand: WorkItemTrackingInterfaces.QueryExpand, depth: number, includeDeleted: boolean, onResult: (err: any, statusCode: number, queries: WorkItemTrackingInterfaces.QueryHierarchyItem[]) => void): void;
     /**
@@ -226,7 +226,7 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {WorkItemTrackingInterfaces.QueryExpand} expand
      * @param {number} depth
      * @param {boolean} includeDeleted
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.QueryHierarchyItem
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.QueryHierarchyItem
      */
     getQuery(project: string, query: string, expand: WorkItemTrackingInterfaces.QueryExpand, depth: number, includeDeleted: boolean, onResult: (err: any, statusCode: number, querie: WorkItemTrackingInterfaces.QueryHierarchyItem) => void): void;
     /**
@@ -234,7 +234,7 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {string} project - Project ID or project name
      * @param {string} query
      * @param {boolean} undeleteDescendants
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.QueryHierarchyItem
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.QueryHierarchyItem
      */
     updateQuery(queryUpdate: WorkItemTrackingInterfaces.QueryHierarchyItem, project: string, query: string, undeleteDescendants: boolean, onResult: (err: any, statusCode: number, querie: WorkItemTrackingInterfaces.QueryHierarchyItem) => void): void;
     /**
@@ -243,7 +243,7 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {number} id
      * @param {number} revisionNumber
      * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItem
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItem
      */
     getRevision(id: number, revisionNumber: number, expand: WorkItemTrackingInterfaces.WorkItemExpand, onResult: (err: any, statusCode: number, revision: WorkItemTrackingInterfaces.WorkItem) => void): void;
     /**
@@ -253,14 +253,14 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {number} top
      * @param {number} skip
      * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItem[]
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItem[]
      */
     getRevisions(id: number, top: number, skip: number, expand: WorkItemTrackingInterfaces.WorkItemExpand, onResult: (err: any, statusCode: number, revisions: WorkItemTrackingInterfaces.WorkItem[]) => void): void;
     /**
      * Validates the fields values.
      *
      * @param {WorkItemTrackingInterfaces.FieldsToEvaluate} ruleEngineInput
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     evaluateRulesOnField(ruleEngineInput: WorkItemTrackingInterfaces.FieldsToEvaluate, onResult: (err: any, statusCode: number) => void): void;
     /**
@@ -268,7 +268,7 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      *
      * @param {number} id
      * @param {number} updateNumber
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemUpdate
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemUpdate
      */
     getUpdate(id: number, updateNumber: number, onResult: (err: any, statusCode: number, update: WorkItemTrackingInterfaces.WorkItemUpdate) => void): void;
     /**
@@ -277,7 +277,7 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {number} id
      * @param {number} top
      * @param {number} skip
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemUpdate[]
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemUpdate[]
      */
     getUpdates(id: number, top: number, skip: number, onResult: (err: any, statusCode: number, updates: WorkItemTrackingInterfaces.WorkItemUpdate[]) => void): void;
     /**
@@ -285,7 +285,7 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      *
      * @param {WorkItemTrackingInterfaces.Wiql} wiql - The query containing the wiql.
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemQueryResult
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemQueryResult
      */
     queryByWiql(wiql: WorkItemTrackingInterfaces.Wiql, project: string, onResult: (err: any, statusCode: number, wiql: WorkItemTrackingInterfaces.WorkItemQueryResult) => void): void;
     /**
@@ -293,38 +293,38 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      *
      * @param {string} id - The query id.
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemQueryResult
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemQueryResult
      */
     queryById(id: string, project: string, onResult: (err: any, statusCode: number, wiql: WorkItemTrackingInterfaces.WorkItemQueryResult) => void): void;
     /**
      * @param {string} project - Project ID or project name
      * @param {number} watermark
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch
      */
     getReportingLinks(project: string, watermark: number, onResult: (err: any, statusCode: number, workItemLink: WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch) => void): void;
     /**
      * Gets the work item relation types.
      *
      * @param {string} relation
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemRelationType
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemRelationType
      */
     getRelationType(relation: string, onResult: (err: any, statusCode: number, workItemRelationType: WorkItemTrackingInterfaces.WorkItemRelationType) => void): void;
     /**
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemRelationType[]
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemRelationType[]
      */
     getRelationTypes(onResult: (err: any, statusCode: number, workItemRelationTypes: WorkItemTrackingInterfaces.WorkItemRelationType[]) => void): void;
     /**
      * @param {string} project - Project ID or project name
      * @param {string[]} fields
      * @param {number} watermark
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch
      */
     readReportingRevisionsGet(project: string, fields: string[], watermark: number, onResult: (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => void): void;
     /**
      * @param {string[]} fieldsList
      * @param {string} project - Project ID or project name
      * @param {number} watermark
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch
      */
     readReportingRevisionsPost(fieldsList: string[], project: string, watermark: number, onResult: (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => void): void;
     /**
@@ -334,7 +334,7 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {string[]} fields
      * @param {Date} asOf
      * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItem
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItem
      */
     getWorkItem(id: number, fields: string[], asOf: Date, expand: WorkItemTrackingInterfaces.WorkItemExpand, onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => void): void;
     /**
@@ -344,7 +344,7 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {string[]} fields
      * @param {Date} asOf
      * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItem[]
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItem[]
      */
     getWorkItems(ids: number[], fields: string[], asOf: Date, expand: WorkItemTrackingInterfaces.WorkItemExpand, onResult: (err: any, statusCode: number, workItems: WorkItemTrackingInterfaces.WorkItem[]) => void): void;
     /**
@@ -352,7 +352,7 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {number} id
      * @param {boolean} validateOnly
      * @param {boolean} bypassRules
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItem
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItem
      */
     updateWorkItem(document: VSSInterfaces.JsonPatchDocument, id: number, validateOnly: boolean, bypassRules: boolean, onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => void): void;
     /**
@@ -363,7 +363,7 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {string} fields
      * @param {Date} asOf
      * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItem
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItem
      */
     getWorkItemTemplate(project: string, type: string, fields: string, asOf: Date, expand: WorkItemTrackingInterfaces.WorkItemExpand, onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => void): void;
     /**
@@ -372,12 +372,12 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {string} type
      * @param {boolean} validateOnly
      * @param {boolean} bypassRules
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItem
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItem
      */
     updateWorkItemTemplate(document: VSSInterfaces.JsonPatchDocument, project: string, type: string, validateOnly: boolean, bypassRules: boolean, onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => void): void;
     /**
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemTypeCategory[]
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemTypeCategory[]
      */
     getWorkItemTypeCategories(project: string, onResult: (err: any, statusCode: number, workItemTypeCategories: WorkItemTrackingInterfaces.WorkItemTypeCategory[]) => void): void;
     /**
@@ -385,7 +385,7 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      *
      * @param {string} project - Project ID or project name
      * @param {string} category
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemTypeCategory
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemTypeCategory
      */
     getWorkItemTypeCategory(project: string, category: string, onResult: (err: any, statusCode: number, workItemTypeCategorie: WorkItemTrackingInterfaces.WorkItemTypeCategory) => void): void;
     /**
@@ -393,12 +393,12 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      *
      * @param {string} project - Project ID or project name
      * @param {string} type
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemType
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemType
      */
     getWorkItemType(project: string, type: string, onResult: (err: any, statusCode: number, workItemType: WorkItemTrackingInterfaces.WorkItemType) => void): void;
     /**
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemType[]
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemType[]
      */
     getWorkItemTypes(project: string, onResult: (err: any, statusCode: number, workItemTypes: WorkItemTrackingInterfaces.WorkItemType[]) => void): void;
     /**
@@ -407,7 +407,7 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {string} project - Project ID or project name
      * @param {string} type
      * @param {string} field
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.FieldDependentRule
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.FieldDependentRule
      */
     getDependentFields(project: string, type: string, field: string, onResult: (err: any, statusCode: number, workItemTypesField: WorkItemTrackingInterfaces.FieldDependentRule) => void): void;
     /**
@@ -416,7 +416,7 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {string} project - Project ID or project name
      * @param {string} type
      * @param {boolean} exportGlobalLists
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemTypeTemplate
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemTypeTemplate
      */
     exportWorkItemTypeDefinition(project: string, type: string, exportGlobalLists: boolean, onResult: (err: any, statusCode: number, workItemTypeTemplate: WorkItemTrackingInterfaces.WorkItemTypeTemplate) => void): void;
     /**
@@ -424,7 +424,7 @@ export declare class WorkItemTrackingApi implements IWorkItemTrackingApi {
      *
      * @param {WorkItemTrackingInterfaces.WorkItemTypeTemplateUpdateModel} updateModel
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.ProvisioningResult
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.ProvisioningResult
      */
     updateWorkItemTypeDefinition(updateModel: WorkItemTrackingInterfaces.WorkItemTypeTemplateUpdateModel, project: string, onResult: (err: any, statusCode: number, workItemTypeTemplate: WorkItemTrackingInterfaces.ProvisioningResult) => void): void;
 }

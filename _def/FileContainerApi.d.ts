@@ -42,7 +42,7 @@ export declare class FileContainerApi implements IFileContainerApi {
      * @param {number} containerId
      * @param {string} itemPath
      * @param {string} scope - A guid representing the scope of the container. This is often the project id.
-     * @param onResult cllback function with the resulting FileContainerInterfaces.FileContainerItem
+     * @param onResult callback function with the resulting FileContainerInterfaces.FileContainerItem
      */
     createItem(containerId: number, itemPath: string, scope: string, onResult: (err: any, statusCode: number, Container: FileContainerInterfaces.FileContainerItem) => void): void;
     /**
@@ -51,7 +51,7 @@ export declare class FileContainerApi implements IFileContainerApi {
      * @param {VSSInterfaces.VssJsonCollectionWrapperV<FileContainerInterfaces.FileContainerItem[]>} items
      * @param {number} containerId
      * @param {string} scope - A guid representing the scope of the container. This is often the project id.
-     * @param onResult cllback function with the resulting FileContainerInterfaces.FileContainerItem[]
+     * @param onResult callback function with the resulting FileContainerInterfaces.FileContainerItem[]
      */
     createItems(items: VSSInterfaces.VssJsonCollectionWrapperV<FileContainerInterfaces.FileContainerItem[]>, containerId: number, scope: string, onResult: (err: any, statusCode: number, Container: FileContainerInterfaces.FileContainerItem[]) => void): void;
     /**
@@ -60,7 +60,7 @@ export declare class FileContainerApi implements IFileContainerApi {
      * @param {number} containerId - Container Id.
      * @param {string} itemPath - Path to delete.
      * @param {string} scope - A guid representing the scope of the container. This is often the project id.
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     deleteItem(containerId: number, itemPath: string, scope: string, onResult: (err: any, statusCode: number) => void): void;
     /**
@@ -68,7 +68,7 @@ export declare class FileContainerApi implements IFileContainerApi {
      *
      * @param {string} scope - A guid representing the scope of the container. This is often the project id.
      * @param {string} artifactUris
-     * @param onResult cllback function with the resulting FileContainerInterfaces.FileContainer[]
+     * @param onResult callback function with the resulting FileContainerInterfaces.FileContainer[]
      */
     getContainers(scope: string, artifactUris: string, onResult: (err: any, statusCode: number, Containers: FileContainerInterfaces.FileContainer[]) => void): void;
     /**
@@ -81,7 +81,7 @@ export declare class FileContainerApi implements IFileContainerApi {
      * @param {string} format - If specified, this overrides the HTTP Accept request header to return either 'json' or 'zip'.  If $format is specified, then api-version should also be specified as a query parameter.
      * @param {string} downloadFileName - If specified and returning other than JSON format, then this download name will be used (else defaults to itemPath)
      * @param {boolean} includeDownloadTickets
-     * @param onResult cllback function with the resulting FileContainerInterfaces.FileContainerItem[]
+     * @param onResult callback function with the resulting FileContainerInterfaces.FileContainerItem[]
      */
     getItems(containerId: number, scope: string, itemPath: string, metadata: boolean, format: string, downloadFileName: string, includeDownloadTickets: boolean, onResult: (err: any, statusCode: number, Containers: FileContainerInterfaces.FileContainerItem[]) => void): void;
 }

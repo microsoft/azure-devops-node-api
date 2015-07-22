@@ -89,7 +89,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     public postEvent(
         eventData: TaskAgentInterfaces.JobEvent,
@@ -121,7 +121,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} planId
      * @param {string} timelineId
      * @param {string} recordId
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     public postLines(
         lines: VSSInterfaces.VssJsonCollectionWrapperV<string[]>,
@@ -156,7 +156,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
      * @param {number} logId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskLog
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskLog
      */
     public appendLog(
         contentStream: NodeJS.ReadableStream,
@@ -190,7 +190,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskLog
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskLog
      */
     public createLog(
         log: TaskAgentInterfaces.TaskLog,
@@ -222,7 +222,7 @@ export class TaskApi implements ITaskApi {
      * @param {number} logId
      * @param {number} startLine
      * @param {number} endLine
-     * @param onResult cllback function with the resulting string[]
+     * @param onResult callback function with the resulting string[]
      */
     public getLog(
         scopeIdentifier: string,
@@ -259,7 +259,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskLog[]
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskLog[]
      */
     public getLogs(
         scopeIdentifier: string,
@@ -287,7 +287,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskOrchestrationPlan
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskOrchestrationPlan
      */
     public getPlan(
         scopeIdentifier: string,
@@ -317,7 +317,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} planId
      * @param {string} timelineId
      * @param {number} changeId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TimelineRecord[]
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TimelineRecord[]
      */
     public getRecords(
         scopeIdentifier: string,
@@ -354,7 +354,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
      * @param {string} timelineId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TimelineRecord[]
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TimelineRecord[]
      */
     public updateRecords(
         records: VSSInterfaces.VssJsonCollectionWrapperV<TaskAgentInterfaces.TimelineRecord[]>,
@@ -386,7 +386,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.Timeline
+     * @param onResult callback function with the resulting TaskAgentInterfaces.Timeline
      */
     public createTimeline(
         timeline: TaskAgentInterfaces.Timeline,
@@ -416,7 +416,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
      * @param {string} timelineId
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     public deleteTimeline(
         scopeIdentifier: string,
@@ -449,7 +449,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} timelineId
      * @param {number} changeId
      * @param {boolean} includeRecords
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.Timeline
+     * @param onResult callback function with the resulting TaskAgentInterfaces.Timeline
      */
     public getTimeline(
         scopeIdentifier: string,
@@ -486,7 +486,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.Timeline[]
+     * @param onResult callback function with the resulting TaskAgentInterfaces.Timeline[]
      */
     public getTimelines(
         scopeIdentifier: string,

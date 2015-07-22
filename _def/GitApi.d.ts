@@ -106,7 +106,7 @@ export declare class GitApi implements IGitApi {
      * @param {string} project - Project ID or project name
      * @param {boolean} download
      * @param {string} fileName
-     * @param onResult cllback function with the resulting GitInterfaces.GitBlobRef
+     * @param onResult callback function with the resulting GitInterfaces.GitBlobRef
      */
     getBlob(repositoryId: string, sha1: string, project: string, download: boolean, fileName: string, onResult: (err: any, statusCode: number, Blob: GitInterfaces.GitBlobRef) => void): void;
     /**
@@ -117,7 +117,7 @@ export declare class GitApi implements IGitApi {
      * @param {string} project - Project ID or project name
      * @param {boolean} download
      * @param {string} fileName
-     * @param onResult cllback function with the resulting ArrayBuffer
+     * @param onResult callback function with the resulting ArrayBuffer
      */
     getBlobContent(repositoryId: string, sha1: string, project: string, download: boolean, fileName: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     /**
@@ -127,7 +127,7 @@ export declare class GitApi implements IGitApi {
      * @param {string} repositoryId
      * @param {string} project - Project ID or project name
      * @param {string} filename
-     * @param onResult cllback function with the resulting ArrayBuffer
+     * @param onResult callback function with the resulting ArrayBuffer
      */
     getBlobsZip(blobIds: string[], repositoryId: string, project: string, filename: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     /**
@@ -138,7 +138,7 @@ export declare class GitApi implements IGitApi {
      * @param {string} project - Project ID or project name
      * @param {boolean} download
      * @param {string} fileName
-     * @param onResult cllback function with the resulting ArrayBuffer
+     * @param onResult callback function with the resulting ArrayBuffer
      */
     getBlobZip(repositoryId: string, sha1: string, project: string, download: boolean, fileName: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     /**
@@ -148,7 +148,7 @@ export declare class GitApi implements IGitApi {
      * @param {string} name - Name of the branch
      * @param {string} project - Project ID or project name
      * @param {GitInterfaces.GitVersionDescriptor} baseVersionDescriptor
-     * @param onResult cllback function with the resulting GitInterfaces.GitBranchStats
+     * @param onResult callback function with the resulting GitInterfaces.GitBranchStats
      */
     getBranch(repositoryId: string, name: string, project: string, baseVersionDescriptor: GitInterfaces.GitVersionDescriptor, onResult: (err: any, statusCode: number, BranchStat: GitInterfaces.GitBranchStats) => void): void;
     /**
@@ -157,7 +157,7 @@ export declare class GitApi implements IGitApi {
      * @param {string} repositoryId - Friendly name or guid of repository
      * @param {string} project - Project ID or project name
      * @param {GitInterfaces.GitVersionDescriptor} baseVersionDescriptor
-     * @param onResult cllback function with the resulting GitInterfaces.GitBranchStats[]
+     * @param onResult callback function with the resulting GitInterfaces.GitBranchStats[]
      */
     getBranches(repositoryId: string, project: string, baseVersionDescriptor: GitInterfaces.GitVersionDescriptor, onResult: (err: any, statusCode: number, BranchStats: GitInterfaces.GitBranchStats[]) => void): void;
     /**
@@ -168,7 +168,7 @@ export declare class GitApi implements IGitApi {
      * @param {string} project - Project ID or project name
      * @param {number} top - The maximum number of changes to return.
      * @param {number} skip - The number of changes to skip.
-     * @param onResult cllback function with the resulting GitInterfaces.GitCommitChanges
+     * @param onResult callback function with the resulting GitInterfaces.GitCommitChanges
      */
     getChanges(commitId: string, repositoryId: string, project: string, top: number, skip: number, onResult: (err: any, statusCode: number, Change: GitInterfaces.GitCommitChanges) => void): void;
     /**
@@ -176,7 +176,7 @@ export declare class GitApi implements IGitApi {
      *
      * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, projectId must also be specified.
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting GitInterfaces.GitCommit
+     * @param onResult callback function with the resulting GitInterfaces.GitCommit
      */
     createCommit(repositoryId: string, project: string, onResult: (err: any, statusCode: number, Commit: GitInterfaces.GitCommit) => void): void;
     /**
@@ -186,7 +186,7 @@ export declare class GitApi implements IGitApi {
      * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, projectId must also be specified.
      * @param {string} project - Project ID or project name
      * @param {number} changeCount - The number of changes to include in the result.
-     * @param onResult cllback function with the resulting GitInterfaces.GitCommit
+     * @param onResult callback function with the resulting GitInterfaces.GitCommit
      */
     getCommit(commitId: string, repositoryId: string, project: string, changeCount: number, onResult: (err: any, statusCode: number, Commit: GitInterfaces.GitCommit) => void): void;
     /**
@@ -197,7 +197,7 @@ export declare class GitApi implements IGitApi {
      * @param {string} project - Project ID or project name
      * @param {number} skip
      * @param {number} top
-     * @param onResult cllback function with the resulting GitInterfaces.GitCommitRef[]
+     * @param onResult callback function with the resulting GitInterfaces.GitCommitRef[]
      */
     getCommits(repositoryId: string, searchCriteria: GitInterfaces.GitQueryCommitsCriteria, project: string, skip: number, top: number, onResult: (err: any, statusCode: number, Commits: GitInterfaces.GitCommitRef[]) => void): void;
     /**
@@ -209,7 +209,7 @@ export declare class GitApi implements IGitApi {
      * @param {number} top - The maximum number of commits to return ("get the top x commits").
      * @param {number} skip - The number of commits to skip.
      * @param {boolean} includeLinks
-     * @param onResult cllback function with the resulting GitInterfaces.GitCommitRef[]
+     * @param onResult callback function with the resulting GitInterfaces.GitCommitRef[]
      */
     getPushCommits(repositoryId: string, pushId: number, project: string, top: number, skip: number, includeLinks: boolean, onResult: (err: any, statusCode: number, Commits: GitInterfaces.GitCommitRef[]) => void): void;
     /**
@@ -220,7 +220,7 @@ export declare class GitApi implements IGitApi {
      * @param {string} project - Project ID or project name
      * @param {number} skip
      * @param {number} top
-     * @param onResult cllback function with the resulting GitInterfaces.GitCommitRef[]
+     * @param onResult callback function with the resulting GitInterfaces.GitCommitRef[]
      */
     getCommitsBatch(searchCriteria: GitInterfaces.GitQueryCommitsCriteria, repositoryId: string, project: string, skip: number, top: number, onResult: (err: any, statusCode: number, CommitsBatch: GitInterfaces.GitCommitRef[]) => void): void;
     /**
@@ -235,7 +235,7 @@ export declare class GitApi implements IGitApi {
      * @param {boolean} latestProcessedChange
      * @param {boolean} download
      * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor
-     * @param onResult cllback function with the resulting GitInterfaces.GitItem
+     * @param onResult callback function with the resulting GitInterfaces.GitItem
      */
     getItem(repositoryId: string, path: string, project: string, scopePath: string, recursionLevel: GitInterfaces.VersionControlRecursionType, includeContentMetadata: boolean, latestProcessedChange: boolean, download: boolean, versionDescriptor: GitInterfaces.GitVersionDescriptor, onResult: (err: any, statusCode: number, Item: GitInterfaces.GitItem) => void): void;
     /**
@@ -250,7 +250,7 @@ export declare class GitApi implements IGitApi {
      * @param {boolean} latestProcessedChange
      * @param {boolean} download
      * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor
-     * @param onResult cllback function with the resulting ArrayBuffer
+     * @param onResult callback function with the resulting ArrayBuffer
      */
     getItemContent(repositoryId: string, path: string, project: string, scopePath: string, recursionLevel: GitInterfaces.VersionControlRecursionType, includeContentMetadata: boolean, latestProcessedChange: boolean, download: boolean, versionDescriptor: GitInterfaces.GitVersionDescriptor, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     /**
@@ -265,7 +265,7 @@ export declare class GitApi implements IGitApi {
      * @param {boolean} download
      * @param {boolean} includeLinks
      * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor
-     * @param onResult cllback function with the resulting GitInterfaces.GitItem[]
+     * @param onResult callback function with the resulting GitInterfaces.GitItem[]
      */
     getItems(repositoryId: string, project: string, scopePath: string, recursionLevel: GitInterfaces.VersionControlRecursionType, includeContentMetadata: boolean, latestProcessedChange: boolean, download: boolean, includeLinks: boolean, versionDescriptor: GitInterfaces.GitVersionDescriptor, onResult: (err: any, statusCode: number, Items: GitInterfaces.GitItem[]) => void): void;
     /**
@@ -280,7 +280,7 @@ export declare class GitApi implements IGitApi {
      * @param {boolean} latestProcessedChange
      * @param {boolean} download
      * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor
-     * @param onResult cllback function with the resulting string
+     * @param onResult callback function with the resulting string
      */
     getItemText(repositoryId: string, path: string, project: string, scopePath: string, recursionLevel: GitInterfaces.VersionControlRecursionType, includeContentMetadata: boolean, latestProcessedChange: boolean, download: boolean, versionDescriptor: GitInterfaces.GitVersionDescriptor, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     /**
@@ -295,7 +295,7 @@ export declare class GitApi implements IGitApi {
      * @param {boolean} latestProcessedChange
      * @param {boolean} download
      * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor
-     * @param onResult cllback function with the resulting ArrayBuffer
+     * @param onResult callback function with the resulting ArrayBuffer
      */
     getItemZip(repositoryId: string, path: string, project: string, scopePath: string, recursionLevel: GitInterfaces.VersionControlRecursionType, includeContentMetadata: boolean, latestProcessedChange: boolean, download: boolean, versionDescriptor: GitInterfaces.GitVersionDescriptor, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     /**
@@ -304,7 +304,7 @@ export declare class GitApi implements IGitApi {
      * @param {GitInterfaces.GitItemRequestData} requestData
      * @param {string} repositoryId
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting GitInterfaces.GitItem[][]
+     * @param onResult callback function with the resulting GitInterfaces.GitItem[][]
      */
     getItemsBatch(requestData: GitInterfaces.GitItemRequestData, repositoryId: string, project: string, onResult: (err: any, statusCode: number, ItemsBatch: GitInterfaces.GitItem[][]) => void): void;
     /**
@@ -315,7 +315,7 @@ export declare class GitApi implements IGitApi {
      * @param {number} pullRequestId
      * @param {string} reviewerId
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting GitInterfaces.IdentityRefWithVote
+     * @param onResult callback function with the resulting GitInterfaces.IdentityRefWithVote
      */
     createPullRequestReviewer(reviewer: GitInterfaces.IdentityRefWithVote, repositoryId: string, pullRequestId: number, reviewerId: string, project: string, onResult: (err: any, statusCode: number, PullRequestReviewer: GitInterfaces.IdentityRefWithVote) => void): void;
     /**
@@ -325,7 +325,7 @@ export declare class GitApi implements IGitApi {
      * @param {string} repositoryId
      * @param {number} pullRequestId
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting GitInterfaces.IdentityRefWithVote[]
+     * @param onResult callback function with the resulting GitInterfaces.IdentityRefWithVote[]
      */
     createPullRequestReviewers(reviewers: VSSInterfaces.IdentityRef[], repositoryId: string, pullRequestId: number, project: string, onResult: (err: any, statusCode: number, PullRequestReviewers: GitInterfaces.IdentityRefWithVote[]) => void): void;
     /**
@@ -335,7 +335,7 @@ export declare class GitApi implements IGitApi {
      * @param {number} pullRequestId
      * @param {string} reviewerId
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     deletePullRequestReviewer(repositoryId: string, pullRequestId: number, reviewerId: string, project: string, onResult: (err: any, statusCode: number) => void): void;
     /**
@@ -345,7 +345,7 @@ export declare class GitApi implements IGitApi {
      * @param {number} pullRequestId
      * @param {string} reviewerId
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting GitInterfaces.IdentityRefWithVote
+     * @param onResult callback function with the resulting GitInterfaces.IdentityRefWithVote
      */
     getPullRequestReviewer(repositoryId: string, pullRequestId: number, reviewerId: string, project: string, onResult: (err: any, statusCode: number, PullRequestReviewer: GitInterfaces.IdentityRefWithVote) => void): void;
     /**
@@ -354,7 +354,7 @@ export declare class GitApi implements IGitApi {
      * @param {string} repositoryId
      * @param {number} pullRequestId
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting GitInterfaces.IdentityRefWithVote[]
+     * @param onResult callback function with the resulting GitInterfaces.IdentityRefWithVote[]
      */
     getPullRequestReviewers(repositoryId: string, pullRequestId: number, project: string, onResult: (err: any, statusCode: number, PullRequestReviewers: GitInterfaces.IdentityRefWithVote[]) => void): void;
     /**
@@ -363,7 +363,7 @@ export declare class GitApi implements IGitApi {
      * @param {GitInterfaces.GitPullRequest} gitPullRequestToCreate
      * @param {string} repositoryId
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting GitInterfaces.GitPullRequest
+     * @param onResult callback function with the resulting GitInterfaces.GitPullRequest
      */
     createPullRequest(gitPullRequestToCreate: GitInterfaces.GitPullRequest, repositoryId: string, project: string, onResult: (err: any, statusCode: number, PullRequest: GitInterfaces.GitPullRequest) => void): void;
     /**
@@ -375,7 +375,7 @@ export declare class GitApi implements IGitApi {
      * @param {number} maxCommentLength
      * @param {number} skip
      * @param {number} top
-     * @param onResult cllback function with the resulting GitInterfaces.GitPullRequest
+     * @param onResult callback function with the resulting GitInterfaces.GitPullRequest
      */
     getPullRequest(repositoryId: string, pullRequestId: number, project: string, maxCommentLength: number, skip: number, top: number, onResult: (err: any, statusCode: number, PullRequest: GitInterfaces.GitPullRequest) => void): void;
     /**
@@ -387,7 +387,7 @@ export declare class GitApi implements IGitApi {
      * @param {number} maxCommentLength
      * @param {number} skip
      * @param {number} top
-     * @param onResult cllback function with the resulting GitInterfaces.GitPullRequest[]
+     * @param onResult callback function with the resulting GitInterfaces.GitPullRequest[]
      */
     getPullRequests(repositoryId: string, searchCriteria: GitInterfaces.GitPullRequestSearchCriteria, project: string, maxCommentLength: number, skip: number, top: number, onResult: (err: any, statusCode: number, PullRequests: GitInterfaces.GitPullRequest[]) => void): void;
     /**
@@ -397,7 +397,7 @@ export declare class GitApi implements IGitApi {
      * @param {string} repositoryId
      * @param {number} pullRequestId
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting GitInterfaces.GitPullRequest
+     * @param onResult callback function with the resulting GitInterfaces.GitPullRequest
      */
     updatePullRequest(gitPullRequestToUpdate: GitInterfaces.GitPullRequest, repositoryId: string, pullRequestId: number, project: string, onResult: (err: any, statusCode: number, PullRequest: GitInterfaces.GitPullRequest) => void): void;
     /**
@@ -408,7 +408,7 @@ export declare class GitApi implements IGitApi {
      * @param {string} project - Project ID or project name
      * @param {number} commitsTop
      * @param {number} commitsSkip
-     * @param onResult cllback function with the resulting GitInterfaces.AssociatedWorkItem[]
+     * @param onResult callback function with the resulting GitInterfaces.AssociatedWorkItem[]
      */
     getPullRequestWorkItems(repositoryId: string, pullRequestId: number, project: string, commitsTop: number, commitsSkip: number, onResult: (err: any, statusCode: number, PullRequestWorkItems: GitInterfaces.AssociatedWorkItem[]) => void): void;
     /**
@@ -417,7 +417,7 @@ export declare class GitApi implements IGitApi {
      * @param {GitInterfaces.GitPush} push
      * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, a project-scoped route must be used.
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting GitInterfaces.GitPush
+     * @param onResult callback function with the resulting GitInterfaces.GitPush
      */
     createPush(push: GitInterfaces.GitPush, repositoryId: string, project: string, onResult: (err: any, statusCode: number, pushe: GitInterfaces.GitPush) => void): void;
     /**
@@ -428,7 +428,7 @@ export declare class GitApi implements IGitApi {
      * @param {string} project - Project ID or project name
      * @param {number} includeCommits - The number of commits to include in the result.
      * @param {boolean} includeRefUpdates
-     * @param onResult cllback function with the resulting GitInterfaces.GitPush
+     * @param onResult callback function with the resulting GitInterfaces.GitPush
      */
     getPush(repositoryId: string, pushId: number, project: string, includeCommits: number, includeRefUpdates: boolean, onResult: (err: any, statusCode: number, pushe: GitInterfaces.GitPush) => void): void;
     /**
@@ -439,7 +439,7 @@ export declare class GitApi implements IGitApi {
      * @param {number} skip
      * @param {number} top
      * @param {GitInterfaces.GitPushSearchCriteria} searchCriteria
-     * @param onResult cllback function with the resulting GitInterfaces.GitPush[]
+     * @param onResult callback function with the resulting GitInterfaces.GitPush[]
      */
     getPushes(repositoryId: string, project: string, skip: number, top: number, searchCriteria: GitInterfaces.GitPushSearchCriteria, onResult: (err: any, statusCode: number, pushes: GitInterfaces.GitPush[]) => void): void;
     /**
@@ -449,7 +449,7 @@ export declare class GitApi implements IGitApi {
      * @param {string} project - Project ID or project name
      * @param {string} filter - [optional] A filter to apply to the refs.
      * @param {boolean} includeLinks - [optional] Specifies if referenceLinks should be included in the result. default is false.
-     * @param onResult cllback function with the resulting GitInterfaces.GitRef[]
+     * @param onResult callback function with the resulting GitInterfaces.GitRef[]
      */
     getRefs(repositoryId: string, project: string, filter: string, includeLinks: boolean, onResult: (err: any, statusCode: number, refs: GitInterfaces.GitRef[]) => void): void;
     /**
@@ -459,7 +459,7 @@ export declare class GitApi implements IGitApi {
      * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, projectId must also be specified.
      * @param {string} project - Project ID or project name
      * @param {string} projectId - The id of the project.
-     * @param onResult cllback function with the resulting GitInterfaces.GitRefUpdateResult[]
+     * @param onResult callback function with the resulting GitInterfaces.GitRefUpdateResult[]
      */
     updateRefs(refUpdates: GitInterfaces.GitRefUpdate[], repositoryId: string, project: string, projectId: string, onResult: (err: any, statusCode: number, refs: GitInterfaces.GitRefUpdateResult[]) => void): void;
     /**
@@ -467,7 +467,7 @@ export declare class GitApi implements IGitApi {
      *
      * @param {GitInterfaces.GitRepository} gitRepositoryToCreate
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting GitInterfaces.GitRepository
+     * @param onResult callback function with the resulting GitInterfaces.GitRepository
      */
     createRepository(gitRepositoryToCreate: GitInterfaces.GitRepository, project: string, onResult: (err: any, statusCode: number, Repositorie: GitInterfaces.GitRepository) => void): void;
     /**
@@ -475,7 +475,7 @@ export declare class GitApi implements IGitApi {
      *
      * @param {string} repositoryId
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     deleteRepository(repositoryId: string, project: string, onResult: (err: any, statusCode: number) => void): void;
     /**
@@ -483,13 +483,13 @@ export declare class GitApi implements IGitApi {
      *
      * @param {string} project - Project ID or project name
      * @param {boolean} includeLinks
-     * @param onResult cllback function with the resulting GitInterfaces.GitRepository[]
+     * @param onResult callback function with the resulting GitInterfaces.GitRepository[]
      */
     getRepositories(project: string, includeLinks: boolean, onResult: (err: any, statusCode: number, Repositories: GitInterfaces.GitRepository[]) => void): void;
     /**
      * @param {string} repositoryId
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting GitInterfaces.GitRepository
+     * @param onResult callback function with the resulting GitInterfaces.GitRepository
      */
     getRepository(repositoryId: string, project: string, onResult: (err: any, statusCode: number, Repositorie: GitInterfaces.GitRepository) => void): void;
     /**
@@ -498,7 +498,7 @@ export declare class GitApi implements IGitApi {
      * @param {GitInterfaces.GitRepository} newRepositoryInfo
      * @param {string} repositoryId
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting GitInterfaces.GitRepository
+     * @param onResult callback function with the resulting GitInterfaces.GitRepository
      */
     updateRepository(newRepositoryInfo: GitInterfaces.GitRepository, repositoryId: string, project: string, onResult: (err: any, statusCode: number, Repositorie: GitInterfaces.GitRepository) => void): void;
     /**
@@ -508,7 +508,7 @@ export declare class GitApi implements IGitApi {
      * @param {string} projectId
      * @param {boolean} recursive
      * @param {string} fileName
-     * @param onResult cllback function with the resulting GitInterfaces.GitTreeRef
+     * @param onResult callback function with the resulting GitInterfaces.GitTreeRef
      */
     getTree(repositoryId: string, sha1: string, project: string, projectId: string, recursive: boolean, fileName: string, onResult: (err: any, statusCode: number, Tree: GitInterfaces.GitTreeRef) => void): void;
     /**
@@ -518,7 +518,7 @@ export declare class GitApi implements IGitApi {
      * @param {string} projectId
      * @param {boolean} recursive
      * @param {string} fileName
-     * @param onResult cllback function with the resulting ArrayBuffer
+     * @param onResult callback function with the resulting ArrayBuffer
      */
     getTreeZip(repositoryId: string, sha1: string, project: string, projectId: string, recursive: boolean, fileName: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
 }

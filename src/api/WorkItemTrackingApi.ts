@@ -144,7 +144,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {string} content
      * @param {string} fileName
      * @param {string} uploadType
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.AttachmentReference
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.AttachmentReference
      */
     public createAttachment(
         contentStream: NodeJS.ReadableStream,
@@ -177,7 +177,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * 
      * @param {string} id
      * @param {string} fileName
-     * @param onResult cllback function with the resulting ArrayBuffer
+     * @param onResult callback function with the resulting ArrayBuffer
      */
     public getAttachmentContent(
         id: string,
@@ -207,7 +207,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * 
      * @param {string} id
      * @param {string} fileName
-     * @param onResult cllback function with the resulting ArrayBuffer
+     * @param onResult callback function with the resulting ArrayBuffer
      */
     public getAttachmentZip(
         id: string,
@@ -235,7 +235,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
     /**
      * @param {string} project - Project ID or project name
      * @param {number} depth
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemClassificationNode[]
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemClassificationNode[]
      */
     public getRootNodes(
         project: string,
@@ -265,7 +265,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {string} project - Project ID or project name
      * @param {WorkItemTrackingInterfaces.TreeStructureGroup} structureGroup
      * @param {string} path
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemClassificationNode
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemClassificationNode
      */
     public createOrUpdateClassificationNode(
         postedNode: WorkItemTrackingInterfaces.WorkItemClassificationNode,
@@ -295,7 +295,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {WorkItemTrackingInterfaces.TreeStructureGroup} structureGroup
      * @param {string} path
      * @param {number} reclassifyId
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     public deleteClassificationNode(
         project: string,
@@ -329,7 +329,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {WorkItemTrackingInterfaces.TreeStructureGroup} structureGroup
      * @param {string} path
      * @param {number} depth
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemClassificationNode
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemClassificationNode
      */
     public getClassificationNode(
         project: string,
@@ -363,7 +363,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {string} project - Project ID or project name
      * @param {WorkItemTrackingInterfaces.TreeStructureGroup} structureGroup
      * @param {string} path
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemClassificationNode
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemClassificationNode
      */
     public updateClassificationNode(
         postedNode: WorkItemTrackingInterfaces.WorkItemClassificationNode,
@@ -390,7 +390,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
 
     /**
      * @param {string} field
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemField
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemField
      */
     public getField(
         field: string,
@@ -411,7 +411,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
     }
 
     /**
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemField[]
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemField[]
      */
     public getFields(
         onResult: (err: any, statusCode: number, fields: WorkItemTrackingInterfaces.WorkItemField[]) => void
@@ -435,7 +435,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {number} id
      * @param {number} top
      * @param {number} skip
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemHistory[]
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemHistory[]
      */
     public getHistory(
         id: number,
@@ -467,7 +467,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * 
      * @param {number} id
      * @param {number} revisionNumber
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemHistory
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemHistory
      */
     public getHistoryById(
         id: number,
@@ -495,7 +495,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {WorkItemTrackingInterfaces.QueryHierarchyItem} postedQuery - The query to create.
      * @param {string} project - Project ID or project name
      * @param {string} query - The parent path for the query to create.
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.QueryHierarchyItem
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.QueryHierarchyItem
      */
     public createQuery(
         postedQuery: WorkItemTrackingInterfaces.QueryHierarchyItem,
@@ -521,7 +521,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
     /**
      * @param {string} project - Project ID or project name
      * @param {string} query
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     public deleteQuery(
         project: string,
@@ -550,7 +550,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {WorkItemTrackingInterfaces.QueryExpand} expand
      * @param {number} depth
      * @param {boolean} includeDeleted
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.QueryHierarchyItem[]
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.QueryHierarchyItem[]
      */
     public getQueries(
         project: string,
@@ -587,7 +587,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {WorkItemTrackingInterfaces.QueryExpand} expand
      * @param {number} depth
      * @param {boolean} includeDeleted
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.QueryHierarchyItem
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.QueryHierarchyItem
      */
     public getQuery(
         project: string,
@@ -623,7 +623,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {string} project - Project ID or project name
      * @param {string} query
      * @param {boolean} undeleteDescendants
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.QueryHierarchyItem
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.QueryHierarchyItem
      */
     public updateQuery(
         queryUpdate: WorkItemTrackingInterfaces.QueryHierarchyItem,
@@ -657,7 +657,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {number} id
      * @param {number} revisionNumber
      * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItem
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItem
      */
     public getRevision(
         id: number,
@@ -691,7 +691,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {number} top
      * @param {number} skip
      * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItem[]
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItem[]
      */
     public getRevisions(
         id: number,
@@ -724,7 +724,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * Validates the fields values.
      * 
      * @param {WorkItemTrackingInterfaces.FieldsToEvaluate} ruleEngineInput
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     public evaluateRulesOnField(
         ruleEngineInput: WorkItemTrackingInterfaces.FieldsToEvaluate,
@@ -748,7 +748,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * 
      * @param {number} id
      * @param {number} updateNumber
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemUpdate
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemUpdate
      */
     public getUpdate(
         id: number,
@@ -776,7 +776,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {number} id
      * @param {number} top
      * @param {number} skip
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemUpdate[]
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemUpdate[]
      */
     public getUpdates(
         id: number,
@@ -808,7 +808,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * 
      * @param {WorkItemTrackingInterfaces.Wiql} wiql - The query containing the wiql.
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemQueryResult
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemQueryResult
      */
     public queryByWiql(
         wiql: WorkItemTrackingInterfaces.Wiql,
@@ -834,7 +834,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * 
      * @param {string} id - The query id.
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemQueryResult
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemQueryResult
      */
     public queryById(
         id: string,
@@ -859,7 +859,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
     /**
      * @param {string} project - Project ID or project name
      * @param {number} watermark
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch
      */
     public getReportingLinks(
         project: string,
@@ -888,7 +888,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * Gets the work item relation types.
      * 
      * @param {string} relation
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemRelationType
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemRelationType
      */
     public getRelationType(
         relation: string,
@@ -909,7 +909,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
     }
 
     /**
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemRelationType[]
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemRelationType[]
      */
     public getRelationTypes(
         onResult: (err: any, statusCode: number, workItemRelationTypes: WorkItemTrackingInterfaces.WorkItemRelationType[]) => void
@@ -931,7 +931,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {string} project - Project ID or project name
      * @param {string[]} fields
      * @param {number} watermark
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch
      */
     public readReportingRevisionsGet(
         project: string,
@@ -962,7 +962,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {string[]} fieldsList
      * @param {string} project - Project ID or project name
      * @param {number} watermark
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch
      */
     public readReportingRevisionsPost(
         fieldsList: string[],
@@ -995,7 +995,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {string[]} fields
      * @param {Date} asOf
      * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItem
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItem
      */
     public getWorkItem(
         id: number,
@@ -1031,7 +1031,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {string[]} fields
      * @param {Date} asOf
      * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItem[]
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItem[]
      */
     public getWorkItems(
         ids: number[],
@@ -1065,7 +1065,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {number} id
      * @param {boolean} validateOnly
      * @param {boolean} bypassRules
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItem
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItem
      */
     public updateWorkItem(
         document: VSSInterfaces.JsonPatchDocument,
@@ -1101,7 +1101,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {string} fields
      * @param {Date} asOf
      * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItem
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItem
      */
     public getWorkItemTemplate(
         project: string,
@@ -1138,7 +1138,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {string} type
      * @param {boolean} validateOnly
      * @param {boolean} bypassRules
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItem
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItem
      */
     public updateWorkItemTemplate(
         document: VSSInterfaces.JsonPatchDocument,
@@ -1170,7 +1170,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
 
     /**
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemTypeCategory[]
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemTypeCategory[]
      */
     public getWorkItemTypeCategories(
         project: string,
@@ -1195,7 +1195,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * 
      * @param {string} project - Project ID or project name
      * @param {string} category
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemTypeCategory
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemTypeCategory
      */
     public getWorkItemTypeCategory(
         project: string,
@@ -1222,7 +1222,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * 
      * @param {string} project - Project ID or project name
      * @param {string} type
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemType
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemType
      */
     public getWorkItemType(
         project: string,
@@ -1246,7 +1246,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
 
     /**
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemType[]
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemType[]
      */
     public getWorkItemTypes(
         project: string,
@@ -1272,7 +1272,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {string} project - Project ID or project name
      * @param {string} type
      * @param {string} field
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.FieldDependentRule
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.FieldDependentRule
      */
     public getDependentFields(
         project: string,
@@ -1302,7 +1302,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * @param {string} project - Project ID or project name
      * @param {string} type
      * @param {boolean} exportGlobalLists
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.WorkItemTypeTemplate
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemTypeTemplate
      */
     public exportWorkItemTypeDefinition(
         project: string,
@@ -1334,7 +1334,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
      * 
      * @param {WorkItemTrackingInterfaces.WorkItemTypeTemplateUpdateModel} updateModel
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting WorkItemTrackingInterfaces.ProvisioningResult
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.ProvisioningResult
      */
     public updateWorkItemTypeDefinition(
         updateModel: WorkItemTrackingInterfaces.WorkItemTypeTemplateUpdateModel,

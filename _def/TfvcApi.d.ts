@@ -78,7 +78,7 @@ export declare class TfvcApi implements ITfvcApi {
      * @param {string} project - Project ID or project name
      * @param {boolean} includeParent
      * @param {boolean} includeChildren
-     * @param onResult cllback function with the resulting TfvcInterfaces.TfvcBranch
+     * @param onResult callback function with the resulting TfvcInterfaces.TfvcBranch
      */
     getBranch(path: string, project: string, includeParent: boolean, includeChildren: boolean, onResult: (err: any, statusCode: number, Branche: TfvcInterfaces.TfvcBranch) => void): void;
     /**
@@ -89,7 +89,7 @@ export declare class TfvcApi implements ITfvcApi {
      * @param {boolean} includeChildren
      * @param {boolean} includeDeleted
      * @param {boolean} includeLinks
-     * @param onResult cllback function with the resulting TfvcInterfaces.TfvcBranch[]
+     * @param onResult callback function with the resulting TfvcInterfaces.TfvcBranch[]
      */
     getBranches(project: string, includeParent: boolean, includeChildren: boolean, includeDeleted: boolean, includeLinks: boolean, onResult: (err: any, statusCode: number, Branches: TfvcInterfaces.TfvcBranch[]) => void): void;
     /**
@@ -99,7 +99,7 @@ export declare class TfvcApi implements ITfvcApi {
      * @param {string} project - Project ID or project name
      * @param {boolean} includeDeleted
      * @param {boolean} includeLinks
-     * @param onResult cllback function with the resulting TfvcInterfaces.TfvcBranchRef[]
+     * @param onResult callback function with the resulting TfvcInterfaces.TfvcBranchRef[]
      */
     getBranchRefs(scopePath: string, project: string, includeDeleted: boolean, includeLinks: boolean, onResult: (err: any, statusCode: number, Branches: TfvcInterfaces.TfvcBranchRef[]) => void): void;
     /**
@@ -108,13 +108,13 @@ export declare class TfvcApi implements ITfvcApi {
      * @param {number} id
      * @param {number} skip
      * @param {number} top
-     * @param onResult cllback function with the resulting TfvcInterfaces.TfvcChange[]
+     * @param onResult callback function with the resulting TfvcInterfaces.TfvcChange[]
      */
     getChangesetChanges(id: number, skip: number, top: number, onResult: (err: any, statusCode: number, ChangesetChanges: TfvcInterfaces.TfvcChange[]) => void): void;
     /**
      * @param {TfvcInterfaces.TfvcChangeset} changeset
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting TfvcInterfaces.TfvcChangesetRef
+     * @param onResult callback function with the resulting TfvcInterfaces.TfvcChangesetRef
      */
     createChangeset(changeset: TfvcInterfaces.TfvcChangeset, project: string, onResult: (err: any, statusCode: number, Changeset: TfvcInterfaces.TfvcChangesetRef) => void): void;
     /**
@@ -131,7 +131,7 @@ export declare class TfvcApi implements ITfvcApi {
      * @param {number} top
      * @param {string} orderby
      * @param {TfvcInterfaces.TfvcChangesetSearchCriteria} searchCriteria
-     * @param onResult cllback function with the resulting TfvcInterfaces.TfvcChangeset
+     * @param onResult callback function with the resulting TfvcInterfaces.TfvcChangeset
      */
     getChangeset(id: number, project: string, maxChangeCount: number, includeDetails: boolean, includeWorkItems: boolean, maxCommentLength: number, includeSourceRename: boolean, skip: number, top: number, orderby: string, searchCriteria: TfvcInterfaces.TfvcChangesetSearchCriteria, onResult: (err: any, statusCode: number, Changeset: TfvcInterfaces.TfvcChangeset) => void): void;
     /**
@@ -147,17 +147,17 @@ export declare class TfvcApi implements ITfvcApi {
      * @param {number} top
      * @param {string} orderby
      * @param {TfvcInterfaces.TfvcChangesetSearchCriteria} searchCriteria
-     * @param onResult cllback function with the resulting TfvcInterfaces.TfvcChangesetRef[]
+     * @param onResult callback function with the resulting TfvcInterfaces.TfvcChangesetRef[]
      */
     getChangesets(project: string, maxChangeCount: number, includeDetails: boolean, includeWorkItems: boolean, maxCommentLength: number, includeSourceRename: boolean, skip: number, top: number, orderby: string, searchCriteria: TfvcInterfaces.TfvcChangesetSearchCriteria, onResult: (err: any, statusCode: number, Changesets: TfvcInterfaces.TfvcChangesetRef[]) => void): void;
     /**
      * @param {TfvcInterfaces.TfvcChangesetsRequestData} changesetsRequestData
-     * @param onResult cllback function with the resulting TfvcInterfaces.TfvcChangesetRef[]
+     * @param onResult callback function with the resulting TfvcInterfaces.TfvcChangesetRef[]
      */
     getBatchedChangesets(changesetsRequestData: TfvcInterfaces.TfvcChangesetsRequestData, onResult: (err: any, statusCode: number, ChangesetsBatch: TfvcInterfaces.TfvcChangesetRef[]) => void): void;
     /**
      * @param {number} id
-     * @param onResult cllback function with the resulting TfvcInterfaces.AssociatedWorkItem[]
+     * @param onResult callback function with the resulting TfvcInterfaces.AssociatedWorkItem[]
      */
     getChangesetWorkItems(id: number, onResult: (err: any, statusCode: number, ChangesetWorkItems: TfvcInterfaces.AssociatedWorkItem[]) => void): void;
     /**
@@ -165,7 +165,7 @@ export declare class TfvcApi implements ITfvcApi {
      *
      * @param {TfvcInterfaces.TfvcItemRequestData} itemRequestData
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting TfvcInterfaces.TfvcItem[][]
+     * @param onResult callback function with the resulting TfvcInterfaces.TfvcItem[][]
      */
     getItemsBatch(itemRequestData: TfvcInterfaces.TfvcItemRequestData, project: string, onResult: (err: any, statusCode: number, ItemBatch: TfvcInterfaces.TfvcItem[][]) => void): void;
     /**
@@ -178,7 +178,7 @@ export declare class TfvcApi implements ITfvcApi {
      * @param {string} scopePath
      * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel
      * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
-     * @param onResult cllback function with the resulting TfvcInterfaces.TfvcItem
+     * @param onResult callback function with the resulting TfvcInterfaces.TfvcItem
      */
     getItem(path: string, project: string, fileName: string, download: boolean, scopePath: string, recursionLevel: TfvcInterfaces.VersionControlRecursionType, versionDescriptor: TfvcInterfaces.TfvcVersionDescriptor, onResult: (err: any, statusCode: number, Item: TfvcInterfaces.TfvcItem) => void): void;
     /**
@@ -191,7 +191,7 @@ export declare class TfvcApi implements ITfvcApi {
      * @param {string} scopePath
      * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel
      * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
-     * @param onResult cllback function with the resulting ArrayBuffer
+     * @param onResult callback function with the resulting ArrayBuffer
      */
     getItemContent(path: string, project: string, fileName: string, download: boolean, scopePath: string, recursionLevel: TfvcInterfaces.VersionControlRecursionType, versionDescriptor: TfvcInterfaces.TfvcVersionDescriptor, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     /**
@@ -202,7 +202,7 @@ export declare class TfvcApi implements ITfvcApi {
      * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel
      * @param {boolean} includeLinks
      * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
-     * @param onResult cllback function with the resulting TfvcInterfaces.TfvcItem[]
+     * @param onResult callback function with the resulting TfvcInterfaces.TfvcItem[]
      */
     getItems(project: string, scopePath: string, recursionLevel: TfvcInterfaces.VersionControlRecursionType, includeLinks: boolean, versionDescriptor: TfvcInterfaces.TfvcVersionDescriptor, onResult: (err: any, statusCode: number, Items: TfvcInterfaces.TfvcItem[]) => void): void;
     /**
@@ -215,7 +215,7 @@ export declare class TfvcApi implements ITfvcApi {
      * @param {string} scopePath
      * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel
      * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
-     * @param onResult cllback function with the resulting string
+     * @param onResult callback function with the resulting string
      */
     getItemText(path: string, project: string, fileName: string, download: boolean, scopePath: string, recursionLevel: TfvcInterfaces.VersionControlRecursionType, versionDescriptor: TfvcInterfaces.TfvcVersionDescriptor, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     /**
@@ -228,7 +228,7 @@ export declare class TfvcApi implements ITfvcApi {
      * @param {string} scopePath
      * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel
      * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
-     * @param onResult cllback function with the resulting ArrayBuffer
+     * @param onResult callback function with the resulting ArrayBuffer
      */
     getItemZip(path: string, project: string, fileName: string, download: boolean, scopePath: string, recursionLevel: TfvcInterfaces.VersionControlRecursionType, versionDescriptor: TfvcInterfaces.TfvcVersionDescriptor, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     /**
@@ -237,7 +237,7 @@ export declare class TfvcApi implements ITfvcApi {
      * @param {string} labelId - Unique identifier of label
      * @param {number} top - Max number of items to return
      * @param {number} skip - Number of items to skip
-     * @param onResult cllback function with the resulting TfvcInterfaces.TfvcItem[]
+     * @param onResult callback function with the resulting TfvcInterfaces.TfvcItem[]
      */
     getLabelItems(labelId: string, top: number, skip: number, onResult: (err: any, statusCode: number, LabelItems: TfvcInterfaces.TfvcItem[]) => void): void;
     /**
@@ -246,7 +246,7 @@ export declare class TfvcApi implements ITfvcApi {
      * @param {string} labelId - Unique identifier of label
      * @param {TfvcInterfaces.TfvcLabelRequestData} requestData - maxItemCount
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting TfvcInterfaces.TfvcLabel
+     * @param onResult callback function with the resulting TfvcInterfaces.TfvcLabel
      */
     getLabel(labelId: string, requestData: TfvcInterfaces.TfvcLabelRequestData, project: string, onResult: (err: any, statusCode: number, Label: TfvcInterfaces.TfvcLabel) => void): void;
     /**
@@ -256,7 +256,7 @@ export declare class TfvcApi implements ITfvcApi {
      * @param {string} project - Project ID or project name
      * @param {number} top - Max number of labels to return
      * @param {number} skip - Number of labels to skip
-     * @param onResult cllback function with the resulting TfvcInterfaces.TfvcLabelRef[]
+     * @param onResult callback function with the resulting TfvcInterfaces.TfvcLabelRef[]
      */
     getLabels(requestData: TfvcInterfaces.TfvcLabelRequestData, project: string, top: number, skip: number, onResult: (err: any, statusCode: number, Labels: TfvcInterfaces.TfvcLabelRef[]) => void): void;
     /**
@@ -264,12 +264,12 @@ export declare class TfvcApi implements ITfvcApi {
      *
      * @param {string} projectId - The id (or name) of the team project
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting TfvcInterfaces.VersionControlProjectInfo
+     * @param onResult callback function with the resulting TfvcInterfaces.VersionControlProjectInfo
      */
     getProjectInfo(projectId: string, project: string, onResult: (err: any, statusCode: number, ProjectInfo: TfvcInterfaces.VersionControlProjectInfo) => void): void;
     /**
      * @param {string} project - Project ID or project name
-     * @param onResult cllback function with the resulting TfvcInterfaces.VersionControlProjectInfo[]
+     * @param onResult callback function with the resulting TfvcInterfaces.VersionControlProjectInfo[]
      */
     getProjectInfos(project: string, onResult: (err: any, statusCode: number, ProjectInfo: TfvcInterfaces.VersionControlProjectInfo[]) => void): void;
     /**
@@ -278,7 +278,7 @@ export declare class TfvcApi implements ITfvcApi {
      * @param {string} shelvesetId - Shelveset's unique ID
      * @param {number} top - Max number of changes to return
      * @param {number} skip - Number of changes to skip
-     * @param onResult cllback function with the resulting TfvcInterfaces.TfvcChange[]
+     * @param onResult callback function with the resulting TfvcInterfaces.TfvcChange[]
      */
     getShelvesetChanges(shelvesetId: string, top: number, skip: number, onResult: (err: any, statusCode: number, ShelvesetChanges: TfvcInterfaces.TfvcChange[]) => void): void;
     /**
@@ -286,7 +286,7 @@ export declare class TfvcApi implements ITfvcApi {
      *
      * @param {string} shelvesetId - Shelveset's unique ID
      * @param {TfvcInterfaces.TfvcShelvesetRequestData} requestData - includeDetails, includeWorkItems, maxChangeCount, and maxCommentLength
-     * @param onResult cllback function with the resulting TfvcInterfaces.TfvcShelveset
+     * @param onResult callback function with the resulting TfvcInterfaces.TfvcShelveset
      */
     getShelveset(shelvesetId: string, requestData: TfvcInterfaces.TfvcShelvesetRequestData, onResult: (err: any, statusCode: number, Shelveset: TfvcInterfaces.TfvcShelveset) => void): void;
     /**
@@ -295,14 +295,14 @@ export declare class TfvcApi implements ITfvcApi {
      * @param {TfvcInterfaces.TfvcShelvesetRequestData} requestData - name, owner, and maxCommentLength
      * @param {number} top - Max number of shelvesets to return
      * @param {number} skip - Number of shelvesets to skip
-     * @param onResult cllback function with the resulting TfvcInterfaces.TfvcShelvesetRef[]
+     * @param onResult callback function with the resulting TfvcInterfaces.TfvcShelvesetRef[]
      */
     getShelvesets(requestData: TfvcInterfaces.TfvcShelvesetRequestData, top: number, skip: number, onResult: (err: any, statusCode: number, Shelvesets: TfvcInterfaces.TfvcShelvesetRef[]) => void): void;
     /**
      * Get work items associated with a shelveset.
      *
      * @param {string} shelvesetId - Shelveset's unique ID
-     * @param onResult cllback function with the resulting TfvcInterfaces.AssociatedWorkItem[]
+     * @param onResult callback function with the resulting TfvcInterfaces.AssociatedWorkItem[]
      */
     getShelvesetWorkItems(shelvesetId: string, onResult: (err: any, statusCode: number, ShelvesetWorkItems: TfvcInterfaces.AssociatedWorkItem[]) => void): void;
 }

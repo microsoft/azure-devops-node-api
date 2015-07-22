@@ -55,7 +55,7 @@ export declare class TaskApi implements ITaskApi {
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     postEvent(eventData: TaskAgentInterfaces.JobEvent, scopeIdentifier: string, hubName: string, planId: string, onResult: (err: any, statusCode: number) => void): void;
     /**
@@ -65,7 +65,7 @@ export declare class TaskApi implements ITaskApi {
      * @param {string} planId
      * @param {string} timelineId
      * @param {string} recordId
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     postLines(lines: VSSInterfaces.VssJsonCollectionWrapperV<string[]>, scopeIdentifier: string, hubName: string, planId: string, timelineId: string, recordId: string, onResult: (err: any, statusCode: number) => void): void;
     /**
@@ -74,7 +74,7 @@ export declare class TaskApi implements ITaskApi {
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
      * @param {number} logId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskLog
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskLog
      */
     appendLog(contentStream: NodeJS.ReadableStream, customHeaders: any, content: string, scopeIdentifier: string, hubName: string, planId: string, logId: number, onResult: (err: any, statusCode: number, log: TaskAgentInterfaces.TaskLog) => void): void;
     /**
@@ -82,7 +82,7 @@ export declare class TaskApi implements ITaskApi {
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskLog
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskLog
      */
     createLog(log: TaskAgentInterfaces.TaskLog, scopeIdentifier: string, hubName: string, planId: string, onResult: (err: any, statusCode: number, log: TaskAgentInterfaces.TaskLog) => void): void;
     /**
@@ -92,21 +92,21 @@ export declare class TaskApi implements ITaskApi {
      * @param {number} logId
      * @param {number} startLine
      * @param {number} endLine
-     * @param onResult cllback function with the resulting string[]
+     * @param onResult callback function with the resulting string[]
      */
     getLog(scopeIdentifier: string, hubName: string, planId: string, logId: number, startLine: number, endLine: number, onResult: (err: any, statusCode: number, logs: string[]) => void): void;
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskLog[]
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskLog[]
      */
     getLogs(scopeIdentifier: string, hubName: string, planId: string, onResult: (err: any, statusCode: number, logs: TaskAgentInterfaces.TaskLog[]) => void): void;
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskOrchestrationPlan
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskOrchestrationPlan
      */
     getPlan(scopeIdentifier: string, hubName: string, planId: string, onResult: (err: any, statusCode: number, plan: TaskAgentInterfaces.TaskOrchestrationPlan) => void): void;
     /**
@@ -115,7 +115,7 @@ export declare class TaskApi implements ITaskApi {
      * @param {string} planId
      * @param {string} timelineId
      * @param {number} changeId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TimelineRecord[]
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TimelineRecord[]
      */
     getRecords(scopeIdentifier: string, hubName: string, planId: string, timelineId: string, changeId: number, onResult: (err: any, statusCode: number, records: TaskAgentInterfaces.TimelineRecord[]) => void): void;
     /**
@@ -124,7 +124,7 @@ export declare class TaskApi implements ITaskApi {
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
      * @param {string} timelineId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TimelineRecord[]
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TimelineRecord[]
      */
     updateRecords(records: VSSInterfaces.VssJsonCollectionWrapperV<TaskAgentInterfaces.TimelineRecord[]>, scopeIdentifier: string, hubName: string, planId: string, timelineId: string, onResult: (err: any, statusCode: number, record: TaskAgentInterfaces.TimelineRecord[]) => void): void;
     /**
@@ -132,7 +132,7 @@ export declare class TaskApi implements ITaskApi {
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.Timeline
+     * @param onResult callback function with the resulting TaskAgentInterfaces.Timeline
      */
     createTimeline(timeline: TaskAgentInterfaces.Timeline, scopeIdentifier: string, hubName: string, planId: string, onResult: (err: any, statusCode: number, timeline: TaskAgentInterfaces.Timeline) => void): void;
     /**
@@ -140,7 +140,7 @@ export declare class TaskApi implements ITaskApi {
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
      * @param {string} timelineId
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     deleteTimeline(scopeIdentifier: string, hubName: string, planId: string, timelineId: string, onResult: (err: any, statusCode: number) => void): void;
     /**
@@ -150,14 +150,14 @@ export declare class TaskApi implements ITaskApi {
      * @param {string} timelineId
      * @param {number} changeId
      * @param {boolean} includeRecords
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.Timeline
+     * @param onResult callback function with the resulting TaskAgentInterfaces.Timeline
      */
     getTimeline(scopeIdentifier: string, hubName: string, planId: string, timelineId: string, changeId: number, includeRecords: boolean, onResult: (err: any, statusCode: number, timeline: TaskAgentInterfaces.Timeline) => void): void;
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.Timeline[]
+     * @param onResult callback function with the resulting TaskAgentInterfaces.Timeline[]
      */
     getTimelines(scopeIdentifier: string, hubName: string, planId: string, onResult: (err: any, statusCode: number, timelines: TaskAgentInterfaces.Timeline[]) => void): void;
 }

@@ -90,13 +90,13 @@ export declare class TaskAgentApi implements ITaskAgentApi {
     /**
      * @param {TaskAgentInterfaces.TaskAgent} agent
      * @param {number} poolId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgent
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgent
      */
     createAgent(agent: TaskAgentInterfaces.TaskAgent, poolId: number, onResult: (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => void): void;
     /**
      * @param {number} poolId
      * @param {number} agentId
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     deleteAgent(poolId: number, agentId: number, onResult: (err: any, statusCode: number) => void): void;
     /**
@@ -104,7 +104,7 @@ export declare class TaskAgentApi implements ITaskAgentApi {
      * @param {number} agentId
      * @param {boolean} includeCapabilities
      * @param {string} propertyFilters
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgent
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgent
      */
     getAgent(poolId: number, agentId: number, includeCapabilities: boolean, propertyFilters: string, onResult: (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => void): void;
     /**
@@ -113,47 +113,47 @@ export declare class TaskAgentApi implements ITaskAgentApi {
      * @param {boolean} includeCapabilities
      * @param {string} propertyFilters
      * @param {string} demands
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgent[]
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgent[]
      */
     getAgents(poolId: number, agentName: string, includeCapabilities: boolean, propertyFilters: string, demands: string, onResult: (err: any, statusCode: number, agents: TaskAgentInterfaces.TaskAgent[]) => void): void;
     /**
      * @param {TaskAgentInterfaces.TaskAgent} agent
      * @param {number} poolId
      * @param {number} agentId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgent
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgent
      */
     replaceAgent(agent: TaskAgentInterfaces.TaskAgent, poolId: number, agentId: number, onResult: (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => void): void;
     /**
      * @param {TaskAgentInterfaces.TaskAgent} agent
      * @param {number} poolId
      * @param {number} agentId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgent
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgent
      */
     updateAgent(agent: TaskAgentInterfaces.TaskAgent, poolId: number, agentId: number, onResult: (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => void): void;
     /**
      * Proxy for a GET request defined by an 'endpoint'. The request is authorized using a service connection. The response is filtered using an XPath/Json based selector.
      *
      * @param {TaskAgentInterfaces.TaskDefinitionEndpoint} endpoint - Describes the URL to fetch.
-     * @param onResult cllback function with the resulting string[]
+     * @param onResult callback function with the resulting string[]
      */
     queryEndpoint(endpoint: TaskAgentInterfaces.TaskDefinitionEndpoint, onResult: (err: any, statusCode: number, endpoint: string[]) => void): void;
     /**
      * @param {number} poolId
      * @param {number} requestId
      * @param {string} lockToken
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     deleteRequest(poolId: number, requestId: number, lockToken: string, onResult: (err: any, statusCode: number) => void): void;
     /**
      * @param {number} poolId
      * @param {number} requestId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgentJobRequest
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgentJobRequest
      */
     getRequest(poolId: number, requestId: number, onResult: (err: any, statusCode: number, jobrequest: TaskAgentInterfaces.TaskAgentJobRequest) => void): void;
     /**
      * @param {TaskAgentInterfaces.TaskAgentJobRequest} request
      * @param {number} poolId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgentJobRequest
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgentJobRequest
      */
     queueRequest(request: TaskAgentInterfaces.TaskAgentJobRequest, poolId: number, onResult: (err: any, statusCode: number, jobrequest: TaskAgentInterfaces.TaskAgentJobRequest) => void): void;
     /**
@@ -161,144 +161,144 @@ export declare class TaskAgentApi implements ITaskAgentApi {
      * @param {number} poolId
      * @param {number} requestId
      * @param {string} lockToken
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgentJobRequest
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgentJobRequest
      */
     updateRequest(request: TaskAgentInterfaces.TaskAgentJobRequest, poolId: number, requestId: number, lockToken: string, onResult: (err: any, statusCode: number, jobrequest: TaskAgentInterfaces.TaskAgentJobRequest) => void): void;
     /**
      * @param {number} poolId
      * @param {number} messageId
      * @param {string} sessionId
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     deleteMessage(poolId: number, messageId: number, sessionId: string, onResult: (err: any, statusCode: number) => void): void;
     /**
      * @param {number} poolId
      * @param {string} sessionId
      * @param {number} lastMessageId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgentMessage
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgentMessage
      */
     getMessage(poolId: number, sessionId: string, lastMessageId: number, onResult: (err: any, statusCode: number, message: TaskAgentInterfaces.TaskAgentMessage) => void): void;
     /**
      * @param {number} poolId
      * @param {number} agentId
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     refreshAgent(poolId: number, agentId: number, onResult: (err: any, statusCode: number) => void): void;
     /**
      * @param {number} poolId
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     refreshAgents(poolId: number, onResult: (err: any, statusCode: number) => void): void;
     /**
      * @param {TaskAgentInterfaces.TaskAgentMessage} message
      * @param {number} poolId
      * @param {number} requestId
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     sendMessage(message: TaskAgentInterfaces.TaskAgentMessage, poolId: number, requestId: number, onResult: (err: any, statusCode: number) => void): void;
     /**
      * @param {TaskAgentInterfaces.TaskAgentPool} pool
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgentPool
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgentPool
      */
     createPool(pool: TaskAgentInterfaces.TaskAgentPool, onResult: (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool) => void): void;
     /**
      * @param {number} poolId
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     deletePool(poolId: number, onResult: (err: any, statusCode: number) => void): void;
     /**
      * @param {number} poolId
      * @param {string} properties
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgentPool
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgentPool
      */
     getPool(poolId: number, properties: string, onResult: (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool) => void): void;
     /**
      * @param {string} poolName
      * @param {string} properties
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgentPool[]
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgentPool[]
      */
     getPools(poolName: string, properties: string, onResult: (err: any, statusCode: number, pools: TaskAgentInterfaces.TaskAgentPool[]) => void): void;
     /**
      * @param {TaskAgentInterfaces.TaskAgentPool} pool
      * @param {number} poolId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgentPool
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgentPool
      */
     updatePool(pool: TaskAgentInterfaces.TaskAgentPool, poolId: number, onResult: (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool) => void): void;
     /**
      * @param {number} poolId
-     * @param onResult cllback function with the resulting VSSInterfaces.IdentityRef[]
+     * @param onResult callback function with the resulting VSSInterfaces.IdentityRef[]
      */
     getAgentPoolRoles(poolId: number, onResult: (err: any, statusCode: number, roles: VSSInterfaces.IdentityRef[]) => void): void;
     /**
      * @param {TaskAgentInterfaces.ServiceEndpoint} endpoint
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} endpointId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.ServiceEndpoint
+     * @param onResult callback function with the resulting TaskAgentInterfaces.ServiceEndpoint
      */
     createServiceEndpoint(endpoint: TaskAgentInterfaces.ServiceEndpoint, scopeIdentifier: string, endpointId: string, onResult: (err: any, statusCode: number, serviceendpoint: TaskAgentInterfaces.ServiceEndpoint) => void): void;
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} endpointId
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     deleteServiceEndpoint(scopeIdentifier: string, endpointId: string, onResult: (err: any, statusCode: number) => void): void;
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} endpointId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.ServiceEndpoint
+     * @param onResult callback function with the resulting TaskAgentInterfaces.ServiceEndpoint
      */
     getServiceEndpointDetails(scopeIdentifier: string, endpointId: string, onResult: (err: any, statusCode: number, serviceendpoint: TaskAgentInterfaces.ServiceEndpoint) => void): void;
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} type
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.ServiceEndpoint[]
+     * @param onResult callback function with the resulting TaskAgentInterfaces.ServiceEndpoint[]
      */
     getServiceEndpoints(scopeIdentifier: string, type: string, onResult: (err: any, statusCode: number, serviceendpoints: TaskAgentInterfaces.ServiceEndpoint[]) => void): void;
     /**
      * @param {TaskAgentInterfaces.TaskAgentSession} session
      * @param {number} poolId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgentSession
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgentSession
      */
     createSession(session: TaskAgentInterfaces.TaskAgentSession, poolId: number, onResult: (err: any, statusCode: number, session: TaskAgentInterfaces.TaskAgentSession) => void): void;
     /**
      * @param {number} poolId
      * @param {string} sessionId
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     deleteSession(poolId: number, sessionId: string, onResult: (err: any, statusCode: number) => void): void;
     /**
      * @param {string} taskId
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     deleteTaskDefinition(taskId: string, onResult: (err: any, statusCode: number) => void): void;
     /**
      * @param {string} taskId
      * @param {string} versionString
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskDefinition[]
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskDefinition[]
      */
     getTaskContent(taskId: string, versionString: string, onResult: (err: any, statusCode: number, tasks: TaskAgentInterfaces.TaskDefinition[]) => void): void;
     /**
      * @param {string} taskId
      * @param {string} versionString
-     * @param onResult cllback function with the resulting ArrayBuffer
+     * @param onResult callback function with the resulting ArrayBuffer
      */
     getTaskContentZip(taskId: string, versionString: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     /**
      * @param {string[]} visibility
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskDefinition[]
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskDefinition[]
      */
     getTaskDefinitions(visibility: string[], onResult: (err: any, statusCode: number, tasks: TaskAgentInterfaces.TaskDefinition[]) => void): void;
     /**
      * @param {string} taskId
      * @param {boolean} overwrite
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     uploadTaskDefinition(taskId: string, overwrite: boolean, onResult: (err: any, statusCode: number) => void): void;
     /**
      * @param {{ [key: string] : string; }} userCapabilities
      * @param {number} poolId
      * @param {number} agentId
-     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgent
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgent
      */
     updateUserCapabilities(userCapabilities: {
         [key: string]: string;

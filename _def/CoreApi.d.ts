@@ -64,42 +64,42 @@ export declare class CoreApi implements ICoreApi {
     /**
      * @param {CoreInterfaces.WebApiConnectedServiceDetails} connectedServiceCreationData
      * @param {string} projectId
-     * @param onResult cllback function with the resulting CoreInterfaces.WebApiConnectedService
+     * @param onResult callback function with the resulting CoreInterfaces.WebApiConnectedService
      */
     createConnectedService(connectedServiceCreationData: CoreInterfaces.WebApiConnectedServiceDetails, projectId: string, onResult: (err: any, statusCode: number, connectedService: CoreInterfaces.WebApiConnectedService) => void): void;
     /**
      * @param {string} projectId
      * @param {string} name
-     * @param onResult cllback function with the resulting CoreInterfaces.WebApiConnectedServiceDetails
+     * @param onResult callback function with the resulting CoreInterfaces.WebApiConnectedServiceDetails
      */
     getConnectedServiceDetails(projectId: string, name: string, onResult: (err: any, statusCode: number, connectedService: CoreInterfaces.WebApiConnectedServiceDetails) => void): void;
     /**
      * @param {string} projectId
      * @param {CoreInterfaces.ConnectedServiceKind} kind
-     * @param onResult cllback function with the resulting CoreInterfaces.WebApiConnectedService[]
+     * @param onResult callback function with the resulting CoreInterfaces.WebApiConnectedService[]
      */
     getConnectedServices(projectId: string, kind: CoreInterfaces.ConnectedServiceKind, onResult: (err: any, statusCode: number, connectedServices: CoreInterfaces.WebApiConnectedService[]) => void): void;
     /**
      * @param {CoreInterfaces.IdentityData} mruData
      * @param {string} mruName
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     createIdentityMru(mruData: CoreInterfaces.IdentityData, mruName: string, onResult: (err: any, statusCode: number) => void): void;
     /**
      * @param {CoreInterfaces.IdentityData} mruData
      * @param {string} mruName
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     deleteIdentityMru(mruData: CoreInterfaces.IdentityData, mruName: string, onResult: (err: any, statusCode: number) => void): void;
     /**
      * @param {string} mruName
-     * @param onResult cllback function with the resulting VSSInterfaces.IdentityRef[]
+     * @param onResult callback function with the resulting VSSInterfaces.IdentityRef[]
      */
     getIdentityMru(mruName: string, onResult: (err: any, statusCode: number, identityMru: VSSInterfaces.IdentityRef[]) => void): void;
     /**
      * @param {CoreInterfaces.IdentityData} mruData
      * @param {string} mruName
-     * @param onResult cllback function
+     * @param onResult callback function
      */
     updateIdentityMru(mruData: CoreInterfaces.IdentityData, mruName: string, onResult: (err: any, statusCode: number) => void): void;
     /**
@@ -107,14 +107,14 @@ export declare class CoreApi implements ICoreApi {
      * @param {string} teamId
      * @param {number} top
      * @param {number} skip
-     * @param onResult cllback function with the resulting VSSInterfaces.IdentityRef[]
+     * @param onResult callback function with the resulting VSSInterfaces.IdentityRef[]
      */
     getTeamMembers(projectId: string, teamId: string, top: number, skip: number, onResult: (err: any, statusCode: number, members: VSSInterfaces.IdentityRef[]) => void): void;
     /**
      * Get project collection with the specified id or name.
      *
      * @param {string} collectionId
-     * @param onResult cllback function with the resulting CoreInterfaces.TeamProjectCollection
+     * @param onResult callback function with the resulting CoreInterfaces.TeamProjectCollection
      */
     getProjectCollection(collectionId: string, onResult: (err: any, statusCode: number, projectCollection: CoreInterfaces.TeamProjectCollection) => void): void;
     /**
@@ -122,12 +122,12 @@ export declare class CoreApi implements ICoreApi {
      *
      * @param {number} top
      * @param {number} skip
-     * @param onResult cllback function with the resulting CoreInterfaces.TeamProjectCollectionReference[]
+     * @param onResult callback function with the resulting CoreInterfaces.TeamProjectCollectionReference[]
      */
     getProjectCollections(top: number, skip: number, onResult: (err: any, statusCode: number, projectCollections: CoreInterfaces.TeamProjectCollectionReference[]) => void): void;
     /**
      * @param {number} minRevision
-     * @param onResult cllback function with the resulting CoreInterfaces.TeamProjectReference[]
+     * @param onResult callback function with the resulting CoreInterfaces.TeamProjectReference[]
      */
     getProjectHistory(minRevision: number, onResult: (err: any, statusCode: number, projectHistory: CoreInterfaces.TeamProjectReference[]) => void): void;
     /**
@@ -136,7 +136,7 @@ export declare class CoreApi implements ICoreApi {
      * @param {string} projectId
      * @param {boolean} includeCapabilities - Include capabilities (such as source control) in the team project result (default: false).
      * @param {boolean} includeHistory - Search within renamed projects (that had such name in the past).
-     * @param onResult cllback function with the resulting CoreInterfaces.TeamProject
+     * @param onResult callback function with the resulting CoreInterfaces.TeamProject
      */
     getProject(projectId: string, includeCapabilities: boolean, includeHistory: boolean, onResult: (err: any, statusCode: number, project: CoreInterfaces.TeamProject) => void): void;
     /**
@@ -145,21 +145,21 @@ export declare class CoreApi implements ICoreApi {
      * @param {any} stateFilter - Filter on team projects in a specific team project state (default: WellFormed).
      * @param {number} top
      * @param {number} skip
-     * @param onResult cllback function with the resulting CoreInterfaces.TeamProjectReference[]
+     * @param onResult callback function with the resulting CoreInterfaces.TeamProjectReference[]
      */
     getProjects(stateFilter: any, top: number, skip: number, onResult: (err: any, statusCode: number, projects: CoreInterfaces.TeamProjectReference[]) => void): void;
     /**
      * Queue a project creation.
      *
      * @param {CoreInterfaces.TeamProject} projectToCreate - The project to create.
-     * @param onResult cllback function with the resulting OperationsInterfaces.OperationReference
+     * @param onResult callback function with the resulting OperationsInterfaces.OperationReference
      */
     queueCreateProject(projectToCreate: CoreInterfaces.TeamProject, onResult: (err: any, statusCode: number, project: OperationsInterfaces.OperationReference) => void): void;
     /**
      * Queue a project deletion.
      *
      * @param {string} projectId - The project id of the project to delete.
-     * @param onResult cllback function with the resulting OperationsInterfaces.OperationReference
+     * @param onResult callback function with the resulting OperationsInterfaces.OperationReference
      */
     queueDeleteProject(projectId: string, onResult: (err: any, statusCode: number, project: OperationsInterfaces.OperationReference) => void): void;
     /**
@@ -167,12 +167,12 @@ export declare class CoreApi implements ICoreApi {
      *
      * @param {CoreInterfaces.TeamProject} projectUpdate - The updates for the project.
      * @param {string} projectId - The project id of the project to update.
-     * @param onResult cllback function with the resulting OperationsInterfaces.OperationReference
+     * @param onResult callback function with the resulting OperationsInterfaces.OperationReference
      */
     updateProject(projectUpdate: CoreInterfaces.TeamProject, projectId: string, onResult: (err: any, statusCode: number, project: OperationsInterfaces.OperationReference) => void): void;
     /**
      * @param {string} proxyUrl
-     * @param onResult cllback function with the resulting CoreInterfaces.Proxy[]
+     * @param onResult callback function with the resulting CoreInterfaces.Proxy[]
      */
     getProxies(proxyUrl: string, onResult: (err: any, statusCode: number, proxies: CoreInterfaces.Proxy[]) => void): void;
     /**
@@ -180,7 +180,7 @@ export declare class CoreApi implements ICoreApi {
      * @param {string} teamId
      * @param {number} top
      * @param {number} skip
-     * @param onResult cllback function with the resulting CoreInterfaces.WebApiTeam
+     * @param onResult callback function with the resulting CoreInterfaces.WebApiTeam
      */
     getTeams(projectId: string, teamId: string, top: number, skip: number, onResult: (err: any, statusCode: number, team: CoreInterfaces.WebApiTeam) => void): void;
 }
