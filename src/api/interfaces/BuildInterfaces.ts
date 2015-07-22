@@ -64,6 +64,7 @@ export enum AuditAction {
     Update = 2,
     Delete = 3,
 }
+
 /**
  * Data representation of a build
  */
@@ -417,6 +418,7 @@ export interface BuildDeployment {
     deployment: BuildSummary;
     sourceBuild: ShallowReference;
 }
+
 /**
  * Represents a build log.
  */
@@ -434,6 +436,7 @@ export interface BuildLog extends BuildLogReference {
      */
     lineCount: number;
 }
+
 /**
  * Data representation of a build log reference
  */
@@ -713,6 +716,7 @@ export interface BuildUpdatedEvent extends RealtimeBuildEvent {
 export interface BuildWorkspace {
     mappings: MappingDetails[];
 }
+
 /**
  * Represents a change associated with a build.
  */
@@ -815,6 +819,7 @@ export enum DefinitionQueueStatus {
      */
     Disabled = 2,
 }
+
 /**
  * A reference to a definition.
  */
@@ -907,24 +912,28 @@ export enum DeleteOptions {
      */
     All = 31,
 }
+
 /**
  * Represents the data from the build information nodes for type "DeploymentInformation" for xaml builds
  */
 export interface Deployment {
     type: string;
 }
+
 /**
  * Deployment iformation for type "Build"
  */
 export interface DeploymentBuild extends Deployment {
     buildId: number;
 }
+
 /**
  * Deployment iformation for type "Deploy"
  */
 export interface DeploymentDeploy extends Deployment {
     message: string;
 }
+
 /**
  * Deployment iformation for type "Test"
  */
@@ -946,6 +955,7 @@ export enum GetOption {
      */
     Custom = 2,
 }
+
 /**
  * Data representation of an information node associated with a build
  */
@@ -1178,6 +1188,7 @@ export enum ServiceHostStatus {
      */
     Offline = 2,
 }
+
 /**
  * An abstracted reference to some other resource. This class is used to provide the build data contracts with a uniform way to reference other resources in a way that provides easy traversal through links.
  */
@@ -1271,6 +1282,7 @@ export enum ValidationResult {
     Warning = 1,
     Error = 2,
 }
+
 /**
  * Mapping for a workspace
  */
@@ -1366,6 +1378,10 @@ export interface XamlBuildDefinition extends DefinitionReference {
      * The last build on this definition
      */
     lastBuild: ShallowReference;
+    /**
+     * The repository
+     */
+    repository: BuildRepository;
     /**
      * The reasons supported by the template
      */
@@ -2375,6 +2391,9 @@ TypeInfo.XamlBuildDefinition.fields = {
     },
     queueStatus: {
         enumType: TypeInfo.DefinitionQueueStatus
+    },
+    repository: {
+        typeInfo: TypeInfo.BuildRepository
     },
     supportedReasons: {
         enumType: TypeInfo.BuildReason

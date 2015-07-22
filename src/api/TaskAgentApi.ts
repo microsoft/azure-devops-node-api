@@ -20,15 +20,15 @@ import Q = require('q');
 import restm = require('./restclient');
 import httpm = require('./httpclient');
 import vsom = require('./VsoClient');
-import CoreInterfaces = require('./interfaces/common/CoreInterfaces');
+import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import TaskAgentInterfaces = require("./interfaces/TaskAgentInterfaces");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
 export interface ITaskAgentApi {
     baseUrl: string;
     userAgent: string;
-    httpClient: CoreInterfaces.IHttpClient;
-    restClient: CoreInterfaces.IRestClient;
+    httpClient: VsoBaseInterfaces.IHttpClient;
+    restClient: VsoBaseInterfaces.IRestClient;
     vsoClient: vsom.VsoClient;
     connect(onResult: (err: any, statusCode: number, obj: any) => void): void;
     createAgent(agent: TaskAgentInterfaces.TaskAgent, poolId: number, onResult: (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => void): void;
@@ -101,7 +101,7 @@ export class TaskAgentApi implements ITaskAgentApi {
     restClient: restm.RestClient;
     vsoClient: vsom.VsoClient
 
-    constructor(baseUrl: string, handlers: CoreInterfaces.IRequestHandler[]) {
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
         this.baseUrl = baseUrl;
         this.httpClient = new httpm.HttpClient('node-TaskAgent-api', handlers);
         this.restClient = new restm.RestClient(this.httpClient);
@@ -114,7 +114,7 @@ export class TaskAgentApi implements ITaskAgentApi {
     }
     
     connect(onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this.restClient.getJson(this.vsoClient.resolveUrl('/_apis/connectionData'), "", onResult);
+        this.restClient.getJson(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, onResult);
     }
 
     /**
@@ -135,8 +135,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, agent, onResult);
+            this.restClient.create(path, apiVersion, agent, serializationData, onResult);
         });
     }
 
@@ -159,8 +160,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, onResult);
+            this.restClient.delete(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -192,8 +194,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, onResult);
+            this.restClient.getJson(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -228,8 +231,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, onResult);
+            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -254,8 +258,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
             
-            this.restClient.replace(path, apiVersion, agent, onResult);
+            this.restClient.replace(path, apiVersion, agent, serializationData, onResult);
         });
     }
 
@@ -280,8 +285,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
             
-            this.restClient.update(path, apiVersion, agent, onResult);
+            this.restClient.update(path, apiVersion, agent, serializationData, onResult);
         });
     }
 
@@ -302,8 +308,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "f223b809-8c33-4b7d-b53f-07232569b5d6", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskDefinitionEndpoint, responseIsCollection: true };
             
-            this.restClient.create(path, apiVersion, endpoint, onResult);
+            this.restClient.create(path, apiVersion, endpoint, serializationData, onResult);
         });
     }
 
@@ -332,8 +339,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, onResult);
+            this.restClient.delete(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -356,8 +364,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, onResult);
+            this.restClient.getJson(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -379,8 +388,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, request, onResult);
+            this.restClient.create(path, apiVersion, request, serializationData, onResult);
         });
     }
 
@@ -411,8 +421,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: false };
             
-            this.restClient.update(path, apiVersion, request, onResult);
+            this.restClient.update(path, apiVersion, request, serializationData, onResult);
         });
     }
 
@@ -441,8 +452,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, onResult);
+            this.restClient.delete(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -471,8 +483,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentMessage, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, onResult);
+            this.restClient.getJson(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -498,8 +511,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, null, onResult);
+            this.restClient.create(path, apiVersion, null, serializationData, onResult);
         });
     }
 
@@ -519,8 +533,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, null, onResult);
+            this.restClient.create(path, apiVersion, null, serializationData, onResult);
         });
     }
 
@@ -548,8 +563,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentMessage, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, message, onResult);
+            this.restClient.create(path, apiVersion, message, serializationData, onResult);
         });
     }
 
@@ -568,8 +584,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, pool, onResult);
+            this.restClient.create(path, apiVersion, pool, serializationData, onResult);
         });
     }
 
@@ -589,8 +606,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, onResult);
+            this.restClient.delete(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -616,8 +634,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, onResult);
+            this.restClient.getJson(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -643,8 +662,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, onResult);
+            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -666,8 +686,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseIsCollection: false };
             
-            this.restClient.update(path, apiVersion, pool, onResult);
+            this.restClient.update(path, apiVersion, pool, serializationData, onResult);
         });
     }
 
@@ -687,8 +708,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "9e627af6-3635-4ddf-a275-dca904802338", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: VSSInterfaces.TypeInfo.IdentityRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, onResult);
+            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -713,8 +735,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "ca373c13-fec3-4b30-9525-35a117731384", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.ServiceEndpoint, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.ServiceEndpoint, responseIsCollection: false };
             
-            this.restClient.replace(path, apiVersion, endpoint, onResult);
+            this.restClient.replace(path, apiVersion, endpoint, serializationData, onResult);
         });
     }
 
@@ -737,8 +760,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "ca373c13-fec3-4b30-9525-35a117731384", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, onResult);
+            this.restClient.delete(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -761,8 +785,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "ca373c13-fec3-4b30-9525-35a117731384", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.ServiceEndpoint, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, onResult);
+            this.restClient.getJson(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -788,8 +813,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "ca373c13-fec3-4b30-9525-35a117731384", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.ServiceEndpoint, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, onResult);
+            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -811,8 +837,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "134e239e-2df3-4794-a6f6-24f1f19ec8dc", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentSession, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentSession, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, session, onResult);
+            this.restClient.create(path, apiVersion, session, serializationData, onResult);
         });
     }
 
@@ -835,8 +862,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "134e239e-2df3-4794-a6f6-24f1f19ec8dc", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, onResult);
+            this.restClient.delete(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -856,8 +884,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, onResult);
+            this.restClient.delete(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -880,8 +909,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskDefinition, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, onResult);
+            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -904,6 +934,7 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
             
             this.httpClient.getStream(path, apiVersion, "application/zip", onResult);
         });
@@ -928,8 +959,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskDefinition, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, onResult);
+            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
         });
     }
 
@@ -955,8 +987,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
             
-            this.restClient.replace(path, apiVersion, null, onResult);
+            this.restClient.replace(path, apiVersion, null, serializationData, onResult);
         });
     }
 
@@ -981,8 +1014,9 @@ export class TaskAgentApi implements ITaskAgentApi {
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "30ba3ada-fedf-4da8-bbb5-dacf2f82e176", routeValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
             
-            this.restClient.replace(path, apiVersion, userCapabilities, onResult);
+            this.restClient.replace(path, apiVersion, userCapabilities, serializationData, onResult);
         });
     }
 
@@ -991,7 +1025,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 export class QTaskAgentApi implements IQTaskAgentApi {
     TaskAgentApi: ITaskAgentApi;
 
-    constructor(baseUrl: string, handlers: CoreInterfaces.IRequestHandler[]) {
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
         this.TaskAgentApi = new TaskAgentApi(baseUrl, handlers);
     }
 
