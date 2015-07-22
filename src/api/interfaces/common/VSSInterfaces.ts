@@ -24,6 +24,40 @@ export interface IdentityRef {
     url: string;
 }
 
+export interface JsonPatchDocument {
+}
+
+/**
+ * The JSON model for a JSON Patch operation
+ */
+export interface JsonPatchOperation {
+    /**
+     * The path to copy from for the Move/Copy operation.
+     */
+    from: string;
+    /**
+     * The patch operation
+     */
+    op: Operation;
+    /**
+     * The path for the operation
+     */
+    path: string;
+    /**
+     * The value for the operation. This is either a primitive or a JToken.
+     */
+    value: any;
+}
+
+export enum Operation {
+    Add = 0,
+    Remove = 1,
+    Replace = 2,
+    Move = 3,
+    Copy = 4,
+    Test = 5,
+}
+
 export interface ResourceRef {
     id: string;
     url: string;
@@ -45,6 +79,22 @@ export var TypeInfo = {
     IdentityRef: {
         fields: <any>null
     },
+    JsonPatchDocument: {
+        fields: <any>null
+    },
+    JsonPatchOperation: {
+        fields: <any>null
+    },
+    Operation: {
+        enumValues: {
+            "add": 0,
+            "remove": 1,
+            "replace": 2,
+            "move": 3,
+            "copy": 4,
+            "test": 5,
+        }
+    },
     ResourceRef: {
         fields: <any>null
     },
@@ -60,6 +110,15 @@ export var TypeInfo = {
 };
 
 TypeInfo.IdentityRef.fields = {
+};
+
+TypeInfo.JsonPatchDocument.fields = {
+};
+
+TypeInfo.JsonPatchOperation.fields = {
+    op: {
+        enumType: TypeInfo.Operation
+    },
 };
 
 TypeInfo.ResourceRef.fields = {
