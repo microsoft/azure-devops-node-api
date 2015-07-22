@@ -6,7 +6,8 @@
 import fs = require("fs");
 import http = require("http");
 import httpm = require("./httpclient");
-import ifm = require('./interfaces/common/CoreInterfaces');
+import ifm = require("./interfaces/common/VsoBaseInterfaces");
+import Serialization = require('./Serialization');
 
 /**
  * getJSON:  REST get request returning JSON object(s)
@@ -46,7 +47,7 @@ var httpCodes = {
     504: "Gateway Timeout"
 }
 
-export function processResponse(url, res, contents, onResult) {
+export function processResponse(url, res, contents, serializationData: Serialization.SerializationData, onResult) {
     if (res.statusCode > 299) {
         // not success
         var msg = httpCodes[res.statusCode] ? "Failed Request: " + httpCodes[res.statusCode] : "Failed Request";
@@ -58,6 +59,9 @@ export function processResponse(url, res, contents, onResult) {
             var jsonObj = null;
             if (contents && contents.length > 0) {
                 jsonObj = JSON.parse(contents);
+                if (serializationData) {
+                    jsonObj = Serialization.ContractSerializer.deserialize(jsonObj, serializationData.responseTypeMetadata, false, serializationData.responseIsCollection);
+                }
             }
         } catch (e) {
 
@@ -93,12 +97,12 @@ export class RestClient implements ifm.IRestClient {
         this.httpClient = httpClient;
     }
 
-    getJson(getUrl: string, apiVersion: string, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._getJson('GET', getUrl, apiVersion, onResult);
+    getJson(url: string, apiVersion: string, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        this._getJson('GET', url, apiVersion, serializationData, onResult);
     }
 
-    getJsonWrappedArray(url: string, apiVersion: string, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this.getJson(url, apiVersion, (err: any, statusCode: number, obj: any) => {
+    getJsonWrappedArray(url: string, apiVersion: string, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        this.getJson(url, apiVersion, serializationData, (err: any, statusCode: number, obj: any) => {
             if (err) {
                 onResult(err, statusCode, null);
             } else {
@@ -111,31 +115,31 @@ export class RestClient implements ifm.IRestClient {
         });
     }
 
-    options(optionsUrl: string, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._getJson('OPTIONS', optionsUrl, "", onResult);
+    options(url: string, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        this._getJson('OPTIONS', url, "", null, onResult);
     }
 
-    delete(url: string, apiVersion: string, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._getJson('DELETE', url, apiVersion, onResult);
+    delete(url: string, apiVersion: string, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        this._getJson('DELETE', url, apiVersion, serializationData, onResult);
     }
 
-    create(url: string, apiVersion: string, resources: any, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._sendJson('POST', url, apiVersion, resources, onResult);
+    create(url: string, apiVersion: string, resources: any, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        this._sendJson('POST', url, apiVersion, resources, serializationData, onResult);
     }
 
-    createJsonWrappedArray(url: string, apiVersion: string, resources: any[], onResult: (err: any, statusCode: number, resources: any[]) => void): void {
-        this._sendWrappedJson('POST', url, apiVersion, resources, onResult);
+    createJsonWrappedArray(url: string, apiVersion: string, resources: any[], serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, resources: any[]) => void): void {
+        this._sendWrappedJson('POST', url, apiVersion, resources, serializationData, onResult);
     }
 
-    update(url: string, apiVersion: string, resources: any, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._sendJson('PATCH', url, apiVersion, resources, onResult);
+    update(url: string, apiVersion: string, resources: any, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        this._sendJson('PATCH', url, apiVersion, resources, serializationData, onResult);
     }
 
-    updateJsonWrappedArray(url: string, apiVersion: string, resources: any[], onResult: (err: any, statusCode: number, resources: any[]) => void): void {
-        this._sendWrappedJson('PATCH', url, apiVersion, resources, onResult);
+    updateJsonWrappedArray(url: string, apiVersion: string, resources: any[], serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, resources: any[]) => void): void {
+        this._sendWrappedJson('PATCH', url, apiVersion, resources, serializationData, onResult);
     }
 
-    uploadFile(url: string, apiVersion: string, filePath: string, customHeaders: any, onResult: (err: any, statusCode: number, obj: any) => void): void {
+    uploadFile(url: string, apiVersion: string, filePath: string, customHeaders: any, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
         fs.stat(filePath, (err, stats) => {
             if (err) {
                 onResult(err, 400, null);
@@ -147,11 +151,11 @@ export class RestClient implements ifm.IRestClient {
 
             var contentStream: NodeJS.ReadableStream = fs.createReadStream(filePath);
 
-            this.uploadStream('POST', url, apiVersion, contentStream, headers, onResult);
+            this.uploadStream('POST', url, apiVersion, contentStream, headers, serializationData, onResult);
         });
     }
 
-    uploadStream(verb: string, url: string, apiVersion: string, contentStream: NodeJS.ReadableStream, customHeaders: any, onResult: (err: any, statusCode: number, obj: any) => void): void {
+    uploadStream(verb: string, url: string, apiVersion: string, contentStream: NodeJS.ReadableStream, customHeaders: any, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
 
         var headers = customHeaders || {};
         headers["Accept"] = this.httpClient.makeAcceptHeader('application/json', apiVersion);
@@ -162,21 +166,21 @@ export class RestClient implements ifm.IRestClient {
                 return;
             }
 
-            processResponse(url, res, contents, onResult);
+            processResponse(url, res, contents, serializationData, onResult);
         });
     }
 
-    replace(url: string, apiVersion: string, resources: any, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._sendJson('PUT', apiVersion, url, resources, onResult);
+    replace(url: string, apiVersion: string, resources: any, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        this._sendJson('PUT', apiVersion, url, resources, serializationData, onResult);
     }
 
-    _sendWrappedJson(verb: string, url: string, apiVersion: string, resources: any[], onResult: (err: any, statusCode: number, resources: any[]) => void): void {
-        var wrapped = {
+    _sendWrappedJson(verb: string, url: string, apiVersion: string, resources: any[], serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, resources: any[]) => void): void {
+        var wrapped = <Serialization.IWebApiArrayResult>{
             count: resources.length,
             value: resources
         }
 
-        this._sendJson(verb, url, apiVersion, wrapped, (err: any, statusCode: number, obj: any) => {
+        this._sendJson(verb, url, apiVersion, wrapped, serializationData, (err: any, statusCode: number, obj: any) => {
             if (err) {
                 onResult(err, statusCode, null);
             } else {
@@ -186,7 +190,7 @@ export class RestClient implements ifm.IRestClient {
         });
     }
 
-    _getJson(verb: string, url: string, apiVersion: string, onResult: (err: any, statusCode: number, obj: any) => void): void {
+    _getJson(verb: string, url: string, apiVersion: string, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
 
         var headers = {};
         headers["Accept"] = this.httpClient.makeAcceptHeader('application/json', apiVersion);
@@ -196,15 +200,19 @@ export class RestClient implements ifm.IRestClient {
                 return;
             }
 
-            processResponse(url, res, contents, onResult);
+            processResponse(url, res, contents, serializationData, onResult);
         });
     }
 
-    _sendJson(verb: string, url: string, apiVersion: string, data: any, onResult: (err: any, statusCode: number, obj: any) => void): void {
+    _sendJson(verb: string, url: string, apiVersion: string, data: any, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
 
         var headers = {};
         headers["Accept"] = this.httpClient.makeAcceptHeader('application/json', apiVersion);
         headers["Content-Type"] = 'application/json; charset=utf-8';
+        
+        if(serializationData) {
+            data = Serialization.ContractSerializer.serialize(data, serializationData.requestTypeMetadata, true);
+        }
 
         this.httpClient.send(verb, url, data, headers, (err: any, res: ifm.IHttpResponse, contents: string) => {
             if (err) {
@@ -212,9 +220,8 @@ export class RestClient implements ifm.IRestClient {
                 return;
             }
 
-            processResponse(url, res, contents, onResult);
+            processResponse(url, res, contents, serializationData, onResult);
         });
     }
 
-    // TODO: postJsonWrappedArray
 }

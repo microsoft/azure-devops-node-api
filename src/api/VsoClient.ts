@@ -11,7 +11,7 @@ import path = require("path");
 /// Import base rest class ///
 import restm = require("./RestClient");
 import httpm = require("./HttpClient");
-import ifm = require("./interfaces/common/CoreInterfaces");
+import ifm = require("./interfaces/common/VsoBaseInterfaces");
 
 interface VssApiResourceLocationLookup {
     [locationId: string]: ifm.ApiResourceLocation;

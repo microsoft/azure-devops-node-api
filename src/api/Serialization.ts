@@ -1,10 +1,14 @@
-// TODO: port JQuery code to node
-
 /**
 * Metadata for deserializing an enum field on a contract/type
 */
 export interface ContractEnumMetadata {
     enumValues?: { [name: string]: number; };
+}
+
+export interface SerializationData {
+    requestTypeMetadata?: ContractMetadata;
+    responseTypeMetadata?: ContractMetadata;
+    responseIsCollection: boolean;
 }
 
 /**
@@ -294,10 +298,7 @@ export module ContractSerializer {
     }
 
     function _getTranslatedDateValue(valueToConvert: any, serialize: boolean): any {
-        if (serialize && (valueToConvert instanceof Date) && Date.prototype.toISOString) {
-            return (<Date>valueToConvert).toISOString();
-        }
-        else if (!serialize && typeof valueToConvert === "string") {
+        if (!serialize && typeof valueToConvert === "string") {
             // Deserialize: String --> Date
             var dateValue = new Date(valueToConvert);
             if (isNaN(<any>dateValue) && navigator.userAgent && /msie/i.test(navigator.userAgent)) {
@@ -344,22 +345,3 @@ export module ContractSerializer {
         return out;
     };
 }
-
-// /**
-// * Deserialize the JSON island data that is stored in the given element
-// *
-// * @param $element JQuery element containing the JSON to deserialize
-// * @param contractMetadata The type info/metadata for the contract type being deserialize
-// * @param removeElement If true remove the element from the DOM after deserializing the content
-// */
-// export function deserializeJsonIsland<T>($element: JQuery, contractMetadata: ContractMetadata, removeElement: boolean = false): T {
-//     var content: T = null;
-//     if ($element && $element.length) {
-//         var html = $element.html();
-//         content = <T>ContractSerializer.deserialize(JSON.parse(html), contractMetadata, true);
-//         if (removeElement) {
-//             $element.remove();
-//         }
-//     }
-//     return content;
-// }
