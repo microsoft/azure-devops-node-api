@@ -20,15 +20,15 @@ import Q = require('q');
 import restm = require('./restclient');
 import httpm = require('./httpclient');
 import vsom = require('./VsoClient');
-import CoreInterfaces = require('./interfaces/common/CoreInterfaces');
+import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 import WorkItemTrackingInterfaces = require("./interfaces/WorkItemTrackingInterfaces");
 
 export interface IWorkItemTrackingApi {
     baseUrl: string;
     userAgent: string;
-    httpClient: CoreInterfaces.IHttpClient;
-    restClient: CoreInterfaces.IRestClient;
+    httpClient: VsoBaseInterfaces.IHttpClient;
+    restClient: VsoBaseInterfaces.IRestClient;
     vsoClient: vsom.VsoClient;
     connect(onResult: (err: any, statusCode: number, obj: any) => void): void;
     createAttachment(contentStream: NodeJS.ReadableStream, customHeaders: any, content: string, fileName: string, uploadType: string, onResult: (err: any, statusCode: number, attachment: WorkItemTrackingInterfaces.AttachmentReference) => void): void;
@@ -122,7 +122,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
     restClient: restm.RestClient;
     vsoClient: vsom.VsoClient
 
-    constructor(baseUrl: string, handlers: CoreInterfaces.IRequestHandler[]) {
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
         this.baseUrl = baseUrl;
         this.httpClient = new httpm.HttpClient('node-WorkItemTracking-api', handlers);
         this.restClient = new restm.RestClient(this.httpClient);
@@ -1360,7 +1360,7 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
 export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     WorkItemTrackingApi: IWorkItemTrackingApi;
 
-    constructor(baseUrl: string, handlers: CoreInterfaces.IRequestHandler[]) {
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
         this.WorkItemTrackingApi = new WorkItemTrackingApi(baseUrl, handlers);
     }
 

@@ -78,6 +78,7 @@ export interface JobCancelMessage {
 export interface JobCompletedEvent extends JobEvent {
     result: TaskResult;
 }
+
 /**
  * Represents the context of variables and vectors for a job request.
  */
@@ -96,6 +97,7 @@ export interface JobEvent {
     jobId: string;
     name: string;
 }
+
 /**
  * Represents an option that may affect the way an agent runs the job.
  */
@@ -134,6 +136,7 @@ export interface PlanEnvironment {
     options: { [key: number] : JobOption; };
     variables: { [key: string] : string; };
 }
+
 /**
  * Represents an endpoint which may be used by an orchestration job.
  */
@@ -484,6 +487,7 @@ export interface TaskVersion {
     minor: number;
     patch: number;
 }
+
 /**
  * Represents a shallow reference to a TeamProject.
  */

@@ -20,15 +20,15 @@ import Q = require('q');
 import restm = require('./restclient');
 import httpm = require('./httpclient');
 import vsom = require('./VsoClient');
-import CoreInterfaces = require('./interfaces/common/CoreInterfaces');
+import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import BuildInterfaces = require("./interfaces/BuildInterfaces");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
 export interface IBuildApi {
     baseUrl: string;
     userAgent: string;
-    httpClient: CoreInterfaces.IHttpClient;
-    restClient: CoreInterfaces.IRestClient;
+    httpClient: VsoBaseInterfaces.IHttpClient;
+    restClient: VsoBaseInterfaces.IRestClient;
     vsoClient: vsom.VsoClient;
     connect(onResult: (err: any, statusCode: number, obj: any) => void): void;
     createArtifact(artifact: BuildInterfaces.BuildArtifact, buildId: number, project: string, onResult: (err: any, statusCode: number, artifact: BuildInterfaces.BuildArtifact) => void): void;
@@ -122,7 +122,7 @@ export class BuildApi implements IBuildApi {
     restClient: restm.RestClient;
     vsoClient: vsom.VsoClient
 
-    constructor(baseUrl: string, handlers: CoreInterfaces.IRequestHandler[]) {
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
         this.baseUrl = baseUrl;
         this.httpClient = new httpm.HttpClient('node-Build-api', handlers);
         this.restClient = new restm.RestClient(this.httpClient);
@@ -184,11 +184,14 @@ export class BuildApi implements IBuildApi {
 
         var routeValues = {
             project: project,
-            buildId: buildId,
+            buildId: buildId
+        };
+
+        var queryValues = {
             artifactName: artifactName
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildArtifact, responseIsCollection: false };
@@ -214,11 +217,14 @@ export class BuildApi implements IBuildApi {
 
         var routeValues = {
             project: project,
-            buildId: buildId,
+            buildId: buildId
+        };
+
+        var queryValues = {
             artifactName: artifactName
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
@@ -1398,7 +1404,7 @@ export class BuildApi implements IBuildApi {
 export class QBuildApi implements IQBuildApi {
     BuildApi: IBuildApi;
 
-    constructor(baseUrl: string, handlers: CoreInterfaces.IRequestHandler[]) {
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
         this.BuildApi = new BuildApi(baseUrl, handlers);
     }
 

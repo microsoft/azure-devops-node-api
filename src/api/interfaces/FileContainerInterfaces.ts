@@ -47,6 +47,7 @@ export enum ContainerOptions {
      */
     None = 0,
 }
+
 /**
  * Represents a container that encapsulates a hierarchical file system.
  */
@@ -101,6 +102,7 @@ export interface FileContainer {
      */
     size: number;
 }
+
 /**
  * Represents an item in a container.
  */

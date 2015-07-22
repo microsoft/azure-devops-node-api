@@ -95,6 +95,9 @@ export var TypeInfo = {
             "test": 5,
         }
     },
+    OperationReference: {
+        fields: <any>null
+    },
     ResourceRef: {
         fields: <any>null
     },
@@ -119,6 +122,9 @@ TypeInfo.JsonPatchOperation.fields = {
     op: {
         enumType: TypeInfo.Operation
     },
+};
+
+TypeInfo.OperationReference.fields = {
 };
 
 TypeInfo.ResourceRef.fields = {

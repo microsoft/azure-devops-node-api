@@ -55,6 +55,7 @@ export interface ChangeList<T> {
     sortDate: Date;
     version: string;
 }
+
 /**
  * Criteria used in a search for change lists
  */
@@ -271,6 +272,7 @@ export interface GitItemRequestData {
      */
     latestProcessedChange: boolean;
 }
+
 /**
  * Encapsulates the reference metadata of a Git media object.
  */
@@ -785,6 +787,7 @@ export enum ItemContentType {
     RawText = 0,
     Base64Encoded = 1,
 }
+
 /**
  * Optional details to include when returning an item model
  */
@@ -877,6 +880,7 @@ export interface TfvcChangesetRef {
     createdDate: Date;
     url: string;
 }
+
 /**
  * Criteria used in a search for change lists
  */
@@ -947,6 +951,7 @@ export interface TfvcItem extends ItemModel {
     isPendingChange: boolean;
     version: number;
 }
+
 /**
  * Item path and Version descriptor properties
  */

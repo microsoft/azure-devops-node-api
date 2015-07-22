@@ -74,6 +74,7 @@ export interface CoverageStatistics {
     linesNotCovered: number;
     linesPartiallyCovered: number;
 }
+
 /**
  * This is a temporary class to provide the details for the test run environment.
  */
@@ -191,6 +192,7 @@ export interface RunCreateModel {
     testSettings: ShallowReference;
     type: string;
 }
+
 /**
  * This class is used to provide the filters used for discovery
  */
@@ -232,6 +234,7 @@ export interface RunUpdateModel {
     testEnvironmentId: string;
     testSettings: ShallowReference;
 }
+
 /**
  * An abstracted reference to some other resource. This class is used to provide the build data contracts with a uniform way to reference other resources in a way that provides easy traversal through links.
  */
@@ -397,6 +400,7 @@ export interface TestIterationDetailsModel {
     startedDate: Date;
     url: string;
 }
+
 /**
  * An abstracted reference to some other resource. This class is used to provide the build data contracts with a uniform way to reference other resources in a way that provides easy traversal through links.
  */
@@ -616,6 +620,7 @@ export enum TestRunSubstate {
     Analyzed = 7,
     CancellationInProgress = 8,
 }
+
 /**
  * Represents the test settings of the run. Used to create test settings and fetch test settings
  */
