@@ -1,22 +1,5 @@
-/*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*
-* See following wiki page for instructions on how to regenerate:
-*   https://vsowiki.com/index.php?title=Rest_Client_Generation
-*/
-
-"use strict";
-
 import TfsInterfaces = require("../interfaces/common/TfsInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
-
-
 export interface AssociatedWorkItem {
     assignedTo: string;
     id: number;
@@ -29,7 +12,6 @@ export interface AssociatedWorkItem {
     webUrl: string;
     workItemType: string;
 }
-
 export interface Change<T> {
     changeType: VersionControlChangeType;
     item: T;
@@ -37,13 +19,13 @@ export interface Change<T> {
     sourceServerItem: string;
     url: string;
 }
-
 export interface ChangeCountDictionary {
 }
-
 export interface ChangeList<T> {
     allChangesIncluded: boolean;
-    changeCounts: { [key: number] : number; };
+    changeCounts: {
+        [key: number]: number;
+    };
     changes: Change<T>[];
     comment: string;
     commentTruncated: boolean;
@@ -55,7 +37,6 @@ export interface ChangeList<T> {
     sortDate: Date;
     version: string;
 }
-
 /**
  * Criteria used in a search for change lists
  */
@@ -109,12 +90,10 @@ export interface ChangeListSearchCriteria {
      */
     user: string;
 }
-
 export interface CheckinNote {
     name: string;
     value: string;
 }
-
 export interface FileContentMetadata {
     contentType: string;
     encoding: number;
@@ -124,7 +103,6 @@ export interface FileContentMetadata {
     isImage: boolean;
     vsLink: string;
 }
-
 export interface GitBaseVersionDescriptor extends GitVersionDescriptor {
     /**
      * Version string identifier (name of tag/branch, SHA1 of commit)
@@ -139,7 +117,6 @@ export interface GitBaseVersionDescriptor extends GitVersionDescriptor {
      */
     baseVersionType: GitVersionType;
 }
-
 export interface GitBlobRef {
     _links: any;
     /**
@@ -152,7 +129,6 @@ export interface GitBlobRef {
     size: number;
     url: string;
 }
-
 export interface GitBranchStats {
     aheadCount: number;
     behindCount: number;
@@ -160,29 +136,26 @@ export interface GitBranchStats {
     isBaseVersion: boolean;
     name: string;
 }
-
 export interface GitChange extends Change<GitItem> {
 }
-
 export interface GitCommit extends GitCommitRef {
     push: GitPushRef;
     treeId: string;
 }
-
 export interface GitCommitChanges {
     changeCounts: ChangeCountDictionary;
     changes: GitChange[];
 }
-
 export interface GitCommitDiffs {
     aheadCount: number;
     allChangesIncluded: boolean;
     behindCount: number;
-    changeCounts: { [key: number] : number; };
+    changeCounts: {
+        [key: number]: number;
+    };
     changes: GitChange[];
     commonCommit: string;
 }
-
 export interface GitCommitRef {
     _links: any;
     author: GitUserDate;
@@ -196,13 +169,11 @@ export interface GitCommitRef {
     remoteUrl: string;
     url: string;
 }
-
 export interface GitCommitToCreate {
     baseRef: GitRef;
     comment: string;
     pathActions: GitPathAction[];
 }
-
 export interface GitHistoryQueryResults extends HistoryQueryResults<GitItem> {
     /**
      * Seed commit used for querying history.  Used for skip feature.
@@ -211,7 +182,6 @@ export interface GitHistoryQueryResults extends HistoryQueryResults<GitItem> {
     unpopulatedCount: number;
     unprocessedCount: number;
 }
-
 export interface GitItem extends ItemModel {
     /**
      * SHA1 of commit item was fetched at
@@ -230,7 +200,6 @@ export interface GitItem extends ItemModel {
      */
     objectId: string;
 }
-
 export interface GitItemDescriptor {
     /**
      * Path to item
@@ -253,7 +222,6 @@ export interface GitItemDescriptor {
      */
     versionType: GitVersionType;
 }
-
 export interface GitItemRequestData {
     /**
      * Whether to include metadata for all items
@@ -272,7 +240,6 @@ export interface GitItemRequestData {
      */
     latestProcessedChange: boolean;
 }
-
 /**
  * Encapsulates the reference metadata of a Git media object.
  */
@@ -298,8 +265,7 @@ export interface GitMediaObjectRef {
      */
     url: string;
 }
-
-export enum GitObjectType {
+export declare enum GitObjectType {
     Bad = 0,
     Commit = 1,
     Tree = 2,
@@ -309,7 +275,6 @@ export enum GitObjectType {
     OfsDelta = 6,
     RefDelta = 7,
 }
-
 export interface GitPathAction {
     action: GitPathActions;
     base64Content: string;
@@ -317,15 +282,13 @@ export interface GitPathAction {
     rawTextContent: string;
     targetPath: string;
 }
-
-export enum GitPathActions {
+export declare enum GitPathActions {
     None = 0,
     Edit = 1,
     Delete = 2,
     Add = 3,
     Rename = 4,
 }
-
 export interface GitPullRequest {
     _links: any;
     closedDate: Date;
@@ -349,7 +312,6 @@ export interface GitPullRequest {
     upgraded: boolean;
     url: string;
 }
-
 export interface GitPullRequestSearchCriteria {
     creatorId: string;
     /**
@@ -362,13 +324,11 @@ export interface GitPullRequestSearchCriteria {
     status: PullRequestStatus;
     targetRefName: string;
 }
-
 export interface GitPush extends GitPushRef {
     commits: GitCommitRef[];
     refUpdates: GitRefUpdate[];
     repository: GitRepository;
 }
-
 export interface GitPushEventData {
     afterId: string;
     beforeId: string;
@@ -376,7 +336,6 @@ export interface GitPushEventData {
     commits: GitCommit[];
     repository: GitRepository;
 }
-
 export interface GitPushRef {
     _links: any;
     date: Date;
@@ -385,7 +344,6 @@ export interface GitPushRef {
     pushId: number;
     url: string;
 }
-
 export interface GitPushSearchCriteria {
     fromDate: Date;
     /**
@@ -397,7 +355,6 @@ export interface GitPushSearchCriteria {
     refName: string;
     toDate: Date;
 }
-
 export interface GitQueryCommitsCriteria {
     /**
      * Number of entries to skip
@@ -456,7 +413,6 @@ export interface GitQueryCommitsCriteria {
      */
     user: string;
 }
-
 export interface GitRef {
     _links: any;
     isLockedBy: VSSInterfaces.IdentityRef;
@@ -464,15 +420,13 @@ export interface GitRef {
     objectId: string;
     url: string;
 }
-
 export interface GitRefUpdate {
     name: string;
     newObjectId: string;
     oldObjectId: string;
     repositoryId: string;
 }
-
-export enum GitRefUpdateMode {
+export declare enum GitRefUpdateMode {
     /**
      * Indicates the Git protocol model where any refs that can be updated will be updated, but any failures will not prevent other updates from succeeding.
      */
@@ -482,7 +436,6 @@ export enum GitRefUpdateMode {
      */
     AllOrNone = 1,
 }
-
 export interface GitRefUpdateResult {
     /**
      * Custom message for the result object For instance, Reason for failing.
@@ -517,17 +470,17 @@ export interface GitRefUpdateResult {
      */
     updateStatus: GitRefUpdateStatus;
 }
-
 export interface GitRefUpdateResultSet {
     countFailed: number;
     countSucceeded: number;
     pushCorrelationId: string;
-    pushIds: { [key: number] : number; };
+    pushIds: {
+        [key: number]: number;
+    };
     pushTime: Date;
     results: GitRefUpdateResult[];
 }
-
-export enum GitRefUpdateStatus {
+export declare enum GitRefUpdateStatus {
     /**
      * Indicates that the ref update request was completed successfully.
      */
@@ -593,7 +546,6 @@ export enum GitRefUpdateStatus {
      */
     SucceededCorruptRef = 15,
 }
-
 export interface GitRepository {
     _links: any;
     defaultBranch: string;
@@ -603,8 +555,7 @@ export interface GitRepository {
     remoteUrl: string;
     url: string;
 }
-
-export enum GitRepositoryPermissions {
+export declare enum GitRepositoryPermissions {
     None = 0,
     Administer = 1,
     GenericRead = 2,
@@ -620,7 +571,6 @@ export enum GitRepositoryPermissions {
     All = 255,
     BranchLevelPermissions = 141,
 }
-
 export interface GitTargetVersionDescriptor extends GitVersionDescriptor {
     /**
      * Version string identifier (name of tag/branch, SHA1 of commit)
@@ -635,7 +585,6 @@ export interface GitTargetVersionDescriptor extends GitVersionDescriptor {
      */
     targetVersionType: GitVersionType;
 }
-
 export interface GitTreeEntryRef {
     /**
      * Blob or tree
@@ -662,7 +611,6 @@ export interface GitTreeEntryRef {
      */
     url: string;
 }
-
 export interface GitTreeRef {
     _links: any;
     /**
@@ -682,13 +630,11 @@ export interface GitTreeRef {
      */
     url: string;
 }
-
 export interface GitUserDate {
     date: Date;
     email: string;
     name: string;
 }
-
 export interface GitVersionDescriptor {
     /**
      * Version string identifier (name of tag/branch/index, SHA1 of commit)
@@ -703,8 +649,7 @@ export interface GitVersionDescriptor {
      */
     versionType: GitVersionType;
 }
-
-export enum GitVersionOptions {
+export declare enum GitVersionOptions {
     /**
      * Not specified
      */
@@ -718,8 +663,7 @@ export enum GitVersionOptions {
      */
     FirstParent = 2,
 }
-
-export enum GitVersionType {
+export declare enum GitVersionType {
     /**
      * Interpret the version as a branch name
      */
@@ -737,7 +681,6 @@ export enum GitVersionType {
      */
     Index = 3,
 }
-
 export interface HistoryEntry<T> {
     /**
      * The Change list (changeset/commit/shelveset) for this point in history
@@ -752,7 +695,6 @@ export interface HistoryEntry<T> {
      */
     serverItem: string;
 }
-
 export interface HistoryQueryResults<T> {
     /**
      * True if there are more results available to fetch (we're returning the max # of items requested) A more RESTy solution would be to include a Link header
@@ -763,31 +705,26 @@ export interface HistoryQueryResults<T> {
      */
     results: HistoryEntry<T>[];
 }
-
 export interface IdentityRefWithVote extends VSSInterfaces.IdentityRef {
     isRequired: boolean;
     reviewerUrl: string;
     vote: number;
     votedFor: IdentityRefWithVote[];
 }
-
 export interface IncludedGitCommit {
     commitId: string;
     commitTime: Date;
     parentCommitIds: string[];
     repositoryId: string;
 }
-
 export interface ItemContent {
     content: string;
     contentType: ItemContentType;
 }
-
-export enum ItemContentType {
+export declare enum ItemContentType {
     RawText = 0,
     Base64Encoded = 1,
 }
-
 /**
  * Optional details to include when returning an item model
  */
@@ -801,7 +738,6 @@ export interface ItemDetailsOptions {
      */
     recursionLevel: VersionControlRecursionType;
 }
-
 export interface ItemModel {
     _links: any;
     contentMetadata: FileContentMetadata;
@@ -810,8 +746,7 @@ export interface ItemModel {
     path: string;
     url: string;
 }
-
-export enum PullRequestAsyncStatus {
+export declare enum PullRequestAsyncStatus {
     NotSet = 0,
     Queued = 1,
     Conflicts = 2,
@@ -819,27 +754,23 @@ export enum PullRequestAsyncStatus {
     RejectedByPolicy = 4,
     Failure = 5,
 }
-
-export enum PullRequestStatus {
+export declare enum PullRequestStatus {
     NotSet = 0,
     Active = 1,
     Abandoned = 2,
     Completed = 3,
 }
-
 export interface TfvcBranch extends TfvcBranchRef {
     children: TfvcBranch[];
     mappings: TfvcBranchMapping[];
     parent: TfvcShallowBranchRef;
     relatedBranches: TfvcShallowBranchRef[];
 }
-
 export interface TfvcBranchMapping {
     depth: string;
     serverItem: string;
     type: string;
 }
-
 export interface TfvcBranchRef extends TfvcShallowBranchRef {
     _links: any;
     createdDate: Date;
@@ -848,7 +779,6 @@ export interface TfvcBranchRef extends TfvcShallowBranchRef {
     owner: VSSInterfaces.IdentityRef;
     url: string;
 }
-
 export interface TfvcChange extends Change<TfvcItem> {
     /**
      * List of merge sources in case of rename or branch creation.
@@ -859,7 +789,6 @@ export interface TfvcChange extends Change<TfvcItem> {
      */
     pendingVersion: number;
 }
-
 export interface TfvcChangeset extends TfvcChangesetRef {
     accountId: string;
     changes: TfvcChange[];
@@ -869,7 +798,6 @@ export interface TfvcChangeset extends TfvcChangesetRef {
     policyOverride: TfvcPolicyOverrideInfo;
     workItems: AssociatedWorkItem[];
 }
-
 export interface TfvcChangesetRef {
     _links: any;
     author: VSSInterfaces.IdentityRef;
@@ -880,7 +808,6 @@ export interface TfvcChangesetRef {
     createdDate: Date;
     url: string;
 }
-
 /**
  * Criteria used in a search for change lists
  */
@@ -918,7 +845,6 @@ export interface TfvcChangesetSearchCriteria {
      */
     toId: number;
 }
-
 export interface TfvcChangesetsRequestData {
     changesetIds: number[];
     commentLength: number;
@@ -927,12 +853,10 @@ export interface TfvcChangesetsRequestData {
      */
     includeLinks: boolean;
 }
-
 export interface TfvcCheckinEventData {
     changeset: TfvcChangeset;
     project: TfsInterfaces.TeamProjectReference;
 }
-
 export interface TfvcHistoryEntry extends HistoryEntry<TfvcItem> {
     /**
      * The encoding of the item at this point in history (only relevant for File history, not folders)
@@ -943,7 +867,6 @@ export interface TfvcHistoryEntry extends HistoryEntry<TfvcItem> {
      */
     fileId: number;
 }
-
 export interface TfvcItem extends ItemModel {
     changeDate: Date;
     deletionId: number;
@@ -951,7 +874,6 @@ export interface TfvcItem extends ItemModel {
     isPendingChange: boolean;
     version: number;
 }
-
 /**
  * Item path and Version descriptor properties
  */
@@ -962,7 +884,6 @@ export interface TfvcItemDescriptor {
     versionOption: TfvcVersionOption;
     versionType: TfvcVersionType;
 }
-
 export interface TfvcItemRequestData {
     /**
      * If true, include metadata about the file type
@@ -974,11 +895,9 @@ export interface TfvcItemRequestData {
     includeLinks: boolean;
     itemDescriptors: TfvcItemDescriptor[];
 }
-
 export interface TfvcLabel extends TfvcLabelRef {
     items: TfvcItem[];
 }
-
 export interface TfvcLabelRef {
     _links: any;
     description: string;
@@ -989,7 +908,6 @@ export interface TfvcLabelRef {
     owner: VSSInterfaces.IdentityRef;
     url: string;
 }
-
 export interface TfvcLabelRequestData {
     /**
      * Whether to include the _links field on the shallow references
@@ -1001,7 +919,6 @@ export interface TfvcLabelRequestData {
     name: string;
     owner: string;
 }
-
 export interface TfvcMergeSource {
     /**
      * Indicates if this a rename source. If false, it is a merge source.
@@ -1020,28 +937,23 @@ export interface TfvcMergeSource {
      */
     versionTo: number;
 }
-
 export interface TfvcPolicyFailureInfo {
     message: string;
     policyName: string;
 }
-
 export interface TfvcPolicyOverrideInfo {
     comment: string;
     policyFailures: TfvcPolicyFailureInfo[];
 }
-
 export interface TfvcShallowBranchRef {
     path: string;
 }
-
 export interface TfvcShelveset extends TfvcShelvesetRef {
     changes: TfvcChange[];
     notes: CheckinNote[];
     policyOverride: TfvcPolicyOverrideInfo;
     workItems: AssociatedWorkItem[];
 }
-
 export interface TfvcShelvesetRef {
     _links: any;
     comment: string;
@@ -1052,7 +964,6 @@ export interface TfvcShelvesetRef {
     owner: VSSInterfaces.IdentityRef;
     url: string;
 }
-
 export interface TfvcShelvesetRequestData {
     /**
      * Whether to include policyOverride and notes
@@ -1083,20 +994,17 @@ export interface TfvcShelvesetRequestData {
      */
     owner: string;
 }
-
 export interface TfvcVersionDescriptor {
     version: string;
     versionOption: TfvcVersionOption;
     versionType: TfvcVersionType;
 }
-
-export enum TfvcVersionOption {
+export declare enum TfvcVersionOption {
     None = 0,
     Previous = 1,
     UseRename = 2,
 }
-
-export enum TfvcVersionType {
+export declare enum TfvcVersionType {
     None = 0,
     Changeset = 1,
     Shelveset = 2,
@@ -1106,13 +1014,11 @@ export enum TfvcVersionType {
     Tip = 6,
     MergeSource = 7,
 }
-
 export interface UpdateRefsRequest {
     refUpdateRequests: GitRefUpdate[];
     updateMode: GitRefUpdateMode;
 }
-
-export enum VersionControlChangeType {
+export declare enum VersionControlChangeType {
     None = 0,
     Add = 1,
     Edit = 2,
@@ -1129,1011 +1035,377 @@ export enum VersionControlChangeType {
     Property = 4096,
     All = 8191,
 }
-
 export interface VersionControlProjectInfo {
     project: TfsInterfaces.TeamProjectReference;
     supportsGit: boolean;
     supportsTFVC: boolean;
 }
-
-export enum VersionControlRecursionType {
+export declare enum VersionControlRecursionType {
     None = 0,
     OneLevel = 1,
     Full = 120,
 }
-
-export var TypeInfo = {
+export declare var TypeInfo: {
     AssociatedWorkItem: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     Change: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     ChangeCountDictionary: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     ChangeList: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     ChangeListSearchCriteria: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     CheckinNote: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     FileContentMetadata: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitBaseVersionDescriptor: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitBlobRef: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitBranchStats: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitChange: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitCommit: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitCommitChanges: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitCommitDiffs: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitCommitRef: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitCommitToCreate: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitHistoryQueryResults: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitItem: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitItemDescriptor: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitItemRequestData: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitMediaObjectRef: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitObjectType: {
         enumValues: {
-            "bad": 0,
-            "commit": 1,
-            "tree": 2,
-            "blob": 3,
-            "tag": 4,
-            "ext2": 5,
-            "ofsDelta": 6,
-            "refDelta": 7,
-        }
-    },
+            "bad": number;
+            "commit": number;
+            "tree": number;
+            "blob": number;
+            "tag": number;
+            "ext2": number;
+            "ofsDelta": number;
+            "refDelta": number;
+        };
+    };
     GitPathAction: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitPathActions: {
         enumValues: {
-            "none": 0,
-            "edit": 1,
-            "delete": 2,
-            "add": 3,
-            "rename": 4,
-        }
-    },
+            "none": number;
+            "edit": number;
+            "delete": number;
+            "add": number;
+            "rename": number;
+        };
+    };
     GitPullRequest: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitPullRequestSearchCriteria: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitPush: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitPushEventData: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitPushRef: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitPushSearchCriteria: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitQueryCommitsCriteria: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitRef: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitRefUpdate: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitRefUpdateMode: {
         enumValues: {
-            "bestEffort": 0,
-            "allOrNone": 1,
-        }
-    },
+            "bestEffort": number;
+            "allOrNone": number;
+        };
+    };
     GitRefUpdateResult: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitRefUpdateResultSet: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitRefUpdateStatus: {
         enumValues: {
-            "succeeded": 0,
-            "forcePushRequired": 1,
-            "staleOldObjectId": 2,
-            "invalidRefName": 3,
-            "unprocessed": 4,
-            "unresolvableToCommit": 5,
-            "writePermissionRequired": 6,
-            "manageNotePermissionRequired": 7,
-            "createBranchPermissionRequired": 8,
-            "createTagPermissionRequired": 9,
-            "rejectedByPlugin": 10,
-            "locked": 11,
-            "refNameConflict": 12,
-            "rejectedByPolicy": 13,
-            "succeededNonExistentRef": 14,
-            "succeededCorruptRef": 15,
-        }
-    },
+            "succeeded": number;
+            "forcePushRequired": number;
+            "staleOldObjectId": number;
+            "invalidRefName": number;
+            "unprocessed": number;
+            "unresolvableToCommit": number;
+            "writePermissionRequired": number;
+            "manageNotePermissionRequired": number;
+            "createBranchPermissionRequired": number;
+            "createTagPermissionRequired": number;
+            "rejectedByPlugin": number;
+            "locked": number;
+            "refNameConflict": number;
+            "rejectedByPolicy": number;
+            "succeededNonExistentRef": number;
+            "succeededCorruptRef": number;
+        };
+    };
     GitRepository: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitRepositoryPermissions: {
         enumValues: {
-            "none": 0,
-            "administer": 1,
-            "genericRead": 2,
-            "genericContribute": 4,
-            "forcePush": 8,
-            "createBranch": 16,
-            "createTag": 32,
-            "manageNote": 64,
-            "policyExempt": 128,
-            "all": 255,
-            "branchLevelPermissions": 141,
-        }
-    },
+            "none": number;
+            "administer": number;
+            "genericRead": number;
+            "genericContribute": number;
+            "forcePush": number;
+            "createBranch": number;
+            "createTag": number;
+            "manageNote": number;
+            "policyExempt": number;
+            "all": number;
+            "branchLevelPermissions": number;
+        };
+    };
     GitTargetVersionDescriptor: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitTreeEntryRef: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitTreeRef: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitUserDate: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitVersionDescriptor: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     GitVersionOptions: {
         enumValues: {
-            "none": 0,
-            "previousChange": 1,
-            "firstParent": 2,
-        }
-    },
+            "none": number;
+            "previousChange": number;
+            "firstParent": number;
+        };
+    };
     GitVersionType: {
         enumValues: {
-            "branch": 0,
-            "tag": 1,
-            "commit": 2,
-            "index": 3,
-        }
-    },
+            "branch": number;
+            "tag": number;
+            "commit": number;
+            "index": number;
+        };
+    };
     HistoryEntry: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     HistoryQueryResults: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     IdentityRefWithVote: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     IncludedGitCommit: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     ItemContent: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     ItemContentType: {
         enumValues: {
-            "rawText": 0,
-            "base64Encoded": 1,
-        }
-    },
+            "rawText": number;
+            "base64Encoded": number;
+        };
+    };
     ItemDetailsOptions: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     ItemModel: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     PullRequestAsyncStatus: {
         enumValues: {
-            "notSet": 0,
-            "queued": 1,
-            "conflicts": 2,
-            "succeeded": 3,
-            "rejectedByPolicy": 4,
-            "failure": 5,
-        }
-    },
+            "notSet": number;
+            "queued": number;
+            "conflicts": number;
+            "succeeded": number;
+            "rejectedByPolicy": number;
+            "failure": number;
+        };
+    };
     PullRequestStatus: {
         enumValues: {
-            "notSet": 0,
-            "active": 1,
-            "abandoned": 2,
-            "completed": 3,
-        }
-    },
+            "notSet": number;
+            "active": number;
+            "abandoned": number;
+            "completed": number;
+        };
+    };
     TfvcBranch: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcBranchMapping: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcBranchRef: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcChange: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcChangeset: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcChangesetRef: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcChangesetSearchCriteria: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcChangesetsRequestData: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcCheckinEventData: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcHistoryEntry: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcItem: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcItemDescriptor: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcItemRequestData: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcLabel: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcLabelRef: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcLabelRequestData: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcMergeSource: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcPolicyFailureInfo: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcPolicyOverrideInfo: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcShallowBranchRef: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcShelveset: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcShelvesetRef: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcShelvesetRequestData: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcVersionDescriptor: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TfvcVersionOption: {
         enumValues: {
-            "none": 0,
-            "previous": 1,
-            "useRename": 2,
-        }
-    },
+            "none": number;
+            "previous": number;
+            "useRename": number;
+        };
+    };
     TfvcVersionType: {
         enumValues: {
-            "none": 0,
-            "changeset": 1,
-            "shelveset": 2,
-            "change": 3,
-            "date": 4,
-            "latest": 5,
-            "tip": 6,
-            "mergeSource": 7,
-        }
-    },
+            "none": number;
+            "changeset": number;
+            "shelveset": number;
+            "change": number;
+            "date": number;
+            "latest": number;
+            "tip": number;
+            "mergeSource": number;
+        };
+    };
     UpdateRefsRequest: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     VersionControlChangeType: {
         enumValues: {
-            "none": 0,
-            "add": 1,
-            "edit": 2,
-            "encoding": 4,
-            "rename": 8,
-            "delete": 16,
-            "undelete": 32,
-            "branch": 64,
-            "merge": 128,
-            "lock": 256,
-            "rollback": 512,
-            "sourceRename": 1024,
-            "targetRename": 2048,
-            "property": 4096,
-            "all": 8191,
-        }
-    },
+            "none": number;
+            "add": number;
+            "edit": number;
+            "encoding": number;
+            "rename": number;
+            "delete": number;
+            "undelete": number;
+            "branch": number;
+            "merge": number;
+            "lock": number;
+            "rollback": number;
+            "sourceRename": number;
+            "targetRename": number;
+            "property": number;
+            "all": number;
+        };
+    };
     VersionControlProjectInfo: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     VersionControlRecursionType: {
         enumValues: {
-            "none": 0,
-            "oneLevel": 1,
-            "full": 120,
-        }
-    },
-};
-
-TypeInfo.AssociatedWorkItem.fields = {
-};
-
-TypeInfo.Change.fields = {
-    changeType: {
-        enumType: TypeInfo.VersionControlChangeType
-    },
-    newContent: {
-        typeInfo: TypeInfo.ItemContent
-    },
-};
-
-TypeInfo.ChangeCountDictionary.fields = {
-};
-
-TypeInfo.ChangeList.fields = {
-    creationDate: {
-        isDate: true,
-    },
-    notes: {
-        isArray: true,
-        typeInfo: TypeInfo.CheckinNote
-    },
-    sortDate: {
-        isDate: true,
-    },
-};
-
-TypeInfo.ChangeListSearchCriteria.fields = {
-};
-
-TypeInfo.CheckinNote.fields = {
-};
-
-TypeInfo.FileContentMetadata.fields = {
-};
-
-TypeInfo.GitBaseVersionDescriptor.fields = {
-    baseVersionOptions: {
-        enumType: TypeInfo.GitVersionOptions
-    },
-    baseVersionType: {
-        enumType: TypeInfo.GitVersionType
-    },
-    versionOptions: {
-        enumType: TypeInfo.GitVersionOptions
-    },
-    versionType: {
-        enumType: TypeInfo.GitVersionType
-    },
-};
-
-TypeInfo.GitBlobRef.fields = {
-};
-
-TypeInfo.GitBranchStats.fields = {
-    commit: {
-        typeInfo: TypeInfo.GitCommitRef
-    },
-};
-
-TypeInfo.GitChange.fields = {
-    changeType: {
-        enumType: TypeInfo.VersionControlChangeType
-    },
-    item: {
-        typeInfo: TypeInfo.GitItem
-    },
-    newContent: {
-        typeInfo: TypeInfo.ItemContent
-    },
-};
-
-TypeInfo.GitCommit.fields = {
-    author: {
-        typeInfo: TypeInfo.GitUserDate
-    },
-    changeCounts: {
-        typeInfo: TypeInfo.ChangeCountDictionary
-    },
-    changes: {
-        isArray: true,
-        typeInfo: TypeInfo.GitChange
-    },
-    committer: {
-        typeInfo: TypeInfo.GitUserDate
-    },
-    push: {
-        typeInfo: TypeInfo.GitPushRef
-    },
-};
-
-TypeInfo.GitCommitChanges.fields = {
-    changeCounts: {
-        typeInfo: TypeInfo.ChangeCountDictionary
-    },
-    changes: {
-        isArray: true,
-        typeInfo: TypeInfo.GitChange
-    },
-};
-
-TypeInfo.GitCommitDiffs.fields = {
-    changes: {
-        isArray: true,
-        typeInfo: TypeInfo.GitChange
-    },
-};
-
-TypeInfo.GitCommitRef.fields = {
-    author: {
-        typeInfo: TypeInfo.GitUserDate
-    },
-    changeCounts: {
-        typeInfo: TypeInfo.ChangeCountDictionary
-    },
-    changes: {
-        isArray: true,
-        typeInfo: TypeInfo.GitChange
-    },
-    committer: {
-        typeInfo: TypeInfo.GitUserDate
-    },
-};
-
-TypeInfo.GitCommitToCreate.fields = {
-    baseRef: {
-        typeInfo: TypeInfo.GitRef
-    },
-    pathActions: {
-        isArray: true,
-        typeInfo: TypeInfo.GitPathAction
-    },
-};
-
-TypeInfo.GitHistoryQueryResults.fields = {
-};
-
-TypeInfo.GitItem.fields = {
-    contentMetadata: {
-        typeInfo: TypeInfo.FileContentMetadata
-    },
-    gitObjectType: {
-        enumType: TypeInfo.GitObjectType
-    },
-    latestProcessedChange: {
-        typeInfo: TypeInfo.GitCommitRef
-    },
-};
-
-TypeInfo.GitItemDescriptor.fields = {
-    recursionLevel: {
-        enumType: TypeInfo.VersionControlRecursionType
-    },
-    versionOptions: {
-        enumType: TypeInfo.GitVersionOptions
-    },
-    versionType: {
-        enumType: TypeInfo.GitVersionType
-    },
-};
-
-TypeInfo.GitItemRequestData.fields = {
-    itemDescriptors: {
-        isArray: true,
-        typeInfo: TypeInfo.GitItemDescriptor
-    },
-};
-
-TypeInfo.GitMediaObjectRef.fields = {
-};
-
-TypeInfo.GitPathAction.fields = {
-    action: {
-        enumType: TypeInfo.GitPathActions
-    },
-};
-
-TypeInfo.GitPullRequest.fields = {
-    closedDate: {
-        isDate: true,
-    },
-    createdBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    creationDate: {
-        isDate: true,
-    },
-    lastMergeCommit: {
-        typeInfo: TypeInfo.GitCommitRef
-    },
-    lastMergeSourceCommit: {
-        typeInfo: TypeInfo.GitCommitRef
-    },
-    lastMergeTargetCommit: {
-        typeInfo: TypeInfo.GitCommitRef
-    },
-    mergeStatus: {
-        enumType: TypeInfo.PullRequestAsyncStatus
-    },
-    repository: {
-        typeInfo: TypeInfo.GitRepository
-    },
-    reviewers: {
-        isArray: true,
-        typeInfo: TypeInfo.IdentityRefWithVote
-    },
-    status: {
-        enumType: TypeInfo.PullRequestStatus
-    },
-};
-
-TypeInfo.GitPullRequestSearchCriteria.fields = {
-    status: {
-        enumType: TypeInfo.PullRequestStatus
-    },
-};
-
-TypeInfo.GitPush.fields = {
-    commits: {
-        isArray: true,
-        typeInfo: TypeInfo.GitCommitRef
-    },
-    date: {
-        isDate: true,
-    },
-    pushedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    refUpdates: {
-        isArray: true,
-        typeInfo: TypeInfo.GitRefUpdate
-    },
-    repository: {
-        typeInfo: TypeInfo.GitRepository
-    },
-};
-
-TypeInfo.GitPushEventData.fields = {
-    commits: {
-        isArray: true,
-        typeInfo: TypeInfo.GitCommit
-    },
-    repository: {
-        typeInfo: TypeInfo.GitRepository
-    },
-};
-
-TypeInfo.GitPushRef.fields = {
-    date: {
-        isDate: true,
-    },
-    pushedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
-TypeInfo.GitPushSearchCriteria.fields = {
-    fromDate: {
-        isDate: true,
-    },
-    toDate: {
-        isDate: true,
-    },
-};
-
-TypeInfo.GitQueryCommitsCriteria.fields = {
-    compareVersion: {
-        typeInfo: TypeInfo.GitVersionDescriptor
-    },
-    itemVersion: {
-        typeInfo: TypeInfo.GitVersionDescriptor
-    },
-};
-
-TypeInfo.GitRef.fields = {
-    isLockedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
-TypeInfo.GitRefUpdate.fields = {
-};
-
-TypeInfo.GitRefUpdateResult.fields = {
-    updateStatus: {
-        enumType: TypeInfo.GitRefUpdateStatus
-    },
-};
-
-TypeInfo.GitRefUpdateResultSet.fields = {
-    pushTime: {
-        isDate: true,
-    },
-    results: {
-        isArray: true,
-        typeInfo: TypeInfo.GitRefUpdateResult
-    },
-};
-
-TypeInfo.GitRepository.fields = {
-    project: {
-        typeInfo: TfsInterfaces.TypeInfo.TeamProjectReference
-    },
-};
-
-TypeInfo.GitTargetVersionDescriptor.fields = {
-    targetVersionOptions: {
-        enumType: TypeInfo.GitVersionOptions
-    },
-    targetVersionType: {
-        enumType: TypeInfo.GitVersionType
-    },
-    versionOptions: {
-        enumType: TypeInfo.GitVersionOptions
-    },
-    versionType: {
-        enumType: TypeInfo.GitVersionType
-    },
-};
-
-TypeInfo.GitTreeEntryRef.fields = {
-    gitObjectType: {
-        enumType: TypeInfo.GitObjectType
-    },
-};
-
-TypeInfo.GitTreeRef.fields = {
-    treeEntries: {
-        isArray: true,
-        typeInfo: TypeInfo.GitTreeEntryRef
-    },
-};
-
-TypeInfo.GitUserDate.fields = {
-    date: {
-        isDate: true,
-    },
-};
-
-TypeInfo.GitVersionDescriptor.fields = {
-    versionOptions: {
-        enumType: TypeInfo.GitVersionOptions
-    },
-    versionType: {
-        enumType: TypeInfo.GitVersionType
-    },
-};
-
-TypeInfo.HistoryEntry.fields = {
-    itemChangeType: {
-        enumType: TypeInfo.VersionControlChangeType
-    },
-};
-
-TypeInfo.HistoryQueryResults.fields = {
-};
-
-TypeInfo.IdentityRefWithVote.fields = {
-    votedFor: {
-        isArray: true,
-        typeInfo: TypeInfo.IdentityRefWithVote
-    },
-};
-
-TypeInfo.IncludedGitCommit.fields = {
-    commitTime: {
-        isDate: true,
-    },
-};
-
-TypeInfo.ItemContent.fields = {
-    contentType: {
-        enumType: TypeInfo.ItemContentType
-    },
-};
-
-TypeInfo.ItemDetailsOptions.fields = {
-    recursionLevel: {
-        enumType: TypeInfo.VersionControlRecursionType
-    },
-};
-
-TypeInfo.ItemModel.fields = {
-    contentMetadata: {
-        typeInfo: TypeInfo.FileContentMetadata
-    },
-};
-
-TypeInfo.TfvcBranch.fields = {
-    children: {
-        isArray: true,
-        typeInfo: TypeInfo.TfvcBranch
-    },
-    createdDate: {
-        isDate: true,
-    },
-    mappings: {
-        isArray: true,
-        typeInfo: TypeInfo.TfvcBranchMapping
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    parent: {
-        typeInfo: TypeInfo.TfvcShallowBranchRef
-    },
-    relatedBranches: {
-        isArray: true,
-        typeInfo: TypeInfo.TfvcShallowBranchRef
-    },
-};
-
-TypeInfo.TfvcBranchMapping.fields = {
-};
-
-TypeInfo.TfvcBranchRef.fields = {
-    createdDate: {
-        isDate: true,
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
-TypeInfo.TfvcChange.fields = {
-    changeType: {
-        enumType: TypeInfo.VersionControlChangeType
-    },
-    item: {
-        typeInfo: TypeInfo.TfvcItem
-    },
-    mergeSources: {
-        isArray: true,
-        typeInfo: TypeInfo.TfvcMergeSource
-    },
-    newContent: {
-        typeInfo: TypeInfo.ItemContent
-    },
-};
-
-TypeInfo.TfvcChangeset.fields = {
-    author: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    changes: {
-        isArray: true,
-        typeInfo: TypeInfo.TfvcChange
-    },
-    checkedInBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    checkinNotes: {
-        isArray: true,
-        typeInfo: TypeInfo.CheckinNote
-    },
-    createdDate: {
-        isDate: true,
-    },
-    policyOverride: {
-        typeInfo: TypeInfo.TfvcPolicyOverrideInfo
-    },
-    workItems: {
-        isArray: true,
-        typeInfo: TypeInfo.AssociatedWorkItem
-    },
-};
-
-TypeInfo.TfvcChangesetRef.fields = {
-    author: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    checkedInBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    createdDate: {
-        isDate: true,
-    },
-};
-
-TypeInfo.TfvcChangesetSearchCriteria.fields = {
-};
-
-TypeInfo.TfvcChangesetsRequestData.fields = {
-};
-
-TypeInfo.TfvcCheckinEventData.fields = {
-    changeset: {
-        typeInfo: TypeInfo.TfvcChangeset
-    },
-    project: {
-        typeInfo: TfsInterfaces.TypeInfo.TeamProjectReference
-    },
-};
-
-TypeInfo.TfvcHistoryEntry.fields = {
-    itemChangeType: {
-        enumType: TypeInfo.VersionControlChangeType
-    },
-};
-
-TypeInfo.TfvcItem.fields = {
-    changeDate: {
-        isDate: true,
-    },
-    contentMetadata: {
-        typeInfo: TypeInfo.FileContentMetadata
-    },
-};
-
-TypeInfo.TfvcItemDescriptor.fields = {
-    recursionLevel: {
-        enumType: TypeInfo.VersionControlRecursionType
-    },
-    versionOption: {
-        enumType: TypeInfo.TfvcVersionOption
-    },
-    versionType: {
-        enumType: TypeInfo.TfvcVersionType
-    },
-};
-
-TypeInfo.TfvcItemRequestData.fields = {
-    itemDescriptors: {
-        isArray: true,
-        typeInfo: TypeInfo.TfvcItemDescriptor
-    },
-};
-
-TypeInfo.TfvcLabel.fields = {
-    items: {
-        isArray: true,
-        typeInfo: TypeInfo.TfvcItem
-    },
-    modifiedDate: {
-        isDate: true,
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
-TypeInfo.TfvcLabelRef.fields = {
-    modifiedDate: {
-        isDate: true,
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
-TypeInfo.TfvcLabelRequestData.fields = {
-};
-
-TypeInfo.TfvcMergeSource.fields = {
-};
-
-TypeInfo.TfvcPolicyFailureInfo.fields = {
-};
-
-TypeInfo.TfvcPolicyOverrideInfo.fields = {
-    policyFailures: {
-        isArray: true,
-        typeInfo: TypeInfo.TfvcPolicyFailureInfo
-    },
-};
-
-TypeInfo.TfvcShallowBranchRef.fields = {
-};
-
-TypeInfo.TfvcShelveset.fields = {
-    changes: {
-        isArray: true,
-        typeInfo: TypeInfo.TfvcChange
-    },
-    createdDate: {
-        isDate: true,
-    },
-    notes: {
-        isArray: true,
-        typeInfo: TypeInfo.CheckinNote
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    policyOverride: {
-        typeInfo: TypeInfo.TfvcPolicyOverrideInfo
-    },
-    workItems: {
-        isArray: true,
-        typeInfo: TypeInfo.AssociatedWorkItem
-    },
-};
-
-TypeInfo.TfvcShelvesetRef.fields = {
-    createdDate: {
-        isDate: true,
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
-TypeInfo.TfvcShelvesetRequestData.fields = {
-};
-
-TypeInfo.TfvcVersionDescriptor.fields = {
-    versionOption: {
-        enumType: TypeInfo.TfvcVersionOption
-    },
-    versionType: {
-        enumType: TypeInfo.TfvcVersionType
-    },
-};
-
-TypeInfo.UpdateRefsRequest.fields = {
-    refUpdateRequests: {
-        isArray: true,
-        typeInfo: TypeInfo.GitRefUpdate
-    },
-    updateMode: {
-        enumType: TypeInfo.GitRefUpdateMode
-    },
-};
-
-TypeInfo.VersionControlProjectInfo.fields = {
-    project: {
-        typeInfo: TfsInterfaces.TypeInfo.TeamProjectReference
-    },
+            "none": number;
+            "oneLevel": number;
+            "full": number;
+        };
+    };
 };

@@ -20,15 +20,15 @@ import Q = require('q');
 import restm = require('./restclient');
 import httpm = require('./httpclient');
 import vsom = require('./VsoClient');
-import CoreInterfaces = require('./interfaces/common/CoreInterfaces');
+import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import TaskAgentInterfaces = require("./interfaces/TaskAgentInterfaces");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
 export interface ITaskAgentApi {
     baseUrl: string;
     userAgent: string;
-    httpClient: CoreInterfaces.IHttpClient;
-    restClient: CoreInterfaces.IRestClient;
+    httpClient: VsoBaseInterfaces.IHttpClient;
+    restClient: VsoBaseInterfaces.IRestClient;
     vsoClient: vsom.VsoClient;
     connect(onResult: (err: any, statusCode: number, obj: any) => void): void;
     createAgent(agent: TaskAgentInterfaces.TaskAgent, poolId: number, onResult: (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => void): void;
@@ -101,7 +101,7 @@ export class TaskAgentApi implements ITaskAgentApi {
     restClient: restm.RestClient;
     vsoClient: vsom.VsoClient
 
-    constructor(baseUrl: string, handlers: CoreInterfaces.IRequestHandler[]) {
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
         this.baseUrl = baseUrl;
         this.httpClient = new httpm.HttpClient('node-TaskAgent-api', handlers);
         this.restClient = new restm.RestClient(this.httpClient);
@@ -120,7 +120,7 @@ export class TaskAgentApi implements ITaskAgentApi {
     /**
      * @param {TaskAgentInterfaces.TaskAgent} agent
      * @param {number} poolId
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgent
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgent
      */
     public createAgent(
         agent: TaskAgentInterfaces.TaskAgent,
@@ -144,7 +144,7 @@ export class TaskAgentApi implements ITaskAgentApi {
     /**
      * @param {number} poolId
      * @param {number} agentId
-     * @param onResult callback function
+     * @param onResult cllback function
      */
     public deleteAgent(
         poolId: number,
@@ -171,7 +171,7 @@ export class TaskAgentApi implements ITaskAgentApi {
      * @param {number} agentId
      * @param {boolean} includeCapabilities
      * @param {string} propertyFilters
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgent
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgent
      */
     public getAgent(
         poolId: number,
@@ -206,7 +206,7 @@ export class TaskAgentApi implements ITaskAgentApi {
      * @param {boolean} includeCapabilities
      * @param {string} propertyFilters
      * @param {string} demands
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgent[]
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgent[]
      */
     public getAgents(
         poolId: number,
@@ -241,7 +241,7 @@ export class TaskAgentApi implements ITaskAgentApi {
      * @param {TaskAgentInterfaces.TaskAgent} agent
      * @param {number} poolId
      * @param {number} agentId
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgent
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgent
      */
     public replaceAgent(
         agent: TaskAgentInterfaces.TaskAgent,
@@ -268,7 +268,7 @@ export class TaskAgentApi implements ITaskAgentApi {
      * @param {TaskAgentInterfaces.TaskAgent} agent
      * @param {number} poolId
      * @param {number} agentId
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgent
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgent
      */
     public updateAgent(
         agent: TaskAgentInterfaces.TaskAgent,
@@ -295,7 +295,7 @@ export class TaskAgentApi implements ITaskAgentApi {
      * Proxy for a GET request defined by an 'endpoint'. The request is authorized using a service connection. The response is filtered using an XPath/Json based selector.
      * 
      * @param {TaskAgentInterfaces.TaskDefinitionEndpoint} endpoint - Describes the URL to fetch.
-     * @param onResult callback function with the resulting string[]
+     * @param onResult cllback function with the resulting string[]
      */
     public queryEndpoint(
         endpoint: TaskAgentInterfaces.TaskDefinitionEndpoint,
@@ -318,7 +318,7 @@ export class TaskAgentApi implements ITaskAgentApi {
      * @param {number} poolId
      * @param {number} requestId
      * @param {string} lockToken
-     * @param onResult callback function
+     * @param onResult cllback function
      */
     public deleteRequest(
         poolId: number,
@@ -348,7 +348,7 @@ export class TaskAgentApi implements ITaskAgentApi {
     /**
      * @param {number} poolId
      * @param {number} requestId
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgentJobRequest
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgentJobRequest
      */
     public getRequest(
         poolId: number,
@@ -373,7 +373,7 @@ export class TaskAgentApi implements ITaskAgentApi {
     /**
      * @param {TaskAgentInterfaces.TaskAgentJobRequest} request
      * @param {number} poolId
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgentJobRequest
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgentJobRequest
      */
     public queueRequest(
         request: TaskAgentInterfaces.TaskAgentJobRequest,
@@ -399,7 +399,7 @@ export class TaskAgentApi implements ITaskAgentApi {
      * @param {number} poolId
      * @param {number} requestId
      * @param {string} lockToken
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgentJobRequest
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgentJobRequest
      */
     public updateRequest(
         request: TaskAgentInterfaces.TaskAgentJobRequest,
@@ -431,7 +431,7 @@ export class TaskAgentApi implements ITaskAgentApi {
      * @param {number} poolId
      * @param {number} messageId
      * @param {string} sessionId
-     * @param onResult callback function
+     * @param onResult cllback function
      */
     public deleteMessage(
         poolId: number,
@@ -462,7 +462,7 @@ export class TaskAgentApi implements ITaskAgentApi {
      * @param {number} poolId
      * @param {string} sessionId
      * @param {number} lastMessageId
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgentMessage
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgentMessage
      */
     public getMessage(
         poolId: number,
@@ -492,7 +492,7 @@ export class TaskAgentApi implements ITaskAgentApi {
     /**
      * @param {number} poolId
      * @param {number} agentId
-     * @param onResult callback function
+     * @param onResult cllback function
      */
     public refreshAgent(
         poolId: number,
@@ -519,7 +519,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 
     /**
      * @param {number} poolId
-     * @param onResult callback function
+     * @param onResult cllback function
      */
     public refreshAgents(
         poolId: number,
@@ -543,7 +543,7 @@ export class TaskAgentApi implements ITaskAgentApi {
      * @param {TaskAgentInterfaces.TaskAgentMessage} message
      * @param {number} poolId
      * @param {number} requestId
-     * @param onResult callback function
+     * @param onResult cllback function
      */
     public sendMessage(
         message: TaskAgentInterfaces.TaskAgentMessage,
@@ -571,7 +571,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 
     /**
      * @param {TaskAgentInterfaces.TaskAgentPool} pool
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgentPool
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgentPool
      */
     public createPool(
         pool: TaskAgentInterfaces.TaskAgentPool,
@@ -592,7 +592,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 
     /**
      * @param {number} poolId
-     * @param onResult callback function
+     * @param onResult cllback function
      */
     public deletePool(
         poolId: number,
@@ -615,7 +615,7 @@ export class TaskAgentApi implements ITaskAgentApi {
     /**
      * @param {number} poolId
      * @param {string} properties
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgentPool
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgentPool
      */
     public getPool(
         poolId: number,
@@ -643,7 +643,7 @@ export class TaskAgentApi implements ITaskAgentApi {
     /**
      * @param {string} poolName
      * @param {string} properties
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgentPool[]
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgentPool[]
      */
     public getPools(
         poolName: string,
@@ -671,7 +671,7 @@ export class TaskAgentApi implements ITaskAgentApi {
     /**
      * @param {TaskAgentInterfaces.TaskAgentPool} pool
      * @param {number} poolId
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgentPool
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgentPool
      */
     public updatePool(
         pool: TaskAgentInterfaces.TaskAgentPool,
@@ -694,7 +694,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 
     /**
      * @param {number} poolId
-     * @param onResult callback function with the resulting VSSInterfaces.IdentityRef[]
+     * @param onResult cllback function with the resulting VSSInterfaces.IdentityRef[]
      */
     public getAgentPoolRoles(
         poolId: number,
@@ -718,7 +718,7 @@ export class TaskAgentApi implements ITaskAgentApi {
      * @param {TaskAgentInterfaces.ServiceEndpoint} endpoint
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} endpointId
-     * @param onResult callback function with the resulting TaskAgentInterfaces.ServiceEndpoint
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.ServiceEndpoint
      */
     public createServiceEndpoint(
         endpoint: TaskAgentInterfaces.ServiceEndpoint,
@@ -744,7 +744,7 @@ export class TaskAgentApi implements ITaskAgentApi {
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} endpointId
-     * @param onResult callback function
+     * @param onResult cllback function
      */
     public deleteServiceEndpoint(
         scopeIdentifier: string,
@@ -769,7 +769,7 @@ export class TaskAgentApi implements ITaskAgentApi {
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} endpointId
-     * @param onResult callback function with the resulting TaskAgentInterfaces.ServiceEndpoint
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.ServiceEndpoint
      */
     public getServiceEndpointDetails(
         scopeIdentifier: string,
@@ -794,7 +794,7 @@ export class TaskAgentApi implements ITaskAgentApi {
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} type
-     * @param onResult callback function with the resulting TaskAgentInterfaces.ServiceEndpoint[]
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.ServiceEndpoint[]
      */
     public getServiceEndpoints(
         scopeIdentifier: string,
@@ -822,7 +822,7 @@ export class TaskAgentApi implements ITaskAgentApi {
     /**
      * @param {TaskAgentInterfaces.TaskAgentSession} session
      * @param {number} poolId
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgentSession
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgentSession
      */
     public createSession(
         session: TaskAgentInterfaces.TaskAgentSession,
@@ -846,7 +846,7 @@ export class TaskAgentApi implements ITaskAgentApi {
     /**
      * @param {number} poolId
      * @param {string} sessionId
-     * @param onResult callback function
+     * @param onResult cllback function
      */
     public deleteSession(
         poolId: number,
@@ -870,7 +870,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 
     /**
      * @param {string} taskId
-     * @param onResult callback function
+     * @param onResult cllback function
      */
     public deleteTaskDefinition(
         taskId: string,
@@ -893,7 +893,7 @@ export class TaskAgentApi implements ITaskAgentApi {
     /**
      * @param {string} taskId
      * @param {string} versionString
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskDefinition[]
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskDefinition[]
      */
     public getTaskContent(
         taskId: string,
@@ -918,7 +918,7 @@ export class TaskAgentApi implements ITaskAgentApi {
     /**
      * @param {string} taskId
      * @param {string} versionString
-     * @param onResult callback function with the resulting ArrayBuffer
+     * @param onResult cllback function with the resulting ArrayBuffer
      */
     public getTaskContentZip(
         taskId: string,
@@ -942,7 +942,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 
     /**
      * @param {string[]} visibility
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskDefinition[]
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskDefinition[]
      */
     public getTaskDefinitions(
         visibility: string[],
@@ -968,7 +968,7 @@ export class TaskAgentApi implements ITaskAgentApi {
     /**
      * @param {string} taskId
      * @param {boolean} overwrite
-     * @param onResult callback function
+     * @param onResult cllback function
      */
     public uploadTaskDefinition(
         taskId: string,
@@ -997,7 +997,7 @@ export class TaskAgentApi implements ITaskAgentApi {
      * @param {{ [key: string] : string; }} userCapabilities
      * @param {number} poolId
      * @param {number} agentId
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgent
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskAgent
      */
     public updateUserCapabilities(
         userCapabilities: { [key: string] : string; },
@@ -1025,7 +1025,7 @@ export class TaskAgentApi implements ITaskAgentApi {
 export class QTaskAgentApi implements IQTaskAgentApi {
     TaskAgentApi: ITaskAgentApi;
 
-    constructor(baseUrl: string, handlers: CoreInterfaces.IRequestHandler[]) {
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
         this.TaskAgentApi = new TaskAgentApi(baseUrl, handlers);
     }
 

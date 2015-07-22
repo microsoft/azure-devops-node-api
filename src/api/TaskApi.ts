@@ -20,15 +20,15 @@ import Q = require('q');
 import restm = require('./restclient');
 import httpm = require('./httpclient');
 import vsom = require('./VsoClient');
-import CoreInterfaces = require('./interfaces/common/CoreInterfaces');
+import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import TaskAgentInterfaces = require("./interfaces/TaskAgentInterfaces");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
 export interface ITaskApi {
     baseUrl: string;
     userAgent: string;
-    httpClient: CoreInterfaces.IHttpClient;
-    restClient: CoreInterfaces.IRestClient;
+    httpClient: VsoBaseInterfaces.IHttpClient;
+    restClient: VsoBaseInterfaces.IRestClient;
     vsoClient: vsom.VsoClient;
     connect(onResult: (err: any, statusCode: number, obj: any) => void): void;
     postEvent(eventData: TaskAgentInterfaces.JobEvent, scopeIdentifier: string, hubName: string, planId: string, onResult: (err: any, statusCode: number) => void): void;
@@ -68,7 +68,7 @@ export class TaskApi implements ITaskApi {
     restClient: restm.RestClient;
     vsoClient: vsom.VsoClient
 
-    constructor(baseUrl: string, handlers: CoreInterfaces.IRequestHandler[]) {
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
         this.baseUrl = baseUrl;
         this.httpClient = new httpm.HttpClient('node-Task-api', handlers);
         this.restClient = new restm.RestClient(this.httpClient);
@@ -89,7 +89,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
-     * @param onResult callback function
+     * @param onResult cllback function
      */
     public postEvent(
         eventData: TaskAgentInterfaces.JobEvent,
@@ -121,7 +121,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} planId
      * @param {string} timelineId
      * @param {string} recordId
-     * @param onResult callback function
+     * @param onResult cllback function
      */
     public postLines(
         lines: VSSInterfaces.VssJsonCollectionWrapperV<string[]>,
@@ -156,7 +156,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
      * @param {number} logId
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskLog
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskLog
      */
     public appendLog(
         contentStream: NodeJS.ReadableStream,
@@ -190,7 +190,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskLog
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskLog
      */
     public createLog(
         log: TaskAgentInterfaces.TaskLog,
@@ -222,7 +222,7 @@ export class TaskApi implements ITaskApi {
      * @param {number} logId
      * @param {number} startLine
      * @param {number} endLine
-     * @param onResult callback function with the resulting string[]
+     * @param onResult cllback function with the resulting string[]
      */
     public getLog(
         scopeIdentifier: string,
@@ -259,7 +259,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskLog[]
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskLog[]
      */
     public getLogs(
         scopeIdentifier: string,
@@ -287,7 +287,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskOrchestrationPlan
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TaskOrchestrationPlan
      */
     public getPlan(
         scopeIdentifier: string,
@@ -317,7 +317,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} planId
      * @param {string} timelineId
      * @param {number} changeId
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TimelineRecord[]
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TimelineRecord[]
      */
     public getRecords(
         scopeIdentifier: string,
@@ -354,7 +354,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
      * @param {string} timelineId
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TimelineRecord[]
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.TimelineRecord[]
      */
     public updateRecords(
         records: VSSInterfaces.VssJsonCollectionWrapperV<TaskAgentInterfaces.TimelineRecord[]>,
@@ -386,7 +386,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
-     * @param onResult callback function with the resulting TaskAgentInterfaces.Timeline
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.Timeline
      */
     public createTimeline(
         timeline: TaskAgentInterfaces.Timeline,
@@ -416,7 +416,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
      * @param {string} timelineId
-     * @param onResult callback function
+     * @param onResult cllback function
      */
     public deleteTimeline(
         scopeIdentifier: string,
@@ -449,7 +449,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} timelineId
      * @param {number} changeId
      * @param {boolean} includeRecords
-     * @param onResult callback function with the resulting TaskAgentInterfaces.Timeline
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.Timeline
      */
     public getTimeline(
         scopeIdentifier: string,
@@ -486,7 +486,7 @@ export class TaskApi implements ITaskApi {
      * @param {string} scopeIdentifier - The project GUID to scope the request
      * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
      * @param {string} planId
-     * @param onResult callback function with the resulting TaskAgentInterfaces.Timeline[]
+     * @param onResult cllback function with the resulting TaskAgentInterfaces.Timeline[]
      */
     public getTimelines(
         scopeIdentifier: string,
@@ -515,7 +515,7 @@ export class TaskApi implements ITaskApi {
 export class QTaskApi implements IQTaskApi {
     TaskApi: ITaskApi;
 
-    constructor(baseUrl: string, handlers: CoreInterfaces.IRequestHandler[]) {
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
         this.TaskApi = new TaskApi(baseUrl, handlers);
     }
 

@@ -6,7 +6,7 @@
 import fs = require("fs");
 import http = require("http");
 import httpm = require("./httpclient");
-import ifm = require('./interfaces/common/CoreInterfaces');
+import ifm = require("./interfaces/common/VsoBaseInterfaces");
 import Serialization = require('./Serialization');
 
 /**

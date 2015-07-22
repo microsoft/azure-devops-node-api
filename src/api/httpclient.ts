@@ -7,7 +7,7 @@ import url = require("url");
 
 import http = require("http");
 import https = require("https");
-import ifm = require('./interfaces/common/CoreInterfaces');
+import ifm = require('./interfaces/common/VsoBaseInterfaces');
 
 http.globalAgent.maxSockets = 100;
 

@@ -1,22 +1,5 @@
-/*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*
-* See following wiki page for instructions on how to regenerate:
-*   https://vsowiki.com/index.php?title=Rest_Client_Generation
-*/
-
-"use strict";
-
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
-
-
-export enum AttachmentType {
+export declare enum AttachmentType {
     GeneralAttachment = 0,
     AfnStrip = 1,
     BugFilingData = 2,
@@ -29,13 +12,11 @@ export enum AttachmentType {
     TmiTestResultDetail = 9,
     TmiTestRunSummary = 10,
 }
-
 export interface BatchResponse {
     error: string;
     responses: Response[];
     status: string;
 }
-
 export interface BuildConfiguration {
     flavor: string;
     id: number;
@@ -43,7 +24,6 @@ export interface BuildConfiguration {
     project: ShallowReference;
     uri: string;
 }
-
 export interface BuildCoverage {
     codeCoverageFileUrl: string;
     configuration: BuildConfiguration;
@@ -51,8 +31,7 @@ export interface BuildCoverage {
     modules: ModuleCoverage[];
     state: string;
 }
-
-export enum CoverageQueryFlags {
+export declare enum CoverageQueryFlags {
     /**
      * If set, the Coverage.Modules property will be populated.
      */
@@ -66,7 +45,6 @@ export enum CoverageQueryFlags {
      */
     BlockData = 4,
 }
-
 export interface CoverageStatistics {
     blocksCovered: number;
     blocksNotCovered: number;
@@ -74,7 +52,6 @@ export interface CoverageStatistics {
     linesNotCovered: number;
     linesPartiallyCovered: number;
 }
-
 /**
  * This is a temporary class to provide the details for the test run environment.
  */
@@ -83,7 +60,6 @@ export interface DtlEnvironmentDetails {
     csmParameters: string;
     subscriptionName: string;
 }
-
 export interface FunctionCoverage {
     class: string;
     name: string;
@@ -91,7 +67,6 @@ export interface FunctionCoverage {
     sourceFile: string;
     statistics: CoverageStatistics;
 }
-
 export interface ModuleCoverage {
     blockCount: number;
     blockData: number[];
@@ -101,7 +76,6 @@ export interface ModuleCoverage {
     signatureAge: number;
     statistics: CoverageStatistics;
 }
-
 export interface PlanUpdateModel {
     area: ShallowReference;
     automatedTestEnvironment: TestEnvironment;
@@ -119,36 +93,32 @@ export interface PlanUpdateModel {
     state: string;
     status: string;
 }
-
 export interface PointAssignment {
     configuration: ShallowReference;
     tester: VSSInterfaces.IdentityRef;
 }
-
 export interface PointUpdateModel {
 }
-
 export interface PointWorkItemProperty {
-    workItem: { key: string; value: any };
+    workItem: {
+        key: string;
+        value: any;
+    };
 }
-
 export interface QueryModel {
     query: string;
 }
-
 export interface Response {
     error: string;
     id: string;
     status: string;
     url: string;
 }
-
-export enum ResultOutcome {
+export declare enum ResultOutcome {
     Pass = 1,
     Fail = 2,
     Pending = 3,
 }
-
 export interface ResultUpdateRequestModel {
     actionResultDeletes: TestActionResultModel[];
     actionResults: TestActionResultModel[];
@@ -156,11 +126,9 @@ export interface ResultUpdateRequestModel {
     parameters: TestResultParameterModel[];
     testCaseResult: TestCaseResultUpdateModel;
 }
-
 export interface ResultUpdateResponseModel {
     revision: number;
 }
-
 export interface RunCreateModel {
     automated: boolean;
     build: ShallowReference;
@@ -192,7 +160,6 @@ export interface RunCreateModel {
     testSettings: ShallowReference;
     type: string;
 }
-
 /**
  * This class is used to provide the filters used for discovery
  */
@@ -206,14 +173,12 @@ export interface RunFilter {
      */
     testCaseFilter: string;
 }
-
 export interface RunStatistic {
     count: number;
     outcome: string;
     resolutionState: TestResolutionState;
     state: string;
 }
-
 export interface RunUpdateModel {
     build: ShallowReference;
     comment: string;
@@ -234,7 +199,6 @@ export interface RunUpdateModel {
     testEnvironmentId: string;
     testSettings: ShallowReference;
 }
-
 /**
  * An abstracted reference to some other resource. This class is used to provide the build data contracts with a uniform way to reference other resources in a way that provides easy traversal through links.
  */
@@ -252,42 +216,34 @@ export interface ShallowReference {
      */
     url: string;
 }
-
 export interface SharedStepModel {
     id: number;
     revision: number;
 }
-
 export interface SuiteCreateModel {
 }
-
 export interface SuiteTestCase {
     pointAssignments: PointAssignment[];
     testCase: WorkItemReference;
 }
-
 export interface SuiteUpdateModel {
 }
-
 export interface TestActionResultModel extends TestResultModelBase {
     actionPath: string;
     iterationId: number;
     sharedStepModel: SharedStepModel;
     url: string;
 }
-
 export interface TestAttachmentReference {
     id: number;
     url: string;
 }
-
 export interface TestAttachmentRequestModel {
     attachmentType: string;
     comment: string;
     fileName: string;
     stream: string;
 }
-
 export interface TestCaseResult {
     afnStripId: number;
     area: ShallowReference;
@@ -327,7 +283,6 @@ export interface TestCaseResult {
     testRun: ShallowReference;
     url: string;
 }
-
 export interface TestCaseResult2 {
     componentId: string;
     custom: any;
@@ -351,7 +306,6 @@ export interface TestCaseResult2 {
     testId: string;
     tfsSecurityKey: string;
 }
-
 export interface TestCaseResultAttachmentModel {
     id: number;
     iterationId: number;
@@ -359,10 +313,8 @@ export interface TestCaseResultAttachmentModel {
     size: number;
     url: string;
 }
-
 export interface TestCaseResultIdentifier {
 }
-
 export interface TestCaseResultUpdateModel {
     associatedWorkItems: number[];
     automatedTestTypeId: string;
@@ -381,12 +333,10 @@ export interface TestCaseResultUpdateModel {
     testCasePriority: string;
     testResult: ShallowReference;
 }
-
 export interface TestEnvironment {
     environmentId: string;
     environmentName: string;
 }
-
 export interface TestIterationDetailsModel {
     actionResults: TestActionResultModel[];
     attachments: TestCaseResultAttachmentModel[];
@@ -400,7 +350,6 @@ export interface TestIterationDetailsModel {
     startedDate: Date;
     url: string;
 }
-
 /**
  * An abstracted reference to some other resource. This class is used to provide the build data contracts with a uniform way to reference other resources in a way that provides easy traversal through links.
  */
@@ -418,7 +367,6 @@ export interface TestMessageLogDetails {
      */
     message: string;
 }
-
 export interface TestPlan {
     area: ShallowReference;
     automatedTestEnvironment: TestEnvironment;
@@ -443,13 +391,11 @@ export interface TestPlan {
     updatedDate: Date;
     url: string;
 }
-
 export interface TestPlansWithSelection {
     lastSelectedPlan: number;
     lastSelectedSuite: number;
     plans: TestPlan[];
 }
-
 export interface TestPoint {
     assignedTo: VSSInterfaces.IdentityRef;
     automated: boolean;
@@ -471,13 +417,11 @@ export interface TestPoint {
     url: string;
     workItemProperties: any[];
 }
-
 export interface TestResolutionState {
     id: number;
     name: string;
     project: ShallowReference;
 }
-
 export interface TestResultCreateModel {
     area: ShallowReference;
     associatedWorkItems: number[];
@@ -504,7 +448,6 @@ export interface TestResultCreateModel {
     testCaseTitle: string;
     testPoint: ShallowReference;
 }
-
 export interface TestResultModelBase {
     comment: string;
     completedDate: Date;
@@ -513,7 +456,6 @@ export interface TestResultModelBase {
     outcome: string;
     startedDate: Date;
 }
-
 export interface TestResultParameterModel {
     actionPath: string;
     iterationId: number;
@@ -521,7 +463,6 @@ export interface TestResultParameterModel {
     url: string;
     value: string;
 }
-
 export interface TestRun {
     build: ShallowReference;
     buildConfiguration: BuildConfiguration;
@@ -565,15 +506,13 @@ export interface TestRun {
     url: string;
     webAccessUrl: string;
 }
-
 export interface TestRunCoverage {
     lastError: string;
     modules: ModuleCoverage[];
     state: string;
     testRun: ShallowReference;
 }
-
-export enum TestRunState {
+export declare enum TestRunState {
     /**
      * Only used during an update to preserve the existing value.
      */
@@ -603,13 +542,11 @@ export enum TestRunState {
      */
     NeedsInvestigation = 6,
 }
-
 export interface TestRunStatistic {
     run: ShallowReference;
     runStatistics: RunStatistic[];
 }
-
-export enum TestRunSubstate {
+export declare enum TestRunSubstate {
     None = 0,
     CreatingEnvironment = 1,
     RunningTests = 2,
@@ -620,7 +557,6 @@ export enum TestRunSubstate {
     Analyzed = 7,
     CancellationInProgress = 8,
 }
-
 /**
  * Represents the test settings of the run. Used to create test settings and fetch test settings
  */
@@ -654,7 +590,6 @@ export interface TestSettings {
      */
     testSettingsName: string;
 }
-
 export interface TestSuite {
     areaUri: string;
     defaultConfigurations: ShallowReference[];
@@ -678,775 +613,207 @@ export interface TestSuite {
     testCasesUrl: string;
     url: string;
 }
-
 export interface WorkItemReference {
     id: string;
     url: string;
     webUrl: string;
 }
-
-export var TypeInfo = {
+export declare var TypeInfo: {
     AttachmentType: {
         enumValues: {
-            "generalAttachment": 0,
-            "afnStrip": 1,
-            "bugFilingData": 2,
-            "codeCoverage": 3,
-            "intermediateCollectorData": 4,
-            "runConfig": 5,
-            "testImpactDetails": 6,
-            "tmiTestRunDeploymentFiles": 7,
-            "tmiTestRunReverseDeploymentFiles": 8,
-            "tmiTestResultDetail": 9,
-            "tmiTestRunSummary": 10,
-        }
-    },
+            "generalAttachment": number;
+            "afnStrip": number;
+            "bugFilingData": number;
+            "codeCoverage": number;
+            "intermediateCollectorData": number;
+            "runConfig": number;
+            "testImpactDetails": number;
+            "tmiTestRunDeploymentFiles": number;
+            "tmiTestRunReverseDeploymentFiles": number;
+            "tmiTestResultDetail": number;
+            "tmiTestRunSummary": number;
+        };
+    };
     BatchResponse: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     BuildConfiguration: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     BuildCoverage: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     CoverageQueryFlags: {
         enumValues: {
-            "modules": 1,
-            "functions": 2,
-            "blockData": 4,
-        }
-    },
+            "modules": number;
+            "functions": number;
+            "blockData": number;
+        };
+    };
     CoverageStatistics: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     DtlEnvironmentDetails: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     FunctionCoverage: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     ModuleCoverage: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     PlanUpdateModel: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     PointAssignment: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     PointUpdateModel: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     PointWorkItemProperty: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     QueryModel: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     Response: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     ResultOutcome: {
         enumValues: {
-            "pass": 1,
-            "fail": 2,
-            "pending": 3,
-        }
-    },
+            "pass": number;
+            "fail": number;
+            "pending": number;
+        };
+    };
     ResultUpdateRequestModel: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     ResultUpdateResponseModel: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     RunCreateModel: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     RunFilter: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     RunStatistic: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     RunUpdateModel: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     ShallowReference: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     SharedStepModel: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     SuiteCreateModel: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     SuiteTestCase: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     SuiteUpdateModel: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestActionResultModel: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestAttachmentReference: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestAttachmentRequestModel: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestCaseResult: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestCaseResult2: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestCaseResultAttachmentModel: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestCaseResultIdentifier: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestCaseResultUpdateModel: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestEnvironment: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestIterationDetailsModel: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestMessageLogDetails: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestPlan: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestPlansWithSelection: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestPoint: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestResolutionState: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestResultCreateModel: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestResultModelBase: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestResultParameterModel: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestRun: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestRunCoverage: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestRunState: {
         enumValues: {
-            "unspecified": 0,
-            "notStarted": 1,
-            "inProgress": 2,
-            "completed": 3,
-            "aborted": 4,
-            "waiting": 5,
-            "needsInvestigation": 6,
-        }
-    },
+            "unspecified": number;
+            "notStarted": number;
+            "inProgress": number;
+            "completed": number;
+            "aborted": number;
+            "waiting": number;
+            "needsInvestigation": number;
+        };
+    };
     TestRunStatistic: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestRunSubstate: {
         enumValues: {
-            "none": 0,
-            "creatingEnvironment": 1,
-            "runningTests": 2,
-            "canceledByUser": 3,
-            "abortedBySystem": 4,
-            "timedOut": 5,
-            "pendingAnalysis": 6,
-            "analyzed": 7,
-            "cancellationInProgress": 8,
-        }
-    },
+            "none": number;
+            "creatingEnvironment": number;
+            "runningTests": number;
+            "canceledByUser": number;
+            "abortedBySystem": number;
+            "timedOut": number;
+            "pendingAnalysis": number;
+            "analyzed": number;
+            "cancellationInProgress": number;
+        };
+    };
     TestSettings: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TestSuite: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     WorkItemReference: {
-        fields: <any>null
-    },
-};
-
-TypeInfo.BatchResponse.fields = {
-    responses: {
-        isArray: true,
-        typeInfo: TypeInfo.Response
-    },
-};
-
-TypeInfo.BuildConfiguration.fields = {
-    project: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.BuildCoverage.fields = {
-    configuration: {
-        typeInfo: TypeInfo.BuildConfiguration
-    },
-    modules: {
-        isArray: true,
-        typeInfo: TypeInfo.ModuleCoverage
-    },
-};
-
-TypeInfo.CoverageStatistics.fields = {
-};
-
-TypeInfo.DtlEnvironmentDetails.fields = {
-};
-
-TypeInfo.FunctionCoverage.fields = {
-    statistics: {
-        typeInfo: TypeInfo.CoverageStatistics
-    },
-};
-
-TypeInfo.ModuleCoverage.fields = {
-    functions: {
-        isArray: true,
-        typeInfo: TypeInfo.FunctionCoverage
-    },
-    statistics: {
-        typeInfo: TypeInfo.CoverageStatistics
-    },
-};
-
-TypeInfo.PlanUpdateModel.fields = {
-    area: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    automatedTestEnvironment: {
-        typeInfo: TypeInfo.TestEnvironment
-    },
-    automatedTestSettings: {
-        typeInfo: TypeInfo.TestSettings
-    },
-    build: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    manualTestEnvironment: {
-        typeInfo: TypeInfo.TestEnvironment
-    },
-    manualTestSettings: {
-        typeInfo: TypeInfo.TestSettings
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
-TypeInfo.PointAssignment.fields = {
-    configuration: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    tester: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
-TypeInfo.PointUpdateModel.fields = {
-};
-
-TypeInfo.PointWorkItemProperty.fields = {
-};
-
-TypeInfo.QueryModel.fields = {
-};
-
-TypeInfo.Response.fields = {
-};
-
-TypeInfo.ResultUpdateRequestModel.fields = {
-    actionResultDeletes: {
-        isArray: true,
-        typeInfo: TypeInfo.TestActionResultModel
-    },
-    actionResults: {
-        isArray: true,
-        typeInfo: TypeInfo.TestActionResultModel
-    },
-    parameterDeletes: {
-        isArray: true,
-        typeInfo: TypeInfo.TestResultParameterModel
-    },
-    parameters: {
-        isArray: true,
-        typeInfo: TypeInfo.TestResultParameterModel
-    },
-    testCaseResult: {
-        typeInfo: TypeInfo.TestCaseResultUpdateModel
-    },
-};
-
-TypeInfo.ResultUpdateResponseModel.fields = {
-};
-
-TypeInfo.RunCreateModel.fields = {
-    build: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    dtlAutEnvironment: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    dtlTestEnvironment: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    environmentDetails: {
-        typeInfo: TypeInfo.DtlEnvironmentDetails
-    },
-    filter: {
-        typeInfo: TypeInfo.RunFilter
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    plan: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    testSettings: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.RunFilter.fields = {
-};
-
-TypeInfo.RunStatistic.fields = {
-    resolutionState: {
-        typeInfo: TypeInfo.TestResolutionState
-    },
-};
-
-TypeInfo.RunUpdateModel.fields = {
-    build: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    dtlAutEnvironment: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    dtlEnvironment: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    dtlEnvironmentDetails: {
-        typeInfo: TypeInfo.DtlEnvironmentDetails
-    },
-    logEntries: {
-        isArray: true,
-        typeInfo: TypeInfo.TestMessageLogDetails
-    },
-    substate: {
-        enumType: TypeInfo.TestRunSubstate
-    },
-    testSettings: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.ShallowReference.fields = {
-};
-
-TypeInfo.SharedStepModel.fields = {
-};
-
-TypeInfo.SuiteCreateModel.fields = {
-};
-
-TypeInfo.SuiteTestCase.fields = {
-    pointAssignments: {
-        isArray: true,
-        typeInfo: TypeInfo.PointAssignment
-    },
-    testCase: {
-        typeInfo: TypeInfo.WorkItemReference
-    },
-};
-
-TypeInfo.SuiteUpdateModel.fields = {
-};
-
-TypeInfo.TestActionResultModel.fields = {
-    completedDate: {
-        isDate: true,
-    },
-    sharedStepModel: {
-        typeInfo: TypeInfo.SharedStepModel
-    },
-    startedDate: {
-        isDate: true,
-    },
-};
-
-TypeInfo.TestAttachmentReference.fields = {
-};
-
-TypeInfo.TestAttachmentRequestModel.fields = {
-};
-
-TypeInfo.TestCaseResult.fields = {
-    area: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    associatedBugs: {
-        isArray: true,
-        typeInfo: TypeInfo.ShallowReference
-    },
-    build: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    completedDate: {
-        isDate: true,
-    },
-    configuration: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    createdDate: {
-        isDate: true,
-    },
-    iterationDetails: {
-        isArray: true,
-        typeInfo: TypeInfo.TestIterationDetailsModel
-    },
-    lastUpdatedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    lastUpdatedDate: {
-        isDate: true,
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    project: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    runBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    startedDate: {
-        isDate: true,
-    },
-    testCase: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    testPoint: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    testRun: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.TestCaseResult2.fields = {
-    endTime: {
-        isDate: true,
-    },
-    outcome: {
-        enumType: TypeInfo.ResultOutcome
-    },
-    startTime: {
-        isDate: true,
-    },
-};
-
-TypeInfo.TestCaseResultAttachmentModel.fields = {
-};
-
-TypeInfo.TestCaseResultIdentifier.fields = {
-};
-
-TypeInfo.TestCaseResultUpdateModel.fields = {
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    runBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    testResult: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.TestEnvironment.fields = {
-};
-
-TypeInfo.TestIterationDetailsModel.fields = {
-    actionResults: {
-        isArray: true,
-        typeInfo: TypeInfo.TestActionResultModel
-    },
-    attachments: {
-        isArray: true,
-        typeInfo: TypeInfo.TestCaseResultAttachmentModel
-    },
-    completedDate: {
-        isDate: true,
-    },
-    parameters: {
-        isArray: true,
-        typeInfo: TypeInfo.TestResultParameterModel
-    },
-    startedDate: {
-        isDate: true,
-    },
-};
-
-TypeInfo.TestMessageLogDetails.fields = {
-    dateCreated: {
-        isDate: true,
-    },
-};
-
-TypeInfo.TestPlan.fields = {
-    area: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    automatedTestEnvironment: {
-        typeInfo: TypeInfo.TestEnvironment
-    },
-    automatedTestSettings: {
-        typeInfo: TypeInfo.TestSettings
-    },
-    build: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    endDate: {
-        isDate: true,
-    },
-    manualTestEnvironment: {
-        typeInfo: TypeInfo.TestEnvironment
-    },
-    manualTestSettings: {
-        typeInfo: TypeInfo.TestSettings
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    previousBuild: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    project: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    rootSuite: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    startDate: {
-        isDate: true,
-    },
-    updatedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    updatedDate: {
-        isDate: true,
-    },
-};
-
-TypeInfo.TestPlansWithSelection.fields = {
-    plans: {
-        isArray: true,
-        typeInfo: TypeInfo.TestPlan
-    },
-};
-
-TypeInfo.TestPoint.fields = {
-    assignedTo: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    configuration: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    lastResult: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    lastTestRun: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    lastUpdatedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    lastUpdatedDate: {
-        isDate: true,
-    },
-    suite: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    testCase: {
-        typeInfo: TypeInfo.WorkItemReference
-    },
-    testPlan: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.TestResolutionState.fields = {
-    project: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.TestResultCreateModel.fields = {
-    area: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    configuration: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    runBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    testCase: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    testPoint: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.TestResultModelBase.fields = {
-    completedDate: {
-        isDate: true,
-    },
-    startedDate: {
-        isDate: true,
-    },
-};
-
-TypeInfo.TestResultParameterModel.fields = {
-};
-
-TypeInfo.TestRun.fields = {
-    build: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    buildConfiguration: {
-        typeInfo: TypeInfo.BuildConfiguration
-    },
-    completedDate: {
-        isDate: true,
-    },
-    createdDate: {
-        isDate: true,
-    },
-    dtlAutEnvironment: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    dtlEnvironment: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    dtlEnvironmentCreationDetails: {
-        typeInfo: TypeInfo.DtlEnvironmentDetails
-    },
-    dueDate: {
-        isDate: true,
-    },
-    filter: {
-        typeInfo: TypeInfo.RunFilter
-    },
-    lastUpdatedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    lastUpdatedDate: {
-        isDate: true,
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    plan: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    project: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    runStatistics: {
-        isArray: true,
-        typeInfo: TypeInfo.RunStatistic
-    },
-    startedDate: {
-        isDate: true,
-    },
-    substate: {
-        enumType: TypeInfo.TestRunSubstate
-    },
-    testEnvironment: {
-        typeInfo: TypeInfo.TestEnvironment
-    },
-    testSettings: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.TestRunCoverage.fields = {
-    modules: {
-        isArray: true,
-        typeInfo: TypeInfo.ModuleCoverage
-    },
-    testRun: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.TestRunStatistic.fields = {
-    run: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    runStatistics: {
-        isArray: true,
-        typeInfo: TypeInfo.RunStatistic
-    },
-};
-
-TypeInfo.TestSettings.fields = {
-};
-
-TypeInfo.TestSuite.fields = {
-    defaultConfigurations: {
-        isArray: true,
-        typeInfo: TypeInfo.ShallowReference
-    },
-    lastPopulatedDate: {
-        isDate: true,
-    },
-    lastUpdatedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    lastUpdatedDate: {
-        isDate: true,
-    },
-    parent: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    plan: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    project: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    suites: {
-        isArray: true,
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.WorkItemReference.fields = {
+        fields: any;
+    };
 };

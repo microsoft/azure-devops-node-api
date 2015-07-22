@@ -1,21 +1,4 @@
-/*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*
-* See following wiki page for instructions on how to regenerate:
-*   https://vsowiki.com/index.php?title=Rest_Client_Generation
-*/
-
-"use strict";
-
-
-
-export enum ContainerItemStatus {
+export declare enum ContainerItemStatus {
     /**
      * Item is created.
      */
@@ -25,8 +8,7 @@ export enum ContainerItemStatus {
      */
     PendingUpload = 2,
 }
-
-export enum ContainerItemType {
+export declare enum ContainerItemType {
     /**
      * Any item type.
      */
@@ -40,14 +22,12 @@ export enum ContainerItemType {
      */
     File = 2,
 }
-
-export enum ContainerOptions {
+export declare enum ContainerOptions {
     /**
      * No option.
      */
     None = 0,
 }
-
 /**
  * Represents a container that encapsulates a hierarchical file system.
  */
@@ -102,7 +82,6 @@ export interface FileContainer {
      */
     size: number;
 }
-
 /**
  * Represents an item in a container.
  */
@@ -167,54 +146,29 @@ export interface FileContainerItem {
     status: ContainerItemStatus;
     ticket: string;
 }
-
-export var TypeInfo = {
+export declare var TypeInfo: {
     ContainerItemStatus: {
         enumValues: {
-            "created": 1,
-            "pendingUpload": 2,
-        }
-    },
+            "created": number;
+            "pendingUpload": number;
+        };
+    };
     ContainerItemType: {
         enumValues: {
-            "any": 0,
-            "folder": 1,
-            "file": 2,
-        }
-    },
+            "any": number;
+            "folder": number;
+            "file": number;
+        };
+    };
     ContainerOptions: {
         enumValues: {
-            "none": 0,
-        }
-    },
+            "none": number;
+        };
+    };
     FileContainer: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     FileContainerItem: {
-        fields: <any>null
-    },
-};
-
-TypeInfo.FileContainer.fields = {
-    dateCreated: {
-        isDate: true,
-    },
-    options: {
-        enumType: TypeInfo.ContainerOptions
-    },
-};
-
-TypeInfo.FileContainerItem.fields = {
-    dateCreated: {
-        isDate: true,
-    },
-    dateLastModified: {
-        isDate: true,
-    },
-    itemType: {
-        enumType: TypeInfo.ContainerItemType
-    },
-    status: {
-        enumType: TypeInfo.ContainerItemStatus
-    },
+        fields: any;
+    };
 };

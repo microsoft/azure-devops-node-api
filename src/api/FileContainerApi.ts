@@ -20,15 +20,15 @@ import Q = require('q');
 import restm = require('./restclient');
 import httpm = require('./httpclient');
 import vsom = require('./VsoClient');
-import CoreInterfaces = require('./interfaces/common/CoreInterfaces');
+import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import FileContainerInterfaces = require("./interfaces/FileContainerInterfaces");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
 export interface IFileContainerApi {
     baseUrl: string;
     userAgent: string;
-    httpClient: CoreInterfaces.IHttpClient;
-    restClient: CoreInterfaces.IRestClient;
+    httpClient: VsoBaseInterfaces.IHttpClient;
+    restClient: VsoBaseInterfaces.IRestClient;
     vsoClient: vsom.VsoClient;
     connect(onResult: (err: any, statusCode: number, obj: any) => void): void;
     createItem(containerId: number, itemPath: string, scope: string, onResult: (err: any, statusCode: number, Container: FileContainerInterfaces.FileContainerItem) => void): void;
@@ -54,7 +54,7 @@ export class FileContainerApi implements IFileContainerApi {
     restClient: restm.RestClient;
     vsoClient: vsom.VsoClient
 
-    constructor(baseUrl: string, handlers: CoreInterfaces.IRequestHandler[]) {
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
         this.baseUrl = baseUrl;
         this.httpClient = new httpm.HttpClient('node-FileContainer-api', handlers);
         this.restClient = new restm.RestClient(this.httpClient);
@@ -76,7 +76,7 @@ export class FileContainerApi implements IFileContainerApi {
      * @param {number} containerId
      * @param {string} itemPath
      * @param {string} scope - A guid representing the scope of the container. This is often the project id.
-     * @param onResult callback function with the resulting FileContainerInterfaces.FileContainerItem
+     * @param onResult cllback function with the resulting FileContainerInterfaces.FileContainerItem
      */
     public createItem(
         containerId: number,
@@ -109,7 +109,7 @@ export class FileContainerApi implements IFileContainerApi {
      * @param {VSSInterfaces.VssJsonCollectionWrapperV<FileContainerInterfaces.FileContainerItem[]>} items
      * @param {number} containerId
      * @param {string} scope - A guid representing the scope of the container. This is often the project id.
-     * @param onResult callback function with the resulting FileContainerInterfaces.FileContainerItem[]
+     * @param onResult cllback function with the resulting FileContainerInterfaces.FileContainerItem[]
      */
     public createItems(
         items: VSSInterfaces.VssJsonCollectionWrapperV<FileContainerInterfaces.FileContainerItem[]>,
@@ -141,7 +141,7 @@ export class FileContainerApi implements IFileContainerApi {
      * @param {number} containerId - Container Id.
      * @param {string} itemPath - Path to delete.
      * @param {string} scope - A guid representing the scope of the container. This is often the project id.
-     * @param onResult callback function
+     * @param onResult cllback function
      */
     public deleteItem(
         containerId: number,
@@ -173,7 +173,7 @@ export class FileContainerApi implements IFileContainerApi {
      * 
      * @param {string} scope - A guid representing the scope of the container. This is often the project id.
      * @param {string} artifactUris
-     * @param onResult callback function with the resulting FileContainerInterfaces.FileContainer[]
+     * @param onResult cllback function with the resulting FileContainerInterfaces.FileContainer[]
      */
     public getContainers(
         scope: string,
@@ -208,7 +208,7 @@ export class FileContainerApi implements IFileContainerApi {
      * @param {string} format - If specified, this overrides the HTTP Accept request header to return either 'json' or 'zip'.  If $format is specified, then api-version should also be specified as a query parameter.
      * @param {string} downloadFileName - If specified and returning other than JSON format, then this download name will be used (else defaults to itemPath)
      * @param {boolean} includeDownloadTickets
-     * @param onResult callback function with the resulting FileContainerInterfaces.FileContainerItem[]
+     * @param onResult cllback function with the resulting FileContainerInterfaces.FileContainerItem[]
      */
     public getItems(
         containerId: number,
@@ -248,7 +248,7 @@ export class FileContainerApi implements IFileContainerApi {
 export class QFileContainerApi implements IQFileContainerApi {
     FileContainerApi: IFileContainerApi;
 
-    constructor(baseUrl: string, handlers: CoreInterfaces.IRequestHandler[]) {
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
         this.FileContainerApi = new FileContainerApi(baseUrl, handlers);
     }
 

@@ -20,14 +20,14 @@ import Q = require('q');
 import restm = require('./restclient');
 import httpm = require('./httpclient');
 import vsom = require('./VsoClient');
-import CoreInterfaces = require('./interfaces/common/CoreInterfaces');
+import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import TestInterfaces = require("./interfaces/TestInterfaces");
 
 export interface ITestApi {
     baseUrl: string;
     userAgent: string;
-    httpClient: CoreInterfaces.IHttpClient;
-    restClient: CoreInterfaces.IRestClient;
+    httpClient: VsoBaseInterfaces.IHttpClient;
+    restClient: VsoBaseInterfaces.IRestClient;
     vsoClient: vsom.VsoClient;
     connect(onResult: (err: any, statusCode: number, obj: any) => void): void;
     createTestResultAttachment(attachmentRequestModel: TestInterfaces.TestAttachmentRequestModel, project: string, runId: number, testCaseResultId: number, onResult: (err: any, statusCode: number, Attachment: TestInterfaces.TestAttachmentReference) => void): void;
@@ -124,7 +124,7 @@ export class TestApi implements ITestApi {
     restClient: restm.RestClient;
     vsoClient: vsom.VsoClient
 
-    constructor(baseUrl: string, handlers: CoreInterfaces.IRequestHandler[]) {
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
         this.baseUrl = baseUrl;
         this.httpClient = new httpm.HttpClient('node-Test-api', handlers);
         this.restClient = new restm.RestClient(this.httpClient);
@@ -145,7 +145,7 @@ export class TestApi implements ITestApi {
      * @param {string} project - Project ID or project name
      * @param {number} runId
      * @param {number} testCaseResultId
-     * @param onResult callback function with the resulting TestInterfaces.TestAttachmentReference
+     * @param onResult cllback function with the resulting TestInterfaces.TestAttachmentReference
      */
     public createTestResultAttachment(
         attachmentRequestModel: TestInterfaces.TestAttachmentRequestModel,
@@ -174,7 +174,7 @@ export class TestApi implements ITestApi {
      * @param {TestInterfaces.TestAttachmentRequestModel} attachmentRequestModel
      * @param {string} project - Project ID or project name
      * @param {number} runId
-     * @param onResult callback function with the resulting TestInterfaces.TestAttachmentReference
+     * @param onResult cllback function with the resulting TestInterfaces.TestAttachmentReference
      */
     public createTestRunAttachment(
         attachmentRequestModel: TestInterfaces.TestAttachmentRequestModel,
@@ -201,7 +201,7 @@ export class TestApi implements ITestApi {
      * @param {string} project - Project ID or project name
      * @param {number} buildId
      * @param {number} flags
-     * @param onResult callback function with the resulting TestInterfaces.BuildCoverage[]
+     * @param onResult cllback function with the resulting TestInterfaces.BuildCoverage[]
      */
     public getBuildCodeCoverage(
         project: string,
@@ -232,7 +232,7 @@ export class TestApi implements ITestApi {
      * @param {string} project - Project ID or project name
      * @param {number} runId
      * @param {number} flags
-     * @param onResult callback function with the resulting TestInterfaces.TestRunCoverage[]
+     * @param onResult cllback function with the resulting TestInterfaces.TestRunCoverage[]
      */
     public getTestRunCodeCoverage(
         project: string,
@@ -262,7 +262,7 @@ export class TestApi implements ITestApi {
     /**
      * @param {string} project - Project ID or project name
      * @param {number} runId
-     * @param onResult callback function with the resulting TestInterfaces.TestMessageLogDetails[]
+     * @param onResult cllback function with the resulting TestInterfaces.TestMessageLogDetails[]
      */
     public getTestRunLogs(
         project: string,
@@ -287,7 +287,7 @@ export class TestApi implements ITestApi {
     /**
      * @param {TestInterfaces.PlanUpdateModel} testPlan
      * @param {string} project - Project ID or project name
-     * @param onResult callback function with the resulting TestInterfaces.TestPlan
+     * @param onResult cllback function with the resulting TestInterfaces.TestPlan
      */
     public createTestPlan(
         testPlan: TestInterfaces.PlanUpdateModel,
@@ -311,7 +311,7 @@ export class TestApi implements ITestApi {
     /**
      * @param {string} project - Project ID or project name
      * @param {number} planId
-     * @param onResult callback function with the resulting TestInterfaces.TestPlan
+     * @param onResult cllback function with the resulting TestInterfaces.TestPlan
      */
     public getPlanById(
         project: string,
@@ -340,7 +340,7 @@ export class TestApi implements ITestApi {
      * @param {number} top
      * @param {boolean} includePlanDetails
      * @param {boolean} filterActivePlans
-     * @param onResult callback function with the resulting TestInterfaces.TestPlan[]
+     * @param onResult cllback function with the resulting TestInterfaces.TestPlan[]
      */
     public getPlans(
         project: string,
@@ -377,7 +377,7 @@ export class TestApi implements ITestApi {
      * @param {TestInterfaces.PlanUpdateModel} planUpdateModel
      * @param {string} project - Project ID or project name
      * @param {number} planId
-     * @param onResult callback function with the resulting TestInterfaces.TestPlan
+     * @param onResult cllback function with the resulting TestInterfaces.TestPlan
      */
     public updateTestPlan(
         planUpdateModel: TestInterfaces.PlanUpdateModel,
@@ -406,7 +406,7 @@ export class TestApi implements ITestApi {
      * @param {number} suiteId
      * @param {number} pointIds
      * @param {string} witFields
-     * @param onResult callback function with the resulting TestInterfaces.TestPoint
+     * @param onResult cllback function with the resulting TestInterfaces.TestPoint
      */
     public getPoint(
         project: string,
@@ -448,7 +448,7 @@ export class TestApi implements ITestApi {
      * @param {boolean} includePointDetails
      * @param {number} skip
      * @param {number} top
-     * @param onResult callback function with the resulting TestInterfaces.TestPoint[]
+     * @param onResult cllback function with the resulting TestInterfaces.TestPoint[]
      */
     public getPoints(
         project: string,
@@ -495,7 +495,7 @@ export class TestApi implements ITestApi {
      * @param {number} planId
      * @param {number} suiteId
      * @param {string} pointIds
-     * @param onResult callback function with the resulting TestInterfaces.TestPoint[]
+     * @param onResult cllback function with the resulting TestInterfaces.TestPoint[]
      */
     public updateTestPoints(
         pointUpdateModel: TestInterfaces.PointUpdateModel,
@@ -528,7 +528,7 @@ export class TestApi implements ITestApi {
      * @param {number} testCaseResultId
      * @param {number} iterationId
      * @param {boolean} includeActionResults
-     * @param onResult callback function with the resulting TestInterfaces.TestIterationDetailsModel
+     * @param onResult cllback function with the resulting TestInterfaces.TestIterationDetailsModel
      */
     public getTestIteration(
         project: string,
@@ -564,7 +564,7 @@ export class TestApi implements ITestApi {
      * @param {number} runId
      * @param {number} testCaseResultId
      * @param {boolean} includeActionResults
-     * @param onResult callback function with the resulting TestInterfaces.TestIterationDetailsModel[]
+     * @param onResult cllback function with the resulting TestInterfaces.TestIterationDetailsModel[]
      */
     public getTestIterations(
         project: string,
@@ -597,7 +597,7 @@ export class TestApi implements ITestApi {
      * @param {TestInterfaces.TestResultCreateModel[]} resultCreateModels
      * @param {string} project - Project ID or project name
      * @param {number} runId
-     * @param onResult callback function with the resulting TestInterfaces.TestCaseResult[]
+     * @param onResult cllback function with the resulting TestInterfaces.TestCaseResult[]
      */
     public addTestResultsToTestRun(
         resultCreateModels: TestInterfaces.TestResultCreateModel[],
@@ -625,7 +625,7 @@ export class TestApi implements ITestApi {
      * @param {string} project - Project ID or project name
      * @param {number} runId
      * @param {number[]} resultIds
-     * @param onResult callback function with the resulting TestInterfaces.TestCaseResult[]
+     * @param onResult cllback function with the resulting TestInterfaces.TestCaseResult[]
      */
     public bulkUpdateTestResults(
         resultUpdateModel: TestInterfaces.TestCaseResultUpdateModel,
@@ -658,7 +658,7 @@ export class TestApi implements ITestApi {
      * @param {number} runId
      * @param {number} testCaseResultId
      * @param {boolean} includeIterationDetails
-     * @param onResult callback function with the resulting TestInterfaces.TestCaseResult
+     * @param onResult cllback function with the resulting TestInterfaces.TestCaseResult
      */
     public getTestCaseResultById(
         project: string,
@@ -691,7 +691,7 @@ export class TestApi implements ITestApi {
      * @param {string} project - Project ID or project name
      * @param {number} runId
      * @param {boolean} includeIterationDetails
-     * @param onResult callback function with the resulting TestInterfaces.TestCaseResult[]
+     * @param onResult cllback function with the resulting TestInterfaces.TestCaseResult[]
      */
     public getTestCaseResults(
         project: string,
@@ -722,7 +722,7 @@ export class TestApi implements ITestApi {
      * @param {TestInterfaces.TestCaseResultUpdateModel[]} resultUpdateModels
      * @param {string} project - Project ID or project name
      * @param {number} runId
-     * @param onResult callback function with the resulting TestInterfaces.TestCaseResult[]
+     * @param onResult cllback function with the resulting TestInterfaces.TestCaseResult[]
      */
     public updateTestResults(
         resultUpdateModels: TestInterfaces.TestCaseResultUpdateModel[],
@@ -751,7 +751,7 @@ export class TestApi implements ITestApi {
      * @param {number} testCaseResultId
      * @param {number} iterationId
      * @param {string} actionPath
-     * @param onResult callback function with the resulting TestInterfaces.TestActionResultModel[]
+     * @param onResult cllback function with the resulting TestInterfaces.TestActionResultModel[]
      */
     public getActionResults(
         project: string,
@@ -785,7 +785,7 @@ export class TestApi implements ITestApi {
      * @param {number} testCaseResultId
      * @param {number} iterationId
      * @param {string} paramName
-     * @param onResult callback function with the resulting TestInterfaces.TestResultParameterModel[]
+     * @param onResult cllback function with the resulting TestInterfaces.TestResultParameterModel[]
      */
     public getResultParameters(
         project: string,
@@ -823,7 +823,7 @@ export class TestApi implements ITestApi {
      * @param {boolean} includeIterationDetails
      * @param {number} skip
      * @param {number} top
-     * @param onResult callback function with the resulting TestInterfaces.TestCaseResult[]
+     * @param onResult cllback function with the resulting TestInterfaces.TestCaseResult[]
      */
     public getTestResultsByQuery(
         query: TestInterfaces.QueryModel,
@@ -858,7 +858,7 @@ export class TestApi implements ITestApi {
     /**
      * @param {string} project - Project ID or project name
      * @param {number} runId
-     * @param onResult callback function with the resulting TestInterfaces.TestRunStatistic
+     * @param onResult cllback function with the resulting TestInterfaces.TestRunStatistic
      */
     public getTestRunStatistics(
         project: string,
@@ -886,7 +886,7 @@ export class TestApi implements ITestApi {
      * @param {boolean} includeRunDetails
      * @param {number} skip
      * @param {number} top
-     * @param onResult callback function with the resulting TestInterfaces.TestRun[]
+     * @param onResult cllback function with the resulting TestInterfaces.TestRun[]
      */
     public getTestRunsByQuery(
         query: TestInterfaces.QueryModel,
@@ -919,7 +919,7 @@ export class TestApi implements ITestApi {
     /**
      * @param {TestInterfaces.RunCreateModel} testRun
      * @param {string} project - Project ID or project name
-     * @param onResult callback function with the resulting TestInterfaces.TestRun
+     * @param onResult cllback function with the resulting TestInterfaces.TestRun
      */
     public createTestRun(
         testRun: TestInterfaces.RunCreateModel,
@@ -943,7 +943,7 @@ export class TestApi implements ITestApi {
     /**
      * @param {string} project - Project ID or project name
      * @param {number} runId
-     * @param onResult callback function
+     * @param onResult cllback function
      */
     public deleteTestRun(
         project: string,
@@ -968,7 +968,7 @@ export class TestApi implements ITestApi {
     /**
      * @param {string} project - Project ID or project name
      * @param {number} runId
-     * @param onResult callback function with the resulting TestInterfaces.TestRun
+     * @param onResult cllback function with the resulting TestInterfaces.TestRun
      */
     public getTestRunById(
         project: string,
@@ -1000,7 +1000,7 @@ export class TestApi implements ITestApi {
      * @param {boolean} automated
      * @param {number} skip
      * @param {number} top
-     * @param onResult callback function with the resulting TestInterfaces.TestRun[]
+     * @param onResult cllback function with the resulting TestInterfaces.TestRun[]
      */
     public getTestRuns(
         project: string,
@@ -1043,7 +1043,7 @@ export class TestApi implements ITestApi {
      * @param {TestInterfaces.RunUpdateModel} runUpdateModel
      * @param {string} project - Project ID or project name
      * @param {number} runId
-     * @param onResult callback function with the resulting TestInterfaces.TestRun
+     * @param onResult cllback function with the resulting TestInterfaces.TestRun
      */
     public updateTestRun(
         runUpdateModel: TestInterfaces.RunUpdateModel,
@@ -1071,7 +1071,7 @@ export class TestApi implements ITestApi {
      * @param {number} planId
      * @param {number} suiteId
      * @param {string} testCaseIds
-     * @param onResult callback function with the resulting TestInterfaces.SuiteTestCase[]
+     * @param onResult cllback function with the resulting TestInterfaces.SuiteTestCase[]
      */
     public addTestCasesToSuite(
         project: string,
@@ -1102,7 +1102,7 @@ export class TestApi implements ITestApi {
      * @param {number} planId
      * @param {number} suiteId
      * @param {number} testCaseIds
-     * @param onResult callback function with the resulting TestInterfaces.SuiteTestCase
+     * @param onResult cllback function with the resulting TestInterfaces.SuiteTestCase
      */
     public getTestCaseById(
         project: string,
@@ -1132,7 +1132,7 @@ export class TestApi implements ITestApi {
      * @param {string} project - Project ID or project name
      * @param {number} planId
      * @param {number} suiteId
-     * @param onResult callback function with the resulting TestInterfaces.SuiteTestCase[]
+     * @param onResult cllback function with the resulting TestInterfaces.SuiteTestCase[]
      */
     public getTestCases(
         project: string,
@@ -1161,7 +1161,7 @@ export class TestApi implements ITestApi {
      * @param {number} planId
      * @param {number} suiteId
      * @param {string} testCaseIds
-     * @param onResult callback function
+     * @param onResult cllback function
      */
     public removeTestCasesFromSuiteUrl(
         project: string,
@@ -1192,7 +1192,7 @@ export class TestApi implements ITestApi {
      * @param {string} project - Project ID or project name
      * @param {number} planId
      * @param {number} suiteId
-     * @param onResult callback function with the resulting TestInterfaces.TestSuite[]
+     * @param onResult cllback function with the resulting TestInterfaces.TestSuite[]
      */
     public createTestSuite(
         testSuite: TestInterfaces.SuiteCreateModel,
@@ -1221,7 +1221,7 @@ export class TestApi implements ITestApi {
      * @param {string} project - Project ID or project name
      * @param {number} planId
      * @param {number} suiteId
-     * @param onResult callback function
+     * @param onResult cllback function
      */
     public deleteTestSuite(
         project: string,
@@ -1250,7 +1250,7 @@ export class TestApi implements ITestApi {
      * @param {number} planId
      * @param {number} suiteId
      * @param {boolean} includeChildSuites
-     * @param onResult callback function with the resulting TestInterfaces.TestSuite
+     * @param onResult cllback function with the resulting TestInterfaces.TestSuite
      */
     public getTestSuiteById(
         project: string,
@@ -1285,7 +1285,7 @@ export class TestApi implements ITestApi {
      * @param {boolean} includeSuites
      * @param {number} skip
      * @param {number} top
-     * @param onResult callback function with the resulting TestInterfaces.TestSuite[]
+     * @param onResult cllback function with the resulting TestInterfaces.TestSuite[]
      */
     public getTestSuitesForPlan(
         project: string,
@@ -1321,7 +1321,7 @@ export class TestApi implements ITestApi {
      * @param {string} project - Project ID or project name
      * @param {number} planId
      * @param {number} suiteId
-     * @param onResult callback function with the resulting TestInterfaces.TestSuite
+     * @param onResult cllback function with the resulting TestInterfaces.TestSuite
      */
     public updateTestSuite(
         suiteUpdateModel: TestInterfaces.SuiteUpdateModel,
@@ -1348,7 +1348,7 @@ export class TestApi implements ITestApi {
 
     /**
      * @param {number} testCaseId
-     * @param onResult callback function with the resulting TestInterfaces.TestSuite[]
+     * @param onResult cllback function with the resulting TestInterfaces.TestSuite[]
      */
     public getSuitesByTestCaseId(
         testCaseId: number,
@@ -1374,7 +1374,7 @@ export class TestApi implements ITestApi {
     /**
      * @param {TestInterfaces.TestSettings} testSettings
      * @param {string} project - Project ID or project name
-     * @param onResult callback function with the resulting number
+     * @param onResult cllback function with the resulting number
      */
     public createTestSettings(
         testSettings: TestInterfaces.TestSettings,
@@ -1398,7 +1398,7 @@ export class TestApi implements ITestApi {
     /**
      * @param {string} project - Project ID or project name
      * @param {number} testSettingsId
-     * @param onResult callback function
+     * @param onResult cllback function
      */
     public deleteTestSettings(
         project: string,
@@ -1423,7 +1423,7 @@ export class TestApi implements ITestApi {
     /**
      * @param {string} project - Project ID or project name
      * @param {number} testSettingsId
-     * @param onResult callback function with the resulting TestInterfaces.TestSettings
+     * @param onResult cllback function with the resulting TestInterfaces.TestSettings
      */
     public getTestSettingsById(
         project: string,
@@ -1450,7 +1450,7 @@ export class TestApi implements ITestApi {
 export class QTestApi implements IQTestApi {
     TestApi: ITestApi;
 
-    constructor(baseUrl: string, handlers: CoreInterfaces.IRequestHandler[]) {
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
         this.TestApi = new TestApi(baseUrl, handlers);
     }
 

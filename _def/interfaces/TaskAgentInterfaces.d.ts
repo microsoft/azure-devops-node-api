@@ -1,32 +1,13 @@
-/*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*
-* See following wiki page for instructions on how to regenerate:
-*   https://vsowiki.com/index.php?title=Rest_Client_Generation
-*/
-
-"use strict";
-
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
-
-
 export interface AgentPoolEvent {
     eventType: string;
     pool: TaskAgentPool;
 }
-
 export interface AgentRefreshMessage {
     agentId: number;
     timeout: any;
 }
-
-export enum ConnectedServiceKind {
+export declare enum ConnectedServiceKind {
     /**
      * Custom or unknown service
      */
@@ -48,67 +29,67 @@ export enum ConnectedServiceKind {
      */
     GitHub = 4,
 }
-
 export interface EndpointAuthorization {
-    parameters: { [key: string] : string; };
+    parameters: {
+        [key: string]: string;
+    };
     scheme: string;
 }
-
 export interface Issue {
     category: string;
-    data: { [key: string] : string; };
+    data: {
+        [key: string]: string;
+    };
     message: string;
     type: IssueType;
 }
-
-export enum IssueType {
+export declare enum IssueType {
     Error = 1,
     Warning = 2,
 }
-
 export interface JobAssignedEvent extends JobEvent {
     request: TaskAgentJobRequest;
 }
-
 export interface JobCancelMessage {
     jobId: string;
     timeout: any;
 }
-
 export interface JobCompletedEvent extends JobEvent {
     result: TaskResult;
 }
-
 /**
  * Represents the context of variables and vectors for a job request.
  */
 export interface JobEnvironment {
     endpoints: ServiceEndpoint[];
     mask: MaskHint[];
-    options: { [key: number] : JobOption; };
+    options: {
+        [key: number]: JobOption;
+    };
     /**
      * Gets or sets the endpoint used for communicating back to the calling service.
      */
     systemConnection: ServiceEndpoint;
-    variables: { [key: string] : string; };
+    variables: {
+        [key: string]: string;
+    };
 }
-
 export interface JobEvent {
     jobId: string;
     name: string;
 }
-
 /**
  * Represents an option that may affect the way an agent runs the job.
  */
 export interface JobOption {
-    data: { [key: string] : string; };
+    data: {
+        [key: string]: string;
+    };
     /**
      * Gets the id of the option.
      */
     id: string;
 }
-
 export interface JobRequestMessage {
     environment: JobEnvironment;
     jobId: string;
@@ -120,23 +101,23 @@ export interface JobRequestMessage {
     tasks: TaskInstance[];
     timeline: TimelineReference;
 }
-
 export interface MaskHint {
     type: MaskType;
     value: string;
 }
-
-export enum MaskType {
+export declare enum MaskType {
     Variable = 1,
     Regex = 2,
 }
-
 export interface PlanEnvironment {
     mask: MaskHint[];
-    options: { [key: number] : JobOption; };
-    variables: { [key: string] : string; };
+    options: {
+        [key: number]: JobOption;
+    };
+    variables: {
+        [key: string]: string;
+    };
 }
-
 /**
  * Represents an endpoint which may be used by an orchestration job.
  */
@@ -149,7 +130,9 @@ export interface ServiceEndpoint {
      * The Gets or sets Identity reference for the user who created the Service endpoint
      */
     createdBy: VSSInterfaces.IdentityRef;
-    data: { [key: string] : string; };
+    data: {
+        [key: string]: string;
+    };
     /**
      * Gets or Sets description of endpoint
      */
@@ -171,7 +154,6 @@ export interface ServiceEndpoint {
      */
     url: string;
 }
-
 export interface TaskAgent extends TaskAgentReference {
     /**
      * Gets the date on which this agent was created.
@@ -194,10 +176,13 @@ export interface TaskAgent extends TaskAgentReference {
      * Gets the date on which the last connectivity status change occurred.
      */
     statusChangedOn: Date;
-    systemCapabilities: { [key: string] : string; };
-    userCapabilities: { [key: string] : string; };
+    systemCapabilities: {
+        [key: string]: string;
+    };
+    userCapabilities: {
+        [key: string]: string;
+    };
 }
-
 export interface TaskAgentJobRequest {
     assignTime: Date;
     demands: any[];
@@ -215,13 +200,11 @@ export interface TaskAgentJobRequest {
     scopeId: string;
     serviceOwner: string;
 }
-
 export interface TaskAgentMessage {
     body: string;
     messageId: number;
     messageType: string;
 }
-
 export interface TaskAgentPool extends TaskAgentPoolReference {
     /**
      * Gets the administrators group for this agent pool.
@@ -257,13 +240,11 @@ export interface TaskAgentPool extends TaskAgentPoolReference {
      */
     size: number;
 }
-
 export interface TaskAgentPoolReference {
     id: number;
     name: string;
     scope: string;
 }
-
 export interface TaskAgentReference {
     /**
      * Gets the identifier of the agent.
@@ -278,19 +259,18 @@ export interface TaskAgentReference {
      */
     version: string;
 }
-
 export interface TaskAgentSession {
     agent: TaskAgentReference;
     ownerName: string;
     sessionId: string;
-    systemCapabilities: { [key: string] : string; };
+    systemCapabilities: {
+        [key: string]: string;
+    };
 }
-
-export enum TaskAgentStatus {
+export declare enum TaskAgentStatus {
     Offline = 1,
     Online = 2,
 }
-
 export interface TaskDefinition {
     agentExecution: TaskExecution;
     author: string;
@@ -316,7 +296,6 @@ export interface TaskDefinition {
     version: TaskVersion;
     visibility: string[];
 }
-
 export interface TaskDefinitionEndpoint {
     /**
      * An ID that identifies a service connection to be used for authenticating endpoint requests.
@@ -339,7 +318,6 @@ export interface TaskDefinitionEndpoint {
      */
     url: string;
 }
-
 export interface TaskExecution {
     /**
      * The utility task to run.  Specifying this means that this task definition is simply a meta task to call another task. This is useful for tasks that call utility tasks like powershell and commandline
@@ -348,28 +326,33 @@ export interface TaskExecution {
     /**
      * If a task is going to run code, then this provides the type/script etc... information by platform. For example, it might look like. net45: { typeName: "Microsoft.TeamFoundation.Automation.Tasks.PowerShellTask", assemblyName: "Microsoft.TeamFoundation.Automation.Tasks.PowerShell.dll" } net20: { typeName: "Microsoft.TeamFoundation.Automation.Tasks.PowerShellTask", assemblyName: "Microsoft.TeamFoundation.Automation.Tasks.PowerShell.dll" } java: { jar: "powershelltask.tasks.automation.teamfoundation.microsoft.com", } node: { script: "powershellhost.js", }
      */
-    platformInstructions: { [key: string] : { [key: string] : string; }; };
+    platformInstructions: {
+        [key: string]: {
+            [key: string]: string;
+        };
+    };
 }
-
 export interface TaskGroupDefinition {
     displayName: string;
     isExpanded: boolean;
     name: string;
 }
-
 export interface TaskInputDefinition {
     defaultValue: string;
     groupName: string;
     helpMarkDown: string;
     label: string;
     name: string;
-    options: { [key: string] : string; };
-    properties: { [key: string] : string; };
+    options: {
+        [key: string]: string;
+    };
+    properties: {
+        [key: string]: string;
+    };
     required: boolean;
     type: string;
     visibleRule: string;
 }
-
 export interface TaskInstance extends TaskReference {
     alwaysRun: boolean;
     continueOnError: boolean;
@@ -377,7 +360,6 @@ export interface TaskInstance extends TaskReference {
     enabled: boolean;
     instanceId: string;
 }
-
 export interface TaskLog extends TaskLogReference {
     createdOn: Date;
     indexLocation: string;
@@ -385,28 +367,23 @@ export interface TaskLog extends TaskLogReference {
     lineCount: number;
     path: string;
 }
-
 export interface TaskLogReference {
     id: number;
     location: string;
 }
-
 export interface TaskOrchestrationContainer extends TaskOrchestrationItem {
     children: TaskOrchestrationItem[];
     continueOnError: boolean;
     parallel: boolean;
     rollback: TaskOrchestrationContainer;
 }
-
 export interface TaskOrchestrationItem {
     itemType: TaskOrchestrationItemType;
 }
-
-export enum TaskOrchestrationItemType {
+export declare enum TaskOrchestrationItemType {
     Container = 0,
     Job = 1,
 }
-
 export interface TaskOrchestrationJob extends TaskOrchestrationItem {
     demands: any[];
     executeAs: VSSInterfaces.IdentityRef;
@@ -414,9 +391,10 @@ export interface TaskOrchestrationJob extends TaskOrchestrationItem {
     instanceId: string;
     name: string;
     tasks: TaskInstance[];
-    variables: { [key: string] : string; };
+    variables: {
+        [key: string]: string;
+    };
 }
-
 export interface TaskOrchestrationPlan extends TaskOrchestrationPlanReference {
     environment: PlanEnvironment;
     finishTime: Date;
@@ -427,7 +405,6 @@ export interface TaskOrchestrationPlan extends TaskOrchestrationPlanReference {
     state: TaskOrchestrationPlanState;
     timeline: TimelineReference;
 }
-
 export interface TaskOrchestrationPlanReference {
     artifactLocation: string;
     artifactUri: string;
@@ -436,13 +413,11 @@ export interface TaskOrchestrationPlanReference {
     scopeIdentifier: string;
     version: number;
 }
-
-export enum TaskOrchestrationPlanState {
+export declare enum TaskOrchestrationPlanState {
     InProgress = 1,
     Queued = 2,
     Completed = 4,
 }
-
 export interface TaskPackageMetadata {
     /**
      * Gets the name of the package.
@@ -457,15 +432,15 @@ export interface TaskPackageMetadata {
      */
     version: string;
 }
-
 export interface TaskReference {
     id: string;
-    inputs: { [key: string] : string; };
+    inputs: {
+        [key: string]: string;
+    };
     name: string;
     version: string;
 }
-
-export enum TaskResult {
+export declare enum TaskResult {
     Succeeded = 0,
     SucceededWithIssues = 1,
     Failed = 2,
@@ -473,21 +448,18 @@ export enum TaskResult {
     Skipped = 4,
     Abandoned = 5,
 }
-
 export interface TaskSourceDefinition {
     authKey: string;
     endpoint: string;
     selector: string;
     target: string;
 }
-
 export interface TaskVersion {
     isTest: boolean;
     major: number;
     minor: number;
     patch: number;
 }
-
 /**
  * Represents a shallow reference to a TeamProject.
  */
@@ -517,13 +489,11 @@ export interface TeamProjectReference {
      */
     url: string;
 }
-
 export interface Timeline extends TimelineReference {
     lastChangedBy: string;
     lastChangedOn: Date;
     records: TimelineRecord[];
 }
-
 export interface TimelineRecord {
     changeId: number;
     currentOperation: string;
@@ -547,19 +517,16 @@ export interface TimelineRecord {
     warningCount: number;
     workerName: string;
 }
-
-export enum TimelineRecordState {
+export declare enum TimelineRecordState {
     Pending = 0,
     InProgress = 1,
     Completed = 2,
 }
-
 export interface TimelineReference {
     changeId: number;
     id: string;
     location: string;
 }
-
 export interface WebApiConnectedService extends WebApiConnectedServiceRef {
     /**
      * The user who did the OAuth authentication to created this service
@@ -590,7 +557,6 @@ export interface WebApiConnectedService extends WebApiConnectedServiceRef {
      */
     serviceUri: string;
 }
-
 export interface WebApiConnectedServiceDetails extends WebApiConnectedServiceRef {
     /**
      * Meta data for service connection
@@ -605,555 +571,201 @@ export interface WebApiConnectedServiceDetails extends WebApiConnectedServiceRef
      */
     endPoint: string;
 }
-
 export interface WebApiConnectedServiceRef {
     id: string;
     url: string;
 }
-
-export var TypeInfo = {
+export declare var TypeInfo: {
     AgentPoolEvent: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     AgentRefreshMessage: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     ConnectedServiceKind: {
         enumValues: {
-            "custom": 0,
-            "azureSubscription": 1,
-            "chef": 2,
-            "generic": 3,
-            "gitHub": 4,
-        }
-    },
+            "custom": number;
+            "azureSubscription": number;
+            "chef": number;
+            "generic": number;
+            "gitHub": number;
+        };
+    };
     EndpointAuthorization: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     Issue: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     IssueType: {
         enumValues: {
-            "error": 1,
-            "warning": 2,
-        }
-    },
+            "error": number;
+            "warning": number;
+        };
+    };
     JobAssignedEvent: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     JobCancelMessage: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     JobCompletedEvent: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     JobEnvironment: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     JobEvent: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     JobOption: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     JobRequestMessage: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     MaskHint: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     MaskType: {
         enumValues: {
-            "variable": 1,
-            "regex": 2,
-        }
-    },
+            "variable": number;
+            "regex": number;
+        };
+    };
     PlanEnvironment: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     ServiceEndpoint: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskAgent: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskAgentJobRequest: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskAgentMessage: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskAgentPool: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskAgentPoolReference: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskAgentReference: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskAgentSession: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskAgentStatus: {
         enumValues: {
-            "offline": 1,
-            "online": 2,
-        }
-    },
+            "offline": number;
+            "online": number;
+        };
+    };
     TaskDefinition: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskDefinitionEndpoint: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskExecution: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskGroupDefinition: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskInputDefinition: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskInstance: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskLog: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskLogReference: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskOrchestrationContainer: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskOrchestrationItem: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskOrchestrationItemType: {
         enumValues: {
-            "container": 0,
-            "job": 1,
-        }
-    },
+            "container": number;
+            "job": number;
+        };
+    };
     TaskOrchestrationJob: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskOrchestrationPlan: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskOrchestrationPlanReference: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskOrchestrationPlanState: {
         enumValues: {
-            "inProgress": 1,
-            "queued": 2,
-            "completed": 4,
-        }
-    },
+            "inProgress": number;
+            "queued": number;
+            "completed": number;
+        };
+    };
     TaskPackageMetadata: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskReference: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskResult: {
         enumValues: {
-            "succeeded": 0,
-            "succeededWithIssues": 1,
-            "failed": 2,
-            "canceled": 3,
-            "skipped": 4,
-            "abandoned": 5,
-        }
-    },
+            "succeeded": number;
+            "succeededWithIssues": number;
+            "failed": number;
+            "canceled": number;
+            "skipped": number;
+            "abandoned": number;
+        };
+    };
     TaskSourceDefinition: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TaskVersion: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TeamProjectReference: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     Timeline: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TimelineRecord: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     TimelineRecordState: {
         enumValues: {
-            "pending": 0,
-            "inProgress": 1,
-            "completed": 2,
-        }
-    },
+            "pending": number;
+            "inProgress": number;
+            "completed": number;
+        };
+    };
     TimelineReference: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     WebApiConnectedService: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     WebApiConnectedServiceDetails: {
-        fields: <any>null
-    },
+        fields: any;
+    };
     WebApiConnectedServiceRef: {
-        fields: <any>null
-    },
-};
-
-TypeInfo.AgentPoolEvent.fields = {
-    pool: {
-        typeInfo: TypeInfo.TaskAgentPool
-    },
-};
-
-TypeInfo.AgentRefreshMessage.fields = {
-};
-
-TypeInfo.EndpointAuthorization.fields = {
-};
-
-TypeInfo.Issue.fields = {
-    type: {
-        enumType: TypeInfo.IssueType
-    },
-};
-
-TypeInfo.JobAssignedEvent.fields = {
-    request: {
-        typeInfo: TypeInfo.TaskAgentJobRequest
-    },
-};
-
-TypeInfo.JobCancelMessage.fields = {
-};
-
-TypeInfo.JobCompletedEvent.fields = {
-    result: {
-        enumType: TypeInfo.TaskResult
-    },
-};
-
-TypeInfo.JobEnvironment.fields = {
-    endpoints: {
-        isArray: true,
-        typeInfo: TypeInfo.ServiceEndpoint
-    },
-    mask: {
-        isArray: true,
-        typeInfo: TypeInfo.MaskHint
-    },
-    options: {
-        isArray: true,
-        typeInfo: TypeInfo.JobOption
-    },
-    systemConnection: {
-        typeInfo: TypeInfo.ServiceEndpoint
-    },
-};
-
-TypeInfo.JobEvent.fields = {
-};
-
-TypeInfo.JobOption.fields = {
-};
-
-TypeInfo.JobRequestMessage.fields = {
-    environment: {
-        typeInfo: TypeInfo.JobEnvironment
-    },
-    lockedUntil: {
-        isDate: true,
-    },
-    plan: {
-        typeInfo: TypeInfo.TaskOrchestrationPlanReference
-    },
-    tasks: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskInstance
-    },
-    timeline: {
-        typeInfo: TypeInfo.TimelineReference
-    },
-};
-
-TypeInfo.MaskHint.fields = {
-    type: {
-        enumType: TypeInfo.MaskType
-    },
-};
-
-TypeInfo.PlanEnvironment.fields = {
-    mask: {
-        isArray: true,
-        typeInfo: TypeInfo.MaskHint
-    },
-    options: {
-        isArray: true,
-        typeInfo: TypeInfo.JobOption
-    },
-};
-
-TypeInfo.ServiceEndpoint.fields = {
-    authorization: {
-        typeInfo: TypeInfo.EndpointAuthorization
-    },
-    createdBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
-TypeInfo.TaskAgent.fields = {
-    createdOn: {
-        isDate: true,
-    },
-    status: {
-        enumType: TypeInfo.TaskAgentStatus
-    },
-    statusChangedOn: {
-        isDate: true,
-    },
-};
-
-TypeInfo.TaskAgentJobRequest.fields = {
-    assignTime: {
-        isDate: true,
-    },
-    finishTime: {
-        isDate: true,
-    },
-    lockedUntil: {
-        isDate: true,
-    },
-    queueTime: {
-        isDate: true,
-    },
-    receiveTime: {
-        isDate: true,
-    },
-    reservedAgent: {
-        typeInfo: TypeInfo.TaskAgentReference
-    },
-    result: {
-        enumType: TypeInfo.TaskResult
-    },
-};
-
-TypeInfo.TaskAgentMessage.fields = {
-};
-
-TypeInfo.TaskAgentPool.fields = {
-    administratorsGroup: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    createdBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    createdOn: {
-        isDate: true,
-    },
-    serviceAccountsGroup: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
-TypeInfo.TaskAgentPoolReference.fields = {
-};
-
-TypeInfo.TaskAgentReference.fields = {
-};
-
-TypeInfo.TaskAgentSession.fields = {
-    agent: {
-        typeInfo: TypeInfo.TaskAgentReference
-    },
-};
-
-TypeInfo.TaskDefinition.fields = {
-    agentExecution: {
-        typeInfo: TypeInfo.TaskExecution
-    },
-    groups: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskGroupDefinition
-    },
-    inputs: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskInputDefinition
-    },
-    sourceDefinitions: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskSourceDefinition
-    },
-    version: {
-        typeInfo: TypeInfo.TaskVersion
-    },
-};
-
-TypeInfo.TaskDefinitionEndpoint.fields = {
-};
-
-TypeInfo.TaskExecution.fields = {
-    execTask: {
-        typeInfo: TypeInfo.TaskReference
-    },
-};
-
-TypeInfo.TaskGroupDefinition.fields = {
-};
-
-TypeInfo.TaskInputDefinition.fields = {
-};
-
-TypeInfo.TaskInstance.fields = {
-};
-
-TypeInfo.TaskLog.fields = {
-    createdOn: {
-        isDate: true,
-    },
-    lastChangedOn: {
-        isDate: true,
-    },
-};
-
-TypeInfo.TaskLogReference.fields = {
-};
-
-TypeInfo.TaskOrchestrationContainer.fields = {
-    children: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskOrchestrationItem
-    },
-    itemType: {
-        enumType: TypeInfo.TaskOrchestrationItemType
-    },
-    rollback: {
-        typeInfo: TypeInfo.TaskOrchestrationContainer
-    },
-};
-
-TypeInfo.TaskOrchestrationItem.fields = {
-    itemType: {
-        enumType: TypeInfo.TaskOrchestrationItemType
-    },
-};
-
-TypeInfo.TaskOrchestrationJob.fields = {
-    executeAs: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    itemType: {
-        enumType: TypeInfo.TaskOrchestrationItemType
-    },
-    tasks: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskInstance
-    },
-};
-
-TypeInfo.TaskOrchestrationPlan.fields = {
-    environment: {
-        typeInfo: TypeInfo.PlanEnvironment
-    },
-    finishTime: {
-        isDate: true,
-    },
-    implementation: {
-        typeInfo: TypeInfo.TaskOrchestrationContainer
-    },
-    result: {
-        enumType: TypeInfo.TaskResult
-    },
-    startTime: {
-        isDate: true,
-    },
-    state: {
-        enumType: TypeInfo.TaskOrchestrationPlanState
-    },
-    timeline: {
-        typeInfo: TypeInfo.TimelineReference
-    },
-};
-
-TypeInfo.TaskOrchestrationPlanReference.fields = {
-};
-
-TypeInfo.TaskPackageMetadata.fields = {
-};
-
-TypeInfo.TaskReference.fields = {
-};
-
-TypeInfo.TaskSourceDefinition.fields = {
-};
-
-TypeInfo.TaskVersion.fields = {
-};
-
-TypeInfo.TeamProjectReference.fields = {
-};
-
-TypeInfo.Timeline.fields = {
-    lastChangedOn: {
-        isDate: true,
-    },
-    records: {
-        isArray: true,
-        typeInfo: TypeInfo.TimelineRecord
-    },
-};
-
-TypeInfo.TimelineRecord.fields = {
-    details: {
-        typeInfo: TypeInfo.TimelineReference
-    },
-    finishTime: {
-        isDate: true,
-    },
-    issues: {
-        isArray: true,
-        typeInfo: TypeInfo.Issue
-    },
-    lastModified: {
-        isDate: true,
-    },
-    log: {
-        typeInfo: TypeInfo.TaskLogReference
-    },
-    result: {
-        enumType: TypeInfo.TaskResult
-    },
-    startTime: {
-        isDate: true,
-    },
-    state: {
-        enumType: TypeInfo.TimelineRecordState
-    },
-};
-
-TypeInfo.TimelineReference.fields = {
-};
-
-TypeInfo.WebApiConnectedService.fields = {
-    authenticatedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    project: {
-        typeInfo: TypeInfo.TeamProjectReference
-    },
-};
-
-TypeInfo.WebApiConnectedServiceDetails.fields = {
-    connectedServiceMetaData: {
-        typeInfo: TypeInfo.WebApiConnectedService
-    },
-};
-
-TypeInfo.WebApiConnectedServiceRef.fields = {
+        fields: any;
+    };
 };
