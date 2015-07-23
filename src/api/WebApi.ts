@@ -18,7 +18,9 @@ import basicm = require('./handlers/basiccreds');
 import bearm = require('./handlers/bearertoken');
 
 // ---------------------------------------------------------------------------
-// factory to return client apis
+// Factory to return client apis
+// When new APIs are added, two methods must be added here to instantiate the
+// API and its corresponding Q Promise-wrapped API
 //----------------------------------------------------------------------------
 export class WebApi {
 
@@ -26,7 +28,7 @@ export class WebApi {
     authHandler: VsoBaseInterfaces.IRequestHandler;
 
     /*
-     * Factory to return client apis
+     * Factory to return client apis and handlers
      * @param defaultServerUrl default server url to use when creating new apis from factory methods
      * @param defaultAuthHandler default authentication credentials to use when creating new apis from factory methods
      */
@@ -35,6 +37,9 @@ export class WebApi {
         this.authHandler = authHandler;
     }
 
+    /**
+     * Methods to return handler objects (see handlers folder)
+     */
     public getVersionHandler(apiVersion: string) {
         return new apivm.ApiVersionHandler(apiVersion);
     }
@@ -47,10 +52,17 @@ export class WebApi {
         return new bearm.BearerCredentialHandler(token);
     }
 
+    /**
+     * Each factory method can take a serverUrl and a list of handlers
+     * if these aren't provided, the default url and auth handler given to the constructor for this class will be used
+     */
     public getBuildApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): buildm.IBuildApi {
         return new buildm.BuildApi(serverUrl, handlers);
     }
 
+    /**
+     * Each API has a method here to create the "vanilla" API as well as one with a Q Promise wrapper.
+     */
     public getQBuildApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): buildm.IQBuildApi {
         return new buildm.QBuildApi(serverUrl, handlers);
     }
