@@ -20,16 +20,11 @@ import Q = require('q');
 import restm = require('./restclient');
 import httpm = require('./httpclient');
 import vsom = require('./VsoClient');
+import basem = require('./ClientApiBases');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import TestInterfaces = require("./interfaces/TestInterfaces");
 
-export interface ITestApi {
-    baseUrl: string;
-    userAgent: string;
-    httpClient: VsoBaseInterfaces.IHttpClient;
-    restClient: VsoBaseInterfaces.IRestClient;
-    vsoClient: vsom.VsoClient;
-    connect(onResult: (err: any, statusCode: number, obj: any) => void): void;
+export interface ITestApi extends basem.ClientApiBase {
     createTestResultAttachment(attachmentRequestModel: TestInterfaces.TestAttachmentRequestModel, project: string, runId: number, testCaseResultId: number, onResult: (err: any, statusCode: number, Attachment: TestInterfaces.TestAttachmentReference) => void): void;
     createTestRunAttachment(attachmentRequestModel: TestInterfaces.TestAttachmentRequestModel, project: string, runId: number, onResult: (err: any, statusCode: number, Attachment: TestInterfaces.TestAttachmentReference) => void): void;
     getBuildCodeCoverage(project: string, buildId: number, flags: number, onResult: (err: any, statusCode: number, CodeCoverage: TestInterfaces.BuildCoverage[]) => void): void;
@@ -74,8 +69,7 @@ export interface ITestApi {
     getTestSettingsById(project: string, testSettingsId: number, onResult: (err: any, statusCode: number, TestSetting: TestInterfaces.TestSettings) => void): void;
 }
 
-export interface IQTestApi {
-    connect(): Q.Promise<void>;
+export interface IQTestApi extends basem.QClientApiBase {
     
     createTestResultAttachment(attachmentRequestModel: TestInterfaces.TestAttachmentRequestModel, project: string, runId: number,  testCaseResultId: number): Q.Promise<TestInterfaces.TestAttachmentReference>;
     createTestRunAttachment(attachmentRequestModel: TestInterfaces.TestAttachmentRequestModel, project: string,  runId: number): Q.Promise<TestInterfaces.TestAttachmentReference>;
@@ -117,27 +111,10 @@ export interface IQTestApi {
     getTestSettingsById(project: string,  testSettingsId: number): Q.Promise<TestInterfaces.TestSettings>;
 }
 
-export class TestApi implements ITestApi {
-    baseUrl: string;
-    userAgent: string;
-    httpClient: httpm.HttpClient;
-    restClient: restm.RestClient;
-    vsoClient: vsom.VsoClient
+export class TestApi extends basem.ClientApiBase implements ITestApi {
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        this.baseUrl = baseUrl;
-        this.httpClient = new httpm.HttpClient('node-Test-api', handlers);
-        this.restClient = new restm.RestClient(this.httpClient);
-        this.vsoClient = new vsom.VsoClient(baseUrl, this.restClient);
-    }
-
-    setUserAgent(userAgent: string) {
-        this.userAgent = userAgent;
-        this.httpClient.userAgent = userAgent;
-    }
-    
-    connect(onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this.restClient.getJson(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, onResult);
+        super(baseUrl, handlers, 'node-Test-api');
     }
 
     /**
@@ -1447,27 +1424,12 @@ export class TestApi implements ITestApi {
 
 }
 
-export class QTestApi implements IQTestApi {
-    TestApi: ITestApi;
+export class QTestApi extends basem.QClientApiBase implements IQTestApi {
+    
+    api: TestApi;
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        this.TestApi = new TestApi(baseUrl, handlers);
-    }
-
-    public connect(): Q.Promise<any> {
-        var defer = Q.defer();
-
-        this.TestApi.connect((err: any, statusCode: number, obj: any) => {
-            if (err) {
-                err.statusCode = statusCode;
-                defer.reject(err);
-            }
-            else {
-                defer.resolve(obj);
-            }
-        });
-
-        return defer.promise;       
+        super(baseUrl, handlers, TestApi);
     }
 
     
@@ -1486,7 +1448,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestAttachmentReference>();
 
-        this.TestApi.createTestResultAttachment(attachmentRequestModel, project, runId, testCaseResultId, (err: any, statusCode: number, Attachment: TestInterfaces.TestAttachmentReference) => {
+        this.api.createTestResultAttachment(attachmentRequestModel, project, runId, testCaseResultId, (err: any, statusCode: number, Attachment: TestInterfaces.TestAttachmentReference) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1512,7 +1474,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestAttachmentReference>();
 
-        this.TestApi.createTestRunAttachment(attachmentRequestModel, project, runId, (err: any, statusCode: number, Attachment: TestInterfaces.TestAttachmentReference) => {
+        this.api.createTestRunAttachment(attachmentRequestModel, project, runId, (err: any, statusCode: number, Attachment: TestInterfaces.TestAttachmentReference) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1538,7 +1500,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.BuildCoverage[]>();
 
-        this.TestApi.getBuildCodeCoverage(project, buildId, flags, (err: any, statusCode: number, CodeCoverage: TestInterfaces.BuildCoverage[]) => {
+        this.api.getBuildCodeCoverage(project, buildId, flags, (err: any, statusCode: number, CodeCoverage: TestInterfaces.BuildCoverage[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1564,7 +1526,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestRunCoverage[]>();
 
-        this.TestApi.getTestRunCodeCoverage(project, runId, flags, (err: any, statusCode: number, CodeCoverage: TestInterfaces.TestRunCoverage[]) => {
+        this.api.getTestRunCodeCoverage(project, runId, flags, (err: any, statusCode: number, CodeCoverage: TestInterfaces.TestRunCoverage[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1588,7 +1550,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestMessageLogDetails[]>();
 
-        this.TestApi.getTestRunLogs(project, runId, (err: any, statusCode: number, MessageLogs: TestInterfaces.TestMessageLogDetails[]) => {
+        this.api.getTestRunLogs(project, runId, (err: any, statusCode: number, MessageLogs: TestInterfaces.TestMessageLogDetails[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1612,7 +1574,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestPlan>();
 
-        this.TestApi.createTestPlan(testPlan, project, (err: any, statusCode: number, Plan: TestInterfaces.TestPlan) => {
+        this.api.createTestPlan(testPlan, project, (err: any, statusCode: number, Plan: TestInterfaces.TestPlan) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1636,7 +1598,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestPlan>();
 
-        this.TestApi.getPlanById(project, planId, (err: any, statusCode: number, Plan: TestInterfaces.TestPlan) => {
+        this.api.getPlanById(project, planId, (err: any, statusCode: number, Plan: TestInterfaces.TestPlan) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1668,7 +1630,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestPlan[]>();
 
-        this.TestApi.getPlans(project, owner, skip, top, includePlanDetails, filterActivePlans, (err: any, statusCode: number, Plans: TestInterfaces.TestPlan[]) => {
+        this.api.getPlans(project, owner, skip, top, includePlanDetails, filterActivePlans, (err: any, statusCode: number, Plans: TestInterfaces.TestPlan[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1694,7 +1656,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestPlan>();
 
-        this.TestApi.updateTestPlan(planUpdateModel, project, planId, (err: any, statusCode: number, Plan: TestInterfaces.TestPlan) => {
+        this.api.updateTestPlan(planUpdateModel, project, planId, (err: any, statusCode: number, Plan: TestInterfaces.TestPlan) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1724,7 +1686,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestPoint>();
 
-        this.TestApi.getPoint(project, planId, suiteId, pointIds, witFields, (err: any, statusCode: number, Point: TestInterfaces.TestPoint) => {
+        this.api.getPoint(project, planId, suiteId, pointIds, witFields, (err: any, statusCode: number, Point: TestInterfaces.TestPoint) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1764,7 +1726,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestPoint[]>();
 
-        this.TestApi.getPoints(project, planId, suiteId, witFields, configurationId, testCaseId, testPointIds, includePointDetails, skip, top, (err: any, statusCode: number, Points: TestInterfaces.TestPoint[]) => {
+        this.api.getPoints(project, planId, suiteId, witFields, configurationId, testCaseId, testPointIds, includePointDetails, skip, top, (err: any, statusCode: number, Points: TestInterfaces.TestPoint[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1794,7 +1756,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestPoint[]>();
 
-        this.TestApi.updateTestPoints(pointUpdateModel, project, planId, suiteId, pointIds, (err: any, statusCode: number, Point: TestInterfaces.TestPoint[]) => {
+        this.api.updateTestPoints(pointUpdateModel, project, planId, suiteId, pointIds, (err: any, statusCode: number, Point: TestInterfaces.TestPoint[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1824,7 +1786,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestIterationDetailsModel>();
 
-        this.TestApi.getTestIteration(project, runId, testCaseResultId, iterationId, includeActionResults, (err: any, statusCode: number, Result: TestInterfaces.TestIterationDetailsModel) => {
+        this.api.getTestIteration(project, runId, testCaseResultId, iterationId, includeActionResults, (err: any, statusCode: number, Result: TestInterfaces.TestIterationDetailsModel) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1852,7 +1814,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestIterationDetailsModel[]>();
 
-        this.TestApi.getTestIterations(project, runId, testCaseResultId, includeActionResults, (err: any, statusCode: number, Results: TestInterfaces.TestIterationDetailsModel[]) => {
+        this.api.getTestIterations(project, runId, testCaseResultId, includeActionResults, (err: any, statusCode: number, Results: TestInterfaces.TestIterationDetailsModel[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1878,7 +1840,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestCaseResult[]>();
 
-        this.TestApi.addTestResultsToTestRun(resultCreateModels, project, runId, (err: any, statusCode: number, Results: TestInterfaces.TestCaseResult[]) => {
+        this.api.addTestResultsToTestRun(resultCreateModels, project, runId, (err: any, statusCode: number, Results: TestInterfaces.TestCaseResult[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1906,7 +1868,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestCaseResult[]>();
 
-        this.TestApi.bulkUpdateTestResults(resultUpdateModel, project, runId, resultIds, (err: any, statusCode: number, Result: TestInterfaces.TestCaseResult[]) => {
+        this.api.bulkUpdateTestResults(resultUpdateModel, project, runId, resultIds, (err: any, statusCode: number, Result: TestInterfaces.TestCaseResult[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1934,7 +1896,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestCaseResult>();
 
-        this.TestApi.getTestCaseResultById(project, runId, testCaseResultId, includeIterationDetails, (err: any, statusCode: number, Result: TestInterfaces.TestCaseResult) => {
+        this.api.getTestCaseResultById(project, runId, testCaseResultId, includeIterationDetails, (err: any, statusCode: number, Result: TestInterfaces.TestCaseResult) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1960,7 +1922,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestCaseResult[]>();
 
-        this.TestApi.getTestCaseResults(project, runId, includeIterationDetails, (err: any, statusCode: number, Results: TestInterfaces.TestCaseResult[]) => {
+        this.api.getTestCaseResults(project, runId, includeIterationDetails, (err: any, statusCode: number, Results: TestInterfaces.TestCaseResult[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1986,7 +1948,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestCaseResult[]>();
 
-        this.TestApi.updateTestResults(resultUpdateModels, project, runId, (err: any, statusCode: number, Results: TestInterfaces.TestCaseResult[]) => {
+        this.api.updateTestResults(resultUpdateModels, project, runId, (err: any, statusCode: number, Results: TestInterfaces.TestCaseResult[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2016,7 +1978,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestActionResultModel[]>();
 
-        this.TestApi.getActionResults(project, runId, testCaseResultId, iterationId, actionPath, (err: any, statusCode: number, Results: TestInterfaces.TestActionResultModel[]) => {
+        this.api.getActionResults(project, runId, testCaseResultId, iterationId, actionPath, (err: any, statusCode: number, Results: TestInterfaces.TestActionResultModel[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2046,7 +2008,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestResultParameterModel[]>();
 
-        this.TestApi.getResultParameters(project, runId, testCaseResultId, iterationId, paramName, (err: any, statusCode: number, Results: TestInterfaces.TestResultParameterModel[]) => {
+        this.api.getResultParameters(project, runId, testCaseResultId, iterationId, paramName, (err: any, statusCode: number, Results: TestInterfaces.TestResultParameterModel[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2078,7 +2040,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestCaseResult[]>();
 
-        this.TestApi.getTestResultsByQuery(query, project, includeResultDetails, includeIterationDetails, skip, top, (err: any, statusCode: number, Result: TestInterfaces.TestCaseResult[]) => {
+        this.api.getTestResultsByQuery(query, project, includeResultDetails, includeIterationDetails, skip, top, (err: any, statusCode: number, Result: TestInterfaces.TestCaseResult[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2102,7 +2064,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestRunStatistic>();
 
-        this.TestApi.getTestRunStatistics(project, runId, (err: any, statusCode: number, Run: TestInterfaces.TestRunStatistic) => {
+        this.api.getTestRunStatistics(project, runId, (err: any, statusCode: number, Run: TestInterfaces.TestRunStatistic) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2132,7 +2094,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestRun[]>();
 
-        this.TestApi.getTestRunsByQuery(query, project, includeRunDetails, skip, top, (err: any, statusCode: number, Run: TestInterfaces.TestRun[]) => {
+        this.api.getTestRunsByQuery(query, project, includeRunDetails, skip, top, (err: any, statusCode: number, Run: TestInterfaces.TestRun[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2156,7 +2118,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestRun>();
 
-        this.TestApi.createTestRun(testRun, project, (err: any, statusCode: number, Run: TestInterfaces.TestRun) => {
+        this.api.createTestRun(testRun, project, (err: any, statusCode: number, Run: TestInterfaces.TestRun) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2180,7 +2142,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestRun>();
 
-        this.TestApi.getTestRunById(project, runId, (err: any, statusCode: number, Run: TestInterfaces.TestRun) => {
+        this.api.getTestRunById(project, runId, (err: any, statusCode: number, Run: TestInterfaces.TestRun) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2218,7 +2180,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestRun[]>();
 
-        this.TestApi.getTestRuns(project, buildUri, owner, tmiRunId, planId, includeRunDetails, automated, skip, top, (err: any, statusCode: number, Runs: TestInterfaces.TestRun[]) => {
+        this.api.getTestRuns(project, buildUri, owner, tmiRunId, planId, includeRunDetails, automated, skip, top, (err: any, statusCode: number, Runs: TestInterfaces.TestRun[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2244,7 +2206,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestRun>();
 
-        this.TestApi.updateTestRun(runUpdateModel, project, runId, (err: any, statusCode: number, Run: TestInterfaces.TestRun) => {
+        this.api.updateTestRun(runUpdateModel, project, runId, (err: any, statusCode: number, Run: TestInterfaces.TestRun) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2272,7 +2234,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.SuiteTestCase[]>();
 
-        this.TestApi.addTestCasesToSuite(project, planId, suiteId, testCaseIds, (err: any, statusCode: number, Suites: TestInterfaces.SuiteTestCase[]) => {
+        this.api.addTestCasesToSuite(project, planId, suiteId, testCaseIds, (err: any, statusCode: number, Suites: TestInterfaces.SuiteTestCase[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2300,7 +2262,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.SuiteTestCase>();
 
-        this.TestApi.getTestCaseById(project, planId, suiteId, testCaseIds, (err: any, statusCode: number, Suite: TestInterfaces.SuiteTestCase) => {
+        this.api.getTestCaseById(project, planId, suiteId, testCaseIds, (err: any, statusCode: number, Suite: TestInterfaces.SuiteTestCase) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2326,7 +2288,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.SuiteTestCase[]>();
 
-        this.TestApi.getTestCases(project, planId, suiteId, (err: any, statusCode: number, Suites: TestInterfaces.SuiteTestCase[]) => {
+        this.api.getTestCases(project, planId, suiteId, (err: any, statusCode: number, Suites: TestInterfaces.SuiteTestCase[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2354,7 +2316,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestSuite[]>();
 
-        this.TestApi.createTestSuite(testSuite, project, planId, suiteId, (err: any, statusCode: number, Suite: TestInterfaces.TestSuite[]) => {
+        this.api.createTestSuite(testSuite, project, planId, suiteId, (err: any, statusCode: number, Suite: TestInterfaces.TestSuite[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2382,7 +2344,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestSuite>();
 
-        this.TestApi.getTestSuiteById(project, planId, suiteId, includeChildSuites, (err: any, statusCode: number, Suite: TestInterfaces.TestSuite) => {
+        this.api.getTestSuiteById(project, planId, suiteId, includeChildSuites, (err: any, statusCode: number, Suite: TestInterfaces.TestSuite) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2412,7 +2374,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestSuite[]>();
 
-        this.TestApi.getTestSuitesForPlan(project, planId, includeSuites, skip, top, (err: any, statusCode: number, Suites: TestInterfaces.TestSuite[]) => {
+        this.api.getTestSuitesForPlan(project, planId, includeSuites, skip, top, (err: any, statusCode: number, Suites: TestInterfaces.TestSuite[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2440,7 +2402,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestSuite>();
 
-        this.TestApi.updateTestSuite(suiteUpdateModel, project, planId, suiteId, (err: any, statusCode: number, Suite: TestInterfaces.TestSuite) => {
+        this.api.updateTestSuite(suiteUpdateModel, project, planId, suiteId, (err: any, statusCode: number, Suite: TestInterfaces.TestSuite) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2462,7 +2424,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestSuite[]>();
 
-        this.TestApi.getSuitesByTestCaseId(testCaseId, (err: any, statusCode: number, Suites: TestInterfaces.TestSuite[]) => {
+        this.api.getSuitesByTestCaseId(testCaseId, (err: any, statusCode: number, Suites: TestInterfaces.TestSuite[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2486,7 +2448,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<number>();
 
-        this.TestApi.createTestSettings(testSettings, project, (err: any, statusCode: number, TestSetting: number) => {
+        this.api.createTestSettings(testSettings, project, (err: any, statusCode: number, TestSetting: number) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2510,7 +2472,7 @@ export class QTestApi implements IQTestApi {
     
         var deferred = Q.defer<TestInterfaces.TestSettings>();
 
-        this.TestApi.getTestSettingsById(project, testSettingsId, (err: any, statusCode: number, TestSetting: TestInterfaces.TestSettings) => {
+        this.api.getTestSettingsById(project, testSettingsId, (err: any, statusCode: number, TestSetting: TestInterfaces.TestSettings) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);

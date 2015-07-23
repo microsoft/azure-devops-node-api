@@ -20,17 +20,12 @@ import Q = require('q');
 import restm = require('./restclient');
 import httpm = require('./httpclient');
 import vsom = require('./VsoClient');
+import basem = require('./ClientApiBases');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 import WorkItemTrackingInterfaces = require("./interfaces/WorkItemTrackingInterfaces");
 
-export interface IWorkItemTrackingApi {
-    baseUrl: string;
-    userAgent: string;
-    httpClient: VsoBaseInterfaces.IHttpClient;
-    restClient: VsoBaseInterfaces.IRestClient;
-    vsoClient: vsom.VsoClient;
-    connect(onResult: (err: any, statusCode: number, obj: any) => void): void;
+export interface IWorkItemTrackingApi extends basem.ClientApiBase {
     createAttachment(contentStream: NodeJS.ReadableStream, customHeaders: any, content: string, fileName: string, uploadType: string, onResult: (err: any, statusCode: number, attachment: WorkItemTrackingInterfaces.AttachmentReference) => void): void;
     getAttachmentContent(id: string, fileName: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     getAttachmentZip(id: string, fileName: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
@@ -74,8 +69,7 @@ export interface IWorkItemTrackingApi {
     updateWorkItemTypeDefinition(updateModel: WorkItemTrackingInterfaces.WorkItemTypeTemplateUpdateModel, project: string, onResult: (err: any, statusCode: number, workItemTypeTemplate: WorkItemTrackingInterfaces.ProvisioningResult) => void): void;
 }
 
-export interface IQWorkItemTrackingApi {
-    connect(): Q.Promise<void>;
+export interface IQWorkItemTrackingApi extends basem.QClientApiBase {
     
     createAttachment(contentStream: NodeJS.ReadableStream, customHeaders: any, content: string, fileName?: string,  uploadType?: string): Q.Promise<WorkItemTrackingInterfaces.AttachmentReference>;
     getRootNodes(project: string,  depth?: number): Q.Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode[]>;
@@ -115,27 +109,10 @@ export interface IQWorkItemTrackingApi {
     updateWorkItemTypeDefinition(updateModel: WorkItemTrackingInterfaces.WorkItemTypeTemplateUpdateModel,  project?: string): Q.Promise<WorkItemTrackingInterfaces.ProvisioningResult>;
 }
 
-export class WorkItemTrackingApi implements IWorkItemTrackingApi {
-    baseUrl: string;
-    userAgent: string;
-    httpClient: httpm.HttpClient;
-    restClient: restm.RestClient;
-    vsoClient: vsom.VsoClient
+export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkItemTrackingApi {
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        this.baseUrl = baseUrl;
-        this.httpClient = new httpm.HttpClient('node-WorkItemTracking-api', handlers);
-        this.restClient = new restm.RestClient(this.httpClient);
-        this.vsoClient = new vsom.VsoClient(baseUrl, this.restClient);
-    }
-
-    setUserAgent(userAgent: string) {
-        this.userAgent = userAgent;
-        this.httpClient.userAgent = userAgent;
-    }
-    
-    connect(onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this.restClient.getJson(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, onResult);
+        super(baseUrl, handlers, 'node-WorkItemTracking-api');
     }
 
     /**
@@ -1357,27 +1334,12 @@ export class WorkItemTrackingApi implements IWorkItemTrackingApi {
 
 }
 
-export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
-    WorkItemTrackingApi: IWorkItemTrackingApi;
+export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWorkItemTrackingApi {
+    
+    api: WorkItemTrackingApi;
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        this.WorkItemTrackingApi = new WorkItemTrackingApi(baseUrl, handlers);
-    }
-
-    public connect(): Q.Promise<any> {
-        var defer = Q.defer();
-
-        this.WorkItemTrackingApi.connect((err: any, statusCode: number, obj: any) => {
-            if (err) {
-                err.statusCode = statusCode;
-                defer.reject(err);
-            }
-            else {
-                defer.resolve(obj);
-            }
-        });
-
-        return defer.promise;       
+        super(baseUrl, handlers, WorkItemTrackingApi);
     }
 
     
@@ -1398,7 +1360,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.AttachmentReference>();
 
-        this.WorkItemTrackingApi.createAttachment(contentStream, customHeaders, content, fileName, uploadType, (err: any, statusCode: number, attachment: WorkItemTrackingInterfaces.AttachmentReference) => {
+        this.api.createAttachment(contentStream, customHeaders, content, fileName, uploadType, (err: any, statusCode: number, attachment: WorkItemTrackingInterfaces.AttachmentReference) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1422,7 +1384,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemClassificationNode[]>();
 
-        this.WorkItemTrackingApi.getRootNodes(project, depth, (err: any, statusCode: number, classificationNodes: WorkItemTrackingInterfaces.WorkItemClassificationNode[]) => {
+        this.api.getRootNodes(project, depth, (err: any, statusCode: number, classificationNodes: WorkItemTrackingInterfaces.WorkItemClassificationNode[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1450,7 +1412,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemClassificationNode>();
 
-        this.WorkItemTrackingApi.createOrUpdateClassificationNode(postedNode, project, structureGroup, path, (err: any, statusCode: number, classificationNode: WorkItemTrackingInterfaces.WorkItemClassificationNode) => {
+        this.api.createOrUpdateClassificationNode(postedNode, project, structureGroup, path, (err: any, statusCode: number, classificationNode: WorkItemTrackingInterfaces.WorkItemClassificationNode) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1478,7 +1440,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemClassificationNode>();
 
-        this.WorkItemTrackingApi.getClassificationNode(project, structureGroup, path, depth, (err: any, statusCode: number, classificationNode: WorkItemTrackingInterfaces.WorkItemClassificationNode) => {
+        this.api.getClassificationNode(project, structureGroup, path, depth, (err: any, statusCode: number, classificationNode: WorkItemTrackingInterfaces.WorkItemClassificationNode) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1506,7 +1468,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemClassificationNode>();
 
-        this.WorkItemTrackingApi.updateClassificationNode(postedNode, project, structureGroup, path, (err: any, statusCode: number, classificationNode: WorkItemTrackingInterfaces.WorkItemClassificationNode) => {
+        this.api.updateClassificationNode(postedNode, project, structureGroup, path, (err: any, statusCode: number, classificationNode: WorkItemTrackingInterfaces.WorkItemClassificationNode) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1528,7 +1490,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemField>();
 
-        this.WorkItemTrackingApi.getField(field, (err: any, statusCode: number, field: WorkItemTrackingInterfaces.WorkItemField) => {
+        this.api.getField(field, (err: any, statusCode: number, field: WorkItemTrackingInterfaces.WorkItemField) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1548,7 +1510,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemField[]>();
 
-        this.WorkItemTrackingApi.getFields((err: any, statusCode: number, fields: WorkItemTrackingInterfaces.WorkItemField[]) => {
+        this.api.getFields((err: any, statusCode: number, fields: WorkItemTrackingInterfaces.WorkItemField[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1576,7 +1538,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemHistory[]>();
 
-        this.WorkItemTrackingApi.getHistory(id, top, skip, (err: any, statusCode: number, history: WorkItemTrackingInterfaces.WorkItemHistory[]) => {
+        this.api.getHistory(id, top, skip, (err: any, statusCode: number, history: WorkItemTrackingInterfaces.WorkItemHistory[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1602,7 +1564,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemHistory>();
 
-        this.WorkItemTrackingApi.getHistoryById(id, revisionNumber, (err: any, statusCode: number, history: WorkItemTrackingInterfaces.WorkItemHistory) => {
+        this.api.getHistoryById(id, revisionNumber, (err: any, statusCode: number, history: WorkItemTrackingInterfaces.WorkItemHistory) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1630,7 +1592,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.QueryHierarchyItem>();
 
-        this.WorkItemTrackingApi.createQuery(postedQuery, project, query, (err: any, statusCode: number, querie: WorkItemTrackingInterfaces.QueryHierarchyItem) => {
+        this.api.createQuery(postedQuery, project, query, (err: any, statusCode: number, querie: WorkItemTrackingInterfaces.QueryHierarchyItem) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1660,7 +1622,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.QueryHierarchyItem[]>();
 
-        this.WorkItemTrackingApi.getQueries(project, expand, depth, includeDeleted, (err: any, statusCode: number, queries: WorkItemTrackingInterfaces.QueryHierarchyItem[]) => {
+        this.api.getQueries(project, expand, depth, includeDeleted, (err: any, statusCode: number, queries: WorkItemTrackingInterfaces.QueryHierarchyItem[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1692,7 +1654,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.QueryHierarchyItem>();
 
-        this.WorkItemTrackingApi.getQuery(project, query, expand, depth, includeDeleted, (err: any, statusCode: number, querie: WorkItemTrackingInterfaces.QueryHierarchyItem) => {
+        this.api.getQuery(project, query, expand, depth, includeDeleted, (err: any, statusCode: number, querie: WorkItemTrackingInterfaces.QueryHierarchyItem) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1720,7 +1682,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.QueryHierarchyItem>();
 
-        this.WorkItemTrackingApi.updateQuery(queryUpdate, project, query, undeleteDescendants, (err: any, statusCode: number, querie: WorkItemTrackingInterfaces.QueryHierarchyItem) => {
+        this.api.updateQuery(queryUpdate, project, query, undeleteDescendants, (err: any, statusCode: number, querie: WorkItemTrackingInterfaces.QueryHierarchyItem) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1748,7 +1710,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItem>();
 
-        this.WorkItemTrackingApi.getRevision(id, revisionNumber, expand, (err: any, statusCode: number, revision: WorkItemTrackingInterfaces.WorkItem) => {
+        this.api.getRevision(id, revisionNumber, expand, (err: any, statusCode: number, revision: WorkItemTrackingInterfaces.WorkItem) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1778,7 +1740,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItem[]>();
 
-        this.WorkItemTrackingApi.getRevisions(id, top, skip, expand, (err: any, statusCode: number, revisions: WorkItemTrackingInterfaces.WorkItem[]) => {
+        this.api.getRevisions(id, top, skip, expand, (err: any, statusCode: number, revisions: WorkItemTrackingInterfaces.WorkItem[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1804,7 +1766,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemUpdate>();
 
-        this.WorkItemTrackingApi.getUpdate(id, updateNumber, (err: any, statusCode: number, update: WorkItemTrackingInterfaces.WorkItemUpdate) => {
+        this.api.getUpdate(id, updateNumber, (err: any, statusCode: number, update: WorkItemTrackingInterfaces.WorkItemUpdate) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1832,7 +1794,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemUpdate[]>();
 
-        this.WorkItemTrackingApi.getUpdates(id, top, skip, (err: any, statusCode: number, updates: WorkItemTrackingInterfaces.WorkItemUpdate[]) => {
+        this.api.getUpdates(id, top, skip, (err: any, statusCode: number, updates: WorkItemTrackingInterfaces.WorkItemUpdate[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1858,7 +1820,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemQueryResult>();
 
-        this.WorkItemTrackingApi.queryByWiql(wiql, project, (err: any, statusCode: number, wiql: WorkItemTrackingInterfaces.WorkItemQueryResult) => {
+        this.api.queryByWiql(wiql, project, (err: any, statusCode: number, wiql: WorkItemTrackingInterfaces.WorkItemQueryResult) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1884,7 +1846,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemQueryResult>();
 
-        this.WorkItemTrackingApi.queryById(id, project, (err: any, statusCode: number, wiql: WorkItemTrackingInterfaces.WorkItemQueryResult) => {
+        this.api.queryById(id, project, (err: any, statusCode: number, wiql: WorkItemTrackingInterfaces.WorkItemQueryResult) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1908,7 +1870,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch>();
 
-        this.WorkItemTrackingApi.getReportingLinks(project, watermark, (err: any, statusCode: number, workItemLink: WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch) => {
+        this.api.getReportingLinks(project, watermark, (err: any, statusCode: number, workItemLink: WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1932,7 +1894,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemRelationType>();
 
-        this.WorkItemTrackingApi.getRelationType(relation, (err: any, statusCode: number, workItemRelationType: WorkItemTrackingInterfaces.WorkItemRelationType) => {
+        this.api.getRelationType(relation, (err: any, statusCode: number, workItemRelationType: WorkItemTrackingInterfaces.WorkItemRelationType) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1952,7 +1914,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemRelationType[]>();
 
-        this.WorkItemTrackingApi.getRelationTypes((err: any, statusCode: number, workItemRelationTypes: WorkItemTrackingInterfaces.WorkItemRelationType[]) => {
+        this.api.getRelationTypes((err: any, statusCode: number, workItemRelationTypes: WorkItemTrackingInterfaces.WorkItemRelationType[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1978,7 +1940,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>();
 
-        this.WorkItemTrackingApi.readReportingRevisionsGet(project, fields, watermark, (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => {
+        this.api.readReportingRevisionsGet(project, fields, watermark, (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2004,7 +1966,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>();
 
-        this.WorkItemTrackingApi.readReportingRevisionsPost(fieldsList, project, watermark, (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => {
+        this.api.readReportingRevisionsPost(fieldsList, project, watermark, (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2034,7 +1996,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItem>();
 
-        this.WorkItemTrackingApi.getWorkItem(id, fields, asOf, expand, (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => {
+        this.api.getWorkItem(id, fields, asOf, expand, (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2064,7 +2026,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItem[]>();
 
-        this.WorkItemTrackingApi.getWorkItems(ids, fields, asOf, expand, (err: any, statusCode: number, workItems: WorkItemTrackingInterfaces.WorkItem[]) => {
+        this.api.getWorkItems(ids, fields, asOf, expand, (err: any, statusCode: number, workItems: WorkItemTrackingInterfaces.WorkItem[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2092,7 +2054,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItem>();
 
-        this.WorkItemTrackingApi.updateWorkItem(document, id, validateOnly, bypassRules, (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => {
+        this.api.updateWorkItem(document, id, validateOnly, bypassRules, (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2124,7 +2086,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItem>();
 
-        this.WorkItemTrackingApi.getWorkItemTemplate(project, type, fields, asOf, expand, (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => {
+        this.api.getWorkItemTemplate(project, type, fields, asOf, expand, (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2154,7 +2116,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItem>();
 
-        this.WorkItemTrackingApi.updateWorkItemTemplate(document, project, type, validateOnly, bypassRules, (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => {
+        this.api.updateWorkItemTemplate(document, project, type, validateOnly, bypassRules, (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2176,7 +2138,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemTypeCategory[]>();
 
-        this.WorkItemTrackingApi.getWorkItemTypeCategories(project, (err: any, statusCode: number, workItemTypeCategories: WorkItemTrackingInterfaces.WorkItemTypeCategory[]) => {
+        this.api.getWorkItemTypeCategories(project, (err: any, statusCode: number, workItemTypeCategories: WorkItemTrackingInterfaces.WorkItemTypeCategory[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2202,7 +2164,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemTypeCategory>();
 
-        this.WorkItemTrackingApi.getWorkItemTypeCategory(project, category, (err: any, statusCode: number, workItemTypeCategorie: WorkItemTrackingInterfaces.WorkItemTypeCategory) => {
+        this.api.getWorkItemTypeCategory(project, category, (err: any, statusCode: number, workItemTypeCategorie: WorkItemTrackingInterfaces.WorkItemTypeCategory) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2228,7 +2190,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemType>();
 
-        this.WorkItemTrackingApi.getWorkItemType(project, type, (err: any, statusCode: number, workItemType: WorkItemTrackingInterfaces.WorkItemType) => {
+        this.api.getWorkItemType(project, type, (err: any, statusCode: number, workItemType: WorkItemTrackingInterfaces.WorkItemType) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2250,7 +2212,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemType[]>();
 
-        this.WorkItemTrackingApi.getWorkItemTypes(project, (err: any, statusCode: number, workItemTypes: WorkItemTrackingInterfaces.WorkItemType[]) => {
+        this.api.getWorkItemTypes(project, (err: any, statusCode: number, workItemTypes: WorkItemTrackingInterfaces.WorkItemType[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2278,7 +2240,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.FieldDependentRule>();
 
-        this.WorkItemTrackingApi.getDependentFields(project, type, field, (err: any, statusCode: number, workItemTypesField: WorkItemTrackingInterfaces.FieldDependentRule) => {
+        this.api.getDependentFields(project, type, field, (err: any, statusCode: number, workItemTypesField: WorkItemTrackingInterfaces.FieldDependentRule) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2306,7 +2268,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemTypeTemplate>();
 
-        this.WorkItemTrackingApi.exportWorkItemTypeDefinition(project, type, exportGlobalLists, (err: any, statusCode: number, workItemTypeTemplate: WorkItemTrackingInterfaces.WorkItemTypeTemplate) => {
+        this.api.exportWorkItemTypeDefinition(project, type, exportGlobalLists, (err: any, statusCode: number, workItemTypeTemplate: WorkItemTrackingInterfaces.WorkItemTypeTemplate) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2332,7 +2294,7 @@ export class QWorkItemTrackingApi implements IQWorkItemTrackingApi {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.ProvisioningResult>();
 
-        this.WorkItemTrackingApi.updateWorkItemTypeDefinition(updateModel, project, (err: any, statusCode: number, workItemTypeTemplate: WorkItemTrackingInterfaces.ProvisioningResult) => {
+        this.api.updateWorkItemTypeDefinition(updateModel, project, (err: any, statusCode: number, workItemTypeTemplate: WorkItemTrackingInterfaces.ProvisioningResult) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);

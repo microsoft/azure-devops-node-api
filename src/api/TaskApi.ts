@@ -20,17 +20,12 @@ import Q = require('q');
 import restm = require('./restclient');
 import httpm = require('./httpclient');
 import vsom = require('./VsoClient');
+import basem = require('./ClientApiBases');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import TaskAgentInterfaces = require("./interfaces/TaskAgentInterfaces");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
-export interface ITaskApi {
-    baseUrl: string;
-    userAgent: string;
-    httpClient: VsoBaseInterfaces.IHttpClient;
-    restClient: VsoBaseInterfaces.IRestClient;
-    vsoClient: vsom.VsoClient;
-    connect(onResult: (err: any, statusCode: number, obj: any) => void): void;
+export interface ITaskApi extends basem.ClientApiBase {
     postEvent(eventData: TaskAgentInterfaces.JobEvent, scopeIdentifier: string, hubName: string, planId: string, onResult: (err: any, statusCode: number) => void): void;
     postLines(lines: VSSInterfaces.VssJsonCollectionWrapperV<string[]>, scopeIdentifier: string, hubName: string, planId: string, timelineId: string, recordId: string, onResult: (err: any, statusCode: number) => void): void;
     appendLog(contentStream: NodeJS.ReadableStream, customHeaders: any, content: string, scopeIdentifier: string, hubName: string, planId: string, logId: number, onResult: (err: any, statusCode: number, log: TaskAgentInterfaces.TaskLog) => void): void;
@@ -46,8 +41,7 @@ export interface ITaskApi {
     getTimelines(scopeIdentifier: string, hubName: string, planId: string, onResult: (err: any, statusCode: number, timelines: TaskAgentInterfaces.Timeline[]) => void): void;
 }
 
-export interface IQTaskApi {
-    connect(): Q.Promise<void>;
+export interface IQTaskApi extends basem.QClientApiBase {
     
     appendLog(contentStream: NodeJS.ReadableStream, customHeaders: any, content: string, scopeIdentifier: string, hubName: string, planId: string,  logId: number): Q.Promise<TaskAgentInterfaces.TaskLog>;
     createLog(log: TaskAgentInterfaces.TaskLog, scopeIdentifier: string, hubName: string,  planId: string): Q.Promise<TaskAgentInterfaces.TaskLog>;
@@ -61,27 +55,10 @@ export interface IQTaskApi {
     getTimelines(scopeIdentifier: string, hubName: string,  planId: string): Q.Promise<TaskAgentInterfaces.Timeline[]>;
 }
 
-export class TaskApi implements ITaskApi {
-    baseUrl: string;
-    userAgent: string;
-    httpClient: httpm.HttpClient;
-    restClient: restm.RestClient;
-    vsoClient: vsom.VsoClient
+export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        this.baseUrl = baseUrl;
-        this.httpClient = new httpm.HttpClient('node-Task-api', handlers);
-        this.restClient = new restm.RestClient(this.httpClient);
-        this.vsoClient = new vsom.VsoClient(baseUrl, this.restClient);
-    }
-
-    setUserAgent(userAgent: string) {
-        this.userAgent = userAgent;
-        this.httpClient.userAgent = userAgent;
-    }
-    
-    connect(onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this.restClient.getJson(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, onResult);
+        super(baseUrl, handlers, 'node-Task-api');
     }
 
     /**
@@ -512,27 +489,12 @@ export class TaskApi implements ITaskApi {
 
 }
 
-export class QTaskApi implements IQTaskApi {
-    TaskApi: ITaskApi;
+export class QTaskApi extends basem.QClientApiBase implements IQTaskApi {
+    
+    api: TaskApi;
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        this.TaskApi = new TaskApi(baseUrl, handlers);
-    }
-
-    public connect(): Q.Promise<any> {
-        var defer = Q.defer();
-
-        this.TaskApi.connect((err: any, statusCode: number, obj: any) => {
-            if (err) {
-                err.statusCode = statusCode;
-                defer.reject(err);
-            }
-            else {
-                defer.resolve(obj);
-            }
-        });
-
-        return defer.promise;       
+        super(baseUrl, handlers, TaskApi);
     }
 
     
@@ -555,7 +517,7 @@ export class QTaskApi implements IQTaskApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskLog>();
 
-        this.TaskApi.appendLog(contentStream, customHeaders, content, scopeIdentifier, hubName, planId, logId, (err: any, statusCode: number, log: TaskAgentInterfaces.TaskLog) => {
+        this.api.appendLog(contentStream, customHeaders, content, scopeIdentifier, hubName, planId, logId, (err: any, statusCode: number, log: TaskAgentInterfaces.TaskLog) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -583,7 +545,7 @@ export class QTaskApi implements IQTaskApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskLog>();
 
-        this.TaskApi.createLog(log, scopeIdentifier, hubName, planId, (err: any, statusCode: number, log: TaskAgentInterfaces.TaskLog) => {
+        this.api.createLog(log, scopeIdentifier, hubName, planId, (err: any, statusCode: number, log: TaskAgentInterfaces.TaskLog) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -615,7 +577,7 @@ export class QTaskApi implements IQTaskApi {
     
         var deferred = Q.defer<string[]>();
 
-        this.TaskApi.getLog(scopeIdentifier, hubName, planId, logId, startLine, endLine, (err: any, statusCode: number, logs: string[]) => {
+        this.api.getLog(scopeIdentifier, hubName, planId, logId, startLine, endLine, (err: any, statusCode: number, logs: string[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -641,7 +603,7 @@ export class QTaskApi implements IQTaskApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskLog[]>();
 
-        this.TaskApi.getLogs(scopeIdentifier, hubName, planId, (err: any, statusCode: number, logs: TaskAgentInterfaces.TaskLog[]) => {
+        this.api.getLogs(scopeIdentifier, hubName, planId, (err: any, statusCode: number, logs: TaskAgentInterfaces.TaskLog[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -667,7 +629,7 @@ export class QTaskApi implements IQTaskApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskOrchestrationPlan>();
 
-        this.TaskApi.getPlan(scopeIdentifier, hubName, planId, (err: any, statusCode: number, plan: TaskAgentInterfaces.TaskOrchestrationPlan) => {
+        this.api.getPlan(scopeIdentifier, hubName, planId, (err: any, statusCode: number, plan: TaskAgentInterfaces.TaskOrchestrationPlan) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -697,7 +659,7 @@ export class QTaskApi implements IQTaskApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TimelineRecord[]>();
 
-        this.TaskApi.getRecords(scopeIdentifier, hubName, planId, timelineId, changeId, (err: any, statusCode: number, records: TaskAgentInterfaces.TimelineRecord[]) => {
+        this.api.getRecords(scopeIdentifier, hubName, planId, timelineId, changeId, (err: any, statusCode: number, records: TaskAgentInterfaces.TimelineRecord[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -727,7 +689,7 @@ export class QTaskApi implements IQTaskApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TimelineRecord[]>();
 
-        this.TaskApi.updateRecords(records, scopeIdentifier, hubName, planId, timelineId, (err: any, statusCode: number, record: TaskAgentInterfaces.TimelineRecord[]) => {
+        this.api.updateRecords(records, scopeIdentifier, hubName, planId, timelineId, (err: any, statusCode: number, record: TaskAgentInterfaces.TimelineRecord[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -755,7 +717,7 @@ export class QTaskApi implements IQTaskApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.Timeline>();
 
-        this.TaskApi.createTimeline(timeline, scopeIdentifier, hubName, planId, (err: any, statusCode: number, timeline: TaskAgentInterfaces.Timeline) => {
+        this.api.createTimeline(timeline, scopeIdentifier, hubName, planId, (err: any, statusCode: number, timeline: TaskAgentInterfaces.Timeline) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -787,7 +749,7 @@ export class QTaskApi implements IQTaskApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.Timeline>();
 
-        this.TaskApi.getTimeline(scopeIdentifier, hubName, planId, timelineId, changeId, includeRecords, (err: any, statusCode: number, timeline: TaskAgentInterfaces.Timeline) => {
+        this.api.getTimeline(scopeIdentifier, hubName, planId, timelineId, changeId, includeRecords, (err: any, statusCode: number, timeline: TaskAgentInterfaces.Timeline) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -813,7 +775,7 @@ export class QTaskApi implements IQTaskApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.Timeline[]>();
 
-        this.TaskApi.getTimelines(scopeIdentifier, hubName, planId, (err: any, statusCode: number, timelines: TaskAgentInterfaces.Timeline[]) => {
+        this.api.getTimelines(scopeIdentifier, hubName, planId, (err: any, statusCode: number, timelines: TaskAgentInterfaces.Timeline[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);

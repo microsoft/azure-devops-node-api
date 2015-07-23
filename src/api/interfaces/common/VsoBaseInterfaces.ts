@@ -59,6 +59,10 @@ export interface IHttpResponse {
     headers: any;
 }
 
+export interface IQCoreApi {
+    connect(): Q.Promise<void>;
+}
+
 export interface IHttpClient {
     get(verb: string, requestUrl: string, headers: any, onResult: (err: any, res: IHttpResponse, contents: string) => void): void;
     send(verb: string, requestUrl: string, objs: any, headers: any, onResult: (err: any, res: IHttpResponse, contents: string) => void): void;
