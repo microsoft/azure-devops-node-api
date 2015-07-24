@@ -20,17 +20,12 @@ import Q = require('q');
 import restm = require('./restclient');
 import httpm = require('./httpclient');
 import vsom = require('./VsoClient');
+import basem = require('./ClientApiBases');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import TaskAgentInterfaces = require("./interfaces/TaskAgentInterfaces");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
-export interface ITaskAgentApi {
-    baseUrl: string;
-    userAgent: string;
-    httpClient: VsoBaseInterfaces.IHttpClient;
-    restClient: VsoBaseInterfaces.IRestClient;
-    vsoClient: vsom.VsoClient;
-    connect(onResult: (err: any, statusCode: number, obj: any) => void): void;
+export interface ITaskAgentApi extends basem.ClientApiBase {
     createAgent(agent: TaskAgentInterfaces.TaskAgent, poolId: number, onResult: (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => void): void;
     deleteAgent(poolId: number, agentId: number, onResult: (err: any, statusCode: number) => void): void;
     getAgent(poolId: number, agentId: number, includeCapabilities: boolean, propertyFilters: string, onResult: (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => void): void;
@@ -67,8 +62,7 @@ export interface ITaskAgentApi {
     updateUserCapabilities(userCapabilities: { [key: string] : string; }, poolId: number, agentId: number, onResult: (err: any, statusCode: number, usercapabilitie: TaskAgentInterfaces.TaskAgent) => void): void;
 }
 
-export interface IQTaskAgentApi {
-    connect(): Q.Promise<void>;
+export interface IQTaskAgentApi extends basem.QClientApiBase {
     
     createAgent(agent: TaskAgentInterfaces.TaskAgent,  poolId: number): Q.Promise<TaskAgentInterfaces.TaskAgent>;
     getAgent(poolId: number, agentId: number, includeCapabilities?: boolean,  propertyFilters?: string): Q.Promise<TaskAgentInterfaces.TaskAgent>;
@@ -94,27 +88,10 @@ export interface IQTaskAgentApi {
     updateUserCapabilities(userCapabilities: { [key: string] : string; }, poolId: number,  agentId: number): Q.Promise<TaskAgentInterfaces.TaskAgent>;
 }
 
-export class TaskAgentApi implements ITaskAgentApi {
-    baseUrl: string;
-    userAgent: string;
-    httpClient: httpm.HttpClient;
-    restClient: restm.RestClient;
-    vsoClient: vsom.VsoClient
+export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        this.baseUrl = baseUrl;
-        this.httpClient = new httpm.HttpClient('node-TaskAgent-api', handlers);
-        this.restClient = new restm.RestClient(this.httpClient);
-        this.vsoClient = new vsom.VsoClient(baseUrl, this.restClient);
-    }
-
-    setUserAgent(userAgent: string) {
-        this.userAgent = userAgent;
-        this.httpClient.userAgent = userAgent;
-    }
-    
-    connect(onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this.restClient.getJson(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, onResult);
+        super(baseUrl, handlers, 'node-TaskAgent-api');
     }
 
     /**
@@ -1022,27 +999,12 @@ export class TaskAgentApi implements ITaskAgentApi {
 
 }
 
-export class QTaskAgentApi implements IQTaskAgentApi {
-    TaskAgentApi: ITaskAgentApi;
+export class QTaskAgentApi extends basem.QClientApiBase implements IQTaskAgentApi {
+    
+    api: TaskAgentApi;
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        this.TaskAgentApi = new TaskAgentApi(baseUrl, handlers);
-    }
-
-    public connect(): Q.Promise<any> {
-        var defer = Q.defer();
-
-        this.TaskAgentApi.connect((err: any, statusCode: number, obj: any) => {
-            if (err) {
-                err.statusCode = statusCode;
-                defer.reject(err);
-            }
-            else {
-                defer.resolve(obj);
-            }
-        });
-
-        return defer.promise;       
+        super(baseUrl, handlers, TaskAgentApi);
     }
 
     
@@ -1057,7 +1019,7 @@ export class QTaskAgentApi implements IQTaskAgentApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskAgent>();
 
-        this.TaskAgentApi.createAgent(agent, poolId, (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => {
+        this.api.createAgent(agent, poolId, (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1085,7 +1047,7 @@ export class QTaskAgentApi implements IQTaskAgentApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskAgent>();
 
-        this.TaskAgentApi.getAgent(poolId, agentId, includeCapabilities, propertyFilters, (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => {
+        this.api.getAgent(poolId, agentId, includeCapabilities, propertyFilters, (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1115,7 +1077,7 @@ export class QTaskAgentApi implements IQTaskAgentApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskAgent[]>();
 
-        this.TaskAgentApi.getAgents(poolId, agentName, includeCapabilities, propertyFilters, demands, (err: any, statusCode: number, agents: TaskAgentInterfaces.TaskAgent[]) => {
+        this.api.getAgents(poolId, agentName, includeCapabilities, propertyFilters, demands, (err: any, statusCode: number, agents: TaskAgentInterfaces.TaskAgent[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1141,7 +1103,7 @@ export class QTaskAgentApi implements IQTaskAgentApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskAgent>();
 
-        this.TaskAgentApi.replaceAgent(agent, poolId, agentId, (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => {
+        this.api.replaceAgent(agent, poolId, agentId, (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1167,7 +1129,7 @@ export class QTaskAgentApi implements IQTaskAgentApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskAgent>();
 
-        this.TaskAgentApi.updateAgent(agent, poolId, agentId, (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => {
+        this.api.updateAgent(agent, poolId, agentId, (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1191,7 +1153,7 @@ export class QTaskAgentApi implements IQTaskAgentApi {
     
         var deferred = Q.defer<string[]>();
 
-        this.TaskAgentApi.queryEndpoint(endpoint, (err: any, statusCode: number, endpoint: string[]) => {
+        this.api.queryEndpoint(endpoint, (err: any, statusCode: number, endpoint: string[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1215,7 +1177,7 @@ export class QTaskAgentApi implements IQTaskAgentApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskAgentJobRequest>();
 
-        this.TaskAgentApi.getRequest(poolId, requestId, (err: any, statusCode: number, jobrequest: TaskAgentInterfaces.TaskAgentJobRequest) => {
+        this.api.getRequest(poolId, requestId, (err: any, statusCode: number, jobrequest: TaskAgentInterfaces.TaskAgentJobRequest) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1239,7 +1201,7 @@ export class QTaskAgentApi implements IQTaskAgentApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskAgentJobRequest>();
 
-        this.TaskAgentApi.queueRequest(request, poolId, (err: any, statusCode: number, jobrequest: TaskAgentInterfaces.TaskAgentJobRequest) => {
+        this.api.queueRequest(request, poolId, (err: any, statusCode: number, jobrequest: TaskAgentInterfaces.TaskAgentJobRequest) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1267,7 +1229,7 @@ export class QTaskAgentApi implements IQTaskAgentApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskAgentJobRequest>();
 
-        this.TaskAgentApi.updateRequest(request, poolId, requestId, lockToken, (err: any, statusCode: number, jobrequest: TaskAgentInterfaces.TaskAgentJobRequest) => {
+        this.api.updateRequest(request, poolId, requestId, lockToken, (err: any, statusCode: number, jobrequest: TaskAgentInterfaces.TaskAgentJobRequest) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1293,7 +1255,7 @@ export class QTaskAgentApi implements IQTaskAgentApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskAgentMessage>();
 
-        this.TaskAgentApi.getMessage(poolId, sessionId, lastMessageId, (err: any, statusCode: number, message: TaskAgentInterfaces.TaskAgentMessage) => {
+        this.api.getMessage(poolId, sessionId, lastMessageId, (err: any, statusCode: number, message: TaskAgentInterfaces.TaskAgentMessage) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1315,7 +1277,7 @@ export class QTaskAgentApi implements IQTaskAgentApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskAgentPool>();
 
-        this.TaskAgentApi.createPool(pool, (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool) => {
+        this.api.createPool(pool, (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1339,7 +1301,7 @@ export class QTaskAgentApi implements IQTaskAgentApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskAgentPool>();
 
-        this.TaskAgentApi.getPool(poolId, properties, (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool) => {
+        this.api.getPool(poolId, properties, (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1363,7 +1325,7 @@ export class QTaskAgentApi implements IQTaskAgentApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskAgentPool[]>();
 
-        this.TaskAgentApi.getPools(poolName, properties, (err: any, statusCode: number, pools: TaskAgentInterfaces.TaskAgentPool[]) => {
+        this.api.getPools(poolName, properties, (err: any, statusCode: number, pools: TaskAgentInterfaces.TaskAgentPool[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1387,7 +1349,7 @@ export class QTaskAgentApi implements IQTaskAgentApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskAgentPool>();
 
-        this.TaskAgentApi.updatePool(pool, poolId, (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool) => {
+        this.api.updatePool(pool, poolId, (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1409,7 +1371,7 @@ export class QTaskAgentApi implements IQTaskAgentApi {
     
         var deferred = Q.defer<VSSInterfaces.IdentityRef[]>();
 
-        this.TaskAgentApi.getAgentPoolRoles(poolId, (err: any, statusCode: number, roles: VSSInterfaces.IdentityRef[]) => {
+        this.api.getAgentPoolRoles(poolId, (err: any, statusCode: number, roles: VSSInterfaces.IdentityRef[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1435,7 +1397,7 @@ export class QTaskAgentApi implements IQTaskAgentApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.ServiceEndpoint>();
 
-        this.TaskAgentApi.createServiceEndpoint(endpoint, scopeIdentifier, endpointId, (err: any, statusCode: number, serviceendpoint: TaskAgentInterfaces.ServiceEndpoint) => {
+        this.api.createServiceEndpoint(endpoint, scopeIdentifier, endpointId, (err: any, statusCode: number, serviceendpoint: TaskAgentInterfaces.ServiceEndpoint) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1459,7 +1421,7 @@ export class QTaskAgentApi implements IQTaskAgentApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.ServiceEndpoint>();
 
-        this.TaskAgentApi.getServiceEndpointDetails(scopeIdentifier, endpointId, (err: any, statusCode: number, serviceendpoint: TaskAgentInterfaces.ServiceEndpoint) => {
+        this.api.getServiceEndpointDetails(scopeIdentifier, endpointId, (err: any, statusCode: number, serviceendpoint: TaskAgentInterfaces.ServiceEndpoint) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1483,7 +1445,7 @@ export class QTaskAgentApi implements IQTaskAgentApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.ServiceEndpoint[]>();
 
-        this.TaskAgentApi.getServiceEndpoints(scopeIdentifier, type, (err: any, statusCode: number, serviceendpoints: TaskAgentInterfaces.ServiceEndpoint[]) => {
+        this.api.getServiceEndpoints(scopeIdentifier, type, (err: any, statusCode: number, serviceendpoints: TaskAgentInterfaces.ServiceEndpoint[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1507,7 +1469,7 @@ export class QTaskAgentApi implements IQTaskAgentApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskAgentSession>();
 
-        this.TaskAgentApi.createSession(session, poolId, (err: any, statusCode: number, session: TaskAgentInterfaces.TaskAgentSession) => {
+        this.api.createSession(session, poolId, (err: any, statusCode: number, session: TaskAgentInterfaces.TaskAgentSession) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1531,7 +1493,7 @@ export class QTaskAgentApi implements IQTaskAgentApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskDefinition[]>();
 
-        this.TaskAgentApi.getTaskContent(taskId, versionString, (err: any, statusCode: number, tasks: TaskAgentInterfaces.TaskDefinition[]) => {
+        this.api.getTaskContent(taskId, versionString, (err: any, statusCode: number, tasks: TaskAgentInterfaces.TaskDefinition[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1553,7 +1515,7 @@ export class QTaskAgentApi implements IQTaskAgentApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskDefinition[]>();
 
-        this.TaskAgentApi.getTaskDefinitions(visibility, (err: any, statusCode: number, tasks: TaskAgentInterfaces.TaskDefinition[]) => {
+        this.api.getTaskDefinitions(visibility, (err: any, statusCode: number, tasks: TaskAgentInterfaces.TaskDefinition[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1579,7 +1541,7 @@ export class QTaskAgentApi implements IQTaskAgentApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskAgent>();
 
-        this.TaskAgentApi.updateUserCapabilities(userCapabilities, poolId, agentId, (err: any, statusCode: number, usercapabilitie: TaskAgentInterfaces.TaskAgent) => {
+        this.api.updateUserCapabilities(userCapabilities, poolId, agentId, (err: any, statusCode: number, usercapabilitie: TaskAgentInterfaces.TaskAgent) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);

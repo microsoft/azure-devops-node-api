@@ -16,21 +16,21 @@ var testPath = path.join(testRoot, 'test');
 
 // grunt is 0, task is 1
 var mopts = {
-  boolean: 'ci',
-  string: 'suite',
-  default: { ci: false, suite: '*' }
+    boolean: 'ci',
+    string: 'suite',
+    default: { ci: false, suite: '*' }
 };
 
 // builds the whole api and drops definition files (.d.ts files) in place
-gulp.task('buildPrep', ['clean'], function () { 
-	var tsResult = gulp.src(['src/**/*.ts'])
+gulp.task('buildPrep', ['clean'], function () {
+    var tsResult = gulp.src(['src/**/*.ts'])
 		.pipe(typescript({ declaration: true }))
 		.on('error', function (err) { process.exit(1) });
-	
-	return merge([
+
+    return merge([
 		tsResult.pipe(gulp.dest(buildPath)),
-		gulp.src(['package.json']).pipe(gulp.dest(buildPath)),
-	]);	
+		gulp.src(['package.json', './README.md']).pipe(gulp.dest(buildPath)),
+    ]);
 });
 
 // copies the definition files to their own _def directory
@@ -46,20 +46,20 @@ gulp.task('build', ['copyDefinitions'], function () {
 });
 
 gulp.task('testPrep', function () {
-	var buildSrc = gulp.src([path.join(buildPath, '**')]);
-	var testSrcPaths = ['src/test/**'];
-	
-	return merge([
+    var buildSrc = gulp.src([path.join(buildPath, '**')]);
+    var testSrcPaths = ['src/test/**'];
+
+    return merge([
 		buildSrc.pipe(gulp.dest(testRoot)),
 		gulp.src(testSrcPaths, { base: 'src/test' })
 			.pipe(gulp.dest(testPath))
-	]);
+    ]);
 });
 
 gulp.task('test', ['testPrep'], function () {
-	var suitePath = path.join(testPath, '*.js');
+    var suitePath = path.join(testPath, '*.js');
 
-	return gulp.src([suitePath])
+    return gulp.src([suitePath])
 		.pipe(mocha({ reporter: 'spec', ui: 'bdd' }));
 });
 

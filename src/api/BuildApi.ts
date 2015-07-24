@@ -20,17 +20,12 @@ import Q = require('q');
 import restm = require('./restclient');
 import httpm = require('./httpclient');
 import vsom = require('./VsoClient');
+import basem = require('./ClientApiBases');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import BuildInterfaces = require("./interfaces/BuildInterfaces");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
-export interface IBuildApi {
-    baseUrl: string;
-    userAgent: string;
-    httpClient: VsoBaseInterfaces.IHttpClient;
-    restClient: VsoBaseInterfaces.IRestClient;
-    vsoClient: vsom.VsoClient;
-    connect(onResult: (err: any, statusCode: number, obj: any) => void): void;
+export interface IBuildApi extends basem.ClientApiBase {
     createArtifact(artifact: BuildInterfaces.BuildArtifact, buildId: number, project: string, onResult: (err: any, statusCode: number, artifact: BuildInterfaces.BuildArtifact) => void): void;
     getArtifact(buildId: number, artifactName: string, project: string, onResult: (err: any, statusCode: number, artifact: BuildInterfaces.BuildArtifact) => void): void;
     getArtifactContentZip(buildId: number, artifactName: string, project: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
@@ -75,8 +70,7 @@ export interface IBuildApi {
     getBuildWorkItemsRefsFromCommits(commitIds: string[], project: string, buildId: number, top: number, onResult: (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => void): void;
 }
 
-export interface IQBuildApi {
-    connect(): Q.Promise<void>;
+export interface IQBuildApi extends basem.QClientApiBase {
     
     createArtifact(artifact: BuildInterfaces.BuildArtifact, buildId: number,  project?: string): Q.Promise<BuildInterfaces.BuildArtifact>;
     getArtifact(buildId: number, artifactName: string,  project?: string): Q.Promise<BuildInterfaces.BuildArtifact>;
@@ -115,27 +109,10 @@ export interface IQBuildApi {
     getBuildWorkItemsRefsFromCommits(commitIds: string[], project: string, buildId: number,  top?: number): Q.Promise<VSSInterfaces.ResourceRef[]>;
 }
 
-export class BuildApi implements IBuildApi {
-    baseUrl: string;
-    userAgent: string;
-    httpClient: httpm.HttpClient;
-    restClient: restm.RestClient;
-    vsoClient: vsom.VsoClient
+export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        this.baseUrl = baseUrl;
-        this.httpClient = new httpm.HttpClient('node-Build-api', handlers);
-        this.restClient = new restm.RestClient(this.httpClient);
-        this.vsoClient = new vsom.VsoClient(baseUrl, this.restClient);
-    }
-
-    setUserAgent(userAgent: string) {
-        this.userAgent = userAgent;
-        this.httpClient.userAgent = userAgent;
-    }
-    
-    connect(onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this.restClient.getJson(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, onResult);
+        super(baseUrl, handlers, 'node-Build-api');
     }
 
     /**
@@ -1401,27 +1378,12 @@ export class BuildApi implements IBuildApi {
 
 }
 
-export class QBuildApi implements IQBuildApi {
-    BuildApi: IBuildApi;
+export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
+    
+    api: BuildApi;
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        this.BuildApi = new BuildApi(baseUrl, handlers);
-    }
-
-    public connect(): Q.Promise<any> {
-        var defer = Q.defer();
-
-        this.BuildApi.connect((err: any, statusCode: number, obj: any) => {
-            if (err) {
-                err.statusCode = statusCode;
-                defer.reject(err);
-            }
-            else {
-                defer.resolve(obj);
-            }
-        });
-
-        return defer.promise;       
+        super(baseUrl, handlers, BuildApi);
     }
 
     
@@ -1440,7 +1402,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.BuildArtifact>();
 
-        this.BuildApi.createArtifact(artifact, buildId, project, (err: any, statusCode: number, artifact: BuildInterfaces.BuildArtifact) => {
+        this.api.createArtifact(artifact, buildId, project, (err: any, statusCode: number, artifact: BuildInterfaces.BuildArtifact) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1468,7 +1430,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.BuildArtifact>();
 
-        this.BuildApi.getArtifact(buildId, artifactName, project, (err: any, statusCode: number, artifact: BuildInterfaces.BuildArtifact) => {
+        this.api.getArtifact(buildId, artifactName, project, (err: any, statusCode: number, artifact: BuildInterfaces.BuildArtifact) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1494,7 +1456,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.BuildArtifact[]>();
 
-        this.BuildApi.getArtifacts(buildId, project, (err: any, statusCode: number, artifacts: BuildInterfaces.BuildArtifact[]) => {
+        this.api.getArtifacts(buildId, project, (err: any, statusCode: number, artifacts: BuildInterfaces.BuildArtifact[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1520,7 +1482,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<string>();
 
-        this.BuildApi.getBadge(project, definitionId, branchName, (err: any, statusCode: number, badge: string) => {
+        this.api.getBadge(project, definitionId, branchName, (err: any, statusCode: number, badge: string) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1548,7 +1510,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.Build>();
 
-        this.BuildApi.getBuild(buildId, project, propertyFilters, (err: any, statusCode: number, build: BuildInterfaces.Build) => {
+        this.api.getBuild(buildId, project, propertyFilters, (err: any, statusCode: number, build: BuildInterfaces.Build) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1606,7 +1568,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.Build[]>();
 
-        this.BuildApi.getBuilds(project, definitions, queues, buildNumber, minFinishTime, maxFinishTime, requestedFor, reasonFilter, statusFilter, resultFilter, tagFilters, properties, type, top, continuationToken, maxBuildsPerDefinition, deletedFilter, queryOrder, (err: any, statusCode: number, builds: BuildInterfaces.Build[]) => {
+        this.api.getBuilds(project, definitions, queues, buildNumber, minFinishTime, maxFinishTime, requestedFor, reasonFilter, statusFilter, resultFilter, tagFilters, properties, type, top, continuationToken, maxBuildsPerDefinition, deletedFilter, queryOrder, (err: any, statusCode: number, builds: BuildInterfaces.Build[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1634,7 +1596,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.Build>();
 
-        this.BuildApi.queueBuild(build, project, ignoreWarnings, (err: any, statusCode: number, build: BuildInterfaces.Build) => {
+        this.api.queueBuild(build, project, ignoreWarnings, (err: any, statusCode: number, build: BuildInterfaces.Build) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1662,7 +1624,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.Build>();
 
-        this.BuildApi.updateBuild(build, buildId, project, (err: any, statusCode: number, build: BuildInterfaces.Build) => {
+        this.api.updateBuild(build, buildId, project, (err: any, statusCode: number, build: BuildInterfaces.Build) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1690,7 +1652,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.Change[]>();
 
-        this.BuildApi.getBuildCommits(project, buildId, top, (err: any, statusCode: number, changes: BuildInterfaces.Change[]) => {
+        this.api.getBuildCommits(project, buildId, top, (err: any, statusCode: number, changes: BuildInterfaces.Change[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1714,7 +1676,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.BuildController>();
 
-        this.BuildApi.getBuildController(controllerId, (err: any, statusCode: number, Controller: BuildInterfaces.BuildController) => {
+        this.api.getBuildController(controllerId, (err: any, statusCode: number, Controller: BuildInterfaces.BuildController) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1738,7 +1700,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.BuildController[]>();
 
-        this.BuildApi.getBuildControllers(name, (err: any, statusCode: number, Controllers: BuildInterfaces.BuildController[]) => {
+        this.api.getBuildControllers(name, (err: any, statusCode: number, Controllers: BuildInterfaces.BuildController[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1768,7 +1730,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.BuildDefinition>();
 
-        this.BuildApi.createDefinition(definition, project, definitionToCloneId, definitionToCloneRevision, (err: any, statusCode: number, definition: BuildInterfaces.BuildDefinition) => {
+        this.api.createDefinition(definition, project, definitionToCloneId, definitionToCloneRevision, (err: any, statusCode: number, definition: BuildInterfaces.BuildDefinition) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1798,7 +1760,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.DefinitionReference>();
 
-        this.BuildApi.getDefinition(definitionId, project, revision, propertyFilters, (err: any, statusCode: number, definition: BuildInterfaces.DefinitionReference) => {
+        this.api.getDefinition(definitionId, project, revision, propertyFilters, (err: any, statusCode: number, definition: BuildInterfaces.DefinitionReference) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1826,7 +1788,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.DefinitionReference[]>();
 
-        this.BuildApi.getDefinitions(project, name, type, (err: any, statusCode: number, definitions: BuildInterfaces.DefinitionReference[]) => {
+        this.api.getDefinitions(project, name, type, (err: any, statusCode: number, definitions: BuildInterfaces.DefinitionReference[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1858,7 +1820,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.BuildDefinition>();
 
-        this.BuildApi.updateDefinition(definition, definitionId, project, secretsSourceDefinitionId, secretsSourceDefinitionRevision, (err: any, statusCode: number, definition: BuildInterfaces.BuildDefinition) => {
+        this.api.updateDefinition(definition, definitionId, project, secretsSourceDefinitionId, secretsSourceDefinitionRevision, (err: any, statusCode: number, definition: BuildInterfaces.BuildDefinition) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1884,7 +1846,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.Deployment[]>();
 
-        this.BuildApi.getBuildDeployments(project, buildId, (err: any, statusCode: number, deployments: BuildInterfaces.Deployment[]) => {
+        this.api.getBuildDeployments(project, buildId, (err: any, statusCode: number, deployments: BuildInterfaces.Deployment[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1910,7 +1872,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.BuildLog[]>();
 
-        this.BuildApi.getBuildLogs(project, buildId, (err: any, statusCode: number, logs: BuildInterfaces.BuildLog[]) => {
+        this.api.getBuildLogs(project, buildId, (err: any, statusCode: number, logs: BuildInterfaces.BuildLog[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1930,7 +1892,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.BuildOptionDefinition[]>();
 
-        this.BuildApi.getBuildOptionDefinitions((err: any, statusCode: number, options: BuildInterfaces.BuildOptionDefinition[]) => {
+        this.api.getBuildOptionDefinitions((err: any, statusCode: number, options: BuildInterfaces.BuildOptionDefinition[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1954,7 +1916,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.AgentPoolQueue>();
 
-        this.BuildApi.createQueue(queue, (err: any, statusCode: number, queue: BuildInterfaces.AgentPoolQueue) => {
+        this.api.createQueue(queue, (err: any, statusCode: number, queue: BuildInterfaces.AgentPoolQueue) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1978,7 +1940,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.AgentPoolQueue>();
 
-        this.BuildApi.getAgentPoolQueue(controllerId, (err: any, statusCode: number, queue: BuildInterfaces.AgentPoolQueue) => {
+        this.api.getAgentPoolQueue(controllerId, (err: any, statusCode: number, queue: BuildInterfaces.AgentPoolQueue) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2002,7 +1964,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.AgentPoolQueue[]>();
 
-        this.BuildApi.getQueues(name, (err: any, statusCode: number, queues: BuildInterfaces.AgentPoolQueue[]) => {
+        this.api.getQueues(name, (err: any, statusCode: number, queues: BuildInterfaces.AgentPoolQueue[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2028,7 +1990,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.BuildDefinitionRevision[]>();
 
-        this.BuildApi.getDefinitionRevisions(project, definitionId, (err: any, statusCode: number, revisions: BuildInterfaces.BuildDefinitionRevision[]) => {
+        this.api.getDefinitionRevisions(project, definitionId, (err: any, statusCode: number, revisions: BuildInterfaces.BuildDefinitionRevision[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2048,7 +2010,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.BuildSettings>();
 
-        this.BuildApi.getBuildSettings((err: any, statusCode: number, setting: BuildInterfaces.BuildSettings) => {
+        this.api.getBuildSettings((err: any, statusCode: number, setting: BuildInterfaces.BuildSettings) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2072,7 +2034,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.BuildSettings>();
 
-        this.BuildApi.updateBuildSettings(settings, (err: any, statusCode: number, setting: BuildInterfaces.BuildSettings) => {
+        this.api.updateBuildSettings(settings, (err: any, statusCode: number, setting: BuildInterfaces.BuildSettings) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2100,7 +2062,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<string[]>();
 
-        this.BuildApi.addBuildTag(project, buildId, tag, (err: any, statusCode: number, tags: string[]) => {
+        this.api.addBuildTag(project, buildId, tag, (err: any, statusCode: number, tags: string[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2128,7 +2090,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<string[]>();
 
-        this.BuildApi.addBuildTags(tags, project, buildId, (err: any, statusCode: number, tags: string[]) => {
+        this.api.addBuildTags(tags, project, buildId, (err: any, statusCode: number, tags: string[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2156,7 +2118,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<string[]>();
 
-        this.BuildApi.deleteBuildTag(project, buildId, tag, (err: any, statusCode: number, tags: string[]) => {
+        this.api.deleteBuildTag(project, buildId, tag, (err: any, statusCode: number, tags: string[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2182,7 +2144,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<string[]>();
 
-        this.BuildApi.getBuildTags(project, buildId, (err: any, statusCode: number, tags: string[]) => {
+        this.api.getBuildTags(project, buildId, (err: any, statusCode: number, tags: string[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2204,7 +2166,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<string[]>();
 
-        this.BuildApi.getTags(project, (err: any, statusCode: number, tags: string[]) => {
+        this.api.getTags(project, (err: any, statusCode: number, tags: string[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2230,7 +2192,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.BuildDefinitionTemplate>();
 
-        this.BuildApi.getTemplate(project, templateId, (err: any, statusCode: number, template: BuildInterfaces.BuildDefinitionTemplate) => {
+        this.api.getTemplate(project, templateId, (err: any, statusCode: number, template: BuildInterfaces.BuildDefinitionTemplate) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2252,7 +2214,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.BuildDefinitionTemplate[]>();
 
-        this.BuildApi.getTemplates(project, (err: any, statusCode: number, templates: BuildInterfaces.BuildDefinitionTemplate[]) => {
+        this.api.getTemplates(project, (err: any, statusCode: number, templates: BuildInterfaces.BuildDefinitionTemplate[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2280,7 +2242,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.BuildDefinitionTemplate>();
 
-        this.BuildApi.saveTemplate(template, project, templateId, (err: any, statusCode: number, template: BuildInterfaces.BuildDefinitionTemplate) => {
+        this.api.saveTemplate(template, project, templateId, (err: any, statusCode: number, template: BuildInterfaces.BuildDefinitionTemplate) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2310,7 +2272,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.Timeline>();
 
-        this.BuildApi.getBuildTimeline(project, buildId, timelineId, changeId, (err: any, statusCode: number, Timeline: BuildInterfaces.Timeline) => {
+        this.api.getBuildTimeline(project, buildId, timelineId, changeId, (err: any, statusCode: number, Timeline: BuildInterfaces.Timeline) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2338,7 +2300,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<VSSInterfaces.ResourceRef[]>();
 
-        this.BuildApi.getBuildWorkItemsRefs(project, buildId, top, (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => {
+        this.api.getBuildWorkItemsRefs(project, buildId, top, (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2368,7 +2330,7 @@ export class QBuildApi implements IQBuildApi {
     
         var deferred = Q.defer<VSSInterfaces.ResourceRef[]>();
 
-        this.BuildApi.getBuildWorkItemsRefsFromCommits(commitIds, project, buildId, top, (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => {
+        this.api.getBuildWorkItemsRefsFromCommits(commitIds, project, buildId, top, (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);

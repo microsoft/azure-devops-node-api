@@ -11,14 +11,14 @@ describe('Dummy test', function () {
 })
 
 
-//  TODO: fix tests below to work with newest clients and structure
+//  //TODO: fix tests below to work with newest clients and structure
 
-//import agentifm = require('./interfaces/TaskAgentInterfaces');
-//import buildifm = require('./interfaces/BuildInterfaces');
-//import agentm = require('./TaskAgentApi');
-//import buildm = require('./BuildApi');
-//import taskm = require('./TaskApi');
-//import restm = require('./RestClient');
+//import agentifm = require('../api/interfaces/TaskAgentInterfaces');
+//import buildifm = require('../api/interfaces/BuildInterfaces');
+//import agentm = require('../api/TaskAgentApi');
+//import buildm = require('../api/BuildApi');
+//import taskm = require('../api/TaskApi');
+//import restm = require('../api/RestClient');
 //import httpm = require('./httpclient');
 //import assert = require('assert');
 //import Q = require('q');
@@ -27,6 +27,49 @@ describe('Dummy test', function () {
 
 //var httpClient = new httpm.HttpClient("TestUser")
 //var restClient = new restm.RestClient("", httpClient);
+
+////TODO: change to testserver before committing
+//var TaskAgentApi = new agentm.TaskAgentApi("https://tedward.tfsbuildhost8.tfsallin.net/", []);
+
+//it("TaskAgent tests", function () {
+//    //TaskAgentApi.connect();
+//    assert.notEqual(TaskAgentApi, null, "create an agent api");
+//    var agent = new DummyTaskAgent(1, "myagent", "1.0");
+
+//    //#createAgent
+//    var testagent;
+//    var createAgentOnResult = function (err: any, statusCode: number, retagent: agentifm.TaskAgent) {
+//        testagent = <DummyTaskAgent>retagent;
+//    };
+//    TaskAgentApi.createAgent(agent, 42, createAgentOnResult);
+
+//    //normally the following tests would have to be in onresult, but we're not actually making async calls
+//    assert.equal(testagent.id, 1, "createAgent agent remains the same - id test");
+//    assert.equal(testagent.name, "myagent", "createAgent agent remains the same - name test");
+//    assert.equal(testagent.version, "1.0", "createAgent agent remains the same - version test");
+//    assert.equal(testagent.verb, "POST", "createAgent calls correct Http Method -- POST");
+//    assert.equal(testagent.relativeUrl, "_apis/distributedtask/pools/42/agents", "createAgent route template formats correctly and is sent correctly");
+
+//    //#deleteAgent
+//    var retStatusCode;
+//    var deleteAgentOnResult = function (err: any, statusCode: number) {
+//        retStatusCode = statusCode;
+//    };
+//    TaskAgentApi.deleteAgent(42, 1, deleteAgentOnResult);
+
+//    assert.equal(retStatusCode, 200, "deleteAgent went through");
+
+//    var deleteAgentRouteValues = {
+//        poolId: 42,
+//        agentId: 1,
+//        area: "distributedtask",
+//        resource: "agents"
+//    };
+
+//    var path: string = restClient.formatRouteTemplate("_apis/{area}/pools/{poolId}/{resource}/{agentId}", deleteAgentRouteValues);
+
+//    assert.equal(path, "_apis/distributedtask/pools/42/agents/1", "deleteAgent route template formats correctly");
+//}
 
 //export class DummyTaskAgent implements agentifm.TaskAgent {
 //	id: number;

@@ -20,19 +20,14 @@ import Q = require('q');
 import restm = require('./restclient');
 import httpm = require('./httpclient');
 import vsom = require('./VsoClient');
+import basem = require('./ClientApiBases');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import CoreInterfaces = require("./interfaces/CoreInterfaces");
 import OperationsInterfaces = require("./interfaces/common/OperationsInterfaces");
 import TfsInterfaces = require("./interfaces/common/TfsInterfaces");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
-export interface ICoreApi {
-    baseUrl: string;
-    userAgent: string;
-    httpClient: VsoBaseInterfaces.IHttpClient;
-    restClient: VsoBaseInterfaces.IRestClient;
-    vsoClient: vsom.VsoClient;
-    connect(onResult: (err: any, statusCode: number, obj: any) => void): void;
+export interface ICoreApi extends basem.ClientApiBase {
     createConnectedService(connectedServiceCreationData: CoreInterfaces.WebApiConnectedServiceDetails, projectId: string, onResult: (err: any, statusCode: number, connectedService: CoreInterfaces.WebApiConnectedService) => void): void;
     getConnectedServiceDetails(projectId: string, name: string, onResult: (err: any, statusCode: number, connectedService: CoreInterfaces.WebApiConnectedServiceDetails) => void): void;
     getConnectedServices(projectId: string, kind: CoreInterfaces.ConnectedServiceKind, onResult: (err: any, statusCode: number, connectedServices: CoreInterfaces.WebApiConnectedService[]) => void): void;
@@ -53,8 +48,7 @@ export interface ICoreApi {
     getTeams(projectId: string, teamId: string, top: number, skip: number, onResult: (err: any, statusCode: number, team: CoreInterfaces.WebApiTeam) => void): void;
 }
 
-export interface IQCoreApi {
-    connect(): Q.Promise<void>;
+export interface IQCoreApi extends basem.QClientApiBase {
     
     createConnectedService(connectedServiceCreationData: CoreInterfaces.WebApiConnectedServiceDetails,  projectId: string): Q.Promise<CoreInterfaces.WebApiConnectedService>;
     getConnectedServiceDetails(projectId: string,  name: string): Q.Promise<CoreInterfaces.WebApiConnectedServiceDetails>;
@@ -73,27 +67,10 @@ export interface IQCoreApi {
     getTeams(projectId: string, teamId?: string, top?: number,  skip?: number): Q.Promise<CoreInterfaces.WebApiTeam>;
 }
 
-export class CoreApi implements ICoreApi {
-    baseUrl: string;
-    userAgent: string;
-    httpClient: httpm.HttpClient;
-    restClient: restm.RestClient;
-    vsoClient: vsom.VsoClient
+export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        this.baseUrl = baseUrl;
-        this.httpClient = new httpm.HttpClient('node-Core-api', handlers);
-        this.restClient = new restm.RestClient(this.httpClient);
-        this.vsoClient = new vsom.VsoClient(baseUrl, this.restClient);
-    }
-
-    setUserAgent(userAgent: string) {
-        this.userAgent = userAgent;
-        this.httpClient.userAgent = userAgent;
-    }
-    
-    connect(onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this.restClient.getJson(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, onResult);
+        super(baseUrl, handlers, 'node-Core-api');
     }
 
     /**
@@ -580,27 +557,12 @@ export class CoreApi implements ICoreApi {
 
 }
 
-export class QCoreApi implements IQCoreApi {
-    CoreApi: ICoreApi;
+export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
+    
+    api: CoreApi;
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        this.CoreApi = new CoreApi(baseUrl, handlers);
-    }
-
-    public connect(): Q.Promise<any> {
-        var defer = Q.defer();
-
-        this.CoreApi.connect((err: any, statusCode: number, obj: any) => {
-            if (err) {
-                err.statusCode = statusCode;
-                defer.reject(err);
-            }
-            else {
-                defer.resolve(obj);
-            }
-        });
-
-        return defer.promise;       
+        super(baseUrl, handlers, CoreApi);
     }
 
     
@@ -615,7 +577,7 @@ export class QCoreApi implements IQCoreApi {
     
         var deferred = Q.defer<CoreInterfaces.WebApiConnectedService>();
 
-        this.CoreApi.createConnectedService(connectedServiceCreationData, projectId, (err: any, statusCode: number, connectedService: CoreInterfaces.WebApiConnectedService) => {
+        this.api.createConnectedService(connectedServiceCreationData, projectId, (err: any, statusCode: number, connectedService: CoreInterfaces.WebApiConnectedService) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -639,7 +601,7 @@ export class QCoreApi implements IQCoreApi {
     
         var deferred = Q.defer<CoreInterfaces.WebApiConnectedServiceDetails>();
 
-        this.CoreApi.getConnectedServiceDetails(projectId, name, (err: any, statusCode: number, connectedService: CoreInterfaces.WebApiConnectedServiceDetails) => {
+        this.api.getConnectedServiceDetails(projectId, name, (err: any, statusCode: number, connectedService: CoreInterfaces.WebApiConnectedServiceDetails) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -663,7 +625,7 @@ export class QCoreApi implements IQCoreApi {
     
         var deferred = Q.defer<CoreInterfaces.WebApiConnectedService[]>();
 
-        this.CoreApi.getConnectedServices(projectId, kind, (err: any, statusCode: number, connectedServices: CoreInterfaces.WebApiConnectedService[]) => {
+        this.api.getConnectedServices(projectId, kind, (err: any, statusCode: number, connectedServices: CoreInterfaces.WebApiConnectedService[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -685,7 +647,7 @@ export class QCoreApi implements IQCoreApi {
     
         var deferred = Q.defer<VSSInterfaces.IdentityRef[]>();
 
-        this.CoreApi.getIdentityMru(mruName, (err: any, statusCode: number, identityMru: VSSInterfaces.IdentityRef[]) => {
+        this.api.getIdentityMru(mruName, (err: any, statusCode: number, identityMru: VSSInterfaces.IdentityRef[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -713,7 +675,7 @@ export class QCoreApi implements IQCoreApi {
     
         var deferred = Q.defer<VSSInterfaces.IdentityRef[]>();
 
-        this.CoreApi.getTeamMembers(projectId, teamId, top, skip, (err: any, statusCode: number, members: VSSInterfaces.IdentityRef[]) => {
+        this.api.getTeamMembers(projectId, teamId, top, skip, (err: any, statusCode: number, members: VSSInterfaces.IdentityRef[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -737,7 +699,7 @@ export class QCoreApi implements IQCoreApi {
     
         var deferred = Q.defer<CoreInterfaces.TeamProjectCollection>();
 
-        this.CoreApi.getProjectCollection(collectionId, (err: any, statusCode: number, projectCollection: CoreInterfaces.TeamProjectCollection) => {
+        this.api.getProjectCollection(collectionId, (err: any, statusCode: number, projectCollection: CoreInterfaces.TeamProjectCollection) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -763,7 +725,7 @@ export class QCoreApi implements IQCoreApi {
     
         var deferred = Q.defer<CoreInterfaces.TeamProjectCollectionReference[]>();
 
-        this.CoreApi.getProjectCollections(top, skip, (err: any, statusCode: number, projectCollections: CoreInterfaces.TeamProjectCollectionReference[]) => {
+        this.api.getProjectCollections(top, skip, (err: any, statusCode: number, projectCollections: CoreInterfaces.TeamProjectCollectionReference[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -785,7 +747,7 @@ export class QCoreApi implements IQCoreApi {
     
         var deferred = Q.defer<CoreInterfaces.TeamProjectReference[]>();
 
-        this.CoreApi.getProjectHistory(minRevision, (err: any, statusCode: number, projectHistory: CoreInterfaces.TeamProjectReference[]) => {
+        this.api.getProjectHistory(minRevision, (err: any, statusCode: number, projectHistory: CoreInterfaces.TeamProjectReference[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -813,7 +775,7 @@ export class QCoreApi implements IQCoreApi {
     
         var deferred = Q.defer<CoreInterfaces.TeamProject>();
 
-        this.CoreApi.getProject(projectId, includeCapabilities, includeHistory, (err: any, statusCode: number, project: CoreInterfaces.TeamProject) => {
+        this.api.getProject(projectId, includeCapabilities, includeHistory, (err: any, statusCode: number, project: CoreInterfaces.TeamProject) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -841,7 +803,7 @@ export class QCoreApi implements IQCoreApi {
     
         var deferred = Q.defer<CoreInterfaces.TeamProjectReference[]>();
 
-        this.CoreApi.getProjects(stateFilter, top, skip, (err: any, statusCode: number, projects: CoreInterfaces.TeamProjectReference[]) => {
+        this.api.getProjects(stateFilter, top, skip, (err: any, statusCode: number, projects: CoreInterfaces.TeamProjectReference[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -865,7 +827,7 @@ export class QCoreApi implements IQCoreApi {
     
         var deferred = Q.defer<OperationsInterfaces.OperationReference>();
 
-        this.CoreApi.queueCreateProject(projectToCreate, (err: any, statusCode: number, project: OperationsInterfaces.OperationReference) => {
+        this.api.queueCreateProject(projectToCreate, (err: any, statusCode: number, project: OperationsInterfaces.OperationReference) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -889,7 +851,7 @@ export class QCoreApi implements IQCoreApi {
     
         var deferred = Q.defer<OperationsInterfaces.OperationReference>();
 
-        this.CoreApi.queueDeleteProject(projectId, (err: any, statusCode: number, project: OperationsInterfaces.OperationReference) => {
+        this.api.queueDeleteProject(projectId, (err: any, statusCode: number, project: OperationsInterfaces.OperationReference) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -915,7 +877,7 @@ export class QCoreApi implements IQCoreApi {
     
         var deferred = Q.defer<OperationsInterfaces.OperationReference>();
 
-        this.CoreApi.updateProject(projectUpdate, projectId, (err: any, statusCode: number, project: OperationsInterfaces.OperationReference) => {
+        this.api.updateProject(projectUpdate, projectId, (err: any, statusCode: number, project: OperationsInterfaces.OperationReference) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -937,7 +899,7 @@ export class QCoreApi implements IQCoreApi {
     
         var deferred = Q.defer<CoreInterfaces.Proxy[]>();
 
-        this.CoreApi.getProxies(proxyUrl, (err: any, statusCode: number, proxies: CoreInterfaces.Proxy[]) => {
+        this.api.getProxies(proxyUrl, (err: any, statusCode: number, proxies: CoreInterfaces.Proxy[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -965,7 +927,7 @@ export class QCoreApi implements IQCoreApi {
     
         var deferred = Q.defer<CoreInterfaces.WebApiTeam>();
 
-        this.CoreApi.getTeams(projectId, teamId, top, skip, (err: any, statusCode: number, team: CoreInterfaces.WebApiTeam) => {
+        this.api.getTeams(projectId, teamId, top, skip, (err: any, statusCode: number, team: CoreInterfaces.WebApiTeam) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);

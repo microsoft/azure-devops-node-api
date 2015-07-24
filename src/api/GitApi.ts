@@ -20,17 +20,12 @@ import Q = require('q');
 import restm = require('./restclient');
 import httpm = require('./httpclient');
 import vsom = require('./VsoClient');
+import basem = require('./ClientApiBases');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import GitInterfaces = require("./interfaces/GitInterfaces");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
-export interface IGitApi {
-    baseUrl: string;
-    userAgent: string;
-    httpClient: VsoBaseInterfaces.IHttpClient;
-    restClient: VsoBaseInterfaces.IRestClient;
-    vsoClient: vsom.VsoClient;
-    connect(onResult: (err: any, statusCode: number, obj: any) => void): void;
+export interface IGitApi extends basem.ClientApiBase {
     getBlob(repositoryId: string, sha1: string, project: string, download: boolean, fileName: string, onResult: (err: any, statusCode: number, Blob: GitInterfaces.GitBlobRef) => void): void;
     getBlobContent(repositoryId: string, sha1: string, project: string, download: boolean, fileName: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     getBlobsZip(blobIds: string[], repositoryId: string, project: string, filename: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
@@ -73,8 +68,7 @@ export interface IGitApi {
     getTreeZip(repositoryId: string, sha1: string, project: string, projectId: string, recursive: boolean, fileName: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
 }
 
-export interface IQGitApi {
-    connect(): Q.Promise<void>;
+export interface IQGitApi extends basem.QClientApiBase {
     
     getBlob(repositoryId: string, sha1: string, project?: string, download?: boolean,  fileName?: string): Q.Promise<GitInterfaces.GitBlobRef>;
     getBranch(repositoryId: string, name: string, project?: string,  baseVersionDescriptor?: GitInterfaces.GitVersionDescriptor): Q.Promise<GitInterfaces.GitBranchStats>;
@@ -109,27 +103,10 @@ export interface IQGitApi {
     getTree(repositoryId: string, sha1: string, project?: string, projectId?: string, recursive?: boolean,  fileName?: string): Q.Promise<GitInterfaces.GitTreeRef>;
 }
 
-export class GitApi implements IGitApi {
-    baseUrl: string;
-    userAgent: string;
-    httpClient: httpm.HttpClient;
-    restClient: restm.RestClient;
-    vsoClient: vsom.VsoClient
+export class GitApi extends basem.ClientApiBase implements IGitApi {
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        this.baseUrl = baseUrl;
-        this.httpClient = new httpm.HttpClient('node-Git-api', handlers);
-        this.restClient = new restm.RestClient(this.httpClient);
-        this.vsoClient = new vsom.VsoClient(baseUrl, this.restClient);
-    }
-
-    setUserAgent(userAgent: string) {
-        this.userAgent = userAgent;
-        this.httpClient.userAgent = userAgent;
-    }
-    
-    connect(onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this.restClient.getJson(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, onResult);
+        super(baseUrl, handlers, 'node-Git-api');
     }
 
     /**
@@ -1602,27 +1579,12 @@ export class GitApi implements IGitApi {
 
 }
 
-export class QGitApi implements IQGitApi {
-    GitApi: IGitApi;
+export class QGitApi extends basem.QClientApiBase implements IQGitApi {
+    
+    api: GitApi;
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        this.GitApi = new GitApi(baseUrl, handlers);
-    }
-
-    public connect(): Q.Promise<any> {
-        var defer = Q.defer();
-
-        this.GitApi.connect((err: any, statusCode: number, obj: any) => {
-            if (err) {
-                err.statusCode = statusCode;
-                defer.reject(err);
-            }
-            else {
-                defer.resolve(obj);
-            }
-        });
-
-        return defer.promise;       
+        super(baseUrl, handlers, GitApi);
     }
 
     
@@ -1645,7 +1607,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitBlobRef>();
 
-        this.GitApi.getBlob(repositoryId, sha1, project, download, fileName, (err: any, statusCode: number, Blob: GitInterfaces.GitBlobRef) => {
+        this.api.getBlob(repositoryId, sha1, project, download, fileName, (err: any, statusCode: number, Blob: GitInterfaces.GitBlobRef) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1675,7 +1637,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitBranchStats>();
 
-        this.GitApi.getBranch(repositoryId, name, project, baseVersionDescriptor, (err: any, statusCode: number, BranchStat: GitInterfaces.GitBranchStats) => {
+        this.api.getBranch(repositoryId, name, project, baseVersionDescriptor, (err: any, statusCode: number, BranchStat: GitInterfaces.GitBranchStats) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1703,7 +1665,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitBranchStats[]>();
 
-        this.GitApi.getBranches(repositoryId, project, baseVersionDescriptor, (err: any, statusCode: number, BranchStats: GitInterfaces.GitBranchStats[]) => {
+        this.api.getBranches(repositoryId, project, baseVersionDescriptor, (err: any, statusCode: number, BranchStats: GitInterfaces.GitBranchStats[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1735,7 +1697,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitCommitChanges>();
 
-        this.GitApi.getChanges(commitId, repositoryId, project, top, skip, (err: any, statusCode: number, Change: GitInterfaces.GitCommitChanges) => {
+        this.api.getChanges(commitId, repositoryId, project, top, skip, (err: any, statusCode: number, Change: GitInterfaces.GitCommitChanges) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1761,7 +1723,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitCommit>();
 
-        this.GitApi.createCommit(repositoryId, project, (err: any, statusCode: number, Commit: GitInterfaces.GitCommit) => {
+        this.api.createCommit(repositoryId, project, (err: any, statusCode: number, Commit: GitInterfaces.GitCommit) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1791,7 +1753,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitCommit>();
 
-        this.GitApi.getCommit(commitId, repositoryId, project, changeCount, (err: any, statusCode: number, Commit: GitInterfaces.GitCommit) => {
+        this.api.getCommit(commitId, repositoryId, project, changeCount, (err: any, statusCode: number, Commit: GitInterfaces.GitCommit) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1823,7 +1785,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitCommitRef[]>();
 
-        this.GitApi.getCommits(repositoryId, searchCriteria, project, skip, top, (err: any, statusCode: number, Commits: GitInterfaces.GitCommitRef[]) => {
+        this.api.getCommits(repositoryId, searchCriteria, project, skip, top, (err: any, statusCode: number, Commits: GitInterfaces.GitCommitRef[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1857,7 +1819,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitCommitRef[]>();
 
-        this.GitApi.getPushCommits(repositoryId, pushId, project, top, skip, includeLinks, (err: any, statusCode: number, Commits: GitInterfaces.GitCommitRef[]) => {
+        this.api.getPushCommits(repositoryId, pushId, project, top, skip, includeLinks, (err: any, statusCode: number, Commits: GitInterfaces.GitCommitRef[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1889,7 +1851,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitCommitRef[]>();
 
-        this.GitApi.getCommitsBatch(searchCriteria, repositoryId, project, skip, top, (err: any, statusCode: number, CommitsBatch: GitInterfaces.GitCommitRef[]) => {
+        this.api.getCommitsBatch(searchCriteria, repositoryId, project, skip, top, (err: any, statusCode: number, CommitsBatch: GitInterfaces.GitCommitRef[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1929,7 +1891,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitItem>();
 
-        this.GitApi.getItem(repositoryId, path, project, scopePath, recursionLevel, includeContentMetadata, latestProcessedChange, download, versionDescriptor, (err: any, statusCode: number, Item: GitInterfaces.GitItem) => {
+        this.api.getItem(repositoryId, path, project, scopePath, recursionLevel, includeContentMetadata, latestProcessedChange, download, versionDescriptor, (err: any, statusCode: number, Item: GitInterfaces.GitItem) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1969,7 +1931,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitItem[]>();
 
-        this.GitApi.getItems(repositoryId, project, scopePath, recursionLevel, includeContentMetadata, latestProcessedChange, download, includeLinks, versionDescriptor, (err: any, statusCode: number, Items: GitInterfaces.GitItem[]) => {
+        this.api.getItems(repositoryId, project, scopePath, recursionLevel, includeContentMetadata, latestProcessedChange, download, includeLinks, versionDescriptor, (err: any, statusCode: number, Items: GitInterfaces.GitItem[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -1997,7 +1959,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitItem[][]>();
 
-        this.GitApi.getItemsBatch(requestData, repositoryId, project, (err: any, statusCode: number, ItemsBatch: GitInterfaces.GitItem[][]) => {
+        this.api.getItemsBatch(requestData, repositoryId, project, (err: any, statusCode: number, ItemsBatch: GitInterfaces.GitItem[][]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2029,7 +1991,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.IdentityRefWithVote>();
 
-        this.GitApi.createPullRequestReviewer(reviewer, repositoryId, pullRequestId, reviewerId, project, (err: any, statusCode: number, PullRequestReviewer: GitInterfaces.IdentityRefWithVote) => {
+        this.api.createPullRequestReviewer(reviewer, repositoryId, pullRequestId, reviewerId, project, (err: any, statusCode: number, PullRequestReviewer: GitInterfaces.IdentityRefWithVote) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2059,7 +2021,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.IdentityRefWithVote[]>();
 
-        this.GitApi.createPullRequestReviewers(reviewers, repositoryId, pullRequestId, project, (err: any, statusCode: number, PullRequestReviewers: GitInterfaces.IdentityRefWithVote[]) => {
+        this.api.createPullRequestReviewers(reviewers, repositoryId, pullRequestId, project, (err: any, statusCode: number, PullRequestReviewers: GitInterfaces.IdentityRefWithVote[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2089,7 +2051,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.IdentityRefWithVote>();
 
-        this.GitApi.getPullRequestReviewer(repositoryId, pullRequestId, reviewerId, project, (err: any, statusCode: number, PullRequestReviewer: GitInterfaces.IdentityRefWithVote) => {
+        this.api.getPullRequestReviewer(repositoryId, pullRequestId, reviewerId, project, (err: any, statusCode: number, PullRequestReviewer: GitInterfaces.IdentityRefWithVote) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2117,7 +2079,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.IdentityRefWithVote[]>();
 
-        this.GitApi.getPullRequestReviewers(repositoryId, pullRequestId, project, (err: any, statusCode: number, PullRequestReviewers: GitInterfaces.IdentityRefWithVote[]) => {
+        this.api.getPullRequestReviewers(repositoryId, pullRequestId, project, (err: any, statusCode: number, PullRequestReviewers: GitInterfaces.IdentityRefWithVote[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2145,7 +2107,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitPullRequest>();
 
-        this.GitApi.createPullRequest(gitPullRequestToCreate, repositoryId, project, (err: any, statusCode: number, PullRequest: GitInterfaces.GitPullRequest) => {
+        this.api.createPullRequest(gitPullRequestToCreate, repositoryId, project, (err: any, statusCode: number, PullRequest: GitInterfaces.GitPullRequest) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2179,7 +2141,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitPullRequest>();
 
-        this.GitApi.getPullRequest(repositoryId, pullRequestId, project, maxCommentLength, skip, top, (err: any, statusCode: number, PullRequest: GitInterfaces.GitPullRequest) => {
+        this.api.getPullRequest(repositoryId, pullRequestId, project, maxCommentLength, skip, top, (err: any, statusCode: number, PullRequest: GitInterfaces.GitPullRequest) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2213,7 +2175,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitPullRequest[]>();
 
-        this.GitApi.getPullRequests(repositoryId, searchCriteria, project, maxCommentLength, skip, top, (err: any, statusCode: number, PullRequests: GitInterfaces.GitPullRequest[]) => {
+        this.api.getPullRequests(repositoryId, searchCriteria, project, maxCommentLength, skip, top, (err: any, statusCode: number, PullRequests: GitInterfaces.GitPullRequest[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2243,7 +2205,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitPullRequest>();
 
-        this.GitApi.updatePullRequest(gitPullRequestToUpdate, repositoryId, pullRequestId, project, (err: any, statusCode: number, PullRequest: GitInterfaces.GitPullRequest) => {
+        this.api.updatePullRequest(gitPullRequestToUpdate, repositoryId, pullRequestId, project, (err: any, statusCode: number, PullRequest: GitInterfaces.GitPullRequest) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2275,7 +2237,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.AssociatedWorkItem[]>();
 
-        this.GitApi.getPullRequestWorkItems(repositoryId, pullRequestId, project, commitsTop, commitsSkip, (err: any, statusCode: number, PullRequestWorkItems: GitInterfaces.AssociatedWorkItem[]) => {
+        this.api.getPullRequestWorkItems(repositoryId, pullRequestId, project, commitsTop, commitsSkip, (err: any, statusCode: number, PullRequestWorkItems: GitInterfaces.AssociatedWorkItem[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2303,7 +2265,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitPush>();
 
-        this.GitApi.createPush(push, repositoryId, project, (err: any, statusCode: number, pushe: GitInterfaces.GitPush) => {
+        this.api.createPush(push, repositoryId, project, (err: any, statusCode: number, pushe: GitInterfaces.GitPush) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2335,7 +2297,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitPush>();
 
-        this.GitApi.getPush(repositoryId, pushId, project, includeCommits, includeRefUpdates, (err: any, statusCode: number, pushe: GitInterfaces.GitPush) => {
+        this.api.getPush(repositoryId, pushId, project, includeCommits, includeRefUpdates, (err: any, statusCode: number, pushe: GitInterfaces.GitPush) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2367,7 +2329,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitPush[]>();
 
-        this.GitApi.getPushes(repositoryId, project, skip, top, searchCriteria, (err: any, statusCode: number, pushes: GitInterfaces.GitPush[]) => {
+        this.api.getPushes(repositoryId, project, skip, top, searchCriteria, (err: any, statusCode: number, pushes: GitInterfaces.GitPush[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2397,7 +2359,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitRef[]>();
 
-        this.GitApi.getRefs(repositoryId, project, filter, includeLinks, (err: any, statusCode: number, refs: GitInterfaces.GitRef[]) => {
+        this.api.getRefs(repositoryId, project, filter, includeLinks, (err: any, statusCode: number, refs: GitInterfaces.GitRef[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2427,7 +2389,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitRefUpdateResult[]>();
 
-        this.GitApi.updateRefs(refUpdates, repositoryId, project, projectId, (err: any, statusCode: number, refs: GitInterfaces.GitRefUpdateResult[]) => {
+        this.api.updateRefs(refUpdates, repositoryId, project, projectId, (err: any, statusCode: number, refs: GitInterfaces.GitRefUpdateResult[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2453,7 +2415,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitRepository>();
 
-        this.GitApi.createRepository(gitRepositoryToCreate, project, (err: any, statusCode: number, Repositorie: GitInterfaces.GitRepository) => {
+        this.api.createRepository(gitRepositoryToCreate, project, (err: any, statusCode: number, Repositorie: GitInterfaces.GitRepository) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2479,7 +2441,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitRepository[]>();
 
-        this.GitApi.getRepositories(project, includeLinks, (err: any, statusCode: number, Repositories: GitInterfaces.GitRepository[]) => {
+        this.api.getRepositories(project, includeLinks, (err: any, statusCode: number, Repositories: GitInterfaces.GitRepository[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2503,7 +2465,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitRepository>();
 
-        this.GitApi.getRepository(repositoryId, project, (err: any, statusCode: number, Repositorie: GitInterfaces.GitRepository) => {
+        this.api.getRepository(repositoryId, project, (err: any, statusCode: number, Repositorie: GitInterfaces.GitRepository) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2531,7 +2493,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitRepository>();
 
-        this.GitApi.updateRepository(newRepositoryInfo, repositoryId, project, (err: any, statusCode: number, Repositorie: GitInterfaces.GitRepository) => {
+        this.api.updateRepository(newRepositoryInfo, repositoryId, project, (err: any, statusCode: number, Repositorie: GitInterfaces.GitRepository) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2563,7 +2525,7 @@ export class QGitApi implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitTreeRef>();
 
-        this.GitApi.getTree(repositoryId, sha1, project, projectId, recursive, fileName, (err: any, statusCode: number, Tree: GitInterfaces.GitTreeRef) => {
+        this.api.getTree(repositoryId, sha1, project, projectId, recursive, fileName, (err: any, statusCode: number, Tree: GitInterfaces.GitTreeRef) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);

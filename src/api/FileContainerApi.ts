@@ -20,17 +20,12 @@ import Q = require('q');
 import restm = require('./restclient');
 import httpm = require('./httpclient');
 import vsom = require('./VsoClient');
+import basem = require('./ClientApiBases');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import FileContainerInterfaces = require("./interfaces/FileContainerInterfaces");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
-export interface IFileContainerApi {
-    baseUrl: string;
-    userAgent: string;
-    httpClient: VsoBaseInterfaces.IHttpClient;
-    restClient: VsoBaseInterfaces.IRestClient;
-    vsoClient: vsom.VsoClient;
-    connect(onResult: (err: any, statusCode: number, obj: any) => void): void;
+export interface IFileContainerApi extends basem.ClientApiBase {
     createItem(containerId: number, itemPath: string, scope: string, onResult: (err: any, statusCode: number, Container: FileContainerInterfaces.FileContainerItem) => void): void;
     createItems(items: VSSInterfaces.VssJsonCollectionWrapperV<FileContainerInterfaces.FileContainerItem[]>, containerId: number, scope: string, onResult: (err: any, statusCode: number, Container: FileContainerInterfaces.FileContainerItem[]) => void): void;
     deleteItem(containerId: number, itemPath: string, scope: string, onResult: (err: any, statusCode: number) => void): void;
@@ -38,8 +33,7 @@ export interface IFileContainerApi {
     getItems(containerId: number, scope: string, itemPath: string, metadata: boolean, format: string, downloadFileName: string, includeDownloadTickets: boolean, onResult: (err: any, statusCode: number, Containers: FileContainerInterfaces.FileContainerItem[]) => void): void;
 }
 
-export interface IQFileContainerApi {
-    connect(): Q.Promise<void>;
+export interface IQFileContainerApi extends basem.QClientApiBase {
     
     createItem(containerId: number, itemPath: string,  scope?: string): Q.Promise<FileContainerInterfaces.FileContainerItem>;
     createItems(items: VSSInterfaces.VssJsonCollectionWrapperV<FileContainerInterfaces.FileContainerItem[]>, containerId: number,  scope?: string): Q.Promise<FileContainerInterfaces.FileContainerItem[]>;
@@ -47,27 +41,10 @@ export interface IQFileContainerApi {
     getItems(containerId: number, scope?: string, itemPath?: string, metadata?: boolean, format?: string, downloadFileName?: string,  includeDownloadTickets?: boolean): Q.Promise<FileContainerInterfaces.FileContainerItem[]>;
 }
 
-export class FileContainerApi implements IFileContainerApi {
-    baseUrl: string;
-    userAgent: string;
-    httpClient: httpm.HttpClient;
-    restClient: restm.RestClient;
-    vsoClient: vsom.VsoClient
+export class FileContainerApi extends basem.ClientApiBase implements IFileContainerApi {
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        this.baseUrl = baseUrl;
-        this.httpClient = new httpm.HttpClient('node-FileContainer-api', handlers);
-        this.restClient = new restm.RestClient(this.httpClient);
-        this.vsoClient = new vsom.VsoClient(baseUrl, this.restClient);
-    }
-
-    setUserAgent(userAgent: string) {
-        this.userAgent = userAgent;
-        this.httpClient.userAgent = userAgent;
-    }
-    
-    connect(onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this.restClient.getJson(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, onResult);
+        super(baseUrl, handlers, 'node-FileContainer-api');
     }
 
     /**
@@ -245,27 +222,12 @@ export class FileContainerApi implements IFileContainerApi {
 
 }
 
-export class QFileContainerApi implements IQFileContainerApi {
-    FileContainerApi: IFileContainerApi;
+export class QFileContainerApi extends basem.QClientApiBase implements IQFileContainerApi {
+    
+    api: FileContainerApi;
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        this.FileContainerApi = new FileContainerApi(baseUrl, handlers);
-    }
-
-    public connect(): Q.Promise<any> {
-        var defer = Q.defer();
-
-        this.FileContainerApi.connect((err: any, statusCode: number, obj: any) => {
-            if (err) {
-                err.statusCode = statusCode;
-                defer.reject(err);
-            }
-            else {
-                defer.resolve(obj);
-            }
-        });
-
-        return defer.promise;       
+        super(baseUrl, handlers, FileContainerApi);
     }
 
     
@@ -284,7 +246,7 @@ export class QFileContainerApi implements IQFileContainerApi {
     
         var deferred = Q.defer<FileContainerInterfaces.FileContainerItem>();
 
-        this.FileContainerApi.createItem(containerId, itemPath, scope, (err: any, statusCode: number, Container: FileContainerInterfaces.FileContainerItem) => {
+        this.api.createItem(containerId, itemPath, scope, (err: any, statusCode: number, Container: FileContainerInterfaces.FileContainerItem) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -312,7 +274,7 @@ export class QFileContainerApi implements IQFileContainerApi {
     
         var deferred = Q.defer<FileContainerInterfaces.FileContainerItem[]>();
 
-        this.FileContainerApi.createItems(items, containerId, scope, (err: any, statusCode: number, Container: FileContainerInterfaces.FileContainerItem[]) => {
+        this.api.createItems(items, containerId, scope, (err: any, statusCode: number, Container: FileContainerInterfaces.FileContainerItem[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -338,7 +300,7 @@ export class QFileContainerApi implements IQFileContainerApi {
     
         var deferred = Q.defer<FileContainerInterfaces.FileContainer[]>();
 
-        this.FileContainerApi.getContainers(scope, artifactUris, (err: any, statusCode: number, Containers: FileContainerInterfaces.FileContainer[]) => {
+        this.api.getContainers(scope, artifactUris, (err: any, statusCode: number, Containers: FileContainerInterfaces.FileContainer[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -374,7 +336,7 @@ export class QFileContainerApi implements IQFileContainerApi {
     
         var deferred = Q.defer<FileContainerInterfaces.FileContainerItem[]>();
 
-        this.FileContainerApi.getItems(containerId, scope, itemPath, metadata, format, downloadFileName, includeDownloadTickets, (err: any, statusCode: number, Containers: FileContainerInterfaces.FileContainerItem[]) => {
+        this.api.getItems(containerId, scope, itemPath, metadata, format, downloadFileName, includeDownloadTickets, (err: any, statusCode: number, Containers: FileContainerInterfaces.FileContainerItem[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
