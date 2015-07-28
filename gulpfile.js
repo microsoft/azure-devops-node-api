@@ -36,7 +36,7 @@ gulp.task('copy', ['compile'], function () {
 
 gulp.task('postPublish', ['publishDefinitions', 'publishBuild', 'copy'], function () {
 
-    return del(path.join(__dirname, 'api', '**/*.js'));
+    return del(['api/**/*.js', 'api/*.d.ts', 'api/handlers/**/*.d.ts', 'api/interfaces/**/*.d.ts']);
     //done();
 });
 

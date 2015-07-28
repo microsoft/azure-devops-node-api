@@ -2,7 +2,7 @@
 // significant portions of this file copied from: VSO\src\Vssf\WebPlatform\Platform\Scripts\VSS\WebApi\RestClient.ts
 //*******************************************************************************************************
 
-/// <reference path='./definitions/q.d.ts' />
+/// <reference path="../q/Q.d.ts"/>
 
 /// Imports of 3rd Party ///
 import Q = require("q");

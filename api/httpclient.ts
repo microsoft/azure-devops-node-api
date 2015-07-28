@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-/// <reference path="./definitions/node.d.ts"/>
+/// <reference path="../node/node.d.ts"/>
 
 import url = require("url");
 
