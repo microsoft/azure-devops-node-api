@@ -17,8 +17,8 @@
 /// <reference path="../q/Q.d.ts"/>
 
 import Q = require('q');
-import restm = require('./restclient');
-import httpm = require('./httpclient');
+import restm = require('./RestClient');
+import httpm = require('./HttpClient');
 import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
