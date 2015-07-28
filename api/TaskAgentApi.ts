@@ -58,7 +58,7 @@ export interface ITaskAgentApi extends basem.ClientApiBase {
     getTaskContent(taskId: string, versionString: string, onResult: (err: any, statusCode: number, tasks: TaskAgentInterfaces.TaskDefinition[]) => void): void;
     getTaskContentZip(taskId: string, versionString: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     getTaskDefinitions(visibility: string[], onResult: (err: any, statusCode: number, tasks: TaskAgentInterfaces.TaskDefinition[]) => void): void;
-    uploadTaskDefinition(taskId: string, overwrite: boolean, onResult: (err: any, statusCode: number) => void): void;
+    uploadTaskDefinition(contentStream: NodeJS.ReadableStream, customHeaders: any, content: string, taskId: string, overwrite: boolean, onResult: (err: any, statusCode: number, obj: any) => void): void;
     updateUserCapabilities(userCapabilities: { [key: string] : string; }, poolId: number, agentId: number, onResult: (err: any, statusCode: number, usercapabilitie: TaskAgentInterfaces.TaskAgent) => void): void;
 }
 
@@ -943,14 +943,18 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
     }
 
     /**
+     * @param {string} content
      * @param {string} taskId
      * @param {boolean} overwrite
      * @param onResult callback function
      */
     public uploadTaskDefinition(
+        contentStream: NodeJS.ReadableStream,
+        customHeaders: any,
+        content: string,
         taskId: string,
         overwrite: boolean,
-        onResult: (err: any, statusCode: number) => void
+        onResult: (err: any, statusCode: number, obj: any) => void
         ): void {
 
         var routeValues = {
@@ -966,7 +970,7 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.replace(path, apiVersion, null, serializationData, onResult);
+            this.restClient.uploadStream("PUT", path, apiVersion, contentStream, customHeaders, serializationData, onResult);
         });
     }
 
