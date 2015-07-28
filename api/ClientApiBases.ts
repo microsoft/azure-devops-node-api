@@ -2,8 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 import Q = require('q');
-import restm = require('./restclient');
-import httpm = require('./httpclient');
+import restm = require('./RestClient');
+import httpm = require('./HttpClient');
 import vsom = require('./VsoClient');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 
