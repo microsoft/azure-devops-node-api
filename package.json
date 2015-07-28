@@ -2,7 +2,7 @@
   "name": "vso-node-api",
   "description": "Node client for Visual Studio Online/TFS REST APIs",
   "version": "0.2.2",
-  "main": "./api/WebApi.js",
+  "main": "./WebApi.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/Microsoft/vso-node-api"
