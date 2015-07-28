@@ -1,14 +1,8 @@
 {
   "name": "vso-node-api",
   "description": "Node client for Visual Studio Online/TFS REST APIs",
-  "version": "0.2.0",
-  "bin": {
-    "vsoagent-installer": "./bin/install.js"
-  },
-  "scripts": {
-    "start": "./bin/install.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "version": "0.2.2",
+  "main": "./api/WebApi.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/Microsoft/vso-node-api"
