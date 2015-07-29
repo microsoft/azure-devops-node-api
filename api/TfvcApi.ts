@@ -6,9 +6,6 @@
 * ---------------------------------------------------------
 * Generated file, DO NOT EDIT
 * ---------------------------------------------------------
-*
-* See following wiki page for instructions on how to regenerate:
-*   https://vsowiki.com/index.php?title=Rest_Client_Generation
 */
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
@@ -103,10 +100,10 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             project: project
         };
 
-        var queryValues = {
+        var queryValues: any = {
             path: path,
             includeParent: includeParent,
-            includeChildren: includeChildren
+            includeChildren: includeChildren,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "bc1f417e-239d-42e7-85e1-76e80cb2d6eb", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -141,11 +138,11 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             project: project
         };
 
-        var queryValues = {
+        var queryValues: any = {
             includeParent: includeParent,
             includeChildren: includeChildren,
             includeDeleted: includeDeleted,
-            includeLinks: includeLinks
+            includeLinks: includeLinks,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "bc1f417e-239d-42e7-85e1-76e80cb2d6eb", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -178,10 +175,10 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             project: project
         };
 
-        var queryValues = {
+        var queryValues: any = {
             scopePath: scopePath,
             includeDeleted: includeDeleted,
-            includeLinks: includeLinks
+            includeLinks: includeLinks,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "bc1f417e-239d-42e7-85e1-76e80cb2d6eb", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -212,9 +209,9 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             id: id
         };
 
-        var queryValues = {
-            skip: skip,
-            top: top
+        var queryValues: any = {
+            '$skip': skip,
+            '$top': top,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "f32b86f2-15b9-4fe6-81b1-6f8938617ee5", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -286,16 +283,16 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             id: id
         };
 
-        var queryValues = {
+        var queryValues: any = {
             maxChangeCount: maxChangeCount,
             includeDetails: includeDetails,
             includeWorkItems: includeWorkItems,
             maxCommentLength: maxCommentLength,
             includeSourceRename: includeSourceRename,
-            skip: skip,
-            top: top,
-            orderby: orderby,
-            searchCriteria: searchCriteria
+            '$skip': skip,
+            '$top': top,
+            '$orderby': orderby,
+            searchCriteria: searchCriteria,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "tfvc", "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -340,16 +337,16 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             project: project
         };
 
-        var queryValues = {
+        var queryValues: any = {
             maxChangeCount: maxChangeCount,
             includeDetails: includeDetails,
             includeWorkItems: includeWorkItems,
             maxCommentLength: maxCommentLength,
             includeSourceRename: includeSourceRename,
-            skip: skip,
-            top: top,
-            orderby: orderby,
-            searchCriteria: searchCriteria
+            '$skip': skip,
+            '$top': top,
+            '$orderby': orderby,
+            searchCriteria: searchCriteria,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "tfvc", "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -457,13 +454,13 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             project: project
         };
 
-        var queryValues = {
+        var queryValues: any = {
             path: path,
             fileName: fileName,
             download: download,
             scopePath: scopePath,
             recursionLevel: recursionLevel,
-            versionDescriptor: versionDescriptor
+            versionDescriptor: versionDescriptor,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -502,13 +499,13 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             project: project
         };
 
-        var queryValues = {
+        var queryValues: any = {
             path: path,
             fileName: fileName,
             download: download,
             scopePath: scopePath,
             recursionLevel: recursionLevel,
-            versionDescriptor: versionDescriptor
+            versionDescriptor: versionDescriptor,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -543,11 +540,11 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             project: project
         };
 
-        var queryValues = {
+        var queryValues: any = {
             scopePath: scopePath,
             recursionLevel: recursionLevel,
             includeLinks: includeLinks,
-            versionDescriptor: versionDescriptor
+            versionDescriptor: versionDescriptor,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -586,13 +583,13 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             project: project
         };
 
-        var queryValues = {
+        var queryValues: any = {
             path: path,
             fileName: fileName,
             download: download,
             scopePath: scopePath,
             recursionLevel: recursionLevel,
-            versionDescriptor: versionDescriptor
+            versionDescriptor: versionDescriptor,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -631,13 +628,13 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             project: project
         };
 
-        var queryValues = {
+        var queryValues: any = {
             path: path,
             fileName: fileName,
             download: download,
             scopePath: scopePath,
             recursionLevel: recursionLevel,
-            versionDescriptor: versionDescriptor
+            versionDescriptor: versionDescriptor,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -668,9 +665,9 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             labelId: labelId
         };
 
-        var queryValues = {
-            top: top,
-            skip: skip
+        var queryValues: any = {
+            '$top': top,
+            '$skip': skip,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "06166e34-de17-4b60-8cd1-23182a346fda", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -702,8 +699,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             labelId: labelId
         };
 
-        var queryValues = {
-            requestData: requestData
+        var queryValues: any = {
+            requestData: requestData,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "a5d9bd7f-b661-4d0e-b9be-d9c16affae54", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -736,10 +733,10 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             project: project
         };
 
-        var queryValues = {
+        var queryValues: any = {
             requestData: requestData,
-            top: top,
-            skip: skip
+            '$top': top,
+            '$skip': skip,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "a5d9bd7f-b661-4d0e-b9be-d9c16affae54", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -768,8 +765,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             project: project
         };
 
-        var queryValues = {
-            projectId: projectId
+        var queryValues: any = {
+            projectId: projectId,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "252d9c40-0643-41cf-85b2-044d80f9b675", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -821,10 +818,10 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         var routeValues = {
         };
 
-        var queryValues = {
+        var queryValues: any = {
             shelvesetId: shelvesetId,
-            top: top,
-            skip: skip
+            '$top': top,
+            '$skip': skip,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "dbaf075b-0445-4c34-9e5b-82292f856522", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -852,9 +849,9 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         var routeValues = {
         };
 
-        var queryValues = {
+        var queryValues: any = {
             shelvesetId: shelvesetId,
-            requestData: requestData
+            requestData: requestData,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "e36d44fb-e907-4b0a-b194-f83f1ed32ad3", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -884,10 +881,10 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         var routeValues = {
         };
 
-        var queryValues = {
+        var queryValues: any = {
             requestData: requestData,
-            top: top,
-            skip: skip
+            '$top': top,
+            '$skip': skip,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "e36d44fb-e907-4b0a-b194-f83f1ed32ad3", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -913,8 +910,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         var routeValues = {
         };
 
-        var queryValues = {
-            shelvesetId: shelvesetId
+        var queryValues: any = {
+            shelvesetId: shelvesetId,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "a7a0c1c1-373e-425a-b031-a519474d743d", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {

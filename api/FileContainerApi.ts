@@ -6,9 +6,6 @@
 * ---------------------------------------------------------
 * Generated file, DO NOT EDIT
 * ---------------------------------------------------------
-*
-* See following wiki page for instructions on how to regenerate:
-*   https://vsowiki.com/index.php?title=Rest_Client_Generation
 */
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
@@ -66,9 +63,9 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             containerId: containerId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             itemPath: itemPath,
-            scope: scope
+            scope: scope,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -99,8 +96,8 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             containerId: containerId
         };
 
-        var queryValues = {
-            scope: scope
+        var queryValues: any = {
+            scope: scope,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -131,9 +128,9 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             containerId: containerId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             itemPath: itemPath,
-            scope: scope
+            scope: scope,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -161,9 +158,9 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
         var routeValues = {
         };
 
-        var queryValues = {
+        var queryValues: any = {
             scope: scope,
-            artifactUris: artifactUris
+            artifactUris: artifactUris,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -202,13 +199,13 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             containerId: containerId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             scope: scope,
             itemPath: itemPath,
             metadata: metadata,
-            format: format,
+            '$format': format,
             downloadFileName: downloadFileName,
-            includeDownloadTickets: includeDownloadTickets
+            includeDownloadTickets: includeDownloadTickets,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {

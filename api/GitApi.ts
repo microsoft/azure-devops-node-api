@@ -6,9 +6,6 @@
 * ---------------------------------------------------------
 * Generated file, DO NOT EDIT
 * ---------------------------------------------------------
-*
-* See following wiki page for instructions on how to regenerate:
-*   https://vsowiki.com/index.php?title=Rest_Client_Generation
 */
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
@@ -134,9 +131,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             sha1: sha1
         };
 
-        var queryValues = {
+        var queryValues: any = {
             download: download,
-            fileName: fileName
+            fileName: fileName,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "7b28e929-2c99-405d-9c5c-6167a06e6816", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -173,9 +170,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             sha1: sha1
         };
 
-        var queryValues = {
+        var queryValues: any = {
             download: download,
-            fileName: fileName
+            fileName: fileName,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "7b28e929-2c99-405d-9c5c-6167a06e6816", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -209,8 +206,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        var queryValues = {
-            filename: filename
+        var queryValues: any = {
+            filename: filename,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "7b28e929-2c99-405d-9c5c-6167a06e6816", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -247,9 +244,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             sha1: sha1
         };
 
-        var queryValues = {
+        var queryValues: any = {
             download: download,
-            fileName: fileName
+            fileName: fileName,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "7b28e929-2c99-405d-9c5c-6167a06e6816", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -283,9 +280,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             name: name,
-            baseVersionDescriptor: baseVersionDescriptor
+            baseVersionDescriptor: baseVersionDescriptor,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "d5b216de-d8d5-4d32-ae76-51df755b16d3", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -317,8 +314,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        var queryValues = {
-            baseVersionDescriptor: baseVersionDescriptor
+        var queryValues: any = {
+            baseVersionDescriptor: baseVersionDescriptor,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "d5b216de-d8d5-4d32-ae76-51df755b16d3", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -355,9 +352,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             top: top,
-            skip: skip
+            skip: skip,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "5bf884f5-3e07-42e9-afb8-1b872267bf16", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -419,8 +416,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        var queryValues = {
-            changeCount: changeCount
+        var queryValues: any = {
+            changeCount: changeCount,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "c2570c3b-5b3f-41b8-98bf-5407bfde8d58", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -456,10 +453,10 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             searchCriteria: searchCriteria,
-            skip: skip,
-            top: top
+            '$skip': skip,
+            '$top': top,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "c2570c3b-5b3f-41b8-98bf-5407bfde8d58", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -497,11 +494,11 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             pushId: pushId,
             top: top,
             skip: skip,
-            includeLinks: includeLinks
+            includeLinks: includeLinks,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "c2570c3b-5b3f-41b8-98bf-5407bfde8d58", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -537,9 +534,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        var queryValues = {
-            skip: skip,
-            top: top
+        var queryValues: any = {
+            '$skip': skip,
+            '$top': top,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "6400dfb2-0bcb-462b-b992-5a57f8f1416c", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -583,14 +580,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             path: path,
             scopePath: scopePath,
             recursionLevel: recursionLevel,
             includeContentMetadata: includeContentMetadata,
             latestProcessedChange: latestProcessedChange,
             download: download,
-            versionDescriptor: versionDescriptor
+            versionDescriptor: versionDescriptor,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -634,14 +631,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             path: path,
             scopePath: scopePath,
             recursionLevel: recursionLevel,
             includeContentMetadata: includeContentMetadata,
             latestProcessedChange: latestProcessedChange,
             download: download,
-            versionDescriptor: versionDescriptor
+            versionDescriptor: versionDescriptor,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -685,14 +682,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             scopePath: scopePath,
             recursionLevel: recursionLevel,
             includeContentMetadata: includeContentMetadata,
             latestProcessedChange: latestProcessedChange,
             download: download,
             includeLinks: includeLinks,
-            versionDescriptor: versionDescriptor
+            versionDescriptor: versionDescriptor,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -736,14 +733,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             path: path,
             scopePath: scopePath,
             recursionLevel: recursionLevel,
             includeContentMetadata: includeContentMetadata,
             latestProcessedChange: latestProcessedChange,
             download: download,
-            versionDescriptor: versionDescriptor
+            versionDescriptor: versionDescriptor,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -787,14 +784,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             path: path,
             scopePath: scopePath,
             recursionLevel: recursionLevel,
             includeContentMetadata: includeContentMetadata,
             latestProcessedChange: latestProcessedChange,
             download: download,
-            versionDescriptor: versionDescriptor
+            versionDescriptor: versionDescriptor,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -1054,10 +1051,10 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             pullRequestId: pullRequestId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             maxCommentLength: maxCommentLength,
-            skip: skip,
-            top: top
+            '$skip': skip,
+            '$top': top,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "9946fd70-0d40-406e-b686-b4744cbbcc37", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -1095,11 +1092,11 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             searchCriteria: searchCriteria,
             maxCommentLength: maxCommentLength,
-            skip: skip,
-            top: top
+            '$skip': skip,
+            '$top': top,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "9946fd70-0d40-406e-b686-b4744cbbcc37", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -1168,9 +1165,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             pullRequestId: pullRequestId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             commitsTop: commitsTop,
-            commitsSkip: commitsSkip
+            commitsSkip: commitsSkip,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "0a637fcc-5370-4ce8-b0e8-98091f5f9482", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -1236,9 +1233,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             pushId: pushId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             includeCommits: includeCommits,
-            includeRefUpdates: includeRefUpdates
+            includeRefUpdates: includeRefUpdates,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "git", "ea98d07b-3c87-4971-8ede-a613694ffb55", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -1274,10 +1271,10 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        var queryValues = {
-            skip: skip,
-            top: top,
-            searchCriteria: searchCriteria
+        var queryValues: any = {
+            '$skip': skip,
+            '$top': top,
+            searchCriteria: searchCriteria,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "git", "ea98d07b-3c87-4971-8ede-a613694ffb55", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -1311,9 +1308,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             filter: filter,
-            includeLinks: includeLinks
+            includeLinks: includeLinks,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "2d874a60-a811-4f62-9c9f-963a6ea0a55b", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -1347,8 +1344,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        var queryValues = {
-            projectId: projectId
+        var queryValues: any = {
+            projectId: projectId,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "2d874a60-a811-4f62-9c9f-963a6ea0a55b", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -1430,8 +1427,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             project: project
         };
 
-        var queryValues = {
-            includeLinks: includeLinks
+        var queryValues: any = {
+            includeLinks: includeLinks,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "225f7195-f9c7-4d14-ab28-a83f7ff77e1f", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -1522,10 +1519,10 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             sha1: sha1
         };
 
-        var queryValues = {
+        var queryValues: any = {
             projectId: projectId,
             recursive: recursive,
-            fileName: fileName
+            fileName: fileName,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "729f6437-6f92-44ec-8bee-273a7111063c", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -1562,10 +1559,10 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             sha1: sha1
         };
 
-        var queryValues = {
+        var queryValues: any = {
             projectId: projectId,
             recursive: recursive,
-            fileName: fileName
+            fileName: fileName,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "git", "729f6437-6f92-44ec-8bee-273a7111063c", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {

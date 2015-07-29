@@ -6,9 +6,6 @@
 * ---------------------------------------------------------
 * Generated file, DO NOT EDIT
 * ---------------------------------------------------------
-*
-* See following wiki page for instructions on how to regenerate:
-*   https://vsowiki.com/index.php?title=Rest_Client_Generation
 */
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
@@ -163,9 +160,9 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
             agentId: agentId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             includeCapabilities: includeCapabilities,
-            propertyFilters: propertyFilters
+            propertyFilters: propertyFilters,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -198,11 +195,11 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
             poolId: poolId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             agentName: agentName,
             includeCapabilities: includeCapabilities,
             propertyFilters: propertyFilters,
-            demands: demands
+            demands: demands,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -309,8 +306,8 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
             requestId: requestId
         };
 
-        var queryValues = {
-            lockToken: lockToken
+        var queryValues: any = {
+            lockToken: lockToken,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -391,8 +388,8 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
             requestId: requestId
         };
 
-        var queryValues = {
-            lockToken: lockToken
+        var queryValues: any = {
+            lockToken: lockToken,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -422,8 +419,8 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
             messageId: messageId
         };
 
-        var queryValues = {
-            sessionId: sessionId
+        var queryValues: any = {
+            sessionId: sessionId,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -452,9 +449,9 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
             poolId: poolId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             sessionId: sessionId,
-            lastMessageId: lastMessageId
+            lastMessageId: lastMessageId,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -481,8 +478,8 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
             poolId: poolId
         };
 
-        var queryValues = {
-            agentId: agentId
+        var queryValues: any = {
+            agentId: agentId,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -533,8 +530,8 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
             poolId: poolId
         };
 
-        var queryValues = {
-            requestId: requestId
+        var queryValues: any = {
+            requestId: requestId,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -604,8 +601,8 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
             poolId: poolId
         };
 
-        var queryValues = {
-            properties: properties
+        var queryValues: any = {
+            properties: properties,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -631,9 +628,9 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         var routeValues = {
         };
 
-        var queryValues = {
+        var queryValues: any = {
             poolName: poolName,
-            properties: properties
+            properties: properties,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -783,8 +780,8 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
             scopeIdentifier: scopeIdentifier
         };
 
-        var queryValues = {
-            type: type
+        var queryValues: any = {
+            type: type,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "ca373c13-fec3-4b30-9525-35a117731384", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -929,8 +926,8 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         var routeValues = {
         };
 
-        var queryValues = {
-            visibility: visibility
+        var queryValues: any = {
+            visibility: visibility,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -961,8 +958,8 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
             taskId: taskId
         };
 
-        var queryValues = {
-            overwrite: overwrite
+        var queryValues: any = {
+            overwrite: overwrite,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {

@@ -6,9 +6,6 @@
 * ---------------------------------------------------------
 * Generated file, DO NOT EDIT
 * ---------------------------------------------------------
-*
-* See following wiki page for instructions on how to regenerate:
-*   https://vsowiki.com/index.php?title=Rest_Client_Generation
 */
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
@@ -164,8 +161,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        var queryValues = {
-            artifactName: artifactName
+        var queryValues: any = {
+            artifactName: artifactName,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -197,8 +194,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        var queryValues = {
-            artifactName: artifactName
+        var queryValues: any = {
+            artifactName: artifactName,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -255,8 +252,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             definitionId: definitionId
         };
 
-        var queryValues = {
-            branchName: branchName
+        var queryValues: any = {
+            branchName: branchName,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "de6a4df8-22cd-44ee-af2d-39f6aa7a4261", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -315,8 +312,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        var queryValues = {
-            propertyFilters: propertyFilters
+        var queryValues: any = {
+            propertyFilters: propertyFilters,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -377,9 +374,9 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             project: project
         };
 
-        var queryValues = {
-            definitions: definitions,
-            queues: queues,
+        var queryValues: any = {
+            definitions: definitions && definitions.join(","),
+            queues: queues && queues.join(","),
             buildNumber: buildNumber,
             minFinishTime: minFinishTime,
             maxFinishTime: maxFinishTime,
@@ -387,14 +384,14 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             reasonFilter: reasonFilter,
             statusFilter: statusFilter,
             resultFilter: resultFilter,
-            tagFilters: tagFilters,
-            properties: properties,
+            tagFilters: tagFilters && tagFilters.join(","),
+            properties: properties && properties.join(","),
             type: type,
-            top: top,
+            '$top': top,
             continuationToken: continuationToken,
             maxBuildsPerDefinition: maxBuildsPerDefinition,
             deletedFilter: deletedFilter,
-            queryOrder: queryOrder
+            queryOrder: queryOrder,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -425,8 +422,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             project: project
         };
 
-        var queryValues = {
-            ignoreWarnings: ignoreWarnings
+        var queryValues: any = {
+            ignoreWarnings: ignoreWarnings,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -487,8 +484,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        var queryValues = {
-            top: top
+        var queryValues: any = {
+            '$top': top,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "54572c7b-bbd3-45d4-80dc-28be08941620", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -538,8 +535,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         var routeValues = {
         };
 
-        var queryValues = {
-            name: name
+        var queryValues: any = {
+            name: name,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "fcac1932-2ee1-437f-9b6f-7f696be858f6", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -572,9 +569,9 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             project: project
         };
 
-        var queryValues = {
+        var queryValues: any = {
             definitionToCloneId: definitionToCloneId,
-            definitionToCloneRevision: definitionToCloneRevision
+            definitionToCloneRevision: definitionToCloneRevision,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -635,9 +632,9 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             definitionId: definitionId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             revision: revision,
-            propertyFilters: propertyFilters
+            propertyFilters: propertyFilters && propertyFilters.join(","),
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -668,9 +665,9 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             project: project
         };
 
-        var queryValues = {
+        var queryValues: any = {
             name: name,
-            type: type
+            type: type,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -706,9 +703,9 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             definitionId: definitionId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             secretsSourceDefinitionId: secretsSourceDefinitionId,
-            secretsSourceDefinitionRevision: secretsSourceDefinitionRevision
+            secretsSourceDefinitionRevision: secretsSourceDefinitionRevision,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -772,9 +769,9 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             logId: logId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             startLine: startLine,
-            endLine: endLine
+            endLine: endLine,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -896,8 +893,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         var routeValues = {
         };
 
-        var queryValues = {
-            id: id
+        var queryValues: any = {
+            id: id,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -947,8 +944,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         var routeValues = {
         };
 
-        var queryValues = {
-            name: name
+        var queryValues: any = {
+            name: name,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -1295,8 +1292,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             timelineId: timelineId
         };
 
-        var queryValues = {
-            changeId: changeId
+        var queryValues: any = {
+            changeId: changeId,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "8baac422-4c6e-4de5-8532-db96d92acffa", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -1328,8 +1325,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        var queryValues = {
-            top: top
+        var queryValues: any = {
+            '$top': top,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "5a21f5d2-5642-47e4-a0bd-1356e6731bee", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -1363,8 +1360,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        var queryValues = {
-            top: top
+        var queryValues: any = {
+            '$top': top,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "build", "5a21f5d2-5642-47e4-a0bd-1356e6731bee", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {

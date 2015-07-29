@@ -6,9 +6,6 @@
 * ---------------------------------------------------------
 * Generated file, DO NOT EDIT
 * ---------------------------------------------------------
-*
-* See following wiki page for instructions on how to regenerate:
-*   https://vsowiki.com/index.php?title=Rest_Client_Generation
 */
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
@@ -191,9 +188,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             project: project
         };
 
-        var queryValues = {
+        var queryValues: any = {
             buildId: buildId,
-            flags: flags
+            flags: flags,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "Test", "77560e8a-4e8c-4d59-894e-a5f264c24444", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -223,8 +220,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             runId: runId
         };
 
-        var queryValues = {
-            flags: flags
+        var queryValues: any = {
+            flags: flags,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "Test", "9629116f-3b89-4ed8-b358-d4694efda160", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -333,12 +330,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             project: project
         };
 
-        var queryValues = {
+        var queryValues: any = {
             owner: owner,
-            skip: skip,
-            top: top,
+            '$skip': skip,
+            '$top': top,
             includePlanDetails: includePlanDetails,
-            filterActivePlans: filterActivePlans
+            filterActivePlans: filterActivePlans,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "51712106-7278-4208-8563-1c96f40cf5e4", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -401,8 +398,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             pointIds: pointIds
         };
 
-        var queryValues = {
-            witFields: witFields
+        var queryValues: any = {
+            witFields: witFields,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "3bcfd5c8-be62-488e-b1da-b8289ce9299c", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -447,14 +444,14 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             suiteId: suiteId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             witFields: witFields,
             configurationId: configurationId,
             testCaseId: testCaseId,
             testPointIds: testPointIds,
             includePointDetails: includePointDetails,
-            skip: skip,
-            top: top
+            '$skip': skip,
+            '$top': top,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "3bcfd5c8-be62-488e-b1da-b8289ce9299c", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -523,8 +520,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             iterationId: iterationId
         };
 
-        var queryValues = {
-            includeActionResults: includeActionResults
+        var queryValues: any = {
+            includeActionResults: includeActionResults,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "73eb9074-3446-4c44-8296-2f811950ff8d", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -557,8 +554,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             testCaseResultId: testCaseResultId
         };
 
-        var queryValues = {
-            includeActionResults: includeActionResults
+        var queryValues: any = {
+            includeActionResults: includeActionResults,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "73eb9074-3446-4c44-8296-2f811950ff8d", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -617,8 +614,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             runId: runId
         };
 
-        var queryValues = {
-            resultIds: resultIds
+        var queryValues: any = {
+            resultIds: resultIds && resultIds.join(","),
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "4637d869-3a76-4468-8057-0bb02aa385cf", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -651,8 +648,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             testCaseResultId: testCaseResultId
         };
 
-        var queryValues = {
-            includeIterationDetails: includeIterationDetails
+        var queryValues: any = {
+            includeIterationDetails: includeIterationDetails,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "4637d869-3a76-4468-8057-0bb02aa385cf", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -682,8 +679,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             runId: runId
         };
 
-        var queryValues = {
-            includeIterationDetails: includeIterationDetails
+        var queryValues: any = {
+            includeIterationDetails: includeIterationDetails,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "4637d869-3a76-4468-8057-0bb02aa385cf", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -780,8 +777,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             iterationId: iterationId
         };
 
-        var queryValues = {
-            paramName: paramName
+        var queryValues: any = {
+            paramName: paramName,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7c69810d-3354-4af3-844a-180bd25db08a", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -816,11 +813,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             project: project
         };
 
-        var queryValues = {
+        var queryValues: any = {
             includeResultDetails: includeResultDetails,
             includeIterationDetails: includeIterationDetails,
-            skip: skip,
-            top: top
+            '$skip': skip,
+            '$top': top,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "d03f4bfd-0863-441a-969f-6bbbd42443ca", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -878,10 +875,10 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             project: project
         };
 
-        var queryValues = {
+        var queryValues: any = {
             includeRunDetails: includeRunDetails,
-            skip: skip,
-            top: top
+            '$skip': skip,
+            '$top': top,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "2da6cbff-1bbb-43c9-b465-ea22b6f9707c", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -996,15 +993,15 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             project: project
         };
 
-        var queryValues = {
+        var queryValues: any = {
             buildUri: buildUri,
             owner: owner,
             tmiRunId: tmiRunId,
             planId: planId,
             includeRunDetails: includeRunDetails,
             automated: automated,
-            skip: skip,
-            top: top
+            '$skip': skip,
+            '$top': top,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "cadb3810-d47d-4a3c-a234-fe5f3be50138", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -1243,8 +1240,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             suiteId: suiteId
         };
 
-        var queryValues = {
-            includeChildSuites: includeChildSuites
+        var queryValues: any = {
+            includeChildSuites: includeChildSuites,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7b7619a0-cb54-4ab3-bf22-194056f45dd1", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -1278,10 +1275,10 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             planId: planId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             includeSuites: includeSuites,
-            skip: skip,
-            top: top
+            '$skip': skip,
+            '$top': top,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7b7619a0-cb54-4ab3-bf22-194056f45dd1", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -1335,8 +1332,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         var routeValues = {
         };
 
-        var queryValues = {
-            testCaseId: testCaseId
+        var queryValues: any = {
+            testCaseId: testCaseId,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "Test", "09a6167b-e969-4775-9247-b94cf3819caf", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {

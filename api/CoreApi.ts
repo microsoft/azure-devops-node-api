@@ -6,9 +6,6 @@
 * ---------------------------------------------------------
 * Generated file, DO NOT EDIT
 * ---------------------------------------------------------
-*
-* See following wiki page for instructions on how to regenerate:
-*   https://vsowiki.com/index.php?title=Rest_Client_Generation
 */
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
@@ -137,8 +134,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             projectId: projectId
         };
 
-        var queryValues = {
-            kind: kind
+        var queryValues: any = {
+            kind: kind,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "core", "b4f70219-e18b-42c5-abe3-98b07d35525e", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -264,9 +261,9 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             teamId: teamId
         };
 
-        var queryValues = {
-            top: top,
-            skip: skip
+        var queryValues: any = {
+            '$top': top,
+            '$skip': skip,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "core", "294c494c-2600-4d7e-b76c-3dd50c3c95be", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -318,9 +315,9 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         var routeValues = {
         };
 
-        var queryValues = {
-            top: top,
-            skip: skip
+        var queryValues: any = {
+            '$top': top,
+            '$skip': skip,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "core", "8031090f-ef1d-4af6-85fc-698cd75d42bf", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -344,8 +341,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         var routeValues = {
         };
 
-        var queryValues = {
-            minRevision: minRevision
+        var queryValues: any = {
+            minRevision: minRevision,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "core", "6488a877-4749-4954-82ea-7340d36be9f2", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -376,9 +373,9 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             projectId: projectId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             includeCapabilities: includeCapabilities,
-            includeHistory: includeHistory
+            includeHistory: includeHistory,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -408,10 +405,10 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         var routeValues = {
         };
 
-        var queryValues = {
+        var queryValues: any = {
             stateFilter: stateFilter,
-            top: top,
-            skip: skip
+            '$top': top,
+            '$skip': skip,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -508,8 +505,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         var routeValues = {
         };
 
-        var queryValues = {
-            proxyUrl: proxyUrl
+        var queryValues: any = {
+            proxyUrl: proxyUrl,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "core", "ec1f4311-f2b4-4c15-b2b8-8990b80d2908", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -541,9 +538,9 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             teamId: teamId
         };
 
-        var queryValues = {
-            top: top,
-            skip: skip
+        var queryValues: any = {
+            '$top': top,
+            '$skip': skip,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "core", "d30a3dd1-f8ba-442a-b86a-bd0c0c383e59", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {

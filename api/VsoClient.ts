@@ -95,7 +95,8 @@ export class VsoClient {
         var requestUrl;
         var deferred = Q.defer<ClientVersioningData>();
 
-        this._beginGetLocation(area, locationId).then((location: ifm.ApiResourceLocation) => {
+        this._beginGetLocation(area, locationId)
+        .then((location: ifm.ApiResourceLocation) => {
             if (!apiVersion) {
                 // Use the latest version of the resource if the api version was not specified in the request.
                 apiVersion = location.maxVersion + VsoClient.PREVIEW_INDICATOR + location.resourceVersion;
@@ -118,6 +119,9 @@ export class VsoClient {
                 requestUrl: requestUrl
             };
             deferred.resolve(versionData);
+        })
+        .fail((err) => {
+            deferred.reject(err);
         });
 
         return deferred.promise;

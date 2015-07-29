@@ -6,9 +6,6 @@
 * ---------------------------------------------------------
 * Generated file, DO NOT EDIT
 * ---------------------------------------------------------
-*
-* See following wiki page for instructions on how to regenerate:
-*   https://vsowiki.com/index.php?title=Rest_Client_Generation
 */
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
@@ -218,9 +215,9 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             logId: logId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             startLine: startLine,
-            endLine: endLine
+            endLine: endLine,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "46f5667d-263a-4684-91b1-dff7fdcf64e2", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -312,8 +309,8 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             timelineId: timelineId
         };
 
-        var queryValues = {
-            changeId: changeId
+        var queryValues: any = {
+            changeId: changeId,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "8893bc5b-35b2-4be7-83cb-99e683551db4", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -445,9 +442,9 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             timelineId: timelineId
         };
 
-        var queryValues = {
+        var queryValues: any = {
             changeId: changeId,
-            includeRecords: includeRecords
+            includeRecords: includeRecords,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "83597576-cc2c-453c-bea6-2882ae6a1653", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {

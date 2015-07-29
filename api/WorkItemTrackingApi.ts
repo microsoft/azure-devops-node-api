@@ -6,9 +6,6 @@
 * ---------------------------------------------------------
 * Generated file, DO NOT EDIT
 * ---------------------------------------------------------
-*
-* See following wiki page for instructions on how to regenerate:
-*   https://vsowiki.com/index.php?title=Rest_Client_Generation
 */
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
@@ -135,9 +132,9 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         var routeValues = {
         };
 
-        var queryValues = {
+        var queryValues: any = {
             fileName: fileName,
-            uploadType: uploadType
+            uploadType: uploadType,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "wit", "e07b5fa4-1499-494d-a496-64b860fd64ff", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -166,8 +163,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             id: id
         };
 
-        var queryValues = {
-            fileName: fileName
+        var queryValues: any = {
+            fileName: fileName,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "wit", "e07b5fa4-1499-494d-a496-64b860fd64ff", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -196,8 +193,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             id: id
         };
 
-        var queryValues = {
-            fileName: fileName
+        var queryValues: any = {
+            fileName: fileName,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "wit", "e07b5fa4-1499-494d-a496-64b860fd64ff", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -224,8 +221,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             project: project
         };
 
-        var queryValues = {
-            depth: depth
+        var queryValues: any = {
+            '$depth': depth,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a70579d1-f53a-48ee-a5be-7be8659023b9", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -288,8 +285,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             path: path
         };
 
-        var queryValues = {
-            reclassifyId: reclassifyId
+        var queryValues: any = {
+            '$reclassifyId': reclassifyId,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "wit", "5a172953-1b41-49d3-840a-33f79c3ce89f", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -322,8 +319,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             path: path
         };
 
-        var queryValues = {
-            depth: depth
+        var queryValues: any = {
+            '$depth': depth,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "wit", "5a172953-1b41-49d3-840a-33f79c3ce89f", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -425,9 +422,9 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             id: id
         };
 
-        var queryValues = {
-            top: top,
-            skip: skip
+        var queryValues: any = {
+            '$top': top,
+            '$skip': skip,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "wit", "f74eba29-47a1-4152-9381-84040aced527", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -541,10 +538,10 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             project: project
         };
 
-        var queryValues = {
-            expand: expand,
-            depth: depth,
-            includeDeleted: includeDeleted
+        var queryValues: any = {
+            '$expand': expand,
+            '$depth': depth,
+            '$includeDeleted': includeDeleted,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -580,10 +577,10 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             query: query
         };
 
-        var queryValues = {
-            expand: expand,
-            depth: depth,
-            includeDeleted: includeDeleted
+        var queryValues: any = {
+            '$expand': expand,
+            '$depth': depth,
+            '$includeDeleted': includeDeleted,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -615,8 +612,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             query: query
         };
 
-        var queryValues = {
-            undeleteDescendants: undeleteDescendants
+        var queryValues: any = {
+            '$undeleteDescendants': undeleteDescendants,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -648,8 +645,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             revisionNumber: revisionNumber
         };
 
-        var queryValues = {
-            expand: expand
+        var queryValues: any = {
+            '$expand': expand,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a00c85a5-80fa-4565-99c3-bcd2181434bb", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -682,10 +679,10 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             id: id
         };
 
-        var queryValues = {
-            top: top,
-            skip: skip,
-            expand: expand
+        var queryValues: any = {
+            '$top': top,
+            '$skip': skip,
+            '$expand': expand,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a00c85a5-80fa-4565-99c3-bcd2181434bb", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -766,9 +763,9 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             id: id
         };
 
-        var queryValues = {
-            top: top,
-            skip: skip
+        var queryValues: any = {
+            '$top': top,
+            '$skip': skip,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "wit", "6570bf97-d02c-4a91-8d93-3abe9895b1a9", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -848,8 +845,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             project: project
         };
 
-        var queryValues = {
-            watermark: watermark
+        var queryValues: any = {
+            watermark: watermark,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "wit", "b5b5b6d0-0308-40a1-b3f4-b9bb3c66878f", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -921,9 +918,9 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             project: project
         };
 
-        var queryValues = {
-            fields: fields,
-            watermark: watermark
+        var queryValues: any = {
+            fields: fields && fields.join(","),
+            watermark: watermark,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "wit", "f828fe59-dd87-495d-a17c-7a8d6211ca6c", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -952,8 +949,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             project: project
         };
 
-        var queryValues = {
-            watermark: watermark
+        var queryValues: any = {
+            watermark: watermark,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "wit", "f828fe59-dd87-495d-a17c-7a8d6211ca6c", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -986,10 +983,10 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             id: id
         };
 
-        var queryValues = {
-            fields: fields,
+        var queryValues: any = {
+            fields: fields && fields.join(","),
             asOf: asOf,
-            expand: expand
+            '$expand': expand,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "wit", "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -1021,11 +1018,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         var routeValues = {
         };
 
-        var queryValues = {
-            ids: ids,
-            fields: fields,
+        var queryValues: any = {
+            ids: ids && ids.join(","),
+            fields: fields && fields.join(","),
             asOf: asOf,
-            expand: expand
+            '$expand': expand,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "wit", "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -1056,9 +1053,9 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             id: id
         };
 
-        var queryValues = {
+        var queryValues: any = {
             validateOnly: validateOnly,
-            bypassRules: bypassRules
+            bypassRules: bypassRules,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "wit", "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -1094,10 +1091,10 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             type: type
         };
 
-        var queryValues = {
+        var queryValues: any = {
             fields: fields,
             asOf: asOf,
-            expand: expand
+            '$expand': expand,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "wit", "62d3d110-0047-428c-ad3c-4fe872c91c74", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -1131,9 +1128,9 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             type: type
         };
 
-        var queryValues = {
+        var queryValues: any = {
             validateOnly: validateOnly,
-            bypassRules: bypassRules
+            bypassRules: bypassRules,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "wit", "62d3d110-0047-428c-ad3c-4fe872c91c74", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
@@ -1293,8 +1290,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             type: type
         };
 
-        var queryValues = {
-            exportGlobalLists: exportGlobalLists
+        var queryValues: any = {
+            exportGlobalLists: exportGlobalLists,
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "wit", "8637ac8b-5eb6-4f90-b3f7-4f2ff576a459", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
