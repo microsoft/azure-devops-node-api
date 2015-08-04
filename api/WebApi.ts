@@ -17,6 +17,21 @@ import apivm = require('./handlers/apiversion');
 import basicm = require('./handlers/basiccreds');
 import bearm = require('./handlers/bearertoken');
 
+/**
+ * Methods to return handler objects (see handlers folder)
+ */
+export function getVersionHandler(apiVersion: string) {
+    return new apivm.ApiVersionHandler(apiVersion);
+}
+
+export function getBasicHandler(username: string, password: string) {
+    return new basicm.BasicCredentialHandler(username, password);
+}
+
+export function getBearerHandler(token) {
+    return new bearm.BearerCredentialHandler(token);
+}
+
 // ---------------------------------------------------------------------------
 // Factory to return client apis
 // When new APIs are added, two methods must be added here to instantiate the
@@ -35,21 +50,6 @@ export class WebApi {
     constructor(serverUrl: string, authHandler: VsoBaseInterfaces.IRequestHandler) {
         this.serverUrl = serverUrl;
         this.authHandler = authHandler;
-    }
-
-    /**
-     * Methods to return handler objects (see handlers folder)
-     */
-    public getVersionHandler(apiVersion: string) {
-        return new apivm.ApiVersionHandler(apiVersion);
-    }
-
-    public getBasicHandler(username: string, password: string) {
-        return new basicm.BasicCredentialHandler(username, password);
-    }
-
-    public getBearerHandler(token) {
-        return new bearm.BearerCredentialHandler(token);
     }
 
     /**
