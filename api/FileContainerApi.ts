@@ -68,12 +68,16 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             scope: scope,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainerItem, responseIsCollection: false };
             
             this.restClient.replace(path, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -100,12 +104,16 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             scope: scope,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: VSSInterfaces.TypeInfo.VssJsonCollectionWrapperV, responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainerItem, responseIsCollection: true };
             
             this.restClient.create(path, apiVersion, items, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -133,12 +141,16 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             scope: scope,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
             this.restClient.delete(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode);
         });
     }
 
@@ -163,12 +175,16 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             artifactUris: artifactUris,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainer, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -208,12 +224,16 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             includeDownloadTickets: includeDownloadTickets,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainerItem, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 

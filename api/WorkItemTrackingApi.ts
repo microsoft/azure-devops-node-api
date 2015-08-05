@@ -137,12 +137,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             uploadType: uploadType,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "e07b5fa4-1499-494d-a496-64b860fd64ff", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "e07b5fa4-1499-494d-a496-64b860fd64ff", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.AttachmentReference, responseIsCollection: false };
             
             this.restClient.uploadStream("POST", path, apiVersion, contentStream, customHeaders, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -167,12 +171,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             fileName: fileName,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "e07b5fa4-1499-494d-a496-64b860fd64ff", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "e07b5fa4-1499-494d-a496-64b860fd64ff", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
             this.httpClient.getStream(path, apiVersion, "application/octet-stream", onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -197,12 +205,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             fileName: fileName,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "e07b5fa4-1499-494d-a496-64b860fd64ff", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "e07b5fa4-1499-494d-a496-64b860fd64ff", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
             this.httpClient.getStream(path, apiVersion, "application/zip", onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -225,12 +237,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$depth': depth,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a70579d1-f53a-48ee-a5be-7be8659023b9", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a70579d1-f53a-48ee-a5be-7be8659023b9", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -255,12 +271,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             path: path
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "5a172953-1b41-49d3-840a-33f79c3ce89f", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "5a172953-1b41-49d3-840a-33f79c3ce89f", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode, responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode, responseIsCollection: false };
             
             this.restClient.create(path, apiVersion, postedNode, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -289,12 +309,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$reclassifyId': reclassifyId,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "5a172953-1b41-49d3-840a-33f79c3ce89f", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "5a172953-1b41-49d3-840a-33f79c3ce89f", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
             this.restClient.delete(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode);
         });
     }
 
@@ -323,12 +347,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$depth': depth,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "5a172953-1b41-49d3-840a-33f79c3ce89f", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "5a172953-1b41-49d3-840a-33f79c3ce89f", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -353,12 +381,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             path: path
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "5a172953-1b41-49d3-840a-33f79c3ce89f", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "5a172953-1b41-49d3-840a-33f79c3ce89f", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode, responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode, responseIsCollection: false };
             
             this.restClient.update(path, apiVersion, postedNode, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -375,12 +407,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             field: field
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "b51fd764-e5c2-4b9b-aaf7-3395cf4bdd94", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "b51fd764-e5c2-4b9b-aaf7-3395cf4bdd94", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemField, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -394,12 +430,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         var routeValues = {
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "b51fd764-e5c2-4b9b-aaf7-3395cf4bdd94", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "b51fd764-e5c2-4b9b-aaf7-3395cf4bdd94", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemField, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -427,12 +467,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$skip': skip,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "f74eba29-47a1-4152-9381-84040aced527", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "f74eba29-47a1-4152-9381-84040aced527", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemHistory, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -454,12 +498,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             revisionNumber: revisionNumber
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "f74eba29-47a1-4152-9381-84040aced527", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "f74eba29-47a1-4152-9381-84040aced527", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemHistory, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -483,12 +531,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             query: query
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem, responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem, responseIsCollection: false };
             
             this.restClient.create(path, apiVersion, postedQuery, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -508,12 +560,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             query: query
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
             this.restClient.delete(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode);
         });
     }
 
@@ -544,12 +600,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$includeDeleted': includeDeleted,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -583,12 +643,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$includeDeleted': includeDeleted,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -616,12 +680,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$undeleteDescendants': undeleteDescendants,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem, responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem, responseIsCollection: false };
             
             this.restClient.update(path, apiVersion, queryUpdate, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -649,12 +717,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$expand': expand,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a00c85a5-80fa-4565-99c3-bcd2181434bb", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a00c85a5-80fa-4565-99c3-bcd2181434bb", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItem, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -685,12 +757,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$expand': expand,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a00c85a5-80fa-4565-99c3-bcd2181434bb", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a00c85a5-80fa-4565-99c3-bcd2181434bb", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItem, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -708,12 +784,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         var routeValues = {
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "wit", "1a3a1536-dca6-4509-b9c3-dd9bb2981506", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "wit", "1a3a1536-dca6-4509-b9c3-dd9bb2981506", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.FieldsToEvaluate, responseIsCollection: false };
             
             this.restClient.create(path, apiVersion, ruleEngineInput, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode);
         });
     }
 
@@ -735,12 +815,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             updateNumber: updateNumber
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "6570bf97-d02c-4a91-8d93-3abe9895b1a9", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "6570bf97-d02c-4a91-8d93-3abe9895b1a9", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemUpdate, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -768,12 +852,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$skip': skip,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "6570bf97-d02c-4a91-8d93-3abe9895b1a9", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "6570bf97-d02c-4a91-8d93-3abe9895b1a9", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemUpdate, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -794,12 +882,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "1a9c53f7-f243-4447-b110-35ef023636e4", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "1a9c53f7-f243-4447-b110-35ef023636e4", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.Wiql, responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemQueryResult, responseIsCollection: false };
             
             this.restClient.create(path, apiVersion, wiql, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -821,12 +913,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             id: id
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a02355f5-5f8a-4671-8e32-369d23aac83d", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a02355f5-5f8a-4671-8e32-369d23aac83d", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemQueryResult, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -849,12 +945,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             watermark: watermark,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "wit", "b5b5b6d0-0308-40a1-b3f4-b9bb3c66878f", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "wit", "b5b5b6d0-0308-40a1-b3f4-b9bb3c66878f", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.ReportingWorkItemLinksBatch, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -873,12 +973,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             relation: relation
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "f5d33bc9-5b49-4a3c-a9bd-f3cd46dd2165", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "f5d33bc9-5b49-4a3c-a9bd-f3cd46dd2165", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemRelationType, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -892,12 +996,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         var routeValues = {
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "f5d33bc9-5b49-4a3c-a9bd-f3cd46dd2165", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "f5d33bc9-5b49-4a3c-a9bd-f3cd46dd2165", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemRelationType, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -923,12 +1031,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             watermark: watermark,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "wit", "f828fe59-dd87-495d-a17c-7a8d6211ca6c", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "wit", "f828fe59-dd87-495d-a17c-7a8d6211ca6c", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.ReportingWorkItemRevisionsBatch, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -953,12 +1065,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             watermark: watermark,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "wit", "f828fe59-dd87-495d-a17c-7a8d6211ca6c", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "wit", "f828fe59-dd87-495d-a17c-7a8d6211ca6c", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.ReportingWorkItemRevisionsBatch, responseIsCollection: false };
             
             this.restClient.create(path, apiVersion, fieldsList, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -989,12 +1105,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$expand': expand,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItem, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1025,12 +1145,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$expand': expand,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItem, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1058,12 +1182,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             bypassRules: bypassRules,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: VSSInterfaces.TypeInfo.JsonPatchDocument, responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItem, responseIsCollection: false };
             
             this.restClient.update(path, apiVersion, document, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1097,12 +1225,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$expand': expand,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "62d3d110-0047-428c-ad3c-4fe872c91c74", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "62d3d110-0047-428c-ad3c-4fe872c91c74", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItem, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1133,12 +1265,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             bypassRules: bypassRules,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "62d3d110-0047-428c-ad3c-4fe872c91c74", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "62d3d110-0047-428c-ad3c-4fe872c91c74", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: VSSInterfaces.TypeInfo.JsonPatchDocument, responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItem, responseIsCollection: false };
             
             this.restClient.update(path, apiVersion, document, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1155,12 +1291,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "9b9f5734-36c8-415e-ba67-f83b45c31408", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "9b9f5734-36c8-415e-ba67-f83b45c31408", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemTypeCategory, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1182,12 +1322,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             category: category
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "9b9f5734-36c8-415e-ba67-f83b45c31408", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "9b9f5734-36c8-415e-ba67-f83b45c31408", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemTypeCategory, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1209,12 +1353,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             type: type
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "7c8d7a76-4a09-43e8-b5df-bd792f4ac6aa", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "7c8d7a76-4a09-43e8-b5df-bd792f4ac6aa", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemType, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1231,12 +1379,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "7c8d7a76-4a09-43e8-b5df-bd792f4ac6aa", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "7c8d7a76-4a09-43e8-b5df-bd792f4ac6aa", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemType, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1261,12 +1413,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             field: field
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "wit", "bd293ce5-3d25-4192-8e67-e8092e879efb", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "wit", "bd293ce5-3d25-4192-8e67-e8092e879efb", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.FieldDependentRule, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1294,12 +1450,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             exportGlobalLists: exportGlobalLists,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "wit", "8637ac8b-5eb6-4f90-b3f7-4f2ff576a459", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "wit", "8637ac8b-5eb6-4f90-b3f7-4f2ff576a459", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemTypeTemplate, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1320,12 +1480,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "wit", "8637ac8b-5eb6-4f90-b3f7-4f2ff576a459", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "wit", "8637ac8b-5eb6-4f90-b3f7-4f2ff576a459", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemTypeTemplateUpdateModel, responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.ProvisioningResult, responseIsCollection: false };
             
             this.restClient.create(path, apiVersion, updateModel, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 

@@ -135,12 +135,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             testCaseResultId: testCaseResultId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "2bffebe9-2f0f-4639-9af8-56129e9fed2d", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "2bffebe9-2f0f-4639-9af8-56129e9fed2d", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestAttachmentRequestModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestAttachmentReference, responseIsCollection: false };
             
             this.restClient.create(path, apiVersion, attachmentRequestModel, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -162,12 +166,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             runId: runId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "4f004af4-a507-489c-9b13-cb62060beb11", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "4f004af4-a507-489c-9b13-cb62060beb11", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestAttachmentRequestModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestAttachmentReference, responseIsCollection: false };
             
             this.restClient.create(path, apiVersion, attachmentRequestModel, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -193,12 +201,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             flags: flags,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "77560e8a-4e8c-4d59-894e-a5f264c24444", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "77560e8a-4e8c-4d59-894e-a5f264c24444", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.BuildCoverage, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -224,12 +236,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             flags: flags,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "9629116f-3b89-4ed8-b358-d4694efda160", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "9629116f-3b89-4ed8-b358-d4694efda160", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestRunCoverage, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -249,12 +265,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             runId: runId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "a1e55200-637e-42e9-a7c0-7e5bfdedb1b3", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "a1e55200-637e-42e9-a7c0-7e5bfdedb1b3", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestMessageLogDetails, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -273,12 +293,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "51712106-7278-4208-8563-1c96f40cf5e4", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "51712106-7278-4208-8563-1c96f40cf5e4", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.PlanUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestPlan, responseIsCollection: false };
             
             this.restClient.create(path, apiVersion, testPlan, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -298,12 +322,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             planId: planId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "51712106-7278-4208-8563-1c96f40cf5e4", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "51712106-7278-4208-8563-1c96f40cf5e4", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPlan, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -338,12 +366,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             filterActivePlans: filterActivePlans,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "51712106-7278-4208-8563-1c96f40cf5e4", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "51712106-7278-4208-8563-1c96f40cf5e4", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPlan, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -365,12 +397,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             planId: planId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "51712106-7278-4208-8563-1c96f40cf5e4", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "51712106-7278-4208-8563-1c96f40cf5e4", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.PlanUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestPlan, responseIsCollection: false };
             
             this.restClient.update(path, apiVersion, planUpdateModel, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -402,12 +438,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             witFields: witFields,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "3bcfd5c8-be62-488e-b1da-b8289ce9299c", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "3bcfd5c8-be62-488e-b1da-b8289ce9299c", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPoint, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -454,12 +494,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             '$top': top,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "3bcfd5c8-be62-488e-b1da-b8289ce9299c", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "3bcfd5c8-be62-488e-b1da-b8289ce9299c", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPoint, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -487,12 +531,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             pointIds: pointIds
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "3bcfd5c8-be62-488e-b1da-b8289ce9299c", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "3bcfd5c8-be62-488e-b1da-b8289ce9299c", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.PointUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestPoint, responseIsCollection: true };
             
             this.restClient.update(path, apiVersion, pointUpdateModel, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -524,12 +572,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             includeActionResults: includeActionResults,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "73eb9074-3446-4c44-8296-2f811950ff8d", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "73eb9074-3446-4c44-8296-2f811950ff8d", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestIterationDetailsModel, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -558,12 +610,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             includeActionResults: includeActionResults,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "73eb9074-3446-4c44-8296-2f811950ff8d", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "73eb9074-3446-4c44-8296-2f811950ff8d", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestIterationDetailsModel, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -585,12 +641,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             runId: runId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "4637d869-3a76-4468-8057-0bb02aa385cf", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "4637d869-3a76-4468-8057-0bb02aa385cf", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestResultCreateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: true };
             
             this.restClient.createJsonWrappedArray(path, apiVersion, resultCreateModels, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -618,12 +678,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             resultIds: resultIds && resultIds.join(","),
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "4637d869-3a76-4468-8057-0bb02aa385cf", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "4637d869-3a76-4468-8057-0bb02aa385cf", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestCaseResultUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: true };
             
             this.restClient.update(path, apiVersion, resultUpdateModel, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -652,12 +716,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             includeIterationDetails: includeIterationDetails,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "4637d869-3a76-4468-8057-0bb02aa385cf", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "4637d869-3a76-4468-8057-0bb02aa385cf", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -683,12 +751,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             includeIterationDetails: includeIterationDetails,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "4637d869-3a76-4468-8057-0bb02aa385cf", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "4637d869-3a76-4468-8057-0bb02aa385cf", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -710,12 +782,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             runId: runId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "4637d869-3a76-4468-8057-0bb02aa385cf", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "4637d869-3a76-4468-8057-0bb02aa385cf", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestCaseResultUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: true };
             
             this.restClient.updateJsonWrappedArray(path, apiVersion, resultUpdateModels, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -744,12 +820,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             actionPath: actionPath
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "eaf40c31-ff84-4062-aafd-d5664be11a37", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "eaf40c31-ff84-4062-aafd-d5664be11a37", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestActionResultModel, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -781,12 +861,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             paramName: paramName,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7c69810d-3354-4af3-844a-180bd25db08a", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7c69810d-3354-4af3-844a-180bd25db08a", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestResultParameterModel, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -820,12 +904,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             '$top': top,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "d03f4bfd-0863-441a-969f-6bbbd42443ca", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "d03f4bfd-0863-441a-969f-6bbbd42443ca", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.QueryModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: true };
             
             this.restClient.create(path, apiVersion, query, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -845,12 +933,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             runId: runId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "0a42c424-d764-4a16-a2d5-5c85f87d0ae8", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "0a42c424-d764-4a16-a2d5-5c85f87d0ae8", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestRunStatistic, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -881,12 +973,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             '$top': top,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "2da6cbff-1bbb-43c9-b465-ea22b6f9707c", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "2da6cbff-1bbb-43c9-b465-ea22b6f9707c", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.QueryModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestRun, responseIsCollection: true };
             
             this.restClient.create(path, apiVersion, query, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -905,12 +1001,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "cadb3810-d47d-4a3c-a234-fe5f3be50138", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "cadb3810-d47d-4a3c-a234-fe5f3be50138", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.RunCreateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestRun, responseIsCollection: false };
             
             this.restClient.create(path, apiVersion, testRun, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -930,12 +1030,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             runId: runId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "cadb3810-d47d-4a3c-a234-fe5f3be50138", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "cadb3810-d47d-4a3c-a234-fe5f3be50138", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
             this.restClient.delete(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode);
         });
     }
 
@@ -955,12 +1059,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             runId: runId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "cadb3810-d47d-4a3c-a234-fe5f3be50138", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "cadb3810-d47d-4a3c-a234-fe5f3be50138", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestRun, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1004,12 +1112,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             '$top': top,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "cadb3810-d47d-4a3c-a234-fe5f3be50138", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "cadb3810-d47d-4a3c-a234-fe5f3be50138", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestRun, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1031,12 +1143,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             runId: runId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "cadb3810-d47d-4a3c-a234-fe5f3be50138", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "cadb3810-d47d-4a3c-a234-fe5f3be50138", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.RunUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestRun, responseIsCollection: false };
             
             this.restClient.update(path, apiVersion, runUpdateModel, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1062,12 +1178,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             testCaseIds: testCaseIds
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "a4a1ec1c-b03f-41ca-8857-704594ecf58e", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "a4a1ec1c-b03f-41ca-8857-704594ecf58e", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.SuiteTestCase, responseIsCollection: true };
             
             this.restClient.createJsonWrappedArray(path, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1093,12 +1213,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             testCaseIds: testCaseIds
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "a4a1ec1c-b03f-41ca-8857-704594ecf58e", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "a4a1ec1c-b03f-41ca-8857-704594ecf58e", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.SuiteTestCase, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1121,12 +1245,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             suiteId: suiteId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "a4a1ec1c-b03f-41ca-8857-704594ecf58e", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "a4a1ec1c-b03f-41ca-8857-704594ecf58e", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.SuiteTestCase, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1152,12 +1280,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             testCaseIds: testCaseIds
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "a4a1ec1c-b03f-41ca-8857-704594ecf58e", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "a4a1ec1c-b03f-41ca-8857-704594ecf58e", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
             this.restClient.delete(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode);
         });
     }
 
@@ -1182,12 +1314,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             suiteId: suiteId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7b7619a0-cb54-4ab3-bf22-194056f45dd1", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7b7619a0-cb54-4ab3-bf22-194056f45dd1", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.SuiteCreateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: true };
             
             this.restClient.create(path, apiVersion, testSuite, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1210,12 +1346,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             suiteId: suiteId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7b7619a0-cb54-4ab3-bf22-194056f45dd1", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7b7619a0-cb54-4ab3-bf22-194056f45dd1", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
             this.restClient.delete(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode);
         });
     }
 
@@ -1244,12 +1384,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             includeChildSuites: includeChildSuites,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7b7619a0-cb54-4ab3-bf22-194056f45dd1", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7b7619a0-cb54-4ab3-bf22-194056f45dd1", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1281,12 +1425,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             '$top': top,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7b7619a0-cb54-4ab3-bf22-194056f45dd1", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7b7619a0-cb54-4ab3-bf22-194056f45dd1", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1311,12 +1459,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             suiteId: suiteId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7b7619a0-cb54-4ab3-bf22-194056f45dd1", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7b7619a0-cb54-4ab3-bf22-194056f45dd1", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.SuiteUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: false };
             
             this.restClient.update(path, apiVersion, suiteUpdateModel, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1336,12 +1488,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             testCaseId: testCaseId,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "09a6167b-e969-4775-9247-b94cf3819caf", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "09a6167b-e969-4775-9247-b94cf3819caf", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1360,12 +1516,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "8133ce14-962f-42af-a5f9-6aa9defcb9c8", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "8133ce14-962f-42af-a5f9-6aa9defcb9c8", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestSettings, responseIsCollection: false };
             
             this.restClient.create(path, apiVersion, testSettings, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1385,12 +1545,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             testSettingsId: testSettingsId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "8133ce14-962f-42af-a5f9-6aa9defcb9c8", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "8133ce14-962f-42af-a5f9-6aa9defcb9c8", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
             this.restClient.delete(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode);
         });
     }
 
@@ -1410,12 +1574,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             testSettingsId: testSettingsId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "8133ce14-962f-42af-a5f9-6aa9defcb9c8", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "8133ce14-962f-42af-a5f9-6aa9defcb9c8", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSettings, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 

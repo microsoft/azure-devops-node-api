@@ -136,12 +136,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             fileName: fileName,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "7b28e929-2c99-405d-9c5c-6167a06e6816", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "7b28e929-2c99-405d-9c5c-6167a06e6816", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitBlobRef, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -175,12 +179,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             fileName: fileName,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "7b28e929-2c99-405d-9c5c-6167a06e6816", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "7b28e929-2c99-405d-9c5c-6167a06e6816", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
             this.httpClient.getStream(path, apiVersion, "application/octet-stream", onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -210,12 +218,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             filename: filename,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "7b28e929-2c99-405d-9c5c-6167a06e6816", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "7b28e929-2c99-405d-9c5c-6167a06e6816", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
             this.httpClient.getStream(path, apiVersion, "application/zip", onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -249,12 +261,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             fileName: fileName,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "7b28e929-2c99-405d-9c5c-6167a06e6816", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "7b28e929-2c99-405d-9c5c-6167a06e6816", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
             this.httpClient.getStream(path, apiVersion, "application/zip", onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -285,12 +301,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             baseVersionDescriptor: baseVersionDescriptor,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "d5b216de-d8d5-4d32-ae76-51df755b16d3", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "d5b216de-d8d5-4d32-ae76-51df755b16d3", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitBranchStats, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -318,12 +338,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             baseVersionDescriptor: baseVersionDescriptor,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "d5b216de-d8d5-4d32-ae76-51df755b16d3", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "d5b216de-d8d5-4d32-ae76-51df755b16d3", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitBranchStats, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -357,12 +381,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             skip: skip,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "5bf884f5-3e07-42e9-afb8-1b872267bf16", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "5bf884f5-3e07-42e9-afb8-1b872267bf16", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitChanges, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -384,12 +412,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "c2570c3b-5b3f-41b8-98bf-5407bfde8d58", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "c2570c3b-5b3f-41b8-98bf-5407bfde8d58", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommit, responseIsCollection: false };
             
             this.restClient.create(path, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -420,12 +452,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             changeCount: changeCount,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "c2570c3b-5b3f-41b8-98bf-5407bfde8d58", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "c2570c3b-5b3f-41b8-98bf-5407bfde8d58", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommit, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -459,12 +495,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             '$top': top,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "c2570c3b-5b3f-41b8-98bf-5407bfde8d58", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "c2570c3b-5b3f-41b8-98bf-5407bfde8d58", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitRef, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -501,12 +541,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             includeLinks: includeLinks,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "c2570c3b-5b3f-41b8-98bf-5407bfde8d58", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "c2570c3b-5b3f-41b8-98bf-5407bfde8d58", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitRef, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -539,12 +583,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             '$top': top,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "6400dfb2-0bcb-462b-b992-5a57f8f1416c", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "6400dfb2-0bcb-462b-b992-5a57f8f1416c", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitQueryCommitsCriteria, responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitRef, responseIsCollection: true };
             
             this.restClient.create(path, apiVersion, searchCriteria, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -590,12 +638,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             versionDescriptor: versionDescriptor,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitItem, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -641,12 +693,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             versionDescriptor: versionDescriptor,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
             this.httpClient.getStream(path, apiVersion, "application/octet-stream", onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -692,12 +748,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             versionDescriptor: versionDescriptor,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitItem, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -743,12 +803,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             versionDescriptor: versionDescriptor,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
             this.httpClient.getStream(path, apiVersion, "text/plain", onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -794,12 +858,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             versionDescriptor: versionDescriptor,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
             this.httpClient.getStream(path, apiVersion, "application/zip", onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -823,12 +891,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "630fd2e4-fb88-4f85-ad21-13f3fd1fbca9", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "630fd2e4-fb88-4f85-ad21-13f3fd1fbca9", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitItemRequestData, responseTypeMetadata: GitInterfaces.TypeInfo.GitItem, responseIsCollection: true };
             
             this.restClient.create(path, apiVersion, requestData, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -858,12 +930,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             reviewerId: reviewerId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "4b6702c7-aa35-4b89-9c96-b9abf6d3e540", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "4b6702c7-aa35-4b89-9c96-b9abf6d3e540", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.IdentityRefWithVote, responseTypeMetadata: GitInterfaces.TypeInfo.IdentityRefWithVote, responseIsCollection: false };
             
             this.restClient.replace(path, apiVersion, reviewer, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -890,12 +966,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             pullRequestId: pullRequestId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "4b6702c7-aa35-4b89-9c96-b9abf6d3e540", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "4b6702c7-aa35-4b89-9c96-b9abf6d3e540", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: VSSInterfaces.TypeInfo.IdentityRef, responseTypeMetadata: GitInterfaces.TypeInfo.IdentityRefWithVote, responseIsCollection: true };
             
             this.restClient.createJsonWrappedArray(path, apiVersion, reviewers, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -923,12 +1003,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             reviewerId: reviewerId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "4b6702c7-aa35-4b89-9c96-b9abf6d3e540", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "4b6702c7-aa35-4b89-9c96-b9abf6d3e540", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
             this.restClient.delete(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode);
         });
     }
 
@@ -956,12 +1040,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             reviewerId: reviewerId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "4b6702c7-aa35-4b89-9c96-b9abf6d3e540", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "4b6702c7-aa35-4b89-9c96-b9abf6d3e540", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.IdentityRefWithVote, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -986,12 +1074,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             pullRequestId: pullRequestId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "4b6702c7-aa35-4b89-9c96-b9abf6d3e540", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "4b6702c7-aa35-4b89-9c96-b9abf6d3e540", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.IdentityRefWithVote, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1015,12 +1107,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "9946fd70-0d40-406e-b686-b4744cbbcc37", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "9946fd70-0d40-406e-b686-b4744cbbcc37", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: false };
             
             this.restClient.create(path, apiVersion, gitPullRequestToCreate, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1057,12 +1153,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             '$top': top,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "9946fd70-0d40-406e-b686-b4744cbbcc37", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "9946fd70-0d40-406e-b686-b4744cbbcc37", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1099,12 +1199,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             '$top': top,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "9946fd70-0d40-406e-b686-b4744cbbcc37", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "9946fd70-0d40-406e-b686-b4744cbbcc37", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1131,12 +1235,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             pullRequestId: pullRequestId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "9946fd70-0d40-406e-b686-b4744cbbcc37", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "9946fd70-0d40-406e-b686-b4744cbbcc37", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: false };
             
             this.restClient.update(path, apiVersion, gitPullRequestToUpdate, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1170,12 +1278,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             commitsSkip: commitsSkip,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "0a637fcc-5370-4ce8-b0e8-98091f5f9482", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "0a637fcc-5370-4ce8-b0e8-98091f5f9482", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.AssociatedWorkItem, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1199,12 +1311,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "git", "ea98d07b-3c87-4971-8ede-a613694ffb55", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "git", "ea98d07b-3c87-4971-8ede-a613694ffb55", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitPush, responseTypeMetadata: GitInterfaces.TypeInfo.GitPush, responseIsCollection: false };
             
             this.restClient.create(path, apiVersion, push, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1238,12 +1354,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             includeRefUpdates: includeRefUpdates,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "git", "ea98d07b-3c87-4971-8ede-a613694ffb55", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "git", "ea98d07b-3c87-4971-8ede-a613694ffb55", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPush, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1277,12 +1397,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             searchCriteria: searchCriteria,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "git", "ea98d07b-3c87-4971-8ede-a613694ffb55", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.2", "git", "ea98d07b-3c87-4971-8ede-a613694ffb55", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPush, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1313,12 +1437,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             includeLinks: includeLinks,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "2d874a60-a811-4f62-9c9f-963a6ea0a55b", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "2d874a60-a811-4f62-9c9f-963a6ea0a55b", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitRef, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1348,12 +1476,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             projectId: projectId,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "2d874a60-a811-4f62-9c9f-963a6ea0a55b", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "2d874a60-a811-4f62-9c9f-963a6ea0a55b", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitRefUpdate, responseTypeMetadata: GitInterfaces.TypeInfo.GitRefUpdateResult, responseIsCollection: true };
             
             this.restClient.createJsonWrappedArray(path, apiVersion, refUpdates, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1374,12 +1506,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "225f7195-f9c7-4d14-ab28-a83f7ff77e1f", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "225f7195-f9c7-4d14-ab28-a83f7ff77e1f", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitRepository, responseTypeMetadata: GitInterfaces.TypeInfo.GitRepository, responseIsCollection: false };
             
             this.restClient.create(path, apiVersion, gitRepositoryToCreate, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1401,12 +1537,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "225f7195-f9c7-4d14-ab28-a83f7ff77e1f", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "225f7195-f9c7-4d14-ab28-a83f7ff77e1f", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
             this.restClient.delete(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode);
         });
     }
 
@@ -1431,12 +1571,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             includeLinks: includeLinks,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "225f7195-f9c7-4d14-ab28-a83f7ff77e1f", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "225f7195-f9c7-4d14-ab28-a83f7ff77e1f", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitRepository, responseIsCollection: true };
             
             this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1456,12 +1600,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "225f7195-f9c7-4d14-ab28-a83f7ff77e1f", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "225f7195-f9c7-4d14-ab28-a83f7ff77e1f", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitRepository, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1485,12 +1633,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "225f7195-f9c7-4d14-ab28-a83f7ff77e1f", routeValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "225f7195-f9c7-4d14-ab28-a83f7ff77e1f", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitRepository, responseTypeMetadata: GitInterfaces.TypeInfo.GitRepository, responseIsCollection: false };
             
             this.restClient.update(path, apiVersion, newRepositoryInfo, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1525,12 +1677,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             fileName: fileName,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "729f6437-6f92-44ec-8bee-273a7111063c", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "729f6437-6f92-44ec-8bee-273a7111063c", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitTreeRef, responseIsCollection: false };
             
             this.restClient.getJson(path, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
@@ -1565,12 +1721,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             fileName: fileName,
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "729f6437-6f92-44ec-8bee-273a7111063c", routeValues, queryValues).then((versioningData: vsom.ClientVersioningData) => {
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "729f6437-6f92-44ec-8bee-273a7111063c", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
             var path: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
             this.httpClient.getStream(path, apiVersion, "application/zip", onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
         });
     }
 
