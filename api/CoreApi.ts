@@ -81,17 +81,17 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         onResult: (err: any, statusCode: number, connectedService: CoreInterfaces.WebApiConnectedService) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             projectId: projectId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "core", "b4f70219-e18b-42c5-abe3-98b07d35525e", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: CoreInterfaces.TypeInfo.WebApiConnectedServiceDetails, responseTypeMetadata: CoreInterfaces.TypeInfo.WebApiConnectedService, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, connectedServiceCreationData, serializationData, onResult);
+            this.restClient.create(url, apiVersion, connectedServiceCreationData, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -109,18 +109,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         onResult: (err: any, statusCode: number, connectedService: CoreInterfaces.WebApiConnectedServiceDetails) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             projectId: projectId,
             name: name
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "core", "b4f70219-e18b-42c5-abe3-98b07d35525e", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.WebApiConnectedServiceDetails, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -138,21 +138,21 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         onResult: (err: any, statusCode: number, connectedServices: CoreInterfaces.WebApiConnectedService[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             projectId: projectId
         };
 
         var queryValues: any = {
             kind: kind,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "core", "b4f70219-e18b-42c5-abe3-98b07d35525e", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.WebApiConnectedService, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -170,17 +170,17 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         onResult: (err: any, statusCode: number) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             mruName: mruName
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "core", "5ead0b70-2572-4697-97e9-f341069a783a", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: CoreInterfaces.TypeInfo.IdentityData, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, mruData, serializationData, onResult);
+            this.restClient.create(url, apiVersion, mruData, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -198,17 +198,17 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         onResult: (err: any, statusCode: number) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             mruName: mruName
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "core", "5ead0b70-2572-4697-97e9-f341069a783a", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: CoreInterfaces.TypeInfo.IdentityData, responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -224,17 +224,17 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         onResult: (err: any, statusCode: number, identityMru: VSSInterfaces.IdentityRef[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             mruName: mruName
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "core", "5ead0b70-2572-4697-97e9-f341069a783a", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: VSSInterfaces.TypeInfo.IdentityRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -252,17 +252,17 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         onResult: (err: any, statusCode: number) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             mruName: mruName
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "core", "5ead0b70-2572-4697-97e9-f341069a783a", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: CoreInterfaces.TypeInfo.IdentityData, responseIsCollection: false };
             
-            this.restClient.update(path, apiVersion, mruData, serializationData, onResult);
+            this.restClient.update(url, apiVersion, mruData, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -284,7 +284,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         onResult: (err: any, statusCode: number, members: VSSInterfaces.IdentityRef[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             projectId: projectId,
             teamId: teamId
         };
@@ -293,14 +293,14 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             '$top': top,
             '$skip': skip,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "core", "294c494c-2600-4d7e-b76c-3dd50c3c95be", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: VSSInterfaces.TypeInfo.IdentityRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -318,17 +318,17 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         onResult: (err: any, statusCode: number, projectCollection: CoreInterfaces.TeamProjectCollection) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             collectionId: collectionId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "core", "8031090f-ef1d-4af6-85fc-698cd75d42bf", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.TeamProjectCollection, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -348,21 +348,21 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         onResult: (err: any, statusCode: number, projectCollections: CoreInterfaces.TeamProjectCollectionReference[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
         };
 
         var queryValues: any = {
             '$top': top,
             '$skip': skip,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.2", "core", "8031090f-ef1d-4af6-85fc-698cd75d42bf", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.TeamProjectCollectionReference, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -378,20 +378,20 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         onResult: (err: any, statusCode: number, projectHistory: CoreInterfaces.TeamProjectReference[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
         };
 
         var queryValues: any = {
             minRevision: minRevision,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "core", "6488a877-4749-4954-82ea-7340d36be9f2", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.TeamProjectReference, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -413,7 +413,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         onResult: (err: any, statusCode: number, project: CoreInterfaces.TeamProject) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             projectId: projectId
         };
 
@@ -421,14 +421,14 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             includeCapabilities: includeCapabilities,
             includeHistory: includeHistory,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.TeamProject, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -450,7 +450,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         onResult: (err: any, statusCode: number, projects: CoreInterfaces.TeamProjectReference[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
         };
 
         var queryValues: any = {
@@ -458,14 +458,14 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             '$top': top,
             '$skip': skip,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.TeamProjectReference, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -483,16 +483,16 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         onResult: (err: any, statusCode: number, project: OperationsInterfaces.OperationReference) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
         };
 
         this.vsoClient.getVersioningData("3.0-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: CoreInterfaces.TypeInfo.TeamProject, responseTypeMetadata: OperationsInterfaces.TypeInfo.OperationReference, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, projectToCreate, serializationData, onResult);
+            this.restClient.create(url, apiVersion, projectToCreate, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -510,17 +510,17 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         onResult: (err: any, statusCode: number, project: OperationsInterfaces.OperationReference) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             projectId: projectId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: OperationsInterfaces.TypeInfo.OperationReference, responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -540,17 +540,17 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         onResult: (err: any, statusCode: number, project: OperationsInterfaces.OperationReference) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             projectId: projectId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: CoreInterfaces.TypeInfo.TeamProject, responseTypeMetadata: OperationsInterfaces.TypeInfo.OperationReference, responseIsCollection: false };
             
-            this.restClient.update(path, apiVersion, projectUpdate, serializationData, onResult);
+            this.restClient.update(url, apiVersion, projectUpdate, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -566,20 +566,20 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         onResult: (err: any, statusCode: number, proxies: CoreInterfaces.Proxy[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
         };
 
         var queryValues: any = {
             proxyUrl: proxyUrl,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "core", "ec1f4311-f2b4-4c15-b2b8-8990b80d2908", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.Proxy, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -601,7 +601,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         onResult: (err: any, statusCode: number, team: CoreInterfaces.WebApiTeam) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             projectId: projectId,
             teamId: teamId
         };
@@ -610,14 +610,14 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             '$top': top,
             '$skip': skip,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "core", "d30a3dd1-f8ba-442a-b86a-bd0c0c383e59", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.WebApiTeam, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);

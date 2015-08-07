@@ -25,6 +25,8 @@ export interface ITestApi extends basem.ClientApiBase {
     createTestResultAttachment(attachmentRequestModel: TestInterfaces.TestAttachmentRequestModel, project: string, runId: number, testCaseResultId: number, onResult: (err: any, statusCode: number, Attachment: TestInterfaces.TestAttachmentReference) => void): void;
     createTestRunAttachment(attachmentRequestModel: TestInterfaces.TestAttachmentRequestModel, project: string, runId: number, onResult: (err: any, statusCode: number, Attachment: TestInterfaces.TestAttachmentReference) => void): void;
     getBuildCodeCoverage(project: string, buildId: number, flags: number, onResult: (err: any, statusCode: number, CodeCoverage: TestInterfaces.BuildCoverage[]) => void): void;
+    getCodeCoverageSummary(project: string, buildId: number, deltaBuildId: number, onResult: (err: any, statusCode: number, CodeCoverage: TestInterfaces.CodeCoverageSummary) => void): void;
+    updateCodeCoverageSummary(coverageData: TestInterfaces.CodeCoverageData, project: string, build: number, onResult: (err: any, statusCode: number) => void): void;
     getTestRunCodeCoverage(project: string, runId: number, flags: number, onResult: (err: any, statusCode: number, CodeCoverage: TestInterfaces.TestRunCoverage[]) => void): void;
     getTestRunLogs(project: string, runId: number, onResult: (err: any, statusCode: number, MessageLogs: TestInterfaces.TestMessageLogDetails[]) => void): void;
     createTestPlan(testPlan: TestInterfaces.PlanUpdateModel, project: string, onResult: (err: any, statusCode: number, Plan: TestInterfaces.TestPlan) => void): void;
@@ -71,6 +73,7 @@ export interface IQTestApi extends basem.QClientApiBase {
     createTestResultAttachment(attachmentRequestModel: TestInterfaces.TestAttachmentRequestModel, project: string, runId: number,  testCaseResultId: number): Q.Promise<TestInterfaces.TestAttachmentReference>;
     createTestRunAttachment(attachmentRequestModel: TestInterfaces.TestAttachmentRequestModel, project: string,  runId: number): Q.Promise<TestInterfaces.TestAttachmentReference>;
     getBuildCodeCoverage(project: string, buildId: number,  flags: number): Q.Promise<TestInterfaces.BuildCoverage[]>;
+    getCodeCoverageSummary(project: string, buildId: number,  deltaBuildId?: number): Q.Promise<TestInterfaces.CodeCoverageSummary>;
     getTestRunCodeCoverage(project: string, runId: number,  flags: number): Q.Promise<TestInterfaces.TestRunCoverage[]>;
     getTestRunLogs(project: string,  runId: number): Q.Promise<TestInterfaces.TestMessageLogDetails[]>;
     createTestPlan(testPlan: TestInterfaces.PlanUpdateModel,  project: string): Q.Promise<TestInterfaces.TestPlan>;
@@ -129,7 +132,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Attachment: TestInterfaces.TestAttachmentReference) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             runId: runId,
             testCaseResultId: testCaseResultId
@@ -137,11 +140,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
         this.vsoClient.getVersioningData("3.0-preview.1", "Test", "2bffebe9-2f0f-4639-9af8-56129e9fed2d", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestAttachmentRequestModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestAttachmentReference, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, attachmentRequestModel, serializationData, onResult);
+            this.restClient.create(url, apiVersion, attachmentRequestModel, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -161,18 +164,18 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Attachment: TestInterfaces.TestAttachmentReference) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             runId: runId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "Test", "4f004af4-a507-489c-9b13-cb62060beb11", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestAttachmentRequestModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestAttachmentReference, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, attachmentRequestModel, serializationData, onResult);
+            this.restClient.create(url, apiVersion, attachmentRequestModel, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -192,7 +195,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, CodeCoverage: TestInterfaces.BuildCoverage[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project
         };
 
@@ -200,17 +203,88 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             buildId: buildId,
             flags: flags,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "Test", "77560e8a-4e8c-4d59-894e-a5f264c24444", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.BuildCoverage, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number} buildId
+     * @param {number} deltaBuildId
+     * @param onResult callback function with the resulting TestInterfaces.CodeCoverageSummary
+     */
+    public getCodeCoverageSummary(
+        project: string,
+        buildId: number,
+        deltaBuildId: number,
+        onResult: (err: any, statusCode: number, CodeCoverage: TestInterfaces.CodeCoverageSummary) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project
+        };
+
+        var queryValues: any = {
+            buildId: buildId,
+            deltaBuildId: deltaBuildId,
+        };
+        
+        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "77560e8a-4e8c-4d59-894e-a5f264c24444", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.CodeCoverageSummary, responseIsCollection: false };
+            
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * http://(tfsserver):8080/tfs/DefaultCollection/_apis/test/CodeCoverage?build=10 Request: Json of code coverage summary
+     * 
+     * @param {TestInterfaces.CodeCoverageData} coverageData
+     * @param {string} project - Project ID or project name
+     * @param {number} build
+     * @param onResult callback function
+     */
+    public updateCodeCoverageSummary(
+        coverageData: TestInterfaces.CodeCoverageData,
+        project: string,
+        build: number,
+        onResult: (err: any, statusCode: number) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project
+        };
+
+        var queryValues: any = {
+            build: build,
+        };
+        
+        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "77560e8a-4e8c-4d59-894e-a5f264c24444", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.CodeCoverageData, responseIsCollection: false };
+            
+            this.restClient.create(url, apiVersion, coverageData, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode);
         });
     }
 
@@ -227,7 +301,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, CodeCoverage: TestInterfaces.TestRunCoverage[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             runId: runId
         };
@@ -235,14 +309,14 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         var queryValues: any = {
             flags: flags,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "Test", "9629116f-3b89-4ed8-b358-d4694efda160", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestRunCoverage, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -260,18 +334,18 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, MessageLogs: TestInterfaces.TestMessageLogDetails[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             runId: runId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "Test", "a1e55200-637e-42e9-a7c0-7e5bfdedb1b3", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestMessageLogDetails, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -289,17 +363,17 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Plan: TestInterfaces.TestPlan) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "51712106-7278-4208-8563-1c96f40cf5e4", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.PlanUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestPlan, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, testPlan, serializationData, onResult);
+            this.restClient.create(url, apiVersion, testPlan, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -317,18 +391,18 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Plan: TestInterfaces.TestPlan) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             planId: planId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "51712106-7278-4208-8563-1c96f40cf5e4", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPlan, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -354,7 +428,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Plans: TestInterfaces.TestPlan[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project
         };
 
@@ -365,14 +439,14 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             includePlanDetails: includePlanDetails,
             filterActivePlans: filterActivePlans,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "51712106-7278-4208-8563-1c96f40cf5e4", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPlan, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -392,18 +466,18 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Plan: TestInterfaces.TestPlan) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             planId: planId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "51712106-7278-4208-8563-1c96f40cf5e4", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.PlanUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestPlan, responseIsCollection: false };
             
-            this.restClient.update(path, apiVersion, planUpdateModel, serializationData, onResult);
+            this.restClient.update(url, apiVersion, planUpdateModel, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -427,7 +501,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Point: TestInterfaces.TestPoint) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             planId: planId,
             suiteId: suiteId,
@@ -437,14 +511,14 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         var queryValues: any = {
             witFields: witFields,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "3bcfd5c8-be62-488e-b1da-b8289ce9299c", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPoint, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -478,7 +552,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Points: TestInterfaces.TestPoint[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             planId: planId,
             suiteId: suiteId
@@ -493,14 +567,14 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             '$skip': skip,
             '$top': top,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "3bcfd5c8-be62-488e-b1da-b8289ce9299c", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPoint, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -524,7 +598,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Point: TestInterfaces.TestPoint[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             planId: planId,
             suiteId: suiteId,
@@ -533,11 +607,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "3bcfd5c8-be62-488e-b1da-b8289ce9299c", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.PointUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestPoint, responseIsCollection: true };
             
-            this.restClient.update(path, apiVersion, pointUpdateModel, serializationData, onResult);
+            this.restClient.update(url, apiVersion, pointUpdateModel, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -561,7 +635,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Result: TestInterfaces.TestIterationDetailsModel) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             runId: runId,
             testCaseResultId: testCaseResultId,
@@ -571,14 +645,14 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         var queryValues: any = {
             includeActionResults: includeActionResults,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "73eb9074-3446-4c44-8296-2f811950ff8d", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestIterationDetailsModel, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -600,7 +674,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Results: TestInterfaces.TestIterationDetailsModel[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             runId: runId,
             testCaseResultId: testCaseResultId
@@ -609,14 +683,14 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         var queryValues: any = {
             includeActionResults: includeActionResults,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "73eb9074-3446-4c44-8296-2f811950ff8d", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestIterationDetailsModel, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -636,18 +710,18 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Results: TestInterfaces.TestCaseResult[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             runId: runId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "4637d869-3a76-4468-8057-0bb02aa385cf", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestResultCreateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: true };
             
-            this.restClient.createJsonWrappedArray(path, apiVersion, resultCreateModels, serializationData, onResult);
+            this.restClient.createJsonWrappedArray(url, apiVersion, resultCreateModels, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -669,7 +743,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Result: TestInterfaces.TestCaseResult[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             runId: runId
         };
@@ -677,14 +751,14 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         var queryValues: any = {
             resultIds: resultIds && resultIds.join(","),
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "4637d869-3a76-4468-8057-0bb02aa385cf", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestCaseResultUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: true };
             
-            this.restClient.update(path, apiVersion, resultUpdateModel, serializationData, onResult);
+            this.restClient.update(url, apiVersion, resultUpdateModel, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -706,7 +780,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Result: TestInterfaces.TestCaseResult) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             runId: runId,
             testCaseResultId: testCaseResultId
@@ -715,14 +789,14 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         var queryValues: any = {
             includeIterationDetails: includeIterationDetails,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "4637d869-3a76-4468-8057-0bb02aa385cf", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -742,7 +816,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Results: TestInterfaces.TestCaseResult[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             runId: runId
         };
@@ -750,14 +824,14 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         var queryValues: any = {
             includeIterationDetails: includeIterationDetails,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "4637d869-3a76-4468-8057-0bb02aa385cf", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -777,18 +851,18 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Results: TestInterfaces.TestCaseResult[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             runId: runId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "4637d869-3a76-4468-8057-0bb02aa385cf", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestCaseResultUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: true };
             
-            this.restClient.updateJsonWrappedArray(path, apiVersion, resultUpdateModels, serializationData, onResult);
+            this.restClient.updateJsonWrappedArray(url, apiVersion, resultUpdateModels, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -812,7 +886,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Results: TestInterfaces.TestActionResultModel[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             runId: runId,
             testCaseResultId: testCaseResultId,
@@ -822,11 +896,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "eaf40c31-ff84-4062-aafd-d5664be11a37", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestActionResultModel, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -850,7 +924,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Results: TestInterfaces.TestResultParameterModel[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             runId: runId,
             testCaseResultId: testCaseResultId,
@@ -860,14 +934,14 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         var queryValues: any = {
             paramName: paramName,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7c69810d-3354-4af3-844a-180bd25db08a", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestResultParameterModel, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -893,7 +967,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Result: TestInterfaces.TestCaseResult[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project
         };
 
@@ -903,14 +977,14 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             '$skip': skip,
             '$top': top,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "d03f4bfd-0863-441a-969f-6bbbd42443ca", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.QueryModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: true };
             
-            this.restClient.create(path, apiVersion, query, serializationData, onResult);
+            this.restClient.create(url, apiVersion, query, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -928,18 +1002,18 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Run: TestInterfaces.TestRunStatistic) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             runId: runId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "0a42c424-d764-4a16-a2d5-5c85f87d0ae8", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestRunStatistic, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -963,7 +1037,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Run: TestInterfaces.TestRun[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project
         };
 
@@ -972,14 +1046,14 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             '$skip': skip,
             '$top': top,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "2da6cbff-1bbb-43c9-b465-ea22b6f9707c", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.QueryModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestRun, responseIsCollection: true };
             
-            this.restClient.create(path, apiVersion, query, serializationData, onResult);
+            this.restClient.create(url, apiVersion, query, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -997,17 +1071,17 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Run: TestInterfaces.TestRun) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "cadb3810-d47d-4a3c-a234-fe5f3be50138", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.RunCreateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestRun, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, testRun, serializationData, onResult);
+            this.restClient.create(url, apiVersion, testRun, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1025,18 +1099,18 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             runId: runId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "cadb3810-d47d-4a3c-a234-fe5f3be50138", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -1054,18 +1128,18 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Run: TestInterfaces.TestRun) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             runId: runId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "cadb3810-d47d-4a3c-a234-fe5f3be50138", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestRun, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1097,7 +1171,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Runs: TestInterfaces.TestRun[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project
         };
 
@@ -1111,14 +1185,14 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             '$skip': skip,
             '$top': top,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "cadb3810-d47d-4a3c-a234-fe5f3be50138", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestRun, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1138,18 +1212,18 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Run: TestInterfaces.TestRun) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             runId: runId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "cadb3810-d47d-4a3c-a234-fe5f3be50138", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.RunUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestRun, responseIsCollection: false };
             
-            this.restClient.update(path, apiVersion, runUpdateModel, serializationData, onResult);
+            this.restClient.update(url, apiVersion, runUpdateModel, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1171,7 +1245,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Suites: TestInterfaces.SuiteTestCase[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             planId: planId,
             suiteId: suiteId,
@@ -1180,11 +1254,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "a4a1ec1c-b03f-41ca-8857-704594ecf58e", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.SuiteTestCase, responseIsCollection: true };
             
-            this.restClient.createJsonWrappedArray(path, apiVersion, null, serializationData, onResult);
+            this.restClient.createJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1206,7 +1280,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Suite: TestInterfaces.SuiteTestCase) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             planId: planId,
             suiteId: suiteId,
@@ -1215,11 +1289,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "a4a1ec1c-b03f-41ca-8857-704594ecf58e", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.SuiteTestCase, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1239,7 +1313,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Suites: TestInterfaces.SuiteTestCase[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             planId: planId,
             suiteId: suiteId
@@ -1247,11 +1321,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "a4a1ec1c-b03f-41ca-8857-704594ecf58e", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.SuiteTestCase, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1273,7 +1347,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             planId: planId,
             suiteId: suiteId,
@@ -1282,11 +1356,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "a4a1ec1c-b03f-41ca-8857-704594ecf58e", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -1308,7 +1382,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Suite: TestInterfaces.TestSuite[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             planId: planId,
             suiteId: suiteId
@@ -1316,11 +1390,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7b7619a0-cb54-4ab3-bf22-194056f45dd1", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.SuiteCreateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: true };
             
-            this.restClient.create(path, apiVersion, testSuite, serializationData, onResult);
+            this.restClient.create(url, apiVersion, testSuite, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1340,7 +1414,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             planId: planId,
             suiteId: suiteId
@@ -1348,11 +1422,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7b7619a0-cb54-4ab3-bf22-194056f45dd1", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -1374,7 +1448,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Suite: TestInterfaces.TestSuite) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             planId: planId,
             suiteId: suiteId
@@ -1383,14 +1457,14 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         var queryValues: any = {
             includeChildSuites: includeChildSuites,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7b7619a0-cb54-4ab3-bf22-194056f45dd1", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1414,7 +1488,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Suites: TestInterfaces.TestSuite[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             planId: planId
         };
@@ -1424,14 +1498,14 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             '$skip': skip,
             '$top': top,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7b7619a0-cb54-4ab3-bf22-194056f45dd1", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1453,7 +1527,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Suite: TestInterfaces.TestSuite) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             planId: planId,
             suiteId: suiteId
@@ -1461,11 +1535,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7b7619a0-cb54-4ab3-bf22-194056f45dd1", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.SuiteUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: false };
             
-            this.restClient.update(path, apiVersion, suiteUpdateModel, serializationData, onResult);
+            this.restClient.update(url, apiVersion, suiteUpdateModel, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1481,20 +1555,20 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, Suites: TestInterfaces.TestSuite[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
         };
 
         var queryValues: any = {
             testCaseId: testCaseId,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "Test", "09a6167b-e969-4775-9247-b94cf3819caf", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1512,17 +1586,17 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, TestSetting: number) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "Test", "8133ce14-962f-42af-a5f9-6aa9defcb9c8", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestSettings, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, testSettings, serializationData, onResult);
+            this.restClient.create(url, apiVersion, testSettings, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1540,18 +1614,18 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             testSettingsId: testSettingsId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "Test", "8133ce14-962f-42af-a5f9-6aa9defcb9c8", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -1569,18 +1643,18 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         onResult: (err: any, statusCode: number, TestSetting: TestInterfaces.TestSettings) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             testSettingsId: testSettingsId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "Test", "8133ce14-962f-42af-a5f9-6aa9defcb9c8", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSettings, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1676,6 +1750,32 @@ export class QTestApi extends basem.QClientApiBase implements IQTestApi {
         });
 
         return <Q.Promise<TestInterfaces.BuildCoverage[]>>deferred.promise;
+    }
+    
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} buildId
+    * @param {number} deltaBuildId
+    */
+    public getCodeCoverageSummary(
+        project: string, 
+        buildId: number, 
+        deltaBuildId?: number
+        ): Q.Promise<TestInterfaces.CodeCoverageSummary> {
+    
+        var deferred = Q.defer<TestInterfaces.CodeCoverageSummary>();
+
+        this.api.getCodeCoverageSummary(project, buildId, deltaBuildId, (err: any, statusCode: number, CodeCoverage: TestInterfaces.CodeCoverageSummary) => {
+            if(err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(CodeCoverage);
+            }
+        });
+
+        return <Q.Promise<TestInterfaces.CodeCoverageSummary>>deferred.promise;
     }
     
     /**

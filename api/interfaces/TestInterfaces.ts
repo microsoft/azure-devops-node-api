@@ -10,8 +10,33 @@
 
 "use strict";
 
+import SystemData = require("../interfaces/common/SystemDataInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
+
+export interface AdditionalTestField {
+    fieldName: string;
+    value: any;
+}
+
+export interface AddtionalTestFieldDefinition {
+    fieldName: string;
+    scope: TestExtensionFieldScope;
+    value: SystemData.SqlDbType;
+}
+
+export interface AggregatedResultsByPivot {
+    count: number;
+    duration: any;
+    pivot: string;
+}
+
+export interface AggregatedTestResults {
+    duration: any;
+    resultsByPivot: AggregatedResultsByPivot[];
+    self: ShallowReference;
+    totalTests: number;
+}
 
 export enum AttachmentType {
     GeneralAttachment = 0,
@@ -47,6 +72,72 @@ export interface BuildCoverage {
     lastError: string;
     modules: ModuleCoverage[];
     state: string;
+}
+
+/**
+ * Represents the build configuration (platform, flavor) and coverage data for the build
+ */
+export interface CodeCoverageData {
+    /**
+     * Flavor of build for which data is retrieved/published
+     */
+    buildFlavor: string;
+    /**
+     * Platform of build for which data is retrieved/published
+     */
+    buildPlatform: string;
+    /**
+     * List of coverage data for the build
+     */
+    coverageStats: CodeCoverageStatistics[];
+}
+
+/**
+ * Represents the code coverage statistics for a particular coverage label (modules, statements, blocks, etc.)
+ */
+export interface CodeCoverageStatistics {
+    /**
+     * Covered units
+     */
+    covered: number;
+    /**
+     * Delta of coverage
+     */
+    delta: number;
+    /**
+     * Position of label
+     */
+    index: number;
+    /**
+     * Is delta valid
+     */
+    isDeltaAvailable: boolean;
+    /**
+     * Label of coverage data ("Blocks", "Statements", "Modules", etc.)
+     */
+    label: string;
+    /**
+     * Total units
+     */
+    total: number;
+}
+
+/**
+ * Represents the code coverage summary results Used to publish or retrieve code coverage summary against a build
+ */
+export interface CodeCoverageSummary {
+    /**
+     * Uri of build for which data is retrieved/published
+     */
+    buildUri: string;
+    /**
+     * List of coverage data and details for the build
+     */
+    coverageData: CodeCoverageData[];
+    /**
+     * Uri of build against which difference in coverage is computed
+     */
+    deltaBuildUri: string;
 }
 
 export enum CoverageQueryFlags {
@@ -159,6 +250,7 @@ export interface ResultUpdateResponseModel {
 }
 
 export interface RunCreateModel {
+    additionalTestFields: AdditionalTestField[];
     automated: boolean;
     build: ShallowReference;
     buildDropLocation: string;
@@ -286,6 +378,7 @@ export interface TestAttachmentRequestModel {
 }
 
 export interface TestCaseResult {
+    additionalFields: AdditionalTestField[];
     afnStripId: number;
     area: ShallowReference;
     associatedBugs: ShallowReference[];
@@ -316,6 +409,7 @@ export interface TestCaseResult {
     resolutionStateId: number;
     revision: number;
     runBy: VSSInterfaces.IdentityRef;
+    stackTrace: string;
     startedDate: Date;
     state: string;
     testCase: ShallowReference;
@@ -361,6 +455,7 @@ export interface TestCaseResultIdentifier {
 }
 
 export interface TestCaseResultUpdateModel {
+    additionalFields: AdditionalTestField[];
     associatedWorkItems: number[];
     automatedTestTypeId: string;
     comment: string;
@@ -373,6 +468,7 @@ export interface TestCaseResultUpdateModel {
     owner: VSSInterfaces.IdentityRef;
     resolutionState: string;
     runBy: VSSInterfaces.IdentityRef;
+    stackTrace: string;
     startedDate: string;
     state: string;
     testCasePriority: string;
@@ -382,6 +478,27 @@ export interface TestCaseResultUpdateModel {
 export interface TestEnvironment {
     environmentId: string;
     environmentName: string;
+}
+
+export enum TestExtensionFieldScope {
+    None = 0,
+    TestRun = 1,
+    TestResult = 2,
+    System = 4,
+}
+
+export interface TestInsightDetails {
+    count: number;
+    previousBuild: ShallowReference;
+    self: ShallowReference;
+    testResults: ShallowReference[];
+}
+
+export interface TestInsights {
+    existingFailures: TestInsightDetails;
+    fixedTests: TestInsightDetails;
+    newFailures: TestInsightDetails;
+    self: ShallowReference;
 }
 
 export interface TestIterationDetailsModel {
@@ -469,6 +586,14 @@ export interface TestPoint {
     workItemProperties: any[];
 }
 
+export interface TestReport {
+    aggregatedResults: AggregatedTestResults;
+    build: ShallowReference;
+    self: ShallowReference;
+    teamProject: ShallowReference;
+    testInsights: TestInsights;
+}
+
 export interface TestResolutionState {
     id: number;
     name: string;
@@ -476,6 +601,7 @@ export interface TestResolutionState {
 }
 
 export interface TestResultCreateModel {
+    additionalFields: AdditionalTestField[];
     area: ShallowReference;
     associatedWorkItems: number[];
     automatedTestId: string;
@@ -494,6 +620,7 @@ export interface TestResultCreateModel {
     owner: VSSInterfaces.IdentityRef;
     resolutionState: string;
     runBy: VSSInterfaces.IdentityRef;
+    stackTrace: string;
     startedDate: string;
     state: string;
     testCase: ShallowReference;
@@ -520,6 +647,7 @@ export interface TestResultParameterModel {
 }
 
 export interface TestRun {
+    additionalFields: AdditionalTestField[];
     build: ShallowReference;
     buildConfiguration: BuildConfiguration;
     comment: string;
@@ -683,6 +811,18 @@ export interface WorkItemReference {
 }
 
 export var TypeInfo = {
+    AdditionalTestField: {
+        fields: <any>null
+    },
+    AddtionalTestFieldDefinition: {
+        fields: <any>null
+    },
+    AggregatedResultsByPivot: {
+        fields: <any>null
+    },
+    AggregatedTestResults: {
+        fields: <any>null
+    },
     AttachmentType: {
         enumValues: {
             "generalAttachment": 0,
@@ -705,6 +845,15 @@ export var TypeInfo = {
         fields: <any>null
     },
     BuildCoverage: {
+        fields: <any>null
+    },
+    CodeCoverageData: {
+        fields: <any>null
+    },
+    CodeCoverageStatistics: {
+        fields: <any>null
+    },
+    CodeCoverageSummary: {
         fields: <any>null
     },
     CoverageQueryFlags: {
@@ -811,6 +960,20 @@ export var TypeInfo = {
     TestEnvironment: {
         fields: <any>null
     },
+    TestExtensionFieldScope: {
+        enumValues: {
+            "none": 0,
+            "testRun": 1,
+            "testResult": 2,
+            "system": 4,
+        }
+    },
+    TestInsightDetails: {
+        fields: <any>null
+    },
+    TestInsights: {
+        fields: <any>null
+    },
     TestIterationDetailsModel: {
         fields: <any>null
     },
@@ -824,6 +987,9 @@ export var TypeInfo = {
         fields: <any>null
     },
     TestPoint: {
+        fields: <any>null
+    },
+    TestReport: {
         fields: <any>null
     },
     TestResolutionState: {
@@ -882,6 +1048,31 @@ export var TypeInfo = {
     },
 };
 
+TypeInfo.AdditionalTestField.fields = {
+};
+
+TypeInfo.AddtionalTestFieldDefinition.fields = {
+    scope: {
+        enumType: TypeInfo.TestExtensionFieldScope
+    },
+    value: {
+        typeInfo: SystemData.TypeInfo.SqlDbType
+    },
+};
+
+TypeInfo.AggregatedResultsByPivot.fields = {
+};
+
+TypeInfo.AggregatedTestResults.fields = {
+    resultsByPivot: {
+        isArray: true,
+        typeInfo: TypeInfo.AggregatedResultsByPivot
+    },
+    self: {
+        typeInfo: TypeInfo.ShallowReference
+    },
+};
+
 TypeInfo.BatchResponse.fields = {
     responses: {
         isArray: true,
@@ -902,6 +1093,23 @@ TypeInfo.BuildCoverage.fields = {
     modules: {
         isArray: true,
         typeInfo: TypeInfo.ModuleCoverage
+    },
+};
+
+TypeInfo.CodeCoverageData.fields = {
+    coverageStats: {
+        isArray: true,
+        typeInfo: TypeInfo.CodeCoverageStatistics
+    },
+};
+
+TypeInfo.CodeCoverageStatistics.fields = {
+};
+
+TypeInfo.CodeCoverageSummary.fields = {
+    coverageData: {
+        isArray: true,
+        typeInfo: TypeInfo.CodeCoverageData
     },
 };
 
@@ -998,6 +1206,10 @@ TypeInfo.ResultUpdateResponseModel.fields = {
 };
 
 TypeInfo.RunCreateModel.fields = {
+    additionalTestFields: {
+        isArray: true,
+        typeInfo: TypeInfo.AdditionalTestField
+    },
     build: {
         typeInfo: TypeInfo.ShallowReference
     },
@@ -1099,6 +1311,10 @@ TypeInfo.TestAttachmentRequestModel.fields = {
 };
 
 TypeInfo.TestCaseResult.fields = {
+    additionalFields: {
+        isArray: true,
+        typeInfo: TypeInfo.AdditionalTestField
+    },
     area: {
         typeInfo: TypeInfo.ShallowReference
     },
@@ -1170,6 +1386,10 @@ TypeInfo.TestCaseResultIdentifier.fields = {
 };
 
 TypeInfo.TestCaseResultUpdateModel.fields = {
+    additionalFields: {
+        isArray: true,
+        typeInfo: TypeInfo.AdditionalTestField
+    },
     owner: {
         typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
@@ -1182,6 +1402,34 @@ TypeInfo.TestCaseResultUpdateModel.fields = {
 };
 
 TypeInfo.TestEnvironment.fields = {
+};
+
+TypeInfo.TestInsightDetails.fields = {
+    previousBuild: {
+        typeInfo: TypeInfo.ShallowReference
+    },
+    self: {
+        typeInfo: TypeInfo.ShallowReference
+    },
+    testResults: {
+        isArray: true,
+        typeInfo: TypeInfo.ShallowReference
+    },
+};
+
+TypeInfo.TestInsights.fields = {
+    existingFailures: {
+        typeInfo: TypeInfo.TestInsightDetails
+    },
+    fixedTests: {
+        typeInfo: TypeInfo.TestInsightDetails
+    },
+    newFailures: {
+        typeInfo: TypeInfo.TestInsightDetails
+    },
+    self: {
+        typeInfo: TypeInfo.ShallowReference
+    },
 };
 
 TypeInfo.TestIterationDetailsModel.fields = {
@@ -1293,6 +1541,24 @@ TypeInfo.TestPoint.fields = {
     },
 };
 
+TypeInfo.TestReport.fields = {
+    aggregatedResults: {
+        typeInfo: TypeInfo.AggregatedTestResults
+    },
+    build: {
+        typeInfo: TypeInfo.ShallowReference
+    },
+    self: {
+        typeInfo: TypeInfo.ShallowReference
+    },
+    teamProject: {
+        typeInfo: TypeInfo.ShallowReference
+    },
+    testInsights: {
+        typeInfo: TypeInfo.TestInsights
+    },
+};
+
 TypeInfo.TestResolutionState.fields = {
     project: {
         typeInfo: TypeInfo.ShallowReference
@@ -1300,6 +1566,10 @@ TypeInfo.TestResolutionState.fields = {
 };
 
 TypeInfo.TestResultCreateModel.fields = {
+    additionalFields: {
+        isArray: true,
+        typeInfo: TypeInfo.AdditionalTestField
+    },
     area: {
         typeInfo: TypeInfo.ShallowReference
     },
@@ -1333,6 +1603,10 @@ TypeInfo.TestResultParameterModel.fields = {
 };
 
 TypeInfo.TestRun.fields = {
+    additionalFields: {
+        isArray: true,
+        typeInfo: TypeInfo.AdditionalTestField
+    },
     build: {
         typeInfo: TypeInfo.ShallowReference
     },

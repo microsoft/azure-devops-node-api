@@ -174,10 +174,12 @@ export interface GitCommitChanges {
 export interface GitCommitDiffs {
     aheadCount: number;
     allChangesIncluded: boolean;
+    baseCommit: string;
     behindCount: number;
     changeCounts: { [key: number] : number; };
     changes: GitChange[];
     commonCommit: string;
+    targetCommit: string;
 }
 
 export interface GitCommitRef {
@@ -226,6 +228,10 @@ export interface GitItem extends ItemModel {
      * Git object id
      */
     objectId: string;
+    /**
+     * Git object id
+     */
+    originalObjectId: string;
 }
 
 export interface GitItemDescriptor {

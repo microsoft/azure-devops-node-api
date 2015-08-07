@@ -44,6 +44,10 @@ export interface ITaskAgentApi extends basem.ClientApiBase {
     getPool(poolId: number, properties: string, onResult: (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool) => void): void;
     getPools(poolName: string, properties: string, onResult: (err: any, statusCode: number, pools: TaskAgentInterfaces.TaskAgentPool[]) => void): void;
     updatePool(pool: TaskAgentInterfaces.TaskAgentPool, poolId: number, onResult: (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool) => void): void;
+    createQueue(queue: TaskAgentInterfaces.TaskAgentQueue, onResult: (err: any, statusCode: number, queue: TaskAgentInterfaces.TaskAgentQueue) => void): void;
+    deleteQueue(queueId: number, onResult: (err: any, statusCode: number) => void): void;
+    getQueue(queueId: number, onResult: (err: any, statusCode: number, queue: TaskAgentInterfaces.TaskAgentQueue) => void): void;
+    getQueues(queueName: string, onResult: (err: any, statusCode: number, queues: TaskAgentInterfaces.TaskAgentQueue[]) => void): void;
     getAgentPoolRoles(poolId: number, onResult: (err: any, statusCode: number, roles: VSSInterfaces.IdentityRef[]) => void): void;
     createServiceEndpoint(endpoint: TaskAgentInterfaces.ServiceEndpoint, scopeIdentifier: string, endpointId: string, onResult: (err: any, statusCode: number, serviceendpoint: TaskAgentInterfaces.ServiceEndpoint) => void): void;
     deleteServiceEndpoint(scopeIdentifier: string, endpointId: string, onResult: (err: any, statusCode: number) => void): void;
@@ -55,7 +59,7 @@ export interface ITaskAgentApi extends basem.ClientApiBase {
     getTaskContent(taskId: string, versionString: string, onResult: (err: any, statusCode: number, tasks: TaskAgentInterfaces.TaskDefinition[]) => void): void;
     getTaskContentZip(taskId: string, versionString: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     getTaskDefinitions(visibility: string[], onResult: (err: any, statusCode: number, tasks: TaskAgentInterfaces.TaskDefinition[]) => void): void;
-    uploadTaskDefinition(contentStream: NodeJS.ReadableStream, customHeaders: any, content: string, taskId: string, overwrite: boolean, onResult: (err: any, statusCode: number, obj: any) => void): void;
+    uploadTaskDefinition(customHeaders: any, contentStream: NodeJS.ReadableStream, taskId: string, overwrite: boolean, onResult: (err: any, statusCode: number, obj: any) => void): void;
     updateUserCapabilities(userCapabilities: { [key: string] : string; }, poolId: number, agentId: number, onResult: (err: any, statusCode: number, usercapabilitie: TaskAgentInterfaces.TaskAgent) => void): void;
 }
 
@@ -75,6 +79,9 @@ export interface IQTaskAgentApi extends basem.QClientApiBase {
     getPool(poolId: number,  properties?: string): Q.Promise<TaskAgentInterfaces.TaskAgentPool>;
     getPools(poolName?: string,  properties?: string): Q.Promise<TaskAgentInterfaces.TaskAgentPool[]>;
     updatePool(pool: TaskAgentInterfaces.TaskAgentPool,  poolId: number): Q.Promise<TaskAgentInterfaces.TaskAgentPool>;
+    createQueue( queue: TaskAgentInterfaces.TaskAgentQueue): Q.Promise<TaskAgentInterfaces.TaskAgentQueue>;
+    getQueue( queueId: number): Q.Promise<TaskAgentInterfaces.TaskAgentQueue>;
+    getQueues( queueName?: string): Q.Promise<TaskAgentInterfaces.TaskAgentQueue[]>;
     getAgentPoolRoles( poolId?: number): Q.Promise<VSSInterfaces.IdentityRef[]>;
     createServiceEndpoint(endpoint: TaskAgentInterfaces.ServiceEndpoint, scopeIdentifier: string,  endpointId: string): Q.Promise<TaskAgentInterfaces.ServiceEndpoint>;
     getServiceEndpointDetails(scopeIdentifier: string,  endpointId: string): Q.Promise<TaskAgentInterfaces.ServiceEndpoint>;
@@ -102,17 +109,17 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             poolId: poolId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, agent, serializationData, onResult);
+            this.restClient.create(url, apiVersion, agent, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -130,18 +137,18 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             poolId: poolId,
             agentId: agentId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -163,7 +170,7 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             poolId: poolId,
             agentId: agentId
         };
@@ -172,14 +179,14 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
             includeCapabilities: includeCapabilities,
             propertyFilters: propertyFilters,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -203,7 +210,7 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, agents: TaskAgentInterfaces.TaskAgent[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             poolId: poolId
         };
 
@@ -213,14 +220,14 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
             propertyFilters: propertyFilters,
             demands: demands,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -240,18 +247,18 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             poolId: poolId,
             agentId: agentId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
             
-            this.restClient.replace(path, apiVersion, agent, serializationData, onResult);
+            this.restClient.replace(url, apiVersion, agent, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -271,18 +278,18 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             poolId: poolId,
             agentId: agentId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
             
-            this.restClient.update(path, apiVersion, agent, serializationData, onResult);
+            this.restClient.update(url, apiVersion, agent, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -300,16 +307,16 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, endpoint: string[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "f223b809-8c33-4b7d-b53f-07232569b5d6", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskDefinitionEndpoint, responseIsCollection: true };
             
-            this.restClient.create(path, apiVersion, endpoint, serializationData, onResult);
+            this.restClient.create(url, apiVersion, endpoint, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -329,7 +336,7 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             poolId: poolId,
             requestId: requestId
         };
@@ -337,14 +344,14 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         var queryValues: any = {
             lockToken: lockToken,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -362,18 +369,18 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, jobrequest: TaskAgentInterfaces.TaskAgentJobRequest) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             poolId: poolId,
             requestId: requestId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -391,17 +398,17 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, jobrequest: TaskAgentInterfaces.TaskAgentJobRequest) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             poolId: poolId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, request, serializationData, onResult);
+            this.restClient.create(url, apiVersion, request, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -423,7 +430,7 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, jobrequest: TaskAgentInterfaces.TaskAgentJobRequest) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             poolId: poolId,
             requestId: requestId
         };
@@ -431,14 +438,14 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         var queryValues: any = {
             lockToken: lockToken,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: false };
             
-            this.restClient.update(path, apiVersion, request, serializationData, onResult);
+            this.restClient.update(url, apiVersion, request, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -458,7 +465,7 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             poolId: poolId,
             messageId: messageId
         };
@@ -466,14 +473,14 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         var queryValues: any = {
             sessionId: sessionId,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -493,7 +500,7 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, message: TaskAgentInterfaces.TaskAgentMessage) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             poolId: poolId
         };
 
@@ -501,14 +508,14 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
             sessionId: sessionId,
             lastMessageId: lastMessageId,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentMessage, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -526,21 +533,21 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             poolId: poolId
         };
 
         var queryValues: any = {
             agentId: agentId,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, null, serializationData, onResult);
+            this.restClient.create(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -556,17 +563,17 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             poolId: poolId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, null, serializationData, onResult);
+            this.restClient.create(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -586,21 +593,21 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             poolId: poolId
         };
 
         var queryValues: any = {
             requestId: requestId,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentMessage, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, message, serializationData, onResult);
+            this.restClient.create(url, apiVersion, message, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -616,16 +623,16 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, pool, serializationData, onResult);
+            this.restClient.create(url, apiVersion, pool, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -641,17 +648,17 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             poolId: poolId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -669,21 +676,21 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             poolId: poolId
         };
 
         var queryValues: any = {
             properties: properties,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -701,21 +708,21 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, pools: TaskAgentInterfaces.TaskAgentPool[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
         };
 
         var queryValues: any = {
             poolName: poolName,
             properties: properties,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -733,17 +740,123 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             poolId: poolId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseIsCollection: false };
             
-            this.restClient.update(path, apiVersion, pool, serializationData, onResult);
+            this.restClient.update(url, apiVersion, pool, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param {TaskAgentInterfaces.TaskAgentQueue} queue
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgentQueue
+     */
+    public createQueue(
+        queue: TaskAgentInterfaces.TaskAgentQueue,
+        onResult: (err: any, statusCode: number, queue: TaskAgentInterfaces.TaskAgentQueue) => void
+        ): void {
+
+        var routeValues: any = {
+        };
+
+        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "900fa995-c559-4923-aae7-f8424fe4fbea", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentQueue, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentQueue, responseIsCollection: false };
+            
+            this.restClient.create(url, apiVersion, queue, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param {number} queueId
+     * @param onResult callback function
+     */
+    public deleteQueue(
+        queueId: number,
+        onResult: (err: any, statusCode: number) => void
+        ): void {
+
+        var routeValues: any = {
+            queueId: queueId
+        };
+
+        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "900fa995-c559-4923-aae7-f8424fe4fbea", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
+            
+            this.restClient.delete(url, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode);
+        });
+    }
+
+    /**
+     * @param {number} queueId
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgentQueue
+     */
+    public getQueue(
+        queueId: number,
+        onResult: (err: any, statusCode: number, queue: TaskAgentInterfaces.TaskAgentQueue) => void
+        ): void {
+
+        var routeValues: any = {
+            queueId: queueId
+        };
+
+        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "900fa995-c559-4923-aae7-f8424fe4fbea", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentQueue, responseIsCollection: false };
+            
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param {string} queueName
+     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskAgentQueue[]
+     */
+    public getQueues(
+        queueName: string,
+        onResult: (err: any, statusCode: number, queues: TaskAgentInterfaces.TaskAgentQueue[]) => void
+        ): void {
+
+        var routeValues: any = {
+        };
+
+        var queryValues: any = {
+            queueName: queueName,
+        };
+        
+        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "900fa995-c559-4923-aae7-f8424fe4fbea", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentQueue, responseIsCollection: true };
+            
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -759,17 +872,17 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, roles: VSSInterfaces.IdentityRef[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             poolId: poolId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "9e627af6-3635-4ddf-a275-dca904802338", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: VSSInterfaces.TypeInfo.IdentityRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -789,18 +902,18 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, serviceendpoint: TaskAgentInterfaces.ServiceEndpoint) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             scopeIdentifier: scopeIdentifier,
             endpointId: endpointId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "ca373c13-fec3-4b30-9525-35a117731384", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.ServiceEndpoint, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.ServiceEndpoint, responseIsCollection: false };
             
-            this.restClient.replace(path, apiVersion, endpoint, serializationData, onResult);
+            this.restClient.replace(url, apiVersion, endpoint, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -818,18 +931,18 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             scopeIdentifier: scopeIdentifier,
             endpointId: endpointId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "ca373c13-fec3-4b30-9525-35a117731384", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -847,18 +960,18 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, serviceendpoint: TaskAgentInterfaces.ServiceEndpoint) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             scopeIdentifier: scopeIdentifier,
             endpointId: endpointId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "ca373c13-fec3-4b30-9525-35a117731384", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.ServiceEndpoint, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -876,21 +989,21 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, serviceendpoints: TaskAgentInterfaces.ServiceEndpoint[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             scopeIdentifier: scopeIdentifier
         };
 
         var queryValues: any = {
             type: type,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "ca373c13-fec3-4b30-9525-35a117731384", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.ServiceEndpoint, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -908,17 +1021,17 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, session: TaskAgentInterfaces.TaskAgentSession) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             poolId: poolId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "134e239e-2df3-4794-a6f6-24f1f19ec8dc", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentSession, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentSession, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, session, serializationData, onResult);
+            this.restClient.create(url, apiVersion, session, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -936,18 +1049,18 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             poolId: poolId,
             sessionId: sessionId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "134e239e-2df3-4794-a6f6-24f1f19ec8dc", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -963,17 +1076,17 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             taskId: taskId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -991,18 +1104,18 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, tasks: TaskAgentInterfaces.TaskDefinition[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             taskId: taskId,
             versionString: versionString
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskDefinition, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1020,18 +1133,18 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             taskId: taskId,
             versionString: versionString
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.httpClient.getStream(path, apiVersion, "application/zip", onResult);
+            this.httpClient.getStream(url, apiVersion, "application/zip", onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1047,20 +1160,20 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, tasks: TaskAgentInterfaces.TaskDefinition[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
         };
 
         var queryValues: any = {
             visibility: visibility,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskDefinition, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1068,35 +1181,37 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
     }
 
     /**
-     * @param {string} content
+     * @param {NodeJS.ReadableStream} contentStream
      * @param {string} taskId
      * @param {boolean} overwrite
      * @param onResult callback function
      */
     public uploadTaskDefinition(
-        contentStream: NodeJS.ReadableStream,
         customHeaders: any,
-        content: string,
+        contentStream: NodeJS.ReadableStream,
         taskId: string,
         overwrite: boolean,
         onResult: (err: any, statusCode: number, obj: any) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             taskId: taskId
         };
 
         var queryValues: any = {
             overwrite: overwrite,
         };
+        
+        customHeaders = customHeaders || {};
+        customHeaders["Content-Type"] = "application/octet-stream";
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.uploadStream("PUT", path, apiVersion, contentStream, customHeaders, serializationData, onResult);
+            this.restClient.uploadStream('PUT', url, apiVersion, contentStream, customHeaders, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1116,18 +1231,18 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         onResult: (err: any, statusCode: number, usercapabilitie: TaskAgentInterfaces.TaskAgent) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             poolId: poolId,
             agentId: agentId
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "30ba3ada-fedf-4da8-bbb5-dacf2f82e176", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
             
-            this.restClient.replace(path, apiVersion, userCapabilities, serializationData, onResult);
+            this.restClient.replace(url, apiVersion, userCapabilities, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1497,6 +1612,72 @@ export class QTaskAgentApi extends basem.QClientApiBase implements IQTaskAgentAp
         });
 
         return <Q.Promise<TaskAgentInterfaces.TaskAgentPool>>deferred.promise;
+    }
+    
+    /**
+    * @param {TaskAgentInterfaces.TaskAgentQueue} queue
+    */
+    public createQueue(
+        queue: TaskAgentInterfaces.TaskAgentQueue
+        ): Q.Promise<TaskAgentInterfaces.TaskAgentQueue> {
+    
+        var deferred = Q.defer<TaskAgentInterfaces.TaskAgentQueue>();
+
+        this.api.createQueue(queue, (err: any, statusCode: number, queue: TaskAgentInterfaces.TaskAgentQueue) => {
+            if(err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(queue);
+            }
+        });
+
+        return <Q.Promise<TaskAgentInterfaces.TaskAgentQueue>>deferred.promise;
+    }
+    
+    /**
+    * @param {number} queueId
+    */
+    public getQueue(
+        queueId: number
+        ): Q.Promise<TaskAgentInterfaces.TaskAgentQueue> {
+    
+        var deferred = Q.defer<TaskAgentInterfaces.TaskAgentQueue>();
+
+        this.api.getQueue(queueId, (err: any, statusCode: number, queue: TaskAgentInterfaces.TaskAgentQueue) => {
+            if(err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(queue);
+            }
+        });
+
+        return <Q.Promise<TaskAgentInterfaces.TaskAgentQueue>>deferred.promise;
+    }
+    
+    /**
+    * @param {string} queueName
+    */
+    public getQueues(
+        queueName?: string
+        ): Q.Promise<TaskAgentInterfaces.TaskAgentQueue[]> {
+    
+        var deferred = Q.defer<TaskAgentInterfaces.TaskAgentQueue[]>();
+
+        this.api.getQueues(queueName, (err: any, statusCode: number, queues: TaskAgentInterfaces.TaskAgentQueue[]) => {
+            if(err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(queues);
+            }
+        });
+
+        return <Q.Promise<TaskAgentInterfaces.TaskAgentQueue[]>>deferred.promise;
     }
     
     /**

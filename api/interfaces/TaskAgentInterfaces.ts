@@ -18,6 +18,11 @@ export interface AgentPoolEvent {
     pool: TaskAgentPool;
 }
 
+export interface AgentQueueEvent {
+    eventType: string;
+    queue: TaskAgentQueue;
+}
+
 export interface AgentRefreshMessage {
     agentId: number;
     timeout: any;
@@ -138,6 +143,7 @@ export interface PlanEnvironment {
  * Represents an endpoint which may be used by an orchestration job.
  */
 export interface ServiceEndpoint {
+    administratorsGroup: VSSInterfaces.IdentityRef;
     /**
      * Gets or sets the authorization data for talking to the endpoint.
      */
@@ -151,6 +157,7 @@ export interface ServiceEndpoint {
      * Gets or Sets description of endpoint
      */
     description: string;
+    groupScopeId: string;
     /**
      * Gets or sets the identifier of this endpoint.
      */
@@ -159,6 +166,7 @@ export interface ServiceEndpoint {
      * Gets or sets the friendly name of the endpoint.
      */
     name: string;
+    readersGroup: VSSInterfaces.IdentityRef;
     /**
      * Gets or sets the type of the endpoint.
      */
@@ -261,6 +269,12 @@ export interface TaskAgentPoolReference {
     scope: string;
 }
 
+export interface TaskAgentQueue {
+    id: number;
+    name: string;
+    pool: TaskAgentPoolReference;
+}
+
 export interface TaskAgentReference {
     /**
      * Gets the identifier of the agent.
@@ -286,6 +300,15 @@ export interface TaskAgentSession {
 export enum TaskAgentStatus {
     Offline = 1,
     Online = 2,
+}
+
+export interface TaskAttachment {
+    _links: any;
+    createdOn: Date;
+    lastChangedBy: string;
+    lastChangedOn: Date;
+    name: string;
+    type: string;
 }
 
 export interface TaskDefinition {
@@ -612,6 +635,9 @@ export var TypeInfo = {
     AgentPoolEvent: {
         fields: <any>null
     },
+    AgentQueueEvent: {
+        fields: <any>null
+    },
     AgentRefreshMessage: {
         fields: <any>null
     },
@@ -687,6 +713,9 @@ export var TypeInfo = {
     TaskAgentPoolReference: {
         fields: <any>null
     },
+    TaskAgentQueue: {
+        fields: <any>null
+    },
     TaskAgentReference: {
         fields: <any>null
     },
@@ -698,6 +727,9 @@ export var TypeInfo = {
             "offline": 1,
             "online": 2,
         }
+    },
+    TaskAttachment: {
+        fields: <any>null
     },
     TaskDefinition: {
         fields: <any>null
@@ -809,6 +841,12 @@ TypeInfo.AgentPoolEvent.fields = {
     },
 };
 
+TypeInfo.AgentQueueEvent.fields = {
+    queue: {
+        typeInfo: TypeInfo.TaskAgentQueue
+    },
+};
+
 TypeInfo.AgentRefreshMessage.fields = {
 };
 
@@ -897,10 +935,16 @@ TypeInfo.PlanEnvironment.fields = {
 };
 
 TypeInfo.ServiceEndpoint.fields = {
+    administratorsGroup: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
     authorization: {
         typeInfo: TypeInfo.EndpointAuthorization
     },
     createdBy: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+    readersGroup: {
         typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
 };
@@ -962,12 +1006,27 @@ TypeInfo.TaskAgentPool.fields = {
 TypeInfo.TaskAgentPoolReference.fields = {
 };
 
+TypeInfo.TaskAgentQueue.fields = {
+    pool: {
+        typeInfo: TypeInfo.TaskAgentPoolReference
+    },
+};
+
 TypeInfo.TaskAgentReference.fields = {
 };
 
 TypeInfo.TaskAgentSession.fields = {
     agent: {
         typeInfo: TypeInfo.TaskAgentReference
+    },
+};
+
+TypeInfo.TaskAttachment.fields = {
+    createdOn: {
+        isDate: true,
+    },
+    lastChangedOn: {
+        isDate: true,
     },
 };
 
