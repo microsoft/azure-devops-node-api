@@ -96,7 +96,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, Branche: TfvcInterfaces.TfvcBranch) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project
         };
 
@@ -105,14 +105,14 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             includeParent: includeParent,
             includeChildren: includeChildren,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "bc1f417e-239d-42e7-85e1-76e80cb2d6eb", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcBranch, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -138,7 +138,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, Branches: TfvcInterfaces.TfvcBranch[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project
         };
 
@@ -148,14 +148,14 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             includeDeleted: includeDeleted,
             includeLinks: includeLinks,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "bc1f417e-239d-42e7-85e1-76e80cb2d6eb", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcBranch, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -179,7 +179,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, Branches: TfvcInterfaces.TfvcBranchRef[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project
         };
 
@@ -188,14 +188,14 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             includeDeleted: includeDeleted,
             includeLinks: includeLinks,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "bc1f417e-239d-42e7-85e1-76e80cb2d6eb", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcBranchRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -217,7 +217,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, ChangesetChanges: TfvcInterfaces.TfvcChange[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             id: id
         };
 
@@ -225,14 +225,14 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             '$skip': skip,
             '$top': top,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "f32b86f2-15b9-4fe6-81b1-6f8938617ee5", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChange, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -250,17 +250,17 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, Changeset: TfvcInterfaces.TfvcChangesetRef) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "tfvc", "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChangeset, responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChangesetRef, responseIsCollection: false };
             
-            this.restClient.create(path, apiVersion, changeset, serializationData, onResult);
+            this.restClient.create(url, apiVersion, changeset, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -298,7 +298,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, Changeset: TfvcInterfaces.TfvcChangeset) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             id: id
         };
@@ -314,14 +314,14 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             '$orderby': orderby,
             searchCriteria: searchCriteria,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.2", "tfvc", "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChangeset, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -357,7 +357,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, Changesets: TfvcInterfaces.TfvcChangesetRef[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project
         };
 
@@ -372,14 +372,14 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             '$orderby': orderby,
             searchCriteria: searchCriteria,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.2", "tfvc", "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChangesetRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -395,16 +395,16 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, ChangesetsBatch: TfvcInterfaces.TfvcChangesetRef[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "b7e7c173-803c-4fea-9ec8-31ee35c5502a", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChangesetsRequestData, responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChangesetRef, responseIsCollection: true };
             
-            this.restClient.create(path, apiVersion, changesetsRequestData, serializationData, onResult);
+            this.restClient.create(url, apiVersion, changesetsRequestData, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -420,17 +420,17 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, ChangesetWorkItems: TfvcInterfaces.AssociatedWorkItem[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             id: id
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "64ae0bea-1d71-47c9-a9e5-fe73f5ea0ff4", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.AssociatedWorkItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -450,17 +450,17 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, ItemBatch: TfvcInterfaces.TfvcItem[][]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "fe6f827b-5f64-480f-b8af-1eca3b80e833", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TfvcInterfaces.TypeInfo.TfvcItemRequestData, responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcItem, responseIsCollection: true };
             
-            this.restClient.create(path, apiVersion, itemRequestData, serializationData, onResult);
+            this.restClient.create(url, apiVersion, itemRequestData, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -490,7 +490,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, Item: TfvcInterfaces.TfvcItem) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project
         };
 
@@ -502,14 +502,14 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             recursionLevel: recursionLevel,
             versionDescriptor: versionDescriptor,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcItem, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -539,7 +539,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project
         };
 
@@ -551,14 +551,14 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             recursionLevel: recursionLevel,
             versionDescriptor: versionDescriptor,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.httpClient.getStream(path, apiVersion, "application/octet-stream", onResult);
+            this.httpClient.getStream(url, apiVersion, "application/octet-stream", onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -584,7 +584,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, Items: TfvcInterfaces.TfvcItem[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project
         };
 
@@ -594,14 +594,14 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             includeLinks: includeLinks,
             versionDescriptor: versionDescriptor,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -631,7 +631,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project
         };
 
@@ -643,14 +643,14 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             recursionLevel: recursionLevel,
             versionDescriptor: versionDescriptor,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.httpClient.getStream(path, apiVersion, "text/plain", onResult);
+            this.httpClient.getStream(url, apiVersion, "text/plain", onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -680,7 +680,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project
         };
 
@@ -692,14 +692,14 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             recursionLevel: recursionLevel,
             versionDescriptor: versionDescriptor,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.httpClient.getStream(path, apiVersion, "application/zip", onResult);
+            this.httpClient.getStream(url, apiVersion, "application/zip", onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -721,7 +721,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, LabelItems: TfvcInterfaces.TfvcItem[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             labelId: labelId
         };
 
@@ -729,14 +729,14 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             '$top': top,
             '$skip': skip,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "06166e34-de17-4b60-8cd1-23182a346fda", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -758,7 +758,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, Label: TfvcInterfaces.TfvcLabel) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project,
             labelId: labelId
         };
@@ -766,14 +766,14 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         var queryValues: any = {
             requestData: requestData,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "a5d9bd7f-b661-4d0e-b9be-d9c16affae54", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcLabel, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -797,7 +797,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, Labels: TfvcInterfaces.TfvcLabelRef[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project
         };
 
@@ -806,14 +806,14 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             '$top': top,
             '$skip': skip,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "a5d9bd7f-b661-4d0e-b9be-d9c16affae54", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcLabelRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -833,21 +833,21 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, ProjectInfo: TfvcInterfaces.VersionControlProjectInfo) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project
         };
 
         var queryValues: any = {
             projectId: projectId,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "252d9c40-0643-41cf-85b2-044d80f9b675", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.VersionControlProjectInfo, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -863,17 +863,17 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, ProjectInfo: TfvcInterfaces.VersionControlProjectInfo[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             project: project
         };
 
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "252d9c40-0643-41cf-85b2-044d80f9b675", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.VersionControlProjectInfo, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -895,7 +895,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, ShelvesetChanges: TfvcInterfaces.TfvcChange[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
         };
 
         var queryValues: any = {
@@ -903,14 +903,14 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             '$top': top,
             '$skip': skip,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "dbaf075b-0445-4c34-9e5b-82292f856522", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChange, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -930,21 +930,21 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, Shelveset: TfvcInterfaces.TfvcShelveset) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
         };
 
         var queryValues: any = {
             shelvesetId: shelvesetId,
             requestData: requestData,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "e36d44fb-e907-4b0a-b194-f83f1ed32ad3", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcShelveset, responseIsCollection: false };
             
-            this.restClient.getJson(path, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -966,7 +966,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, Shelvesets: TfvcInterfaces.TfvcShelvesetRef[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
         };
 
         var queryValues: any = {
@@ -974,14 +974,14 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             '$top': top,
             '$skip': skip,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "e36d44fb-e907-4b0a-b194-f83f1ed32ad3", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcShelvesetRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -999,20 +999,20 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         onResult: (err: any, statusCode: number, ShelvesetWorkItems: TfvcInterfaces.AssociatedWorkItem[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
         };
 
         var queryValues: any = {
             shelvesetId: shelvesetId,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "a7a0c1c1-373e-425a-b031-a519474d743d", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.AssociatedWorkItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);

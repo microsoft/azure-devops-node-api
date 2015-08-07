@@ -147,6 +147,11 @@ export interface ReportingWorkItemLinksBatch extends StreamedBatch<ReportingWork
 export interface ReportingWorkItemRevisionsBatch extends StreamedBatch<WorkItem> {
 }
 
+export interface ReportingWorkItemRevisionsFilter {
+    fields: string[];
+    types: string[];
+}
+
 export interface StreamedBatch<T> {
     isLastBatch: boolean;
     nextLink: string;
@@ -437,6 +442,9 @@ export var TypeInfo = {
     ReportingWorkItemRevisionsBatch: {
         fields: <any>null
     },
+    ReportingWorkItemRevisionsFilter: {
+        fields: <any>null
+    },
     StreamedBatch: {
         fields: <any>null
     },
@@ -617,6 +625,9 @@ TypeInfo.ReportingWorkItemLinksBatch.fields = {
 };
 
 TypeInfo.ReportingWorkItemRevisionsBatch.fields = {
+};
+
+TypeInfo.ReportingWorkItemRevisionsFilter.fields = {
 };
 
 TypeInfo.StreamedBatch.fields = {
