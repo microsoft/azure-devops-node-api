@@ -23,7 +23,7 @@ import FileContainerInterfaces = require("./interfaces/FileContainerInterfaces")
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
 export interface IFileContainerApi extends basem.ClientApiBase {
-    createItem(containerId: number, itemPath: string, scope: string, onResult: (err: any, statusCode: number, Container: FileContainerInterfaces.FileContainerItem) => void): void;
+    createItem(customHeaders: any, contentStream: NodeJS.ReadableStream, containerId: number, itemPath: string, scope: string, onResult: (err: any, statusCode: number, Container: FileContainerInterfaces.FileContainerItem) => void): void;
     createItems(items: VSSInterfaces.VssJsonCollectionWrapperV<FileContainerInterfaces.FileContainerItem[]>, containerId: number, scope: string, onResult: (err: any, statusCode: number, Container: FileContainerInterfaces.FileContainerItem[]) => void): void;
     deleteItem(containerId: number, itemPath: string, scope: string, onResult: (err: any, statusCode: number) => void): void;
     getContainers(scope: string, artifactUris: string, onResult: (err: any, statusCode: number, Containers: FileContainerInterfaces.FileContainer[]) => void): void;
@@ -32,7 +32,7 @@ export interface IFileContainerApi extends basem.ClientApiBase {
 
 export interface IQFileContainerApi extends basem.QClientApiBase {
     
-    createItem(containerId: number, itemPath: string,  scope?: string): Q.Promise<FileContainerInterfaces.FileContainerItem>;
+    createItem(customHeaders: any, contentStream: NodeJS.ReadableStream, containerId: number, itemPath: string,  scope?: string): Q.Promise<FileContainerInterfaces.FileContainerItem>;
     createItems(items: VSSInterfaces.VssJsonCollectionWrapperV<FileContainerInterfaces.FileContainerItem[]>, containerId: number,  scope?: string): Q.Promise<FileContainerInterfaces.FileContainerItem[]>;
     getContainers(scope?: string,  artifactUris?: string): Q.Promise<FileContainerInterfaces.FileContainer[]>;
     getItems(containerId: number, scope?: string, itemPath?: string, metadata?: boolean, format?: string, downloadFileName?: string,  includeDownloadTickets?: boolean): Q.Promise<FileContainerInterfaces.FileContainerItem[]>;
@@ -47,19 +47,22 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
     /**
      * Creates the specified item in the container referenced container.
      * 
+     * @param {NodeJS.ReadableStream} contentStream
      * @param {number} containerId
      * @param {string} itemPath
      * @param {string} scope - A guid representing the scope of the container. This is often the project id.
      * @param onResult callback function with the resulting FileContainerInterfaces.FileContainerItem
      */
     public createItem(
+        customHeaders: any,
+        contentStream: NodeJS.ReadableStream,
         containerId: number,
         itemPath: string,
         scope: string,
         onResult: (err: any, statusCode: number, Container: FileContainerInterfaces.FileContainerItem) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             containerId: containerId
         };
 
@@ -67,14 +70,17 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             itemPath: itemPath,
             scope: scope,
         };
+        
+        customHeaders = customHeaders || {};
+        customHeaders["Content-Type"] = "application/octet-stream";
 
         this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainerItem, responseIsCollection: false };
             
-            this.restClient.replace(path, apiVersion, null, serializationData, onResult);
+            this.restClient.uploadStream('PUT', url, apiVersion, contentStream, customHeaders, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -96,21 +102,21 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
         onResult: (err: any, statusCode: number, Container: FileContainerInterfaces.FileContainerItem[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             containerId: containerId
         };
 
         var queryValues: any = {
             scope: scope,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: VSSInterfaces.TypeInfo.VssJsonCollectionWrapperV, responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainerItem, responseIsCollection: true };
             
-            this.restClient.create(path, apiVersion, items, serializationData, onResult);
+            this.restClient.create(url, apiVersion, items, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -132,7 +138,7 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
         onResult: (err: any, statusCode: number) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             containerId: containerId
         };
 
@@ -140,14 +146,14 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             itemPath: itemPath,
             scope: scope,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(path, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -167,21 +173,21 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
         onResult: (err: any, statusCode: number, Containers: FileContainerInterfaces.FileContainer[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
         };
 
         var queryValues: any = {
             scope: scope,
             artifactUris: artifactUris,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainer, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -211,7 +217,7 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
         onResult: (err: any, statusCode: number, Containers: FileContainerInterfaces.FileContainerItem[]) => void
         ): void {
 
-        var routeValues = {
+        var routeValues: any = {
             containerId: containerId
         };
 
@@ -223,14 +229,14 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             downloadFileName: downloadFileName,
             includeDownloadTickets: includeDownloadTickets,
         };
-
+        
         this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
-            var path: string = versioningData.requestUrl;
+            var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainerItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(path, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -251,11 +257,14 @@ export class QFileContainerApi extends basem.QClientApiBase implements IQFileCon
     /**
     * Creates the specified item in the container referenced container.
     * 
+    * @param {NodeJS.ReadableStream} contentStream
     * @param {number} containerId
     * @param {string} itemPath
     * @param {string} scope - A guid representing the scope of the container. This is often the project id.
     */
     public createItem(
+        customHeaders: any,
+        contentStream: NodeJS.ReadableStream, 
         containerId: number, 
         itemPath: string, 
         scope?: string
@@ -263,7 +272,7 @@ export class QFileContainerApi extends basem.QClientApiBase implements IQFileCon
     
         var deferred = Q.defer<FileContainerInterfaces.FileContainerItem>();
 
-        this.api.createItem(containerId, itemPath, scope, (err: any, statusCode: number, Container: FileContainerInterfaces.FileContainerItem) => {
+        this.api.createItem(customHeaders, contentStream, containerId, itemPath, scope, (err: any, statusCode: number, Container: FileContainerInterfaces.FileContainerItem) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);

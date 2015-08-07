@@ -139,7 +139,7 @@ export class RestClient implements ifm.IRestClient {
         this._sendWrappedJson('PATCH', url, apiVersion, resources, serializationData, onResult);
     }
 
-    uploadFile(url: string, apiVersion: string, filePath: string, customHeaders: any, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+    uploadFile(verb: string, url: string, apiVersion: string, filePath: string, customHeaders: any, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
         fs.stat(filePath, (err, stats) => {
             if (err) {
                 onResult(err, 400, null);
@@ -151,7 +151,7 @@ export class RestClient implements ifm.IRestClient {
 
             var contentStream: NodeJS.ReadableStream = fs.createReadStream(filePath);
 
-            this.uploadStream('POST', url, apiVersion, contentStream, headers, serializationData, onResult);
+            this.uploadStream(verb, url, apiVersion, contentStream, headers, serializationData, onResult);
         });
     }
 
