@@ -6,6 +6,7 @@ import basem = require('./ClientApiBases');
 import buildm = require('./BuildApi');
 import corem = require('./CoreApi');
 import filecontainerm = require('./FileContainerApi');
+import gallerym = require('./GalleryApi');
 import gitm = require('./GitApi');
 import taskagentm = require('./TaskAgentApi');
 import taskm = require('./TaskApi');
@@ -81,6 +82,14 @@ export class WebApi {
 
     public getQFileContainerApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): filecontainerm.IQFileContainerApi {
         return new filecontainerm.QFileContainerApi(serverUrl, handlers);
+    }
+    
+    public getGalleryApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): gallerym.IGalleryApi {
+        return new gallerym.GalleryApi(serverUrl, handlers);
+    }
+
+    public getQGalleryApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): gallerym.IQGalleryApi {
+        return new gallerym.QGalleryApi(serverUrl, handlers);
     }
     
     public getGitApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): gitm.IGitApi {
