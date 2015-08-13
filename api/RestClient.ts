@@ -171,7 +171,7 @@ export class RestClient implements ifm.IRestClient {
     }
 
     replace(url: string, apiVersion: string, resources: any, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._sendJson('PUT', apiVersion, url, resources, serializationData, onResult);
+        this._sendJson('PUT', url, apiVersion, resources, serializationData, onResult);
     }
 
     _sendWrappedJson(verb: string, url: string, apiVersion: string, resources: any[], serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, resources: any[]) => void): void {
