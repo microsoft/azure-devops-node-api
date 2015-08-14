@@ -27,18 +27,18 @@ export class HttpClient implements ifm.IHttpClient {
         }
     }
 
-    get(verb: string, requestUrl: string, headers: any, onResult: (err: any, res: http.ClientResponse, contents: string) => void): void {
+    get(verb: string, requestUrl: string, headers: ifm.IHeaders, onResult: (err: any, res: http.ClientResponse, contents: string) => void): void {
         var options = this._getOptions(verb, requestUrl, headers);
         this.request(options.protocol, options.options, null, onResult);
     }
 
     // POST, PATCH, PUT
-    send(verb: string, requestUrl: string, objs: any, headers: any, onResult: (err: any, res: http.ClientResponse, contents: string) => void): void {
+    send(verb: string, requestUrl: string, objs: any, headers: ifm.IHeaders, onResult: (err: any, res: http.ClientResponse, contents: string) => void): void {
         var options = this._getOptions(verb, requestUrl, headers);
         this.request(options.protocol, options.options, objs, onResult);
     }
 
-    sendFile(verb: string, requestUrl: string, content: NodeJS.ReadableStream, headers: any, onResult: (err: any, res: http.ClientResponse, contents: string) => void): void {
+    sendFile(verb: string, requestUrl: string, content: NodeJS.ReadableStream, headers: ifm.IHeaders, onResult: (err: any, res: http.ClientResponse, contents: string) => void): void {
         var options = this._getOptions(verb, requestUrl, headers);
 
         var req = options.protocol.request(options.options, function (res) {

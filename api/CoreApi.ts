@@ -91,7 +91,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: CoreInterfaces.TypeInfo.WebApiConnectedServiceDetails, responseTypeMetadata: CoreInterfaces.TypeInfo.WebApiConnectedService, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, connectedServiceCreationData, serializationData, onResult);
+            this.restClient.create(url, apiVersion, connectedServiceCreationData, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -120,7 +120,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.WebApiConnectedServiceDetails, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -152,7 +152,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.WebApiConnectedService, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -180,7 +180,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: CoreInterfaces.TypeInfo.IdentityData, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, mruData, serializationData, onResult);
+            this.restClient.create(url, apiVersion, mruData, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -208,7 +208,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: CoreInterfaces.TypeInfo.IdentityData, responseIsCollection: false };
             
-            this.restClient.delete(url, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -234,7 +234,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: VSSInterfaces.TypeInfo.IdentityRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -262,7 +262,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: CoreInterfaces.TypeInfo.IdentityData, responseIsCollection: false };
             
-            this.restClient.update(url, apiVersion, mruData, serializationData, onResult);
+            this.restClient.update(url, apiVersion, mruData, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -300,7 +300,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: VSSInterfaces.TypeInfo.IdentityRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -328,7 +328,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.TeamProjectCollection, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -362,7 +362,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.TeamProjectCollectionReference, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -391,7 +391,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.TeamProjectReference, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -428,7 +428,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.TeamProject, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -465,7 +465,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.TeamProjectReference, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -492,7 +492,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: CoreInterfaces.TypeInfo.TeamProject, responseTypeMetadata: OperationsInterfaces.TypeInfo.OperationReference, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, projectToCreate, serializationData, onResult);
+            this.restClient.create(url, apiVersion, projectToCreate, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -520,7 +520,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: OperationsInterfaces.TypeInfo.OperationReference, responseIsCollection: false };
             
-            this.restClient.delete(url, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -550,7 +550,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: CoreInterfaces.TypeInfo.TeamProject, responseTypeMetadata: OperationsInterfaces.TypeInfo.OperationReference, responseIsCollection: false };
             
-            this.restClient.update(url, apiVersion, projectUpdate, serializationData, onResult);
+            this.restClient.update(url, apiVersion, projectUpdate, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -579,7 +579,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.Proxy, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -617,7 +617,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.WebApiTeam, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);

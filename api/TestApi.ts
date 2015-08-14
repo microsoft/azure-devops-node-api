@@ -28,6 +28,8 @@ export interface ITestApi extends basem.ClientApiBase {
     getCodeCoverageSummary(project: string, buildId: number, deltaBuildId: number, onResult: (err: any, statusCode: number, CodeCoverage: TestInterfaces.CodeCoverageSummary) => void): void;
     updateCodeCoverageSummary(coverageData: TestInterfaces.CodeCoverageData, project: string, build: number, onResult: (err: any, statusCode: number) => void): void;
     getTestRunCodeCoverage(project: string, runId: number, flags: number, onResult: (err: any, statusCode: number, CodeCoverage: TestInterfaces.TestRunCoverage[]) => void): void;
+    addCustomFields(newFields: TestInterfaces.CustomTestFieldDefinition[], project: string, onResult: (err: any, statusCode: number, ExtensionFields: TestInterfaces.CustomTestFieldDefinition[]) => void): void;
+    queryCustomFields(project: string, scopeFilter: TestInterfaces.CustomTestFieldScope, onResult: (err: any, statusCode: number, ExtensionFields: TestInterfaces.CustomTestFieldDefinition[]) => void): void;
     getTestRunLogs(project: string, runId: number, onResult: (err: any, statusCode: number, MessageLogs: TestInterfaces.TestMessageLogDetails[]) => void): void;
     createTestPlan(testPlan: TestInterfaces.PlanUpdateModel, project: string, onResult: (err: any, statusCode: number, Plan: TestInterfaces.TestPlan) => void): void;
     getPlanById(project: string, planId: number, onResult: (err: any, statusCode: number, Plan: TestInterfaces.TestPlan) => void): void;
@@ -75,6 +77,8 @@ export interface IQTestApi extends basem.QClientApiBase {
     getBuildCodeCoverage(project: string, buildId: number,  flags: number): Q.Promise<TestInterfaces.BuildCoverage[]>;
     getCodeCoverageSummary(project: string, buildId: number,  deltaBuildId?: number): Q.Promise<TestInterfaces.CodeCoverageSummary>;
     getTestRunCodeCoverage(project: string, runId: number,  flags: number): Q.Promise<TestInterfaces.TestRunCoverage[]>;
+    addCustomFields(newFields: TestInterfaces.CustomTestFieldDefinition[],  project: string): Q.Promise<TestInterfaces.CustomTestFieldDefinition[]>;
+    queryCustomFields(project: string,  scopeFilter: TestInterfaces.CustomTestFieldScope): Q.Promise<TestInterfaces.CustomTestFieldDefinition[]>;
     getTestRunLogs(project: string,  runId: number): Q.Promise<TestInterfaces.TestMessageLogDetails[]>;
     createTestPlan(testPlan: TestInterfaces.PlanUpdateModel,  project: string): Q.Promise<TestInterfaces.TestPlan>;
     getPlanById(project: string,  planId: number): Q.Promise<TestInterfaces.TestPlan>;
@@ -144,7 +148,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestAttachmentRequestModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestAttachmentReference, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, attachmentRequestModel, serializationData, onResult);
+            this.restClient.create(url, apiVersion, attachmentRequestModel, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -175,7 +179,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestAttachmentRequestModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestAttachmentReference, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, attachmentRequestModel, serializationData, onResult);
+            this.restClient.create(url, apiVersion, attachmentRequestModel, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -210,7 +214,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.BuildCoverage, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -245,7 +249,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.CodeCoverageSummary, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -281,7 +285,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.CodeCoverageData, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, coverageData, serializationData, onResult);
+            this.restClient.create(url, apiVersion, coverageData, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -316,7 +320,67 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestRunCoverage, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param {TestInterfaces.CustomTestFieldDefinition[]} newFields
+     * @param {string} project - Project ID or project name
+     * @param onResult callback function with the resulting TestInterfaces.CustomTestFieldDefinition[]
+     */
+    public addCustomFields(
+        newFields: TestInterfaces.CustomTestFieldDefinition[],
+        project: string,
+        onResult: (err: any, statusCode: number, ExtensionFields: TestInterfaces.CustomTestFieldDefinition[]) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project
+        };
+
+        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "8ce1923b-f4c7-4e22-b93b-f6284e525ec2", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.CustomTestFieldDefinition, responseTypeMetadata: TestInterfaces.TypeInfo.CustomTestFieldDefinition, responseIsCollection: true };
+            
+            this.restClient.createJsonWrappedArray(url, apiVersion, newFields, {}, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {TestInterfaces.CustomTestFieldScope} scopeFilter
+     * @param onResult callback function with the resulting TestInterfaces.CustomTestFieldDefinition[]
+     */
+    public queryCustomFields(
+        project: string,
+        scopeFilter: TestInterfaces.CustomTestFieldScope,
+        onResult: (err: any, statusCode: number, ExtensionFields: TestInterfaces.CustomTestFieldDefinition[]) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project
+        };
+
+        var queryValues: any = {
+            scopeFilter: scopeFilter,
+        };
+        
+        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "8ce1923b-f4c7-4e22-b93b-f6284e525ec2", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.CustomTestFieldDefinition, responseIsCollection: true };
+            
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -345,7 +409,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestMessageLogDetails, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -373,7 +437,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.PlanUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestPlan, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, testPlan, serializationData, onResult);
+            this.restClient.create(url, apiVersion, testPlan, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -402,7 +466,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPlan, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -446,7 +510,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPlan, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -477,7 +541,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.PlanUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestPlan, responseIsCollection: false };
             
-            this.restClient.update(url, apiVersion, planUpdateModel, serializationData, onResult);
+            this.restClient.update(url, apiVersion, planUpdateModel, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -518,7 +582,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPoint, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -574,7 +638,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPoint, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -611,7 +675,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.PointUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestPoint, responseIsCollection: true };
             
-            this.restClient.update(url, apiVersion, pointUpdateModel, serializationData, onResult);
+            this.restClient.update(url, apiVersion, pointUpdateModel, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -652,7 +716,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestIterationDetailsModel, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -690,7 +754,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestIterationDetailsModel, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -721,7 +785,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestResultCreateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: true };
             
-            this.restClient.createJsonWrappedArray(url, apiVersion, resultCreateModels, serializationData, onResult);
+            this.restClient.createJsonWrappedArray(url, apiVersion, resultCreateModels, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -758,7 +822,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestCaseResultUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: true };
             
-            this.restClient.update(url, apiVersion, resultUpdateModel, serializationData, onResult);
+            this.restClient.update(url, apiVersion, resultUpdateModel, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -796,7 +860,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -831,7 +895,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -862,7 +926,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestCaseResultUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: true };
             
-            this.restClient.updateJsonWrappedArray(url, apiVersion, resultUpdateModels, serializationData, onResult);
+            this.restClient.updateJsonWrappedArray(url, apiVersion, resultUpdateModels, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -900,7 +964,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestActionResultModel, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -941,7 +1005,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestResultParameterModel, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -984,7 +1048,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.QueryModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: true };
             
-            this.restClient.create(url, apiVersion, query, serializationData, onResult);
+            this.restClient.create(url, apiVersion, query, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1013,7 +1077,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestRunStatistic, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1053,7 +1117,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.QueryModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestRun, responseIsCollection: true };
             
-            this.restClient.create(url, apiVersion, query, serializationData, onResult);
+            this.restClient.create(url, apiVersion, query, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1081,7 +1145,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.RunCreateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestRun, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, testRun, serializationData, onResult);
+            this.restClient.create(url, apiVersion, testRun, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1110,7 +1174,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(url, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -1139,7 +1203,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestRun, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1192,7 +1256,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestRun, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1223,7 +1287,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.RunUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestRun, responseIsCollection: false };
             
-            this.restClient.update(url, apiVersion, runUpdateModel, serializationData, onResult);
+            this.restClient.update(url, apiVersion, runUpdateModel, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1258,7 +1322,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.SuiteTestCase, responseIsCollection: true };
             
-            this.restClient.createJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.createJsonWrappedArray(url, apiVersion, null, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1293,7 +1357,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.SuiteTestCase, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1325,7 +1389,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.SuiteTestCase, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1360,7 +1424,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(url, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -1394,7 +1458,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.SuiteCreateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: true };
             
-            this.restClient.create(url, apiVersion, testSuite, serializationData, onResult);
+            this.restClient.create(url, apiVersion, testSuite, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1426,7 +1490,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(url, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -1464,7 +1528,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1505,7 +1569,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1539,7 +1603,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.SuiteUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: false };
             
-            this.restClient.update(url, apiVersion, suiteUpdateModel, serializationData, onResult);
+            this.restClient.update(url, apiVersion, suiteUpdateModel, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1568,7 +1632,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1596,7 +1660,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestSettings, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, testSettings, serializationData, onResult);
+            this.restClient.create(url, apiVersion, testSettings, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1625,7 +1689,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(url, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -1654,7 +1718,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSettings, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1802,6 +1866,54 @@ export class QTestApi extends basem.QClientApiBase implements IQTestApi {
         });
 
         return <Q.Promise<TestInterfaces.TestRunCoverage[]>>deferred.promise;
+    }
+    
+    /**
+    * @param {TestInterfaces.CustomTestFieldDefinition[]} newFields
+    * @param {string} project - Project ID or project name
+    */
+    public addCustomFields(
+        newFields: TestInterfaces.CustomTestFieldDefinition[], 
+        project: string
+        ): Q.Promise<TestInterfaces.CustomTestFieldDefinition[]> {
+    
+        var deferred = Q.defer<TestInterfaces.CustomTestFieldDefinition[]>();
+
+        this.api.addCustomFields(newFields, project, (err: any, statusCode: number, ExtensionFields: TestInterfaces.CustomTestFieldDefinition[]) => {
+            if(err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(ExtensionFields);
+            }
+        });
+
+        return <Q.Promise<TestInterfaces.CustomTestFieldDefinition[]>>deferred.promise;
+    }
+    
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {TestInterfaces.CustomTestFieldScope} scopeFilter
+    */
+    public queryCustomFields(
+        project: string, 
+        scopeFilter: TestInterfaces.CustomTestFieldScope
+        ): Q.Promise<TestInterfaces.CustomTestFieldDefinition[]> {
+    
+        var deferred = Q.defer<TestInterfaces.CustomTestFieldDefinition[]>();
+
+        this.api.queryCustomFields(project, scopeFilter, (err: any, statusCode: number, ExtensionFields: TestInterfaces.CustomTestFieldDefinition[]) => {
+            if(err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(ExtensionFields);
+            }
+        });
+
+        return <Q.Promise<TestInterfaces.CustomTestFieldDefinition[]>>deferred.promise;
     }
     
     /**

@@ -138,7 +138,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.BuildArtifact, responseTypeMetadata: BuildInterfaces.TypeInfo.BuildArtifact, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, artifact, serializationData, onResult);
+            this.restClient.create(url, apiVersion, artifact, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -175,7 +175,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildArtifact, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -243,7 +243,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildArtifact, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -278,7 +278,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -309,7 +309,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(url, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -346,7 +346,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -428,7 +428,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -464,7 +464,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.Build, responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, build, serializationData, onResult);
+            this.restClient.create(url, apiVersion, build, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -497,7 +497,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.Build, responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: false };
             
-            this.restClient.update(url, apiVersion, build, serializationData, onResult);
+            this.restClient.update(url, apiVersion, build, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -534,7 +534,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Change, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -562,7 +562,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildController, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -593,7 +593,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildController, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -632,7 +632,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, definition, serializationData, onResult);
+            this.restClient.create(url, apiVersion, definition, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -663,7 +663,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(url, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -703,7 +703,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.DefinitionReference, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -740,7 +740,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.DefinitionReference, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -782,7 +782,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseIsCollection: false };
             
-            this.restClient.replace(url, apiVersion, definition, serializationData, onResult);
+            this.restClient.replace(url, apiVersion, definition, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -813,7 +813,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Deployment, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -887,7 +887,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildLog, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -941,7 +941,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildOptionDefinition, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -968,7 +968,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.AgentPoolQueue, responseTypeMetadata: BuildInterfaces.TypeInfo.AgentPoolQueue, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, queue, serializationData, onResult);
+            this.restClient.create(url, apiVersion, queue, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -999,7 +999,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(url, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -1027,7 +1027,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.AgentPoolQueue, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1058,7 +1058,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.AgentPoolQueue, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1089,7 +1089,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionRevision, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1112,7 +1112,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildSettings, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1139,7 +1139,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.BuildSettings, responseTypeMetadata: BuildInterfaces.TypeInfo.BuildSettings, responseIsCollection: false };
             
-            this.restClient.update(url, apiVersion, settings, serializationData, onResult);
+            this.restClient.update(url, apiVersion, settings, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1173,7 +1173,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: true };
             
-            this.restClient.replace(url, apiVersion, null, serializationData, onResult);
+            this.restClient.replace(url, apiVersion, null, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1206,7 +1206,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: true };
             
-            this.restClient.createJsonWrappedArray(url, apiVersion, tags, serializationData, onResult);
+            this.restClient.createJsonWrappedArray(url, apiVersion, tags, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1240,7 +1240,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: true };
             
-            this.restClient.delete(url, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1271,7 +1271,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1297,7 +1297,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1328,7 +1328,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(url, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -1359,7 +1359,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionTemplate, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1385,7 +1385,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionTemplate, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1418,7 +1418,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionTemplate, responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionTemplate, responseIsCollection: false };
             
-            this.restClient.replace(url, apiVersion, template, serializationData, onResult);
+            this.restClient.replace(url, apiVersion, template, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1458,7 +1458,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Timeline, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1495,7 +1495,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: VSSInterfaces.TypeInfo.ResourceRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1534,7 +1534,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: VSSInterfaces.TypeInfo.ResourceRef, responseIsCollection: true };
             
-            this.restClient.createJsonWrappedArray(url, apiVersion, commitIds, serializationData, onResult);
+            this.restClient.createJsonWrappedArray(url, apiVersion, commitIds, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);

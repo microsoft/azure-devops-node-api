@@ -30,7 +30,7 @@ export class ClientApiBase {
     }
 
     connect(onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this.restClient.getJson(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, onResult);
+        this.restClient.getJson(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, null, onResult);
     }
 }
 

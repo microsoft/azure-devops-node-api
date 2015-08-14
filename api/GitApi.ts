@@ -46,6 +46,7 @@ export interface IGitApi extends basem.ClientApiBase {
     deletePullRequestReviewer(repositoryId: string, pullRequestId: number, reviewerId: string, project: string, onResult: (err: any, statusCode: number) => void): void;
     getPullRequestReviewer(repositoryId: string, pullRequestId: number, reviewerId: string, project: string, onResult: (err: any, statusCode: number, PullRequestReviewer: GitInterfaces.IdentityRefWithVote) => void): void;
     getPullRequestReviewers(repositoryId: string, pullRequestId: number, project: string, onResult: (err: any, statusCode: number, PullRequestReviewers: GitInterfaces.IdentityRefWithVote[]) => void): void;
+    getPullRequestsByProject(project: string, searchCriteria: GitInterfaces.GitPullRequestSearchCriteria, maxCommentLength: number, skip: number, top: number, onResult: (err: any, statusCode: number, PullRequests: GitInterfaces.GitPullRequest[]) => void): void;
     createPullRequest(gitPullRequestToCreate: GitInterfaces.GitPullRequest, repositoryId: string, project: string, onResult: (err: any, statusCode: number, PullRequest: GitInterfaces.GitPullRequest) => void): void;
     getPullRequest(repositoryId: string, pullRequestId: number, project: string, maxCommentLength: number, skip: number, top: number, onResult: (err: any, statusCode: number, PullRequest: GitInterfaces.GitPullRequest) => void): void;
     getPullRequests(repositoryId: string, searchCriteria: GitInterfaces.GitPullRequestSearchCriteria, project: string, maxCommentLength: number, skip: number, top: number, onResult: (err: any, statusCode: number, PullRequests: GitInterfaces.GitPullRequest[]) => void): void;
@@ -83,6 +84,7 @@ export interface IQGitApi extends basem.QClientApiBase {
     createPullRequestReviewers(reviewers: VSSInterfaces.IdentityRef[], repositoryId: string, pullRequestId: number,  project?: string): Q.Promise<GitInterfaces.IdentityRefWithVote[]>;
     getPullRequestReviewer(repositoryId: string, pullRequestId: number, reviewerId: string,  project?: string): Q.Promise<GitInterfaces.IdentityRefWithVote>;
     getPullRequestReviewers(repositoryId: string, pullRequestId: number,  project?: string): Q.Promise<GitInterfaces.IdentityRefWithVote[]>;
+    getPullRequestsByProject(project: string, searchCriteria: GitInterfaces.GitPullRequestSearchCriteria, maxCommentLength?: number, skip?: number,  top?: number): Q.Promise<GitInterfaces.GitPullRequest[]>;
     createPullRequest(gitPullRequestToCreate: GitInterfaces.GitPullRequest, repositoryId: string,  project?: string): Q.Promise<GitInterfaces.GitPullRequest>;
     getPullRequest(repositoryId: string, pullRequestId: number, project?: string, maxCommentLength?: number, skip?: number,  top?: number): Q.Promise<GitInterfaces.GitPullRequest>;
     getPullRequests(repositoryId: string, searchCriteria: GitInterfaces.GitPullRequestSearchCriteria, project?: string, maxCommentLength?: number, skip?: number,  top?: number): Q.Promise<GitInterfaces.GitPullRequest[]>;
@@ -142,7 +144,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitBlobRef, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -307,7 +309,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitBranchStats, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -344,7 +346,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitBranchStats, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -387,7 +389,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitChanges, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -418,7 +420,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommit, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, null, serializationData, onResult);
+            this.restClient.create(url, apiVersion, null, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -458,7 +460,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommit, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -501,7 +503,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -547,7 +549,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -589,7 +591,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitQueryCommitsCriteria, responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitRef, responseIsCollection: true };
             
-            this.restClient.create(url, apiVersion, searchCriteria, serializationData, onResult);
+            this.restClient.create(url, apiVersion, searchCriteria, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -644,7 +646,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitItem, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -754,7 +756,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -897,7 +899,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitItemRequestData, responseTypeMetadata: GitInterfaces.TypeInfo.GitItem, responseIsCollection: true };
             
-            this.restClient.create(url, apiVersion, requestData, serializationData, onResult);
+            this.restClient.create(url, apiVersion, requestData, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -936,7 +938,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.IdentityRefWithVote, responseTypeMetadata: GitInterfaces.TypeInfo.IdentityRefWithVote, responseIsCollection: false };
             
-            this.restClient.replace(url, apiVersion, reviewer, serializationData, onResult);
+            this.restClient.replace(url, apiVersion, reviewer, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -972,7 +974,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: VSSInterfaces.TypeInfo.IdentityRef, responseTypeMetadata: GitInterfaces.TypeInfo.IdentityRefWithVote, responseIsCollection: true };
             
-            this.restClient.createJsonWrappedArray(url, apiVersion, reviewers, serializationData, onResult);
+            this.restClient.createJsonWrappedArray(url, apiVersion, reviewers, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1009,7 +1011,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(url, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -1046,7 +1048,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.IdentityRefWithVote, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1080,7 +1082,50 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.IdentityRefWithVote, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * Query pull requests by project
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {GitInterfaces.GitPullRequestSearchCriteria} searchCriteria
+     * @param {number} maxCommentLength
+     * @param {number} skip
+     * @param {number} top
+     * @param onResult callback function with the resulting GitInterfaces.GitPullRequest[]
+     */
+    public getPullRequestsByProject(
+        project: string,
+        searchCriteria: GitInterfaces.GitPullRequestSearchCriteria,
+        maxCommentLength: number,
+        skip: number,
+        top: number,
+        onResult: (err: any, statusCode: number, PullRequests: GitInterfaces.GitPullRequest[]) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project
+        };
+
+        var queryValues: any = {
+            searchCriteria: searchCriteria,
+            maxCommentLength: maxCommentLength,
+            '$skip': skip,
+            '$top': top,
+        };
+        
+        this.vsoClient.getVersioningData("3.0-preview.1", "git", "a5d28130-9cd2-40fa-9f08-902e7daa9efb", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: true };
+            
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1113,7 +1158,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, gitPullRequestToCreate, serializationData, onResult);
+            this.restClient.create(url, apiVersion, gitPullRequestToCreate, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1159,7 +1204,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1205,7 +1250,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1241,7 +1286,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: false };
             
-            this.restClient.update(url, apiVersion, gitPullRequestToUpdate, serializationData, onResult);
+            this.restClient.update(url, apiVersion, gitPullRequestToUpdate, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1284,7 +1329,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.AssociatedWorkItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1317,7 +1362,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitPush, responseTypeMetadata: GitInterfaces.TypeInfo.GitPush, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, push, serializationData, onResult);
+            this.restClient.create(url, apiVersion, push, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1360,7 +1405,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPush, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1403,7 +1448,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPush, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1443,7 +1488,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1482,7 +1527,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitRefUpdate, responseTypeMetadata: GitInterfaces.TypeInfo.GitRefUpdateResult, responseIsCollection: true };
             
-            this.restClient.createJsonWrappedArray(url, apiVersion, refUpdates, serializationData, onResult);
+            this.restClient.createJsonWrappedArray(url, apiVersion, refUpdates, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1512,7 +1557,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitRepository, responseTypeMetadata: GitInterfaces.TypeInfo.GitRepository, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, gitRepositoryToCreate, serializationData, onResult);
+            this.restClient.create(url, apiVersion, gitRepositoryToCreate, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1543,7 +1588,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(url, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -1577,7 +1622,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitRepository, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1606,7 +1651,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitRepository, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1639,7 +1684,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitRepository, responseTypeMetadata: GitInterfaces.TypeInfo.GitRepository, responseIsCollection: false };
             
-            this.restClient.update(url, apiVersion, newRepositoryInfo, serializationData, onResult);
+            this.restClient.update(url, apiVersion, newRepositoryInfo, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1683,7 +1728,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitTreeRef, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -2247,6 +2292,38 @@ export class QGitApi extends basem.QClientApiBase implements IQGitApi {
         });
 
         return <Q.Promise<GitInterfaces.IdentityRefWithVote[]>>deferred.promise;
+    }
+    
+    /**
+    * Query pull requests by project
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {GitInterfaces.GitPullRequestSearchCriteria} searchCriteria
+    * @param {number} maxCommentLength
+    * @param {number} skip
+    * @param {number} top
+    */
+    public getPullRequestsByProject(
+        project: string, 
+        searchCriteria: GitInterfaces.GitPullRequestSearchCriteria, 
+        maxCommentLength?: number, 
+        skip?: number, 
+        top?: number
+        ): Q.Promise<GitInterfaces.GitPullRequest[]> {
+    
+        var deferred = Q.defer<GitInterfaces.GitPullRequest[]>();
+
+        this.api.getPullRequestsByProject(project, searchCriteria, maxCommentLength, skip, top, (err: any, statusCode: number, PullRequests: GitInterfaces.GitPullRequest[]) => {
+            if(err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(PullRequests);
+            }
+        });
+
+        return <Q.Promise<GitInterfaces.GitPullRequest[]>>deferred.promise;
     }
     
     /**

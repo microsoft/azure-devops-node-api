@@ -97,12 +97,12 @@ export class RestClient implements ifm.IRestClient {
         this.httpClient = httpClient;
     }
 
-    getJson(url: string, apiVersion: string, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._getJson('GET', url, apiVersion, serializationData, onResult);
+    getJson(url: string, apiVersion: string, customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        this._getJson('GET', url, apiVersion, customHeaders, serializationData, onResult);
     }
 
-    getJsonWrappedArray(url: string, apiVersion: string, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this.getJson(url, apiVersion, serializationData, (err: any, statusCode: number, obj: any) => {
+    getJsonWrappedArray(url: string, apiVersion: string, customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        this.getJson(url, apiVersion, customHeaders, serializationData, (err: any, statusCode: number, obj: any) => {
             if (err) {
                 onResult(err, statusCode, null);
             } else {
@@ -116,30 +116,30 @@ export class RestClient implements ifm.IRestClient {
     }
 
     options(url: string, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._getJson('OPTIONS', url, "", null, onResult);
+        this._getJson('OPTIONS', url, "", null, null, onResult);
     }
 
-    delete(url: string, apiVersion: string, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._getJson('DELETE', url, apiVersion, serializationData, onResult);
+    delete(url: string, apiVersion: string, customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        this._getJson('DELETE', url, apiVersion, customHeaders, serializationData, onResult);
     }
 
-    create(url: string, apiVersion: string, resources: any, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._sendJson('POST', url, apiVersion, resources, serializationData, onResult);
+    create(url: string, apiVersion: string, resources: any, customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        this._sendJson('POST', url, apiVersion, resources, customHeaders, serializationData, onResult);
     }
 
-    createJsonWrappedArray(url: string, apiVersion: string, resources: any[], serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, resources: any[]) => void): void {
-        this._sendWrappedJson('POST', url, apiVersion, resources, serializationData, onResult);
+    createJsonWrappedArray(url: string, apiVersion: string, resources: any[], customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, resources: any[]) => void): void {
+        this._sendWrappedJson('POST', url, apiVersion, resources, customHeaders, serializationData, onResult);
     }
 
-    update(url: string, apiVersion: string, resources: any, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._sendJson('PATCH', url, apiVersion, resources, serializationData, onResult);
+    update(url: string, apiVersion: string, resources: any, customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        this._sendJson('PATCH', url, apiVersion, resources, customHeaders, serializationData, onResult);
     }
 
-    updateJsonWrappedArray(url: string, apiVersion: string, resources: any[], serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, resources: any[]) => void): void {
-        this._sendWrappedJson('PATCH', url, apiVersion, resources, serializationData, onResult);
+    updateJsonWrappedArray(url: string, apiVersion: string, resources: any[], customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, resources: any[]) => void): void {
+        this._sendWrappedJson('PATCH', url, apiVersion, resources, customHeaders, serializationData, onResult);
     }
 
-    uploadFile(verb: string, url: string, apiVersion: string, filePath: string, customHeaders: any, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+    uploadFile(verb: string, url: string, apiVersion: string, filePath: string, customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
         fs.stat(filePath, (err, stats) => {
             if (err) {
                 onResult(err, 400, null);
@@ -155,7 +155,7 @@ export class RestClient implements ifm.IRestClient {
         });
     }
 
-    uploadStream(verb: string, url: string, apiVersion: string, contentStream: NodeJS.ReadableStream, customHeaders: any, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+    uploadStream(verb: string, url: string, apiVersion: string, contentStream: NodeJS.ReadableStream, customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
 
         var headers = customHeaders || {};
         headers["Accept"] = this.httpClient.makeAcceptHeader('application/json', apiVersion);
@@ -170,17 +170,17 @@ export class RestClient implements ifm.IRestClient {
         });
     }
 
-    replace(url: string, apiVersion: string, resources: any, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._sendJson('PUT', url, apiVersion, resources, serializationData, onResult);
+    replace(url: string, apiVersion: string, resources: any, customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        this._sendJson('PUT', url, apiVersion, resources, customHeaders, serializationData, onResult);
     }
 
-    _sendWrappedJson(verb: string, url: string, apiVersion: string, resources: any[], serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, resources: any[]) => void): void {
+    _sendWrappedJson(verb: string, url: string, apiVersion: string, resources: any[], customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, resources: any[]) => void): void {
         var wrapped = <Serialization.IWebApiArrayResult>{
             count: resources.length,
             value: resources
         }
 
-        this._sendJson(verb, url, apiVersion, wrapped, serializationData, (err: any, statusCode: number, obj: any) => {
+        this._sendJson(verb, url, apiVersion, wrapped, customHeaders, serializationData, (err: any, statusCode: number, obj: any) => {
             if (err) {
                 onResult(err, statusCode, null);
             } else {
@@ -190,7 +190,7 @@ export class RestClient implements ifm.IRestClient {
         });
     }
 
-    _getJson(verb: string, url: string, apiVersion: string, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+    _getJson(verb: string, url: string, apiVersion: string, customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
 
         var headers = {};
         headers["Accept"] = this.httpClient.makeAcceptHeader('application/json', apiVersion);
@@ -204,11 +204,11 @@ export class RestClient implements ifm.IRestClient {
         });
     }
 
-    _sendJson(verb: string, url: string, apiVersion: string, data: any, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+    _sendJson(verb: string, url: string, apiVersion: string, data: any, customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
 
-        var headers = {};
+        var headers = customHeaders || {};
         headers["Accept"] = this.httpClient.makeAcceptHeader('application/json', apiVersion);
-        headers["Content-Type"] = 'application/json; charset=utf-8';
+        headers["Content-Type"] = headers["Content-Type"] || 'application/json; charset=utf-8';
         
         if(serializationData) {
             data = Serialization.ContractSerializer.serialize(data, serializationData.requestTypeMetadata, true);

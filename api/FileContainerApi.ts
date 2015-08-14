@@ -54,7 +54,7 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
      * @param onResult callback function with the resulting FileContainerInterfaces.FileContainerItem
      */
     public createItem(
-        customHeaders: any,
+        customHeaders: VsoBaseInterfaces.IHeaders,
         contentStream: NodeJS.ReadableStream,
         containerId: number,
         itemPath: string,
@@ -116,7 +116,7 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: VSSInterfaces.TypeInfo.VssJsonCollectionWrapperV, responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainerItem, responseIsCollection: true };
             
-            this.restClient.create(url, apiVersion, items, serializationData, onResult);
+            this.restClient.create(url, apiVersion, items, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -153,7 +153,7 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(url, apiVersion, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -187,7 +187,7 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainer, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -236,7 +236,7 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainerItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
