@@ -1106,6 +1106,7 @@ export interface RetentionPolicy {
     branches: string[];
     daysToKeep: number;
     deleteBuildRecord: boolean;
+    deleteTestResults: boolean;
 }
 
 export interface Schedule {

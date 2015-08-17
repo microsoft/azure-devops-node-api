@@ -245,7 +245,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -279,7 +279,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode, responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, postedNode, {}, serializationData, onResult);
+            this.restClient.create(url, apiVersion, postedNode, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -317,7 +317,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -355,7 +355,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -389,7 +389,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode, responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode, responseIsCollection: false };
             
-            this.restClient.update(url, apiVersion, postedNode, {}, serializationData, onResult);
+            this.restClient.update(url, apiVersion, postedNode, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -415,7 +415,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemField, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -438,7 +438,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemField, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -475,7 +475,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemHistory, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -506,7 +506,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemHistory, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -539,7 +539,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem, responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, postedQuery, {}, serializationData, onResult);
+            this.restClient.create(url, apiVersion, postedQuery, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -568,7 +568,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: false };
             
-            this.restClient.delete(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -608,7 +608,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -651,7 +651,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -688,7 +688,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem, responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem, responseIsCollection: false };
             
-            this.restClient.update(url, apiVersion, queryUpdate, {}, serializationData, onResult);
+            this.restClient.update(url, apiVersion, queryUpdate, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -725,7 +725,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItem, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -765,7 +765,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -792,7 +792,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.FieldsToEvaluate, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, ruleEngineInput, {}, serializationData, onResult);
+            this.restClient.create(url, apiVersion, ruleEngineInput, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode);
@@ -823,7 +823,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemUpdate, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -860,7 +860,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemUpdate, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -890,7 +890,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.Wiql, responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemQueryResult, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, wiql, {}, serializationData, onResult);
+            this.restClient.create(url, apiVersion, wiql, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -921,7 +921,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemQueryResult, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -956,7 +956,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.ReportingWorkItemLinksBatch, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -984,7 +984,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemRelationType, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1007,7 +1007,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemRelationType, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1045,7 +1045,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.ReportingWorkItemRevisionsBatch, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1079,7 +1079,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.ReportingWorkItemRevisionsFilter, responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.ReportingWorkItemRevisionsBatch, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, filter, {}, serializationData, onResult);
+            this.restClient.create(url, apiVersion, filter, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1119,7 +1119,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItem, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1159,7 +1159,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1243,7 +1243,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItem, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1313,7 +1313,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemTypeCategory, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1344,7 +1344,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemTypeCategory, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1375,7 +1375,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemType, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1401,7 +1401,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemType, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1435,7 +1435,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.FieldDependentRule, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1472,7 +1472,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemTypeTemplate, responseIsCollection: false };
             
-            this.restClient.getJson(url, apiVersion, {}, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1502,7 +1502,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemTypeTemplateUpdateModel, responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.ProvisioningResult, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, updateModel, {}, serializationData, onResult);
+            this.restClient.create(url, apiVersion, updateModel, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);

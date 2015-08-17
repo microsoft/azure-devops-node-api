@@ -870,6 +870,7 @@ export interface TfvcChangeset extends TfvcChangesetRef {
     collectionId: string;
     hasMoreChanges: boolean;
     policyOverride: TfvcPolicyOverrideInfo;
+    teamProjectIds: string[];
     workItems: AssociatedWorkItem[];
 }
 
