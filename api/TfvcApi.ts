@@ -23,29 +23,29 @@ import TfvcInterfaces = require("./interfaces/TfvcInterfaces");
 
 export interface ITfvcApi extends basem.ClientApiBase {
     getBranch(path: string, project: string, includeParent: boolean, includeChildren: boolean, onResult: (err: any, statusCode: number, Branche: TfvcInterfaces.TfvcBranch) => void): void;
-    getBranches(project: string, includeParent: boolean, includeChildren: boolean, includeDeleted: boolean, includeLinks: boolean, onResult: (err: any, statusCode: number, Branches: TfvcInterfaces.TfvcBranch[]) => void): void;
-    getBranchRefs(scopePath: string, project: string, includeDeleted: boolean, includeLinks: boolean, onResult: (err: any, statusCode: number, Branches: TfvcInterfaces.TfvcBranchRef[]) => void): void;
-    getChangesetChanges(id: number, skip: number, top: number, onResult: (err: any, statusCode: number, ChangesetChanges: TfvcInterfaces.TfvcChange[]) => void): void;
+    getBranches(project: string, includeParent: boolean, includeChildren: boolean, includeDeleted: boolean, includeLinks: boolean, onResult: (err: any, statusCode: number, Branche: TfvcInterfaces.TfvcBranch[]) => void): void;
+    getBranchRefs(scopePath: string, project: string, includeDeleted: boolean, includeLinks: boolean, onResult: (err: any, statusCode: number, Branche: TfvcInterfaces.TfvcBranchRef[]) => void): void;
+    getChangesetChanges(id: number, skip: number, top: number, onResult: (err: any, statusCode: number, ChangesetChange: TfvcInterfaces.TfvcChange[]) => void): void;
     createChangeset(changeset: TfvcInterfaces.TfvcChangeset, project: string, onResult: (err: any, statusCode: number, Changeset: TfvcInterfaces.TfvcChangesetRef) => void): void;
     getChangeset(id: number, project: string, maxChangeCount: number, includeDetails: boolean, includeWorkItems: boolean, maxCommentLength: number, includeSourceRename: boolean, skip: number, top: number, orderby: string, searchCriteria: TfvcInterfaces.TfvcChangesetSearchCriteria, onResult: (err: any, statusCode: number, Changeset: TfvcInterfaces.TfvcChangeset) => void): void;
-    getChangesets(project: string, maxChangeCount: number, includeDetails: boolean, includeWorkItems: boolean, maxCommentLength: number, includeSourceRename: boolean, skip: number, top: number, orderby: string, searchCriteria: TfvcInterfaces.TfvcChangesetSearchCriteria, onResult: (err: any, statusCode: number, Changesets: TfvcInterfaces.TfvcChangesetRef[]) => void): void;
+    getChangesets(project: string, maxChangeCount: number, includeDetails: boolean, includeWorkItems: boolean, maxCommentLength: number, includeSourceRename: boolean, skip: number, top: number, orderby: string, searchCriteria: TfvcInterfaces.TfvcChangesetSearchCriteria, onResult: (err: any, statusCode: number, Changeset: TfvcInterfaces.TfvcChangesetRef[]) => void): void;
     getBatchedChangesets(changesetsRequestData: TfvcInterfaces.TfvcChangesetsRequestData, onResult: (err: any, statusCode: number, ChangesetsBatch: TfvcInterfaces.TfvcChangesetRef[]) => void): void;
-    getChangesetWorkItems(id: number, onResult: (err: any, statusCode: number, ChangesetWorkItems: TfvcInterfaces.AssociatedWorkItem[]) => void): void;
+    getChangesetWorkItems(id: number, onResult: (err: any, statusCode: number, ChangesetWorkItem: TfvcInterfaces.AssociatedWorkItem[]) => void): void;
     getItemsBatch(itemRequestData: TfvcInterfaces.TfvcItemRequestData, project: string, onResult: (err: any, statusCode: number, ItemBatch: TfvcInterfaces.TfvcItem[][]) => void): void;
     getItem(path: string, project: string, fileName: string, download: boolean, scopePath: string, recursionLevel: TfvcInterfaces.VersionControlRecursionType, versionDescriptor: TfvcInterfaces.TfvcVersionDescriptor, onResult: (err: any, statusCode: number, Item: TfvcInterfaces.TfvcItem) => void): void;
     getItemContent(path: string, project: string, fileName: string, download: boolean, scopePath: string, recursionLevel: TfvcInterfaces.VersionControlRecursionType, versionDescriptor: TfvcInterfaces.TfvcVersionDescriptor, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
-    getItems(project: string, scopePath: string, recursionLevel: TfvcInterfaces.VersionControlRecursionType, includeLinks: boolean, versionDescriptor: TfvcInterfaces.TfvcVersionDescriptor, onResult: (err: any, statusCode: number, Items: TfvcInterfaces.TfvcItem[]) => void): void;
+    getItems(project: string, scopePath: string, recursionLevel: TfvcInterfaces.VersionControlRecursionType, includeLinks: boolean, versionDescriptor: TfvcInterfaces.TfvcVersionDescriptor, onResult: (err: any, statusCode: number, Item: TfvcInterfaces.TfvcItem[]) => void): void;
     getItemText(path: string, project: string, fileName: string, download: boolean, scopePath: string, recursionLevel: TfvcInterfaces.VersionControlRecursionType, versionDescriptor: TfvcInterfaces.TfvcVersionDescriptor, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     getItemZip(path: string, project: string, fileName: string, download: boolean, scopePath: string, recursionLevel: TfvcInterfaces.VersionControlRecursionType, versionDescriptor: TfvcInterfaces.TfvcVersionDescriptor, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
-    getLabelItems(labelId: string, top: number, skip: number, onResult: (err: any, statusCode: number, LabelItems: TfvcInterfaces.TfvcItem[]) => void): void;
+    getLabelItems(labelId: string, top: number, skip: number, onResult: (err: any, statusCode: number, LabelItem: TfvcInterfaces.TfvcItem[]) => void): void;
     getLabel(labelId: string, requestData: TfvcInterfaces.TfvcLabelRequestData, project: string, onResult: (err: any, statusCode: number, Label: TfvcInterfaces.TfvcLabel) => void): void;
-    getLabels(requestData: TfvcInterfaces.TfvcLabelRequestData, project: string, top: number, skip: number, onResult: (err: any, statusCode: number, Labels: TfvcInterfaces.TfvcLabelRef[]) => void): void;
+    getLabels(requestData: TfvcInterfaces.TfvcLabelRequestData, project: string, top: number, skip: number, onResult: (err: any, statusCode: number, Label: TfvcInterfaces.TfvcLabelRef[]) => void): void;
     getProjectInfo(projectId: string, project: string, onResult: (err: any, statusCode: number, ProjectInfo: TfvcInterfaces.VersionControlProjectInfo) => void): void;
     getProjectInfos(project: string, onResult: (err: any, statusCode: number, ProjectInfo: TfvcInterfaces.VersionControlProjectInfo[]) => void): void;
-    getShelvesetChanges(shelvesetId: string, top: number, skip: number, onResult: (err: any, statusCode: number, ShelvesetChanges: TfvcInterfaces.TfvcChange[]) => void): void;
+    getShelvesetChanges(shelvesetId: string, top: number, skip: number, onResult: (err: any, statusCode: number, ShelvesetChange: TfvcInterfaces.TfvcChange[]) => void): void;
     getShelveset(shelvesetId: string, requestData: TfvcInterfaces.TfvcShelvesetRequestData, onResult: (err: any, statusCode: number, Shelveset: TfvcInterfaces.TfvcShelveset) => void): void;
-    getShelvesets(requestData: TfvcInterfaces.TfvcShelvesetRequestData, top: number, skip: number, onResult: (err: any, statusCode: number, Shelvesets: TfvcInterfaces.TfvcShelvesetRef[]) => void): void;
-    getShelvesetWorkItems(shelvesetId: string, onResult: (err: any, statusCode: number, ShelvesetWorkItems: TfvcInterfaces.AssociatedWorkItem[]) => void): void;
+    getShelvesets(requestData: TfvcInterfaces.TfvcShelvesetRequestData, top: number, skip: number, onResult: (err: any, statusCode: number, Shelveset: TfvcInterfaces.TfvcShelvesetRef[]) => void): void;
+    getShelvesetWorkItems(shelvesetId: string, onResult: (err: any, statusCode: number, ShelvesetWorkItem: TfvcInterfaces.AssociatedWorkItem[]) => void): void;
 }
 
 export interface IQTfvcApi extends basem.QClientApiBase {
@@ -135,7 +135,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         includeChildren: boolean,
         includeDeleted: boolean,
         includeLinks: boolean,
-        onResult: (err: any, statusCode: number, Branches: TfvcInterfaces.TfvcBranch[]) => void
+        onResult: (err: any, statusCode: number, Branche: TfvcInterfaces.TfvcBranch[]) => void
         ): void {
 
         var routeValues: any = {
@@ -155,7 +155,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcBranch, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -176,7 +176,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         project: string,
         includeDeleted: boolean,
         includeLinks: boolean,
-        onResult: (err: any, statusCode: number, Branches: TfvcInterfaces.TfvcBranchRef[]) => void
+        onResult: (err: any, statusCode: number, Branche: TfvcInterfaces.TfvcBranchRef[]) => void
         ): void {
 
         var routeValues: any = {
@@ -195,7 +195,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcBranchRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -214,7 +214,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         id: number,
         skip: number,
         top: number,
-        onResult: (err: any, statusCode: number, ChangesetChanges: TfvcInterfaces.TfvcChange[]) => void
+        onResult: (err: any, statusCode: number, ChangesetChange: TfvcInterfaces.TfvcChange[]) => void
         ): void {
 
         var routeValues: any = {
@@ -232,7 +232,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChange, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -354,7 +354,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         top: number,
         orderby: string,
         searchCriteria: TfvcInterfaces.TfvcChangesetSearchCriteria,
-        onResult: (err: any, statusCode: number, Changesets: TfvcInterfaces.TfvcChangesetRef[]) => void
+        onResult: (err: any, statusCode: number, Changeset: TfvcInterfaces.TfvcChangesetRef[]) => void
         ): void {
 
         var routeValues: any = {
@@ -379,7 +379,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChangesetRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -417,7 +417,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
      */
     public getChangesetWorkItems(
         id: number,
-        onResult: (err: any, statusCode: number, ChangesetWorkItems: TfvcInterfaces.AssociatedWorkItem[]) => void
+        onResult: (err: any, statusCode: number, ChangesetWorkItem: TfvcInterfaces.AssociatedWorkItem[]) => void
         ): void {
 
         var routeValues: any = {
@@ -430,7 +430,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.AssociatedWorkItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -581,7 +581,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         recursionLevel: TfvcInterfaces.VersionControlRecursionType,
         includeLinks: boolean,
         versionDescriptor: TfvcInterfaces.TfvcVersionDescriptor,
-        onResult: (err: any, statusCode: number, Items: TfvcInterfaces.TfvcItem[]) => void
+        onResult: (err: any, statusCode: number, Item: TfvcInterfaces.TfvcItem[]) => void
         ): void {
 
         var routeValues: any = {
@@ -601,7 +601,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -718,7 +718,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         labelId: string,
         top: number,
         skip: number,
-        onResult: (err: any, statusCode: number, LabelItems: TfvcInterfaces.TfvcItem[]) => void
+        onResult: (err: any, statusCode: number, LabelItem: TfvcInterfaces.TfvcItem[]) => void
         ): void {
 
         var routeValues: any = {
@@ -736,7 +736,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -794,7 +794,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         project: string,
         top: number,
         skip: number,
-        onResult: (err: any, statusCode: number, Labels: TfvcInterfaces.TfvcLabelRef[]) => void
+        onResult: (err: any, statusCode: number, Label: TfvcInterfaces.TfvcLabelRef[]) => void
         ): void {
 
         var routeValues: any = {
@@ -813,7 +813,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcLabelRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -873,7 +873,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.VersionControlProjectInfo, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -892,7 +892,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         shelvesetId: string,
         top: number,
         skip: number,
-        onResult: (err: any, statusCode: number, ShelvesetChanges: TfvcInterfaces.TfvcChange[]) => void
+        onResult: (err: any, statusCode: number, ShelvesetChange: TfvcInterfaces.TfvcChange[]) => void
         ): void {
 
         var routeValues: any = {
@@ -910,7 +910,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChange, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -963,7 +963,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         requestData: TfvcInterfaces.TfvcShelvesetRequestData,
         top: number,
         skip: number,
-        onResult: (err: any, statusCode: number, Shelvesets: TfvcInterfaces.TfvcShelvesetRef[]) => void
+        onResult: (err: any, statusCode: number, Shelveset: TfvcInterfaces.TfvcShelvesetRef[]) => void
         ): void {
 
         var routeValues: any = {
@@ -981,7 +981,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcShelvesetRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -996,7 +996,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
      */
     public getShelvesetWorkItems(
         shelvesetId: string,
-        onResult: (err: any, statusCode: number, ShelvesetWorkItems: TfvcInterfaces.AssociatedWorkItem[]) => void
+        onResult: (err: any, statusCode: number, ShelvesetWorkItem: TfvcInterfaces.AssociatedWorkItem[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1012,7 +1012,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.AssociatedWorkItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1079,13 +1079,13 @@ export class QTfvcApi extends basem.QClientApiBase implements IQTfvcApi {
     
         var deferred = Q.defer<TfvcInterfaces.TfvcBranch[]>();
 
-        this.api.getBranches(project, includeParent, includeChildren, includeDeleted, includeLinks, (err: any, statusCode: number, Branches: TfvcInterfaces.TfvcBranch[]) => {
+        this.api.getBranches(project, includeParent, includeChildren, includeDeleted, includeLinks, (err: any, statusCode: number, Branche: TfvcInterfaces.TfvcBranch[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(Branches);
+                deferred.resolve(Branche);
             }
         });
 
@@ -1109,13 +1109,13 @@ export class QTfvcApi extends basem.QClientApiBase implements IQTfvcApi {
     
         var deferred = Q.defer<TfvcInterfaces.TfvcBranchRef[]>();
 
-        this.api.getBranchRefs(scopePath, project, includeDeleted, includeLinks, (err: any, statusCode: number, Branches: TfvcInterfaces.TfvcBranchRef[]) => {
+        this.api.getBranchRefs(scopePath, project, includeDeleted, includeLinks, (err: any, statusCode: number, Branche: TfvcInterfaces.TfvcBranchRef[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(Branches);
+                deferred.resolve(Branche);
             }
         });
 
@@ -1137,13 +1137,13 @@ export class QTfvcApi extends basem.QClientApiBase implements IQTfvcApi {
     
         var deferred = Q.defer<TfvcInterfaces.TfvcChange[]>();
 
-        this.api.getChangesetChanges(id, skip, top, (err: any, statusCode: number, ChangesetChanges: TfvcInterfaces.TfvcChange[]) => {
+        this.api.getChangesetChanges(id, skip, top, (err: any, statusCode: number, ChangesetChange: TfvcInterfaces.TfvcChange[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(ChangesetChanges);
+                deferred.resolve(ChangesetChange);
             }
         });
 
@@ -1247,13 +1247,13 @@ export class QTfvcApi extends basem.QClientApiBase implements IQTfvcApi {
     
         var deferred = Q.defer<TfvcInterfaces.TfvcChangesetRef[]>();
 
-        this.api.getChangesets(project, maxChangeCount, includeDetails, includeWorkItems, maxCommentLength, includeSourceRename, skip, top, orderby, searchCriteria, (err: any, statusCode: number, Changesets: TfvcInterfaces.TfvcChangesetRef[]) => {
+        this.api.getChangesets(project, maxChangeCount, includeDetails, includeWorkItems, maxCommentLength, includeSourceRename, skip, top, orderby, searchCriteria, (err: any, statusCode: number, Changeset: TfvcInterfaces.TfvcChangesetRef[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(Changesets);
+                deferred.resolve(Changeset);
             }
         });
 
@@ -1291,13 +1291,13 @@ export class QTfvcApi extends basem.QClientApiBase implements IQTfvcApi {
     
         var deferred = Q.defer<TfvcInterfaces.AssociatedWorkItem[]>();
 
-        this.api.getChangesetWorkItems(id, (err: any, statusCode: number, ChangesetWorkItems: TfvcInterfaces.AssociatedWorkItem[]) => {
+        this.api.getChangesetWorkItems(id, (err: any, statusCode: number, ChangesetWorkItem: TfvcInterfaces.AssociatedWorkItem[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(ChangesetWorkItems);
+                deferred.resolve(ChangesetWorkItem);
             }
         });
 
@@ -1385,13 +1385,13 @@ export class QTfvcApi extends basem.QClientApiBase implements IQTfvcApi {
     
         var deferred = Q.defer<TfvcInterfaces.TfvcItem[]>();
 
-        this.api.getItems(project, scopePath, recursionLevel, includeLinks, versionDescriptor, (err: any, statusCode: number, Items: TfvcInterfaces.TfvcItem[]) => {
+        this.api.getItems(project, scopePath, recursionLevel, includeLinks, versionDescriptor, (err: any, statusCode: number, Item: TfvcInterfaces.TfvcItem[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(Items);
+                deferred.resolve(Item);
             }
         });
 
@@ -1413,13 +1413,13 @@ export class QTfvcApi extends basem.QClientApiBase implements IQTfvcApi {
     
         var deferred = Q.defer<TfvcInterfaces.TfvcItem[]>();
 
-        this.api.getLabelItems(labelId, top, skip, (err: any, statusCode: number, LabelItems: TfvcInterfaces.TfvcItem[]) => {
+        this.api.getLabelItems(labelId, top, skip, (err: any, statusCode: number, LabelItem: TfvcInterfaces.TfvcItem[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(LabelItems);
+                deferred.resolve(LabelItem);
             }
         });
 
@@ -1471,13 +1471,13 @@ export class QTfvcApi extends basem.QClientApiBase implements IQTfvcApi {
     
         var deferred = Q.defer<TfvcInterfaces.TfvcLabelRef[]>();
 
-        this.api.getLabels(requestData, project, top, skip, (err: any, statusCode: number, Labels: TfvcInterfaces.TfvcLabelRef[]) => {
+        this.api.getLabels(requestData, project, top, skip, (err: any, statusCode: number, Label: TfvcInterfaces.TfvcLabelRef[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(Labels);
+                deferred.resolve(Label);
             }
         });
 
@@ -1547,13 +1547,13 @@ export class QTfvcApi extends basem.QClientApiBase implements IQTfvcApi {
     
         var deferred = Q.defer<TfvcInterfaces.TfvcChange[]>();
 
-        this.api.getShelvesetChanges(shelvesetId, top, skip, (err: any, statusCode: number, ShelvesetChanges: TfvcInterfaces.TfvcChange[]) => {
+        this.api.getShelvesetChanges(shelvesetId, top, skip, (err: any, statusCode: number, ShelvesetChange: TfvcInterfaces.TfvcChange[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(ShelvesetChanges);
+                deferred.resolve(ShelvesetChange);
             }
         });
 
@@ -1601,13 +1601,13 @@ export class QTfvcApi extends basem.QClientApiBase implements IQTfvcApi {
     
         var deferred = Q.defer<TfvcInterfaces.TfvcShelvesetRef[]>();
 
-        this.api.getShelvesets(requestData, top, skip, (err: any, statusCode: number, Shelvesets: TfvcInterfaces.TfvcShelvesetRef[]) => {
+        this.api.getShelvesets(requestData, top, skip, (err: any, statusCode: number, Shelveset: TfvcInterfaces.TfvcShelvesetRef[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(Shelvesets);
+                deferred.resolve(Shelveset);
             }
         });
 
@@ -1625,13 +1625,13 @@ export class QTfvcApi extends basem.QClientApiBase implements IQTfvcApi {
     
         var deferred = Q.defer<TfvcInterfaces.AssociatedWorkItem[]>();
 
-        this.api.getShelvesetWorkItems(shelvesetId, (err: any, statusCode: number, ShelvesetWorkItems: TfvcInterfaces.AssociatedWorkItem[]) => {
+        this.api.getShelvesetWorkItems(shelvesetId, (err: any, statusCode: number, ShelvesetWorkItem: TfvcInterfaces.AssociatedWorkItem[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(ShelvesetWorkItems);
+                deferred.resolve(ShelvesetWorkItem);
             }
         });
 

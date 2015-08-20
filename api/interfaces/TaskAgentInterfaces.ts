@@ -311,6 +311,9 @@ export interface TaskAttachment {
     type: string;
 }
 
+export interface TaskChangeEvent {
+}
+
 export interface TaskDefinition {
     agentExecution: TaskExecution;
     author: string;
@@ -731,6 +734,9 @@ export var TypeInfo = {
     TaskAttachment: {
         fields: <any>null
     },
+    TaskChangeEvent: {
+        fields: <any>null
+    },
     TaskDefinition: {
         fields: <any>null
     },
@@ -1028,6 +1034,9 @@ TypeInfo.TaskAttachment.fields = {
     lastChangedOn: {
         isDate: true,
     },
+};
+
+TypeInfo.TaskChangeEvent.fields = {
 };
 
 TypeInfo.TaskDefinition.fields = {

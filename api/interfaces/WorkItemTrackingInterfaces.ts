@@ -149,6 +149,7 @@ export interface ReportingWorkItemRevisionsBatch extends StreamedBatch<WorkItem>
 
 export interface ReportingWorkItemRevisionsFilter {
     fields: string[];
+    includeIdentityRef: boolean;
     types: string[];
 }
 

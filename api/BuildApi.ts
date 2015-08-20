@@ -26,45 +26,45 @@ export interface IBuildApi extends basem.ClientApiBase {
     createArtifact(artifact: BuildInterfaces.BuildArtifact, buildId: number, project: string, onResult: (err: any, statusCode: number, artifact: BuildInterfaces.BuildArtifact) => void): void;
     getArtifact(buildId: number, artifactName: string, project: string, onResult: (err: any, statusCode: number, artifact: BuildInterfaces.BuildArtifact) => void): void;
     getArtifactContentZip(buildId: number, artifactName: string, project: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
-    getArtifacts(buildId: number, project: string, onResult: (err: any, statusCode: number, artifacts: BuildInterfaces.BuildArtifact[]) => void): void;
+    getArtifacts(buildId: number, project: string, onResult: (err: any, statusCode: number, artifact: BuildInterfaces.BuildArtifact[]) => void): void;
     getBadge(project: string, definitionId: number, branchName: string, onResult: (err: any, statusCode: number, badge: string) => void): void;
     deleteBuild(buildId: number, project: string, onResult: (err: any, statusCode: number) => void): void;
     getBuild(buildId: number, project: string, propertyFilters: string, onResult: (err: any, statusCode: number, build: BuildInterfaces.Build) => void): void;
-    getBuilds(project: string, definitions: number[], queues: number[], buildNumber: string, minFinishTime: Date, maxFinishTime: Date, requestedFor: string, reasonFilter: BuildInterfaces.BuildReason, statusFilter: BuildInterfaces.BuildStatus, resultFilter: BuildInterfaces.BuildResult, tagFilters: string[], properties: string[], type: BuildInterfaces.DefinitionType, top: number, continuationToken: string, maxBuildsPerDefinition: number, deletedFilter: BuildInterfaces.QueryDeletedOption, queryOrder: BuildInterfaces.BuildQueryOrder, onResult: (err: any, statusCode: number, builds: BuildInterfaces.Build[]) => void): void;
+    getBuilds(project: string, definitions: number[], queues: number[], buildNumber: string, minFinishTime: Date, maxFinishTime: Date, requestedFor: string, reasonFilter: BuildInterfaces.BuildReason, statusFilter: BuildInterfaces.BuildStatus, resultFilter: BuildInterfaces.BuildResult, tagFilters: string[], properties: string[], type: BuildInterfaces.DefinitionType, top: number, continuationToken: string, maxBuildsPerDefinition: number, deletedFilter: BuildInterfaces.QueryDeletedOption, queryOrder: BuildInterfaces.BuildQueryOrder, onResult: (err: any, statusCode: number, build: BuildInterfaces.Build[]) => void): void;
     queueBuild(build: BuildInterfaces.Build, project: string, ignoreWarnings: boolean, onResult: (err: any, statusCode: number, build: BuildInterfaces.Build) => void): void;
     updateBuild(build: BuildInterfaces.Build, buildId: number, project: string, onResult: (err: any, statusCode: number, build: BuildInterfaces.Build) => void): void;
-    getBuildCommits(project: string, buildId: number, top: number, onResult: (err: any, statusCode: number, changes: BuildInterfaces.Change[]) => void): void;
+    getBuildCommits(project: string, buildId: number, top: number, onResult: (err: any, statusCode: number, change: BuildInterfaces.Change[]) => void): void;
     getBuildController(controllerId: number, onResult: (err: any, statusCode: number, Controller: BuildInterfaces.BuildController) => void): void;
-    getBuildControllers(name: string, onResult: (err: any, statusCode: number, Controllers: BuildInterfaces.BuildController[]) => void): void;
+    getBuildControllers(name: string, onResult: (err: any, statusCode: number, Controller: BuildInterfaces.BuildController[]) => void): void;
     createDefinition(definition: BuildInterfaces.BuildDefinition, project: string, definitionToCloneId: number, definitionToCloneRevision: number, onResult: (err: any, statusCode: number, definition: BuildInterfaces.BuildDefinition) => void): void;
     deleteDefinition(definitionId: number, project: string, onResult: (err: any, statusCode: number) => void): void;
     getDefinition(definitionId: number, project: string, revision: number, propertyFilters: string[], onResult: (err: any, statusCode: number, definition: BuildInterfaces.DefinitionReference) => void): void;
-    getDefinitions(project: string, name: string, type: BuildInterfaces.DefinitionType, onResult: (err: any, statusCode: number, definitions: BuildInterfaces.DefinitionReference[]) => void): void;
+    getDefinitions(project: string, name: string, type: BuildInterfaces.DefinitionType, onResult: (err: any, statusCode: number, definition: BuildInterfaces.DefinitionReference[]) => void): void;
     updateDefinition(definition: BuildInterfaces.BuildDefinition, definitionId: number, project: string, secretsSourceDefinitionId: number, secretsSourceDefinitionRevision: number, onResult: (err: any, statusCode: number, definition: BuildInterfaces.BuildDefinition) => void): void;
-    getBuildDeployments(project: string, buildId: number, onResult: (err: any, statusCode: number, deployments: BuildInterfaces.Deployment[]) => void): void;
+    getBuildDeployments(project: string, buildId: number, onResult: (err: any, statusCode: number, deployment: BuildInterfaces.Deployment[]) => void): void;
     getBuildLog(project: string, buildId: number, logId: number, startLine: number, endLine: number, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
-    getBuildLogs(project: string, buildId: number, onResult: (err: any, statusCode: number, logs: BuildInterfaces.BuildLog[]) => void): void;
+    getBuildLogs(project: string, buildId: number, onResult: (err: any, statusCode: number, log: BuildInterfaces.BuildLog[]) => void): void;
     getBuildLogsZip(project: string, buildId: number, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
-    getBuildOptionDefinitions(onResult: (err: any, statusCode: number, options: BuildInterfaces.BuildOptionDefinition[]) => void): void;
+    getBuildOptionDefinitions(onResult: (err: any, statusCode: number, option: BuildInterfaces.BuildOptionDefinition[]) => void): void;
     createQueue(queue: BuildInterfaces.AgentPoolQueue, onResult: (err: any, statusCode: number, queue: BuildInterfaces.AgentPoolQueue) => void): void;
     deleteQueue(id: number, onResult: (err: any, statusCode: number) => void): void;
     getAgentPoolQueue(controllerId: number, onResult: (err: any, statusCode: number, queue: BuildInterfaces.AgentPoolQueue) => void): void;
-    getQueues(name: string, onResult: (err: any, statusCode: number, queues: BuildInterfaces.AgentPoolQueue[]) => void): void;
-    getDefinitionRevisions(project: string, definitionId: number, onResult: (err: any, statusCode: number, revisions: BuildInterfaces.BuildDefinitionRevision[]) => void): void;
+    getQueues(name: string, onResult: (err: any, statusCode: number, queue: BuildInterfaces.AgentPoolQueue[]) => void): void;
+    getDefinitionRevisions(project: string, definitionId: number, onResult: (err: any, statusCode: number, revision: BuildInterfaces.BuildDefinitionRevision[]) => void): void;
     getBuildSettings(onResult: (err: any, statusCode: number, setting: BuildInterfaces.BuildSettings) => void): void;
     updateBuildSettings(settings: BuildInterfaces.BuildSettings, onResult: (err: any, statusCode: number, setting: BuildInterfaces.BuildSettings) => void): void;
-    addBuildTag(project: string, buildId: number, tag: string, onResult: (err: any, statusCode: number, tags: string[]) => void): void;
-    addBuildTags(tags: string[], project: string, buildId: number, onResult: (err: any, statusCode: number, tags: string[]) => void): void;
-    deleteBuildTag(project: string, buildId: number, tag: string, onResult: (err: any, statusCode: number, tags: string[]) => void): void;
-    getBuildTags(project: string, buildId: number, onResult: (err: any, statusCode: number, tags: string[]) => void): void;
-    getTags(project: string, onResult: (err: any, statusCode: number, tags: string[]) => void): void;
+    addBuildTag(project: string, buildId: number, tag: string, onResult: (err: any, statusCode: number, tag: string[]) => void): void;
+    addBuildTags(tags: string[], project: string, buildId: number, onResult: (err: any, statusCode: number, tag: string[]) => void): void;
+    deleteBuildTag(project: string, buildId: number, tag: string, onResult: (err: any, statusCode: number, tag: string[]) => void): void;
+    getBuildTags(project: string, buildId: number, onResult: (err: any, statusCode: number, tag: string[]) => void): void;
+    getTags(project: string, onResult: (err: any, statusCode: number, tag: string[]) => void): void;
     deleteTemplate(project: string, templateId: string, onResult: (err: any, statusCode: number) => void): void;
     getTemplate(project: string, templateId: string, onResult: (err: any, statusCode: number, template: BuildInterfaces.BuildDefinitionTemplate) => void): void;
-    getTemplates(project: string, onResult: (err: any, statusCode: number, templates: BuildInterfaces.BuildDefinitionTemplate[]) => void): void;
+    getTemplates(project: string, onResult: (err: any, statusCode: number, template: BuildInterfaces.BuildDefinitionTemplate[]) => void): void;
     saveTemplate(template: BuildInterfaces.BuildDefinitionTemplate, project: string, templateId: string, onResult: (err: any, statusCode: number, template: BuildInterfaces.BuildDefinitionTemplate) => void): void;
     getBuildTimeline(project: string, buildId: number, timelineId: string, changeId: number, onResult: (err: any, statusCode: number, Timeline: BuildInterfaces.Timeline) => void): void;
-    getBuildWorkItemsRefs(project: string, buildId: number, top: number, onResult: (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => void): void;
-    getBuildWorkItemsRefsFromCommits(commitIds: string[], project: string, buildId: number, top: number, onResult: (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => void): void;
+    getBuildWorkItemsRefs(project: string, buildId: number, top: number, onResult: (err: any, statusCode: number, workitem: VSSInterfaces.ResourceRef[]) => void): void;
+    getBuildWorkItemsRefsFromCommits(commitIds: string[], project: string, buildId: number, top: number, onResult: (err: any, statusCode: number, workitem: VSSInterfaces.ResourceRef[]) => void): void;
 }
 
 export interface IQBuildApi extends basem.QClientApiBase {
@@ -229,7 +229,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     public getArtifacts(
         buildId: number,
         project: string,
-        onResult: (err: any, statusCode: number, artifacts: BuildInterfaces.BuildArtifact[]) => void
+        onResult: (err: any, statusCode: number, artifact: BuildInterfaces.BuildArtifact[]) => void
         ): void {
 
         var routeValues: any = {
@@ -243,7 +243,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildArtifact, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -395,7 +395,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         maxBuildsPerDefinition: number,
         deletedFilter: BuildInterfaces.QueryDeletedOption,
         queryOrder: BuildInterfaces.BuildQueryOrder,
-        onResult: (err: any, statusCode: number, builds: BuildInterfaces.Build[]) => void
+        onResult: (err: any, statusCode: number, build: BuildInterfaces.Build[]) => void
         ): void {
 
         var routeValues: any = {
@@ -428,7 +428,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -516,7 +516,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         project: string,
         buildId: number,
         top: number,
-        onResult: (err: any, statusCode: number, changes: BuildInterfaces.Change[]) => void
+        onResult: (err: any, statusCode: number, change: BuildInterfaces.Change[]) => void
         ): void {
 
         var routeValues: any = {
@@ -534,7 +534,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Change, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -577,7 +577,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
      */
     public getBuildControllers(
         name: string,
-        onResult: (err: any, statusCode: number, Controllers: BuildInterfaces.BuildController[]) => void
+        onResult: (err: any, statusCode: number, Controller: BuildInterfaces.BuildController[]) => void
         ): void {
 
         var routeValues: any = {
@@ -593,7 +593,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildController, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -722,7 +722,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         project: string,
         name: string,
         type: BuildInterfaces.DefinitionType,
-        onResult: (err: any, statusCode: number, definitions: BuildInterfaces.DefinitionReference[]) => void
+        onResult: (err: any, statusCode: number, definition: BuildInterfaces.DefinitionReference[]) => void
         ): void {
 
         var routeValues: any = {
@@ -740,7 +740,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.DefinitionReference, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -799,7 +799,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     public getBuildDeployments(
         project: string,
         buildId: number,
-        onResult: (err: any, statusCode: number, deployments: BuildInterfaces.Deployment[]) => void
+        onResult: (err: any, statusCode: number, deployment: BuildInterfaces.Deployment[]) => void
         ): void {
 
         var routeValues: any = {
@@ -813,7 +813,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Deployment, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -873,7 +873,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     public getBuildLogs(
         project: string,
         buildId: number,
-        onResult: (err: any, statusCode: number, logs: BuildInterfaces.BuildLog[]) => void
+        onResult: (err: any, statusCode: number, log: BuildInterfaces.BuildLog[]) => void
         ): void {
 
         var routeValues: any = {
@@ -887,7 +887,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildLog, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -929,7 +929,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
      * @param onResult callback function with the resulting BuildInterfaces.BuildOptionDefinition[]
      */
     public getBuildOptionDefinitions(
-        onResult: (err: any, statusCode: number, options: BuildInterfaces.BuildOptionDefinition[]) => void
+        onResult: (err: any, statusCode: number, option: BuildInterfaces.BuildOptionDefinition[]) => void
         ): void {
 
         var routeValues: any = {
@@ -941,7 +941,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildOptionDefinition, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1042,7 +1042,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
      */
     public getQueues(
         name: string,
-        onResult: (err: any, statusCode: number, queues: BuildInterfaces.AgentPoolQueue[]) => void
+        onResult: (err: any, statusCode: number, queue: BuildInterfaces.AgentPoolQueue[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1058,7 +1058,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.AgentPoolQueue, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1075,7 +1075,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     public getDefinitionRevisions(
         project: string,
         definitionId: number,
-        onResult: (err: any, statusCode: number, revisions: BuildInterfaces.BuildDefinitionRevision[]) => void
+        onResult: (err: any, statusCode: number, revision: BuildInterfaces.BuildDefinitionRevision[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1089,7 +1089,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionRevision, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1158,7 +1158,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         project: string,
         buildId: number,
         tag: string,
-        onResult: (err: any, statusCode: number, tags: string[]) => void
+        onResult: (err: any, statusCode: number, tag: string[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1192,7 +1192,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         tags: string[],
         project: string,
         buildId: number,
-        onResult: (err: any, statusCode: number, tags: string[]) => void
+        onResult: (err: any, statusCode: number, tag: string[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1206,7 +1206,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: true };
             
-            this.restClient.createJsonWrappedArray(url, apiVersion, tags, null, serializationData, onResult);
+            this.restClient.create(url, apiVersion, tags, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1225,7 +1225,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         project: string,
         buildId: number,
         tag: string,
-        onResult: (err: any, statusCode: number, tags: string[]) => void
+        onResult: (err: any, statusCode: number, tag: string[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1257,7 +1257,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     public getBuildTags(
         project: string,
         buildId: number,
-        onResult: (err: any, statusCode: number, tags: string[]) => void
+        onResult: (err: any, statusCode: number, tag: string[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1271,7 +1271,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1284,7 +1284,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
      */
     public getTags(
         project: string,
-        onResult: (err: any, statusCode: number, tags: string[]) => void
+        onResult: (err: any, statusCode: number, tag: string[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1297,7 +1297,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1372,7 +1372,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
      */
     public getTemplates(
         project: string,
-        onResult: (err: any, statusCode: number, templates: BuildInterfaces.BuildDefinitionTemplate[]) => void
+        onResult: (err: any, statusCode: number, template: BuildInterfaces.BuildDefinitionTemplate[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1385,7 +1385,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionTemplate, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1477,7 +1477,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         project: string,
         buildId: number,
         top: number,
-        onResult: (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => void
+        onResult: (err: any, statusCode: number, workitem: VSSInterfaces.ResourceRef[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1495,7 +1495,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: VSSInterfaces.TypeInfo.ResourceRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1516,7 +1516,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         project: string,
         buildId: number,
         top: number,
-        onResult: (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => void
+        onResult: (err: any, statusCode: number, workitem: VSSInterfaces.ResourceRef[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1534,7 +1534,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: VSSInterfaces.TypeInfo.ResourceRef, responseIsCollection: true };
             
-            this.restClient.createJsonWrappedArray(url, apiVersion, commitIds, null, serializationData, onResult);
+            this.restClient.create(url, apiVersion, commitIds, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1621,13 +1621,13 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.BuildArtifact[]>();
 
-        this.api.getArtifacts(buildId, project, (err: any, statusCode: number, artifacts: BuildInterfaces.BuildArtifact[]) => {
+        this.api.getArtifacts(buildId, project, (err: any, statusCode: number, artifact: BuildInterfaces.BuildArtifact[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(artifacts);
+                deferred.resolve(artifact);
             }
         });
 
@@ -1733,13 +1733,13 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.Build[]>();
 
-        this.api.getBuilds(project, definitions, queues, buildNumber, minFinishTime, maxFinishTime, requestedFor, reasonFilter, statusFilter, resultFilter, tagFilters, properties, type, top, continuationToken, maxBuildsPerDefinition, deletedFilter, queryOrder, (err: any, statusCode: number, builds: BuildInterfaces.Build[]) => {
+        this.api.getBuilds(project, definitions, queues, buildNumber, minFinishTime, maxFinishTime, requestedFor, reasonFilter, statusFilter, resultFilter, tagFilters, properties, type, top, continuationToken, maxBuildsPerDefinition, deletedFilter, queryOrder, (err: any, statusCode: number, build: BuildInterfaces.Build[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(builds);
+                deferred.resolve(build);
             }
         });
 
@@ -1817,13 +1817,13 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.Change[]>();
 
-        this.api.getBuildCommits(project, buildId, top, (err: any, statusCode: number, changes: BuildInterfaces.Change[]) => {
+        this.api.getBuildCommits(project, buildId, top, (err: any, statusCode: number, change: BuildInterfaces.Change[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(changes);
+                deferred.resolve(change);
             }
         });
 
@@ -1865,13 +1865,13 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.BuildController[]>();
 
-        this.api.getBuildControllers(name, (err: any, statusCode: number, Controllers: BuildInterfaces.BuildController[]) => {
+        this.api.getBuildControllers(name, (err: any, statusCode: number, Controller: BuildInterfaces.BuildController[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(Controllers);
+                deferred.resolve(Controller);
             }
         });
 
@@ -1953,13 +1953,13 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.DefinitionReference[]>();
 
-        this.api.getDefinitions(project, name, type, (err: any, statusCode: number, definitions: BuildInterfaces.DefinitionReference[]) => {
+        this.api.getDefinitions(project, name, type, (err: any, statusCode: number, definition: BuildInterfaces.DefinitionReference[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(definitions);
+                deferred.resolve(definition);
             }
         });
 
@@ -2011,13 +2011,13 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.Deployment[]>();
 
-        this.api.getBuildDeployments(project, buildId, (err: any, statusCode: number, deployments: BuildInterfaces.Deployment[]) => {
+        this.api.getBuildDeployments(project, buildId, (err: any, statusCode: number, deployment: BuildInterfaces.Deployment[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(deployments);
+                deferred.resolve(deployment);
             }
         });
 
@@ -2037,13 +2037,13 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.BuildLog[]>();
 
-        this.api.getBuildLogs(project, buildId, (err: any, statusCode: number, logs: BuildInterfaces.BuildLog[]) => {
+        this.api.getBuildLogs(project, buildId, (err: any, statusCode: number, log: BuildInterfaces.BuildLog[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(logs);
+                deferred.resolve(log);
             }
         });
 
@@ -2057,13 +2057,13 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.BuildOptionDefinition[]>();
 
-        this.api.getBuildOptionDefinitions((err: any, statusCode: number, options: BuildInterfaces.BuildOptionDefinition[]) => {
+        this.api.getBuildOptionDefinitions((err: any, statusCode: number, option: BuildInterfaces.BuildOptionDefinition[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(options);
+                deferred.resolve(option);
             }
         });
 
@@ -2129,13 +2129,13 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.AgentPoolQueue[]>();
 
-        this.api.getQueues(name, (err: any, statusCode: number, queues: BuildInterfaces.AgentPoolQueue[]) => {
+        this.api.getQueues(name, (err: any, statusCode: number, queue: BuildInterfaces.AgentPoolQueue[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(queues);
+                deferred.resolve(queue);
             }
         });
 
@@ -2155,13 +2155,13 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.BuildDefinitionRevision[]>();
 
-        this.api.getDefinitionRevisions(project, definitionId, (err: any, statusCode: number, revisions: BuildInterfaces.BuildDefinitionRevision[]) => {
+        this.api.getDefinitionRevisions(project, definitionId, (err: any, statusCode: number, revision: BuildInterfaces.BuildDefinitionRevision[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(revisions);
+                deferred.resolve(revision);
             }
         });
 
@@ -2227,13 +2227,13 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     
         var deferred = Q.defer<string[]>();
 
-        this.api.addBuildTag(project, buildId, tag, (err: any, statusCode: number, tags: string[]) => {
+        this.api.addBuildTag(project, buildId, tag, (err: any, statusCode: number, tag: string[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(tags);
+                deferred.resolve(tag);
             }
         });
 
@@ -2255,13 +2255,13 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     
         var deferred = Q.defer<string[]>();
 
-        this.api.addBuildTags(tags, project, buildId, (err: any, statusCode: number, tags: string[]) => {
+        this.api.addBuildTags(tags, project, buildId, (err: any, statusCode: number, tag: string[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(tags);
+                deferred.resolve(tag);
             }
         });
 
@@ -2283,13 +2283,13 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     
         var deferred = Q.defer<string[]>();
 
-        this.api.deleteBuildTag(project, buildId, tag, (err: any, statusCode: number, tags: string[]) => {
+        this.api.deleteBuildTag(project, buildId, tag, (err: any, statusCode: number, tag: string[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(tags);
+                deferred.resolve(tag);
             }
         });
 
@@ -2309,13 +2309,13 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     
         var deferred = Q.defer<string[]>();
 
-        this.api.getBuildTags(project, buildId, (err: any, statusCode: number, tags: string[]) => {
+        this.api.getBuildTags(project, buildId, (err: any, statusCode: number, tag: string[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(tags);
+                deferred.resolve(tag);
             }
         });
 
@@ -2331,13 +2331,13 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     
         var deferred = Q.defer<string[]>();
 
-        this.api.getTags(project, (err: any, statusCode: number, tags: string[]) => {
+        this.api.getTags(project, (err: any, statusCode: number, tag: string[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(tags);
+                deferred.resolve(tag);
             }
         });
 
@@ -2379,13 +2379,13 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     
         var deferred = Q.defer<BuildInterfaces.BuildDefinitionTemplate[]>();
 
-        this.api.getTemplates(project, (err: any, statusCode: number, templates: BuildInterfaces.BuildDefinitionTemplate[]) => {
+        this.api.getTemplates(project, (err: any, statusCode: number, template: BuildInterfaces.BuildDefinitionTemplate[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(templates);
+                deferred.resolve(template);
             }
         });
 
@@ -2465,13 +2465,13 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     
         var deferred = Q.defer<VSSInterfaces.ResourceRef[]>();
 
-        this.api.getBuildWorkItemsRefs(project, buildId, top, (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => {
+        this.api.getBuildWorkItemsRefs(project, buildId, top, (err: any, statusCode: number, workitem: VSSInterfaces.ResourceRef[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(workitems);
+                deferred.resolve(workitem);
             }
         });
 
@@ -2495,13 +2495,13 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     
         var deferred = Q.defer<VSSInterfaces.ResourceRef[]>();
 
-        this.api.getBuildWorkItemsRefsFromCommits(commitIds, project, buildId, top, (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => {
+        this.api.getBuildWorkItemsRefsFromCommits(commitIds, project, buildId, top, (err: any, statusCode: number, workitem: VSSInterfaces.ResourceRef[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(workitems);
+                deferred.resolve(workitem);
             }
         });
 

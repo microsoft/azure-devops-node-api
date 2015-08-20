@@ -27,21 +27,21 @@ import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 export interface ICoreApi extends basem.ClientApiBase {
     createConnectedService(connectedServiceCreationData: CoreInterfaces.WebApiConnectedServiceDetails, projectId: string, onResult: (err: any, statusCode: number, connectedService: CoreInterfaces.WebApiConnectedService) => void): void;
     getConnectedServiceDetails(projectId: string, name: string, onResult: (err: any, statusCode: number, connectedService: CoreInterfaces.WebApiConnectedServiceDetails) => void): void;
-    getConnectedServices(projectId: string, kind: CoreInterfaces.ConnectedServiceKind, onResult: (err: any, statusCode: number, connectedServices: CoreInterfaces.WebApiConnectedService[]) => void): void;
+    getConnectedServices(projectId: string, kind: CoreInterfaces.ConnectedServiceKind, onResult: (err: any, statusCode: number, connectedService: CoreInterfaces.WebApiConnectedService[]) => void): void;
     createIdentityMru(mruData: CoreInterfaces.IdentityData, mruName: string, onResult: (err: any, statusCode: number) => void): void;
     deleteIdentityMru(mruData: CoreInterfaces.IdentityData, mruName: string, onResult: (err: any, statusCode: number) => void): void;
     getIdentityMru(mruName: string, onResult: (err: any, statusCode: number, identityMru: VSSInterfaces.IdentityRef[]) => void): void;
     updateIdentityMru(mruData: CoreInterfaces.IdentityData, mruName: string, onResult: (err: any, statusCode: number) => void): void;
-    getTeamMembers(projectId: string, teamId: string, top: number, skip: number, onResult: (err: any, statusCode: number, members: VSSInterfaces.IdentityRef[]) => void): void;
+    getTeamMembers(projectId: string, teamId: string, top: number, skip: number, onResult: (err: any, statusCode: number, member: VSSInterfaces.IdentityRef[]) => void): void;
     getProjectCollection(collectionId: string, onResult: (err: any, statusCode: number, projectCollection: CoreInterfaces.TeamProjectCollection) => void): void;
-    getProjectCollections(top: number, skip: number, onResult: (err: any, statusCode: number, projectCollections: CoreInterfaces.TeamProjectCollectionReference[]) => void): void;
+    getProjectCollections(top: number, skip: number, onResult: (err: any, statusCode: number, projectCollection: CoreInterfaces.TeamProjectCollectionReference[]) => void): void;
     getProjectHistory(minRevision: number, onResult: (err: any, statusCode: number, projectHistory: CoreInterfaces.TeamProjectReference[]) => void): void;
     getProject(projectId: string, includeCapabilities: boolean, includeHistory: boolean, onResult: (err: any, statusCode: number, project: CoreInterfaces.TeamProject) => void): void;
-    getProjects(stateFilter: any, top: number, skip: number, onResult: (err: any, statusCode: number, projects: CoreInterfaces.TeamProjectReference[]) => void): void;
+    getProjects(stateFilter: any, top: number, skip: number, onResult: (err: any, statusCode: number, project: CoreInterfaces.TeamProjectReference[]) => void): void;
     queueCreateProject(projectToCreate: CoreInterfaces.TeamProject, onResult: (err: any, statusCode: number, project: OperationsInterfaces.OperationReference) => void): void;
     queueDeleteProject(projectId: string, onResult: (err: any, statusCode: number, project: OperationsInterfaces.OperationReference) => void): void;
     updateProject(projectUpdate: CoreInterfaces.TeamProject, projectId: string, onResult: (err: any, statusCode: number, project: OperationsInterfaces.OperationReference) => void): void;
-    getProxies(proxyUrl: string, onResult: (err: any, statusCode: number, proxies: CoreInterfaces.Proxy[]) => void): void;
+    getProxies(proxyUrl: string, onResult: (err: any, statusCode: number, proxie: CoreInterfaces.Proxy[]) => void): void;
     getTeams(projectId: string, teamId: string, top: number, skip: number, onResult: (err: any, statusCode: number, team: CoreInterfaces.WebApiTeam) => void): void;
 }
 
@@ -135,7 +135,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     public getConnectedServices(
         projectId: string,
         kind: CoreInterfaces.ConnectedServiceKind,
-        onResult: (err: any, statusCode: number, connectedServices: CoreInterfaces.WebApiConnectedService[]) => void
+        onResult: (err: any, statusCode: number, connectedService: CoreInterfaces.WebApiConnectedService[]) => void
         ): void {
 
         var routeValues: any = {
@@ -152,7 +152,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.WebApiConnectedService, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -234,7 +234,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: VSSInterfaces.TypeInfo.IdentityRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -281,7 +281,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         teamId: string,
         top: number,
         skip: number,
-        onResult: (err: any, statusCode: number, members: VSSInterfaces.IdentityRef[]) => void
+        onResult: (err: any, statusCode: number, member: VSSInterfaces.IdentityRef[]) => void
         ): void {
 
         var routeValues: any = {
@@ -300,7 +300,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: VSSInterfaces.TypeInfo.IdentityRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -345,7 +345,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     public getProjectCollections(
         top: number,
         skip: number,
-        onResult: (err: any, statusCode: number, projectCollections: CoreInterfaces.TeamProjectCollectionReference[]) => void
+        onResult: (err: any, statusCode: number, projectCollection: CoreInterfaces.TeamProjectCollectionReference[]) => void
         ): void {
 
         var routeValues: any = {
@@ -362,7 +362,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.TeamProjectCollectionReference, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -391,7 +391,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.TeamProjectReference, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -447,7 +447,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         stateFilter: any,
         top: number,
         skip: number,
-        onResult: (err: any, statusCode: number, projects: CoreInterfaces.TeamProjectReference[]) => void
+        onResult: (err: any, statusCode: number, project: CoreInterfaces.TeamProjectReference[]) => void
         ): void {
 
         var routeValues: any = {
@@ -465,7 +465,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.TeamProjectReference, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -563,7 +563,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
      */
     public getProxies(
         proxyUrl: string,
-        onResult: (err: any, statusCode: number, proxies: CoreInterfaces.Proxy[]) => void
+        onResult: (err: any, statusCode: number, proxie: CoreInterfaces.Proxy[]) => void
         ): void {
 
         var routeValues: any = {
@@ -579,7 +579,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.Proxy, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -694,13 +694,13 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
     
         var deferred = Q.defer<CoreInterfaces.WebApiConnectedService[]>();
 
-        this.api.getConnectedServices(projectId, kind, (err: any, statusCode: number, connectedServices: CoreInterfaces.WebApiConnectedService[]) => {
+        this.api.getConnectedServices(projectId, kind, (err: any, statusCode: number, connectedService: CoreInterfaces.WebApiConnectedService[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(connectedServices);
+                deferred.resolve(connectedService);
             }
         });
 
@@ -744,13 +744,13 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
     
         var deferred = Q.defer<VSSInterfaces.IdentityRef[]>();
 
-        this.api.getTeamMembers(projectId, teamId, top, skip, (err: any, statusCode: number, members: VSSInterfaces.IdentityRef[]) => {
+        this.api.getTeamMembers(projectId, teamId, top, skip, (err: any, statusCode: number, member: VSSInterfaces.IdentityRef[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(members);
+                deferred.resolve(member);
             }
         });
 
@@ -794,13 +794,13 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
     
         var deferred = Q.defer<CoreInterfaces.TeamProjectCollectionReference[]>();
 
-        this.api.getProjectCollections(top, skip, (err: any, statusCode: number, projectCollections: CoreInterfaces.TeamProjectCollectionReference[]) => {
+        this.api.getProjectCollections(top, skip, (err: any, statusCode: number, projectCollection: CoreInterfaces.TeamProjectCollectionReference[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(projectCollections);
+                deferred.resolve(projectCollection);
             }
         });
 
@@ -872,13 +872,13 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
     
         var deferred = Q.defer<CoreInterfaces.TeamProjectReference[]>();
 
-        this.api.getProjects(stateFilter, top, skip, (err: any, statusCode: number, projects: CoreInterfaces.TeamProjectReference[]) => {
+        this.api.getProjects(stateFilter, top, skip, (err: any, statusCode: number, project: CoreInterfaces.TeamProjectReference[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(projects);
+                deferred.resolve(project);
             }
         });
 
@@ -968,13 +968,13 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
     
         var deferred = Q.defer<CoreInterfaces.Proxy[]>();
 
-        this.api.getProxies(proxyUrl, (err: any, statusCode: number, proxies: CoreInterfaces.Proxy[]) => {
+        this.api.getProxies(proxyUrl, (err: any, statusCode: number, proxie: CoreInterfaces.Proxy[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(proxies);
+                deferred.resolve(proxie);
             }
         });
 
