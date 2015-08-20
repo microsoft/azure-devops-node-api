@@ -23,22 +23,22 @@ import TaskAgentInterfaces = require("./interfaces/TaskAgentInterfaces");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
 export interface ITaskApi extends basem.ClientApiBase {
-    getPlanAttachments(scopeIdentifier: string, hubName: string, planId: string, type: string, onResult: (err: any, statusCode: number, attachments: TaskAgentInterfaces.TaskAttachment[]) => void): void;
+    getPlanAttachments(scopeIdentifier: string, hubName: string, planId: string, type: string, onResult: (err: any, statusCode: number, attachment: TaskAgentInterfaces.TaskAttachment[]) => void): void;
     createAttachment(customHeaders: any, contentStream: NodeJS.ReadableStream, scopeIdentifier: string, hubName: string, planId: string, timelineId: string, recordId: string, type: string, name: string, onResult: (err: any, statusCode: number, attachment: TaskAgentInterfaces.TaskAttachment) => void): void;
-    getAttachments(scopeIdentifier: string, hubName: string, planId: string, timelineId: string, recordId: string, type: string, onResult: (err: any, statusCode: number, attachments: TaskAgentInterfaces.TaskAttachment[]) => void): void;
+    getAttachments(scopeIdentifier: string, hubName: string, planId: string, timelineId: string, recordId: string, type: string, onResult: (err: any, statusCode: number, attachment: TaskAgentInterfaces.TaskAttachment[]) => void): void;
     postEvent(eventData: TaskAgentInterfaces.JobEvent, scopeIdentifier: string, hubName: string, planId: string, onResult: (err: any, statusCode: number) => void): void;
     postLines(lines: VSSInterfaces.VssJsonCollectionWrapperV<string[]>, scopeIdentifier: string, hubName: string, planId: string, timelineId: string, recordId: string, onResult: (err: any, statusCode: number) => void): void;
     appendLog(customHeaders: any, contentStream: NodeJS.ReadableStream, scopeIdentifier: string, hubName: string, planId: string, logId: number, onResult: (err: any, statusCode: number, log: TaskAgentInterfaces.TaskLog) => void): void;
     createLog(log: TaskAgentInterfaces.TaskLog, scopeIdentifier: string, hubName: string, planId: string, onResult: (err: any, statusCode: number, log: TaskAgentInterfaces.TaskLog) => void): void;
-    getLog(scopeIdentifier: string, hubName: string, planId: string, logId: number, startLine: number, endLine: number, onResult: (err: any, statusCode: number, logs: string[]) => void): void;
-    getLogs(scopeIdentifier: string, hubName: string, planId: string, onResult: (err: any, statusCode: number, logs: TaskAgentInterfaces.TaskLog[]) => void): void;
+    getLog(scopeIdentifier: string, hubName: string, planId: string, logId: number, startLine: number, endLine: number, onResult: (err: any, statusCode: number, log: string[]) => void): void;
+    getLogs(scopeIdentifier: string, hubName: string, planId: string, onResult: (err: any, statusCode: number, log: TaskAgentInterfaces.TaskLog[]) => void): void;
     getPlan(scopeIdentifier: string, hubName: string, planId: string, onResult: (err: any, statusCode: number, plan: TaskAgentInterfaces.TaskOrchestrationPlan) => void): void;
-    getRecords(scopeIdentifier: string, hubName: string, planId: string, timelineId: string, changeId: number, onResult: (err: any, statusCode: number, records: TaskAgentInterfaces.TimelineRecord[]) => void): void;
+    getRecords(scopeIdentifier: string, hubName: string, planId: string, timelineId: string, changeId: number, onResult: (err: any, statusCode: number, record: TaskAgentInterfaces.TimelineRecord[]) => void): void;
     updateRecords(records: VSSInterfaces.VssJsonCollectionWrapperV<TaskAgentInterfaces.TimelineRecord[]>, scopeIdentifier: string, hubName: string, planId: string, timelineId: string, onResult: (err: any, statusCode: number, record: TaskAgentInterfaces.TimelineRecord[]) => void): void;
     createTimeline(timeline: TaskAgentInterfaces.Timeline, scopeIdentifier: string, hubName: string, planId: string, onResult: (err: any, statusCode: number, timeline: TaskAgentInterfaces.Timeline) => void): void;
     deleteTimeline(scopeIdentifier: string, hubName: string, planId: string, timelineId: string, onResult: (err: any, statusCode: number) => void): void;
     getTimeline(scopeIdentifier: string, hubName: string, planId: string, timelineId: string, changeId: number, includeRecords: boolean, onResult: (err: any, statusCode: number, timeline: TaskAgentInterfaces.Timeline) => void): void;
-    getTimelines(scopeIdentifier: string, hubName: string, planId: string, onResult: (err: any, statusCode: number, timelines: TaskAgentInterfaces.Timeline[]) => void): void;
+    getTimelines(scopeIdentifier: string, hubName: string, planId: string, onResult: (err: any, statusCode: number, timeline: TaskAgentInterfaces.Timeline[]) => void): void;
 }
 
 export interface IQTaskApi extends basem.QClientApiBase {
@@ -76,7 +76,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
         hubName: string,
         planId: string,
         type: string,
-        onResult: (err: any, statusCode: number, attachments: TaskAgentInterfaces.TaskAttachment[]) => void
+        onResult: (err: any, statusCode: number, attachment: TaskAgentInterfaces.TaskAttachment[]) => void
         ): void {
 
         var routeValues: any = {
@@ -95,7 +95,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAttachment, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -171,7 +171,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
         timelineId: string,
         recordId: string,
         type: string,
-        onResult: (err: any, statusCode: number, attachments: TaskAgentInterfaces.TaskAttachment[]) => void
+        onResult: (err: any, statusCode: number, attachment: TaskAgentInterfaces.TaskAttachment[]) => void
         ): void {
 
         var routeValues: any = {
@@ -192,7 +192,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAttachment, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -364,7 +364,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
         logId: number,
         startLine: number,
         endLine: number,
-        onResult: (err: any, statusCode: number, logs: string[]) => void
+        onResult: (err: any, statusCode: number, log: string[]) => void
         ): void {
 
         var routeValues: any = {
@@ -385,7 +385,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -402,7 +402,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
         scopeIdentifier: string,
         hubName: string,
         planId: string,
-        onResult: (err: any, statusCode: number, logs: TaskAgentInterfaces.TaskLog[]) => void
+        onResult: (err: any, statusCode: number, log: TaskAgentInterfaces.TaskLog[]) => void
         ): void {
 
         var routeValues: any = {
@@ -417,7 +417,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskLog, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -470,7 +470,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
         planId: string,
         timelineId: string,
         changeId: number,
-        onResult: (err: any, statusCode: number, records: TaskAgentInterfaces.TimelineRecord[]) => void
+        onResult: (err: any, statusCode: number, record: TaskAgentInterfaces.TimelineRecord[]) => void
         ): void {
 
         var routeValues: any = {
@@ -490,7 +490,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TimelineRecord, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -657,7 +657,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
         scopeIdentifier: string,
         hubName: string,
         planId: string,
-        onResult: (err: any, statusCode: number, timelines: TaskAgentInterfaces.Timeline[]) => void
+        onResult: (err: any, statusCode: number, timeline: TaskAgentInterfaces.Timeline[]) => void
         ): void {
 
         var routeValues: any = {
@@ -672,7 +672,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.Timeline, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -705,13 +705,13 @@ export class QTaskApi extends basem.QClientApiBase implements IQTaskApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskAttachment[]>();
 
-        this.api.getPlanAttachments(scopeIdentifier, hubName, planId, type, (err: any, statusCode: number, attachments: TaskAgentInterfaces.TaskAttachment[]) => {
+        this.api.getPlanAttachments(scopeIdentifier, hubName, planId, type, (err: any, statusCode: number, attachment: TaskAgentInterfaces.TaskAttachment[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(attachments);
+                deferred.resolve(attachment);
             }
         });
 
@@ -774,13 +774,13 @@ export class QTaskApi extends basem.QClientApiBase implements IQTaskApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskAttachment[]>();
 
-        this.api.getAttachments(scopeIdentifier, hubName, planId, timelineId, recordId, type, (err: any, statusCode: number, attachments: TaskAgentInterfaces.TaskAttachment[]) => {
+        this.api.getAttachments(scopeIdentifier, hubName, planId, timelineId, recordId, type, (err: any, statusCode: number, attachment: TaskAgentInterfaces.TaskAttachment[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(attachments);
+                deferred.resolve(attachment);
             }
         });
 
@@ -865,13 +865,13 @@ export class QTaskApi extends basem.QClientApiBase implements IQTaskApi {
     
         var deferred = Q.defer<string[]>();
 
-        this.api.getLog(scopeIdentifier, hubName, planId, logId, startLine, endLine, (err: any, statusCode: number, logs: string[]) => {
+        this.api.getLog(scopeIdentifier, hubName, planId, logId, startLine, endLine, (err: any, statusCode: number, log: string[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(logs);
+                deferred.resolve(log);
             }
         });
 
@@ -891,13 +891,13 @@ export class QTaskApi extends basem.QClientApiBase implements IQTaskApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskLog[]>();
 
-        this.api.getLogs(scopeIdentifier, hubName, planId, (err: any, statusCode: number, logs: TaskAgentInterfaces.TaskLog[]) => {
+        this.api.getLogs(scopeIdentifier, hubName, planId, (err: any, statusCode: number, log: TaskAgentInterfaces.TaskLog[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(logs);
+                deferred.resolve(log);
             }
         });
 
@@ -947,13 +947,13 @@ export class QTaskApi extends basem.QClientApiBase implements IQTaskApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.TimelineRecord[]>();
 
-        this.api.getRecords(scopeIdentifier, hubName, planId, timelineId, changeId, (err: any, statusCode: number, records: TaskAgentInterfaces.TimelineRecord[]) => {
+        this.api.getRecords(scopeIdentifier, hubName, planId, timelineId, changeId, (err: any, statusCode: number, record: TaskAgentInterfaces.TimelineRecord[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(records);
+                deferred.resolve(record);
             }
         });
 
@@ -1063,13 +1063,13 @@ export class QTaskApi extends basem.QClientApiBase implements IQTaskApi {
     
         var deferred = Q.defer<TaskAgentInterfaces.Timeline[]>();
 
-        this.api.getTimelines(scopeIdentifier, hubName, planId, (err: any, statusCode: number, timelines: TaskAgentInterfaces.Timeline[]) => {
+        this.api.getTimelines(scopeIdentifier, hubName, planId, (err: any, statusCode: number, timeline: TaskAgentInterfaces.Timeline[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(timelines);
+                deferred.resolve(timeline);
             }
         });
 

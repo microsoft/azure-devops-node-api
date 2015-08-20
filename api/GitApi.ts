@@ -28,38 +28,38 @@ export interface IGitApi extends basem.ClientApiBase {
     getBlobsZip(blobIds: string[], repositoryId: string, project: string, filename: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     getBlobZip(repositoryId: string, sha1: string, project: string, download: boolean, fileName: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     getBranch(repositoryId: string, name: string, project: string, baseVersionDescriptor: GitInterfaces.GitVersionDescriptor, onResult: (err: any, statusCode: number, BranchStat: GitInterfaces.GitBranchStats) => void): void;
-    getBranches(repositoryId: string, project: string, baseVersionDescriptor: GitInterfaces.GitVersionDescriptor, onResult: (err: any, statusCode: number, BranchStats: GitInterfaces.GitBranchStats[]) => void): void;
+    getBranches(repositoryId: string, project: string, baseVersionDescriptor: GitInterfaces.GitVersionDescriptor, onResult: (err: any, statusCode: number, BranchStat: GitInterfaces.GitBranchStats[]) => void): void;
     getChanges(commitId: string, repositoryId: string, project: string, top: number, skip: number, onResult: (err: any, statusCode: number, Change: GitInterfaces.GitCommitChanges) => void): void;
     createCommit(repositoryId: string, project: string, onResult: (err: any, statusCode: number, Commit: GitInterfaces.GitCommit) => void): void;
     getCommit(commitId: string, repositoryId: string, project: string, changeCount: number, onResult: (err: any, statusCode: number, Commit: GitInterfaces.GitCommit) => void): void;
-    getCommits(repositoryId: string, searchCriteria: GitInterfaces.GitQueryCommitsCriteria, project: string, skip: number, top: number, onResult: (err: any, statusCode: number, Commits: GitInterfaces.GitCommitRef[]) => void): void;
-    getPushCommits(repositoryId: string, pushId: number, project: string, top: number, skip: number, includeLinks: boolean, onResult: (err: any, statusCode: number, Commits: GitInterfaces.GitCommitRef[]) => void): void;
+    getCommits(repositoryId: string, searchCriteria: GitInterfaces.GitQueryCommitsCriteria, project: string, skip: number, top: number, onResult: (err: any, statusCode: number, Commit: GitInterfaces.GitCommitRef[]) => void): void;
+    getPushCommits(repositoryId: string, pushId: number, project: string, top: number, skip: number, includeLinks: boolean, onResult: (err: any, statusCode: number, Commit: GitInterfaces.GitCommitRef[]) => void): void;
     getCommitsBatch(searchCriteria: GitInterfaces.GitQueryCommitsCriteria, repositoryId: string, project: string, skip: number, top: number, onResult: (err: any, statusCode: number, CommitsBatch: GitInterfaces.GitCommitRef[]) => void): void;
     getItem(repositoryId: string, path: string, project: string, scopePath: string, recursionLevel: GitInterfaces.VersionControlRecursionType, includeContentMetadata: boolean, latestProcessedChange: boolean, download: boolean, versionDescriptor: GitInterfaces.GitVersionDescriptor, onResult: (err: any, statusCode: number, Item: GitInterfaces.GitItem) => void): void;
     getItemContent(repositoryId: string, path: string, project: string, scopePath: string, recursionLevel: GitInterfaces.VersionControlRecursionType, includeContentMetadata: boolean, latestProcessedChange: boolean, download: boolean, versionDescriptor: GitInterfaces.GitVersionDescriptor, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
-    getItems(repositoryId: string, project: string, scopePath: string, recursionLevel: GitInterfaces.VersionControlRecursionType, includeContentMetadata: boolean, latestProcessedChange: boolean, download: boolean, includeLinks: boolean, versionDescriptor: GitInterfaces.GitVersionDescriptor, onResult: (err: any, statusCode: number, Items: GitInterfaces.GitItem[]) => void): void;
+    getItems(repositoryId: string, project: string, scopePath: string, recursionLevel: GitInterfaces.VersionControlRecursionType, includeContentMetadata: boolean, latestProcessedChange: boolean, download: boolean, includeLinks: boolean, versionDescriptor: GitInterfaces.GitVersionDescriptor, onResult: (err: any, statusCode: number, Item: GitInterfaces.GitItem[]) => void): void;
     getItemText(repositoryId: string, path: string, project: string, scopePath: string, recursionLevel: GitInterfaces.VersionControlRecursionType, includeContentMetadata: boolean, latestProcessedChange: boolean, download: boolean, versionDescriptor: GitInterfaces.GitVersionDescriptor, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     getItemZip(repositoryId: string, path: string, project: string, scopePath: string, recursionLevel: GitInterfaces.VersionControlRecursionType, includeContentMetadata: boolean, latestProcessedChange: boolean, download: boolean, versionDescriptor: GitInterfaces.GitVersionDescriptor, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     getItemsBatch(requestData: GitInterfaces.GitItemRequestData, repositoryId: string, project: string, onResult: (err: any, statusCode: number, ItemsBatch: GitInterfaces.GitItem[][]) => void): void;
     createPullRequestReviewer(reviewer: GitInterfaces.IdentityRefWithVote, repositoryId: string, pullRequestId: number, reviewerId: string, project: string, onResult: (err: any, statusCode: number, PullRequestReviewer: GitInterfaces.IdentityRefWithVote) => void): void;
-    createPullRequestReviewers(reviewers: VSSInterfaces.IdentityRef[], repositoryId: string, pullRequestId: number, project: string, onResult: (err: any, statusCode: number, PullRequestReviewers: GitInterfaces.IdentityRefWithVote[]) => void): void;
+    createPullRequestReviewers(reviewers: VSSInterfaces.IdentityRef[], repositoryId: string, pullRequestId: number, project: string, onResult: (err: any, statusCode: number, PullRequestReviewer: GitInterfaces.IdentityRefWithVote[]) => void): void;
     deletePullRequestReviewer(repositoryId: string, pullRequestId: number, reviewerId: string, project: string, onResult: (err: any, statusCode: number) => void): void;
     getPullRequestReviewer(repositoryId: string, pullRequestId: number, reviewerId: string, project: string, onResult: (err: any, statusCode: number, PullRequestReviewer: GitInterfaces.IdentityRefWithVote) => void): void;
-    getPullRequestReviewers(repositoryId: string, pullRequestId: number, project: string, onResult: (err: any, statusCode: number, PullRequestReviewers: GitInterfaces.IdentityRefWithVote[]) => void): void;
-    getPullRequestsByProject(project: string, searchCriteria: GitInterfaces.GitPullRequestSearchCriteria, maxCommentLength: number, skip: number, top: number, onResult: (err: any, statusCode: number, PullRequests: GitInterfaces.GitPullRequest[]) => void): void;
+    getPullRequestReviewers(repositoryId: string, pullRequestId: number, project: string, onResult: (err: any, statusCode: number, PullRequestReviewer: GitInterfaces.IdentityRefWithVote[]) => void): void;
+    getPullRequestsByProject(project: string, searchCriteria: GitInterfaces.GitPullRequestSearchCriteria, maxCommentLength: number, skip: number, top: number, onResult: (err: any, statusCode: number, PullRequest: GitInterfaces.GitPullRequest[]) => void): void;
     createPullRequest(gitPullRequestToCreate: GitInterfaces.GitPullRequest, repositoryId: string, project: string, onResult: (err: any, statusCode: number, PullRequest: GitInterfaces.GitPullRequest) => void): void;
     getPullRequest(repositoryId: string, pullRequestId: number, project: string, maxCommentLength: number, skip: number, top: number, onResult: (err: any, statusCode: number, PullRequest: GitInterfaces.GitPullRequest) => void): void;
-    getPullRequests(repositoryId: string, searchCriteria: GitInterfaces.GitPullRequestSearchCriteria, project: string, maxCommentLength: number, skip: number, top: number, onResult: (err: any, statusCode: number, PullRequests: GitInterfaces.GitPullRequest[]) => void): void;
+    getPullRequests(repositoryId: string, searchCriteria: GitInterfaces.GitPullRequestSearchCriteria, project: string, maxCommentLength: number, skip: number, top: number, onResult: (err: any, statusCode: number, PullRequest: GitInterfaces.GitPullRequest[]) => void): void;
     updatePullRequest(gitPullRequestToUpdate: GitInterfaces.GitPullRequest, repositoryId: string, pullRequestId: number, project: string, onResult: (err: any, statusCode: number, PullRequest: GitInterfaces.GitPullRequest) => void): void;
-    getPullRequestWorkItems(repositoryId: string, pullRequestId: number, project: string, commitsTop: number, commitsSkip: number, onResult: (err: any, statusCode: number, PullRequestWorkItems: GitInterfaces.AssociatedWorkItem[]) => void): void;
+    getPullRequestWorkItems(repositoryId: string, pullRequestId: number, project: string, commitsTop: number, commitsSkip: number, onResult: (err: any, statusCode: number, PullRequestWorkItem: GitInterfaces.AssociatedWorkItem[]) => void): void;
     createPush(push: GitInterfaces.GitPush, repositoryId: string, project: string, onResult: (err: any, statusCode: number, pushe: GitInterfaces.GitPush) => void): void;
     getPush(repositoryId: string, pushId: number, project: string, includeCommits: number, includeRefUpdates: boolean, onResult: (err: any, statusCode: number, pushe: GitInterfaces.GitPush) => void): void;
-    getPushes(repositoryId: string, project: string, skip: number, top: number, searchCriteria: GitInterfaces.GitPushSearchCriteria, onResult: (err: any, statusCode: number, pushes: GitInterfaces.GitPush[]) => void): void;
-    getRefs(repositoryId: string, project: string, filter: string, includeLinks: boolean, onResult: (err: any, statusCode: number, refs: GitInterfaces.GitRef[]) => void): void;
-    updateRefs(refUpdates: GitInterfaces.GitRefUpdate[], repositoryId: string, project: string, projectId: string, onResult: (err: any, statusCode: number, refs: GitInterfaces.GitRefUpdateResult[]) => void): void;
+    getPushes(repositoryId: string, project: string, skip: number, top: number, searchCriteria: GitInterfaces.GitPushSearchCriteria, onResult: (err: any, statusCode: number, pushe: GitInterfaces.GitPush[]) => void): void;
+    getRefs(repositoryId: string, project: string, filter: string, includeLinks: boolean, onResult: (err: any, statusCode: number, ref: GitInterfaces.GitRef[]) => void): void;
+    updateRefs(refUpdates: GitInterfaces.GitRefUpdate[], repositoryId: string, project: string, projectId: string, onResult: (err: any, statusCode: number, ref: GitInterfaces.GitRefUpdateResult[]) => void): void;
     createRepository(gitRepositoryToCreate: GitInterfaces.GitRepository, project: string, onResult: (err: any, statusCode: number, Repositorie: GitInterfaces.GitRepository) => void): void;
     deleteRepository(repositoryId: string, project: string, onResult: (err: any, statusCode: number) => void): void;
-    getRepositories(project: string, includeLinks: boolean, onResult: (err: any, statusCode: number, Repositories: GitInterfaces.GitRepository[]) => void): void;
+    getRepositories(project: string, includeLinks: boolean, onResult: (err: any, statusCode: number, Repositorie: GitInterfaces.GitRepository[]) => void): void;
     getRepository(repositoryId: string, project: string, onResult: (err: any, statusCode: number, Repositorie: GitInterfaces.GitRepository) => void): void;
     updateRepository(newRepositoryInfo: GitInterfaces.GitRepository, repositoryId: string, project: string, onResult: (err: any, statusCode: number, Repositorie: GitInterfaces.GitRepository) => void): void;
     getTree(repositoryId: string, sha1: string, project: string, projectId: string, recursive: boolean, fileName: string, onResult: (err: any, statusCode: number, Tree: GitInterfaces.GitTreeRef) => void): void;
@@ -328,7 +328,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         project: string,
         baseVersionDescriptor: GitInterfaces.GitVersionDescriptor,
-        onResult: (err: any, statusCode: number, BranchStats: GitInterfaces.GitBranchStats[]) => void
+        onResult: (err: any, statusCode: number, BranchStat: GitInterfaces.GitBranchStats[]) => void
         ): void {
 
         var routeValues: any = {
@@ -346,7 +346,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitBranchStats, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -483,7 +483,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project: string,
         skip: number,
         top: number,
-        onResult: (err: any, statusCode: number, Commits: GitInterfaces.GitCommitRef[]) => void
+        onResult: (err: any, statusCode: number, Commit: GitInterfaces.GitCommitRef[]) => void
         ): void {
 
         var routeValues: any = {
@@ -503,7 +503,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -528,7 +528,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         top: number,
         skip: number,
         includeLinks: boolean,
-        onResult: (err: any, statusCode: number, Commits: GitInterfaces.GitCommitRef[]) => void
+        onResult: (err: any, statusCode: number, Commit: GitInterfaces.GitCommitRef[]) => void
         ): void {
 
         var routeValues: any = {
@@ -549,7 +549,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -732,7 +732,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         download: boolean,
         includeLinks: boolean,
         versionDescriptor: GitInterfaces.GitVersionDescriptor,
-        onResult: (err: any, statusCode: number, Items: GitInterfaces.GitItem[]) => void
+        onResult: (err: any, statusCode: number, Item: GitInterfaces.GitItem[]) => void
         ): void {
 
         var routeValues: any = {
@@ -756,7 +756,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -959,7 +959,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project: string,
-        onResult: (err: any, statusCode: number, PullRequestReviewers: GitInterfaces.IdentityRefWithVote[]) => void
+        onResult: (err: any, statusCode: number, PullRequestReviewer: GitInterfaces.IdentityRefWithVote[]) => void
         ): void {
 
         var routeValues: any = {
@@ -974,7 +974,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: VSSInterfaces.TypeInfo.IdentityRef, responseTypeMetadata: GitInterfaces.TypeInfo.IdentityRefWithVote, responseIsCollection: true };
             
-            this.restClient.createJsonWrappedArray(url, apiVersion, reviewers, null, serializationData, onResult);
+            this.restClient.create(url, apiVersion, reviewers, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1067,7 +1067,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project: string,
-        onResult: (err: any, statusCode: number, PullRequestReviewers: GitInterfaces.IdentityRefWithVote[]) => void
+        onResult: (err: any, statusCode: number, PullRequestReviewer: GitInterfaces.IdentityRefWithVote[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1082,7 +1082,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.IdentityRefWithVote, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1105,7 +1105,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         maxCommentLength: number,
         skip: number,
         top: number,
-        onResult: (err: any, statusCode: number, PullRequests: GitInterfaces.GitPullRequest[]) => void
+        onResult: (err: any, statusCode: number, PullRequest: GitInterfaces.GitPullRequest[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1125,7 +1125,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1229,7 +1229,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         maxCommentLength: number,
         skip: number,
         top: number,
-        onResult: (err: any, statusCode: number, PullRequests: GitInterfaces.GitPullRequest[]) => void
+        onResult: (err: any, statusCode: number, PullRequest: GitInterfaces.GitPullRequest[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1250,7 +1250,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1309,7 +1309,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project: string,
         commitsTop: number,
         commitsSkip: number,
-        onResult: (err: any, statusCode: number, PullRequestWorkItems: GitInterfaces.AssociatedWorkItem[]) => void
+        onResult: (err: any, statusCode: number, PullRequestWorkItem: GitInterfaces.AssociatedWorkItem[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1329,7 +1329,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.AssociatedWorkItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1428,7 +1428,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         skip: number,
         top: number,
         searchCriteria: GitInterfaces.GitPushSearchCriteria,
-        onResult: (err: any, statusCode: number, pushes: GitInterfaces.GitPush[]) => void
+        onResult: (err: any, statusCode: number, pushe: GitInterfaces.GitPush[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1448,7 +1448,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPush, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1469,7 +1469,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project: string,
         filter: string,
         includeLinks: boolean,
-        onResult: (err: any, statusCode: number, refs: GitInterfaces.GitRef[]) => void
+        onResult: (err: any, statusCode: number, ref: GitInterfaces.GitRef[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1488,7 +1488,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1509,7 +1509,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         project: string,
         projectId: string,
-        onResult: (err: any, statusCode: number, refs: GitInterfaces.GitRefUpdateResult[]) => void
+        onResult: (err: any, statusCode: number, ref: GitInterfaces.GitRefUpdateResult[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1527,7 +1527,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitRefUpdate, responseTypeMetadata: GitInterfaces.TypeInfo.GitRefUpdateResult, responseIsCollection: true };
             
-            this.restClient.createJsonWrappedArray(url, apiVersion, refUpdates, null, serializationData, onResult);
+            this.restClient.create(url, apiVersion, refUpdates, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1605,7 +1605,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     public getRepositories(
         project: string,
         includeLinks: boolean,
-        onResult: (err: any, statusCode: number, Repositories: GitInterfaces.GitRepository[]) => void
+        onResult: (err: any, statusCode: number, Repositorie: GitInterfaces.GitRepository[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1622,7 +1622,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitRepository, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1867,13 +1867,13 @@ export class QGitApi extends basem.QClientApiBase implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitBranchStats[]>();
 
-        this.api.getBranches(repositoryId, project, baseVersionDescriptor, (err: any, statusCode: number, BranchStats: GitInterfaces.GitBranchStats[]) => {
+        this.api.getBranches(repositoryId, project, baseVersionDescriptor, (err: any, statusCode: number, BranchStat: GitInterfaces.GitBranchStats[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(BranchStats);
+                deferred.resolve(BranchStat);
             }
         });
 
@@ -1987,13 +1987,13 @@ export class QGitApi extends basem.QClientApiBase implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitCommitRef[]>();
 
-        this.api.getCommits(repositoryId, searchCriteria, project, skip, top, (err: any, statusCode: number, Commits: GitInterfaces.GitCommitRef[]) => {
+        this.api.getCommits(repositoryId, searchCriteria, project, skip, top, (err: any, statusCode: number, Commit: GitInterfaces.GitCommitRef[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(Commits);
+                deferred.resolve(Commit);
             }
         });
 
@@ -2021,13 +2021,13 @@ export class QGitApi extends basem.QClientApiBase implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitCommitRef[]>();
 
-        this.api.getPushCommits(repositoryId, pushId, project, top, skip, includeLinks, (err: any, statusCode: number, Commits: GitInterfaces.GitCommitRef[]) => {
+        this.api.getPushCommits(repositoryId, pushId, project, top, skip, includeLinks, (err: any, statusCode: number, Commit: GitInterfaces.GitCommitRef[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(Commits);
+                deferred.resolve(Commit);
             }
         });
 
@@ -2133,13 +2133,13 @@ export class QGitApi extends basem.QClientApiBase implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitItem[]>();
 
-        this.api.getItems(repositoryId, project, scopePath, recursionLevel, includeContentMetadata, latestProcessedChange, download, includeLinks, versionDescriptor, (err: any, statusCode: number, Items: GitInterfaces.GitItem[]) => {
+        this.api.getItems(repositoryId, project, scopePath, recursionLevel, includeContentMetadata, latestProcessedChange, download, includeLinks, versionDescriptor, (err: any, statusCode: number, Item: GitInterfaces.GitItem[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(Items);
+                deferred.resolve(Item);
             }
         });
 
@@ -2223,13 +2223,13 @@ export class QGitApi extends basem.QClientApiBase implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.IdentityRefWithVote[]>();
 
-        this.api.createPullRequestReviewers(reviewers, repositoryId, pullRequestId, project, (err: any, statusCode: number, PullRequestReviewers: GitInterfaces.IdentityRefWithVote[]) => {
+        this.api.createPullRequestReviewers(reviewers, repositoryId, pullRequestId, project, (err: any, statusCode: number, PullRequestReviewer: GitInterfaces.IdentityRefWithVote[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(PullRequestReviewers);
+                deferred.resolve(PullRequestReviewer);
             }
         });
 
@@ -2281,13 +2281,13 @@ export class QGitApi extends basem.QClientApiBase implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.IdentityRefWithVote[]>();
 
-        this.api.getPullRequestReviewers(repositoryId, pullRequestId, project, (err: any, statusCode: number, PullRequestReviewers: GitInterfaces.IdentityRefWithVote[]) => {
+        this.api.getPullRequestReviewers(repositoryId, pullRequestId, project, (err: any, statusCode: number, PullRequestReviewer: GitInterfaces.IdentityRefWithVote[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(PullRequestReviewers);
+                deferred.resolve(PullRequestReviewer);
             }
         });
 
@@ -2313,13 +2313,13 @@ export class QGitApi extends basem.QClientApiBase implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitPullRequest[]>();
 
-        this.api.getPullRequestsByProject(project, searchCriteria, maxCommentLength, skip, top, (err: any, statusCode: number, PullRequests: GitInterfaces.GitPullRequest[]) => {
+        this.api.getPullRequestsByProject(project, searchCriteria, maxCommentLength, skip, top, (err: any, statusCode: number, PullRequest: GitInterfaces.GitPullRequest[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(PullRequests);
+                deferred.resolve(PullRequest);
             }
         });
 
@@ -2409,13 +2409,13 @@ export class QGitApi extends basem.QClientApiBase implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitPullRequest[]>();
 
-        this.api.getPullRequests(repositoryId, searchCriteria, project, maxCommentLength, skip, top, (err: any, statusCode: number, PullRequests: GitInterfaces.GitPullRequest[]) => {
+        this.api.getPullRequests(repositoryId, searchCriteria, project, maxCommentLength, skip, top, (err: any, statusCode: number, PullRequest: GitInterfaces.GitPullRequest[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(PullRequests);
+                deferred.resolve(PullRequest);
             }
         });
 
@@ -2471,13 +2471,13 @@ export class QGitApi extends basem.QClientApiBase implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.AssociatedWorkItem[]>();
 
-        this.api.getPullRequestWorkItems(repositoryId, pullRequestId, project, commitsTop, commitsSkip, (err: any, statusCode: number, PullRequestWorkItems: GitInterfaces.AssociatedWorkItem[]) => {
+        this.api.getPullRequestWorkItems(repositoryId, pullRequestId, project, commitsTop, commitsSkip, (err: any, statusCode: number, PullRequestWorkItem: GitInterfaces.AssociatedWorkItem[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(PullRequestWorkItems);
+                deferred.resolve(PullRequestWorkItem);
             }
         });
 
@@ -2563,13 +2563,13 @@ export class QGitApi extends basem.QClientApiBase implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitPush[]>();
 
-        this.api.getPushes(repositoryId, project, skip, top, searchCriteria, (err: any, statusCode: number, pushes: GitInterfaces.GitPush[]) => {
+        this.api.getPushes(repositoryId, project, skip, top, searchCriteria, (err: any, statusCode: number, pushe: GitInterfaces.GitPush[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(pushes);
+                deferred.resolve(pushe);
             }
         });
 
@@ -2593,13 +2593,13 @@ export class QGitApi extends basem.QClientApiBase implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitRef[]>();
 
-        this.api.getRefs(repositoryId, project, filter, includeLinks, (err: any, statusCode: number, refs: GitInterfaces.GitRef[]) => {
+        this.api.getRefs(repositoryId, project, filter, includeLinks, (err: any, statusCode: number, ref: GitInterfaces.GitRef[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(refs);
+                deferred.resolve(ref);
             }
         });
 
@@ -2623,13 +2623,13 @@ export class QGitApi extends basem.QClientApiBase implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitRefUpdateResult[]>();
 
-        this.api.updateRefs(refUpdates, repositoryId, project, projectId, (err: any, statusCode: number, refs: GitInterfaces.GitRefUpdateResult[]) => {
+        this.api.updateRefs(refUpdates, repositoryId, project, projectId, (err: any, statusCode: number, ref: GitInterfaces.GitRefUpdateResult[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(refs);
+                deferred.resolve(ref);
             }
         });
 
@@ -2675,13 +2675,13 @@ export class QGitApi extends basem.QClientApiBase implements IQGitApi {
     
         var deferred = Q.defer<GitInterfaces.GitRepository[]>();
 
-        this.api.getRepositories(project, includeLinks, (err: any, statusCode: number, Repositories: GitInterfaces.GitRepository[]) => {
+        this.api.getRepositories(project, includeLinks, (err: any, statusCode: number, Repositorie: GitInterfaces.GitRepository[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(Repositories);
+                deferred.resolve(Repositorie);
             }
         });
 

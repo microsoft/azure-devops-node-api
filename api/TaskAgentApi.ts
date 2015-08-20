@@ -26,7 +26,7 @@ export interface ITaskAgentApi extends basem.ClientApiBase {
     createAgent(agent: TaskAgentInterfaces.TaskAgent, poolId: number, onResult: (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => void): void;
     deleteAgent(poolId: number, agentId: number, onResult: (err: any, statusCode: number) => void): void;
     getAgent(poolId: number, agentId: number, includeCapabilities: boolean, propertyFilters: string, onResult: (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => void): void;
-    getAgents(poolId: number, agentName: string, includeCapabilities: boolean, propertyFilters: string, demands: string, onResult: (err: any, statusCode: number, agents: TaskAgentInterfaces.TaskAgent[]) => void): void;
+    getAgents(poolId: number, agentName: string, includeCapabilities: boolean, propertyFilters: string, demands: string, onResult: (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent[]) => void): void;
     replaceAgent(agent: TaskAgentInterfaces.TaskAgent, poolId: number, agentId: number, onResult: (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => void): void;
     updateAgent(agent: TaskAgentInterfaces.TaskAgent, poolId: number, agentId: number, onResult: (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => void): void;
     queryEndpoint(endpoint: TaskAgentInterfaces.TaskDefinitionEndpoint, onResult: (err: any, statusCode: number, endpoint: string[]) => void): void;
@@ -42,23 +42,22 @@ export interface ITaskAgentApi extends basem.ClientApiBase {
     createPool(pool: TaskAgentInterfaces.TaskAgentPool, onResult: (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool) => void): void;
     deletePool(poolId: number, onResult: (err: any, statusCode: number) => void): void;
     getPool(poolId: number, properties: string, onResult: (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool) => void): void;
-    getPools(poolName: string, properties: string, onResult: (err: any, statusCode: number, pools: TaskAgentInterfaces.TaskAgentPool[]) => void): void;
+    getPools(poolName: string, properties: string, onResult: (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool[]) => void): void;
     updatePool(pool: TaskAgentInterfaces.TaskAgentPool, poolId: number, onResult: (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool) => void): void;
     createQueue(queue: TaskAgentInterfaces.TaskAgentQueue, onResult: (err: any, statusCode: number, queue: TaskAgentInterfaces.TaskAgentQueue) => void): void;
     deleteQueue(queueId: number, onResult: (err: any, statusCode: number) => void): void;
     getQueue(queueId: number, onResult: (err: any, statusCode: number, queue: TaskAgentInterfaces.TaskAgentQueue) => void): void;
-    getQueues(queueName: string, onResult: (err: any, statusCode: number, queues: TaskAgentInterfaces.TaskAgentQueue[]) => void): void;
-    getAgentPoolRoles(poolId: number, onResult: (err: any, statusCode: number, roles: VSSInterfaces.IdentityRef[]) => void): void;
+    getQueues(queueName: string, onResult: (err: any, statusCode: number, queue: TaskAgentInterfaces.TaskAgentQueue[]) => void): void;
+    getAgentPoolRoles(poolId: number, onResult: (err: any, statusCode: number, role: VSSInterfaces.IdentityRef[]) => void): void;
     createServiceEndpoint(endpoint: TaskAgentInterfaces.ServiceEndpoint, scopeIdentifier: string, endpointId: string, onResult: (err: any, statusCode: number, serviceendpoint: TaskAgentInterfaces.ServiceEndpoint) => void): void;
     deleteServiceEndpoint(scopeIdentifier: string, endpointId: string, onResult: (err: any, statusCode: number) => void): void;
     getServiceEndpointDetails(scopeIdentifier: string, endpointId: string, onResult: (err: any, statusCode: number, serviceendpoint: TaskAgentInterfaces.ServiceEndpoint) => void): void;
-    getServiceEndpoints(scopeIdentifier: string, type: string, onResult: (err: any, statusCode: number, serviceendpoints: TaskAgentInterfaces.ServiceEndpoint[]) => void): void;
+    getServiceEndpoints(scopeIdentifier: string, type: string, onResult: (err: any, statusCode: number, serviceendpoint: TaskAgentInterfaces.ServiceEndpoint[]) => void): void;
     createSession(session: TaskAgentInterfaces.TaskAgentSession, poolId: number, onResult: (err: any, statusCode: number, session: TaskAgentInterfaces.TaskAgentSession) => void): void;
     deleteSession(poolId: number, sessionId: string, onResult: (err: any, statusCode: number) => void): void;
     deleteTaskDefinition(taskId: string, onResult: (err: any, statusCode: number) => void): void;
-    getTaskContent(taskId: string, versionString: string, onResult: (err: any, statusCode: number, tasks: TaskAgentInterfaces.TaskDefinition[]) => void): void;
-    getTaskContentZip(taskId: string, versionString: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
-    getTaskDefinitions(visibility: string[], onResult: (err: any, statusCode: number, tasks: TaskAgentInterfaces.TaskDefinition[]) => void): void;
+    getTaskContentZip(taskId: string, versionString: string, visibility: string[], scopeLocal: boolean, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
+    getTaskDefinitions(taskId: string, versionString: string, visibility: string[], scopeLocal: boolean, onResult: (err: any, statusCode: number, task: TaskAgentInterfaces.TaskDefinition[]) => void): void;
     uploadTaskDefinition(customHeaders: any, contentStream: NodeJS.ReadableStream, taskId: string, overwrite: boolean, onResult: (err: any, statusCode: number, obj: any) => void): void;
     updateUserCapabilities(userCapabilities: { [key: string] : string; }, poolId: number, agentId: number, onResult: (err: any, statusCode: number, usercapabilitie: TaskAgentInterfaces.TaskAgent) => void): void;
 }
@@ -87,8 +86,7 @@ export interface IQTaskAgentApi extends basem.QClientApiBase {
     getServiceEndpointDetails(scopeIdentifier: string,  endpointId: string): Q.Promise<TaskAgentInterfaces.ServiceEndpoint>;
     getServiceEndpoints(scopeIdentifier: string,  type?: string): Q.Promise<TaskAgentInterfaces.ServiceEndpoint[]>;
     createSession(session: TaskAgentInterfaces.TaskAgentSession,  poolId: number): Q.Promise<TaskAgentInterfaces.TaskAgentSession>;
-    getTaskContent(taskId: string,  versionString?: string): Q.Promise<TaskAgentInterfaces.TaskDefinition[]>;
-    getTaskDefinitions( visibility: string[]): Q.Promise<TaskAgentInterfaces.TaskDefinition[]>;
+    getTaskDefinitions(taskId?: string, versionString?: string, visibility?: string[],  scopeLocal?: boolean): Q.Promise<TaskAgentInterfaces.TaskDefinition[]>;
     updateUserCapabilities(userCapabilities: { [key: string] : string; }, poolId: number,  agentId: number): Q.Promise<TaskAgentInterfaces.TaskAgent>;
 }
 
@@ -207,7 +205,7 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
         includeCapabilities: boolean,
         propertyFilters: string,
         demands: string,
-        onResult: (err: any, statusCode: number, agents: TaskAgentInterfaces.TaskAgent[]) => void
+        onResult: (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent[]) => void
         ): void {
 
         var routeValues: any = {
@@ -227,7 +225,7 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -705,7 +703,7 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
     public getPools(
         poolName: string,
         properties: string,
-        onResult: (err: any, statusCode: number, pools: TaskAgentInterfaces.TaskAgentPool[]) => void
+        onResult: (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool[]) => void
         ): void {
 
         var routeValues: any = {
@@ -722,7 +720,7 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -840,7 +838,7 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
      */
     public getQueues(
         queueName: string,
-        onResult: (err: any, statusCode: number, queues: TaskAgentInterfaces.TaskAgentQueue[]) => void
+        onResult: (err: any, statusCode: number, queue: TaskAgentInterfaces.TaskAgentQueue[]) => void
         ): void {
 
         var routeValues: any = {
@@ -856,7 +854,7 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentQueue, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -869,7 +867,7 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
      */
     public getAgentPoolRoles(
         poolId: number,
-        onResult: (err: any, statusCode: number, roles: VSSInterfaces.IdentityRef[]) => void
+        onResult: (err: any, statusCode: number, role: VSSInterfaces.IdentityRef[]) => void
         ): void {
 
         var routeValues: any = {
@@ -882,7 +880,7 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: VSSInterfaces.TypeInfo.IdentityRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -986,7 +984,7 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
     public getServiceEndpoints(
         scopeIdentifier: string,
         type: string,
-        onResult: (err: any, statusCode: number, serviceendpoints: TaskAgentInterfaces.ServiceEndpoint[]) => void
+        onResult: (err: any, statusCode: number, serviceendpoint: TaskAgentInterfaces.ServiceEndpoint[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1003,7 +1001,7 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.ServiceEndpoint, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1096,40 +1094,15 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
     /**
      * @param {string} taskId
      * @param {string} versionString
-     * @param onResult callback function with the resulting TaskAgentInterfaces.TaskDefinition[]
-     */
-    public getTaskContent(
-        taskId: string,
-        versionString: string,
-        onResult: (err: any, statusCode: number, tasks: TaskAgentInterfaces.TaskDefinition[]) => void
-        ): void {
-
-        var routeValues: any = {
-            taskId: taskId,
-            versionString: versionString
-        };
-
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues)
-        .then((versioningData: vsom.ClientVersioningData) => {
-            var url: string = versioningData.requestUrl;
-            var apiVersion: string = versioningData.apiVersion;
-            var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskDefinition, responseIsCollection: true };
-            
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
-        })
-        .fail((error) => {
-            onResult(error, error.statusCode, null);
-        });
-    }
-
-    /**
-     * @param {string} taskId
-     * @param {string} versionString
+     * @param {string[]} visibility
+     * @param {boolean} scopeLocal
      * @param onResult callback function with the resulting ArrayBuffer
      */
     public getTaskContentZip(
         taskId: string,
         versionString: string,
+        visibility: string[],
+        scopeLocal: boolean,
         onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void
         ): void {
 
@@ -1138,7 +1111,12 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
             versionString: versionString
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues)
+        var queryValues: any = {
+            visibility: visibility,
+            scopeLocal: scopeLocal,
+        };
+        
+        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1152,19 +1130,28 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
     }
 
     /**
+     * @param {string} taskId
+     * @param {string} versionString
      * @param {string[]} visibility
+     * @param {boolean} scopeLocal
      * @param onResult callback function with the resulting TaskAgentInterfaces.TaskDefinition[]
      */
     public getTaskDefinitions(
+        taskId: string,
+        versionString: string,
         visibility: string[],
-        onResult: (err: any, statusCode: number, tasks: TaskAgentInterfaces.TaskDefinition[]) => void
+        scopeLocal: boolean,
+        onResult: (err: any, statusCode: number, task: TaskAgentInterfaces.TaskDefinition[]) => void
         ): void {
 
         var routeValues: any = {
+            taskId: taskId,
+            versionString: versionString
         };
 
         var queryValues: any = {
             visibility: visibility,
+            scopeLocal: scopeLocal,
         };
         
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues, queryValues)
@@ -1173,7 +1160,7 @@ export class TaskAgentApi extends basem.ClientApiBase implements ITaskAgentApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskDefinition, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1329,13 +1316,13 @@ export class QTaskAgentApi extends basem.QClientApiBase implements IQTaskAgentAp
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskAgent[]>();
 
-        this.api.getAgents(poolId, agentName, includeCapabilities, propertyFilters, demands, (err: any, statusCode: number, agents: TaskAgentInterfaces.TaskAgent[]) => {
+        this.api.getAgents(poolId, agentName, includeCapabilities, propertyFilters, demands, (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(agents);
+                deferred.resolve(agent);
             }
         });
 
@@ -1577,13 +1564,13 @@ export class QTaskAgentApi extends basem.QClientApiBase implements IQTaskAgentAp
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskAgentPool[]>();
 
-        this.api.getPools(poolName, properties, (err: any, statusCode: number, pools: TaskAgentInterfaces.TaskAgentPool[]) => {
+        this.api.getPools(poolName, properties, (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(pools);
+                deferred.resolve(pool);
             }
         });
 
@@ -1667,13 +1654,13 @@ export class QTaskAgentApi extends basem.QClientApiBase implements IQTaskAgentAp
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskAgentQueue[]>();
 
-        this.api.getQueues(queueName, (err: any, statusCode: number, queues: TaskAgentInterfaces.TaskAgentQueue[]) => {
+        this.api.getQueues(queueName, (err: any, statusCode: number, queue: TaskAgentInterfaces.TaskAgentQueue[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(queues);
+                deferred.resolve(queue);
             }
         });
 
@@ -1689,13 +1676,13 @@ export class QTaskAgentApi extends basem.QClientApiBase implements IQTaskAgentAp
     
         var deferred = Q.defer<VSSInterfaces.IdentityRef[]>();
 
-        this.api.getAgentPoolRoles(poolId, (err: any, statusCode: number, roles: VSSInterfaces.IdentityRef[]) => {
+        this.api.getAgentPoolRoles(poolId, (err: any, statusCode: number, role: VSSInterfaces.IdentityRef[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(roles);
+                deferred.resolve(role);
             }
         });
 
@@ -1763,13 +1750,13 @@ export class QTaskAgentApi extends basem.QClientApiBase implements IQTaskAgentAp
     
         var deferred = Q.defer<TaskAgentInterfaces.ServiceEndpoint[]>();
 
-        this.api.getServiceEndpoints(scopeIdentifier, type, (err: any, statusCode: number, serviceendpoints: TaskAgentInterfaces.ServiceEndpoint[]) => {
+        this.api.getServiceEndpoints(scopeIdentifier, type, (err: any, statusCode: number, serviceendpoint: TaskAgentInterfaces.ServiceEndpoint[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(serviceendpoints);
+                deferred.resolve(serviceendpoint);
             }
         });
 
@@ -1803,43 +1790,25 @@ export class QTaskAgentApi extends basem.QClientApiBase implements IQTaskAgentAp
     /**
     * @param {string} taskId
     * @param {string} versionString
-    */
-    public getTaskContent(
-        taskId: string, 
-        versionString?: string
-        ): Q.Promise<TaskAgentInterfaces.TaskDefinition[]> {
-    
-        var deferred = Q.defer<TaskAgentInterfaces.TaskDefinition[]>();
-
-        this.api.getTaskContent(taskId, versionString, (err: any, statusCode: number, tasks: TaskAgentInterfaces.TaskDefinition[]) => {
-            if(err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(tasks);
-            }
-        });
-
-        return <Q.Promise<TaskAgentInterfaces.TaskDefinition[]>>deferred.promise;
-    }
-    
-    /**
     * @param {string[]} visibility
+    * @param {boolean} scopeLocal
     */
     public getTaskDefinitions(
-        visibility: string[]
+        taskId?: string, 
+        versionString?: string, 
+        visibility?: string[], 
+        scopeLocal?: boolean
         ): Q.Promise<TaskAgentInterfaces.TaskDefinition[]> {
     
         var deferred = Q.defer<TaskAgentInterfaces.TaskDefinition[]>();
 
-        this.api.getTaskDefinitions(visibility, (err: any, statusCode: number, tasks: TaskAgentInterfaces.TaskDefinition[]) => {
+        this.api.getTaskDefinitions(taskId, versionString, visibility, scopeLocal, (err: any, statusCode: number, task: TaskAgentInterfaces.TaskDefinition[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(tasks);
+                deferred.resolve(task);
             }
         });
 

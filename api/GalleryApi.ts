@@ -27,7 +27,7 @@ export interface IGalleryApi extends basem.ClientApiBase {
     shareExtension(publisherName: string, extensionName: string, accountName: string, onResult: (err: any, statusCode: number) => void): void;
     unshareExtension(publisherName: string, extensionName: string, accountName: string, onResult: (err: any, statusCode: number) => void): void;
     getAsset(extensionId: string, version: string, assetType: string, accountToken: string, acceptDefault: boolean, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
-    getCategories(languages: string, onResult: (err: any, statusCode: number, categories: string[]) => void): void;
+    getCategories(languages: string, onResult: (err: any, statusCode: number, categorie: string[]) => void): void;
     getCertificate(publisherName: string, extensionName: string, version: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     queryExtensions(extensionQuery: GalleryInterfaces.ExtensionQuery, accountToken: string, onResult: (err: any, statusCode: number, extensionquery: GalleryInterfaces.ExtensionQueryResult) => void): void;
     createExtension(extensionPackage: GalleryInterfaces.ExtensionPackage, onResult: (err: any, statusCode: number, extension: GalleryInterfaces.PublishedExtension) => void): void;
@@ -239,7 +239,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
      */
     public getCategories(
         languages: string,
-        onResult: (err: any, statusCode: number, categories: string[]) => void
+        onResult: (err: any, statusCode: number, categorie: string[]) => void
         ): void {
 
         var routeValues: any = {
@@ -255,7 +255,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -791,13 +791,13 @@ export class QGalleryApi extends basem.QClientApiBase implements IQGalleryApi {
     
         var deferred = Q.defer<string[]>();
 
-        this.api.getCategories(languages, (err: any, statusCode: number, categories: string[]) => {
+        this.api.getCategories(languages, (err: any, statusCode: number, categorie: string[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(categories);
+                deferred.resolve(categorie);
             }
         });
 

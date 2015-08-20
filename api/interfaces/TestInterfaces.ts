@@ -13,15 +13,15 @@
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
-export interface AggregatedResultsByPivot {
+export interface AggregatedResultsByOutcome {
     count: number;
     duration: any;
-    pivot: string;
+    outcome: TestOutcome;
 }
 
 export interface AggregatedTestResults {
     duration: any;
-    resultsByPivot: AggregatedResultsByPivot[];
+    resultsByOutcome: AggregatedResultsByOutcome[];
     self: ShallowReference;
     totalTests: number;
 }
@@ -47,10 +47,15 @@ export interface BatchResponse {
 }
 
 export interface BuildConfiguration {
+    branchName: string;
+    buildDefinitionId: number;
     flavor: string;
     id: number;
+    number: string;
     platform: string;
     project: ShallowReference;
+    repositoryId: number;
+    sourceVersion: string;
     uri: string;
 }
 
@@ -60,6 +65,13 @@ export interface BuildCoverage {
     lastError: string;
     modules: ModuleCoverage[];
     state: string;
+}
+
+export interface BuildReference {
+    buildSystem: string;
+    id: number;
+    number: string;
+    uri: string;
 }
 
 /**
@@ -189,6 +201,11 @@ export interface DtlEnvironmentDetails {
     subscriptionName: string;
 }
 
+export interface FailingSince {
+    build: BuildReference;
+    date: Date;
+}
+
 export interface FunctionCoverage {
     class: string;
     name: string;
@@ -267,7 +284,6 @@ export interface ResultUpdateResponseModel {
 }
 
 export interface RunCreateModel {
-    additionalTestFields: CustomTestField[];
     automated: boolean;
     build: ShallowReference;
     buildDropLocation: string;
@@ -277,6 +293,7 @@ export interface RunCreateModel {
     completeDate: string;
     configurationIds: number[];
     controller: string;
+    customTestFields: CustomTestField[];
     dtlAutEnvironment: ShallowReference;
     dtlTestEnvironment: ShallowReference;
     dueDate: string;
@@ -291,6 +308,7 @@ export interface RunCreateModel {
     releaseEnvironmentUri: string;
     releaseUri: string;
     runTimeout: any;
+    sourceWorkflow: string;
     startDate: string;
     state: string;
     testConfigurationsMapping: string;
@@ -395,7 +413,6 @@ export interface TestAttachmentRequestModel {
 }
 
 export interface TestCaseResult {
-    additionalFields: CustomTestField[];
     afnStripId: number;
     area: ShallowReference;
     associatedBugs: ShallowReference[];
@@ -410,8 +427,10 @@ export interface TestCaseResult {
     computerName: string;
     configuration: ShallowReference;
     createdDate: Date;
+    customFields: CustomTestField[];
     durationInMs: number;
     errorMessage: string;
+    failingSince: FailingSince;
     failureType: string;
     id: number;
     iterationDetails: TestIterationDetailsModel[];
@@ -472,12 +491,12 @@ export interface TestCaseResultIdentifier {
 }
 
 export interface TestCaseResultUpdateModel {
-    additionalFields: CustomTestField[];
     associatedWorkItems: number[];
     automatedTestTypeId: string;
     comment: string;
     completedDate: string;
     computerName: string;
+    customFields: CustomTestField[];
     durationInMs: string;
     errorMessage: string;
     failureType: string;
@@ -497,17 +516,17 @@ export interface TestEnvironment {
     environmentName: string;
 }
 
-export interface TestInsightDetails {
+export interface TestFailureDetails {
     count: number;
-    previousBuild: ShallowReference;
+    previousBuild: BuildReference;
     self: ShallowReference;
     testResults: ShallowReference[];
 }
 
-export interface TestInsights {
-    existingFailures: TestInsightDetails;
-    fixedTests: TestInsightDetails;
-    newFailures: TestInsightDetails;
+export interface TestFailures {
+    existingFailures: TestFailureDetails;
+    fixedTests: TestFailureDetails;
+    newFailures: TestFailureDetails;
     self: ShallowReference;
 }
 
@@ -541,6 +560,66 @@ export interface TestMessageLogDetails {
      * Message of the resource
      */
     message: string;
+}
+
+export enum TestOutcome {
+    /**
+     * Only used during an update to preserve the existing value.
+     */
+    Unspecified = 0,
+    /**
+     * Test has not been completed, or the test type does not report pass/failure.
+     */
+    None = 1,
+    /**
+     * Test was executed w/o any issues.
+     */
+    Passed = 2,
+    /**
+     * Test was executed, but there were issues. Issues may involve exceptions or failed assertions.
+     */
+    Failed = 3,
+    /**
+     * Test has completed, but we can't say if it passed or failed. May be used for aborted tests...
+     */
+    Inconclusive = 4,
+    /**
+     * The test timed out
+     */
+    Timeout = 5,
+    /**
+     * Test was aborted. This was not caused by a user gesture, but rather by a framework decision.
+     */
+    Aborted = 6,
+    /**
+     * Test had it chance for been executed but was not, as ITestElement.IsRunnable == false.
+     */
+    Blocked = 7,
+    /**
+     * Test was not executed. This was caused by a user gesture - e.g. user hit stop button.
+     */
+    NotExecuted = 8,
+    /**
+     * To be used by Run level results. This is not a failure.
+     */
+    Warning = 9,
+    /**
+     * There was a system error while we were trying to execute a test.
+     */
+    Error = 10,
+    /**
+     * Test is Not Applicable for execution.
+     */
+    NotApplicable = 11,
+    /**
+     * Test is paused.
+     */
+    Paused = 12,
+    /**
+     * Test is currently executing. Added this for TCM charts
+     */
+    InProgress = 13,
+    MaxValue = 13,
 }
 
 export interface TestPlan {
@@ -598,10 +677,10 @@ export interface TestPoint {
 
 export interface TestReport {
     aggregatedResults: AggregatedTestResults;
-    build: ShallowReference;
+    build: BuildReference;
     self: ShallowReference;
     teamProject: ShallowReference;
-    testInsights: TestInsights;
+    testFailures: TestFailures;
 }
 
 export interface TestResolutionState {
@@ -611,7 +690,6 @@ export interface TestResolutionState {
 }
 
 export interface TestResultCreateModel {
-    additionalFields: CustomTestField[];
     area: ShallowReference;
     associatedWorkItems: number[];
     automatedTestId: string;
@@ -623,6 +701,7 @@ export interface TestResultCreateModel {
     completedDate: string;
     computerName: string;
     configuration: ShallowReference;
+    customFields: CustomTestField[];
     durationInMs: string;
     errorMessage: string;
     failureType: string;
@@ -657,13 +736,13 @@ export interface TestResultParameterModel {
 }
 
 export interface TestRun {
-    additionalFields: CustomTestField[];
     build: ShallowReference;
     buildConfiguration: BuildConfiguration;
     comment: string;
     completedDate: Date;
     controller: string;
     createdDate: Date;
+    customFields: CustomTestField[];
     dropLocation: string;
     dtlAutEnvironment: ShallowReference;
     dtlEnvironment: ShallowReference;
@@ -821,7 +900,7 @@ export interface WorkItemReference {
 }
 
 export var TypeInfo = {
-    AggregatedResultsByPivot: {
+    AggregatedResultsByOutcome: {
         fields: <any>null
     },
     AggregatedTestResults: {
@@ -849,6 +928,9 @@ export var TypeInfo = {
         fields: <any>null
     },
     BuildCoverage: {
+        fields: <any>null
+    },
+    BuildReference: {
         fields: <any>null
     },
     CodeCoverageData: {
@@ -896,6 +978,9 @@ export var TypeInfo = {
         }
     },
     DtlEnvironmentDetails: {
+        fields: <any>null
+    },
+    FailingSince: {
         fields: <any>null
     },
     FunctionCoverage: {
@@ -989,10 +1074,10 @@ export var TypeInfo = {
     TestEnvironment: {
         fields: <any>null
     },
-    TestInsightDetails: {
+    TestFailureDetails: {
         fields: <any>null
     },
-    TestInsights: {
+    TestFailures: {
         fields: <any>null
     },
     TestIterationDetailsModel: {
@@ -1000,6 +1085,25 @@ export var TypeInfo = {
     },
     TestMessageLogDetails: {
         fields: <any>null
+    },
+    TestOutcome: {
+        enumValues: {
+            "unspecified": 0,
+            "none": 1,
+            "passed": 2,
+            "failed": 3,
+            "inconclusive": 4,
+            "timeout": 5,
+            "aborted": 6,
+            "blocked": 7,
+            "notExecuted": 8,
+            "warning": 9,
+            "error": 10,
+            "notApplicable": 11,
+            "paused": 12,
+            "inProgress": 13,
+            "maxValue": 13,
+        }
     },
     TestPlan: {
         fields: <any>null
@@ -1069,13 +1173,16 @@ export var TypeInfo = {
     },
 };
 
-TypeInfo.AggregatedResultsByPivot.fields = {
+TypeInfo.AggregatedResultsByOutcome.fields = {
+    outcome: {
+        enumType: TypeInfo.TestOutcome
+    },
 };
 
 TypeInfo.AggregatedTestResults.fields = {
-    resultsByPivot: {
+    resultsByOutcome: {
         isArray: true,
-        typeInfo: TypeInfo.AggregatedResultsByPivot
+        typeInfo: TypeInfo.AggregatedResultsByOutcome
     },
     self: {
         typeInfo: TypeInfo.ShallowReference
@@ -1103,6 +1210,9 @@ TypeInfo.BuildCoverage.fields = {
         isArray: true,
         typeInfo: TypeInfo.ModuleCoverage
     },
+};
+
+TypeInfo.BuildReference.fields = {
 };
 
 TypeInfo.CodeCoverageData.fields = {
@@ -1144,6 +1254,15 @@ TypeInfo.CustomTestFieldDefinition.fields = {
 };
 
 TypeInfo.DtlEnvironmentDetails.fields = {
+};
+
+TypeInfo.FailingSince.fields = {
+    build: {
+        typeInfo: TypeInfo.BuildReference
+    },
+    date: {
+        isDate: true,
+    },
 };
 
 TypeInfo.FunctionCoverage.fields = {
@@ -1233,12 +1352,12 @@ TypeInfo.ResultUpdateResponseModel.fields = {
 };
 
 TypeInfo.RunCreateModel.fields = {
-    additionalTestFields: {
-        isArray: true,
-        typeInfo: TypeInfo.CustomTestField
-    },
     build: {
         typeInfo: TypeInfo.ShallowReference
+    },
+    customTestFields: {
+        isArray: true,
+        typeInfo: TypeInfo.CustomTestField
     },
     dtlAutEnvironment: {
         typeInfo: TypeInfo.ShallowReference
@@ -1338,10 +1457,6 @@ TypeInfo.TestAttachmentRequestModel.fields = {
 };
 
 TypeInfo.TestCaseResult.fields = {
-    additionalFields: {
-        isArray: true,
-        typeInfo: TypeInfo.CustomTestField
-    },
     area: {
         typeInfo: TypeInfo.ShallowReference
     },
@@ -1360,6 +1475,13 @@ TypeInfo.TestCaseResult.fields = {
     },
     createdDate: {
         isDate: true,
+    },
+    customFields: {
+        isArray: true,
+        typeInfo: TypeInfo.CustomTestField
+    },
+    failingSince: {
+        typeInfo: TypeInfo.FailingSince
     },
     iterationDetails: {
         isArray: true,
@@ -1413,7 +1535,7 @@ TypeInfo.TestCaseResultIdentifier.fields = {
 };
 
 TypeInfo.TestCaseResultUpdateModel.fields = {
-    additionalFields: {
+    customFields: {
         isArray: true,
         typeInfo: TypeInfo.CustomTestField
     },
@@ -1431,9 +1553,9 @@ TypeInfo.TestCaseResultUpdateModel.fields = {
 TypeInfo.TestEnvironment.fields = {
 };
 
-TypeInfo.TestInsightDetails.fields = {
+TypeInfo.TestFailureDetails.fields = {
     previousBuild: {
-        typeInfo: TypeInfo.ShallowReference
+        typeInfo: TypeInfo.BuildReference
     },
     self: {
         typeInfo: TypeInfo.ShallowReference
@@ -1444,15 +1566,15 @@ TypeInfo.TestInsightDetails.fields = {
     },
 };
 
-TypeInfo.TestInsights.fields = {
+TypeInfo.TestFailures.fields = {
     existingFailures: {
-        typeInfo: TypeInfo.TestInsightDetails
+        typeInfo: TypeInfo.TestFailureDetails
     },
     fixedTests: {
-        typeInfo: TypeInfo.TestInsightDetails
+        typeInfo: TypeInfo.TestFailureDetails
     },
     newFailures: {
-        typeInfo: TypeInfo.TestInsightDetails
+        typeInfo: TypeInfo.TestFailureDetails
     },
     self: {
         typeInfo: TypeInfo.ShallowReference
@@ -1573,7 +1695,7 @@ TypeInfo.TestReport.fields = {
         typeInfo: TypeInfo.AggregatedTestResults
     },
     build: {
-        typeInfo: TypeInfo.ShallowReference
+        typeInfo: TypeInfo.BuildReference
     },
     self: {
         typeInfo: TypeInfo.ShallowReference
@@ -1581,8 +1703,8 @@ TypeInfo.TestReport.fields = {
     teamProject: {
         typeInfo: TypeInfo.ShallowReference
     },
-    testInsights: {
-        typeInfo: TypeInfo.TestInsights
+    testFailures: {
+        typeInfo: TypeInfo.TestFailures
     },
 };
 
@@ -1593,15 +1715,15 @@ TypeInfo.TestResolutionState.fields = {
 };
 
 TypeInfo.TestResultCreateModel.fields = {
-    additionalFields: {
-        isArray: true,
-        typeInfo: TypeInfo.CustomTestField
-    },
     area: {
         typeInfo: TypeInfo.ShallowReference
     },
     configuration: {
         typeInfo: TypeInfo.ShallowReference
+    },
+    customFields: {
+        isArray: true,
+        typeInfo: TypeInfo.CustomTestField
     },
     owner: {
         typeInfo: VSSInterfaces.TypeInfo.IdentityRef
@@ -1630,10 +1752,6 @@ TypeInfo.TestResultParameterModel.fields = {
 };
 
 TypeInfo.TestRun.fields = {
-    additionalFields: {
-        isArray: true,
-        typeInfo: TypeInfo.CustomTestField
-    },
     build: {
         typeInfo: TypeInfo.ShallowReference
     },
@@ -1645,6 +1763,10 @@ TypeInfo.TestRun.fields = {
     },
     createdDate: {
         isDate: true,
+    },
+    customFields: {
+        isArray: true,
+        typeInfo: TypeInfo.CustomTestField
     },
     dtlAutEnvironment: {
         typeInfo: TypeInfo.ShallowReference
