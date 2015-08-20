@@ -155,7 +155,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcBranch, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -195,7 +195,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcBranchRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -232,7 +232,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChange, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -379,7 +379,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChangesetRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -430,7 +430,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.AssociatedWorkItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -601,7 +601,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -736,7 +736,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -813,7 +813,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcLabelRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -873,7 +873,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.VersionControlProjectInfo, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -910,7 +910,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChange, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -981,7 +981,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcShelvesetRef, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1012,7 +1012,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.AssociatedWorkItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);

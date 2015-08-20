@@ -26,41 +26,41 @@ export interface IWorkItemTrackingApi extends basem.ClientApiBase {
     createAttachment(customHeaders: any, contentStream: NodeJS.ReadableStream, fileName: string, uploadType: string, onResult: (err: any, statusCode: number, attachment: WorkItemTrackingInterfaces.AttachmentReference) => void): void;
     getAttachmentContent(id: string, fileName: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     getAttachmentZip(id: string, fileName: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
-    getRootNodes(project: string, depth: number, onResult: (err: any, statusCode: number, classificationNodes: WorkItemTrackingInterfaces.WorkItemClassificationNode[]) => void): void;
+    getRootNodes(project: string, depth: number, onResult: (err: any, statusCode: number, classificationNode: WorkItemTrackingInterfaces.WorkItemClassificationNode[]) => void): void;
     createOrUpdateClassificationNode(postedNode: WorkItemTrackingInterfaces.WorkItemClassificationNode, project: string, structureGroup: WorkItemTrackingInterfaces.TreeStructureGroup, path: string, onResult: (err: any, statusCode: number, classificationNode: WorkItemTrackingInterfaces.WorkItemClassificationNode) => void): void;
     deleteClassificationNode(project: string, structureGroup: WorkItemTrackingInterfaces.TreeStructureGroup, path: string, reclassifyId: number, onResult: (err: any, statusCode: number) => void): void;
     getClassificationNode(project: string, structureGroup: WorkItemTrackingInterfaces.TreeStructureGroup, path: string, depth: number, onResult: (err: any, statusCode: number, classificationNode: WorkItemTrackingInterfaces.WorkItemClassificationNode) => void): void;
     updateClassificationNode(postedNode: WorkItemTrackingInterfaces.WorkItemClassificationNode, project: string, structureGroup: WorkItemTrackingInterfaces.TreeStructureGroup, path: string, onResult: (err: any, statusCode: number, classificationNode: WorkItemTrackingInterfaces.WorkItemClassificationNode) => void): void;
     getField(field: string, onResult: (err: any, statusCode: number, field: WorkItemTrackingInterfaces.WorkItemField) => void): void;
-    getFields(onResult: (err: any, statusCode: number, fields: WorkItemTrackingInterfaces.WorkItemField[]) => void): void;
+    getFields(onResult: (err: any, statusCode: number, field: WorkItemTrackingInterfaces.WorkItemField[]) => void): void;
     getHistory(id: number, top: number, skip: number, onResult: (err: any, statusCode: number, history: WorkItemTrackingInterfaces.WorkItemHistory[]) => void): void;
     getHistoryById(id: number, revisionNumber: number, onResult: (err: any, statusCode: number, history: WorkItemTrackingInterfaces.WorkItemHistory) => void): void;
     createQuery(postedQuery: WorkItemTrackingInterfaces.QueryHierarchyItem, project: string, query: string, onResult: (err: any, statusCode: number, querie: WorkItemTrackingInterfaces.QueryHierarchyItem) => void): void;
     deleteQuery(project: string, query: string, onResult: (err: any, statusCode: number) => void): void;
-    getQueries(project: string, expand: WorkItemTrackingInterfaces.QueryExpand, depth: number, includeDeleted: boolean, onResult: (err: any, statusCode: number, queries: WorkItemTrackingInterfaces.QueryHierarchyItem[]) => void): void;
+    getQueries(project: string, expand: WorkItemTrackingInterfaces.QueryExpand, depth: number, includeDeleted: boolean, onResult: (err: any, statusCode: number, querie: WorkItemTrackingInterfaces.QueryHierarchyItem[]) => void): void;
     getQuery(project: string, query: string, expand: WorkItemTrackingInterfaces.QueryExpand, depth: number, includeDeleted: boolean, onResult: (err: any, statusCode: number, querie: WorkItemTrackingInterfaces.QueryHierarchyItem) => void): void;
     updateQuery(queryUpdate: WorkItemTrackingInterfaces.QueryHierarchyItem, project: string, query: string, undeleteDescendants: boolean, onResult: (err: any, statusCode: number, querie: WorkItemTrackingInterfaces.QueryHierarchyItem) => void): void;
     getRevision(id: number, revisionNumber: number, expand: WorkItemTrackingInterfaces.WorkItemExpand, onResult: (err: any, statusCode: number, revision: WorkItemTrackingInterfaces.WorkItem) => void): void;
-    getRevisions(id: number, top: number, skip: number, expand: WorkItemTrackingInterfaces.WorkItemExpand, onResult: (err: any, statusCode: number, revisions: WorkItemTrackingInterfaces.WorkItem[]) => void): void;
+    getRevisions(id: number, top: number, skip: number, expand: WorkItemTrackingInterfaces.WorkItemExpand, onResult: (err: any, statusCode: number, revision: WorkItemTrackingInterfaces.WorkItem[]) => void): void;
     evaluateRulesOnField(ruleEngineInput: WorkItemTrackingInterfaces.FieldsToEvaluate, onResult: (err: any, statusCode: number) => void): void;
     getUpdate(id: number, updateNumber: number, onResult: (err: any, statusCode: number, update: WorkItemTrackingInterfaces.WorkItemUpdate) => void): void;
-    getUpdates(id: number, top: number, skip: number, onResult: (err: any, statusCode: number, updates: WorkItemTrackingInterfaces.WorkItemUpdate[]) => void): void;
+    getUpdates(id: number, top: number, skip: number, onResult: (err: any, statusCode: number, update: WorkItemTrackingInterfaces.WorkItemUpdate[]) => void): void;
     queryByWiql(wiql: WorkItemTrackingInterfaces.Wiql, project: string, onResult: (err: any, statusCode: number, wiql: WorkItemTrackingInterfaces.WorkItemQueryResult) => void): void;
     queryById(id: string, project: string, onResult: (err: any, statusCode: number, wiql: WorkItemTrackingInterfaces.WorkItemQueryResult) => void): void;
     getReportingLinks(project: string, types: string[], watermark: number, onResult: (err: any, statusCode: number, workItemLink: WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch) => void): void;
     getRelationType(relation: string, onResult: (err: any, statusCode: number, workItemRelationType: WorkItemTrackingInterfaces.WorkItemRelationType) => void): void;
-    getRelationTypes(onResult: (err: any, statusCode: number, workItemRelationTypes: WorkItemTrackingInterfaces.WorkItemRelationType[]) => void): void;
-    readReportingRevisionsGet(project: string, fields: string[], types: string[], watermark: number, onResult: (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => void): void;
+    getRelationTypes(onResult: (err: any, statusCode: number, workItemRelationType: WorkItemTrackingInterfaces.WorkItemRelationType[]) => void): void;
+    readReportingRevisionsGet(project: string, fields: string[], types: string[], watermark: number, includeIdentityRef: boolean, onResult: (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => void): void;
     readReportingRevisionsPost(filter: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsFilter, project: string, watermark: number, onResult: (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => void): void;
     getWorkItem(id: number, fields: string[], asOf: Date, expand: WorkItemTrackingInterfaces.WorkItemExpand, onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => void): void;
-    getWorkItems(ids: number[], fields: string[], asOf: Date, expand: WorkItemTrackingInterfaces.WorkItemExpand, onResult: (err: any, statusCode: number, workItems: WorkItemTrackingInterfaces.WorkItem[]) => void): void;
+    getWorkItems(ids: number[], fields: string[], asOf: Date, expand: WorkItemTrackingInterfaces.WorkItemExpand, onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem[]) => void): void;
     updateWorkItem(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, id: number, validateOnly: boolean, bypassRules: boolean, onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => void): void;
     getWorkItemTemplate(project: string, type: string, fields: string, asOf: Date, expand: WorkItemTrackingInterfaces.WorkItemExpand, onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => void): void;
     updateWorkItemTemplate(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, project: string, type: string, validateOnly: boolean, bypassRules: boolean, onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => void): void;
-    getWorkItemTypeCategories(project: string, onResult: (err: any, statusCode: number, workItemTypeCategories: WorkItemTrackingInterfaces.WorkItemTypeCategory[]) => void): void;
+    getWorkItemTypeCategories(project: string, onResult: (err: any, statusCode: number, workItemTypeCategorie: WorkItemTrackingInterfaces.WorkItemTypeCategory[]) => void): void;
     getWorkItemTypeCategory(project: string, category: string, onResult: (err: any, statusCode: number, workItemTypeCategorie: WorkItemTrackingInterfaces.WorkItemTypeCategory) => void): void;
     getWorkItemType(project: string, type: string, onResult: (err: any, statusCode: number, workItemType: WorkItemTrackingInterfaces.WorkItemType) => void): void;
-    getWorkItemTypes(project: string, onResult: (err: any, statusCode: number, workItemTypes: WorkItemTrackingInterfaces.WorkItemType[]) => void): void;
+    getWorkItemTypes(project: string, onResult: (err: any, statusCode: number, workItemType: WorkItemTrackingInterfaces.WorkItemType[]) => void): void;
     getDependentFields(project: string, type: string, field: string, onResult: (err: any, statusCode: number, workItemTypesField: WorkItemTrackingInterfaces.FieldDependentRule) => void): void;
     exportWorkItemTypeDefinition(project: string, type: string, exportGlobalLists: boolean, onResult: (err: any, statusCode: number, workItemTypeTemplate: WorkItemTrackingInterfaces.WorkItemTypeTemplate) => void): void;
     updateWorkItemTypeDefinition(updateModel: WorkItemTrackingInterfaces.WorkItemTypeTemplateUpdateModel, project: string, onResult: (err: any, statusCode: number, workItemTypeTemplate: WorkItemTrackingInterfaces.ProvisioningResult) => void): void;
@@ -90,7 +90,7 @@ export interface IQWorkItemTrackingApi extends basem.QClientApiBase {
     getReportingLinks(project?: string, types?: string[],  watermark?: number): Q.Promise<WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch>;
     getRelationType( relation: string): Q.Promise<WorkItemTrackingInterfaces.WorkItemRelationType>;
     getRelationTypes(): Q.Promise<WorkItemTrackingInterfaces.WorkItemRelationType[]>;
-    readReportingRevisionsGet(project?: string, fields?: string[], types?: string[],  watermark?: number): Q.Promise<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>;
+    readReportingRevisionsGet(project?: string, fields?: string[], types?: string[], watermark?: number,  includeIdentityRef?: boolean): Q.Promise<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>;
     readReportingRevisionsPost(filter: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsFilter, project?: string,  watermark?: number): Q.Promise<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>;
     getWorkItem(id: number, fields?: string[], asOf?: Date,  expand?: WorkItemTrackingInterfaces.WorkItemExpand): Q.Promise<WorkItemTrackingInterfaces.WorkItem>;
     getWorkItems(ids: number[], fields?: string[], asOf?: Date,  expand?: WorkItemTrackingInterfaces.WorkItemExpand): Q.Promise<WorkItemTrackingInterfaces.WorkItem[]>;
@@ -228,7 +228,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     public getRootNodes(
         project: string,
         depth: number,
-        onResult: (err: any, statusCode: number, classificationNodes: WorkItemTrackingInterfaces.WorkItemClassificationNode[]) => void
+        onResult: (err: any, statusCode: number, classificationNode: WorkItemTrackingInterfaces.WorkItemClassificationNode[]) => void
         ): void {
 
         var routeValues: any = {
@@ -245,7 +245,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -426,7 +426,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemField[]
      */
     public getFields(
-        onResult: (err: any, statusCode: number, fields: WorkItemTrackingInterfaces.WorkItemField[]) => void
+        onResult: (err: any, statusCode: number, field: WorkItemTrackingInterfaces.WorkItemField[]) => void
         ): void {
 
         var routeValues: any = {
@@ -438,7 +438,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemField, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -475,7 +475,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemHistory, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -589,7 +589,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         expand: WorkItemTrackingInterfaces.QueryExpand,
         depth: number,
         includeDeleted: boolean,
-        onResult: (err: any, statusCode: number, queries: WorkItemTrackingInterfaces.QueryHierarchyItem[]) => void
+        onResult: (err: any, statusCode: number, querie: WorkItemTrackingInterfaces.QueryHierarchyItem[]) => void
         ): void {
 
         var routeValues: any = {
@@ -608,7 +608,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -746,7 +746,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         top: number,
         skip: number,
         expand: WorkItemTrackingInterfaces.WorkItemExpand,
-        onResult: (err: any, statusCode: number, revisions: WorkItemTrackingInterfaces.WorkItem[]) => void
+        onResult: (err: any, statusCode: number, revision: WorkItemTrackingInterfaces.WorkItem[]) => void
         ): void {
 
         var routeValues: any = {
@@ -765,7 +765,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -842,7 +842,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         id: number,
         top: number,
         skip: number,
-        onResult: (err: any, statusCode: number, updates: WorkItemTrackingInterfaces.WorkItemUpdate[]) => void
+        onResult: (err: any, statusCode: number, update: WorkItemTrackingInterfaces.WorkItemUpdate[]) => void
         ): void {
 
         var routeValues: any = {
@@ -860,7 +860,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemUpdate, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -995,7 +995,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemRelationType[]
      */
     public getRelationTypes(
-        onResult: (err: any, statusCode: number, workItemRelationTypes: WorkItemTrackingInterfaces.WorkItemRelationType[]) => void
+        onResult: (err: any, statusCode: number, workItemRelationType: WorkItemTrackingInterfaces.WorkItemRelationType[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1007,7 +1007,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemRelationType, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1019,6 +1019,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      * @param {string[]} fields
      * @param {string[]} types
      * @param {number} watermark
+     * @param {boolean} includeIdentityRef
      * @param onResult callback function with the resulting WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch
      */
     public readReportingRevisionsGet(
@@ -1026,6 +1027,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         fields: string[],
         types: string[],
         watermark: number,
+        includeIdentityRef: boolean,
         onResult: (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => void
         ): void {
 
@@ -1037,6 +1039,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             fields: fields && fields.join(","),
             types: types && types.join(","),
             watermark: watermark,
+            includeIdentityRef: includeIdentityRef,
         };
         
         this.vsoClient.getVersioningData("3.0-preview.1", "wit", "f828fe59-dd87-495d-a17c-7a8d6211ca6c", routeValues, queryValues)
@@ -1140,7 +1143,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         fields: string[],
         asOf: Date,
         expand: WorkItemTrackingInterfaces.WorkItemExpand,
-        onResult: (err: any, statusCode: number, workItems: WorkItemTrackingInterfaces.WorkItem[]) => void
+        onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1159,7 +1162,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItem, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1300,7 +1303,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      */
     public getWorkItemTypeCategories(
         project: string,
-        onResult: (err: any, statusCode: number, workItemTypeCategories: WorkItemTrackingInterfaces.WorkItemTypeCategory[]) => void
+        onResult: (err: any, statusCode: number, workItemTypeCategorie: WorkItemTrackingInterfaces.WorkItemTypeCategory[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1313,7 +1316,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemTypeCategory, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1388,7 +1391,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      */
     public getWorkItemTypes(
         project: string,
-        onResult: (err: any, statusCode: number, workItemTypes: WorkItemTrackingInterfaces.WorkItemType[]) => void
+        onResult: (err: any, statusCode: number, workItemType: WorkItemTrackingInterfaces.WorkItemType[]) => void
         ): void {
 
         var routeValues: any = {
@@ -1401,7 +1404,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemType, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1560,13 +1563,13 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemClassificationNode[]>();
 
-        this.api.getRootNodes(project, depth, (err: any, statusCode: number, classificationNodes: WorkItemTrackingInterfaces.WorkItemClassificationNode[]) => {
+        this.api.getRootNodes(project, depth, (err: any, statusCode: number, classificationNode: WorkItemTrackingInterfaces.WorkItemClassificationNode[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(classificationNodes);
+                deferred.resolve(classificationNode);
             }
         });
 
@@ -1686,13 +1689,13 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemField[]>();
 
-        this.api.getFields((err: any, statusCode: number, fields: WorkItemTrackingInterfaces.WorkItemField[]) => {
+        this.api.getFields((err: any, statusCode: number, field: WorkItemTrackingInterfaces.WorkItemField[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(fields);
+                deferred.resolve(field);
             }
         });
 
@@ -1798,13 +1801,13 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.QueryHierarchyItem[]>();
 
-        this.api.getQueries(project, expand, depth, includeDeleted, (err: any, statusCode: number, queries: WorkItemTrackingInterfaces.QueryHierarchyItem[]) => {
+        this.api.getQueries(project, expand, depth, includeDeleted, (err: any, statusCode: number, querie: WorkItemTrackingInterfaces.QueryHierarchyItem[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(queries);
+                deferred.resolve(querie);
             }
         });
 
@@ -1916,13 +1919,13 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItem[]>();
 
-        this.api.getRevisions(id, top, skip, expand, (err: any, statusCode: number, revisions: WorkItemTrackingInterfaces.WorkItem[]) => {
+        this.api.getRevisions(id, top, skip, expand, (err: any, statusCode: number, revision: WorkItemTrackingInterfaces.WorkItem[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(revisions);
+                deferred.resolve(revision);
             }
         });
 
@@ -1970,13 +1973,13 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemUpdate[]>();
 
-        this.api.getUpdates(id, top, skip, (err: any, statusCode: number, updates: WorkItemTrackingInterfaces.WorkItemUpdate[]) => {
+        this.api.getUpdates(id, top, skip, (err: any, statusCode: number, update: WorkItemTrackingInterfaces.WorkItemUpdate[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(updates);
+                deferred.resolve(update);
             }
         });
 
@@ -2092,13 +2095,13 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemRelationType[]>();
 
-        this.api.getRelationTypes((err: any, statusCode: number, workItemRelationTypes: WorkItemTrackingInterfaces.WorkItemRelationType[]) => {
+        this.api.getRelationTypes((err: any, statusCode: number, workItemRelationType: WorkItemTrackingInterfaces.WorkItemRelationType[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(workItemRelationTypes);
+                deferred.resolve(workItemRelationType);
             }
         });
 
@@ -2110,17 +2113,19 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
     * @param {string[]} fields
     * @param {string[]} types
     * @param {number} watermark
+    * @param {boolean} includeIdentityRef
     */
     public readReportingRevisionsGet(
         project?: string, 
         fields?: string[], 
         types?: string[], 
-        watermark?: number
+        watermark?: number, 
+        includeIdentityRef?: boolean
         ): Q.Promise<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch> {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>();
 
-        this.api.readReportingRevisionsGet(project, fields, types, watermark, (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => {
+        this.api.readReportingRevisionsGet(project, fields, types, watermark, includeIdentityRef, (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2206,13 +2211,13 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItem[]>();
 
-        this.api.getWorkItems(ids, fields, asOf, expand, (err: any, statusCode: number, workItems: WorkItemTrackingInterfaces.WorkItem[]) => {
+        this.api.getWorkItems(ids, fields, asOf, expand, (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(workItems);
+                deferred.resolve(workItem);
             }
         });
 
@@ -2320,13 +2325,13 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemTypeCategory[]>();
 
-        this.api.getWorkItemTypeCategories(project, (err: any, statusCode: number, workItemTypeCategories: WorkItemTrackingInterfaces.WorkItemTypeCategory[]) => {
+        this.api.getWorkItemTypeCategories(project, (err: any, statusCode: number, workItemTypeCategorie: WorkItemTrackingInterfaces.WorkItemTypeCategory[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(workItemTypeCategories);
+                deferred.resolve(workItemTypeCategorie);
             }
         });
 
@@ -2394,13 +2399,13 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemType[]>();
 
-        this.api.getWorkItemTypes(project, (err: any, statusCode: number, workItemTypes: WorkItemTrackingInterfaces.WorkItemType[]) => {
+        this.api.getWorkItemTypes(project, (err: any, statusCode: number, workItemType: WorkItemTrackingInterfaces.WorkItemType[]) => {
             if(err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(workItemTypes);
+                deferred.resolve(workItemType);
             }
         });
 

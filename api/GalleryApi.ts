@@ -255,7 +255,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);

@@ -26,7 +26,7 @@ export interface ITestApi extends basem.ClientApiBase {
     createTestRunAttachment(attachmentRequestModel: TestInterfaces.TestAttachmentRequestModel, project: string, runId: number, onResult: (err: any, statusCode: number, Attachment: TestInterfaces.TestAttachmentReference) => void): void;
     getBuildCodeCoverage(project: string, buildId: number, flags: number, onResult: (err: any, statusCode: number, CodeCoverage: TestInterfaces.BuildCoverage[]) => void): void;
     getCodeCoverageSummary(project: string, buildId: number, deltaBuildId: number, onResult: (err: any, statusCode: number, CodeCoverage: TestInterfaces.CodeCoverageSummary) => void): void;
-    updateCodeCoverageSummary(coverageData: TestInterfaces.CodeCoverageData, project: string, build: number, onResult: (err: any, statusCode: number) => void): void;
+    updateCodeCoverageSummary(coverageData: TestInterfaces.CodeCoverageData, project: string, buildId: number, onResult: (err: any, statusCode: number) => void): void;
     getTestRunCodeCoverage(project: string, runId: number, flags: number, onResult: (err: any, statusCode: number, CodeCoverage: TestInterfaces.TestRunCoverage[]) => void): void;
     addCustomFields(newFields: TestInterfaces.CustomTestFieldDefinition[], project: string, onResult: (err: any, statusCode: number, ExtensionFields: TestInterfaces.CustomTestFieldDefinition[]) => void): void;
     queryCustomFields(project: string, scopeFilter: TestInterfaces.CustomTestFieldScope, onResult: (err: any, statusCode: number, ExtensionFields: TestInterfaces.CustomTestFieldDefinition[]) => void): void;
@@ -38,6 +38,8 @@ export interface ITestApi extends basem.ClientApiBase {
     getPoint(project: string, planId: number, suiteId: number, pointIds: number, witFields: string, onResult: (err: any, statusCode: number, Point: TestInterfaces.TestPoint) => void): void;
     getPoints(project: string, planId: number, suiteId: number, witFields: string, configurationId: string, testCaseId: string, testPointIds: string, includePointDetails: boolean, skip: number, top: number, onResult: (err: any, statusCode: number, Points: TestInterfaces.TestPoint[]) => void): void;
     updateTestPoints(pointUpdateModel: TestInterfaces.PointUpdateModel, project: string, planId: number, suiteId: number, pointIds: string, onResult: (err: any, statusCode: number, Point: TestInterfaces.TestPoint[]) => void): void;
+    queryReportForBuild(build: TestInterfaces.BuildReference, project: string, sourceWorkflow: string, includeFailureDetails: boolean, buildToCompare: TestInterfaces.BuildReference, onResult: (err: any, statusCode: number, ReportForBuild: TestInterfaces.TestReport) => void): void;
+    queryReportForTestRun(project: string, testRunId: number, includeFailureDetails: boolean, onResult: (err: any, statusCode: number, ReportForBuild: TestInterfaces.TestReport) => void): void;
     getTestIteration(project: string, runId: number, testCaseResultId: number, iterationId: number, includeActionResults: boolean, onResult: (err: any, statusCode: number, Result: TestInterfaces.TestIterationDetailsModel) => void): void;
     getTestIterations(project: string, runId: number, testCaseResultId: number, includeActionResults: boolean, onResult: (err: any, statusCode: number, Results: TestInterfaces.TestIterationDetailsModel[]) => void): void;
     addTestResultsToTestRun(resultCreateModels: TestInterfaces.TestResultCreateModel[], project: string, runId: number, onResult: (err: any, statusCode: number, Results: TestInterfaces.TestCaseResult[]) => void): void;
@@ -65,6 +67,8 @@ export interface ITestApi extends basem.ClientApiBase {
     getTestSuitesForPlan(project: string, planId: number, includeSuites: boolean, skip: number, top: number, onResult: (err: any, statusCode: number, Suites: TestInterfaces.TestSuite[]) => void): void;
     updateTestSuite(suiteUpdateModel: TestInterfaces.SuiteUpdateModel, project: string, planId: number, suiteId: number, onResult: (err: any, statusCode: number, Suite: TestInterfaces.TestSuite) => void): void;
     getSuitesByTestCaseId(testCaseId: number, onResult: (err: any, statusCode: number, Suites: TestInterfaces.TestSuite[]) => void): void;
+    queryFailureDetailsForBuild(build: TestInterfaces.BuildReference, project: string, sourceWorkflow: string, buildToCompare: TestInterfaces.BuildReference, onResult: (err: any, statusCode: number, TestFailure: TestInterfaces.TestFailures) => void): void;
+    queryFailureDetailsForTestRun(project: string, testRunId: number, onResult: (err: any, statusCode: number, TestFailure: TestInterfaces.TestFailures) => void): void;
     createTestSettings(testSettings: TestInterfaces.TestSettings, project: string, onResult: (err: any, statusCode: number, TestSetting: number) => void): void;
     deleteTestSettings(project: string, testSettingsId: number, onResult: (err: any, statusCode: number) => void): void;
     getTestSettingsById(project: string, testSettingsId: number, onResult: (err: any, statusCode: number, TestSetting: TestInterfaces.TestSettings) => void): void;
@@ -87,6 +91,8 @@ export interface IQTestApi extends basem.QClientApiBase {
     getPoint(project: string, planId: number, suiteId: number, pointIds: number,  witFields?: string): Q.Promise<TestInterfaces.TestPoint>;
     getPoints(project: string, planId: number, suiteId: number, witFields?: string, configurationId?: string, testCaseId?: string, testPointIds?: string, includePointDetails?: boolean, skip?: number,  top?: number): Q.Promise<TestInterfaces.TestPoint[]>;
     updateTestPoints(pointUpdateModel: TestInterfaces.PointUpdateModel, project: string, planId: number, suiteId: number,  pointIds: string): Q.Promise<TestInterfaces.TestPoint[]>;
+    queryReportForBuild(build: TestInterfaces.BuildReference, project: string, sourceWorkflow: string, includeFailureDetails: boolean,  buildToCompare: TestInterfaces.BuildReference): Q.Promise<TestInterfaces.TestReport>;
+    queryReportForTestRun(project: string, testRunId: number,  includeFailureDetails: boolean): Q.Promise<TestInterfaces.TestReport>;
     getTestIteration(project: string, runId: number, testCaseResultId: number, iterationId: number,  includeActionResults?: boolean): Q.Promise<TestInterfaces.TestIterationDetailsModel>;
     getTestIterations(project: string, runId: number, testCaseResultId: number,  includeActionResults?: boolean): Q.Promise<TestInterfaces.TestIterationDetailsModel[]>;
     addTestResultsToTestRun(resultCreateModels: TestInterfaces.TestResultCreateModel[], project: string,  runId: number): Q.Promise<TestInterfaces.TestCaseResult[]>;
@@ -111,6 +117,8 @@ export interface IQTestApi extends basem.QClientApiBase {
     getTestSuitesForPlan(project: string, planId: number, includeSuites?: boolean, skip?: number,  top?: number): Q.Promise<TestInterfaces.TestSuite[]>;
     updateTestSuite(suiteUpdateModel: TestInterfaces.SuiteUpdateModel, project: string, planId: number,  suiteId: number): Q.Promise<TestInterfaces.TestSuite>;
     getSuitesByTestCaseId( testCaseId: number): Q.Promise<TestInterfaces.TestSuite[]>;
+    queryFailureDetailsForBuild(build: TestInterfaces.BuildReference, project: string, sourceWorkflow: string,  buildToCompare: TestInterfaces.BuildReference): Q.Promise<TestInterfaces.TestFailures>;
+    queryFailureDetailsForTestRun(project: string,  testRunId: number): Q.Promise<TestInterfaces.TestFailures>;
     createTestSettings(testSettings: TestInterfaces.TestSettings,  project: string): Q.Promise<number>;
     getTestSettingsById(project: string,  testSettingsId: number): Q.Promise<TestInterfaces.TestSettings>;
 }
@@ -214,7 +222,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.BuildCoverage, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -257,17 +265,17 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-     * http://(tfsserver):8080/tfs/DefaultCollection/_apis/test/CodeCoverage?build=10 Request: Json of code coverage summary
+     * http://(tfsserver):8080/tfs/DefaultCollection/_apis/test/CodeCoverage?buildId=10 Request: Json of code coverage summary
      * 
      * @param {TestInterfaces.CodeCoverageData} coverageData
      * @param {string} project - Project ID or project name
-     * @param {number} build
+     * @param {number} buildId
      * @param onResult callback function
      */
     public updateCodeCoverageSummary(
         coverageData: TestInterfaces.CodeCoverageData,
         project: string,
-        build: number,
+        buildId: number,
         onResult: (err: any, statusCode: number) => void
         ): void {
 
@@ -276,7 +284,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         };
 
         var queryValues: any = {
-            build: build,
+            buildId: buildId,
         };
         
         this.vsoClient.getVersioningData("3.0-preview.1", "Test", "77560e8a-4e8c-4d59-894e-a5f264c24444", routeValues, queryValues)
@@ -320,7 +328,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestRunCoverage, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -348,7 +356,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.CustomTestFieldDefinition, responseTypeMetadata: TestInterfaces.TypeInfo.CustomTestFieldDefinition, responseIsCollection: true };
             
-            this.restClient.createJsonWrappedArray(url, apiVersion, newFields, null, serializationData, onResult);
+            this.restClient.create(url, apiVersion, newFields, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -380,7 +388,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.CustomTestFieldDefinition, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -409,7 +417,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestMessageLogDetails, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -510,7 +518,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPlan, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -638,7 +646,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPoint, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -676,6 +684,81 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.PointUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestPoint, responseIsCollection: true };
             
             this.restClient.update(url, apiVersion, pointUpdateModel, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param {TestInterfaces.BuildReference} build
+     * @param {string} project - Project ID or project name
+     * @param {string} sourceWorkflow
+     * @param {boolean} includeFailureDetails
+     * @param {TestInterfaces.BuildReference} buildToCompare
+     * @param onResult callback function with the resulting TestInterfaces.TestReport
+     */
+    public queryReportForBuild(
+        build: TestInterfaces.BuildReference,
+        project: string,
+        sourceWorkflow: string,
+        includeFailureDetails: boolean,
+        buildToCompare: TestInterfaces.BuildReference,
+        onResult: (err: any, statusCode: number, ReportForBuild: TestInterfaces.TestReport) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project
+        };
+
+        var queryValues: any = {
+            sourceWorkflow: sourceWorkflow,
+            includeFailureDetails: includeFailureDetails,
+            buildToCompare: buildToCompare,
+        };
+        
+        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "000ef77b-fea2-498d-a10d-ad1a037f559f", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.BuildReference, responseTypeMetadata: TestInterfaces.TypeInfo.TestReport, responseIsCollection: false };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number} testRunId
+     * @param {boolean} includeFailureDetails
+     * @param onResult callback function with the resulting TestInterfaces.TestReport
+     */
+    public queryReportForTestRun(
+        project: string,
+        testRunId: number,
+        includeFailureDetails: boolean,
+        onResult: (err: any, statusCode: number, ReportForBuild: TestInterfaces.TestReport) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project
+        };
+
+        var queryValues: any = {
+            testRunId: testRunId,
+            includeFailureDetails: includeFailureDetails,
+        };
+        
+        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "000ef77b-fea2-498d-a10d-ad1a037f559f", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestReport, responseIsCollection: false };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -754,7 +837,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestIterationDetailsModel, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -785,7 +868,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestResultCreateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: true };
             
-            this.restClient.createJsonWrappedArray(url, apiVersion, resultCreateModels, null, serializationData, onResult);
+            this.restClient.create(url, apiVersion, resultCreateModels, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -895,7 +978,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -926,7 +1009,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestCaseResultUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: true };
             
-            this.restClient.updateJsonWrappedArray(url, apiVersion, resultUpdateModels, null, serializationData, onResult);
+            this.restClient.update(url, apiVersion, resultUpdateModels, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -964,7 +1047,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestActionResultModel, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1005,7 +1088,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestResultParameterModel, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1256,7 +1339,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestRun, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1322,7 +1405,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.SuiteTestCase, responseIsCollection: true };
             
-            this.restClient.createJsonWrappedArray(url, apiVersion, null, null, serializationData, onResult);
+            this.restClient.create(url, apiVersion, null, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1389,7 +1472,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.SuiteTestCase, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1569,7 +1652,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1632,7 +1715,76 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param {TestInterfaces.BuildReference} build
+     * @param {string} project - Project ID or project name
+     * @param {string} sourceWorkflow
+     * @param {TestInterfaces.BuildReference} buildToCompare
+     * @param onResult callback function with the resulting TestInterfaces.TestFailures
+     */
+    public queryFailureDetailsForBuild(
+        build: TestInterfaces.BuildReference,
+        project: string,
+        sourceWorkflow: string,
+        buildToCompare: TestInterfaces.BuildReference,
+        onResult: (err: any, statusCode: number, TestFailure: TestInterfaces.TestFailures) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project
+        };
+
+        var queryValues: any = {
+            sourceWorkflow: sourceWorkflow,
+            buildToCompare: buildToCompare,
+        };
+        
+        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "aa4e770d-13e2-467b-ab47-2ddc2adcd643", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.BuildReference, responseTypeMetadata: TestInterfaces.TypeInfo.TestFailures, responseIsCollection: false };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number} testRunId
+     * @param onResult callback function with the resulting TestInterfaces.TestFailures
+     */
+    public queryFailureDetailsForTestRun(
+        project: string,
+        testRunId: number,
+        onResult: (err: any, statusCode: number, TestFailure: TestInterfaces.TestFailures) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project
+        };
+
+        var queryValues: any = {
+            testRunId: testRunId,
+        };
+        
+        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "aa4e770d-13e2-467b-ab47-2ddc2adcd643", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestFailures, responseIsCollection: false };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -2144,6 +2296,62 @@ export class QTestApi extends basem.QClientApiBase implements IQTestApi {
         });
 
         return <Q.Promise<TestInterfaces.TestPoint[]>>deferred.promise;
+    }
+    
+    /**
+    * @param {TestInterfaces.BuildReference} build
+    * @param {string} project - Project ID or project name
+    * @param {string} sourceWorkflow
+    * @param {boolean} includeFailureDetails
+    * @param {TestInterfaces.BuildReference} buildToCompare
+    */
+    public queryReportForBuild(
+        build: TestInterfaces.BuildReference, 
+        project: string, 
+        sourceWorkflow: string, 
+        includeFailureDetails: boolean, 
+        buildToCompare: TestInterfaces.BuildReference
+        ): Q.Promise<TestInterfaces.TestReport> {
+    
+        var deferred = Q.defer<TestInterfaces.TestReport>();
+
+        this.api.queryReportForBuild(build, project, sourceWorkflow, includeFailureDetails, buildToCompare, (err: any, statusCode: number, ReportForBuild: TestInterfaces.TestReport) => {
+            if(err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(ReportForBuild);
+            }
+        });
+
+        return <Q.Promise<TestInterfaces.TestReport>>deferred.promise;
+    }
+    
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} testRunId
+    * @param {boolean} includeFailureDetails
+    */
+    public queryReportForTestRun(
+        project: string, 
+        testRunId: number, 
+        includeFailureDetails: boolean
+        ): Q.Promise<TestInterfaces.TestReport> {
+    
+        var deferred = Q.defer<TestInterfaces.TestReport>();
+
+        this.api.queryReportForTestRun(project, testRunId, includeFailureDetails, (err: any, statusCode: number, ReportForBuild: TestInterfaces.TestReport) => {
+            if(err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(ReportForBuild);
+            }
+        });
+
+        return <Q.Promise<TestInterfaces.TestReport>>deferred.promise;
     }
     
     /**
@@ -2812,6 +3020,58 @@ export class QTestApi extends basem.QClientApiBase implements IQTestApi {
         });
 
         return <Q.Promise<TestInterfaces.TestSuite[]>>deferred.promise;
+    }
+    
+    /**
+    * @param {TestInterfaces.BuildReference} build
+    * @param {string} project - Project ID or project name
+    * @param {string} sourceWorkflow
+    * @param {TestInterfaces.BuildReference} buildToCompare
+    */
+    public queryFailureDetailsForBuild(
+        build: TestInterfaces.BuildReference, 
+        project: string, 
+        sourceWorkflow: string, 
+        buildToCompare: TestInterfaces.BuildReference
+        ): Q.Promise<TestInterfaces.TestFailures> {
+    
+        var deferred = Q.defer<TestInterfaces.TestFailures>();
+
+        this.api.queryFailureDetailsForBuild(build, project, sourceWorkflow, buildToCompare, (err: any, statusCode: number, TestFailure: TestInterfaces.TestFailures) => {
+            if(err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(TestFailure);
+            }
+        });
+
+        return <Q.Promise<TestInterfaces.TestFailures>>deferred.promise;
+    }
+    
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} testRunId
+    */
+    public queryFailureDetailsForTestRun(
+        project: string, 
+        testRunId: number
+        ): Q.Promise<TestInterfaces.TestFailures> {
+    
+        var deferred = Q.defer<TestInterfaces.TestFailures>();
+
+        this.api.queryFailureDetailsForTestRun(project, testRunId, (err: any, statusCode: number, TestFailure: TestInterfaces.TestFailures) => {
+            if(err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(TestFailure);
+            }
+        });
+
+        return <Q.Promise<TestInterfaces.TestFailures>>deferred.promise;
     }
     
     /**
