@@ -13,6 +13,7 @@ import taskm = require('./TaskApi');
 import testm = require('./TestApi');
 import tfvcm = require('./TfvcApi');
 import workitemtrackingm = require('./WorkItemTrackingApi');
+import releasemanagementm = require('./ReleaseManagementApi');
 
 import apivm = require('./handlers/apiversion');
 import basicm = require('./handlers/basiccreds');
@@ -138,5 +139,13 @@ export class WebApi {
 
     public getQWorkItemTrackingApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): workitemtrackingm.IQWorkItemTrackingApi {
         return new workitemtrackingm.QWorkItemTrackingApi(serverUrl, handlers);
+    }
+
+    public getReleaseManagemntApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): releasemanagementm.IReleaseManagementApi {
+        return new releasemanagementm.ReleaseManagementApi(serverUrl, handlers);
+    }
+
+    public getQReleaseManagemntApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): releasemanagementm.IQReleaseManagementApi {
+        return new releasemanagementm.QReleaseManagementApi(serverUrl, handlers);
     }
 }
