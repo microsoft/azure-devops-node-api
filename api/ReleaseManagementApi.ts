@@ -116,7 +116,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: ReleaseManagementInterfaces.TypeInfo.AgentArtifactDefinition, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -154,7 +154,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: ReleaseManagementInterfaces.TypeInfo.ReleaseApproval, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -183,7 +183,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: ReleaseManagementInterfaces.TypeInfo.ReleaseApproval, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -312,7 +312,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: ReleaseManagementInterfaces.TypeInfo.Artifact, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -340,7 +340,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: ReleaseManagementInterfaces.TypeInfo.ArtifactDefinition, responseTypeMetadata: ReleaseManagementInterfaces.TypeInfo.ArtifactDefinition, responseIsCollection: true };
             
-            this.restClient.updateJsonWrappedArray(url, apiVersion, artifactDefinitions, null, serializationData, onResult);
+            this.restClient.update(url, apiVersion, artifactDefinitions, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -461,7 +461,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: ReleaseManagementInterfaces.TypeInfo.ReleaseDefinition, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -607,7 +607,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: ReleaseManagementInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -888,7 +888,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: ReleaseManagementInterfaces.TypeInfo.Release, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1008,7 +1008,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: ReleaseManagementInterfaces.TypeInfo.ArtifactTypeDefinition, responseIsCollection: true };
             
-            this.restClient.getJsonWrappedArray(url, apiVersion, null, serializationData, onResult);
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
