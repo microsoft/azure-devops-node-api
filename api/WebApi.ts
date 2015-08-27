@@ -14,6 +14,7 @@ import testm = require('./TestApi');
 import tfvcm = require('./TfvcApi');
 import workitemtrackingm = require('./WorkItemTrackingApi');
 import releasemanagementm = require('./ReleaseManagementApi');
+import jenkinsm = require('./JenkinsApi');
 
 import apivm = require('./handlers/apiversion');
 import basicm = require('./handlers/basiccreds');
@@ -147,5 +148,9 @@ export class WebApi {
 
     public getQReleaseManagemntApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): releasemanagementm.IQReleaseManagementApi {
         return new releasemanagementm.QReleaseManagementApi(serverUrl, handlers);
+    }
+
+    public getJenkinsApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): jenkinsm.IJenkinsApi {
+        return new jenkinsm.JenkinsApi(serverUrl, handlers);
     }
 }
