@@ -149,8 +149,4 @@ export class WebApi {
     public getQReleaseManagemntApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): releasemanagementm.IQReleaseManagementApi {
         return new releasemanagementm.QReleaseManagementApi(serverUrl, handlers);
     }
-
-    public getJenkinsApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): jenkinsm.IJenkinsApi {
-        return new jenkinsm.JenkinsApi(serverUrl, handlers);
-    }
 }
