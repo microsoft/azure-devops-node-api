@@ -14,7 +14,6 @@ import testm = require('./TestApi');
 import tfvcm = require('./TfvcApi');
 import workitemtrackingm = require('./WorkItemTrackingApi');
 import releasemanagementm = require('./ReleaseManagementApi');
-import jenkinsm = require('./JenkinsApi');
 
 import apivm = require('./handlers/apiversion');
 import basicm = require('./handlers/basiccreds');
