@@ -271,6 +271,7 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
         
         var accountUrl = purl.protocol + '//' + purl.host;
         
+        // purl.path is something like /DefaultCollection or /tfs/DefaultCollection or /DefaultCollection/
         var splitPath: string[] = purl.path.split('/').slice(1);
         if (splitPath.length === 0 || (splitPath.length === 1 && splitPath[0] === '')) {
             return null;
@@ -278,7 +279,11 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
         if (splitPath.length === 2 && splitPath[0] === 'tfs') {
             //on prem
             accountUrl += '/' + 'tfs';
-        } 
+        }
+        else if (splitPath.length === 2 && splitPath[0] === '') {
+            // /DefaultCollection/
+            return accountUrl;
+        }
         else if (splitPath.length > 1) {
             return null;
         }
