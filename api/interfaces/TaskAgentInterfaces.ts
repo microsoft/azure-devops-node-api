@@ -10,6 +10,7 @@
 
 "use strict";
 
+import FormInputInterfaces = require("../interfaces/common/FormInputInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
@@ -49,6 +50,18 @@ export enum ConnectedServiceKind {
      * GitHub Connection
      */
     GitHub = 4,
+}
+
+export interface DataSource {
+    endpointUrl: string;
+    name: string;
+    resultSelector: string;
+}
+
+export interface DataSourceBinding {
+    dataSourceName: string;
+    endpointId: string;
+    parameters: { [key: string] : string; };
 }
 
 export interface EndpointAuthorization {
@@ -177,6 +190,21 @@ export interface ServiceEndpoint {
     url: string;
 }
 
+export interface ServiceEndpointAuthenticationScheme {
+    displayName: string;
+    inputDescriptors: FormInputInterfaces.InputDescriptor[];
+    scheme: string;
+}
+
+export interface ServiceEndpointType {
+    authenticationSchemes: ServiceEndpointAuthenticationScheme[];
+    dataSources: DataSource[];
+    description: string;
+    displayName: string;
+    imageUrl: string;
+    name: string;
+}
+
 export interface TaskAgent extends TaskAgentReference {
     /**
      * Gets the date on which this agent was created.
@@ -254,6 +282,10 @@ export interface TaskAgentPool extends TaskAgentPoolReference {
     isHosted: boolean;
     properties: any;
     /**
+     * Gets a value indicating whether or not roles have been provisioned for this pool.
+     */
+    provisioned: boolean;
+    /**
      * Gets the service accounts group for this agent pool.
      */
     serviceAccountsGroup: VSSInterfaces.IdentityRef;
@@ -270,9 +302,17 @@ export interface TaskAgentPoolReference {
 }
 
 export interface TaskAgentQueue {
+    groupScopeId: string;
     id: number;
     name: string;
     pool: TaskAgentPoolReference;
+    provisioned: boolean;
+}
+
+export enum TaskAgentQueueActionFilter {
+    None = 0,
+    Manage = 2,
+    Use = 16,
 }
 
 export interface TaskAgentReference {
@@ -308,6 +348,8 @@ export interface TaskAttachment {
     lastChangedBy: string;
     lastChangedOn: Date;
     name: string;
+    recordId: string;
+    timelineId: string;
     type: string;
 }
 
@@ -444,6 +486,8 @@ export interface TaskOrchestrationPlan extends TaskOrchestrationPlanReference {
     environment: PlanEnvironment;
     finishTime: Date;
     implementation: TaskOrchestrationContainer;
+    requestedById: string;
+    requestedForId: string;
     result: TaskResult;
     resultCode: string;
     startTime: Date;
@@ -653,6 +697,12 @@ export var TypeInfo = {
             "gitHub": 4,
         }
     },
+    DataSource: {
+        fields: <any>null
+    },
+    DataSourceBinding: {
+        fields: <any>null
+    },
     EndpointAuthorization: {
         fields: <any>null
     },
@@ -701,6 +751,12 @@ export var TypeInfo = {
     ServiceEndpoint: {
         fields: <any>null
     },
+    ServiceEndpointAuthenticationScheme: {
+        fields: <any>null
+    },
+    ServiceEndpointType: {
+        fields: <any>null
+    },
     TaskAgent: {
         fields: <any>null
     },
@@ -718,6 +774,13 @@ export var TypeInfo = {
     },
     TaskAgentQueue: {
         fields: <any>null
+    },
+    TaskAgentQueueActionFilter: {
+        enumValues: {
+            "none": 0,
+            "manage": 2,
+            "use": 16,
+        }
     },
     TaskAgentReference: {
         fields: <any>null
@@ -856,6 +919,12 @@ TypeInfo.AgentQueueEvent.fields = {
 TypeInfo.AgentRefreshMessage.fields = {
 };
 
+TypeInfo.DataSource.fields = {
+};
+
+TypeInfo.DataSourceBinding.fields = {
+};
+
 TypeInfo.EndpointAuthorization.fields = {
 };
 
@@ -952,6 +1021,24 @@ TypeInfo.ServiceEndpoint.fields = {
     },
     readersGroup: {
         typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+};
+
+TypeInfo.ServiceEndpointAuthenticationScheme.fields = {
+    inputDescriptors: {
+        isArray: true,
+        typeInfo: FormInputInterfaces.TypeInfo.InputDescriptor
+    },
+};
+
+TypeInfo.ServiceEndpointType.fields = {
+    authenticationSchemes: {
+        isArray: true,
+        typeInfo: TypeInfo.ServiceEndpointAuthenticationScheme
+    },
+    dataSources: {
+        isArray: true,
+        typeInfo: TypeInfo.DataSource
     },
 };
 

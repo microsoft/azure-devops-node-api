@@ -100,7 +100,7 @@ export class HttpClient implements ifm.IHttpClient {
             prot = proxyUrl.protocol === 'https:' ? https: http;
         }
 
-        var options = { headers: {}};
+        var options: any = { headers: {}};
 
         var useProxy = proxyUrl && proxyUrl.hostname;
         if (useProxy) {

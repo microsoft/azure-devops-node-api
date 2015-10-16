@@ -95,8 +95,12 @@ export class VsoClient {
         var requestUrl;
         var deferred = Q.defer<ClientVersioningData>();
 
-        this._beginGetLocation(area, locationId)
+        this.beginGetLocation(area, locationId)
         .then((location: ifm.ApiResourceLocation) => {
+            if (!location) { 
+                throw new Error("Failed to find api location for area: " + area + " id: " + locationId);
+            }
+            
             if (!apiVersion) {
                 // Use the latest version of the resource if the api version was not specified in the request.
                 apiVersion = location.maxVersion + VsoClient.PREVIEW_INDICATOR + location.resourceVersion;
@@ -136,23 +140,19 @@ export class VsoClient {
             this._initializationPromise = promise;
         }
     }
-
+    
     /**
      * Gets information about an API resource location (route template, supported versions, etc.)
      * 
      * @param area resource area name
      * @param locationId Guid of the location to get
      */
-    public _beginGetLocation(area: string, locationId: string): Q.Promise<ifm.ApiResourceLocation> {
+    public beginGetLocation(area: string, locationId: string): Q.Promise<ifm.ApiResourceLocation> {
         return this._initializationPromise.then(() => {
-                return this.beginGetAreaLocations(area);
-            }).then((areaLocations: VssApiResourceLocationLookup) => {
-                var location = areaLocations[(locationId || "").toLowerCase()];
-                if (!location) {
-                    throw new Error("Failed to find api location for area: " + area + " id: " + locationId);
-                }
-                return location;
-            });
+            return this.beginGetAreaLocations(area);
+        }).then((areaLocations: VssApiResourceLocationLookup) => {
+            return areaLocations[(locationId || "").toLowerCase()];
+        });
     }
 
     private beginGetAreaLocations(area: string): Q.Promise<VssApiResourceLocationLookup> {
