@@ -3,7 +3,7 @@ var path = require('path');
 var gulp = require('gulp');
 var del = require('del');
 var mocha = require('gulp-mocha');
-var typescript = require('gulp-tsc');
+var typescript = require('gulp-typescript');
 var dtsgen = require('dts-generator');
 
 var srcDir = path.join(__dirname, 'api');
@@ -15,7 +15,7 @@ gulp.task('clean', function (done) {
 // builds the whole api and drops definition files (.d.ts files) in place
 gulp.task('compile', ['clean'], function () {
     return tsResult = gulp.src(['api/**/*.ts'])
-        .pipe(typescript({ removeComments: true, outDir: 'api' }))
+        .pipe(typescript({ removeComments: true, outDir: 'api', module: 'commonjs' }))
         .pipe(gulp.dest('api'))
         .on('error', function (err) { console.error(err.message);process.exit(1) });
 });
