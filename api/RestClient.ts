@@ -51,7 +51,20 @@ export function processResponse(url, res, contents, serializationData: Serializa
     if (res.statusCode > 299) {
         // not success
         var msg = httpCodes[res.statusCode] ? "Failed Request: " + httpCodes[res.statusCode] : "Failed Request";
-        msg += '(' + res.statusCode + ') - ' + url;
+        msg += '(' + res.statusCode + ') - ';
+
+        if (contents && contents.length > 0) {
+            var jsonObj = null;
+            try {
+                jsonObj = JSON.parse(contents);
+            } catch (e) {}
+
+            if (jsonObj && jsonObj.message) {
+                msg += jsonObj.message;
+            } else {
+                msg += url;
+            }
+        }
 
         onResult(new Error(msg), res.statusCode, null);
     } else {
