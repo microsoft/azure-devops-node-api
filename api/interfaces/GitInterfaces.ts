@@ -333,8 +333,6 @@ export interface GitPullRequest {
     _links: any;
     closedDate: Date;
     codeReviewId: number;
-    commits: GitCommitRef[];
-    completionOptions: GitPullRequestCompletionOptions;
     createdBy: VSSInterfaces.IdentityRef;
     creationDate: Date;
     description: string;
@@ -353,11 +351,6 @@ export interface GitPullRequest {
     title: string;
     upgraded: boolean;
     url: string;
-}
-
-export interface GitPullRequestCompletionOptions {
-    deleteSourceBranch: boolean;
-    mergeCommitMessage: string;
 }
 
 export interface GitPullRequestSearchCriteria {
@@ -835,7 +828,6 @@ export enum PullRequestStatus {
     Active = 1,
     Abandoned = 2,
     Completed = 3,
-    All = 4,
 }
 
 export interface TfvcBranch extends TfvcBranchRef {
@@ -1245,9 +1237,6 @@ export var TypeInfo = {
     GitPullRequest: {
         fields: <any>null
     },
-    GitPullRequestCompletionOptions: {
-        fields: <any>null
-    },
     GitPullRequestSearchCriteria: {
         fields: <any>null
     },
@@ -1395,7 +1384,6 @@ export var TypeInfo = {
             "active": 1,
             "abandoned": 2,
             "completed": 3,
-            "all": 4,
         }
     },
     TfvcBranch: {
@@ -1705,13 +1693,6 @@ TypeInfo.GitPullRequest.fields = {
     closedDate: {
         isDate: true,
     },
-    commits: {
-        isArray: true,
-        typeInfo: TypeInfo.GitCommitRef
-    },
-    completionOptions: {
-        typeInfo: TypeInfo.GitPullRequestCompletionOptions
-    },
     createdBy: {
         typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
@@ -1740,9 +1721,6 @@ TypeInfo.GitPullRequest.fields = {
     status: {
         enumType: TypeInfo.PullRequestStatus
     },
-};
-
-TypeInfo.GitPullRequestCompletionOptions.fields = {
 };
 
 TypeInfo.GitPullRequestSearchCriteria.fields = {

@@ -41,18 +41,11 @@ export interface Process extends ProcessReference {
     description: string;
     id: string;
     isDefault: boolean;
-    type: ProcessType;
 }
 
 export interface ProcessReference {
     name: string;
     url: string;
-}
-
-export enum ProcessType {
-    System = 0,
-    Custom = 1,
-    Inherited = 2,
 }
 
 export enum ProjectChangeType {
@@ -380,13 +373,6 @@ export var TypeInfo = {
     ProcessReference: {
         fields: <any>null
     },
-    ProcessType: {
-        enumValues: {
-            "system": 0,
-            "custom": 1,
-            "inherited": 2,
-        }
-    },
     ProjectChangeType: {
         enumValues: {
             "modified": 0,
@@ -463,9 +449,6 @@ TypeInfo.IdentityData.fields = {
 };
 
 TypeInfo.Process.fields = {
-    type: {
-        enumType: TypeInfo.ProcessType
-    },
 };
 
 TypeInfo.ProcessReference.fields = {

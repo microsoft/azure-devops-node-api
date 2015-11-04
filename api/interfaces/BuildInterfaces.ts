@@ -38,7 +38,6 @@ export enum AgentStatus {
 }
 
 export interface ArtifactResource {
-    _links: any;
     /**
      * The type-specific resource data. For example, "#/10002/5/drop", "$/drops/5", "\\myshare\myfolder\mydrops\5"
      */
@@ -47,10 +46,6 @@ export interface ArtifactResource {
      * Link to the resource. This might include things like query parameters to download as a zip file
      */
     downloadUrl: string;
-    /**
-     * Properties of Artifact Resource
-     */
-    properties: { [key: string] : string; };
     /**
      * The type of the resource: File container, version control folder, UNC path, etc.
      */
@@ -76,10 +71,6 @@ export interface Build {
      * Build number/name of the build
      */
     buildNumber: string;
-    /**
-     * Build number revision
-     */
-    buildNumberRevision: number;
     /**
      * The build controller. This should only be set if the definition type is Xaml.
      */
@@ -235,10 +226,6 @@ export interface BuildArtifact {
     resource: ArtifactResource;
 }
 
-export interface BuildArtifactAddedEvent extends BuildUpdatedEvent {
-    artifact: BuildArtifact;
-}
-
 export enum BuildAuthorizationScope {
     /**
      * The identity used should have build service account permissions scoped to the project collection. This is useful when resources for a single build are spread across multiple projects.
@@ -248,20 +235,6 @@ export enum BuildAuthorizationScope {
      * The identity used should have build service account permissions scoped to the project in which the build definition resides. This is useful for isolation of build jobs to a particular team project to avoid any unintentional escalation of privilege attacks during a build.
      */
     Project = 2,
-}
-
-/**
- * Data representation of a build badge
- */
-export interface BuildBadge {
-    /**
-     * Build id, if exists that this badge corresponds to
-     */
-    buildId: number;
-    /**
-     * Self Url that generates SVG
-     */
-    imageUrl: string;
 }
 
 export interface BuildCompletedEvent extends BuildUpdatedEvent {
@@ -310,6 +283,10 @@ export interface BuildDefinition extends BuildDefinitionReference {
      * The comment entered when saving the definition
      */
     comment: string;
+    /**
+     * The date the definition was created
+     */
+    createdDate: Date;
     demands: any[];
     /**
      * The description
@@ -535,9 +512,6 @@ export enum BuildPhaseStatus {
     Succeeded = 2,
 }
 
-export interface BuildPollingSummaryEvent {
-}
-
 export interface BuildProcessTemplate {
     description: string;
     fileExists: boolean;
@@ -638,12 +612,6 @@ export interface BuildRepository {
 export interface BuildRequestValidationResult {
     message: string;
     result: ValidationResult;
-}
-
-export interface BuildResourceUsage {
-    distributedTaskAgents: number;
-    totalUsage: number;
-    xamlControllers: number;
 }
 
 export enum BuildResult {
@@ -812,14 +780,6 @@ export interface ContinuousDeploymentDefinition {
 export interface ContinuousIntegrationTrigger extends BuildTrigger {
     batchChanges: boolean;
     branchFilters: string[];
-    /**
-     * The polling interval in seconds.
-     */
-    pollingInterval: number;
-    /**
-     * This is the id of the polling job that polls the external repository.  Once the build definition is saved/updated, this value is set.
-     */
-    pollingJobId: string;
 }
 
 export enum ControllerStatus {
@@ -842,21 +802,6 @@ export enum DefinitionQuality {
     Draft = 2,
 }
 
-export enum DefinitionQueryOrder {
-    /**
-     * No order
-     */
-    None = 0,
-    /**
-     * Order by created on/last modified time ascending.
-     */
-    LastModifiedAscending = 1,
-    /**
-     * Order by created on/last modified time descending.
-     */
-    LastModifiedDescending = 2,
-}
-
 export enum DefinitionQueueStatus {
     /**
      * When enabled the definition queue allows builds to be queued by users, the system will queue scheduled, gated and continuous integration builds, and the queued builds will be started by the system.
@@ -876,10 +821,6 @@ export enum DefinitionQueueStatus {
  * A reference to a definition.
  */
 export interface DefinitionReference extends ShallowReference {
-    /**
-     * The date the definition was created
-     */
-    createdDate: Date;
     /**
      * The project.
      */
@@ -1055,7 +996,6 @@ export enum IssueType {
 }
 
 export interface MappingDetails {
-    localPath: string;
     mappingType: string;
     serverPath: string;
 }
@@ -1163,7 +1103,6 @@ export interface RequestReference {
 }
 
 export interface RetentionPolicy {
-    artifacts: string[];
     branches: string[];
     daysToKeep: number;
     deleteBuildRecord: boolean;
@@ -1264,18 +1203,6 @@ export interface ShallowReference {
      * Full http link to the resource
      */
     url: string;
-}
-
-export interface SvnMappingDetails {
-    depth: number;
-    ignoreExternals: boolean;
-    localPath: string;
-    revision: string;
-    serverPath: string;
-}
-
-export interface SvnWorkspace {
-    mappings: SvnMappingDetails[];
 }
 
 export interface TaskAgentPoolReference {
@@ -1493,17 +1420,11 @@ export var TypeInfo = {
     BuildArtifact: {
         fields: <any>null
     },
-    BuildArtifactAddedEvent: {
-        fields: <any>null
-    },
     BuildAuthorizationScope: {
         enumValues: {
             "projectCollection": 1,
             "project": 2,
         }
-    },
-    BuildBadge: {
-        fields: <any>null
     },
     BuildCompletedEvent: {
         fields: <any>null
@@ -1582,9 +1503,6 @@ export var TypeInfo = {
             "succeeded": 2,
         }
     },
-    BuildPollingSummaryEvent: {
-        fields: <any>null
-    },
     BuildProcessTemplate: {
         fields: <any>null
     },
@@ -1612,9 +1530,6 @@ export var TypeInfo = {
         fields: <any>null
     },
     BuildRequestValidationResult: {
-        fields: <any>null
-    },
-    BuildResourceUsage: {
         fields: <any>null
     },
     BuildResult: {
@@ -1681,13 +1596,6 @@ export var TypeInfo = {
         enumValues: {
             "definition": 1,
             "draft": 2,
-        }
-    },
-    DefinitionQueryOrder: {
-        enumValues: {
-            "none": 0,
-            "lastModifiedAscending": 1,
-            "lastModifiedDescending": 2,
         }
     },
     DefinitionQueueStatus: {
@@ -1829,12 +1737,6 @@ export var TypeInfo = {
         }
     },
     ShallowReference: {
-        fields: <any>null
-    },
-    SvnMappingDetails: {
-        fields: <any>null
-    },
-    SvnWorkspace: {
         fields: <any>null
     },
     TaskAgentPoolReference: {
@@ -1996,18 +1898,6 @@ TypeInfo.BuildArtifact.fields = {
     },
 };
 
-TypeInfo.BuildArtifactAddedEvent.fields = {
-    artifact: {
-        typeInfo: TypeInfo.BuildArtifact
-    },
-    build: {
-        typeInfo: TypeInfo.Build
-    },
-};
-
-TypeInfo.BuildBadge.fields = {
-};
-
 TypeInfo.BuildCompletedEvent.fields = {
     build: {
         typeInfo: TypeInfo.Build
@@ -2103,9 +1993,6 @@ TypeInfo.BuildDefinitionChangingEvent.fields = {
 TypeInfo.BuildDefinitionReference.fields = {
     authoredBy: {
         typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    createdDate: {
-        isDate: true,
     },
     draftOf: {
         typeInfo: TypeInfo.DefinitionReference
@@ -2219,9 +2106,6 @@ TypeInfo.BuildOptionInputDefinition.fields = {
     },
 };
 
-TypeInfo.BuildPollingSummaryEvent.fields = {
-};
-
 TypeInfo.BuildProcessTemplate.fields = {
     supportedReasons: {
         enumType: TypeInfo.BuildReason
@@ -2238,9 +2122,6 @@ TypeInfo.BuildRequestValidationResult.fields = {
     result: {
         enumType: TypeInfo.ValidationResult
     },
-};
-
-TypeInfo.BuildResourceUsage.fields = {
 };
 
 TypeInfo.BuildServer.fields = {
@@ -2345,9 +2226,6 @@ TypeInfo.ContinuousIntegrationTrigger.fields = {
 };
 
 TypeInfo.DefinitionReference.fields = {
-    createdDate: {
-        isDate: true,
-    },
     project: {
         typeInfo: TfsInterfaces.TypeInfo.TeamProjectReference
     },
@@ -2421,16 +2299,6 @@ TypeInfo.ScheduleTrigger.fields = {
 };
 
 TypeInfo.ShallowReference.fields = {
-};
-
-TypeInfo.SvnMappingDetails.fields = {
-};
-
-TypeInfo.SvnWorkspace.fields = {
-    mappings: {
-        isArray: true,
-        typeInfo: TypeInfo.SvnMappingDetails
-    },
 };
 
 TypeInfo.TaskAgentPoolReference.fields = {
@@ -2509,9 +2377,6 @@ TypeInfo.WorkspaceTemplate.fields = {
 TypeInfo.XamlBuildDefinition.fields = {
     controller: {
         typeInfo: TypeInfo.BuildController
-    },
-    createdDate: {
-        isDate: true,
     },
     createdOn: {
         isDate: true,

@@ -10,20 +10,8 @@
 
 "use strict";
 
-import TfsInterfaces = require("../interfaces/common/TfsInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
-
-export interface AggregatedResultsAnalysis {
-    duration: any;
-    increaseInDuration: any;
-    increaseInFailures: number;
-    increaseInPassedTests: number;
-    increaseInTotalTests: number;
-    previousBuild: BuildReference;
-    resultsByOutcome: AggregatedResultsByOutcome[];
-    totalTests: number;
-}
 
 export interface AggregatedResultsByOutcome {
     count: number;
@@ -31,9 +19,11 @@ export interface AggregatedResultsByOutcome {
     outcome: TestOutcome;
 }
 
-export interface AggregatedResultsWithDetails {
-    groupByField: string;
-    resultsForGroup: TestResultsDetailsForGroup[];
+export interface AggregatedTestResults {
+    duration: any;
+    resultsByOutcome: AggregatedResultsByOutcome[];
+    self: ShallowReference;
+    totalTests: number;
 }
 
 export enum AttachmentType {
@@ -224,17 +214,6 @@ export interface FunctionCoverage {
     statistics: CoverageStatistics;
 }
 
-export enum GroupTestResultsBy {
-    None = 0,
-    AutomatedTestStorage = 1,
-}
-
-export interface LastResultDetails {
-    dateCompleted: Date;
-    duration: number;
-    runBy: VSSInterfaces.IdentityRef;
-}
-
 export interface ModuleCoverage {
     blockCount: number;
     blockData: number[];
@@ -286,23 +265,10 @@ export interface Response {
     url: string;
 }
 
-export enum ResultDetails {
-    None = 0,
-    Iterations = 1,
-    WorkItems = 2,
-}
-
 export enum ResultOutcome {
     Pass = 1,
     Fail = 2,
     Pending = 3,
-}
-
-export interface ResultRetentionSettings {
-    automatedResultsRetentionDuration: number;
-    lastUpdatedBy: VSSInterfaces.IdentityRef;
-    lastUpdatedDate: Date;
-    manualResultsRetentionDuration: number;
 }
 
 export interface ResultUpdateRequestModel {
@@ -456,7 +422,6 @@ export interface TestCaseResult {
     automatedTestType: string;
     automatedTestTypeId: string;
     build: ShallowReference;
-    buildReference: BuildReference;
     comment: string;
     completedDate: Date;
     computerName: string;
@@ -523,8 +488,6 @@ export interface TestCaseResultAttachmentModel {
 }
 
 export interface TestCaseResultIdentifier {
-    testResultId: number;
-    testRunId: number;
 }
 
 export interface TestCaseResultUpdateModel {
@@ -555,14 +518,16 @@ export interface TestEnvironment {
 
 export interface TestFailureDetails {
     count: number;
+    previousBuild: BuildReference;
+    self: ShallowReference;
     testResults: ShallowReference[];
 }
 
-export interface TestFailuresAnalysis {
+export interface TestFailures {
     existingFailures: TestFailureDetails;
     fixedTests: TestFailureDetails;
     newFailures: TestFailureDetails;
-    previousBuild: BuildReference;
+    self: ShallowReference;
 }
 
 export interface TestIterationDetailsModel {
@@ -697,8 +662,6 @@ export interface TestPoint {
     id: number;
     lastResolutionStateId: number;
     lastResult: ShallowReference;
-    lastResultDetails: LastResultDetails;
-    lastRunBuildNumber: string;
     lastTestRun: ShallowReference;
     lastUpdatedBy: VSSInterfaces.IdentityRef;
     lastUpdatedDate: Date;
@@ -713,10 +676,11 @@ export interface TestPoint {
 }
 
 export interface TestReport {
-    aggregatedResultsAnalysis: AggregatedResultsAnalysis;
+    aggregatedResults: AggregatedTestResults;
     build: BuildReference;
-    teamProject: TfsInterfaces.TeamProjectReference;
-    testFailures: TestFailuresAnalysis;
+    self: ShallowReference;
+    teamProject: ShallowReference;
+    testFailures: TestFailures;
 }
 
 export interface TestResolutionState {
@@ -769,12 +733,6 @@ export interface TestResultParameterModel {
     parameterName: string;
     url: string;
     value: string;
-}
-
-export interface TestResultsDetailsForGroup {
-    groupByValue: string;
-    results: TestCaseResult[];
-    resultsCountByOutcome: AggregatedResultsByOutcome[];
 }
 
 export interface TestRun {
@@ -937,19 +895,15 @@ export interface TestSuite {
 
 export interface WorkItemReference {
     id: string;
-    name: string;
     url: string;
     webUrl: string;
 }
 
 export var TypeInfo = {
-    AggregatedResultsAnalysis: {
-        fields: <any>null
-    },
     AggregatedResultsByOutcome: {
         fields: <any>null
     },
-    AggregatedResultsWithDetails: {
+    AggregatedTestResults: {
         fields: <any>null
     },
     AttachmentType: {
@@ -1032,15 +986,6 @@ export var TypeInfo = {
     FunctionCoverage: {
         fields: <any>null
     },
-    GroupTestResultsBy: {
-        enumValues: {
-            "none": 0,
-            "automatedTestStorage": 1,
-        }
-    },
-    LastResultDetails: {
-        fields: <any>null
-    },
     ModuleCoverage: {
         fields: <any>null
     },
@@ -1062,22 +1007,12 @@ export var TypeInfo = {
     Response: {
         fields: <any>null
     },
-    ResultDetails: {
-        enumValues: {
-            "none": 0,
-            "iterations": 1,
-            "workItems": 2,
-        }
-    },
     ResultOutcome: {
         enumValues: {
             "pass": 1,
             "fail": 2,
             "pending": 3,
         }
-    },
-    ResultRetentionSettings: {
-        fields: <any>null
     },
     ResultUpdateRequestModel: {
         fields: <any>null
@@ -1142,7 +1077,7 @@ export var TypeInfo = {
     TestFailureDetails: {
         fields: <any>null
     },
-    TestFailuresAnalysis: {
+    TestFailures: {
         fields: <any>null
     },
     TestIterationDetailsModel: {
@@ -1194,9 +1129,6 @@ export var TypeInfo = {
     TestResultParameterModel: {
         fields: <any>null
     },
-    TestResultsDetailsForGroup: {
-        fields: <any>null
-    },
     TestRun: {
         fields: <any>null
     },
@@ -1241,26 +1173,19 @@ export var TypeInfo = {
     },
 };
 
-TypeInfo.AggregatedResultsAnalysis.fields = {
-    previousBuild: {
-        typeInfo: TypeInfo.BuildReference
-    },
-    resultsByOutcome: {
-        isArray: true,
-        typeInfo: TypeInfo.AggregatedResultsByOutcome
-    },
-};
-
 TypeInfo.AggregatedResultsByOutcome.fields = {
     outcome: {
         enumType: TypeInfo.TestOutcome
     },
 };
 
-TypeInfo.AggregatedResultsWithDetails.fields = {
-    resultsForGroup: {
+TypeInfo.AggregatedTestResults.fields = {
+    resultsByOutcome: {
         isArray: true,
-        typeInfo: TypeInfo.TestResultsDetailsForGroup
+        typeInfo: TypeInfo.AggregatedResultsByOutcome
+    },
+    self: {
+        typeInfo: TypeInfo.ShallowReference
     },
 };
 
@@ -1346,15 +1271,6 @@ TypeInfo.FunctionCoverage.fields = {
     },
 };
 
-TypeInfo.LastResultDetails.fields = {
-    dateCompleted: {
-        isDate: true,
-    },
-    runBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
 TypeInfo.ModuleCoverage.fields = {
     functions: {
         isArray: true,
@@ -1408,15 +1324,6 @@ TypeInfo.QueryModel.fields = {
 };
 
 TypeInfo.Response.fields = {
-};
-
-TypeInfo.ResultRetentionSettings.fields = {
-    lastUpdatedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    lastUpdatedDate: {
-        isDate: true,
-    },
 };
 
 TypeInfo.ResultUpdateRequestModel.fields = {
@@ -1560,9 +1467,6 @@ TypeInfo.TestCaseResult.fields = {
     build: {
         typeInfo: TypeInfo.ShallowReference
     },
-    buildReference: {
-        typeInfo: TypeInfo.BuildReference
-    },
     completedDate: {
         isDate: true,
     },
@@ -1650,13 +1554,19 @@ TypeInfo.TestEnvironment.fields = {
 };
 
 TypeInfo.TestFailureDetails.fields = {
+    previousBuild: {
+        typeInfo: TypeInfo.BuildReference
+    },
+    self: {
+        typeInfo: TypeInfo.ShallowReference
+    },
     testResults: {
         isArray: true,
         typeInfo: TypeInfo.ShallowReference
     },
 };
 
-TypeInfo.TestFailuresAnalysis.fields = {
+TypeInfo.TestFailures.fields = {
     existingFailures: {
         typeInfo: TypeInfo.TestFailureDetails
     },
@@ -1666,8 +1576,8 @@ TypeInfo.TestFailuresAnalysis.fields = {
     newFailures: {
         typeInfo: TypeInfo.TestFailureDetails
     },
-    previousBuild: {
-        typeInfo: TypeInfo.BuildReference
+    self: {
+        typeInfo: TypeInfo.ShallowReference
     },
 };
 
@@ -1760,9 +1670,6 @@ TypeInfo.TestPoint.fields = {
     lastResult: {
         typeInfo: TypeInfo.ShallowReference
     },
-    lastResultDetails: {
-        typeInfo: TypeInfo.LastResultDetails
-    },
     lastTestRun: {
         typeInfo: TypeInfo.ShallowReference
     },
@@ -1784,17 +1691,20 @@ TypeInfo.TestPoint.fields = {
 };
 
 TypeInfo.TestReport.fields = {
-    aggregatedResultsAnalysis: {
-        typeInfo: TypeInfo.AggregatedResultsAnalysis
+    aggregatedResults: {
+        typeInfo: TypeInfo.AggregatedTestResults
     },
     build: {
         typeInfo: TypeInfo.BuildReference
     },
+    self: {
+        typeInfo: TypeInfo.ShallowReference
+    },
     teamProject: {
-        typeInfo: TfsInterfaces.TypeInfo.TeamProjectReference
+        typeInfo: TypeInfo.ShallowReference
     },
     testFailures: {
-        typeInfo: TypeInfo.TestFailuresAnalysis
+        typeInfo: TypeInfo.TestFailures
     },
 };
 
@@ -1839,17 +1749,6 @@ TypeInfo.TestResultModelBase.fields = {
 };
 
 TypeInfo.TestResultParameterModel.fields = {
-};
-
-TypeInfo.TestResultsDetailsForGroup.fields = {
-    results: {
-        isArray: true,
-        typeInfo: TypeInfo.TestCaseResult
-    },
-    resultsCountByOutcome: {
-        isArray: true,
-        typeInfo: TypeInfo.AggregatedResultsByOutcome
-    },
 };
 
 TypeInfo.TestRun.fields = {

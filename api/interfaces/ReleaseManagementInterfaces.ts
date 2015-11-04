@@ -29,8 +29,30 @@ export enum AgentArtifactType {
     FileShare = 3,
     Nuget = 4,
     TfsOnPrem = 5,
-    GitHub = 6,
-    TFGit = 7,
+}
+
+export interface AgentJenkinsArtifactDetails {
+    connectionName: string;
+    jobName: string;
+    relativePath: string;
+}
+
+export interface AgentNugetArtifactDetails {
+    connectionName: string;
+    packageId: string;
+    relativePath: string;
+}
+
+export interface AgentTfsBuildArtifactDetails {
+    project: string;
+    relativePath: string;
+}
+
+export interface AgentTfsOnPremArtifactDetails {
+    buildDefinition: string;
+    connectionName: string;
+    project: string;
+    relativePath: string;
 }
 
 export interface ApprovalPendingEvent {
@@ -109,7 +131,6 @@ export interface ArtifactSource {
     createdBy: VSSInterfaces.IdentityRef;
     createdOn: Date;
     id: number;
-    isPrimary: boolean;
     modifiedBy: VSSInterfaces.IdentityRef;
     modifiedOn: Date;
     sourceData: { [key: string] : FormInputInterfaces.InputValue; };
@@ -147,50 +168,9 @@ export interface ArtifactVersionQueryResult {
     versions: { [key: number] : FormInputInterfaces.InputValue[]; };
 }
 
-export enum AuditAction {
-    Add = 1,
-    Update = 2,
-    Delete = 3,
-}
-
 export interface BuildVersion {
     id: string;
     name: string;
-    sourceBranch: string;
-}
-
-/**
- * Represents a change associated with a build.
- */
-export interface Change {
-    /**
-     * The author of the change.
-     */
-    author: VSSInterfaces.IdentityRef;
-    /**
-     * The type of change. "commit", "changeset", etc.
-     */
-    changeType: string;
-    /**
-     * The location of a user-friendly representation of the resource.
-     */
-    displayUri: string;
-    /**
-     * Something that identifies the change. For a commit, this would be the SHA1. For a TFVC changeset, this would be the changeset id.
-     */
-    id: string;
-    /**
-     * The location of the full representation of the resource.
-     */
-    location: string;
-    /**
-     * A description of the change. This might be a commit message or changeset description.
-     */
-    message: string;
-    /**
-     * A timestamp for the change.
-     */
-    timestamp: Date;
 }
 
 export interface ConfigurationVariableValue {
@@ -231,13 +211,10 @@ export interface Release {
     description: string;
     environments: ReleaseEnvironment[];
     id: number;
-    modifiedBy: VSSInterfaces.IdentityRef;
     modifiedOn: Date;
     name: string;
     poolName: string;
-    reason: ReleaseReason;
     releaseDefinition: ShallowReference;
-    releaseNameFormat: string;
     status: ReleaseStatus;
     targetEnvironmentId: number;
     variables: { [key: string] : ConfigurationVariableValue; };
@@ -252,14 +229,15 @@ export interface ReleaseApproval {
     createdOn: Date;
     dateCreated: Date;
     dateLastModified: Date;
+    environmentId: number;
     id: number;
     isAutomated: boolean;
-    isNotificationOn: boolean;
     modifiedOn: Date;
     rank: number;
     release: ShallowReference;
     releaseDefinition: ShallowReference;
     releaseEnvironment: ShallowReference;
+    releaseId: number;
     status: ApprovalStatus;
     trialNumber: number;
 }
@@ -285,8 +263,6 @@ export interface ReleaseDefinition {
     modifiedBy: VSSInterfaces.IdentityRef;
     modifiedOn: Date;
     name: string;
-    releaseNameFormat: string;
-    revision: number;
     triggers: ReleaseTrigger[];
     variables: { [key: string] : ConfigurationVariableValue; };
 }
@@ -299,10 +275,7 @@ export interface ReleaseDefinitionApprovalStep extends ReleaseDefinitionEnvironm
 }
 
 export interface ReleaseDefinitionDeployStep extends ReleaseDefinitionEnvironmentStep {
-    /**
-     * The list of steps for this definition.
-     */
-    tasks: WorkflowTask[];
+    workflow: string;
 }
 
 export interface ReleaseDefinitionEnvironment {
@@ -340,15 +313,6 @@ export interface ReleaseDefinitionEnvironmentTemplate {
     name: string;
 }
 
-export interface ReleaseDefinitionRevision {
-    changedBy: VSSInterfaces.IdentityRef;
-    changedDate: Date;
-    changeType: AuditAction;
-    definitionId: number;
-    definitionUrl: string;
-    revision: number;
-}
-
 export interface ReleaseDefinitionSummary {
     environments: ReleaseDefinitionEnvironmentSummary[];
     releaseDefinition: ShallowReference;
@@ -379,14 +343,14 @@ export interface ReleaseEnvironment {
     status: EnvironmentStatus;
     tasks: ReleaseTask[];
     variables: { [key: string] : ConfigurationVariableValue; };
-    workflowTasks: WorkflowTask[];
+    workflow: string;
+    workflowTaskCount: number;
 }
 
 export interface ReleaseEnvironmentCompletedEvent {
     definitionName: string;
     environment: ReleaseEnvironment;
     projectName: string;
-    releaseCreatedBy: VSSInterfaces.IdentityRef;
     releaseLogsUri: string;
     releaseName: string;
     status: string;
@@ -400,18 +364,12 @@ export enum ReleaseQueryOrder {
     Ascending = 1,
 }
 
-export enum ReleaseReason {
-    None = 0,
-    Manual = 1,
-    ContinuousIntegration = 2,
-}
-
 export interface ReleaseStartMetadata {
     artifactSourceData: { [key: number] : FormInputInterfaces.InputValue; };
     definitionId: number;
     description: string;
     isDraft: boolean;
-    reason: ReleaseReason;
+    releaseName: string;
     targetEnvironmentId: number;
 }
 
@@ -427,14 +385,12 @@ export enum ReleaseStatus {
 }
 
 export interface ReleaseTask {
-    agentName: string;
     attempt: number;
     dateEnded: Date;
     dateStarted: Date;
     environmentId: number;
     id: number;
     issues: Issue[];
-    lineCount: number;
     name: string;
     rank: number;
     recordType: string;
@@ -476,11 +432,6 @@ export interface ReleaseUpdateMetadata {
     status: ReleaseStatus;
 }
 
-export interface ReleaseWorkItemRef {
-    id: string;
-    url: string;
-}
-
 export interface ShallowReference {
     id: number;
     name: string;
@@ -502,16 +453,6 @@ export enum TaskStatus {
     Skipped = 6,
 }
 
-export interface WorkflowTask {
-    alwaysRun: boolean;
-    continueOnError: boolean;
-    enabled: boolean;
-    inputs: { [key: string] : string; };
-    name: string;
-    taskId: string;
-    version: string;
-}
-
 export var TypeInfo = {
     AgentArtifactDefinition: {
         fields: <any>null
@@ -524,9 +465,19 @@ export var TypeInfo = {
             "fileShare": 3,
             "nuget": 4,
             "tfsOnPrem": 5,
-            "gitHub": 6,
-            "tFGit": 7,
         }
+    },
+    AgentJenkinsArtifactDetails: {
+        fields: <any>null
+    },
+    AgentNugetArtifactDetails: {
+        fields: <any>null
+    },
+    AgentTfsBuildArtifactDetails: {
+        fields: <any>null
+    },
+    AgentTfsOnPremArtifactDetails: {
+        fields: <any>null
     },
     ApprovalPendingEvent: {
         fields: <any>null
@@ -584,17 +535,7 @@ export var TypeInfo = {
     ArtifactVersionQueryResult: {
         fields: <any>null
     },
-    AuditAction: {
-        enumValues: {
-            "add": 1,
-            "update": 2,
-            "delete": 3,
-        }
-    },
     BuildVersion: {
-        fields: <any>null
-    },
-    Change: {
         fields: <any>null
     },
     ConfigurationVariableValue: {
@@ -651,9 +592,6 @@ export var TypeInfo = {
     ReleaseDefinitionEnvironmentTemplate: {
         fields: <any>null
     },
-    ReleaseDefinitionRevision: {
-        fields: <any>null
-    },
     ReleaseDefinitionSummary: {
         fields: <any>null
     },
@@ -667,13 +605,6 @@ export var TypeInfo = {
         enumValues: {
             "descending": 0,
             "ascending": 1,
-        }
-    },
-    ReleaseReason: {
-        enumValues: {
-            "none": 0,
-            "manual": 1,
-            "continuousIntegration": 2,
         }
     },
     ReleaseStartMetadata: {
@@ -715,9 +646,6 @@ export var TypeInfo = {
     ReleaseUpdateMetadata: {
         fields: <any>null
     },
-    ReleaseWorkItemRef: {
-        fields: <any>null
-    },
     ShallowReference: {
         fields: <any>null
     },
@@ -735,15 +663,24 @@ export var TypeInfo = {
             "skipped": 6,
         }
     },
-    WorkflowTask: {
-        fields: <any>null
-    },
 };
 
 TypeInfo.AgentArtifactDefinition.fields = {
     artifactType: {
         enumType: TypeInfo.AgentArtifactType
     },
+};
+
+TypeInfo.AgentJenkinsArtifactDetails.fields = {
+};
+
+TypeInfo.AgentNugetArtifactDetails.fields = {
+};
+
+TypeInfo.AgentTfsBuildArtifactDetails.fields = {
+};
+
+TypeInfo.AgentTfsOnPremArtifactDetails.fields = {
 };
 
 TypeInfo.ApprovalPendingEvent.fields = {
@@ -853,15 +790,6 @@ TypeInfo.ArtifactVersionQueryResult.fields = {
 TypeInfo.BuildVersion.fields = {
 };
 
-TypeInfo.Change.fields = {
-    author: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    timestamp: {
-        isDate: true,
-    },
-};
-
 TypeInfo.ConfigurationVariableValue.fields = {
 };
 
@@ -889,14 +817,8 @@ TypeInfo.Release.fields = {
         isArray: true,
         typeInfo: TypeInfo.ReleaseEnvironment
     },
-    modifiedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     modifiedOn: {
         isDate: true,
-    },
-    reason: {
-        enumType: TypeInfo.ReleaseReason
     },
     releaseDefinition: {
         typeInfo: TypeInfo.ShallowReference
@@ -993,10 +915,6 @@ TypeInfo.ReleaseDefinitionApprovalStep.fields = {
 };
 
 TypeInfo.ReleaseDefinitionDeployStep.fields = {
-    tasks: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkflowTask
-    },
 };
 
 TypeInfo.ReleaseDefinitionEnvironment.fields = {
@@ -1033,18 +951,6 @@ TypeInfo.ReleaseDefinitionEnvironmentSummary.fields = {
 TypeInfo.ReleaseDefinitionEnvironmentTemplate.fields = {
     environment: {
         typeInfo: TypeInfo.ReleaseDefinitionEnvironment
-    },
-};
-
-TypeInfo.ReleaseDefinitionRevision.fields = {
-    changedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    changedDate: {
-        isDate: true,
-    },
-    changeType: {
-        enumType: TypeInfo.AuditAction
     },
 };
 
@@ -1099,18 +1005,11 @@ TypeInfo.ReleaseEnvironment.fields = {
         isArray: true,
         typeInfo: TypeInfo.ConfigurationVariableValue
     },
-    workflowTasks: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkflowTask
-    },
 };
 
 TypeInfo.ReleaseEnvironmentCompletedEvent.fields = {
     environment: {
         typeInfo: TypeInfo.ReleaseEnvironment
-    },
-    releaseCreatedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
 };
 
@@ -1118,9 +1017,6 @@ TypeInfo.ReleaseStartMetadata.fields = {
     artifactSourceData: {
         isArray: true,
         typeInfo: FormInputInterfaces.TypeInfo.InputValue
-    },
-    reason: {
-        enumType: TypeInfo.ReleaseReason
     },
 };
 
@@ -1171,14 +1067,8 @@ TypeInfo.ReleaseUpdateMetadata.fields = {
     },
 };
 
-TypeInfo.ReleaseWorkItemRef.fields = {
-};
-
 TypeInfo.ShallowReference.fields = {
 };
 
 TypeInfo.SourceIdInput.fields = {
-};
-
-TypeInfo.WorkflowTask.fields = {
 };

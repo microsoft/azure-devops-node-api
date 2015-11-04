@@ -62,7 +62,6 @@ export interface DataSourceBinding {
     dataSourceName: string;
     endpointId: string;
     parameters: { [key: string] : string; };
-    target: string;
 }
 
 export interface EndpointAuthorization {
@@ -202,15 +201,11 @@ export interface ServiceEndpointType {
     dataSources: DataSource[];
     description: string;
     displayName: string;
+    imageUrl: string;
     name: string;
-    url: string;
 }
 
 export interface TaskAgent extends TaskAgentReference {
-    /**
-     * Gets the request which is currently assigned to this agent.
-     */
-    assignedRequest: TaskAgentJobRequest;
     /**
      * Gets the date on which this agent was created.
      */
@@ -238,14 +233,11 @@ export interface TaskAgent extends TaskAgentReference {
 
 export interface TaskAgentJobRequest {
     assignTime: Date;
-    definition: TaskOrchestrationOwner;
     demands: any[];
     finishTime: Date;
     hostId: string;
     jobId: string;
     lockedUntil: Date;
-    matchedAgents: TaskAgentReference[];
-    owner: TaskOrchestrationOwner;
     planId: string;
     planType: string;
     queueTime: Date;
@@ -369,12 +361,8 @@ export interface TaskDefinition {
     author: string;
     category: string;
     contentsUploaded: boolean;
-    contributionIdentifier: string;
-    contributionVersion: string;
-    dataSourceBindings: DataSourceBinding[];
     demands: any[];
     description: string;
-    disabled: boolean;
     friendlyName: string;
     groups: TaskGroupDefinition[];
     helpMarkDown: string;
@@ -492,12 +480,6 @@ export interface TaskOrchestrationJob extends TaskOrchestrationItem {
     name: string;
     tasks: TaskInstance[];
     variables: { [key: string] : string; };
-}
-
-export interface TaskOrchestrationOwner {
-    _links: any;
-    id: number;
-    name: string;
 }
 
 export interface TaskOrchestrationPlan extends TaskOrchestrationPlanReference {
@@ -857,9 +839,6 @@ export var TypeInfo = {
     TaskOrchestrationJob: {
         fields: <any>null
     },
-    TaskOrchestrationOwner: {
-        fields: <any>null
-    },
     TaskOrchestrationPlan: {
         fields: <any>null
     },
@@ -1064,9 +1043,6 @@ TypeInfo.ServiceEndpointType.fields = {
 };
 
 TypeInfo.TaskAgent.fields = {
-    assignedRequest: {
-        typeInfo: TypeInfo.TaskAgentJobRequest
-    },
     createdOn: {
         isDate: true,
     },
@@ -1082,21 +1058,11 @@ TypeInfo.TaskAgentJobRequest.fields = {
     assignTime: {
         isDate: true,
     },
-    definition: {
-        typeInfo: TypeInfo.TaskOrchestrationOwner
-    },
     finishTime: {
         isDate: true,
     },
     lockedUntil: {
         isDate: true,
-    },
-    matchedAgents: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskAgentReference
-    },
-    owner: {
-        typeInfo: TypeInfo.TaskOrchestrationOwner
     },
     queueTime: {
         isDate: true,
@@ -1163,10 +1129,6 @@ TypeInfo.TaskChangeEvent.fields = {
 TypeInfo.TaskDefinition.fields = {
     agentExecution: {
         typeInfo: TypeInfo.TaskExecution
-    },
-    dataSourceBindings: {
-        isArray: true,
-        typeInfo: TypeInfo.DataSourceBinding
     },
     groups: {
         isArray: true,
@@ -1245,9 +1207,6 @@ TypeInfo.TaskOrchestrationJob.fields = {
         isArray: true,
         typeInfo: TypeInfo.TaskInstance
     },
-};
-
-TypeInfo.TaskOrchestrationOwner.fields = {
 };
 
 TypeInfo.TaskOrchestrationPlan.fields = {
