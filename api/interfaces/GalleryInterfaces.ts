@@ -12,16 +12,102 @@
 
 
 
-export interface ExtensionAccount {
-    accountId: string;
-    accountName: string;
+export enum AcquisitionAssignmentType {
+    None = 0,
+    /**
+     * Just assign for me
+     */
+    Me = 1,
+    /**
+     * Assign for all users in the account
+     */
+    All = 2,
+}
+
+export enum AcquisitionOperationType {
+    /**
+     * Not yet used
+     */
+    Get = 0,
+    /**
+     * Install this extension into the host provided
+     */
+    Install = 1,
+    /**
+     * Buy licenses for this extension and install into the host provided
+     */
+    Buy = 2,
+    /**
+     * Not yet used
+     */
+    Try = 3,
+    /**
+     * Not yet used
+     */
+    Request = 4,
+}
+
+/**
+ * Market item acquisition options (install, buy, etc) for an installation target.
+ */
+export interface AcquisitionOptions {
+    /**
+     * The installation target that this options refer to
+     */
+    installationTarget: string;
+    /**
+     * The item id that this options refer to
+     */
+    itemId: string;
+    /**
+     * Operations allowed for the ItemId in this InstallationTarget
+     */
+    operations: AcquisitionOperationType[];
+}
+
+/**
+ * Contract for handling the extension acquisition process
+ */
+export interface ExtensionAcquisitionRequest {
+    /**
+     * How the item is being assigned
+     */
+    assignmentType: AcquisitionAssignmentType;
+    /**
+     * The id of the subscription used for purchase
+     */
+    billingId: string;
+    /**
+     * A list of installation target guids where the item should be installed
+     */
+    installationTargets: string[];
+    /**
+     * The marketplace id (publisherName.extensionName) for the item
+     */
+    itemId: string;
+    /**
+     * The type of operation, such as install, request, purchase
+     */
+    operationType: AcquisitionOperationType;
+    /**
+     * Additional properties which can be added to the request.
+     */
+    properties: any;
+    /**
+     * How many licenses should be purchased
+     */
+    quantity: number;
 }
 
 export interface ExtensionFile {
     assetType: string;
     contentType: string;
     fileId: number;
+    isDefault: boolean;
+    isPublic: boolean;
+    language: string;
     shortDescription: string;
+    source: string;
     version: string;
 }
 
@@ -88,6 +174,14 @@ export enum ExtensionQueryFilterType {
      * Certain contribution types may be indexed to allow for query by type. User defined types can't be indexed at the moment.
      */
     ContributionType = 6,
+    /**
+     * Retrieve an set extension based on the name based identifier. This differs from the internal id (which is being deprecated).
+     */
+    Name = 7,
+    /**
+     * The InstallationTarget for an extension defines the target consumer for the extension. This may be something like VS, VSOnline, or VSCode
+     */
+    InstallationTarget = 8,
 }
 
 export enum ExtensionQueryFlags {
@@ -120,9 +214,17 @@ export enum ExtensionQueryFlags {
      */
     ExcludeNonValidated = 32,
     /**
+     * Include the set of installation targets the extension has requested.
+     */
+    IncludeInstallationTargets = 64,
+    /**
+     * Include the base uri for assets of this extension
+     */
+    IncludeAssetUri = 128,
+    /**
      * AllAttributes is designed to be a mask that defines all sub-elements of the extension should be returned.
      */
-    AllAttributes = 31,
+    AllAttributes = 223,
 }
 
 /**
@@ -135,7 +237,14 @@ export interface ExtensionQueryResult {
     results: ExtensionFilterResult[];
 }
 
+export interface ExtensionShare {
+    id: string;
+    name: string;
+    type: string;
+}
+
 export interface ExtensionVersion {
+    assetUri: string;
     files: ExtensionFile[];
     flags: ExtensionVersionFlags;
     lastUpdated: Date;
@@ -167,6 +276,10 @@ export interface FilterCriteria {
     value: string;
 }
 
+export interface InstallationTarget {
+    target: string;
+}
+
 export enum PagingDirection {
     /**
      * Backward will return results from earlier in the resultset.
@@ -179,25 +292,22 @@ export enum PagingDirection {
 }
 
 export interface PublishedExtension {
-    allowedAccounts: ExtensionAccount[];
     categories: string[];
     displayName: string;
     extensionId: string;
     extensionName: string;
     flags: PublishedExtensionFlags;
+    installationTargets: InstallationTarget[];
     lastUpdated: Date;
     longDescription: string;
     publisher: PublisherFacts;
+    sharedWith: ExtensionShare[];
     shortDescription: string;
     tags: string[];
     versions: ExtensionVersion[];
 }
 
 export enum PublishedExtensionFlags {
-    /**
-     * This should never be returned, it is used to represent a extension who's flags havent changed during update calls.
-     */
-    UnChanged = 1073741824,
     /**
      * No flags exist for this extension.
      */
@@ -215,6 +325,10 @@ export enum PublishedExtensionFlags {
      */
     Validated = 4,
     /**
+     * Trusted extensions are ones that are given special capabilities. These tend to come from Microsoft and can't be published by the general public.  Note: BuiltIn extensions are always trusted.
+     */
+    Trusted = 8,
+    /**
      * This extension registration is public, making its visibilty open to the public. This means all tenants have the ability to install this extension. Without this flag the extension will be private and will need to be shared with the tenants that can install it.
      */
     Public = 256,
@@ -227,9 +341,9 @@ export enum PublishedExtensionFlags {
      */
     System = 1024,
     /**
-     * This is the set of flags that can't be supplied by the developer and is managed by the service itself.
+     * The Preview flag indicates that the extension is still under preview (not yet of "release" quality). These extensions may be decorated differently in the gallery and may have different policies applied to them.
      */
-    ServiceFlags = 1029,
+    Preview = 2048,
 }
 
 export interface Publisher {
@@ -276,9 +390,13 @@ export enum PublisherFlags {
      */
     Disabled = 1,
     /**
+     * A verified publisher is one that Microsoft has done some review of and ensured the publisher meets a set of requirements. The requirements to become a verified publisher are not listed here.  They can be found in public documentation (TBD).
+     */
+    Verified = 2,
+    /**
      * This is the set of flags that can't be supplied by the developer and is managed by the service itself.
      */
-    ServiceFlags = 1,
+    ServiceFlags = 3,
 }
 
 export enum PublisherPermissions {
@@ -390,7 +508,26 @@ export enum SigningKeyPermissions {
 }
 
 export var TypeInfo = {
-    ExtensionAccount: {
+    AcquisitionAssignmentType: {
+        enumValues: {
+            "none": 0,
+            "me": 1,
+            "all": 2,
+        }
+    },
+    AcquisitionOperationType: {
+        enumValues: {
+            "get": 0,
+            "install": 1,
+            "buy": 2,
+            "try": 3,
+            "request": 4,
+        }
+    },
+    AcquisitionOptions: {
+        fields: <any>null
+    },
+    ExtensionAcquisitionRequest: {
         fields: <any>null
     },
     ExtensionFile: {
@@ -413,6 +550,8 @@ export var TypeInfo = {
             "id": 4,
             "category": 5,
             "contributionType": 6,
+            "name": 7,
+            "installationTarget": 8,
         }
     },
     ExtensionQueryFlags: {
@@ -424,10 +563,15 @@ export var TypeInfo = {
             "includeSharedAccounts": 8,
             "includeVersionProperties": 16,
             "excludeNonValidated": 32,
-            "allAttributes": 31,
+            "includeInstallationTargets": 64,
+            "includeAssetUri": 128,
+            "allAttributes": 223,
         }
     },
     ExtensionQueryResult: {
+        fields: <any>null
+    },
+    ExtensionShare: {
         fields: <any>null
     },
     ExtensionVersion: {
@@ -442,6 +586,9 @@ export var TypeInfo = {
     FilterCriteria: {
         fields: <any>null
     },
+    InstallationTarget: {
+        fields: <any>null
+    },
     PagingDirection: {
         enumValues: {
             "backward": 1,
@@ -453,15 +600,15 @@ export var TypeInfo = {
     },
     PublishedExtensionFlags: {
         enumValues: {
-            "unChanged": 1073741824,
             "none": 0,
             "disabled": 1,
             "builtIn": 2,
             "validated": 4,
+            "trusted": 8,
             "public": 256,
             "multiVersion": 512,
             "system": 1024,
-            "serviceFlags": 1029,
+            "preview": 2048,
         }
     },
     Publisher: {
@@ -478,7 +625,8 @@ export var TypeInfo = {
             "unChanged": 1073741824,
             "none": 0,
             "disabled": 1,
-            "serviceFlags": 1,
+            "verified": 2,
+            "serviceFlags": 3,
         }
     },
     PublisherPermissions: {
@@ -522,7 +670,20 @@ export var TypeInfo = {
     },
 };
 
-TypeInfo.ExtensionAccount.fields = {
+TypeInfo.AcquisitionOptions.fields = {
+    operations: {
+        isArray: true,
+        enumType: TypeInfo.AcquisitionOperationType[]
+    },
+};
+
+TypeInfo.ExtensionAcquisitionRequest.fields = {
+    assignmentType: {
+        enumType: TypeInfo.AcquisitionAssignmentType
+    },
+    operationType: {
+        enumType: TypeInfo.AcquisitionOperationType
+    },
 };
 
 TypeInfo.ExtensionFile.fields = {
@@ -555,6 +716,9 @@ TypeInfo.ExtensionQueryResult.fields = {
     },
 };
 
+TypeInfo.ExtensionShare.fields = {
+};
+
 TypeInfo.ExtensionVersion.fields = {
     files: {
         isArray: true,
@@ -571,19 +735,26 @@ TypeInfo.ExtensionVersion.fields = {
 TypeInfo.FilterCriteria.fields = {
 };
 
+TypeInfo.InstallationTarget.fields = {
+};
+
 TypeInfo.PublishedExtension.fields = {
-    allowedAccounts: {
-        isArray: true,
-        typeInfo: TypeInfo.ExtensionAccount
-    },
     flags: {
         enumType: TypeInfo.PublishedExtensionFlags
+    },
+    installationTargets: {
+        isArray: true,
+        typeInfo: TypeInfo.InstallationTarget
     },
     lastUpdated: {
         isDate: true,
     },
     publisher: {
         typeInfo: TypeInfo.PublisherFacts
+    },
+    sharedWith: {
+        isArray: true,
+        typeInfo: TypeInfo.ExtensionShare
     },
     versions: {
         isArray: true,
