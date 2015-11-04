@@ -27,19 +27,20 @@ export interface IFileContainerApi extends basem.ClientApiBase {
     createItems(items: VSSInterfaces.VssJsonCollectionWrapperV<FileContainerInterfaces.FileContainerItem[]>, containerId: number, scope: string, onResult: (err: any, statusCode: number, Container: FileContainerInterfaces.FileContainerItem[]) => void): void;
     deleteItem(containerId: number, itemPath: string, scope: string, onResult: (err: any, statusCode: number) => void): void;
     getContainers(scope: string, artifactUris: string, onResult: (err: any, statusCode: number, Containers: FileContainerInterfaces.FileContainer[]) => void): void;
-    getItems(containerId: number, scope: string, itemPath: string, metadata: boolean, format: string, downloadFileName: string, includeDownloadTickets: boolean, onResult: (err: any, statusCode: number, Containers: FileContainerInterfaces.FileContainerItem[]) => void): void;
+    getItems(containerId: number, scope: string, itemPath: string, metadata: boolean, format: string, downloadFileName: string, includeDownloadTickets: boolean, isShallow: boolean, onResult: (err: any, statusCode: number, Containers: FileContainerInterfaces.FileContainerItem[]) => void): void;
+    browseItems(container: number, itemPath: string, onResult: (err: any, statusCode: number, Containers: FileContainerInterfaces.FileContainerItem[]) => void): void;
 }
 
 export interface IQFileContainerApi extends basem.QClientApiBase {
-    
-    createItem(customHeaders: any, contentStream: NodeJS.ReadableStream, containerId: number, itemPath: string,  scope?: string): Q.Promise<FileContainerInterfaces.FileContainerItem>;
-    createItems(items: VSSInterfaces.VssJsonCollectionWrapperV<FileContainerInterfaces.FileContainerItem[]>, containerId: number,  scope?: string): Q.Promise<FileContainerInterfaces.FileContainerItem[]>;
-    getContainers(scope?: string,  artifactUris?: string): Q.Promise<FileContainerInterfaces.FileContainer[]>;
-    getItems(containerId: number, scope?: string, itemPath?: string, metadata?: boolean, format?: string, downloadFileName?: string,  includeDownloadTickets?: boolean): Q.Promise<FileContainerInterfaces.FileContainerItem[]>;
+    createItem(customHeaders: any, contentStream: NodeJS.ReadableStream, containerId: number, itemPath: string, scope?: string): Q.Promise<FileContainerInterfaces.FileContainerItem>;
+    createItems(items: VSSInterfaces.VssJsonCollectionWrapperV<FileContainerInterfaces.FileContainerItem[]>, containerId: number, scope?: string): Q.Promise<FileContainerInterfaces.FileContainerItem[]>;
+    deleteItem(containerId: number, itemPath: string, scope?: string): Q.Promise<void>;
+    getContainers(scope?: string, artifactUris?: string): Q.Promise<FileContainerInterfaces.FileContainer[]>;
+    getItems(containerId: number, scope?: string, itemPath?: string, metadata?: boolean, format?: string, downloadFileName?: string, includeDownloadTickets?: boolean, isShallow?: boolean): Q.Promise<FileContainerInterfaces.FileContainerItem[]>;
+    browseItems(container: number, itemPath?: string): Q.Promise<FileContainerInterfaces.FileContainerItem[]>;
 }
 
 export class FileContainerApi extends basem.ClientApiBase implements IFileContainerApi {
-
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
         super(baseUrl, handlers, 'node-FileContainer-api');
     }
@@ -47,7 +48,7 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
     /**
      * Creates the specified item in the container referenced container.
      * 
-     * @param {NodeJS.ReadableStream} contentStream
+     * @param {NodeJS.ReadableStream} contentStream - Content to upload
      * @param {number} containerId
      * @param {string} itemPath
      * @param {string} scope - A guid representing the scope of the container. This is often the project id.
@@ -74,11 +75,11 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
         customHeaders = customHeaders || {};
         customHeaders["Content-Type"] = "application/octet-stream";
 
-        this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
-            var serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainerItem, responseIsCollection: false };
+            var serializationData = { requestTypeMetadata: NodeJS.TypeInfo.ReadableStream, responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainerItem, responseIsCollection: false };
             
             this.restClient.uploadStream('PUT', url, apiVersion, contentStream, customHeaders, serializationData, onResult);
         })
@@ -110,7 +111,7 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             scope: scope,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -147,7 +148,7 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             scope: scope,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -181,7 +182,7 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             artifactUris: artifactUris,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -195,15 +196,14 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
     }
 
     /**
-     * Gets the specified file container object in a format dependent upon the given parameters or HTTP Accept request header
-     * 
-     * @param {number} containerId - The requested container Id
-     * @param {string} scope - A guid representing the scope of the container. This is often the project id.
-     * @param {string} itemPath - The path to the item of interest
-     * @param {boolean} metadata - If true, this overrides any specified format parameter or HTTP Accept request header to provide non-recursive information for the given itemPath
-     * @param {string} format - If specified, this overrides the HTTP Accept request header to return either 'json' or 'zip'.  If $format is specified, then api-version should also be specified as a query parameter.
-     * @param {string} downloadFileName - If specified and returning other than JSON format, then this download name will be used (else defaults to itemPath)
+     * @param {number} containerId
+     * @param {string} scope
+     * @param {string} itemPath
+     * @param {boolean} metadata
+     * @param {string} format
+     * @param {string} downloadFileName
      * @param {boolean} includeDownloadTickets
+     * @param {boolean} isShallow
      * @param onResult callback function with the resulting FileContainerInterfaces.FileContainerItem[]
      */
     public getItems(
@@ -214,6 +214,7 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
         format: string,
         downloadFileName: string,
         includeDownloadTickets: boolean,
+        isShallow: boolean,
         onResult: (err: any, statusCode: number, Containers: FileContainerInterfaces.FileContainerItem[]) => void
         ): void {
 
@@ -228,9 +229,44 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             '$format': format,
             downloadFileName: downloadFileName,
             includeDownloadTickets: includeDownloadTickets,
+            isShallow: isShallow,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainerItem, responseIsCollection: true };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * Allow browsing of file ,the contentDisposition is inline and Content-Type is determined by FileExtension
+     * 
+     * @param {number} container
+     * @param {string} itemPath - The path to the item of interest
+     * @param onResult callback function with the resulting FileContainerInterfaces.FileContainerItem[]
+     */
+    public browseItems(
+        container: number,
+        itemPath: string,
+        onResult: (err: any, statusCode: number, Containers: FileContainerInterfaces.FileContainerItem[]) => void
+        ): void {
+
+        var routeValues: any = {
+            container: container
+        };
+
+        var queryValues: any = {
+            itemPath: itemPath,
+        };
+        
+        this.vsoClient.getVersioningData("2.2-preview.3", "Container", "e71a64ac-b2b5-4230-a4c0-dad657cf97e2", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -246,34 +282,32 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
 }
 
 export class QFileContainerApi extends basem.QClientApiBase implements IQFileContainerApi {
-    
     api: FileContainerApi;
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        super(baseUrl, handlers, FileContainerApi);
+        super(baseUrl, handlers, api);
     }
 
-    
     /**
     * Creates the specified item in the container referenced container.
     * 
-    * @param {NodeJS.ReadableStream} contentStream
+    * @param {NodeJS.ReadableStream} contentStream - Content to upload
     * @param {number} containerId
     * @param {string} itemPath
     * @param {string} scope - A guid representing the scope of the container. This is often the project id.
     */
     public createItem(
         customHeaders: any,
-        contentStream: NodeJS.ReadableStream, 
-        containerId: number, 
-        itemPath: string, 
+        contentStream: NodeJS.ReadableStream,
+        containerId: number,
+        itemPath: string,
         scope?: string
         ): Q.Promise<FileContainerInterfaces.FileContainerItem> {
     
         var deferred = Q.defer<FileContainerInterfaces.FileContainerItem>();
 
         this.api.createItem(customHeaders, contentStream, containerId, itemPath, scope, (err: any, statusCode: number, Container: FileContainerInterfaces.FileContainerItem) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -284,7 +318,7 @@ export class QFileContainerApi extends basem.QClientApiBase implements IQFileCon
 
         return <Q.Promise<FileContainerInterfaces.FileContainerItem>>deferred.promise;
     }
-    
+
     /**
     * Creates the specified items in in the referenced container.
     * 
@@ -293,15 +327,15 @@ export class QFileContainerApi extends basem.QClientApiBase implements IQFileCon
     * @param {string} scope - A guid representing the scope of the container. This is often the project id.
     */
     public createItems(
-        items: VSSInterfaces.VssJsonCollectionWrapperV<FileContainerInterfaces.FileContainerItem[]>, 
-        containerId: number, 
+        items: VSSInterfaces.VssJsonCollectionWrapperV<FileContainerInterfaces.FileContainerItem[]>,
+        containerId: number,
         scope?: string
         ): Q.Promise<FileContainerInterfaces.FileContainerItem[]> {
     
         var deferred = Q.defer<FileContainerInterfaces.FileContainerItem[]>();
 
         this.api.createItems(items, containerId, scope, (err: any, statusCode: number, Container: FileContainerInterfaces.FileContainerItem[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -312,7 +346,35 @@ export class QFileContainerApi extends basem.QClientApiBase implements IQFileCon
 
         return <Q.Promise<FileContainerInterfaces.FileContainerItem[]>>deferred.promise;
     }
+
+    /**
+    * Deletes the specified items in a container.
+    * 
+    * @param {number} containerId - Container Id.
+    * @param {string} itemPath - Path to delete.
+    * @param {string} scope - A guid representing the scope of the container. This is often the project id.
+    */
+    public deleteItem(
+        containerId: number,
+        itemPath: string,
+        scope?: string
+        ): Q.Promise<void> {
     
+        var deferred = Q.defer<void>();
+
+        this.api.deleteItem(containerId, itemPath, scope, (err: any, statusCode: number) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(null);
+            }
+        });
+
+        return <Q.Promise<void>>deferred.promise;
+    }
+
     /**
     * Gets containers filtered by a comma separated list of artifact uris within the same scope, if not specified returns all containers
     * 
@@ -320,14 +382,14 @@ export class QFileContainerApi extends basem.QClientApiBase implements IQFileCon
     * @param {string} artifactUris
     */
     public getContainers(
-        scope?: string, 
+        scope?: string,
         artifactUris?: string
         ): Q.Promise<FileContainerInterfaces.FileContainer[]> {
     
         var deferred = Q.defer<FileContainerInterfaces.FileContainer[]>();
 
         this.api.getContainers(scope, artifactUris, (err: any, statusCode: number, Containers: FileContainerInterfaces.FileContainer[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -338,32 +400,32 @@ export class QFileContainerApi extends basem.QClientApiBase implements IQFileCon
 
         return <Q.Promise<FileContainerInterfaces.FileContainer[]>>deferred.promise;
     }
-    
+
     /**
-    * Gets the specified file container object in a format dependent upon the given parameters or HTTP Accept request header
-    * 
-    * @param {number} containerId - The requested container Id
-    * @param {string} scope - A guid representing the scope of the container. This is often the project id.
-    * @param {string} itemPath - The path to the item of interest
-    * @param {boolean} metadata - If true, this overrides any specified format parameter or HTTP Accept request header to provide non-recursive information for the given itemPath
-    * @param {string} format - If specified, this overrides the HTTP Accept request header to return either 'json' or 'zip'.  If $format is specified, then api-version should also be specified as a query parameter.
-    * @param {string} downloadFileName - If specified and returning other than JSON format, then this download name will be used (else defaults to itemPath)
+    * @param {number} containerId
+    * @param {string} scope
+    * @param {string} itemPath
+    * @param {boolean} metadata
+    * @param {string} format
+    * @param {string} downloadFileName
     * @param {boolean} includeDownloadTickets
+    * @param {boolean} isShallow
     */
     public getItems(
-        containerId: number, 
-        scope?: string, 
-        itemPath?: string, 
-        metadata?: boolean, 
-        format?: string, 
-        downloadFileName?: string, 
-        includeDownloadTickets?: boolean
+        containerId: number,
+        scope?: string,
+        itemPath?: string,
+        metadata?: boolean,
+        format?: string,
+        downloadFileName?: string,
+        includeDownloadTickets?: boolean,
+        isShallow?: boolean
         ): Q.Promise<FileContainerInterfaces.FileContainerItem[]> {
     
         var deferred = Q.defer<FileContainerInterfaces.FileContainerItem[]>();
 
-        this.api.getItems(containerId, scope, itemPath, metadata, format, downloadFileName, includeDownloadTickets, (err: any, statusCode: number, Containers: FileContainerInterfaces.FileContainerItem[]) => {
-            if(err) {
+        this.api.getItems(containerId, scope, itemPath, metadata, format, downloadFileName, includeDownloadTickets, isShallow, (err: any, statusCode: number, Containers: FileContainerInterfaces.FileContainerItem[]) => {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -374,5 +436,31 @@ export class QFileContainerApi extends basem.QClientApiBase implements IQFileCon
 
         return <Q.Promise<FileContainerInterfaces.FileContainerItem[]>>deferred.promise;
     }
+
+    /**
+    * Allow browsing of file ,the contentDisposition is inline and Content-Type is determined by FileExtension
+    * 
+    * @param {number} container
+    * @param {string} itemPath - The path to the item of interest
+    */
+    public browseItems(
+        container: number,
+        itemPath?: string
+        ): Q.Promise<FileContainerInterfaces.FileContainerItem[]> {
     
+        var deferred = Q.defer<FileContainerInterfaces.FileContainerItem[]>();
+
+        this.api.browseItems(container, itemPath, (err: any, statusCode: number, Containers: FileContainerInterfaces.FileContainerItem[]) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(Containers);
+            }
+        });
+
+        return <Q.Promise<FileContainerInterfaces.FileContainerItem[]>>deferred.promise;
+    }
+
 }

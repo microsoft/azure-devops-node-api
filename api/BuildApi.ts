@@ -28,28 +28,32 @@ export interface IBuildApi extends basem.ClientApiBase {
     getArtifactContentZip(buildId: number, artifactName: string, project: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     getArtifacts(buildId: number, project: string, onResult: (err: any, statusCode: number, artifacts: BuildInterfaces.BuildArtifact[]) => void): void;
     getBadge(project: string, definitionId: number, branchName: string, onResult: (err: any, statusCode: number, badge: string) => void): void;
+    getBuildBadge(project: string, repoType: string, repoId: string, branchName: string, onResult: (err: any, statusCode: number, buildbadge: BuildInterfaces.BuildBadge) => void): void;
+    getBuildBadgeData(project: string, repoType: string, repoId: string, branchName: string, onResult: (err: any, statusCode: number, buildbadge: string) => void): void;
     deleteBuild(buildId: number, project: string, onResult: (err: any, statusCode: number) => void): void;
     getBuild(buildId: number, project: string, propertyFilters: string, onResult: (err: any, statusCode: number, build: BuildInterfaces.Build) => void): void;
     getBuilds(project: string, definitions: number[], queues: number[], buildNumber: string, minFinishTime: Date, maxFinishTime: Date, requestedFor: string, reasonFilter: BuildInterfaces.BuildReason, statusFilter: BuildInterfaces.BuildStatus, resultFilter: BuildInterfaces.BuildResult, tagFilters: string[], properties: string[], type: BuildInterfaces.DefinitionType, top: number, continuationToken: string, maxBuildsPerDefinition: number, deletedFilter: BuildInterfaces.QueryDeletedOption, queryOrder: BuildInterfaces.BuildQueryOrder, onResult: (err: any, statusCode: number, builds: BuildInterfaces.Build[]) => void): void;
     queueBuild(build: BuildInterfaces.Build, project: string, ignoreWarnings: boolean, onResult: (err: any, statusCode: number, build: BuildInterfaces.Build) => void): void;
     updateBuild(build: BuildInterfaces.Build, buildId: number, project: string, onResult: (err: any, statusCode: number, build: BuildInterfaces.Build) => void): void;
     getBuildCommits(project: string, buildId: number, top: number, onResult: (err: any, statusCode: number, changes: BuildInterfaces.Change[]) => void): void;
+    getChangesBetweenBuilds(project: string, fromBuildId: number, toBuildId: number, top: number, onResult: (err: any, statusCode: number, changes: BuildInterfaces.Change[]) => void): void;
     getBuildController(controllerId: number, onResult: (err: any, statusCode: number, Controller: BuildInterfaces.BuildController) => void): void;
     getBuildControllers(name: string, onResult: (err: any, statusCode: number, Controllers: BuildInterfaces.BuildController[]) => void): void;
     createDefinition(definition: BuildInterfaces.BuildDefinition, project: string, definitionToCloneId: number, definitionToCloneRevision: number, onResult: (err: any, statusCode: number, definition: BuildInterfaces.BuildDefinition) => void): void;
     deleteDefinition(definitionId: number, project: string, onResult: (err: any, statusCode: number) => void): void;
     getDefinition(definitionId: number, project: string, revision: number, propertyFilters: string[], onResult: (err: any, statusCode: number, definition: BuildInterfaces.DefinitionReference) => void): void;
-    getDefinitions(project: string, name: string, type: BuildInterfaces.DefinitionType, onResult: (err: any, statusCode: number, definitions: BuildInterfaces.DefinitionReference[]) => void): void;
+    getDefinitions(project: string, name: string, type: BuildInterfaces.DefinitionType, repositoryId: string, repositoryType: string, queryOrder: BuildInterfaces.DefinitionQueryOrder, top: number, onResult: (err: any, statusCode: number, definitions: BuildInterfaces.DefinitionReference[]) => void): void;
     updateDefinition(definition: BuildInterfaces.BuildDefinition, definitionId: number, project: string, secretsSourceDefinitionId: number, secretsSourceDefinitionRevision: number, onResult: (err: any, statusCode: number, definition: BuildInterfaces.BuildDefinition) => void): void;
     getBuildDeployments(project: string, buildId: number, onResult: (err: any, statusCode: number, deployments: BuildInterfaces.Deployment[]) => void): void;
     getBuildLog(project: string, buildId: number, logId: number, startLine: number, endLine: number, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     getBuildLogs(project: string, buildId: number, onResult: (err: any, statusCode: number, logs: BuildInterfaces.BuildLog[]) => void): void;
     getBuildLogsZip(project: string, buildId: number, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
-    getBuildOptionDefinitions(onResult: (err: any, statusCode: number, options: BuildInterfaces.BuildOptionDefinition[]) => void): void;
+    getBuildOptionDefinitions(project: string, onResult: (err: any, statusCode: number, options: BuildInterfaces.BuildOptionDefinition[]) => void): void;
     createQueue(queue: BuildInterfaces.AgentPoolQueue, onResult: (err: any, statusCode: number, queue: BuildInterfaces.AgentPoolQueue) => void): void;
     deleteQueue(id: number, onResult: (err: any, statusCode: number) => void): void;
     getAgentPoolQueue(controllerId: number, onResult: (err: any, statusCode: number, queue: BuildInterfaces.AgentPoolQueue) => void): void;
     getQueues(name: string, onResult: (err: any, statusCode: number, queues: BuildInterfaces.AgentPoolQueue[]) => void): void;
+    getResourceUsage(onResult: (err: any, statusCode: number, ResourceUsage: BuildInterfaces.BuildResourceUsage) => void): void;
     getDefinitionRevisions(project: string, definitionId: number, onResult: (err: any, statusCode: number, revisions: BuildInterfaces.BuildDefinitionRevision[]) => void): void;
     getBuildSettings(onResult: (err: any, statusCode: number, setting: BuildInterfaces.BuildSettings) => void): void;
     updateBuildSettings(settings: BuildInterfaces.BuildSettings, onResult: (err: any, statusCode: number, setting: BuildInterfaces.BuildSettings) => void): void;
@@ -65,49 +69,60 @@ export interface IBuildApi extends basem.ClientApiBase {
     getBuildTimeline(project: string, buildId: number, timelineId: string, changeId: number, onResult: (err: any, statusCode: number, Timeline: BuildInterfaces.Timeline) => void): void;
     getBuildWorkItemsRefs(project: string, buildId: number, top: number, onResult: (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => void): void;
     getBuildWorkItemsRefsFromCommits(commitIds: string[], project: string, buildId: number, top: number, onResult: (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => void): void;
+    getWorkItemsBetweenBuilds(project: string, fromBuildId: number, toBuildId: number, top: number, onResult: (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => void): void;
 }
 
 export interface IQBuildApi extends basem.QClientApiBase {
-    
-    createArtifact(artifact: BuildInterfaces.BuildArtifact, buildId: number,  project?: string): Q.Promise<BuildInterfaces.BuildArtifact>;
-    getArtifact(buildId: number, artifactName: string,  project?: string): Q.Promise<BuildInterfaces.BuildArtifact>;
-    getArtifacts(buildId: number,  project?: string): Q.Promise<BuildInterfaces.BuildArtifact[]>;
-    getBadge(project: string, definitionId: number,  branchName?: string): Q.Promise<string>;
-    getBuild(buildId: number, project?: string,  propertyFilters?: string): Q.Promise<BuildInterfaces.Build>;
-    getBuilds(project?: string, definitions?: number[], queues?: number[], buildNumber?: string, minFinishTime?: Date, maxFinishTime?: Date, requestedFor?: string, reasonFilter?: BuildInterfaces.BuildReason, statusFilter?: BuildInterfaces.BuildStatus, resultFilter?: BuildInterfaces.BuildResult, tagFilters?: string[], properties?: string[], type?: BuildInterfaces.DefinitionType, top?: number, continuationToken?: string, maxBuildsPerDefinition?: number, deletedFilter?: BuildInterfaces.QueryDeletedOption,  queryOrder?: BuildInterfaces.BuildQueryOrder): Q.Promise<BuildInterfaces.Build[]>;
-    queueBuild(build: BuildInterfaces.Build, project?: string,  ignoreWarnings?: boolean): Q.Promise<BuildInterfaces.Build>;
-    updateBuild(build: BuildInterfaces.Build, buildId: number,  project?: string): Q.Promise<BuildInterfaces.Build>;
-    getBuildCommits(project: string, buildId: number,  top?: number): Q.Promise<BuildInterfaces.Change[]>;
-    getBuildController( controllerId: number): Q.Promise<BuildInterfaces.BuildController>;
-    getBuildControllers( name?: string): Q.Promise<BuildInterfaces.BuildController[]>;
-    createDefinition(definition: BuildInterfaces.BuildDefinition, project?: string, definitionToCloneId?: number,  definitionToCloneRevision?: number): Q.Promise<BuildInterfaces.BuildDefinition>;
-    getDefinition(definitionId: number, project?: string, revision?: number,  propertyFilters?: string[]): Q.Promise<BuildInterfaces.DefinitionReference>;
-    getDefinitions(project?: string, name?: string,  type?: BuildInterfaces.DefinitionType): Q.Promise<BuildInterfaces.DefinitionReference[]>;
-    updateDefinition(definition: BuildInterfaces.BuildDefinition, definitionId: number, project?: string, secretsSourceDefinitionId?: number,  secretsSourceDefinitionRevision?: number): Q.Promise<BuildInterfaces.BuildDefinition>;
-    getBuildDeployments(project: string,  buildId: number): Q.Promise<BuildInterfaces.Deployment[]>;
-    getBuildLogs(project: string,  buildId: number): Q.Promise<BuildInterfaces.BuildLog[]>;
-    getBuildOptionDefinitions(): Q.Promise<BuildInterfaces.BuildOptionDefinition[]>;
-    createQueue( queue: BuildInterfaces.AgentPoolQueue): Q.Promise<BuildInterfaces.AgentPoolQueue>;
-    getAgentPoolQueue( controllerId: number): Q.Promise<BuildInterfaces.AgentPoolQueue>;
-    getQueues( name?: string): Q.Promise<BuildInterfaces.AgentPoolQueue[]>;
-    getDefinitionRevisions(project: string,  definitionId: number): Q.Promise<BuildInterfaces.BuildDefinitionRevision[]>;
+    createArtifact(artifact: BuildInterfaces.BuildArtifact, buildId: number, project?: string): Q.Promise<BuildInterfaces.BuildArtifact>;
+    getArtifact(buildId: number, artifactName: string, project?: string): Q.Promise<BuildInterfaces.BuildArtifact>;
+    getArtifactContentZip(buildId: number, artifactName: string, project?: string): Q.Promise<NodeJS.ReadableStream>;
+    getArtifacts(buildId: number, project?: string): Q.Promise<BuildInterfaces.BuildArtifact[]>;
+    getBadge(project: string, definitionId: number, branchName?: string): Q.Promise<string>;
+    getBuildBadge(project: string, repoType: string, repoId?: string, branchName?: string): Q.Promise<BuildInterfaces.BuildBadge>;
+    getBuildBadgeData(project: string, repoType: string, repoId?: string, branchName?: string): Q.Promise<string>;
+    deleteBuild(buildId: number, project?: string): Q.Promise<void>;
+    getBuild(buildId: number, project?: string, propertyFilters?: string): Q.Promise<BuildInterfaces.Build>;
+    getBuilds(project?: string, definitions?: number[], queues?: number[], buildNumber?: string, minFinishTime?: Date, maxFinishTime?: Date, requestedFor?: string, reasonFilter?: BuildInterfaces.BuildReason, statusFilter?: BuildInterfaces.BuildStatus, resultFilter?: BuildInterfaces.BuildResult, tagFilters?: string[], properties?: string[], type?: BuildInterfaces.DefinitionType, top?: number, continuationToken?: string, maxBuildsPerDefinition?: number, deletedFilter?: BuildInterfaces.QueryDeletedOption, queryOrder?: BuildInterfaces.BuildQueryOrder): Q.Promise<BuildInterfaces.Build[]>;
+    queueBuild(build: BuildInterfaces.Build, project?: string, ignoreWarnings?: boolean): Q.Promise<BuildInterfaces.Build>;
+    updateBuild(build: BuildInterfaces.Build, buildId: number, project?: string): Q.Promise<BuildInterfaces.Build>;
+    getBuildCommits(project: string, buildId: number, top?: number): Q.Promise<BuildInterfaces.Change[]>;
+    getChangesBetweenBuilds(project: string, fromBuildId?: number, toBuildId?: number, top?: number): Q.Promise<BuildInterfaces.Change[]>;
+    getBuildController(controllerId: number): Q.Promise<BuildInterfaces.BuildController>;
+    getBuildControllers(name?: string): Q.Promise<BuildInterfaces.BuildController[]>;
+    createDefinition(definition: BuildInterfaces.BuildDefinition, project?: string, definitionToCloneId?: number, definitionToCloneRevision?: number): Q.Promise<BuildInterfaces.BuildDefinition>;
+    deleteDefinition(definitionId: number, project?: string): Q.Promise<void>;
+    getDefinition(definitionId: number, project?: string, revision?: number, propertyFilters?: string[]): Q.Promise<BuildInterfaces.DefinitionReference>;
+    getDefinitions(project?: string, name?: string, type?: BuildInterfaces.DefinitionType, repositoryId?: string, repositoryType?: string, queryOrder?: BuildInterfaces.DefinitionQueryOrder, top?: number): Q.Promise<BuildInterfaces.DefinitionReference[]>;
+    updateDefinition(definition: BuildInterfaces.BuildDefinition, definitionId: number, project?: string, secretsSourceDefinitionId?: number, secretsSourceDefinitionRevision?: number): Q.Promise<BuildInterfaces.BuildDefinition>;
+    getBuildDeployments(project: string, buildId: number): Q.Promise<BuildInterfaces.Deployment[]>;
+    getBuildLog(project: string, buildId: number, logId: number, startLine?: number, endLine?: number): Q.Promise<NodeJS.ReadableStream>;
+    getBuildLogs(project: string, buildId: number): Q.Promise<BuildInterfaces.BuildLog[]>;
+    getBuildLogsZip(project: string, buildId: number): Q.Promise<NodeJS.ReadableStream>;
+    getBuildOptionDefinitions(project?: string): Q.Promise<BuildInterfaces.BuildOptionDefinition[]>;
+    createQueue(queue: BuildInterfaces.AgentPoolQueue): Q.Promise<BuildInterfaces.AgentPoolQueue>;
+    deleteQueue(id: number): Q.Promise<void>;
+    getAgentPoolQueue(controllerId: number): Q.Promise<BuildInterfaces.AgentPoolQueue>;
+    getQueues(name?: string): Q.Promise<BuildInterfaces.AgentPoolQueue[]>;
+    getResourceUsage(): Q.Promise<BuildInterfaces.BuildResourceUsage>;
+    getDefinitionRevisions(project: string, definitionId: number): Q.Promise<BuildInterfaces.BuildDefinitionRevision[]>;
     getBuildSettings(): Q.Promise<BuildInterfaces.BuildSettings>;
-    updateBuildSettings( settings: BuildInterfaces.BuildSettings): Q.Promise<BuildInterfaces.BuildSettings>;
-    addBuildTag(project: string, buildId: number,  tag: string): Q.Promise<string[]>;
-    addBuildTags(tags: string[], project: string,  buildId: number): Q.Promise<string[]>;
-    deleteBuildTag(project: string, buildId: number,  tag: string): Q.Promise<string[]>;
-    getBuildTags(project: string,  buildId: number): Q.Promise<string[]>;
-    getTags( project: string): Q.Promise<string[]>;
-    getTemplate(project: string,  templateId: string): Q.Promise<BuildInterfaces.BuildDefinitionTemplate>;
-    getTemplates( project: string): Q.Promise<BuildInterfaces.BuildDefinitionTemplate[]>;
-    saveTemplate(template: BuildInterfaces.BuildDefinitionTemplate, project: string,  templateId: string): Q.Promise<BuildInterfaces.BuildDefinitionTemplate>;
-    getBuildTimeline(project: string, buildId: number, timelineId?: string,  changeId?: number): Q.Promise<BuildInterfaces.Timeline>;
-    getBuildWorkItemsRefs(project: string, buildId: number,  top?: number): Q.Promise<VSSInterfaces.ResourceRef[]>;
-    getBuildWorkItemsRefsFromCommits(commitIds: string[], project: string, buildId: number,  top?: number): Q.Promise<VSSInterfaces.ResourceRef[]>;
+    updateBuildSettings(settings: BuildInterfaces.BuildSettings): Q.Promise<BuildInterfaces.BuildSettings>;
+    addBuildTag(project: string, buildId: number, tag: string): Q.Promise<string[]>;
+    addBuildTags(tags: string[], project: string, buildId: number): Q.Promise<string[]>;
+    deleteBuildTag(project: string, buildId: number, tag: string): Q.Promise<string[]>;
+    getBuildTags(project: string, buildId: number): Q.Promise<string[]>;
+    getTags(project: string): Q.Promise<string[]>;
+    deleteTemplate(project: string, templateId: string): Q.Promise<void>;
+    getTemplate(project: string, templateId: string): Q.Promise<BuildInterfaces.BuildDefinitionTemplate>;
+    getTemplates(project: string): Q.Promise<BuildInterfaces.BuildDefinitionTemplate[]>;
+    saveTemplate(template: BuildInterfaces.BuildDefinitionTemplate, project: string, templateId: string): Q.Promise<BuildInterfaces.BuildDefinitionTemplate>;
+    getBuildTimeline(project: string, buildId: number, timelineId?: string, changeId?: number): Q.Promise<BuildInterfaces.Timeline>;
+    getBuildWorkItemsRefs(project: string, buildId: number, top?: number): Q.Promise<VSSInterfaces.ResourceRef[]>;
+    getBuildWorkItemsRefsFromCommits(commitIds: string[], project: string, buildId: number, top?: number): Q.Promise<VSSInterfaces.ResourceRef[]>;
+    getWorkItemsBetweenBuilds(project: string, fromBuildId: number, toBuildId: number, top?: number): Q.Promise<VSSInterfaces.ResourceRef[]>;
 }
 
 export class BuildApi extends basem.ClientApiBase implements IBuildApi {
-
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
         super(baseUrl, handlers, 'node-Build-api');
     }
@@ -132,7 +147,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.3", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -169,7 +184,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             artifactName: artifactName,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.3", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -206,7 +221,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             artifactName: artifactName,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.3", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -237,7 +252,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.3", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -272,7 +287,83 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             branchName: branchName,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "de6a4df8-22cd-44ee-af2d-39f6aa7a4261", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "de6a4df8-22cd-44ee-af2d-39f6aa7a4261", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {string} repoType
+     * @param {string} repoId
+     * @param {string} branchName
+     * @param onResult callback function with the resulting BuildInterfaces.BuildBadge
+     */
+    public getBuildBadge(
+        project: string,
+        repoType: string,
+        repoId: string,
+        branchName: string,
+        onResult: (err: any, statusCode: number, buildbadge: BuildInterfaces.BuildBadge) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project,
+            repoType: repoType
+        };
+
+        var queryValues: any = {
+            repoId: repoId,
+            branchName: branchName,
+        };
+        
+        this.vsoClient.getVersioningData("2.2-preview.1", "build", "21b3b9ce-fad5-4567-9ad0-80679794e003", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildBadge, responseIsCollection: false };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {string} repoType
+     * @param {string} repoId
+     * @param {string} branchName
+     * @param onResult callback function with the resulting string
+     */
+    public getBuildBadgeData(
+        project: string,
+        repoType: string,
+        repoId: string,
+        branchName: string,
+        onResult: (err: any, statusCode: number, buildbadge: string) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project,
+            repoType: repoType
+        };
+
+        var queryValues: any = {
+            repoId: repoId,
+            branchName: branchName,
+        };
+        
+        this.vsoClient.getVersioningData("2.2-preview.1", "build", "21b3b9ce-fad5-4567-9ad0-80679794e003", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -303,7 +394,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -340,7 +431,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             propertyFilters: propertyFilters,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -422,7 +513,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             queryOrder: queryOrder,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -458,7 +549,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             ignoreWarnings: ignoreWarnings,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -491,7 +582,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -528,7 +619,47 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             '$top': top,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "54572c7b-bbd3-45d4-80dc-28be08941620", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "54572c7b-bbd3-45d4-80dc-28be08941620", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Change, responseIsCollection: true };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * Gets the changes associated between given builds
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} fromBuildId
+     * @param {number} toBuildId
+     * @param {number} top - The maximum number of changes to return
+     * @param onResult callback function with the resulting BuildInterfaces.Change[]
+     */
+    public getChangesBetweenBuilds(
+        project: string,
+        fromBuildId: number,
+        toBuildId: number,
+        top: number,
+        onResult: (err: any, statusCode: number, changes: BuildInterfaces.Change[]) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project
+        };
+
+        var queryValues: any = {
+            fromBuildId: fromBuildId,
+            toBuildId: toBuildId,
+            '$top': top,
+        };
+        
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "f10f0ea5-18a1-43ec-a8fb-2042c7be9b43", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -556,7 +687,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             controllerId: controllerId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "fcac1932-2ee1-437f-9b6f-7f696be858f6", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "fcac1932-2ee1-437f-9b6f-7f696be858f6", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -587,7 +718,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             name: name,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "fcac1932-2ee1-437f-9b6f-7f696be858f6", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "fcac1932-2ee1-437f-9b6f-7f696be858f6", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -626,7 +757,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             definitionToCloneRevision: definitionToCloneRevision,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -657,7 +788,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             definitionId: definitionId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -697,7 +828,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             propertyFilters: propertyFilters && propertyFilters.join(","),
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -716,12 +847,20 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
      * @param {string} project - Project ID or project name
      * @param {string} name
      * @param {BuildInterfaces.DefinitionType} type
+     * @param {string} repositoryId
+     * @param {string} repositoryType
+     * @param {BuildInterfaces.DefinitionQueryOrder} queryOrder
+     * @param {number} top
      * @param onResult callback function with the resulting BuildInterfaces.DefinitionReference[]
      */
     public getDefinitions(
         project: string,
         name: string,
         type: BuildInterfaces.DefinitionType,
+        repositoryId: string,
+        repositoryType: string,
+        queryOrder: BuildInterfaces.DefinitionQueryOrder,
+        top: number,
         onResult: (err: any, statusCode: number, definitions: BuildInterfaces.DefinitionReference[]) => void
         ): void {
 
@@ -732,9 +871,13 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         var queryValues: any = {
             name: name,
             type: type,
+            repositoryId: repositoryId,
+            repositoryType: repositoryType,
+            queryOrder: queryOrder,
+            '$top': top,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -776,7 +919,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             secretsSourceDefinitionRevision: secretsSourceDefinitionRevision,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -807,7 +950,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "f275be9a-556a-4ee9-b72f-f9c8370ccaee", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "f275be9a-556a-4ee9-b72f-f9c8370ccaee", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -850,7 +993,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             endLine: endLine,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -881,7 +1024,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -912,7 +1055,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -926,16 +1069,19 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
+     * @param {string} project - Project ID or project name
      * @param onResult callback function with the resulting BuildInterfaces.BuildOptionDefinition[]
      */
     public getBuildOptionDefinitions(
+        project: string,
         onResult: (err: any, statusCode: number, options: BuildInterfaces.BuildOptionDefinition[]) => void
         ): void {
 
         var routeValues: any = {
+            project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "591cb5a4-2d46-4f3a-a697-5cd42b6bd332", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "591cb5a4-2d46-4f3a-a697-5cd42b6bd332", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -962,7 +1108,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         var routeValues: any = {
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -993,7 +1139,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             id: id,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1021,7 +1167,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             controllerId: controllerId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1052,11 +1198,34 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             name: name,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.AgentPoolQueue, responseIsCollection: true };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param onResult callback function with the resulting BuildInterfaces.BuildResourceUsage
+     */
+    public getResourceUsage(
+        onResult: (err: any, statusCode: number, ResourceUsage: BuildInterfaces.BuildResourceUsage) => void
+        ): void {
+
+        var routeValues: any = {
+        };
+
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "3813d06c-9e36-4ea1-aac3-61a485d60e3d", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildResourceUsage, responseIsCollection: false };
             
             this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
@@ -1083,7 +1252,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             definitionId: definitionId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "7c116775-52e5-453e-8c5d-914d9762d8c4", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "7c116775-52e5-453e-8c5d-914d9762d8c4", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1106,7 +1275,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         var routeValues: any = {
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "build", "aa8c1c9c-ef8b-474a-b8c4-785c7b191d0d", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "build", "aa8c1c9c-ef8b-474a-b8c4-785c7b191d0d", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1133,7 +1302,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         var routeValues: any = {
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "build", "aa8c1c9c-ef8b-474a-b8c4-785c7b191d0d", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "build", "aa8c1c9c-ef8b-474a-b8c4-785c7b191d0d", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1167,7 +1336,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             tag: tag
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1200,7 +1369,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1234,7 +1403,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             tag: tag
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1265,7 +1434,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1291,7 +1460,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "d84ac5c6-edc7-43d5-adc9-1b34be5dea09", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "d84ac5c6-edc7-43d5-adc9-1b34be5dea09", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1322,7 +1491,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             templateId: templateId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1353,7 +1522,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             templateId: templateId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1379,7 +1548,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1412,7 +1581,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             templateId: templateId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1452,7 +1621,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             changeId: changeId,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "8baac422-4c6e-4de5-8532-db96d92acffa", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "8baac422-4c6e-4de5-8532-db96d92acffa", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1489,7 +1658,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             '$top': top,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "5a21f5d2-5642-47e4-a0bd-1356e6731bee", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "5a21f5d2-5642-47e4-a0bd-1356e6731bee", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1528,7 +1697,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             '$top': top,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "5a21f5d2-5642-47e4-a0bd-1356e6731bee", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "5a21f5d2-5642-47e4-a0bd-1356e6731bee", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1541,17 +1710,55 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         });
     }
 
+    /**
+     * Gets all the work item ids inbetween fromBuildId to toBuildId
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} fromBuildId
+     * @param {number} toBuildId
+     * @param {number} top - The maximum number of workitems to return
+     * @param onResult callback function with the resulting VSSInterfaces.ResourceRef[]
+     */
+    public getWorkItemsBetweenBuilds(
+        project: string,
+        fromBuildId: number,
+        toBuildId: number,
+        top: number,
+        onResult: (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project
+        };
+
+        var queryValues: any = {
+            fromBuildId: fromBuildId,
+            toBuildId: toBuildId,
+            '$top': top,
+        };
+        
+        this.vsoClient.getVersioningData("2.2-preview.2", "build", "52ba8915-5518-42e3-a4bb-b0182d159e2d", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: VSSInterfaces.TypeInfo.ResourceRef, responseIsCollection: true };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
 }
 
 export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
-    
     api: BuildApi;
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        super(baseUrl, handlers, BuildApi);
+        super(baseUrl, handlers, api);
     }
 
-    
     /**
     * Associates an artifact with a build
     * 
@@ -1560,15 +1767,15 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {string} project - Project ID or project name
     */
     public createArtifact(
-        artifact: BuildInterfaces.BuildArtifact, 
-        buildId: number, 
+        artifact: BuildInterfaces.BuildArtifact,
+        buildId: number,
         project?: string
         ): Q.Promise<BuildInterfaces.BuildArtifact> {
     
         var deferred = Q.defer<BuildInterfaces.BuildArtifact>();
 
         this.api.createArtifact(artifact, buildId, project, (err: any, statusCode: number, artifact: BuildInterfaces.BuildArtifact) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1579,7 +1786,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.BuildArtifact>>deferred.promise;
     }
-    
+
     /**
     * Gets a specific artifact for a build
     * 
@@ -1588,15 +1795,15 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {string} project - Project ID or project name
     */
     public getArtifact(
-        buildId: number, 
-        artifactName: string, 
+        buildId: number,
+        artifactName: string,
         project?: string
         ): Q.Promise<BuildInterfaces.BuildArtifact> {
     
         var deferred = Q.defer<BuildInterfaces.BuildArtifact>();
 
         this.api.getArtifact(buildId, artifactName, project, (err: any, statusCode: number, artifact: BuildInterfaces.BuildArtifact) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1607,7 +1814,35 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.BuildArtifact>>deferred.promise;
     }
+
+    /**
+    * Gets a specific artifact for a build
+    * 
+    * @param {number} buildId
+    * @param {string} artifactName
+    * @param {string} project - Project ID or project name
+    */
+    public getArtifactContentZip(
+        buildId: number,
+        artifactName: string,
+        project?: string
+        ): Q.Promise<NodeJS.ReadableStream> {
     
+        var deferred = Q.defer<NodeJS.ReadableStream>();
+
+        this.api.getArtifactContentZip(buildId, artifactName, project, (err: any, statusCode: number, artifact: NodeJS.ReadableStream) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(artifact);
+            }
+        });
+
+        return <Q.Promise<NodeJS.ReadableStream>>deferred.promise;
+    }
+
     /**
     * Gets all artifacts for a build
     * 
@@ -1615,14 +1850,14 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {string} project - Project ID or project name
     */
     public getArtifacts(
-        buildId: number, 
+        buildId: number,
         project?: string
         ): Q.Promise<BuildInterfaces.BuildArtifact[]> {
     
         var deferred = Q.defer<BuildInterfaces.BuildArtifact[]>();
 
         this.api.getArtifacts(buildId, project, (err: any, statusCode: number, artifacts: BuildInterfaces.BuildArtifact[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1633,22 +1868,22 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.BuildArtifact[]>>deferred.promise;
     }
-    
+
     /**
     * @param {string} project
     * @param {number} definitionId
     * @param {string} branchName
     */
     public getBadge(
-        project: string, 
-        definitionId: number, 
+        project: string,
+        definitionId: number,
         branchName?: string
         ): Q.Promise<string> {
     
         var deferred = Q.defer<string>();
 
         this.api.getBadge(project, definitionId, branchName, (err: any, statusCode: number, badge: string) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1659,7 +1894,89 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<string>>deferred.promise;
     }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {string} repoType
+    * @param {string} repoId
+    * @param {string} branchName
+    */
+    public getBuildBadge(
+        project: string,
+        repoType: string,
+        repoId?: string,
+        branchName?: string
+        ): Q.Promise<BuildInterfaces.BuildBadge> {
     
+        var deferred = Q.defer<BuildInterfaces.BuildBadge>();
+
+        this.api.getBuildBadge(project, repoType, repoId, branchName, (err: any, statusCode: number, buildbadge: BuildInterfaces.BuildBadge) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(buildbadge);
+            }
+        });
+
+        return <Q.Promise<BuildInterfaces.BuildBadge>>deferred.promise;
+    }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {string} repoType
+    * @param {string} repoId
+    * @param {string} branchName
+    */
+    public getBuildBadgeData(
+        project: string,
+        repoType: string,
+        repoId?: string,
+        branchName?: string
+        ): Q.Promise<string> {
+    
+        var deferred = Q.defer<string>();
+
+        this.api.getBuildBadgeData(project, repoType, repoId, branchName, (err: any, statusCode: number, buildbadge: string) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(buildbadge);
+            }
+        });
+
+        return <Q.Promise<string>>deferred.promise;
+    }
+
+    /**
+    * Deletes a build
+    * 
+    * @param {number} buildId
+    * @param {string} project - Project ID or project name
+    */
+    public deleteBuild(
+        buildId: number,
+        project?: string
+        ): Q.Promise<void> {
+    
+        var deferred = Q.defer<void>();
+
+        this.api.deleteBuild(buildId, project, (err: any, statusCode: number) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(null);
+            }
+        });
+
+        return <Q.Promise<void>>deferred.promise;
+    }
+
     /**
     * Gets a build
     * 
@@ -1668,15 +1985,15 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {string} propertyFilters - A comma-delimited list of properties to include in the results
     */
     public getBuild(
-        buildId: number, 
-        project?: string, 
+        buildId: number,
+        project?: string,
         propertyFilters?: string
         ): Q.Promise<BuildInterfaces.Build> {
     
         var deferred = Q.defer<BuildInterfaces.Build>();
 
         this.api.getBuild(buildId, project, propertyFilters, (err: any, statusCode: number, build: BuildInterfaces.Build) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1687,7 +2004,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.Build>>deferred.promise;
     }
-    
+
     /**
     * Gets builds
     * 
@@ -1711,30 +2028,30 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {BuildInterfaces.BuildQueryOrder} queryOrder
     */
     public getBuilds(
-        project?: string, 
-        definitions?: number[], 
-        queues?: number[], 
-        buildNumber?: string, 
-        minFinishTime?: Date, 
-        maxFinishTime?: Date, 
-        requestedFor?: string, 
-        reasonFilter?: BuildInterfaces.BuildReason, 
-        statusFilter?: BuildInterfaces.BuildStatus, 
-        resultFilter?: BuildInterfaces.BuildResult, 
-        tagFilters?: string[], 
-        properties?: string[], 
-        type?: BuildInterfaces.DefinitionType, 
-        top?: number, 
-        continuationToken?: string, 
-        maxBuildsPerDefinition?: number, 
-        deletedFilter?: BuildInterfaces.QueryDeletedOption, 
+        project?: string,
+        definitions?: number[],
+        queues?: number[],
+        buildNumber?: string,
+        minFinishTime?: Date,
+        maxFinishTime?: Date,
+        requestedFor?: string,
+        reasonFilter?: BuildInterfaces.BuildReason,
+        statusFilter?: BuildInterfaces.BuildStatus,
+        resultFilter?: BuildInterfaces.BuildResult,
+        tagFilters?: string[],
+        properties?: string[],
+        type?: BuildInterfaces.DefinitionType,
+        top?: number,
+        continuationToken?: string,
+        maxBuildsPerDefinition?: number,
+        deletedFilter?: BuildInterfaces.QueryDeletedOption,
         queryOrder?: BuildInterfaces.BuildQueryOrder
         ): Q.Promise<BuildInterfaces.Build[]> {
     
         var deferred = Q.defer<BuildInterfaces.Build[]>();
 
         this.api.getBuilds(project, definitions, queues, buildNumber, minFinishTime, maxFinishTime, requestedFor, reasonFilter, statusFilter, resultFilter, tagFilters, properties, type, top, continuationToken, maxBuildsPerDefinition, deletedFilter, queryOrder, (err: any, statusCode: number, builds: BuildInterfaces.Build[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1745,7 +2062,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.Build[]>>deferred.promise;
     }
-    
+
     /**
     * Queues a build
     * 
@@ -1754,15 +2071,15 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {boolean} ignoreWarnings
     */
     public queueBuild(
-        build: BuildInterfaces.Build, 
-        project?: string, 
+        build: BuildInterfaces.Build,
+        project?: string,
         ignoreWarnings?: boolean
         ): Q.Promise<BuildInterfaces.Build> {
     
         var deferred = Q.defer<BuildInterfaces.Build>();
 
         this.api.queueBuild(build, project, ignoreWarnings, (err: any, statusCode: number, build: BuildInterfaces.Build) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1773,7 +2090,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.Build>>deferred.promise;
     }
-    
+
     /**
     * Updates a build
     * 
@@ -1782,15 +2099,15 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {string} project - Project ID or project name
     */
     public updateBuild(
-        build: BuildInterfaces.Build, 
-        buildId: number, 
+        build: BuildInterfaces.Build,
+        buildId: number,
         project?: string
         ): Q.Promise<BuildInterfaces.Build> {
     
         var deferred = Q.defer<BuildInterfaces.Build>();
 
         this.api.updateBuild(build, buildId, project, (err: any, statusCode: number, build: BuildInterfaces.Build) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1801,7 +2118,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.Build>>deferred.promise;
     }
-    
+
     /**
     * Gets the changes associated with a build
     * 
@@ -1810,15 +2127,15 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {number} top - The maximum number of changes to return
     */
     public getBuildCommits(
-        project: string, 
-        buildId: number, 
+        project: string,
+        buildId: number,
         top?: number
         ): Q.Promise<BuildInterfaces.Change[]> {
     
         var deferred = Q.defer<BuildInterfaces.Change[]>();
 
         this.api.getBuildCommits(project, buildId, top, (err: any, statusCode: number, changes: BuildInterfaces.Change[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1829,7 +2146,37 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.Change[]>>deferred.promise;
     }
+
+    /**
+    * Gets the changes associated between given builds
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} fromBuildId
+    * @param {number} toBuildId
+    * @param {number} top - The maximum number of changes to return
+    */
+    public getChangesBetweenBuilds(
+        project: string,
+        fromBuildId?: number,
+        toBuildId?: number,
+        top?: number
+        ): Q.Promise<BuildInterfaces.Change[]> {
     
+        var deferred = Q.defer<BuildInterfaces.Change[]>();
+
+        this.api.getChangesBetweenBuilds(project, fromBuildId, toBuildId, top, (err: any, statusCode: number, changes: BuildInterfaces.Change[]) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(changes);
+            }
+        });
+
+        return <Q.Promise<BuildInterfaces.Change[]>>deferred.promise;
+    }
+
     /**
     * Gets a controller
     * 
@@ -1842,7 +2189,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
         var deferred = Q.defer<BuildInterfaces.BuildController>();
 
         this.api.getBuildController(controllerId, (err: any, statusCode: number, Controller: BuildInterfaces.BuildController) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1853,7 +2200,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.BuildController>>deferred.promise;
     }
-    
+
     /**
     * Gets controller, optionally filtered by name
     * 
@@ -1866,7 +2213,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
         var deferred = Q.defer<BuildInterfaces.BuildController[]>();
 
         this.api.getBuildControllers(name, (err: any, statusCode: number, Controllers: BuildInterfaces.BuildController[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1877,7 +2224,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.BuildController[]>>deferred.promise;
     }
-    
+
     /**
     * Creates a new definition
     * 
@@ -1887,16 +2234,16 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {number} definitionToCloneRevision
     */
     public createDefinition(
-        definition: BuildInterfaces.BuildDefinition, 
-        project?: string, 
-        definitionToCloneId?: number, 
+        definition: BuildInterfaces.BuildDefinition,
+        project?: string,
+        definitionToCloneId?: number,
         definitionToCloneRevision?: number
         ): Q.Promise<BuildInterfaces.BuildDefinition> {
     
         var deferred = Q.defer<BuildInterfaces.BuildDefinition>();
 
         this.api.createDefinition(definition, project, definitionToCloneId, definitionToCloneRevision, (err: any, statusCode: number, definition: BuildInterfaces.BuildDefinition) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1907,7 +2254,33 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.BuildDefinition>>deferred.promise;
     }
+
+    /**
+    * Deletes a definition and all associated builds
+    * 
+    * @param {number} definitionId
+    * @param {string} project - Project ID or project name
+    */
+    public deleteDefinition(
+        definitionId: number,
+        project?: string
+        ): Q.Promise<void> {
     
+        var deferred = Q.defer<void>();
+
+        this.api.deleteDefinition(definitionId, project, (err: any, statusCode: number) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(null);
+            }
+        });
+
+        return <Q.Promise<void>>deferred.promise;
+    }
+
     /**
     * Gets a definition, optionally at a specific revision
     * 
@@ -1917,16 +2290,16 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {string[]} propertyFilters
     */
     public getDefinition(
-        definitionId: number, 
-        project?: string, 
-        revision?: number, 
+        definitionId: number,
+        project?: string,
+        revision?: number,
         propertyFilters?: string[]
         ): Q.Promise<BuildInterfaces.DefinitionReference> {
     
         var deferred = Q.defer<BuildInterfaces.DefinitionReference>();
 
         this.api.getDefinition(definitionId, project, revision, propertyFilters, (err: any, statusCode: number, definition: BuildInterfaces.DefinitionReference) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1937,24 +2310,32 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.DefinitionReference>>deferred.promise;
     }
-    
+
     /**
     * Gets definitions, optionally filtered by name
     * 
     * @param {string} project - Project ID or project name
     * @param {string} name
     * @param {BuildInterfaces.DefinitionType} type
+    * @param {string} repositoryId
+    * @param {string} repositoryType
+    * @param {BuildInterfaces.DefinitionQueryOrder} queryOrder
+    * @param {number} top
     */
     public getDefinitions(
-        project?: string, 
-        name?: string, 
-        type?: BuildInterfaces.DefinitionType
+        project?: string,
+        name?: string,
+        type?: BuildInterfaces.DefinitionType,
+        repositoryId?: string,
+        repositoryType?: string,
+        queryOrder?: BuildInterfaces.DefinitionQueryOrder,
+        top?: number
         ): Q.Promise<BuildInterfaces.DefinitionReference[]> {
     
         var deferred = Q.defer<BuildInterfaces.DefinitionReference[]>();
 
-        this.api.getDefinitions(project, name, type, (err: any, statusCode: number, definitions: BuildInterfaces.DefinitionReference[]) => {
-            if(err) {
+        this.api.getDefinitions(project, name, type, repositoryId, repositoryType, queryOrder, top, (err: any, statusCode: number, definitions: BuildInterfaces.DefinitionReference[]) => {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1965,7 +2346,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.DefinitionReference[]>>deferred.promise;
     }
-    
+
     /**
     * Updates an existing definition
     * 
@@ -1976,17 +2357,17 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {number} secretsSourceDefinitionRevision
     */
     public updateDefinition(
-        definition: BuildInterfaces.BuildDefinition, 
-        definitionId: number, 
-        project?: string, 
-        secretsSourceDefinitionId?: number, 
+        definition: BuildInterfaces.BuildDefinition,
+        definitionId: number,
+        project?: string,
+        secretsSourceDefinitionId?: number,
         secretsSourceDefinitionRevision?: number
         ): Q.Promise<BuildInterfaces.BuildDefinition> {
     
         var deferred = Q.defer<BuildInterfaces.BuildDefinition>();
 
         this.api.updateDefinition(definition, definitionId, project, secretsSourceDefinitionId, secretsSourceDefinitionRevision, (err: any, statusCode: number, definition: BuildInterfaces.BuildDefinition) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1997,7 +2378,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.BuildDefinition>>deferred.promise;
     }
-    
+
     /**
     * Gets the deployment information associated with a build
     * 
@@ -2005,14 +2386,14 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {number} buildId
     */
     public getBuildDeployments(
-        project: string, 
+        project: string,
         buildId: number
         ): Q.Promise<BuildInterfaces.Deployment[]> {
     
         var deferred = Q.defer<BuildInterfaces.Deployment[]>();
 
         this.api.getBuildDeployments(project, buildId, (err: any, statusCode: number, deployments: BuildInterfaces.Deployment[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -2023,7 +2404,39 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.Deployment[]>>deferred.promise;
     }
+
+    /**
+    * Gets a log
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} buildId
+    * @param {number} logId
+    * @param {number} startLine
+    * @param {number} endLine
+    */
+    public getBuildLog(
+        project: string,
+        buildId: number,
+        logId: number,
+        startLine?: number,
+        endLine?: number
+        ): Q.Promise<NodeJS.ReadableStream> {
     
+        var deferred = Q.defer<NodeJS.ReadableStream>();
+
+        this.api.getBuildLog(project, buildId, logId, startLine, endLine, (err: any, statusCode: number, log: NodeJS.ReadableStream) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(log);
+            }
+        });
+
+        return <Q.Promise<NodeJS.ReadableStream>>deferred.promise;
+    }
+
     /**
     * Gets logs for a build
     * 
@@ -2031,14 +2444,14 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {number} buildId
     */
     public getBuildLogs(
-        project: string, 
+        project: string,
         buildId: number
         ): Q.Promise<BuildInterfaces.BuildLog[]> {
     
         var deferred = Q.defer<BuildInterfaces.BuildLog[]>();
 
         this.api.getBuildLogs(project, buildId, (err: any, statusCode: number, logs: BuildInterfaces.BuildLog[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -2049,16 +2462,44 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.BuildLog[]>>deferred.promise;
     }
-    
+
     /**
+    * Gets logs for a build
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} buildId
+    */
+    public getBuildLogsZip(
+        project: string,
+        buildId: number
+        ): Q.Promise<NodeJS.ReadableStream> {
+    
+        var deferred = Q.defer<NodeJS.ReadableStream>();
+
+        this.api.getBuildLogsZip(project, buildId, (err: any, statusCode: number, log: NodeJS.ReadableStream) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(log);
+            }
+        });
+
+        return <Q.Promise<NodeJS.ReadableStream>>deferred.promise;
+    }
+
+    /**
+    * @param {string} project - Project ID or project name
     */
     public getBuildOptionDefinitions(
+        project?: string
         ): Q.Promise<BuildInterfaces.BuildOptionDefinition[]> {
     
         var deferred = Q.defer<BuildInterfaces.BuildOptionDefinition[]>();
 
-        this.api.getBuildOptionDefinitions((err: any, statusCode: number, options: BuildInterfaces.BuildOptionDefinition[]) => {
-            if(err) {
+        this.api.getBuildOptionDefinitions(project, (err: any, statusCode: number, options: BuildInterfaces.BuildOptionDefinition[]) => {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -2069,7 +2510,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.BuildOptionDefinition[]>>deferred.promise;
     }
-    
+
     /**
     * Creates a build queue
     * 
@@ -2082,7 +2523,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
         var deferred = Q.defer<BuildInterfaces.AgentPoolQueue>();
 
         this.api.createQueue(queue, (err: any, statusCode: number, queue: BuildInterfaces.AgentPoolQueue) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -2093,7 +2534,31 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.AgentPoolQueue>>deferred.promise;
     }
+
+    /**
+    * Deletes a build queue
+    * 
+    * @param {number} id
+    */
+    public deleteQueue(
+        id: number
+        ): Q.Promise<void> {
     
+        var deferred = Q.defer<void>();
+
+        this.api.deleteQueue(id, (err: any, statusCode: number) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(null);
+            }
+        });
+
+        return <Q.Promise<void>>deferred.promise;
+    }
+
     /**
     * Gets a queue
     * 
@@ -2106,7 +2571,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
         var deferred = Q.defer<BuildInterfaces.AgentPoolQueue>();
 
         this.api.getAgentPoolQueue(controllerId, (err: any, statusCode: number, queue: BuildInterfaces.AgentPoolQueue) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -2117,7 +2582,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.AgentPoolQueue>>deferred.promise;
     }
-    
+
     /**
     * Gets queues, optionally filtered by name
     * 
@@ -2130,7 +2595,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
         var deferred = Q.defer<BuildInterfaces.AgentPoolQueue[]>();
 
         this.api.getQueues(name, (err: any, statusCode: number, queues: BuildInterfaces.AgentPoolQueue[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -2141,7 +2606,27 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.AgentPoolQueue[]>>deferred.promise;
     }
+
+    /**
+    */
+    public getResourceUsage(
+        ): Q.Promise<BuildInterfaces.BuildResourceUsage> {
     
+        var deferred = Q.defer<BuildInterfaces.BuildResourceUsage>();
+
+        this.api.getResourceUsage((err: any, statusCode: number, ResourceUsage: BuildInterfaces.BuildResourceUsage) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(ResourceUsage);
+            }
+        });
+
+        return <Q.Promise<BuildInterfaces.BuildResourceUsage>>deferred.promise;
+    }
+
     /**
     * Gets revisions of a definition
     * 
@@ -2149,14 +2634,14 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {number} definitionId
     */
     public getDefinitionRevisions(
-        project: string, 
+        project: string,
         definitionId: number
         ): Q.Promise<BuildInterfaces.BuildDefinitionRevision[]> {
     
         var deferred = Q.defer<BuildInterfaces.BuildDefinitionRevision[]>();
 
         this.api.getDefinitionRevisions(project, definitionId, (err: any, statusCode: number, revisions: BuildInterfaces.BuildDefinitionRevision[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -2167,7 +2652,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.BuildDefinitionRevision[]>>deferred.promise;
     }
-    
+
     /**
     */
     public getBuildSettings(
@@ -2176,7 +2661,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
         var deferred = Q.defer<BuildInterfaces.BuildSettings>();
 
         this.api.getBuildSettings((err: any, statusCode: number, setting: BuildInterfaces.BuildSettings) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -2187,7 +2672,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.BuildSettings>>deferred.promise;
     }
-    
+
     /**
     * Updates the build settings
     * 
@@ -2200,7 +2685,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
         var deferred = Q.defer<BuildInterfaces.BuildSettings>();
 
         this.api.updateBuildSettings(settings, (err: any, statusCode: number, setting: BuildInterfaces.BuildSettings) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -2211,7 +2696,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.BuildSettings>>deferred.promise;
     }
-    
+
     /**
     * Adds a tag to a build
     * 
@@ -2220,15 +2705,15 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {string} tag
     */
     public addBuildTag(
-        project: string, 
-        buildId: number, 
+        project: string,
+        buildId: number,
         tag: string
         ): Q.Promise<string[]> {
     
         var deferred = Q.defer<string[]>();
 
         this.api.addBuildTag(project, buildId, tag, (err: any, statusCode: number, tags: string[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -2239,7 +2724,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<string[]>>deferred.promise;
     }
-    
+
     /**
     * Adds tag to a build
     * 
@@ -2248,15 +2733,15 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {number} buildId
     */
     public addBuildTags(
-        tags: string[], 
-        project: string, 
+        tags: string[],
+        project: string,
         buildId: number
         ): Q.Promise<string[]> {
     
         var deferred = Q.defer<string[]>();
 
         this.api.addBuildTags(tags, project, buildId, (err: any, statusCode: number, tags: string[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -2267,7 +2752,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<string[]>>deferred.promise;
     }
-    
+
     /**
     * Deletes a tag from a build
     * 
@@ -2276,15 +2761,15 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {string} tag
     */
     public deleteBuildTag(
-        project: string, 
-        buildId: number, 
+        project: string,
+        buildId: number,
         tag: string
         ): Q.Promise<string[]> {
     
         var deferred = Q.defer<string[]>();
 
         this.api.deleteBuildTag(project, buildId, tag, (err: any, statusCode: number, tags: string[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -2295,7 +2780,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<string[]>>deferred.promise;
     }
-    
+
     /**
     * Gets the tags for a build
     * 
@@ -2303,14 +2788,14 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {number} buildId
     */
     public getBuildTags(
-        project: string, 
+        project: string,
         buildId: number
         ): Q.Promise<string[]> {
     
         var deferred = Q.defer<string[]>();
 
         this.api.getBuildTags(project, buildId, (err: any, statusCode: number, tags: string[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -2321,7 +2806,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<string[]>>deferred.promise;
     }
-    
+
     /**
     * @param {string} project - Project ID or project name
     */
@@ -2332,7 +2817,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
         var deferred = Q.defer<string[]>();
 
         this.api.getTags(project, (err: any, statusCode: number, tags: string[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -2343,7 +2828,33 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<string[]>>deferred.promise;
     }
+
+    /**
+    * Deletes a definition template
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {string} templateId
+    */
+    public deleteTemplate(
+        project: string,
+        templateId: string
+        ): Q.Promise<void> {
     
+        var deferred = Q.defer<void>();
+
+        this.api.deleteTemplate(project, templateId, (err: any, statusCode: number) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(null);
+            }
+        });
+
+        return <Q.Promise<void>>deferred.promise;
+    }
+
     /**
     * Gets definition template filtered by id
     * 
@@ -2351,14 +2862,14 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {string} templateId
     */
     public getTemplate(
-        project: string, 
+        project: string,
         templateId: string
         ): Q.Promise<BuildInterfaces.BuildDefinitionTemplate> {
     
         var deferred = Q.defer<BuildInterfaces.BuildDefinitionTemplate>();
 
         this.api.getTemplate(project, templateId, (err: any, statusCode: number, template: BuildInterfaces.BuildDefinitionTemplate) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -2369,7 +2880,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.BuildDefinitionTemplate>>deferred.promise;
     }
-    
+
     /**
     * @param {string} project - Project ID or project name
     */
@@ -2380,7 +2891,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
         var deferred = Q.defer<BuildInterfaces.BuildDefinitionTemplate[]>();
 
         this.api.getTemplates(project, (err: any, statusCode: number, templates: BuildInterfaces.BuildDefinitionTemplate[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -2391,7 +2902,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.BuildDefinitionTemplate[]>>deferred.promise;
     }
-    
+
     /**
     * Saves a definition template
     * 
@@ -2400,15 +2911,15 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {string} templateId
     */
     public saveTemplate(
-        template: BuildInterfaces.BuildDefinitionTemplate, 
-        project: string, 
+        template: BuildInterfaces.BuildDefinitionTemplate,
+        project: string,
         templateId: string
         ): Q.Promise<BuildInterfaces.BuildDefinitionTemplate> {
     
         var deferred = Q.defer<BuildInterfaces.BuildDefinitionTemplate>();
 
         this.api.saveTemplate(template, project, templateId, (err: any, statusCode: number, template: BuildInterfaces.BuildDefinitionTemplate) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -2419,7 +2930,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.BuildDefinitionTemplate>>deferred.promise;
     }
-    
+
     /**
     * Gets details for a build
     * 
@@ -2429,16 +2940,16 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {number} changeId
     */
     public getBuildTimeline(
-        project: string, 
-        buildId: number, 
-        timelineId?: string, 
+        project: string,
+        buildId: number,
+        timelineId?: string,
         changeId?: number
         ): Q.Promise<BuildInterfaces.Timeline> {
     
         var deferred = Q.defer<BuildInterfaces.Timeline>();
 
         this.api.getBuildTimeline(project, buildId, timelineId, changeId, (err: any, statusCode: number, Timeline: BuildInterfaces.Timeline) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -2449,7 +2960,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<BuildInterfaces.Timeline>>deferred.promise;
     }
-    
+
     /**
     * Gets the work item ids associated with a build
     * 
@@ -2458,15 +2969,15 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {number} top - The maximum number of workitems to return
     */
     public getBuildWorkItemsRefs(
-        project: string, 
-        buildId: number, 
+        project: string,
+        buildId: number,
         top?: number
         ): Q.Promise<VSSInterfaces.ResourceRef[]> {
     
         var deferred = Q.defer<VSSInterfaces.ResourceRef[]>();
 
         this.api.getBuildWorkItemsRefs(project, buildId, top, (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -2477,7 +2988,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<VSSInterfaces.ResourceRef[]>>deferred.promise;
     }
-    
+
     /**
     * Gets the work item ids associated with build commits
     * 
@@ -2487,16 +2998,16 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {number} top - The maximum number of workitems to return, also number of commits to consider if commitids are not sent
     */
     public getBuildWorkItemsRefsFromCommits(
-        commitIds: string[], 
-        project: string, 
-        buildId: number, 
+        commitIds: string[],
+        project: string,
+        buildId: number,
         top?: number
         ): Q.Promise<VSSInterfaces.ResourceRef[]> {
     
         var deferred = Q.defer<VSSInterfaces.ResourceRef[]>();
 
         this.api.getBuildWorkItemsRefsFromCommits(commitIds, project, buildId, top, (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -2507,5 +3018,35 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
 
         return <Q.Promise<VSSInterfaces.ResourceRef[]>>deferred.promise;
     }
+
+    /**
+    * Gets all the work item ids inbetween fromBuildId to toBuildId
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} fromBuildId
+    * @param {number} toBuildId
+    * @param {number} top - The maximum number of workitems to return
+    */
+    public getWorkItemsBetweenBuilds(
+        project: string,
+        fromBuildId: number,
+        toBuildId: number,
+        top?: number
+        ): Q.Promise<VSSInterfaces.ResourceRef[]> {
     
+        var deferred = Q.defer<VSSInterfaces.ResourceRef[]>();
+
+        this.api.getWorkItemsBetweenBuilds(project, fromBuildId, toBuildId, top, (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(workitems);
+            }
+        });
+
+        return <Q.Promise<VSSInterfaces.ResourceRef[]>>deferred.promise;
+    }
+
 }

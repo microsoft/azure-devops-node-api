@@ -33,6 +33,8 @@ export interface ICoreApi extends basem.ClientApiBase {
     getIdentityMru(mruName: string, onResult: (err: any, statusCode: number, identityMru: VSSInterfaces.IdentityRef[]) => void): void;
     updateIdentityMru(mruData: CoreInterfaces.IdentityData, mruName: string, onResult: (err: any, statusCode: number) => void): void;
     getTeamMembers(projectId: string, teamId: string, top: number, skip: number, onResult: (err: any, statusCode: number, members: VSSInterfaces.IdentityRef[]) => void): void;
+    getProcessById(processId: string, onResult: (err: any, statusCode: number, processe: CoreInterfaces.Process) => void): void;
+    getProcesses(onResult: (err: any, statusCode: number, processes: CoreInterfaces.Process[]) => void): void;
     getProjectCollection(collectionId: string, onResult: (err: any, statusCode: number, projectCollection: CoreInterfaces.TeamProjectCollection) => void): void;
     getProjectCollections(top: number, skip: number, onResult: (err: any, statusCode: number, projectCollections: CoreInterfaces.TeamProjectCollectionReference[]) => void): void;
     getProjectHistory(minRevision: number, onResult: (err: any, statusCode: number, projectHistory: CoreInterfaces.TeamProjectReference[]) => void): void;
@@ -46,26 +48,29 @@ export interface ICoreApi extends basem.ClientApiBase {
 }
 
 export interface IQCoreApi extends basem.QClientApiBase {
-    
-    createConnectedService(connectedServiceCreationData: CoreInterfaces.WebApiConnectedServiceDetails,  projectId: string): Q.Promise<CoreInterfaces.WebApiConnectedService>;
-    getConnectedServiceDetails(projectId: string,  name: string): Q.Promise<CoreInterfaces.WebApiConnectedServiceDetails>;
-    getConnectedServices(projectId: string,  kind?: CoreInterfaces.ConnectedServiceKind): Q.Promise<CoreInterfaces.WebApiConnectedService[]>;
-    getIdentityMru( mruName: string): Q.Promise<VSSInterfaces.IdentityRef[]>;
-    getTeamMembers(projectId: string, teamId: string, top?: number,  skip?: number): Q.Promise<VSSInterfaces.IdentityRef[]>;
-    getProjectCollection( collectionId: string): Q.Promise<CoreInterfaces.TeamProjectCollection>;
-    getProjectCollections(top?: number,  skip?: number): Q.Promise<CoreInterfaces.TeamProjectCollectionReference[]>;
-    getProjectHistory( minRevision?: number): Q.Promise<CoreInterfaces.TeamProjectReference[]>;
-    getProject(projectId: string, includeCapabilities?: boolean,  includeHistory?: boolean): Q.Promise<CoreInterfaces.TeamProject>;
-    getProjects(stateFilter?: any, top?: number,  skip?: number): Q.Promise<CoreInterfaces.TeamProjectReference[]>;
-    queueCreateProject( projectToCreate: CoreInterfaces.TeamProject): Q.Promise<OperationsInterfaces.OperationReference>;
-    queueDeleteProject( projectId: string): Q.Promise<OperationsInterfaces.OperationReference>;
-    updateProject(projectUpdate: CoreInterfaces.TeamProject,  projectId: string): Q.Promise<OperationsInterfaces.OperationReference>;
-    getProxies( proxyUrl?: string): Q.Promise<CoreInterfaces.Proxy[]>;
-    getTeams(projectId: string, teamId?: string, top?: number,  skip?: number): Q.Promise<CoreInterfaces.WebApiTeam>;
+    createConnectedService(connectedServiceCreationData: CoreInterfaces.WebApiConnectedServiceDetails, projectId: string): Q.Promise<CoreInterfaces.WebApiConnectedService>;
+    getConnectedServiceDetails(projectId: string, name: string): Q.Promise<CoreInterfaces.WebApiConnectedServiceDetails>;
+    getConnectedServices(projectId: string, kind?: CoreInterfaces.ConnectedServiceKind): Q.Promise<CoreInterfaces.WebApiConnectedService[]>;
+    createIdentityMru(mruData: CoreInterfaces.IdentityData, mruName: string): Q.Promise<void>;
+    deleteIdentityMru(mruData: CoreInterfaces.IdentityData, mruName: string): Q.Promise<void>;
+    getIdentityMru(mruName: string): Q.Promise<VSSInterfaces.IdentityRef[]>;
+    updateIdentityMru(mruData: CoreInterfaces.IdentityData, mruName: string): Q.Promise<void>;
+    getTeamMembers(projectId: string, teamId: string, top?: number, skip?: number): Q.Promise<VSSInterfaces.IdentityRef[]>;
+    getProcessById(processId: string): Q.Promise<CoreInterfaces.Process>;
+    getProcesses(): Q.Promise<CoreInterfaces.Process[]>;
+    getProjectCollection(collectionId: string): Q.Promise<CoreInterfaces.TeamProjectCollection>;
+    getProjectCollections(top?: number, skip?: number): Q.Promise<CoreInterfaces.TeamProjectCollectionReference[]>;
+    getProjectHistory(minRevision?: number): Q.Promise<CoreInterfaces.TeamProjectReference[]>;
+    getProject(projectId: string, includeCapabilities?: boolean, includeHistory?: boolean): Q.Promise<CoreInterfaces.TeamProject>;
+    getProjects(stateFilter?: any, top?: number, skip?: number): Q.Promise<CoreInterfaces.TeamProjectReference[]>;
+    queueCreateProject(projectToCreate: CoreInterfaces.TeamProject): Q.Promise<OperationsInterfaces.OperationReference>;
+    queueDeleteProject(projectId: string): Q.Promise<OperationsInterfaces.OperationReference>;
+    updateProject(projectUpdate: CoreInterfaces.TeamProject, projectId: string): Q.Promise<OperationsInterfaces.OperationReference>;
+    getProxies(proxyUrl?: string): Q.Promise<CoreInterfaces.Proxy[]>;
+    getTeams(projectId: string, teamId?: string, top?: number, skip?: number): Q.Promise<CoreInterfaces.WebApiTeam>;
 }
 
 export class CoreApi extends basem.ClientApiBase implements ICoreApi {
-
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
         super(baseUrl, handlers, 'node-Core-api');
     }
@@ -85,7 +90,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             projectId: projectId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "core", "b4f70219-e18b-42c5-abe3-98b07d35525e", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "core", "b4f70219-e18b-42c5-abe3-98b07d35525e", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -114,7 +119,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             name: name
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "core", "b4f70219-e18b-42c5-abe3-98b07d35525e", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "core", "b4f70219-e18b-42c5-abe3-98b07d35525e", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -146,7 +151,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             kind: kind,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "core", "b4f70219-e18b-42c5-abe3-98b07d35525e", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "core", "b4f70219-e18b-42c5-abe3-98b07d35525e", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -174,7 +179,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             mruName: mruName
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "core", "5ead0b70-2572-4697-97e9-f341069a783a", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "core", "5ead0b70-2572-4697-97e9-f341069a783a", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -202,7 +207,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             mruName: mruName
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "core", "5ead0b70-2572-4697-97e9-f341069a783a", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "core", "5ead0b70-2572-4697-97e9-f341069a783a", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -228,7 +233,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             mruName: mruName
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "core", "5ead0b70-2572-4697-97e9-f341069a783a", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "core", "5ead0b70-2572-4697-97e9-f341069a783a", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -256,7 +261,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             mruName: mruName
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "core", "5ead0b70-2572-4697-97e9-f341069a783a", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "core", "5ead0b70-2572-4697-97e9-f341069a783a", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -294,11 +299,62 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             '$skip': skip,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "core", "294c494c-2600-4d7e-b76c-3dd50c3c95be", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "core", "294c494c-2600-4d7e-b76c-3dd50c3c95be", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: VSSInterfaces.TypeInfo.IdentityRef, responseIsCollection: true };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * Retrieve process by id
+     * 
+     * @param {string} processId
+     * @param onResult callback function with the resulting CoreInterfaces.Process
+     */
+    public getProcessById(
+        processId: string,
+        onResult: (err: any, statusCode: number, processe: CoreInterfaces.Process) => void
+        ): void {
+
+        var routeValues: any = {
+            processId: processId
+        };
+
+        this.vsoClient.getVersioningData("2.2-preview.1", "core", "93878975-88c5-4e6a-8abb-7ddd77a8a7d8", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.Process, responseIsCollection: false };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param onResult callback function with the resulting CoreInterfaces.Process[]
+     */
+    public getProcesses(
+        onResult: (err: any, statusCode: number, processes: CoreInterfaces.Process[]) => void
+        ): void {
+
+        var routeValues: any = {
+        };
+
+        this.vsoClient.getVersioningData("2.2-preview.1", "core", "93878975-88c5-4e6a-8abb-7ddd77a8a7d8", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.Process, responseIsCollection: true };
             
             this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
@@ -322,7 +378,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             collectionId: collectionId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "core", "8031090f-ef1d-4af6-85fc-698cd75d42bf", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "core", "8031090f-ef1d-4af6-85fc-698cd75d42bf", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -356,7 +412,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             '$skip': skip,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.2", "core", "8031090f-ef1d-4af6-85fc-698cd75d42bf", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "core", "8031090f-ef1d-4af6-85fc-698cd75d42bf", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -385,7 +441,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             minRevision: minRevision,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "core", "6488a877-4749-4954-82ea-7340d36be9f2", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "core", "6488a877-4749-4954-82ea-7340d36be9f2", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -422,7 +478,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             includeHistory: includeHistory,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -459,7 +515,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             '$skip': skip,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -486,7 +542,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         var routeValues: any = {
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -514,7 +570,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             projectId: projectId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -544,7 +600,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             projectId: projectId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -573,7 +629,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             proxyUrl: proxyUrl,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "core", "ec1f4311-f2b4-4c15-b2b8-8990b80d2908", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "core", "ec1f4311-f2b4-4c15-b2b8-8990b80d2908", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -611,7 +667,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             '$skip': skip,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "core", "d30a3dd1-f8ba-442a-b86a-bd0c0c383e59", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "core", "d30a3dd1-f8ba-442a-b86a-bd0c0c383e59", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -627,27 +683,25 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 }
 
 export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
-    
     api: CoreApi;
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        super(baseUrl, handlers, CoreApi);
+        super(baseUrl, handlers, api);
     }
 
-    
     /**
     * @param {CoreInterfaces.WebApiConnectedServiceDetails} connectedServiceCreationData
     * @param {string} projectId
     */
     public createConnectedService(
-        connectedServiceCreationData: CoreInterfaces.WebApiConnectedServiceDetails, 
+        connectedServiceCreationData: CoreInterfaces.WebApiConnectedServiceDetails,
         projectId: string
         ): Q.Promise<CoreInterfaces.WebApiConnectedService> {
     
         var deferred = Q.defer<CoreInterfaces.WebApiConnectedService>();
 
         this.api.createConnectedService(connectedServiceCreationData, projectId, (err: any, statusCode: number, connectedService: CoreInterfaces.WebApiConnectedService) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -658,20 +712,20 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
 
         return <Q.Promise<CoreInterfaces.WebApiConnectedService>>deferred.promise;
     }
-    
+
     /**
     * @param {string} projectId
     * @param {string} name
     */
     public getConnectedServiceDetails(
-        projectId: string, 
+        projectId: string,
         name: string
         ): Q.Promise<CoreInterfaces.WebApiConnectedServiceDetails> {
     
         var deferred = Q.defer<CoreInterfaces.WebApiConnectedServiceDetails>();
 
         this.api.getConnectedServiceDetails(projectId, name, (err: any, statusCode: number, connectedService: CoreInterfaces.WebApiConnectedServiceDetails) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -682,20 +736,20 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
 
         return <Q.Promise<CoreInterfaces.WebApiConnectedServiceDetails>>deferred.promise;
     }
-    
+
     /**
     * @param {string} projectId
     * @param {CoreInterfaces.ConnectedServiceKind} kind
     */
     public getConnectedServices(
-        projectId: string, 
+        projectId: string,
         kind?: CoreInterfaces.ConnectedServiceKind
         ): Q.Promise<CoreInterfaces.WebApiConnectedService[]> {
     
         var deferred = Q.defer<CoreInterfaces.WebApiConnectedService[]>();
 
         this.api.getConnectedServices(projectId, kind, (err: any, statusCode: number, connectedServices: CoreInterfaces.WebApiConnectedService[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -706,7 +760,55 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
 
         return <Q.Promise<CoreInterfaces.WebApiConnectedService[]>>deferred.promise;
     }
+
+    /**
+    * @param {CoreInterfaces.IdentityData} mruData
+    * @param {string} mruName
+    */
+    public createIdentityMru(
+        mruData: CoreInterfaces.IdentityData,
+        mruName: string
+        ): Q.Promise<void> {
     
+        var deferred = Q.defer<void>();
+
+        this.api.createIdentityMru(mruData, mruName, (err: any, statusCode: number) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(null);
+            }
+        });
+
+        return <Q.Promise<void>>deferred.promise;
+    }
+
+    /**
+    * @param {CoreInterfaces.IdentityData} mruData
+    * @param {string} mruName
+    */
+    public deleteIdentityMru(
+        mruData: CoreInterfaces.IdentityData,
+        mruName: string
+        ): Q.Promise<void> {
+    
+        var deferred = Q.defer<void>();
+
+        this.api.deleteIdentityMru(mruData, mruName, (err: any, statusCode: number) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(null);
+            }
+        });
+
+        return <Q.Promise<void>>deferred.promise;
+    }
+
     /**
     * @param {string} mruName
     */
@@ -717,7 +819,7 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
         var deferred = Q.defer<VSSInterfaces.IdentityRef[]>();
 
         this.api.getIdentityMru(mruName, (err: any, statusCode: number, identityMru: VSSInterfaces.IdentityRef[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -728,7 +830,31 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
 
         return <Q.Promise<VSSInterfaces.IdentityRef[]>>deferred.promise;
     }
+
+    /**
+    * @param {CoreInterfaces.IdentityData} mruData
+    * @param {string} mruName
+    */
+    public updateIdentityMru(
+        mruData: CoreInterfaces.IdentityData,
+        mruName: string
+        ): Q.Promise<void> {
     
+        var deferred = Q.defer<void>();
+
+        this.api.updateIdentityMru(mruData, mruName, (err: any, statusCode: number) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(null);
+            }
+        });
+
+        return <Q.Promise<void>>deferred.promise;
+    }
+
     /**
     * @param {string} projectId
     * @param {string} teamId
@@ -736,16 +862,16 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
     * @param {number} skip
     */
     public getTeamMembers(
-        projectId: string, 
-        teamId: string, 
-        top?: number, 
+        projectId: string,
+        teamId: string,
+        top?: number,
         skip?: number
         ): Q.Promise<VSSInterfaces.IdentityRef[]> {
     
         var deferred = Q.defer<VSSInterfaces.IdentityRef[]>();
 
         this.api.getTeamMembers(projectId, teamId, top, skip, (err: any, statusCode: number, members: VSSInterfaces.IdentityRef[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -756,7 +882,51 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
 
         return <Q.Promise<VSSInterfaces.IdentityRef[]>>deferred.promise;
     }
+
+    /**
+    * Retrieve process by id
+    * 
+    * @param {string} processId
+    */
+    public getProcessById(
+        processId: string
+        ): Q.Promise<CoreInterfaces.Process> {
     
+        var deferred = Q.defer<CoreInterfaces.Process>();
+
+        this.api.getProcessById(processId, (err: any, statusCode: number, processe: CoreInterfaces.Process) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(processe);
+            }
+        });
+
+        return <Q.Promise<CoreInterfaces.Process>>deferred.promise;
+    }
+
+    /**
+    */
+    public getProcesses(
+        ): Q.Promise<CoreInterfaces.Process[]> {
+    
+        var deferred = Q.defer<CoreInterfaces.Process[]>();
+
+        this.api.getProcesses((err: any, statusCode: number, processes: CoreInterfaces.Process[]) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(processes);
+            }
+        });
+
+        return <Q.Promise<CoreInterfaces.Process[]>>deferred.promise;
+    }
+
     /**
     * Get project collection with the specified id or name.
     * 
@@ -769,7 +939,7 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
         var deferred = Q.defer<CoreInterfaces.TeamProjectCollection>();
 
         this.api.getProjectCollection(collectionId, (err: any, statusCode: number, projectCollection: CoreInterfaces.TeamProjectCollection) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -780,7 +950,7 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
 
         return <Q.Promise<CoreInterfaces.TeamProjectCollection>>deferred.promise;
     }
-    
+
     /**
     * Get project collection references for this application.
     * 
@@ -788,14 +958,14 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
     * @param {number} skip
     */
     public getProjectCollections(
-        top?: number, 
+        top?: number,
         skip?: number
         ): Q.Promise<CoreInterfaces.TeamProjectCollectionReference[]> {
     
         var deferred = Q.defer<CoreInterfaces.TeamProjectCollectionReference[]>();
 
         this.api.getProjectCollections(top, skip, (err: any, statusCode: number, projectCollections: CoreInterfaces.TeamProjectCollectionReference[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -806,7 +976,7 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
 
         return <Q.Promise<CoreInterfaces.TeamProjectCollectionReference[]>>deferred.promise;
     }
-    
+
     /**
     * @param {number} minRevision
     */
@@ -817,7 +987,7 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
         var deferred = Q.defer<CoreInterfaces.TeamProjectReference[]>();
 
         this.api.getProjectHistory(minRevision, (err: any, statusCode: number, projectHistory: CoreInterfaces.TeamProjectReference[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -828,7 +998,7 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
 
         return <Q.Promise<CoreInterfaces.TeamProjectReference[]>>deferred.promise;
     }
-    
+
     /**
     * Get project with the specified id or name, optionally including capabilities.
     * 
@@ -837,15 +1007,15 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
     * @param {boolean} includeHistory - Search within renamed projects (that had such name in the past).
     */
     public getProject(
-        projectId: string, 
-        includeCapabilities?: boolean, 
+        projectId: string,
+        includeCapabilities?: boolean,
         includeHistory?: boolean
         ): Q.Promise<CoreInterfaces.TeamProject> {
     
         var deferred = Q.defer<CoreInterfaces.TeamProject>();
 
         this.api.getProject(projectId, includeCapabilities, includeHistory, (err: any, statusCode: number, project: CoreInterfaces.TeamProject) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -856,7 +1026,7 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
 
         return <Q.Promise<CoreInterfaces.TeamProject>>deferred.promise;
     }
-    
+
     /**
     * Get project references with the specified state
     * 
@@ -865,15 +1035,15 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
     * @param {number} skip
     */
     public getProjects(
-        stateFilter?: any, 
-        top?: number, 
+        stateFilter?: any,
+        top?: number,
         skip?: number
         ): Q.Promise<CoreInterfaces.TeamProjectReference[]> {
     
         var deferred = Q.defer<CoreInterfaces.TeamProjectReference[]>();
 
         this.api.getProjects(stateFilter, top, skip, (err: any, statusCode: number, projects: CoreInterfaces.TeamProjectReference[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -884,7 +1054,7 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
 
         return <Q.Promise<CoreInterfaces.TeamProjectReference[]>>deferred.promise;
     }
-    
+
     /**
     * Queue a project creation.
     * 
@@ -897,7 +1067,7 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
         var deferred = Q.defer<OperationsInterfaces.OperationReference>();
 
         this.api.queueCreateProject(projectToCreate, (err: any, statusCode: number, project: OperationsInterfaces.OperationReference) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -908,7 +1078,7 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
 
         return <Q.Promise<OperationsInterfaces.OperationReference>>deferred.promise;
     }
-    
+
     /**
     * Queue a project deletion.
     * 
@@ -921,7 +1091,7 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
         var deferred = Q.defer<OperationsInterfaces.OperationReference>();
 
         this.api.queueDeleteProject(projectId, (err: any, statusCode: number, project: OperationsInterfaces.OperationReference) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -932,7 +1102,7 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
 
         return <Q.Promise<OperationsInterfaces.OperationReference>>deferred.promise;
     }
-    
+
     /**
     * Update an existing project's name, abbreviation, or description.
     * 
@@ -940,14 +1110,14 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
     * @param {string} projectId - The project id of the project to update.
     */
     public updateProject(
-        projectUpdate: CoreInterfaces.TeamProject, 
+        projectUpdate: CoreInterfaces.TeamProject,
         projectId: string
         ): Q.Promise<OperationsInterfaces.OperationReference> {
     
         var deferred = Q.defer<OperationsInterfaces.OperationReference>();
 
         this.api.updateProject(projectUpdate, projectId, (err: any, statusCode: number, project: OperationsInterfaces.OperationReference) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -958,7 +1128,7 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
 
         return <Q.Promise<OperationsInterfaces.OperationReference>>deferred.promise;
     }
-    
+
     /**
     * @param {string} proxyUrl
     */
@@ -969,7 +1139,7 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
         var deferred = Q.defer<CoreInterfaces.Proxy[]>();
 
         this.api.getProxies(proxyUrl, (err: any, statusCode: number, proxies: CoreInterfaces.Proxy[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -980,7 +1150,7 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
 
         return <Q.Promise<CoreInterfaces.Proxy[]>>deferred.promise;
     }
-    
+
     /**
     * @param {string} projectId
     * @param {string} teamId
@@ -988,16 +1158,16 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
     * @param {number} skip
     */
     public getTeams(
-        projectId: string, 
-        teamId?: string, 
-        top?: number, 
+        projectId: string,
+        teamId?: string,
+        top?: number,
         skip?: number
         ): Q.Promise<CoreInterfaces.WebApiTeam> {
     
         var deferred = Q.defer<CoreInterfaces.WebApiTeam>();
 
         this.api.getTeams(projectId, teamId, top, skip, (err: any, statusCode: number, team: CoreInterfaces.WebApiTeam) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1008,5 +1178,5 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
 
         return <Q.Promise<CoreInterfaces.WebApiTeam>>deferred.promise;
     }
-    
+
 }
