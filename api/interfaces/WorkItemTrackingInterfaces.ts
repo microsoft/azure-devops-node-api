@@ -148,8 +148,17 @@ export interface ReportingWorkItemRevisionsBatch extends StreamedBatch<WorkItem>
 }
 
 export interface ReportingWorkItemRevisionsFilter {
+    /**
+     * A list of fields to return in work item revisions. Omit this parameter to get all reportable fields.
+     */
     fields: string[];
+    /**
+     * Return an identity reference instead of a string value for identity fields.
+     */
     includeIdentityRef: boolean;
+    /**
+     * A list of types to filter the results to specific work item types. Omit this parameter to get work item revisions of all work item types.
+     */
     types: string[];
 }
 

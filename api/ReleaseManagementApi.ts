@@ -24,17 +24,19 @@ import ReleaseManagementInterfaces = require("./interfaces/ReleaseManagementInte
 
 export interface IReleaseManagementApi extends basem.ClientApiBase {
     getAgentArtifactDefinitions(project: string, releaseId: number, onResult: (err: any, statusCode: number, agentartifacts: ReleaseManagementInterfaces.AgentArtifactDefinition[]) => void): void;
-    getApprovals(project: string, assignedToFilter: string, statusFilter: ReleaseManagementInterfaces.ApprovalStatus, releaseIdFilter: number, onResult: (err: any, statusCode: number, approvals: ReleaseManagementInterfaces.ReleaseApproval[]) => void): void;
+    getApprovals(project: string, assignedToFilter: string, statusFilter: ReleaseManagementInterfaces.ApprovalStatus, releaseIdsFilter: number[], onResult: (err: any, statusCode: number, approvals: ReleaseManagementInterfaces.ReleaseApproval[]) => void): void;
     getApprovalHistory(project: string, approvalStepId: number, onResult: (err: any, statusCode: number, approvals: ReleaseManagementInterfaces.ReleaseApproval[]) => void): void;
     updateReleaseApproval(approvalUpdateMetadata: ReleaseManagementInterfaces.ApprovalUpdateMetadata, project: string, approvalId: number, onResult: (err: any, statusCode: number, approval: ReleaseManagementInterfaces.ReleaseApproval) => void): void;
     createArtifact(artifact: ReleaseManagementInterfaces.Artifact, project: string, onResult: (err: any, statusCode: number, artifact: ReleaseManagementInterfaces.Artifact) => void): void;
     getArtifact(project: string, definitionId: number, onResult: (err: any, statusCode: number, artifact: ReleaseManagementInterfaces.Artifact) => void): void;
     getArtifacts(project: string, typeId: string, name: string, sourceId: string, onResult: (err: any, statusCode: number, artifacts: ReleaseManagementInterfaces.Artifact[]) => void): void;
     updateArtifacts(artifactDefinitions: ReleaseManagementInterfaces.ArtifactDefinition[], project: string, onResult: (err: any, statusCode: number, artifacts: ReleaseManagementInterfaces.ArtifactDefinition[]) => void): void;
+    getReleaseChanges(project: string, releaseId: number, baseReleaseId: number, top: number, onResult: (err: any, statusCode: number, changes: ReleaseManagementInterfaces.Change[]) => void): void;
     createReleaseDefinition(releaseDefinition: ReleaseManagementInterfaces.ReleaseDefinition, project: string, onResult: (err: any, statusCode: number, definition: ReleaseManagementInterfaces.ReleaseDefinition) => void): void;
     deleteReleaseDefinition(project: string, definitionId: number, onResult: (err: any, statusCode: number) => void): void;
     getReleaseDefinition(project: string, definitionId: number, onResult: (err: any, statusCode: number, definition: ReleaseManagementInterfaces.ReleaseDefinition) => void): void;
     getReleaseDefinitions(project: string, searchText: string, artifactIdFilter: number, onResult: (err: any, statusCode: number, definitions: ReleaseManagementInterfaces.ReleaseDefinition[]) => void): void;
+    getReleaseDefinitionsForArtifactSource(project: string, artifactType: string, artifactSourceId: string, onResult: (err: any, statusCode: number, definitions: ReleaseManagementInterfaces.ReleaseDefinition[]) => void): void;
     updateReleaseDefinition(releaseDefinition: ReleaseManagementInterfaces.ReleaseDefinition, project: string, onResult: (err: any, statusCode: number, definition: ReleaseManagementInterfaces.ReleaseDefinition) => void): void;
     createDefinitionEnvironmentTemplate(template: ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate, project: string, onResult: (err: any, statusCode: number, environmenttemplate: ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate) => void): void;
     deleteDefinitionEnvironmentTemplate(project: string, templateId: string, onResult: (err: any, statusCode: number) => void): void;
@@ -50,44 +52,57 @@ export interface IReleaseManagementApi extends basem.ClientApiBase {
     getReleases(project: string, definitionId: number, searchText: string, statusFilter: ReleaseManagementInterfaces.ReleaseStatus, minCreatedTime: Date, maxCreatedTime: Date, queryOrder: ReleaseManagementInterfaces.ReleaseQueryOrder, top: number, continuationToken: number, onResult: (err: any, statusCode: number, releases: ReleaseManagementInterfaces.Release[]) => void): void;
     updateRelease(release: ReleaseManagementInterfaces.Release, project: string, releaseId: number, onResult: (err: any, statusCode: number, release: ReleaseManagementInterfaces.Release) => void): void;
     updateReleaseStatus(releaseUpdateMetadata: ReleaseManagementInterfaces.ReleaseUpdateMetadata, project: string, releaseId: number, onResult: (err: any, statusCode: number, release: ReleaseManagementInterfaces.Release) => void): void;
+    getReleaseDefinitionHistory(project: string, definitionId: number, onResult: (err: any, statusCode: number, revisions: ReleaseManagementInterfaces.ReleaseDefinitionRevision[]) => void): void;
+    getReleaseDefinitionRevision(project: string, definitionId: number, revision: number, onResult: (err: any, statusCode: number, revision: any) => void): void;
     getArtifactsSources(project: string, typeId: string, onResult: (err: any, statusCode: number, source: ReleaseManagementInterfaces.ArtifactSourceIdsQueryResult) => void): void;
+    getTasks(project: string, releaseId: number, environmentId: number, attemptId: number, onResult: (err: any, statusCode: number, tasks: ReleaseManagementInterfaces.ReleaseTask[]) => void): void;
     getArtifactTypeDefinitions(project: string, onResult: (err: any, statusCode: number, types: ReleaseManagementInterfaces.ArtifactTypeDefinition[]) => void): void;
     getArtifactVersions(project: string, releaseDefinitionId: number, onResult: (err: any, statusCode: number, version: ReleaseManagementInterfaces.ArtifactVersionQueryResult) => void): void;
     getArtifactVersionsForSources(artifactSources: ReleaseManagementInterfaces.ArtifactSource[], project: string, onResult: (err: any, statusCode: number, version: ReleaseManagementInterfaces.ArtifactVersionQueryResult) => void): void;
+    getReleaseWorkItemsRefs(project: string, releaseId: number, baseReleaseId: number, top: number, onResult: (err: any, statusCode: number, workitems: ReleaseManagementInterfaces.ReleaseWorkItemRef[]) => void): void;
 }
 
 export interface IQReleaseManagementApi extends basem.QClientApiBase {
-    
-    getAgentArtifactDefinitions(project: string,  releaseId: number): Q.Promise<ReleaseManagementInterfaces.AgentArtifactDefinition[]>;
-    getApprovals(project: string, assignedToFilter?: string, statusFilter?: ReleaseManagementInterfaces.ApprovalStatus,  releaseIdFilter?: number): Q.Promise<ReleaseManagementInterfaces.ReleaseApproval[]>;
-    getApprovalHistory(project: string,  approvalStepId: number): Q.Promise<ReleaseManagementInterfaces.ReleaseApproval[]>;
-    updateReleaseApproval(approvalUpdateMetadata: ReleaseManagementInterfaces.ApprovalUpdateMetadata, project: string,  approvalId: number): Q.Promise<ReleaseManagementInterfaces.ReleaseApproval>;
-    createArtifact(artifact: ReleaseManagementInterfaces.Artifact,  project: string): Q.Promise<ReleaseManagementInterfaces.Artifact>;
-    getArtifact(project: string,  definitionId: number): Q.Promise<ReleaseManagementInterfaces.Artifact>;
-    getArtifacts(project: string, typeId?: string, name?: string,  sourceId?: string): Q.Promise<ReleaseManagementInterfaces.Artifact[]>;
-    updateArtifacts(artifactDefinitions: ReleaseManagementInterfaces.ArtifactDefinition[],  project: string): Q.Promise<ReleaseManagementInterfaces.ArtifactDefinition[]>;
-    createReleaseDefinition(releaseDefinition: ReleaseManagementInterfaces.ReleaseDefinition,  project: string): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinition>;
-    getReleaseDefinition(project: string,  definitionId: number): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinition>;
-    getReleaseDefinitions(project: string, searchText?: string,  artifactIdFilter?: number): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinition[]>;
-    updateReleaseDefinition(releaseDefinition: ReleaseManagementInterfaces.ReleaseDefinition,  project: string): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinition>;
-    createDefinitionEnvironmentTemplate(template: ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate,  project: string): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate>;
-    getDefinitionEnvironmentTemplate(project: string,  templateId: string): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate>;
-    listDefinitionEnvironmentTemplates( project: string): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate[]>;
-    getInputValues(query: FormInputInterfaces.InputValuesQuery,  project: string): Q.Promise<FormInputInterfaces.InputValuesQuery>;
-    createRelease(releaseStartMetadata: ReleaseManagementInterfaces.ReleaseStartMetadata,  project: string): Q.Promise<ReleaseManagementInterfaces.Release>;
-    getRelease(project: string, releaseId: number,  includeAllApprovals?: boolean): Q.Promise<ReleaseManagementInterfaces.Release>;
-    getReleaseDefinitionSummary(project: string, definitionId: number, releaseCount: number,  includeArtifact?: boolean): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinitionSummary>;
-    getReleases(project: string, definitionId?: number, searchText?: string, statusFilter?: ReleaseManagementInterfaces.ReleaseStatus, minCreatedTime?: Date, maxCreatedTime?: Date, queryOrder?: ReleaseManagementInterfaces.ReleaseQueryOrder, top?: number,  continuationToken?: number): Q.Promise<ReleaseManagementInterfaces.Release[]>;
-    updateRelease(release: ReleaseManagementInterfaces.Release, project: string,  releaseId: number): Q.Promise<ReleaseManagementInterfaces.Release>;
-    updateReleaseStatus(releaseUpdateMetadata: ReleaseManagementInterfaces.ReleaseUpdateMetadata, project: string,  releaseId: number): Q.Promise<ReleaseManagementInterfaces.Release>;
-    getArtifactsSources(project: string,  typeId?: string): Q.Promise<ReleaseManagementInterfaces.ArtifactSourceIdsQueryResult>;
-    getArtifactTypeDefinitions( project: string): Q.Promise<ReleaseManagementInterfaces.ArtifactTypeDefinition[]>;
-    getArtifactVersions(project: string,  releaseDefinitionId: number): Q.Promise<ReleaseManagementInterfaces.ArtifactVersionQueryResult>;
-    getArtifactVersionsForSources(artifactSources: ReleaseManagementInterfaces.ArtifactSource[],  project: string): Q.Promise<ReleaseManagementInterfaces.ArtifactVersionQueryResult>;
+    getAgentArtifactDefinitions(project: string, releaseId: number): Q.Promise<ReleaseManagementInterfaces.AgentArtifactDefinition[]>;
+    getApprovals(project: string, assignedToFilter?: string, statusFilter?: ReleaseManagementInterfaces.ApprovalStatus, releaseIdsFilter?: number[]): Q.Promise<ReleaseManagementInterfaces.ReleaseApproval[]>;
+    getApprovalHistory(project: string, approvalStepId: number): Q.Promise<ReleaseManagementInterfaces.ReleaseApproval[]>;
+    updateReleaseApproval(approvalUpdateMetadata: ReleaseManagementInterfaces.ApprovalUpdateMetadata, project: string, approvalId: number): Q.Promise<ReleaseManagementInterfaces.ReleaseApproval>;
+    createArtifact(artifact: ReleaseManagementInterfaces.Artifact, project: string): Q.Promise<ReleaseManagementInterfaces.Artifact>;
+    getArtifact(project: string, definitionId: number): Q.Promise<ReleaseManagementInterfaces.Artifact>;
+    getArtifacts(project: string, typeId?: string, name?: string, sourceId?: string): Q.Promise<ReleaseManagementInterfaces.Artifact[]>;
+    updateArtifacts(artifactDefinitions: ReleaseManagementInterfaces.ArtifactDefinition[], project: string): Q.Promise<ReleaseManagementInterfaces.ArtifactDefinition[]>;
+    getReleaseChanges(project: string, releaseId: number, baseReleaseId?: number, top?: number): Q.Promise<ReleaseManagementInterfaces.Change[]>;
+    createReleaseDefinition(releaseDefinition: ReleaseManagementInterfaces.ReleaseDefinition, project: string): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinition>;
+    deleteReleaseDefinition(project: string, definitionId: number): Q.Promise<void>;
+    getReleaseDefinition(project: string, definitionId: number): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinition>;
+    getReleaseDefinitions(project: string, searchText?: string, artifactIdFilter?: number): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinition[]>;
+    getReleaseDefinitionsForArtifactSource(project: string, artifactType: string, artifactSourceId: string): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinition[]>;
+    updateReleaseDefinition(releaseDefinition: ReleaseManagementInterfaces.ReleaseDefinition, project: string): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinition>;
+    createDefinitionEnvironmentTemplate(template: ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate, project: string): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate>;
+    deleteDefinitionEnvironmentTemplate(project: string, templateId: string): Q.Promise<void>;
+    getDefinitionEnvironmentTemplate(project: string, templateId: string): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate>;
+    listDefinitionEnvironmentTemplates(project: string): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate[]>;
+    getInputValues(query: FormInputInterfaces.InputValuesQuery, project: string): Q.Promise<FormInputInterfaces.InputValuesQuery>;
+    getLogs(project: string, releaseId: number): Q.Promise<NodeJS.ReadableStream>;
+    getLog(project: string, releaseId: number, environmentId: number, taskId: number, attemptId?: number): Q.Promise<NodeJS.ReadableStream>;
+    createRelease(releaseStartMetadata: ReleaseManagementInterfaces.ReleaseStartMetadata, project: string): Q.Promise<ReleaseManagementInterfaces.Release>;
+    deleteRelease(project: string, releaseId: number): Q.Promise<void>;
+    getRelease(project: string, releaseId: number, includeAllApprovals?: boolean): Q.Promise<ReleaseManagementInterfaces.Release>;
+    getReleaseDefinitionSummary(project: string, definitionId: number, releaseCount: number, includeArtifact?: boolean): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinitionSummary>;
+    getReleases(project: string, definitionId?: number, searchText?: string, statusFilter?: ReleaseManagementInterfaces.ReleaseStatus, minCreatedTime?: Date, maxCreatedTime?: Date, queryOrder?: ReleaseManagementInterfaces.ReleaseQueryOrder, top?: number, continuationToken?: number): Q.Promise<ReleaseManagementInterfaces.Release[]>;
+    updateRelease(release: ReleaseManagementInterfaces.Release, project: string, releaseId: number): Q.Promise<ReleaseManagementInterfaces.Release>;
+    updateReleaseStatus(releaseUpdateMetadata: ReleaseManagementInterfaces.ReleaseUpdateMetadata, project: string, releaseId: number): Q.Promise<ReleaseManagementInterfaces.Release>;
+    getReleaseDefinitionHistory(project: string, definitionId: number): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinitionRevision[]>;
+    getReleaseDefinitionRevision(project: string, definitionId: number, revision: number): Q.Promise<any>;
+    getArtifactsSources(project: string, typeId?: string): Q.Promise<ReleaseManagementInterfaces.ArtifactSourceIdsQueryResult>;
+    getTasks(project: string, releaseId: number, environmentId: number, attemptId?: number): Q.Promise<ReleaseManagementInterfaces.ReleaseTask[]>;
+    getArtifactTypeDefinitions(project: string): Q.Promise<ReleaseManagementInterfaces.ArtifactTypeDefinition[]>;
+    getArtifactVersions(project: string, releaseDefinitionId: number): Q.Promise<ReleaseManagementInterfaces.ArtifactVersionQueryResult>;
+    getArtifactVersionsForSources(artifactSources: ReleaseManagementInterfaces.ArtifactSource[], project: string): Q.Promise<ReleaseManagementInterfaces.ArtifactVersionQueryResult>;
+    getReleaseWorkItemsRefs(project: string, releaseId: number, baseReleaseId?: number, top?: number): Q.Promise<ReleaseManagementInterfaces.ReleaseWorkItemRef[]>;
 }
 
 export class ReleaseManagementApi extends basem.ClientApiBase implements IReleaseManagementApi {
-
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
         super(baseUrl, handlers, 'node-ReleaseManagement-api');
     }
@@ -110,7 +125,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             releaseId: releaseId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "d843590d-370d-47ef-97f5-bea3ceff021f", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "d843590d-370d-47ef-97f5-bea3ceff021f", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -127,14 +142,14 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
      * @param {string} project - Project ID or project name
      * @param {string} assignedToFilter
      * @param {ReleaseManagementInterfaces.ApprovalStatus} statusFilter
-     * @param {number} releaseIdFilter
+     * @param {number[]} releaseIdsFilter
      * @param onResult callback function with the resulting ReleaseManagementInterfaces.ReleaseApproval[]
      */
     public getApprovals(
         project: string,
         assignedToFilter: string,
         statusFilter: ReleaseManagementInterfaces.ApprovalStatus,
-        releaseIdFilter: number,
+        releaseIdsFilter: number[],
         onResult: (err: any, statusCode: number, approvals: ReleaseManagementInterfaces.ReleaseApproval[]) => void
         ): void {
 
@@ -145,10 +160,10 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
         var queryValues: any = {
             assignedToFilter: assignedToFilter,
             statusFilter: statusFilter,
-            releaseIdFilter: releaseIdFilter,
+            releaseIdsFilter: releaseIdsFilter && releaseIdsFilter.join(","),
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "1166ae8c-9f6d-4dcf-8544-b3d4c1eb4e4b", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "1166ae8c-9f6d-4dcf-8544-b3d4c1eb4e4b", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -177,7 +192,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             approvalStepId: approvalStepId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "0b896e11-8fc4-4a23-8390-d144c1b4f832", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "0b896e11-8fc4-4a23-8390-d144c1b4f832", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -208,7 +223,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             approvalId: approvalId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "0173e33f-0f3f-4085-a001-90e5fc8e1f9b", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "0173e33f-0f3f-4085-a001-90e5fc8e1f9b", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -236,7 +251,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "2b11036a-8011-4f3c-8492-9600ad9740b2", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "2b11036a-8011-4f3c-8492-9600ad9740b2", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -268,7 +283,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             definitionId: definitionId,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "2b11036a-8011-4f3c-8492-9600ad9740b2", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "2b11036a-8011-4f3c-8492-9600ad9740b2", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -306,7 +321,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             sourceId: sourceId,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "2b11036a-8011-4f3c-8492-9600ad9740b2", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "2b11036a-8011-4f3c-8492-9600ad9740b2", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -334,13 +349,51 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "2b11036a-8011-4f3c-8492-9600ad9740b2", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "2b11036a-8011-4f3c-8492-9600ad9740b2", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: ReleaseManagementInterfaces.TypeInfo.ArtifactDefinition, responseTypeMetadata: ReleaseManagementInterfaces.TypeInfo.ArtifactDefinition, responseIsCollection: true };
             
             this.restClient.update(url, apiVersion, artifactDefinitions, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number} releaseId
+     * @param {number} baseReleaseId
+     * @param {number} top
+     * @param onResult callback function with the resulting ReleaseManagementInterfaces.Change[]
+     */
+    public getReleaseChanges(
+        project: string,
+        releaseId: number,
+        baseReleaseId: number,
+        top: number,
+        onResult: (err: any, statusCode: number, changes: ReleaseManagementInterfaces.Change[]) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project,
+            releaseId: releaseId
+        };
+
+        var queryValues: any = {
+            baseReleaseId: baseReleaseId,
+            '$top': top,
+        };
+        
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "b96fc2e2-ca1a-42d3-b9a6-de96a4702731", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: ReleaseManagementInterfaces.TypeInfo.Change, responseIsCollection: true };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -362,7 +415,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "6b4d717d-9b96-495d-bbfa-b54cbb0a77d6", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "6b4d717d-9b96-495d-bbfa-b54cbb0a77d6", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -391,7 +444,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             definitionId: definitionId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "6b4d717d-9b96-495d-bbfa-b54cbb0a77d6", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "6b4d717d-9b96-495d-bbfa-b54cbb0a77d6", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -420,7 +473,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             definitionId: definitionId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "6b4d717d-9b96-495d-bbfa-b54cbb0a77d6", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "6b4d717d-9b96-495d-bbfa-b54cbb0a77d6", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -455,7 +508,42 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             artifactIdFilter: artifactIdFilter,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "6b4d717d-9b96-495d-bbfa-b54cbb0a77d6", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "6b4d717d-9b96-495d-bbfa-b54cbb0a77d6", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: ReleaseManagementInterfaces.TypeInfo.ReleaseDefinition, responseIsCollection: true };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {string} artifactType
+     * @param {string} artifactSourceId
+     * @param onResult callback function with the resulting ReleaseManagementInterfaces.ReleaseDefinition[]
+     */
+    public getReleaseDefinitionsForArtifactSource(
+        project: string,
+        artifactType: string,
+        artifactSourceId: string,
+        onResult: (err: any, statusCode: number, definitions: ReleaseManagementInterfaces.ReleaseDefinition[]) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project
+        };
+
+        var queryValues: any = {
+            artifactType: artifactType,
+            artifactSourceId: artifactSourceId,
+        };
+        
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "6b4d717d-9b96-495d-bbfa-b54cbb0a77d6", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -483,7 +571,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "6b4d717d-9b96-495d-bbfa-b54cbb0a77d6", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "6b4d717d-9b96-495d-bbfa-b54cbb0a77d6", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -511,7 +599,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "6124b10c-df09-4ec6-85fe-00fab2c768e1", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "6124b10c-df09-4ec6-85fe-00fab2c768e1", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -543,7 +631,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             templateId: templateId,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "6124b10c-df09-4ec6-85fe-00fab2c768e1", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "6124b10c-df09-4ec6-85fe-00fab2c768e1", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -575,7 +663,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             templateId: templateId,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "6124b10c-df09-4ec6-85fe-00fab2c768e1", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "6124b10c-df09-4ec6-85fe-00fab2c768e1", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -601,7 +689,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "6124b10c-df09-4ec6-85fe-00fab2c768e1", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "6124b10c-df09-4ec6-85fe-00fab2c768e1", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -629,7 +717,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "c55d6d03-d176-48a7-b083-db055dc0d017", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "c55d6d03-d176-48a7-b083-db055dc0d017", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -658,7 +746,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             releaseId: releaseId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "e53a645a-4803-49a2-9669-7f5156e1b051", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "e53a645a-4803-49a2-9669-7f5156e1b051", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -699,7 +787,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             attemptId: attemptId,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "e53a645a-4803-49a2-9669-7f5156e1b052", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "e53a645a-4803-49a2-9669-7f5156e1b052", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -727,7 +815,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "5a351e69-12ea-426b-ac51-a1ec3a4526f7", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "5a351e69-12ea-426b-ac51-a1ec3a4526f7", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -756,7 +844,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             releaseId: releaseId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "5a351e69-12ea-426b-ac51-a1ec3a4526f7", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "5a351e69-12ea-426b-ac51-a1ec3a4526f7", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -791,7 +879,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             includeAllApprovals: includeAllApprovals,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "5a351e69-12ea-426b-ac51-a1ec3a4526f7", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "5a351e69-12ea-426b-ac51-a1ec3a4526f7", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -829,7 +917,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             includeArtifact: includeArtifact,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "5a351e69-12ea-426b-ac51-a1ec3a4526f7", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "5a351e69-12ea-426b-ac51-a1ec3a4526f7", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -882,7 +970,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             continuationToken: continuationToken,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "5a351e69-12ea-426b-ac51-a1ec3a4526f7", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "5a351e69-12ea-426b-ac51-a1ec3a4526f7", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -913,7 +1001,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             releaseId: releaseId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "5a351e69-12ea-426b-ac51-a1ec3a4526f7", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "5a351e69-12ea-426b-ac51-a1ec3a4526f7", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -944,13 +1032,74 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             releaseId: releaseId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "5a351e69-12ea-426b-ac51-a1ec3a4526f7", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "5a351e69-12ea-426b-ac51-a1ec3a4526f7", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: ReleaseManagementInterfaces.TypeInfo.ReleaseUpdateMetadata, responseTypeMetadata: ReleaseManagementInterfaces.TypeInfo.Release, responseIsCollection: false };
             
             this.restClient.update(url, apiVersion, releaseUpdateMetadata, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number} definitionId
+     * @param onResult callback function with the resulting ReleaseManagementInterfaces.ReleaseDefinitionRevision[]
+     */
+    public getReleaseDefinitionHistory(
+        project: string,
+        definitionId: number,
+        onResult: (err: any, statusCode: number, revisions: ReleaseManagementInterfaces.ReleaseDefinitionRevision[]) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project,
+            definitionId: definitionId
+        };
+
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "d3396eca-dd3d-430d-9b64-78381dc971d7", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: ReleaseManagementInterfaces.TypeInfo.ReleaseDefinitionRevision, responseIsCollection: true };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number} definitionId
+     * @param {number} revision
+     * @param onResult callback function with the resulting any
+     */
+    public getReleaseDefinitionRevision(
+        project: string,
+        definitionId: number,
+        revision: number,
+        onResult: (err: any, statusCode: number, revision: any) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project,
+            definitionId: definitionId,
+            revision: revision
+        };
+
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "d3396eca-dd3d-430d-9b64-78381dc971d7", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -976,11 +1125,49 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             typeId: typeId,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "e1270c26-707f-4c70-b8d8-0451d8647ed2", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "e1270c26-707f-4c70-b8d8-0451d8647ed2", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: ReleaseManagementInterfaces.TypeInfo.ArtifactSourceIdsQueryResult, responseIsCollection: false };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number} releaseId
+     * @param {number} environmentId
+     * @param {number} attemptId
+     * @param onResult callback function with the resulting ReleaseManagementInterfaces.ReleaseTask[]
+     */
+    public getTasks(
+        project: string,
+        releaseId: number,
+        environmentId: number,
+        attemptId: number,
+        onResult: (err: any, statusCode: number, tasks: ReleaseManagementInterfaces.ReleaseTask[]) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project,
+            releaseId: releaseId,
+            environmentId: environmentId
+        };
+
+        var queryValues: any = {
+            attemptId: attemptId,
+        };
+        
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "72981449-58ba-4fdf-a28a-6516d8eb71bb", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: ReleaseManagementInterfaces.TypeInfo.ReleaseTask, responseIsCollection: true };
             
             this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
@@ -1002,7 +1189,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "e994d372-77c0-433f-a0db-13a67931a5a8", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "e994d372-77c0-433f-a0db-13a67931a5a8", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1034,7 +1221,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             releaseDefinitionId: releaseDefinitionId,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "00d6d075-cad1-4e02-ac77-4666ed953d87", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "00d6d075-cad1-4e02-ac77-4666ed953d87", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1062,7 +1249,7 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ReleaseManagement", "00d6d075-cad1-4e02-ac77-4666ed953d87", routeValues)
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "00d6d075-cad1-4e02-ac77-4666ed953d87", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1075,17 +1262,53 @@ export class ReleaseManagementApi extends basem.ClientApiBase implements IReleas
         });
     }
 
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number} releaseId
+     * @param {number} baseReleaseId
+     * @param {number} top
+     * @param onResult callback function with the resulting ReleaseManagementInterfaces.ReleaseWorkItemRef[]
+     */
+    public getReleaseWorkItemsRefs(
+        project: string,
+        releaseId: number,
+        baseReleaseId: number,
+        top: number,
+        onResult: (err: any, statusCode: number, workitems: ReleaseManagementInterfaces.ReleaseWorkItemRef[]) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project,
+            releaseId: releaseId
+        };
+
+        var queryValues: any = {
+            baseReleaseId: baseReleaseId,
+            '$top': top,
+        };
+        
+        this.vsoClient.getVersioningData("2.2-preview.1", "ReleaseManagement", "ea61c48b-60dc-4b1a-aabe-e6d50b6307d9", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: ReleaseManagementInterfaces.TypeInfo.ReleaseWorkItemRef, responseIsCollection: true };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
 }
 
 export class QReleaseManagementApi extends basem.QClientApiBase implements IQReleaseManagementApi {
-    
     api: ReleaseManagementApi;
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
         super(baseUrl, handlers, ReleaseManagementApi);
     }
 
-    
     /**
     * Returns the artifact details that automation agent requires
     * 
@@ -1093,14 +1316,14 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
     * @param {number} releaseId
     */
     public getAgentArtifactDefinitions(
-        project: string, 
+        project: string,
         releaseId: number
         ): Q.Promise<ReleaseManagementInterfaces.AgentArtifactDefinition[]> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.AgentArtifactDefinition[]>();
 
         this.api.getAgentArtifactDefinitions(project, releaseId, (err: any, statusCode: number, agentartifacts: ReleaseManagementInterfaces.AgentArtifactDefinition[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1111,24 +1334,24 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.AgentArtifactDefinition[]>>deferred.promise;
     }
-    
+
     /**
     * @param {string} project - Project ID or project name
     * @param {string} assignedToFilter
     * @param {ReleaseManagementInterfaces.ApprovalStatus} statusFilter
-    * @param {number} releaseIdFilter
+    * @param {number[]} releaseIdsFilter
     */
     public getApprovals(
-        project: string, 
-        assignedToFilter?: string, 
-        statusFilter?: ReleaseManagementInterfaces.ApprovalStatus, 
-        releaseIdFilter?: number
+        project: string,
+        assignedToFilter?: string,
+        statusFilter?: ReleaseManagementInterfaces.ApprovalStatus,
+        releaseIdsFilter?: number[]
         ): Q.Promise<ReleaseManagementInterfaces.ReleaseApproval[]> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.ReleaseApproval[]>();
 
-        this.api.getApprovals(project, assignedToFilter, statusFilter, releaseIdFilter, (err: any, statusCode: number, approvals: ReleaseManagementInterfaces.ReleaseApproval[]) => {
-            if(err) {
+        this.api.getApprovals(project, assignedToFilter, statusFilter, releaseIdsFilter, (err: any, statusCode: number, approvals: ReleaseManagementInterfaces.ReleaseApproval[]) => {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1139,20 +1362,20 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.ReleaseApproval[]>>deferred.promise;
     }
-    
+
     /**
     * @param {string} project - Project ID or project name
     * @param {number} approvalStepId
     */
     public getApprovalHistory(
-        project: string, 
+        project: string,
         approvalStepId: number
         ): Q.Promise<ReleaseManagementInterfaces.ReleaseApproval[]> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.ReleaseApproval[]>();
 
         this.api.getApprovalHistory(project, approvalStepId, (err: any, statusCode: number, approvals: ReleaseManagementInterfaces.ReleaseApproval[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1163,22 +1386,22 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.ReleaseApproval[]>>deferred.promise;
     }
-    
+
     /**
     * @param {ReleaseManagementInterfaces.ApprovalUpdateMetadata} approvalUpdateMetadata
     * @param {string} project - Project ID or project name
     * @param {number} approvalId
     */
     public updateReleaseApproval(
-        approvalUpdateMetadata: ReleaseManagementInterfaces.ApprovalUpdateMetadata, 
-        project: string, 
+        approvalUpdateMetadata: ReleaseManagementInterfaces.ApprovalUpdateMetadata,
+        project: string,
         approvalId: number
         ): Q.Promise<ReleaseManagementInterfaces.ReleaseApproval> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.ReleaseApproval>();
 
         this.api.updateReleaseApproval(approvalUpdateMetadata, project, approvalId, (err: any, statusCode: number, approval: ReleaseManagementInterfaces.ReleaseApproval) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1189,20 +1412,20 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.ReleaseApproval>>deferred.promise;
     }
-    
+
     /**
     * @param {ReleaseManagementInterfaces.Artifact} artifact
     * @param {string} project - Project ID or project name
     */
     public createArtifact(
-        artifact: ReleaseManagementInterfaces.Artifact, 
+        artifact: ReleaseManagementInterfaces.Artifact,
         project: string
         ): Q.Promise<ReleaseManagementInterfaces.Artifact> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.Artifact>();
 
         this.api.createArtifact(artifact, project, (err: any, statusCode: number, artifact: ReleaseManagementInterfaces.Artifact) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1213,20 +1436,20 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.Artifact>>deferred.promise;
     }
-    
+
     /**
     * @param {string} project - Project ID or project name
     * @param {number} definitionId
     */
     public getArtifact(
-        project: string, 
+        project: string,
         definitionId: number
         ): Q.Promise<ReleaseManagementInterfaces.Artifact> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.Artifact>();
 
         this.api.getArtifact(project, definitionId, (err: any, statusCode: number, artifact: ReleaseManagementInterfaces.Artifact) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1237,7 +1460,7 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.Artifact>>deferred.promise;
     }
-    
+
     /**
     * @param {string} project - Project ID or project name
     * @param {string} typeId
@@ -1245,16 +1468,16 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
     * @param {string} sourceId
     */
     public getArtifacts(
-        project: string, 
-        typeId?: string, 
-        name?: string, 
+        project: string,
+        typeId?: string,
+        name?: string,
         sourceId?: string
         ): Q.Promise<ReleaseManagementInterfaces.Artifact[]> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.Artifact[]>();
 
         this.api.getArtifacts(project, typeId, name, sourceId, (err: any, statusCode: number, artifacts: ReleaseManagementInterfaces.Artifact[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1265,20 +1488,20 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.Artifact[]>>deferred.promise;
     }
-    
+
     /**
     * @param {ReleaseManagementInterfaces.ArtifactDefinition[]} artifactDefinitions
     * @param {string} project - Project ID or project name
     */
     public updateArtifacts(
-        artifactDefinitions: ReleaseManagementInterfaces.ArtifactDefinition[], 
+        artifactDefinitions: ReleaseManagementInterfaces.ArtifactDefinition[],
         project: string
         ): Q.Promise<ReleaseManagementInterfaces.ArtifactDefinition[]> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.ArtifactDefinition[]>();
 
         this.api.updateArtifacts(artifactDefinitions, project, (err: any, statusCode: number, artifacts: ReleaseManagementInterfaces.ArtifactDefinition[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1289,20 +1512,48 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.ArtifactDefinition[]>>deferred.promise;
     }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {number} baseReleaseId
+    * @param {number} top
+    */
+    public getReleaseChanges(
+        project: string,
+        releaseId: number,
+        baseReleaseId?: number,
+        top?: number
+        ): Q.Promise<ReleaseManagementInterfaces.Change[]> {
     
+        var deferred = Q.defer<ReleaseManagementInterfaces.Change[]>();
+
+        this.api.getReleaseChanges(project, releaseId, baseReleaseId, top, (err: any, statusCode: number, changes: ReleaseManagementInterfaces.Change[]) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(changes);
+            }
+        });
+
+        return <Q.Promise<ReleaseManagementInterfaces.Change[]>>deferred.promise;
+    }
+
     /**
     * @param {ReleaseManagementInterfaces.ReleaseDefinition} releaseDefinition
     * @param {string} project - Project ID or project name
     */
     public createReleaseDefinition(
-        releaseDefinition: ReleaseManagementInterfaces.ReleaseDefinition, 
+        releaseDefinition: ReleaseManagementInterfaces.ReleaseDefinition,
         project: string
         ): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinition> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.ReleaseDefinition>();
 
         this.api.createReleaseDefinition(releaseDefinition, project, (err: any, statusCode: number, definition: ReleaseManagementInterfaces.ReleaseDefinition) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1313,20 +1564,44 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.ReleaseDefinition>>deferred.promise;
     }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    */
+    public deleteReleaseDefinition(
+        project: string,
+        definitionId: number
+        ): Q.Promise<void> {
     
+        var deferred = Q.defer<void>();
+
+        this.api.deleteReleaseDefinition(project, definitionId, (err: any, statusCode: number) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(null);
+            }
+        });
+
+        return <Q.Promise<void>>deferred.promise;
+    }
+
     /**
     * @param {string} project - Project ID or project name
     * @param {number} definitionId
     */
     public getReleaseDefinition(
-        project: string, 
+        project: string,
         definitionId: number
         ): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinition> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.ReleaseDefinition>();
 
         this.api.getReleaseDefinition(project, definitionId, (err: any, statusCode: number, definition: ReleaseManagementInterfaces.ReleaseDefinition) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1337,22 +1612,22 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.ReleaseDefinition>>deferred.promise;
     }
-    
+
     /**
     * @param {string} project - Project ID or project name
     * @param {string} searchText
     * @param {number} artifactIdFilter
     */
     public getReleaseDefinitions(
-        project: string, 
-        searchText?: string, 
+        project: string,
+        searchText?: string,
         artifactIdFilter?: number
         ): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinition[]> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.ReleaseDefinition[]>();
 
         this.api.getReleaseDefinitions(project, searchText, artifactIdFilter, (err: any, statusCode: number, definitions: ReleaseManagementInterfaces.ReleaseDefinition[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1363,20 +1638,46 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.ReleaseDefinition[]>>deferred.promise;
     }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {string} artifactType
+    * @param {string} artifactSourceId
+    */
+    public getReleaseDefinitionsForArtifactSource(
+        project: string,
+        artifactType: string,
+        artifactSourceId: string
+        ): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinition[]> {
     
+        var deferred = Q.defer<ReleaseManagementInterfaces.ReleaseDefinition[]>();
+
+        this.api.getReleaseDefinitionsForArtifactSource(project, artifactType, artifactSourceId, (err: any, statusCode: number, definitions: ReleaseManagementInterfaces.ReleaseDefinition[]) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(definitions);
+            }
+        });
+
+        return <Q.Promise<ReleaseManagementInterfaces.ReleaseDefinition[]>>deferred.promise;
+    }
+
     /**
     * @param {ReleaseManagementInterfaces.ReleaseDefinition} releaseDefinition
     * @param {string} project - Project ID or project name
     */
     public updateReleaseDefinition(
-        releaseDefinition: ReleaseManagementInterfaces.ReleaseDefinition, 
+        releaseDefinition: ReleaseManagementInterfaces.ReleaseDefinition,
         project: string
         ): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinition> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.ReleaseDefinition>();
 
         this.api.updateReleaseDefinition(releaseDefinition, project, (err: any, statusCode: number, definition: ReleaseManagementInterfaces.ReleaseDefinition) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1387,20 +1688,20 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.ReleaseDefinition>>deferred.promise;
     }
-    
+
     /**
     * @param {ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate} template
     * @param {string} project - Project ID or project name
     */
     public createDefinitionEnvironmentTemplate(
-        template: ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate, 
+        template: ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate,
         project: string
         ): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate>();
 
         this.api.createDefinitionEnvironmentTemplate(template, project, (err: any, statusCode: number, environmenttemplate: ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1411,20 +1712,44 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate>>deferred.promise;
     }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {string} templateId
+    */
+    public deleteDefinitionEnvironmentTemplate(
+        project: string,
+        templateId: string
+        ): Q.Promise<void> {
     
+        var deferred = Q.defer<void>();
+
+        this.api.deleteDefinitionEnvironmentTemplate(project, templateId, (err: any, statusCode: number) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(null);
+            }
+        });
+
+        return <Q.Promise<void>>deferred.promise;
+    }
+
     /**
     * @param {string} project - Project ID or project name
     * @param {string} templateId
     */
     public getDefinitionEnvironmentTemplate(
-        project: string, 
+        project: string,
         templateId: string
         ): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate>();
 
         this.api.getDefinitionEnvironmentTemplate(project, templateId, (err: any, statusCode: number, environmenttemplate: ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1435,7 +1760,7 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate>>deferred.promise;
     }
-    
+
     /**
     * @param {string} project - Project ID or project name
     */
@@ -1446,7 +1771,7 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
         var deferred = Q.defer<ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate[]>();
 
         this.api.listDefinitionEnvironmentTemplates(project, (err: any, statusCode: number, environmenttemplates: ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1457,20 +1782,20 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.ReleaseDefinitionEnvironmentTemplate[]>>deferred.promise;
     }
-    
+
     /**
     * @param {FormInputInterfaces.InputValuesQuery} query
     * @param {string} project - Project ID or project name
     */
     public getInputValues(
-        query: FormInputInterfaces.InputValuesQuery, 
+        query: FormInputInterfaces.InputValuesQuery,
         project: string
         ): Q.Promise<FormInputInterfaces.InputValuesQuery> {
     
         var deferred = Q.defer<FormInputInterfaces.InputValuesQuery>();
 
         this.api.getInputValues(query, project, (err: any, statusCode: number, inputvaluesquery: FormInputInterfaces.InputValuesQuery) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1481,20 +1806,74 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<FormInputInterfaces.InputValuesQuery>>deferred.promise;
     }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    */
+    public getLogs(
+        project: string,
+        releaseId: number
+        ): Q.Promise<NodeJS.ReadableStream> {
     
+        var deferred = Q.defer<NodeJS.ReadableStream>();
+
+        this.api.getLogs(project, releaseId, (err: any, statusCode: number, log: NodeJS.ReadableStream) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(log);
+            }
+        });
+
+        return <Q.Promise<NodeJS.ReadableStream>>deferred.promise;
+    }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {number} environmentId
+    * @param {number} taskId
+    * @param {number} attemptId
+    */
+    public getLog(
+        project: string,
+        releaseId: number,
+        environmentId: number,
+        taskId: number,
+        attemptId?: number
+        ): Q.Promise<NodeJS.ReadableStream> {
+    
+        var deferred = Q.defer<NodeJS.ReadableStream>();
+
+        this.api.getLog(project, releaseId, environmentId, taskId, attemptId, (err: any, statusCode: number, log: NodeJS.ReadableStream) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(log);
+            }
+        });
+
+        return <Q.Promise<NodeJS.ReadableStream>>deferred.promise;
+    }
+
     /**
     * @param {ReleaseManagementInterfaces.ReleaseStartMetadata} releaseStartMetadata
     * @param {string} project - Project ID or project name
     */
     public createRelease(
-        releaseStartMetadata: ReleaseManagementInterfaces.ReleaseStartMetadata, 
+        releaseStartMetadata: ReleaseManagementInterfaces.ReleaseStartMetadata,
         project: string
         ): Q.Promise<ReleaseManagementInterfaces.Release> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.Release>();
 
         this.api.createRelease(releaseStartMetadata, project, (err: any, statusCode: number, release: ReleaseManagementInterfaces.Release) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1505,22 +1884,46 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.Release>>deferred.promise;
     }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    */
+    public deleteRelease(
+        project: string,
+        releaseId: number
+        ): Q.Promise<void> {
     
+        var deferred = Q.defer<void>();
+
+        this.api.deleteRelease(project, releaseId, (err: any, statusCode: number) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(null);
+            }
+        });
+
+        return <Q.Promise<void>>deferred.promise;
+    }
+
     /**
     * @param {string} project - Project ID or project name
     * @param {number} releaseId
     * @param {boolean} includeAllApprovals
     */
     public getRelease(
-        project: string, 
-        releaseId: number, 
+        project: string,
+        releaseId: number,
         includeAllApprovals?: boolean
         ): Q.Promise<ReleaseManagementInterfaces.Release> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.Release>();
 
         this.api.getRelease(project, releaseId, includeAllApprovals, (err: any, statusCode: number, release: ReleaseManagementInterfaces.Release) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1531,7 +1934,7 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.Release>>deferred.promise;
     }
-    
+
     /**
     * @param {string} project - Project ID or project name
     * @param {number} definitionId
@@ -1539,16 +1942,16 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
     * @param {boolean} includeArtifact
     */
     public getReleaseDefinitionSummary(
-        project: string, 
-        definitionId: number, 
-        releaseCount: number, 
+        project: string,
+        definitionId: number,
+        releaseCount: number,
         includeArtifact?: boolean
         ): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinitionSummary> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.ReleaseDefinitionSummary>();
 
         this.api.getReleaseDefinitionSummary(project, definitionId, releaseCount, includeArtifact, (err: any, statusCode: number, release: ReleaseManagementInterfaces.ReleaseDefinitionSummary) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1559,7 +1962,7 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.ReleaseDefinitionSummary>>deferred.promise;
     }
-    
+
     /**
     * @param {string} project - Project ID or project name
     * @param {number} definitionId
@@ -1572,21 +1975,21 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
     * @param {number} continuationToken
     */
     public getReleases(
-        project: string, 
-        definitionId?: number, 
-        searchText?: string, 
-        statusFilter?: ReleaseManagementInterfaces.ReleaseStatus, 
-        minCreatedTime?: Date, 
-        maxCreatedTime?: Date, 
-        queryOrder?: ReleaseManagementInterfaces.ReleaseQueryOrder, 
-        top?: number, 
+        project: string,
+        definitionId?: number,
+        searchText?: string,
+        statusFilter?: ReleaseManagementInterfaces.ReleaseStatus,
+        minCreatedTime?: Date,
+        maxCreatedTime?: Date,
+        queryOrder?: ReleaseManagementInterfaces.ReleaseQueryOrder,
+        top?: number,
         continuationToken?: number
         ): Q.Promise<ReleaseManagementInterfaces.Release[]> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.Release[]>();
 
         this.api.getReleases(project, definitionId, searchText, statusFilter, minCreatedTime, maxCreatedTime, queryOrder, top, continuationToken, (err: any, statusCode: number, releases: ReleaseManagementInterfaces.Release[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1597,22 +2000,22 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.Release[]>>deferred.promise;
     }
-    
+
     /**
     * @param {ReleaseManagementInterfaces.Release} release
     * @param {string} project - Project ID or project name
     * @param {number} releaseId
     */
     public updateRelease(
-        release: ReleaseManagementInterfaces.Release, 
-        project: string, 
+        release: ReleaseManagementInterfaces.Release,
+        project: string,
         releaseId: number
         ): Q.Promise<ReleaseManagementInterfaces.Release> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.Release>();
 
         this.api.updateRelease(release, project, releaseId, (err: any, statusCode: number, release: ReleaseManagementInterfaces.Release) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1623,22 +2026,22 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.Release>>deferred.promise;
     }
-    
+
     /**
     * @param {ReleaseManagementInterfaces.ReleaseUpdateMetadata} releaseUpdateMetadata
     * @param {string} project - Project ID or project name
     * @param {number} releaseId
     */
     public updateReleaseStatus(
-        releaseUpdateMetadata: ReleaseManagementInterfaces.ReleaseUpdateMetadata, 
-        project: string, 
+        releaseUpdateMetadata: ReleaseManagementInterfaces.ReleaseUpdateMetadata,
+        project: string,
         releaseId: number
         ): Q.Promise<ReleaseManagementInterfaces.Release> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.Release>();
 
         this.api.updateReleaseStatus(releaseUpdateMetadata, project, releaseId, (err: any, statusCode: number, release: ReleaseManagementInterfaces.Release) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1649,20 +2052,70 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.Release>>deferred.promise;
     }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    */
+    public getReleaseDefinitionHistory(
+        project: string,
+        definitionId: number
+        ): Q.Promise<ReleaseManagementInterfaces.ReleaseDefinitionRevision[]> {
     
+        var deferred = Q.defer<ReleaseManagementInterfaces.ReleaseDefinitionRevision[]>();
+
+        this.api.getReleaseDefinitionHistory(project, definitionId, (err: any, statusCode: number, revisions: ReleaseManagementInterfaces.ReleaseDefinitionRevision[]) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(revisions);
+            }
+        });
+
+        return <Q.Promise<ReleaseManagementInterfaces.ReleaseDefinitionRevision[]>>deferred.promise;
+    }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    * @param {number} revision
+    */
+    public getReleaseDefinitionRevision(
+        project: string,
+        definitionId: number,
+        revision: number
+        ): Q.Promise<any> {
+    
+        var deferred = Q.defer<any>();
+
+        this.api.getReleaseDefinitionRevision(project, definitionId, revision, (err: any, statusCode: number, revision: any) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(revision);
+            }
+        });
+
+        return <Q.Promise<any>>deferred.promise;
+    }
+
     /**
     * @param {string} project - Project ID or project name
     * @param {string} typeId
     */
     public getArtifactsSources(
-        project: string, 
+        project: string,
         typeId?: string
         ): Q.Promise<ReleaseManagementInterfaces.ArtifactSourceIdsQueryResult> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.ArtifactSourceIdsQueryResult>();
 
         this.api.getArtifactsSources(project, typeId, (err: any, statusCode: number, source: ReleaseManagementInterfaces.ArtifactSourceIdsQueryResult) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1673,7 +2126,35 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.ArtifactSourceIdsQueryResult>>deferred.promise;
     }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {number} environmentId
+    * @param {number} attemptId
+    */
+    public getTasks(
+        project: string,
+        releaseId: number,
+        environmentId: number,
+        attemptId?: number
+        ): Q.Promise<ReleaseManagementInterfaces.ReleaseTask[]> {
     
+        var deferred = Q.defer<ReleaseManagementInterfaces.ReleaseTask[]>();
+
+        this.api.getTasks(project, releaseId, environmentId, attemptId, (err: any, statusCode: number, tasks: ReleaseManagementInterfaces.ReleaseTask[]) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(tasks);
+            }
+        });
+
+        return <Q.Promise<ReleaseManagementInterfaces.ReleaseTask[]>>deferred.promise;
+    }
+
     /**
     * @param {string} project - Project ID or project name
     */
@@ -1684,7 +2165,7 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
         var deferred = Q.defer<ReleaseManagementInterfaces.ArtifactTypeDefinition[]>();
 
         this.api.getArtifactTypeDefinitions(project, (err: any, statusCode: number, types: ReleaseManagementInterfaces.ArtifactTypeDefinition[]) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1695,20 +2176,20 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.ArtifactTypeDefinition[]>>deferred.promise;
     }
-    
+
     /**
     * @param {string} project - Project ID or project name
     * @param {number} releaseDefinitionId
     */
     public getArtifactVersions(
-        project: string, 
+        project: string,
         releaseDefinitionId: number
         ): Q.Promise<ReleaseManagementInterfaces.ArtifactVersionQueryResult> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.ArtifactVersionQueryResult>();
 
         this.api.getArtifactVersions(project, releaseDefinitionId, (err: any, statusCode: number, version: ReleaseManagementInterfaces.ArtifactVersionQueryResult) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1719,20 +2200,20 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.ArtifactVersionQueryResult>>deferred.promise;
     }
-    
+
     /**
     * @param {ReleaseManagementInterfaces.ArtifactSource[]} artifactSources
     * @param {string} project - Project ID or project name
     */
     public getArtifactVersionsForSources(
-        artifactSources: ReleaseManagementInterfaces.ArtifactSource[], 
+        artifactSources: ReleaseManagementInterfaces.ArtifactSource[],
         project: string
         ): Q.Promise<ReleaseManagementInterfaces.ArtifactVersionQueryResult> {
     
         var deferred = Q.defer<ReleaseManagementInterfaces.ArtifactVersionQueryResult>();
 
         this.api.getArtifactVersionsForSources(artifactSources, project, (err: any, statusCode: number, version: ReleaseManagementInterfaces.ArtifactVersionQueryResult) => {
-            if(err) {
+            if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
@@ -1743,5 +2224,33 @@ export class QReleaseManagementApi extends basem.QClientApiBase implements IQRel
 
         return <Q.Promise<ReleaseManagementInterfaces.ArtifactVersionQueryResult>>deferred.promise;
     }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {number} baseReleaseId
+    * @param {number} top
+    */
+    public getReleaseWorkItemsRefs(
+        project: string,
+        releaseId: number,
+        baseReleaseId?: number,
+        top?: number
+        ): Q.Promise<ReleaseManagementInterfaces.ReleaseWorkItemRef[]> {
     
+        var deferred = Q.defer<ReleaseManagementInterfaces.ReleaseWorkItemRef[]>();
+
+        this.api.getReleaseWorkItemsRefs(project, releaseId, baseReleaseId, top, (err: any, statusCode: number, workitems: ReleaseManagementInterfaces.ReleaseWorkItemRef[]) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(workitems);
+            }
+        });
+
+        return <Q.Promise<ReleaseManagementInterfaces.ReleaseWorkItemRef[]>>deferred.promise;
+    }
+
 }
