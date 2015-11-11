@@ -10,7 +10,7 @@
 
 "use strict";
 
-import TfsInterfaces = require("../interfaces/common/TfsInterfaces");
+import TfsCoreInterfaces = require("../interfaces/CoreInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
@@ -276,6 +276,13 @@ export interface GitItemRequestData {
     latestProcessedChange: boolean;
 }
 
+export interface GitLimitedRefCriteria {
+    _links: any;
+    refExactMatches: string[];
+    refNamespaces: string[];
+    url: string;
+}
+
 /**
  * Encapsulates the reference metadata of a Git media object.
  */
@@ -285,7 +292,7 @@ export interface GitMediaObjectRef {
      */
     _links: any;
     /**
-     * Gets or sets the Git media object identifier. This Id property duplicates the Oid property, but is required by the VSO REST specification.
+     * Gets or sets the Git media object identifier. This Id property duplicates the Oid property, but is required by the VSTS REST specification.
      */
     id: string;
     /**
@@ -333,6 +340,8 @@ export interface GitPullRequest {
     _links: any;
     closedDate: Date;
     codeReviewId: number;
+    commits: GitCommitRef[];
+    completionOptions: GitPullRequestCompletionOptions;
     createdBy: VSSInterfaces.IdentityRef;
     creationDate: Date;
     description: string;
@@ -351,6 +360,11 @@ export interface GitPullRequest {
     title: string;
     upgraded: boolean;
     url: string;
+}
+
+export interface GitPullRequestCompletionOptions {
+    deleteSourceBranch: boolean;
+    mergeCommitMessage: string;
 }
 
 export interface GitPullRequestSearchCriteria {
@@ -465,6 +479,7 @@ export interface GitRef {
     isLockedBy: VSSInterfaces.IdentityRef;
     name: string;
     objectId: string;
+    statuses: GitStatus[];
     url: string;
 }
 
@@ -602,7 +617,7 @@ export interface GitRepository {
     defaultBranch: string;
     id: string;
     name: string;
-    project: TfsInterfaces.TeamProjectReference;
+    project: TfsCoreInterfaces.TeamProjectReference;
     remoteUrl: string;
     url: string;
 }
@@ -622,6 +637,29 @@ export enum GitRepositoryPermissions {
      */
     All = 255,
     BranchLevelPermissions = 141,
+}
+
+export interface GitStatus {
+    _links: any;
+    context: GitStatusContext;
+    createdBy: VSSInterfaces.IdentityRef;
+    creationDate: Date;
+    description: string;
+    state: GitStatusState;
+    targetUrl: string;
+}
+
+export interface GitStatusContext {
+    genre: string;
+    name: string;
+}
+
+export enum GitStatusState {
+    NotSet = 0,
+    Pending = 1,
+    Succeeded = 2,
+    Failure = 3,
+    Error = 4,
 }
 
 export interface GitTargetVersionDescriptor extends GitVersionDescriptor {
@@ -828,6 +866,7 @@ export enum PullRequestStatus {
     Active = 1,
     Abandoned = 2,
     Completed = 3,
+    All = 4,
 }
 
 export interface TfvcBranch extends TfvcBranchRef {
@@ -934,7 +973,7 @@ export interface TfvcChangesetsRequestData {
 
 export interface TfvcCheckinEventData {
     changeset: TfvcChangeset;
-    project: TfsInterfaces.TeamProjectReference;
+    project: TfsCoreInterfaces.TeamProjectReference;
 }
 
 export interface TfvcHistoryEntry extends HistoryEntry<TfvcItem> {
@@ -1135,7 +1174,7 @@ export enum VersionControlChangeType {
 }
 
 export interface VersionControlProjectInfo {
-    project: TfsInterfaces.TeamProjectReference;
+    project: TfsCoreInterfaces.TeamProjectReference;
     supportsGit: boolean;
     supportsTFVC: boolean;
 }
@@ -1207,6 +1246,9 @@ export var TypeInfo = {
     GitItemRequestData: {
         fields: <any>null
     },
+    GitLimitedRefCriteria: {
+        fields: <any>null
+    },
     GitMediaObjectRef: {
         fields: <any>null
     },
@@ -1235,6 +1277,9 @@ export var TypeInfo = {
         }
     },
     GitPullRequest: {
+        fields: <any>null
+    },
+    GitPullRequestCompletionOptions: {
         fields: <any>null
     },
     GitPullRequestSearchCriteria: {
@@ -1311,6 +1356,21 @@ export var TypeInfo = {
             "branchLevelPermissions": 141,
         }
     },
+    GitStatus: {
+        fields: <any>null
+    },
+    GitStatusContext: {
+        fields: <any>null
+    },
+    GitStatusState: {
+        enumValues: {
+            "notSet": 0,
+            "pending": 1,
+            "succeeded": 2,
+            "failure": 3,
+            "error": 4,
+        }
+    },
     GitTargetVersionDescriptor: {
         fields: <any>null
     },
@@ -1384,6 +1444,7 @@ export var TypeInfo = {
             "active": 1,
             "abandoned": 2,
             "completed": 3,
+            "all": 4,
         }
     },
     TfvcBranch: {
@@ -1680,6 +1741,9 @@ TypeInfo.GitItemRequestData.fields = {
     },
 };
 
+TypeInfo.GitLimitedRefCriteria.fields = {
+};
+
 TypeInfo.GitMediaObjectRef.fields = {
 };
 
@@ -1692,6 +1756,13 @@ TypeInfo.GitPathAction.fields = {
 TypeInfo.GitPullRequest.fields = {
     closedDate: {
         isDate: true,
+    },
+    commits: {
+        isArray: true,
+        typeInfo: TypeInfo.GitCommitRef
+    },
+    completionOptions: {
+        typeInfo: TypeInfo.GitPullRequestCompletionOptions
     },
     createdBy: {
         typeInfo: VSSInterfaces.TypeInfo.IdentityRef
@@ -1721,6 +1792,9 @@ TypeInfo.GitPullRequest.fields = {
     status: {
         enumType: TypeInfo.PullRequestStatus
     },
+};
+
+TypeInfo.GitPullRequestCompletionOptions.fields = {
 };
 
 TypeInfo.GitPullRequestSearchCriteria.fields = {
@@ -1790,6 +1864,10 @@ TypeInfo.GitRef.fields = {
     isLockedBy: {
         typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
+    statuses: {
+        isArray: true,
+        typeInfo: TypeInfo.GitStatus
+    },
 };
 
 TypeInfo.GitRefUpdate.fields = {
@@ -1813,8 +1891,26 @@ TypeInfo.GitRefUpdateResultSet.fields = {
 
 TypeInfo.GitRepository.fields = {
     project: {
-        typeInfo: TfsInterfaces.TypeInfo.TeamProjectReference
+        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
     },
+};
+
+TypeInfo.GitStatus.fields = {
+    context: {
+        typeInfo: TypeInfo.GitStatusContext
+    },
+    createdBy: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+    creationDate: {
+        isDate: true,
+    },
+    state: {
+        enumType: TypeInfo.GitStatusState
+    },
+};
+
+TypeInfo.GitStatusContext.fields = {
 };
 
 TypeInfo.GitTargetVersionDescriptor.fields = {
@@ -2002,7 +2098,7 @@ TypeInfo.TfvcCheckinEventData.fields = {
         typeInfo: TypeInfo.TfvcChangeset
     },
     project: {
-        typeInfo: TfsInterfaces.TypeInfo.TeamProjectReference
+        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
     },
 };
 
@@ -2138,6 +2234,6 @@ TypeInfo.UpdateRefsRequest.fields = {
 
 TypeInfo.VersionControlProjectInfo.fields = {
     project: {
-        typeInfo: TfsInterfaces.TypeInfo.TeamProjectReference
+        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
     },
 };
