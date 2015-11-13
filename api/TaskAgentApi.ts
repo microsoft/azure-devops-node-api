@@ -276,7 +276,9 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
         if (splitPath.length === 0 || (splitPath.length === 1 && splitPath[0] === '')) {
             return null;
         }
-        if (splitPath.length === 2 && splitPath[0] === 'tfs') {
+        
+        // if the first segment of the path is tfs, the second is the collection. if the url ends in / there will be a third, empty entry
+        if (splitPath[0] === 'tfs' && (splitPath.length === 2 || (splitPath.length === 3 && splitPath[2].length === 0))) {
             //on prem
             accountUrl += '/' + 'tfs';
         }
