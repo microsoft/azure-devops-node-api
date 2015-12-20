@@ -53,7 +53,7 @@ export interface IWorkItemTrackingApi extends basem.ClientApiBase {
     getRelationTypes(onResult: (err: any, statusCode: number, workItemRelationTypes: WorkItemTrackingInterfaces.WorkItemRelationType[]) => void): void;
     readReportingRevisionsGet(project: string, fields: string[], types: string[], watermark: number, startDateTime: Date, includeIdentityRef: boolean, onResult: (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => void): void;
     readReportingRevisionsPost(filter: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsFilter, project: string, watermark: number, startDateTime: Date, onResult: (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => void): void;
-    createWorkItem(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, type: string, validateOnly: boolean, bypassRules: boolean, onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => void): void;
+    createWorkItem(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, project: string, type: string, validateOnly: boolean, bypassRules: boolean, onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => void): void;
     getWorkItem(id: number, fields: string[], asOf: Date, expand: WorkItemTrackingInterfaces.WorkItemExpand, onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => void): void;
     getWorkItems(ids: number[], fields: string[], asOf: Date, expand: WorkItemTrackingInterfaces.WorkItemExpand, onResult: (err: any, statusCode: number, workItems: WorkItemTrackingInterfaces.WorkItem[]) => void): void;
     updateWorkItem(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, id: number, validateOnly: boolean, bypassRules: boolean, onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => void): void;
@@ -98,7 +98,7 @@ export interface IQWorkItemTrackingApi extends basem.QClientApiBase {
     getRelationTypes(): Q.Promise<WorkItemTrackingInterfaces.WorkItemRelationType[]>;
     readReportingRevisionsGet(project?: string, fields?: string[], types?: string[], watermark?: number, startDateTime?: Date, includeIdentityRef?: boolean): Q.Promise<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>;
     readReportingRevisionsPost(filter: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsFilter, project?: string, watermark?: number, startDateTime?: Date): Q.Promise<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>;
-    createWorkItem(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, type: string, validateOnly?: boolean, bypassRules?: boolean): Q.Promise<WorkItemTrackingInterfaces.WorkItem>;
+    createWorkItem(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, project: string, type: string, validateOnly?: boolean, bypassRules?: boolean): Q.Promise<WorkItemTrackingInterfaces.WorkItem>;
     getWorkItem(id: number, fields?: string[], asOf?: Date, expand?: WorkItemTrackingInterfaces.WorkItemExpand): Q.Promise<WorkItemTrackingInterfaces.WorkItem>;
     getWorkItems(ids: number[], fields?: string[], asOf?: Date, expand?: WorkItemTrackingInterfaces.WorkItemExpand): Q.Promise<WorkItemTrackingInterfaces.WorkItem[]>;
     updateWorkItem(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, id: number, validateOnly?: boolean, bypassRules?: boolean): Q.Promise<WorkItemTrackingInterfaces.WorkItem>;
@@ -1120,14 +1120,16 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
     /**
      * @param {VSSInterfaces.JsonPatchDocument} document
+     * @param {string} project
      * @param {string} type
      * @param {boolean} validateOnly
      * @param {boolean} bypassRules
      * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItem
      */
     public createWorkItem(
-        customHeaders: VsoBaseInterfaces.IHeaders,
+        customHeaders: VsoBaseInterfaces.IHeaders,        
         document: VSSInterfaces.JsonPatchDocument,
+        project: string,
         type: string,
         validateOnly: boolean,
         bypassRules: boolean,
@@ -1135,10 +1137,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         ): void {
 
         var routeValues: any = {
+            project: project,
+            type: type
         };
 
         var queryValues: any = {
-            type: type,
             validateOnly: validateOnly,
             bypassRules: bypassRules,
         };
@@ -1146,7 +1149,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         customHeaders = customHeaders || {};
         customHeaders["Content-Type"] = "application/json-patch+json";
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b", routeValues, queryValues)
+        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "62d3d110-0047-428c-ad3c-4fe872c91c74", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -2374,6 +2377,7 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
 
     /**
     * @param {VSSInterfaces.JsonPatchDocument} document
+    * @param {string} project
     * @param {string} type
     * @param {boolean} validateOnly
     * @param {boolean} bypassRules
@@ -2381,6 +2385,7 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
     public createWorkItem(
         customHeaders: any,
         document: VSSInterfaces.JsonPatchDocument,
+        project: string,
         type: string,
         validateOnly?: boolean,
         bypassRules?: boolean
@@ -2388,7 +2393,7 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItem>();
 
-        this.api.createWorkItem(customHeaders, document, type, validateOnly, bypassRules, (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => {
+        this.api.createWorkItem(customHeaders, document, project, type, validateOnly, bypassRules, (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => {
             if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
