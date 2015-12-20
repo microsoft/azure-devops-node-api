@@ -1127,7 +1127,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItem
      */
     public createWorkItem(
-        customHeaders: VsoBaseInterfaces.IHeaders,        
+        customHeaders: VsoBaseInterfaces.IHeaders,
         document: VSSInterfaces.JsonPatchDocument,
         project: string,
         type: string,
