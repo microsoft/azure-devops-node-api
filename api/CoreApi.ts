@@ -21,7 +21,6 @@ import basem = require('./ClientApiBases');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import CoreInterfaces = require("./interfaces/CoreInterfaces");
 import OperationsInterfaces = require("./interfaces/common/OperationsInterfaces");
-import TfsCoreInterfaces = require("./interfaces/CoreInterfaces");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
 export interface ICoreApi extends basem.ClientApiBase {
@@ -44,7 +43,11 @@ export interface ICoreApi extends basem.ClientApiBase {
     queueDeleteProject(projectId: string, onResult: (err: any, statusCode: number, project: OperationsInterfaces.OperationReference) => void): void;
     updateProject(projectUpdate: CoreInterfaces.TeamProject, projectId: string, onResult: (err: any, statusCode: number, project: OperationsInterfaces.OperationReference) => void): void;
     getProxies(proxyUrl: string, onResult: (err: any, statusCode: number, proxies: CoreInterfaces.Proxy[]) => void): void;
-    getTeams(projectId: string, teamId: string, top: number, skip: number, onResult: (err: any, statusCode: number, team: CoreInterfaces.WebApiTeam) => void): void;
+    createTeam(team: CoreInterfaces.WebApiTeam, projectId: string, onResult: (err: any, statusCode: number, team: CoreInterfaces.WebApiTeam) => void): void;
+    deleteTeam(projectId: string, teamId: string, onResult: (err: any, statusCode: number) => void): void;
+    getTeam(projectId: string, teamId: string, onResult: (err: any, statusCode: number, team: CoreInterfaces.WebApiTeam) => void): void;
+    getTeams(projectId: string, top: number, skip: number, onResult: (err: any, statusCode: number, teams: CoreInterfaces.WebApiTeam[]) => void): void;
+    updateTeam(teamData: CoreInterfaces.WebApiTeam, projectId: string, teamId: string, onResult: (err: any, statusCode: number, team: CoreInterfaces.WebApiTeam) => void): void;
 }
 
 export interface IQCoreApi extends basem.QClientApiBase {
@@ -67,7 +70,11 @@ export interface IQCoreApi extends basem.QClientApiBase {
     queueDeleteProject(projectId: string): Q.Promise<OperationsInterfaces.OperationReference>;
     updateProject(projectUpdate: CoreInterfaces.TeamProject, projectId: string): Q.Promise<OperationsInterfaces.OperationReference>;
     getProxies(proxyUrl?: string): Q.Promise<CoreInterfaces.Proxy[]>;
-    getTeams(projectId: string, teamId?: string, top?: number, skip?: number): Q.Promise<CoreInterfaces.WebApiTeam>;
+    createTeam(team: CoreInterfaces.WebApiTeam, projectId: string): Q.Promise<CoreInterfaces.WebApiTeam>;
+    deleteTeam(projectId: string, teamId: string): Q.Promise<void>;
+    getTeam(projectId: string, teamId: string): Q.Promise<CoreInterfaces.WebApiTeam>;
+    getTeams(projectId: string, top?: number, skip?: number): Q.Promise<CoreInterfaces.WebApiTeam[]>;
+    updateTeam(teamData: CoreInterfaces.WebApiTeam, projectId: string, teamId: string): Q.Promise<CoreInterfaces.WebApiTeam>;
 }
 
 export class CoreApi extends basem.ClientApiBase implements ICoreApi {
@@ -90,7 +97,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             projectId: projectId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "core", "b4f70219-e18b-42c5-abe3-98b07d35525e", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "core", "b4f70219-e18b-42c5-abe3-98b07d35525e", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -119,7 +126,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             name: name
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "core", "b4f70219-e18b-42c5-abe3-98b07d35525e", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "core", "b4f70219-e18b-42c5-abe3-98b07d35525e", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -151,7 +158,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             kind: kind,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "core", "b4f70219-e18b-42c5-abe3-98b07d35525e", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "core", "b4f70219-e18b-42c5-abe3-98b07d35525e", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -179,7 +186,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             mruName: mruName
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "core", "5ead0b70-2572-4697-97e9-f341069a783a", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "core", "5ead0b70-2572-4697-97e9-f341069a783a", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -207,7 +214,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             mruName: mruName
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "core", "5ead0b70-2572-4697-97e9-f341069a783a", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "core", "5ead0b70-2572-4697-97e9-f341069a783a", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -233,7 +240,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             mruName: mruName
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "core", "5ead0b70-2572-4697-97e9-f341069a783a", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "core", "5ead0b70-2572-4697-97e9-f341069a783a", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -261,7 +268,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             mruName: mruName
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "core", "5ead0b70-2572-4697-97e9-f341069a783a", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "core", "5ead0b70-2572-4697-97e9-f341069a783a", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -299,7 +306,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             '$skip': skip,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "core", "294c494c-2600-4d7e-b76c-3dd50c3c95be", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "core", "294c494c-2600-4d7e-b76c-3dd50c3c95be", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -327,7 +334,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             processId: processId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "core", "93878975-88c5-4e6a-8abb-7ddd77a8a7d8", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "core", "93878975-88c5-4e6a-8abb-7ddd77a8a7d8", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -350,7 +357,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         var routeValues: any = {
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "core", "93878975-88c5-4e6a-8abb-7ddd77a8a7d8", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "core", "93878975-88c5-4e6a-8abb-7ddd77a8a7d8", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -378,7 +385,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             collectionId: collectionId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "core", "8031090f-ef1d-4af6-85fc-698cd75d42bf", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "core", "8031090f-ef1d-4af6-85fc-698cd75d42bf", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -412,7 +419,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             '$skip': skip,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "core", "8031090f-ef1d-4af6-85fc-698cd75d42bf", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "core", "8031090f-ef1d-4af6-85fc-698cd75d42bf", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -441,7 +448,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             minRevision: minRevision,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "core", "6488a877-4749-4954-82ea-7340d36be9f2", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "core", "6488a877-4749-4954-82ea-7340d36be9f2", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -478,7 +485,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             includeHistory: includeHistory,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -515,7 +522,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             '$skip': skip,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -542,7 +549,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         var routeValues: any = {
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -570,7 +577,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             projectId: projectId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -600,7 +607,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             projectId: projectId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.3", "core", "603fe2ac-9723-48b9-88ad-09305aa6c6e1", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -629,7 +636,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             proxyUrl: proxyUrl,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "core", "ec1f4311-f2b4-4c15-b2b8-8990b80d2908", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "core", "ec1f4311-f2b4-4c15-b2b8-8990b80d2908", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -643,17 +650,76 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-     * @param {string} projectId
-     * @param {string} teamId
-     * @param {number} top
-     * @param {number} skip
+     * Creates a team
+     * 
+     * @param {CoreInterfaces.WebApiTeam} team - The team data used to create the team.
+     * @param {string} projectId - The name or id (GUID) of the team project in which to create the team.
      * @param onResult callback function with the resulting CoreInterfaces.WebApiTeam
      */
-    public getTeams(
+    public createTeam(
+        team: CoreInterfaces.WebApiTeam,
+        projectId: string,
+        onResult: (err: any, statusCode: number, team: CoreInterfaces.WebApiTeam) => void
+        ): void {
+
+        var routeValues: any = {
+            projectId: projectId
+        };
+
+        this.vsoClient.getVersioningData("3.0-preview.1", "core", "d30a3dd1-f8ba-442a-b86a-bd0c0c383e59", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: CoreInterfaces.TypeInfo.WebApiTeam, responseTypeMetadata: CoreInterfaces.TypeInfo.WebApiTeam, responseIsCollection: false };
+            
+            this.restClient.create(url, apiVersion, team, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * Deletes a team
+     * 
+     * @param {string} projectId - The name or id (GUID) of the team project containing the team to delete.
+     * @param {string} teamId - The name of id of the team to delete.
+     * @param onResult callback function
+     */
+    public deleteTeam(
         projectId: string,
         teamId: string,
-        top: number,
-        skip: number,
+        onResult: (err: any, statusCode: number) => void
+        ): void {
+
+        var routeValues: any = {
+            projectId: projectId,
+            teamId: teamId
+        };
+
+        this.vsoClient.getVersioningData("3.0-preview.1", "core", "d30a3dd1-f8ba-442a-b86a-bd0c0c383e59", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
+            
+            this.restClient.delete(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode);
+        });
+    }
+
+    /**
+     * Gets a team
+     * 
+     * @param {string} projectId
+     * @param {string} teamId
+     * @param onResult callback function with the resulting CoreInterfaces.WebApiTeam
+     */
+    public getTeam(
+        projectId: string,
+        teamId: string,
         onResult: (err: any, statusCode: number, team: CoreInterfaces.WebApiTeam) => void
         ): void {
 
@@ -662,18 +728,81 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             teamId: teamId
         };
 
-        var queryValues: any = {
-            '$top': top,
-            '$skip': skip,
-        };
-        
-        this.vsoClient.getVersioningData("2.2-preview.1", "core", "d30a3dd1-f8ba-442a-b86a-bd0c0c383e59", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "core", "d30a3dd1-f8ba-442a-b86a-bd0c0c383e59", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.WebApiTeam, responseIsCollection: false };
             
             this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param {string} projectId
+     * @param {number} top
+     * @param {number} skip
+     * @param onResult callback function with the resulting CoreInterfaces.WebApiTeam[]
+     */
+    public getTeams(
+        projectId: string,
+        top: number,
+        skip: number,
+        onResult: (err: any, statusCode: number, teams: CoreInterfaces.WebApiTeam[]) => void
+        ): void {
+
+        var routeValues: any = {
+            projectId: projectId
+        };
+
+        var queryValues: any = {
+            '$top': top,
+            '$skip': skip,
+        };
+        
+        this.vsoClient.getVersioningData("3.0-preview.1", "core", "d30a3dd1-f8ba-442a-b86a-bd0c0c383e59", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.WebApiTeam, responseIsCollection: true };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * Updates a team's name and/or description
+     * 
+     * @param {CoreInterfaces.WebApiTeam} teamData
+     * @param {string} projectId - The name or id (GUID) of the team project containing the team to update.
+     * @param {string} teamId - The name of id of the team to update.
+     * @param onResult callback function with the resulting CoreInterfaces.WebApiTeam
+     */
+    public updateTeam(
+        teamData: CoreInterfaces.WebApiTeam,
+        projectId: string,
+        teamId: string,
+        onResult: (err: any, statusCode: number, team: CoreInterfaces.WebApiTeam) => void
+        ): void {
+
+        var routeValues: any = {
+            projectId: projectId,
+            teamId: teamId
+        };
+
+        this.vsoClient.getVersioningData("3.0-preview.1", "core", "d30a3dd1-f8ba-442a-b86a-bd0c0c383e59", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: CoreInterfaces.TypeInfo.WebApiTeam, responseTypeMetadata: CoreInterfaces.TypeInfo.WebApiTeam, responseIsCollection: false };
+            
+            this.restClient.update(url, apiVersion, teamData, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1152,21 +1281,125 @@ export class QCoreApi extends basem.QClientApiBase implements IQCoreApi {
     }
 
     /**
+    * Creates a team
+    * 
+    * @param {CoreInterfaces.WebApiTeam} team - The team data used to create the team.
+    * @param {string} projectId - The name or id (GUID) of the team project in which to create the team.
+    */
+    public createTeam(
+        team: CoreInterfaces.WebApiTeam,
+        projectId: string
+        ): Q.Promise<CoreInterfaces.WebApiTeam> {
+    
+        var deferred = Q.defer<CoreInterfaces.WebApiTeam>();
+
+        this.api.createTeam(team, projectId, (err: any, statusCode: number, team: CoreInterfaces.WebApiTeam) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(team);
+            }
+        });
+
+        return <Q.Promise<CoreInterfaces.WebApiTeam>>deferred.promise;
+    }
+
+    /**
+    * Deletes a team
+    * 
+    * @param {string} projectId - The name or id (GUID) of the team project containing the team to delete.
+    * @param {string} teamId - The name of id of the team to delete.
+    */
+    public deleteTeam(
+        projectId: string,
+        teamId: string
+        ): Q.Promise<void> {
+    
+        var deferred = Q.defer<void>();
+
+        this.api.deleteTeam(projectId, teamId, (err: any, statusCode: number) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(null);
+            }
+        });
+
+        return <Q.Promise<void>>deferred.promise;
+    }
+
+    /**
+    * Gets a team
+    * 
     * @param {string} projectId
     * @param {string} teamId
+    */
+    public getTeam(
+        projectId: string,
+        teamId: string
+        ): Q.Promise<CoreInterfaces.WebApiTeam> {
+    
+        var deferred = Q.defer<CoreInterfaces.WebApiTeam>();
+
+        this.api.getTeam(projectId, teamId, (err: any, statusCode: number, team: CoreInterfaces.WebApiTeam) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(team);
+            }
+        });
+
+        return <Q.Promise<CoreInterfaces.WebApiTeam>>deferred.promise;
+    }
+
+    /**
+    * @param {string} projectId
     * @param {number} top
     * @param {number} skip
     */
     public getTeams(
         projectId: string,
-        teamId?: string,
         top?: number,
         skip?: number
+        ): Q.Promise<CoreInterfaces.WebApiTeam[]> {
+    
+        var deferred = Q.defer<CoreInterfaces.WebApiTeam[]>();
+
+        this.api.getTeams(projectId, top, skip, (err: any, statusCode: number, teams: CoreInterfaces.WebApiTeam[]) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(teams);
+            }
+        });
+
+        return <Q.Promise<CoreInterfaces.WebApiTeam[]>>deferred.promise;
+    }
+
+    /**
+    * Updates a team's name and/or description
+    * 
+    * @param {CoreInterfaces.WebApiTeam} teamData
+    * @param {string} projectId - The name or id (GUID) of the team project containing the team to update.
+    * @param {string} teamId - The name of id of the team to update.
+    */
+    public updateTeam(
+        teamData: CoreInterfaces.WebApiTeam,
+        projectId: string,
+        teamId: string
         ): Q.Promise<CoreInterfaces.WebApiTeam> {
     
         var deferred = Q.defer<CoreInterfaces.WebApiTeam>();
 
-        this.api.getTeams(projectId, teamId, top, skip, (err: any, statusCode: number, team: CoreInterfaces.WebApiTeam) => {
+        this.api.updateTeam(teamData, projectId, teamId, (err: any, statusCode: number, team: CoreInterfaces.WebApiTeam) => {
             if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);

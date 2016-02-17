@@ -41,16 +41,15 @@ export interface IGalleryApi extends basem.ClientApiBase {
     deleteExtension(publisherName: string, extensionName: string, version: string, onResult: (err: any, statusCode: number) => void): void;
     getExtension(publisherName: string, extensionName: string, version: string, flags: GalleryInterfaces.ExtensionQueryFlags, accountToken: string, onResult: (err: any, statusCode: number, extension: GalleryInterfaces.PublishedExtension) => void): void;
     updateExtension(extensionPackage: GalleryInterfaces.ExtensionPackage, publisherName: string, extensionName: string, onResult: (err: any, statusCode: number, extension: GalleryInterfaces.PublishedExtension) => void): void;
-    getPublisherPermissions(publisherName: string, onResult: (err: any, statusCode: number, permissions: GalleryInterfaces.PublisherPermission[]) => void): void;
-    updatePublisherPermissions(publisherPermission: GalleryInterfaces.PublisherPermission, publisherName: string, identityId: string, onResult: (err: any, statusCode: number, permission: GalleryInterfaces.PublisherPermission) => void): void;
-    getExtensionPermissions(publisherName: string, extensionName: string, onResult: (err: any, statusCode: number, permissions: GalleryInterfaces.PublisherPermission[]) => void): void;
-    updateExtensionPermissions(publisherPermission: GalleryInterfaces.PublisherPermission, publisherName: string, extensionName: string, identityId: string, onResult: (err: any, statusCode: number, permission: GalleryInterfaces.PublisherPermission) => void): void;
+    getPackage(publisherName: string, extensionName: string, version: string, accountToken: string, acceptDefault: boolean, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     getAssetWithToken(publisherName: string, extensionName: string, version: string, assetType: string, assetToken: string, accountToken: string, acceptDefault: boolean, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     queryPublishers(publisherQuery: GalleryInterfaces.PublisherQuery, onResult: (err: any, statusCode: number, publisherquery: GalleryInterfaces.PublisherQueryResult) => void): void;
     createPublisher(publisher: GalleryInterfaces.Publisher, onResult: (err: any, statusCode: number, publisher: GalleryInterfaces.Publisher) => void): void;
     deletePublisher(publisherName: string, onResult: (err: any, statusCode: number) => void): void;
     getPublisher(publisherName: string, flags: number, onResult: (err: any, statusCode: number, publisher: GalleryInterfaces.Publisher) => void): void;
     updatePublisher(publisher: GalleryInterfaces.Publisher, publisherName: string, onResult: (err: any, statusCode: number, publisher: GalleryInterfaces.Publisher) => void): void;
+    createReview(review: GalleryInterfaces.Review, extensionId: string, onResult: (err: any, statusCode: number, review: GalleryInterfaces.Review) => void): void;
+    getReviews(extensionId: string, onResult: (err: any, statusCode: number, review: GalleryInterfaces.ReviewsResult) => void): void;
     generateKey(keyType: string, expireCurrentSeconds: number, onResult: (err: any, statusCode: number) => void): void;
     getSigningKey(keyType: string, onResult: (err: any, statusCode: number, signingkey: string) => void): void;
 }
@@ -75,16 +74,15 @@ export interface IQGalleryApi extends basem.QClientApiBase {
     deleteExtension(publisherName: string, extensionName: string, version?: string): Q.Promise<void>;
     getExtension(publisherName: string, extensionName: string, version?: string, flags?: GalleryInterfaces.ExtensionQueryFlags, accountToken?: string): Q.Promise<GalleryInterfaces.PublishedExtension>;
     updateExtension(extensionPackage: GalleryInterfaces.ExtensionPackage, publisherName: string, extensionName: string): Q.Promise<GalleryInterfaces.PublishedExtension>;
-    getPublisherPermissions(publisherName: string): Q.Promise<GalleryInterfaces.PublisherPermission[]>;
-    updatePublisherPermissions(publisherPermission: GalleryInterfaces.PublisherPermission, publisherName: string, identityId: string): Q.Promise<GalleryInterfaces.PublisherPermission>;
-    getExtensionPermissions(publisherName: string, extensionName: string): Q.Promise<GalleryInterfaces.PublisherPermission[]>;
-    updateExtensionPermissions(publisherPermission: GalleryInterfaces.PublisherPermission, publisherName: string, extensionName: string, identityId: string): Q.Promise<GalleryInterfaces.PublisherPermission>;
+    getPackage(publisherName: string, extensionName: string, version: string, accountToken?: string, acceptDefault?: boolean): Q.Promise<NodeJS.ReadableStream>;
     getAssetWithToken(publisherName: string, extensionName: string, version: string, assetType: string, assetToken?: string, accountToken?: string, acceptDefault?: boolean): Q.Promise<NodeJS.ReadableStream>;
     queryPublishers(publisherQuery: GalleryInterfaces.PublisherQuery): Q.Promise<GalleryInterfaces.PublisherQueryResult>;
     createPublisher(publisher: GalleryInterfaces.Publisher): Q.Promise<GalleryInterfaces.Publisher>;
     deletePublisher(publisherName: string): Q.Promise<void>;
     getPublisher(publisherName: string, flags?: number): Q.Promise<GalleryInterfaces.Publisher>;
     updatePublisher(publisher: GalleryInterfaces.Publisher, publisherName: string): Q.Promise<GalleryInterfaces.Publisher>;
+    createReview(review: GalleryInterfaces.Review, extensionId: string): Q.Promise<GalleryInterfaces.Review>;
+    getReviews(extensionId: string): Q.Promise<GalleryInterfaces.ReviewsResult>;
     generateKey(keyType: string, expireCurrentSeconds?: number): Q.Promise<void>;
     getSigningKey(keyType: string): Q.Promise<string>;
 }
@@ -110,7 +108,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             accountName: accountName
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "1f19631b-a0b4-4a03-89c2-d79785d24360", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "1f19631b-a0b4-4a03-89c2-d79785d24360", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -139,7 +137,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             accountName: accountName
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "1f19631b-a0b4-4a03-89c2-d79785d24360", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "1f19631b-a0b4-4a03-89c2-d79785d24360", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -171,7 +169,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             accountName: accountName
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "a1e66d8f-f5de-4d16-8309-91a4e015ee46", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "a1e66d8f-f5de-4d16-8309-91a4e015ee46", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -203,7 +201,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             accountName: accountName
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "a1e66d8f-f5de-4d16-8309-91a4e015ee46", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "a1e66d8f-f5de-4d16-8309-91a4e015ee46", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -235,7 +233,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             installationTarget: installationTarget,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "9d0a0105-075e-4760-aa15-8bcf54d1bd7d", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "9d0a0105-075e-4760-aa15-8bcf54d1bd7d", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -260,7 +258,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
         var routeValues: any = {
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "3adb1f2d-e328-446e-be73-9f6d98071c45", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "3adb1f2d-e328-446e-be73-9f6d98071c45", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -304,7 +302,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             acceptDefault: acceptDefault,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "7529171f-a002-4180-93ba-685f358a0482", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "7529171f-a002-4180-93ba-685f358a0482", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -345,7 +343,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             acceptDefault: acceptDefault,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "5d545f3d-ef47-488b-8be3-f5ee1517856c", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "5d545f3d-ef47-488b-8be3-f5ee1517856c", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -374,7 +372,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             languages: languages,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "e0a5a71e-3ac3-43a0-ae7d-0bb5c3046a2a", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "e0a5a71e-3ac3-43a0-ae7d-0bb5c3046a2a", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -406,7 +404,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             version: version
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "e905ad6a-3f1f-4d08-9f6d-7d357ff8b7d0", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "e905ad6a-3f1f-4d08-9f6d-7d357ff8b7d0", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -437,7 +435,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             accountToken: accountToken,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "eb9d5ee1-6d43-456b-b80e-8a96fbc014b6", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "eb9d5ee1-6d43-456b-b80e-8a96fbc014b6", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -462,7 +460,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
         var routeValues: any = {
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "a41192c8-9525-4b58-bc86-179fa549d80d", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "a41192c8-9525-4b58-bc86-179fa549d80d", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -494,7 +492,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             version: version,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "a41192c8-9525-4b58-bc86-179fa549d80d", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "a41192c8-9525-4b58-bc86-179fa549d80d", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -529,7 +527,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             flags: flags,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "a41192c8-9525-4b58-bc86-179fa549d80d", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "a41192c8-9525-4b58-bc86-179fa549d80d", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -557,7 +555,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             extensionId: extensionId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "a41192c8-9525-4b58-bc86-179fa549d80d", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "a41192c8-9525-4b58-bc86-179fa549d80d", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -585,7 +583,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             publisherName: publisherName
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "e11ea35a-16fe-4b80-ab11-c4cab88a0966", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "e11ea35a-16fe-4b80-ab11-c4cab88a0966", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -620,7 +618,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             version: version,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "e11ea35a-16fe-4b80-ab11-c4cab88a0966", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "e11ea35a-16fe-4b80-ab11-c4cab88a0966", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -661,7 +659,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             accountToken: accountToken,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "e11ea35a-16fe-4b80-ab11-c4cab88a0966", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "e11ea35a-16fe-4b80-ab11-c4cab88a0966", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -692,7 +690,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             extensionName: extensionName
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "e11ea35a-16fe-4b80-ab11-c4cab88a0966", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "e11ea35a-16fe-4b80-ab11-c4cab88a0966", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -707,118 +705,39 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
 
     /**
      * @param {string} publisherName
-     * @param onResult callback function with the resulting GalleryInterfaces.PublisherPermission[]
-     */
-    public getPublisherPermissions(
-        publisherName: string,
-        onResult: (err: any, statusCode: number, permissions: GalleryInterfaces.PublisherPermission[]) => void
-        ): void {
-
-        var routeValues: any = {
-            publisherName: publisherName
-        };
-
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "b96f588e-ae11-4be4-8cb7-9a494c445b46", routeValues)
-        .then((versioningData: vsom.ClientVersioningData) => {
-            var url: string = versioningData.requestUrl;
-            var apiVersion: string = versioningData.apiVersion;
-            var serializationData = {  responseTypeMetadata: GalleryInterfaces.TypeInfo.PublisherPermission, responseIsCollection: true };
-            
-            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-        })
-        .fail((error) => {
-            onResult(error, error.statusCode, null);
-        });
-    }
-
-    /**
-     * @param {GalleryInterfaces.PublisherPermission} publisherPermission
-     * @param {string} publisherName
-     * @param {string} identityId
-     * @param onResult callback function with the resulting GalleryInterfaces.PublisherPermission
-     */
-    public updatePublisherPermissions(
-        publisherPermission: GalleryInterfaces.PublisherPermission,
-        publisherName: string,
-        identityId: string,
-        onResult: (err: any, statusCode: number, permission: GalleryInterfaces.PublisherPermission) => void
-        ): void {
-
-        var routeValues: any = {
-            publisherName: publisherName,
-            identityId: identityId
-        };
-
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "b96f588e-ae11-4be4-8cb7-9a494c445b46", routeValues)
-        .then((versioningData: vsom.ClientVersioningData) => {
-            var url: string = versioningData.requestUrl;
-            var apiVersion: string = versioningData.apiVersion;
-            var serializationData = { requestTypeMetadata: GalleryInterfaces.TypeInfo.PublisherPermission, responseTypeMetadata: GalleryInterfaces.TypeInfo.PublisherPermission, responseIsCollection: false };
-            
-            this.restClient.replace(url, apiVersion, publisherPermission, null, serializationData, onResult);
-        })
-        .fail((error) => {
-            onResult(error, error.statusCode, null);
-        });
-    }
-
-    /**
-     * @param {string} publisherName
      * @param {string} extensionName
-     * @param onResult callback function with the resulting GalleryInterfaces.PublisherPermission[]
+     * @param {string} version
+     * @param {string} accountToken
+     * @param {boolean} acceptDefault
+     * @param onResult callback function with the resulting ArrayBuffer
      */
-    public getExtensionPermissions(
+    public getPackage(
         publisherName: string,
         extensionName: string,
-        onResult: (err: any, statusCode: number, permissions: GalleryInterfaces.PublisherPermission[]) => void
-        ): void {
-
-        var routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName
-        };
-
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "c89b3712-7ff9-40a6-8342-efd2cbeb607b", routeValues)
-        .then((versioningData: vsom.ClientVersioningData) => {
-            var url: string = versioningData.requestUrl;
-            var apiVersion: string = versioningData.apiVersion;
-            var serializationData = {  responseTypeMetadata: GalleryInterfaces.TypeInfo.PublisherPermission, responseIsCollection: true };
-            
-            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-        })
-        .fail((error) => {
-            onResult(error, error.statusCode, null);
-        });
-    }
-
-    /**
-     * @param {GalleryInterfaces.PublisherPermission} publisherPermission
-     * @param {string} publisherName
-     * @param {string} extensionName
-     * @param {string} identityId
-     * @param onResult callback function with the resulting GalleryInterfaces.PublisherPermission
-     */
-    public updateExtensionPermissions(
-        publisherPermission: GalleryInterfaces.PublisherPermission,
-        publisherName: string,
-        extensionName: string,
-        identityId: string,
-        onResult: (err: any, statusCode: number, permission: GalleryInterfaces.PublisherPermission) => void
+        version: string,
+        accountToken: string,
+        acceptDefault: boolean,
+        onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void
         ): void {
 
         var routeValues: any = {
             publisherName: publisherName,
             extensionName: extensionName,
-            identityId: identityId
+            version: version
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "c89b3712-7ff9-40a6-8342-efd2cbeb607b", routeValues)
+        var queryValues: any = {
+            accountToken: accountToken,
+            acceptDefault: acceptDefault,
+        };
+        
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "7cb576f8-1cae-4c4b-b7b1-e4af5759e965", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
-            var serializationData = { requestTypeMetadata: GalleryInterfaces.TypeInfo.PublisherPermission, responseTypeMetadata: GalleryInterfaces.TypeInfo.PublisherPermission, responseIsCollection: false };
+            var serializationData = {  responseIsCollection: false };
             
-            this.restClient.replace(url, apiVersion, publisherPermission, null, serializationData, onResult);
+            this.httpClient.getStream(url, apiVersion, "application/octet-stream", onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -859,7 +778,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             acceptDefault: acceptDefault,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "364415a1-0077-4a41-a7a0-06edd4497492", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "364415a1-0077-4a41-a7a0-06edd4497492", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -884,7 +803,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
         var routeValues: any = {
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "2ad6ee0a-b53f-4034-9d1d-d009fda1212e", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "2ad6ee0a-b53f-4034-9d1d-d009fda1212e", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -909,7 +828,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
         var routeValues: any = {
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -935,7 +854,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             publisherName: publisherName
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -967,7 +886,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             flags: flags,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -995,13 +914,71 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             publisherName: publisherName
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: GalleryInterfaces.TypeInfo.Publisher, responseTypeMetadata: GalleryInterfaces.TypeInfo.Publisher, responseIsCollection: false };
             
             this.restClient.replace(url, apiVersion, publisher, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * Creates a new review item
+     * 
+     * @param {GalleryInterfaces.Review} review - Contains details about the review item to be created like rating, reviewText, productId
+     * @param {string} extensionId
+     * @param onResult callback function with the resulting GalleryInterfaces.Review
+     */
+    public createReview(
+        review: GalleryInterfaces.Review,
+        extensionId: string,
+        onResult: (err: any, statusCode: number, review: GalleryInterfaces.Review) => void
+        ): void {
+
+        var routeValues: any = {
+            extensionId: extensionId
+        };
+
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "5b3f819f-f247-42ad-8c00-dd9ab9ab246d", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: GalleryInterfaces.TypeInfo.Review, responseTypeMetadata: GalleryInterfaces.TypeInfo.Review, responseIsCollection: false };
+            
+            this.restClient.create(url, apiVersion, review, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * Returns all reviews associated with a product
+     * 
+     * @param {string} extensionId - Guid of the extension whose reviews need to be retrieved
+     * @param onResult callback function with the resulting GalleryInterfaces.ReviewsResult
+     */
+    public getReviews(
+        extensionId: string,
+        onResult: (err: any, statusCode: number, review: GalleryInterfaces.ReviewsResult) => void
+        ): void {
+
+        var routeValues: any = {
+            extensionId: extensionId
+        };
+
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "5b3f819f-f247-42ad-8c00-dd9ab9ab246d", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: GalleryInterfaces.TypeInfo.ReviewsResult, responseIsCollection: false };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1027,7 +1004,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             expireCurrentSeconds: expireCurrentSeconds,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "92ed5cf4-c38b-465a-9059-2f2fb7c624b5", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "92ed5cf4-c38b-465a-9059-2f2fb7c624b5", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1053,7 +1030,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
             keyType: keyType
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "gallery", "92ed5cf4-c38b-465a-9059-2f2fb7c624b5", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "92ed5cf4-c38b-465a-9059-2f2fb7c624b5", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1559,102 +1536,32 @@ export class QGalleryApi extends basem.QClientApiBase implements IQGalleryApi {
 
     /**
     * @param {string} publisherName
-    */
-    public getPublisherPermissions(
-        publisherName: string
-        ): Q.Promise<GalleryInterfaces.PublisherPermission[]> {
-    
-        var deferred = Q.defer<GalleryInterfaces.PublisherPermission[]>();
-
-        this.api.getPublisherPermissions(publisherName, (err: any, statusCode: number, permissions: GalleryInterfaces.PublisherPermission[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(permissions);
-            }
-        });
-
-        return <Q.Promise<GalleryInterfaces.PublisherPermission[]>>deferred.promise;
-    }
-
-    /**
-    * @param {GalleryInterfaces.PublisherPermission} publisherPermission
-    * @param {string} publisherName
-    * @param {string} identityId
-    */
-    public updatePublisherPermissions(
-        publisherPermission: GalleryInterfaces.PublisherPermission,
-        publisherName: string,
-        identityId: string
-        ): Q.Promise<GalleryInterfaces.PublisherPermission> {
-    
-        var deferred = Q.defer<GalleryInterfaces.PublisherPermission>();
-
-        this.api.updatePublisherPermissions(publisherPermission, publisherName, identityId, (err: any, statusCode: number, permission: GalleryInterfaces.PublisherPermission) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(permission);
-            }
-        });
-
-        return <Q.Promise<GalleryInterfaces.PublisherPermission>>deferred.promise;
-    }
-
-    /**
-    * @param {string} publisherName
     * @param {string} extensionName
+    * @param {string} version
+    * @param {string} accountToken
+    * @param {boolean} acceptDefault
     */
-    public getExtensionPermissions(
-        publisherName: string,
-        extensionName: string
-        ): Q.Promise<GalleryInterfaces.PublisherPermission[]> {
-    
-        var deferred = Q.defer<GalleryInterfaces.PublisherPermission[]>();
-
-        this.api.getExtensionPermissions(publisherName, extensionName, (err: any, statusCode: number, permissions: GalleryInterfaces.PublisherPermission[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(permissions);
-            }
-        });
-
-        return <Q.Promise<GalleryInterfaces.PublisherPermission[]>>deferred.promise;
-    }
-
-    /**
-    * @param {GalleryInterfaces.PublisherPermission} publisherPermission
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} identityId
-    */
-    public updateExtensionPermissions(
-        publisherPermission: GalleryInterfaces.PublisherPermission,
+    public getPackage(
         publisherName: string,
         extensionName: string,
-        identityId: string
-        ): Q.Promise<GalleryInterfaces.PublisherPermission> {
+        version: string,
+        accountToken?: string,
+        acceptDefault?: boolean
+        ): Q.Promise<NodeJS.ReadableStream> {
     
-        var deferred = Q.defer<GalleryInterfaces.PublisherPermission>();
+        var deferred = Q.defer<NodeJS.ReadableStream>();
 
-        this.api.updateExtensionPermissions(publisherPermission, publisherName, extensionName, identityId, (err: any, statusCode: number, permission: GalleryInterfaces.PublisherPermission) => {
+        this.api.getPackage(publisherName, extensionName, version, accountToken, acceptDefault, (err: any, statusCode: number, _package: NodeJS.ReadableStream) => {
             if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
             }
             else {
-                deferred.resolve(permission);
+                deferred.resolve(_package);
             }
         });
 
-        return <Q.Promise<GalleryInterfaces.PublisherPermission>>deferred.promise;
+        return <Q.Promise<NodeJS.ReadableStream>>deferred.promise;
     }
 
     /**
@@ -1803,6 +1710,56 @@ export class QGalleryApi extends basem.QClientApiBase implements IQGalleryApi {
         });
 
         return <Q.Promise<GalleryInterfaces.Publisher>>deferred.promise;
+    }
+
+    /**
+    * Creates a new review item
+    * 
+    * @param {GalleryInterfaces.Review} review - Contains details about the review item to be created like rating, reviewText, productId
+    * @param {string} extensionId
+    */
+    public createReview(
+        review: GalleryInterfaces.Review,
+        extensionId: string
+        ): Q.Promise<GalleryInterfaces.Review> {
+    
+        var deferred = Q.defer<GalleryInterfaces.Review>();
+
+        this.api.createReview(review, extensionId, (err: any, statusCode: number, review: GalleryInterfaces.Review) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(review);
+            }
+        });
+
+        return <Q.Promise<GalleryInterfaces.Review>>deferred.promise;
+    }
+
+    /**
+    * Returns all reviews associated with a product
+    * 
+    * @param {string} extensionId - Guid of the extension whose reviews need to be retrieved
+    */
+    public getReviews(
+        extensionId: string
+        ): Q.Promise<GalleryInterfaces.ReviewsResult> {
+    
+        var deferred = Q.defer<GalleryInterfaces.ReviewsResult>();
+
+        this.api.getReviews(extensionId, (err: any, statusCode: number, review: GalleryInterfaces.ReviewsResult) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(review);
+            }
+        });
+
+        return <Q.Promise<GalleryInterfaces.ReviewsResult>>deferred.promise;
     }
 
     /**

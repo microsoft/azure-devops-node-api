@@ -41,8 +41,6 @@ export interface ITfvcApi extends basem.ClientApiBase {
     getLabelItems(labelId: string, top: number, skip: number, onResult: (err: any, statusCode: number, LabelItems: TfvcInterfaces.TfvcItem[]) => void): void;
     getLabel(labelId: string, requestData: TfvcInterfaces.TfvcLabelRequestData, project: string, onResult: (err: any, statusCode: number, Label: TfvcInterfaces.TfvcLabel) => void): void;
     getLabels(requestData: TfvcInterfaces.TfvcLabelRequestData, project: string, top: number, skip: number, onResult: (err: any, statusCode: number, Labels: TfvcInterfaces.TfvcLabelRef[]) => void): void;
-    getProjectInfo(projectId: string, project: string, onResult: (err: any, statusCode: number, ProjectInfo: TfvcInterfaces.VersionControlProjectInfo) => void): void;
-    getProjectInfos(project: string, onResult: (err: any, statusCode: number, ProjectInfo: TfvcInterfaces.VersionControlProjectInfo[]) => void): void;
     getShelvesetChanges(shelvesetId: string, top: number, skip: number, onResult: (err: any, statusCode: number, ShelvesetChanges: TfvcInterfaces.TfvcChange[]) => void): void;
     getShelveset(shelvesetId: string, requestData: TfvcInterfaces.TfvcShelvesetRequestData, onResult: (err: any, statusCode: number, Shelveset: TfvcInterfaces.TfvcShelveset) => void): void;
     getShelvesets(requestData: TfvcInterfaces.TfvcShelvesetRequestData, top: number, skip: number, onResult: (err: any, statusCode: number, Shelvesets: TfvcInterfaces.TfvcShelvesetRef[]) => void): void;
@@ -69,8 +67,6 @@ export interface IQTfvcApi extends basem.QClientApiBase {
     getLabelItems(labelId: string, top?: number, skip?: number): Q.Promise<TfvcInterfaces.TfvcItem[]>;
     getLabel(labelId: string, requestData: TfvcInterfaces.TfvcLabelRequestData, project?: string): Q.Promise<TfvcInterfaces.TfvcLabel>;
     getLabels(requestData: TfvcInterfaces.TfvcLabelRequestData, project?: string, top?: number, skip?: number): Q.Promise<TfvcInterfaces.TfvcLabelRef[]>;
-    getProjectInfo(projectId: string, project?: string): Q.Promise<TfvcInterfaces.VersionControlProjectInfo>;
-    getProjectInfos(project?: string): Q.Promise<TfvcInterfaces.VersionControlProjectInfo[]>;
     getShelvesetChanges(shelvesetId: string, top?: number, skip?: number): Q.Promise<TfvcInterfaces.TfvcChange[]>;
     getShelveset(shelvesetId: string, requestData: TfvcInterfaces.TfvcShelvesetRequestData): Q.Promise<TfvcInterfaces.TfvcShelveset>;
     getShelvesets(requestData: TfvcInterfaces.TfvcShelvesetRequestData, top?: number, skip?: number): Q.Promise<TfvcInterfaces.TfvcShelvesetRef[]>;
@@ -109,7 +105,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             includeChildren: includeChildren,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "tfvc", "bc1f417e-239d-42e7-85e1-76e80cb2d6eb", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "bc1f417e-239d-42e7-85e1-76e80cb2d6eb", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -152,7 +148,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             includeLinks: includeLinks,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "tfvc", "bc1f417e-239d-42e7-85e1-76e80cb2d6eb", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "bc1f417e-239d-42e7-85e1-76e80cb2d6eb", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -192,7 +188,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             includeLinks: includeLinks,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "tfvc", "bc1f417e-239d-42e7-85e1-76e80cb2d6eb", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "bc1f417e-239d-42e7-85e1-76e80cb2d6eb", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -229,7 +225,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             '$top': top,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "tfvc", "f32b86f2-15b9-4fe6-81b1-6f8938617ee5", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "f32b86f2-15b9-4fe6-81b1-6f8938617ee5", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -257,7 +253,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "tfvc", "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "tfvc", "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -318,7 +314,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             searchCriteria: searchCriteria,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "tfvc", "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "tfvc", "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -376,7 +372,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             searchCriteria: searchCriteria,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "tfvc", "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "tfvc", "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -401,7 +397,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         var routeValues: any = {
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "tfvc", "b7e7c173-803c-4fea-9ec8-31ee35c5502a", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "b7e7c173-803c-4fea-9ec8-31ee35c5502a", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -427,7 +423,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             id: id
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "tfvc", "64ae0bea-1d71-47c9-a9e5-fe73f5ea0ff4", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "64ae0bea-1d71-47c9-a9e5-fe73f5ea0ff4", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -457,7 +453,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "tfvc", "fe6f827b-5f64-480f-b8af-1eca3b80e833", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "fe6f827b-5f64-480f-b8af-1eca3b80e833", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -487,7 +483,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "tfvc", "fe6f827b-5f64-480f-b8af-1eca3b80e833", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "fe6f827b-5f64-480f-b8af-1eca3b80e833", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -536,7 +532,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             versionDescriptor: versionDescriptor,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -585,7 +581,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             versionDescriptor: versionDescriptor,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -628,7 +624,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             versionDescriptor: versionDescriptor,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -677,7 +673,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             versionDescriptor: versionDescriptor,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -726,7 +722,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             versionDescriptor: versionDescriptor,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -763,7 +759,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             '$skip': skip,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "tfvc", "06166e34-de17-4b60-8cd1-23182a346fda", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "06166e34-de17-4b60-8cd1-23182a346fda", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -800,7 +796,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             requestData: requestData,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "tfvc", "a5d9bd7f-b661-4d0e-b9be-d9c16affae54", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "a5d9bd7f-b661-4d0e-b9be-d9c16affae54", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -840,71 +836,11 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             '$skip': skip,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "tfvc", "a5d9bd7f-b661-4d0e-b9be-d9c16affae54", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "a5d9bd7f-b661-4d0e-b9be-d9c16affae54", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcLabelRef, responseIsCollection: true };
-            
-            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-        })
-        .fail((error) => {
-            onResult(error, error.statusCode, null);
-        });
-    }
-
-    /**
-     * Retrieve the version control information for a given Team Project
-     * 
-     * @param {string} projectId - The id (or name) of the team project
-     * @param {string} project - Project ID or project name
-     * @param onResult callback function with the resulting TfvcInterfaces.VersionControlProjectInfo
-     */
-    public getProjectInfo(
-        projectId: string,
-        project: string,
-        onResult: (err: any, statusCode: number, ProjectInfo: TfvcInterfaces.VersionControlProjectInfo) => void
-        ): void {
-
-        var routeValues: any = {
-            project: project
-        };
-
-        var queryValues: any = {
-            projectId: projectId,
-        };
-        
-        this.vsoClient.getVersioningData("2.2-preview.1", "tfvc", "252d9c40-0643-41cf-85b2-044d80f9b675", routeValues, queryValues)
-        .then((versioningData: vsom.ClientVersioningData) => {
-            var url: string = versioningData.requestUrl;
-            var apiVersion: string = versioningData.apiVersion;
-            var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.VersionControlProjectInfo, responseIsCollection: false };
-            
-            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-        })
-        .fail((error) => {
-            onResult(error, error.statusCode, null);
-        });
-    }
-
-    /**
-     * @param {string} project - Project ID or project name
-     * @param onResult callback function with the resulting TfvcInterfaces.VersionControlProjectInfo[]
-     */
-    public getProjectInfos(
-        project: string,
-        onResult: (err: any, statusCode: number, ProjectInfo: TfvcInterfaces.VersionControlProjectInfo[]) => void
-        ): void {
-
-        var routeValues: any = {
-            project: project
-        };
-
-        this.vsoClient.getVersioningData("2.2-preview.1", "tfvc", "252d9c40-0643-41cf-85b2-044d80f9b675", routeValues)
-        .then((versioningData: vsom.ClientVersioningData) => {
-            var url: string = versioningData.requestUrl;
-            var apiVersion: string = versioningData.apiVersion;
-            var serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.VersionControlProjectInfo, responseIsCollection: true };
             
             this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
         })
@@ -937,7 +873,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             '$skip': skip,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "tfvc", "dbaf075b-0445-4c34-9e5b-82292f856522", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "dbaf075b-0445-4c34-9e5b-82292f856522", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -971,7 +907,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             requestData: requestData,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "tfvc", "e36d44fb-e907-4b0a-b194-f83f1ed32ad3", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "e36d44fb-e907-4b0a-b194-f83f1ed32ad3", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1008,7 +944,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             '$skip': skip,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "tfvc", "e36d44fb-e907-4b0a-b194-f83f1ed32ad3", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "e36d44fb-e907-4b0a-b194-f83f1ed32ad3", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1039,7 +975,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             shelvesetId: shelvesetId,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "tfvc", "a7a0c1c1-373e-425a-b031-a519474d743d", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "a7a0c1c1-373e-425a-b031-a519474d743d", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1647,54 +1583,6 @@ export class QTfvcApi extends basem.QClientApiBase implements IQTfvcApi {
         });
 
         return <Q.Promise<TfvcInterfaces.TfvcLabelRef[]>>deferred.promise;
-    }
-
-    /**
-    * Retrieve the version control information for a given Team Project
-    * 
-    * @param {string} projectId - The id (or name) of the team project
-    * @param {string} project - Project ID or project name
-    */
-    public getProjectInfo(
-        projectId: string,
-        project?: string
-        ): Q.Promise<TfvcInterfaces.VersionControlProjectInfo> {
-    
-        var deferred = Q.defer<TfvcInterfaces.VersionControlProjectInfo>();
-
-        this.api.getProjectInfo(projectId, project, (err: any, statusCode: number, ProjectInfo: TfvcInterfaces.VersionControlProjectInfo) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ProjectInfo);
-            }
-        });
-
-        return <Q.Promise<TfvcInterfaces.VersionControlProjectInfo>>deferred.promise;
-    }
-
-    /**
-    * @param {string} project - Project ID or project name
-    */
-    public getProjectInfos(
-        project?: string
-        ): Q.Promise<TfvcInterfaces.VersionControlProjectInfo[]> {
-    
-        var deferred = Q.defer<TfvcInterfaces.VersionControlProjectInfo[]>();
-
-        this.api.getProjectInfos(project, (err: any, statusCode: number, ProjectInfo: TfvcInterfaces.VersionControlProjectInfo[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ProjectInfo);
-            }
-        });
-
-        return <Q.Promise<TfvcInterfaces.VersionControlProjectInfo[]>>deferred.promise;
     }
 
     /**

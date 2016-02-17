@@ -41,24 +41,28 @@ export interface IWorkItemTrackingApi extends basem.ClientApiBase {
     getQueries(project: string, expand: WorkItemTrackingInterfaces.QueryExpand, depth: number, includeDeleted: boolean, onResult: (err: any, statusCode: number, queries: WorkItemTrackingInterfaces.QueryHierarchyItem[]) => void): void;
     getQuery(project: string, query: string, expand: WorkItemTrackingInterfaces.QueryExpand, depth: number, includeDeleted: boolean, onResult: (err: any, statusCode: number, querie: WorkItemTrackingInterfaces.QueryHierarchyItem) => void): void;
     updateQuery(queryUpdate: WorkItemTrackingInterfaces.QueryHierarchyItem, project: string, query: string, undeleteDescendants: boolean, onResult: (err: any, statusCode: number, querie: WorkItemTrackingInterfaces.QueryHierarchyItem) => void): void;
+    destroyWorkItem(id: number, project: string, onResult: (err: any, statusCode: number) => void): void;
+    getDeletedWorkItem(id: number, project: string, onResult: (err: any, statusCode: number, recyclebin: WorkItemTrackingInterfaces.WorkItemDelete) => void): void;
+    getDeletedWorkItems(project: string, ids: number[], onResult: (err: any, statusCode: number, recyclebin: WorkItemTrackingInterfaces.WorkItemDeleteReference[]) => void): void;
+    restoreWorkItem(payload: WorkItemTrackingInterfaces.WorkItemDeleteUpdate, id: number, project: string, onResult: (err: any, statusCode: number, recyclebin: WorkItemTrackingInterfaces.WorkItemDelete) => void): void;
     getRevision(id: number, revisionNumber: number, expand: WorkItemTrackingInterfaces.WorkItemExpand, onResult: (err: any, statusCode: number, revision: WorkItemTrackingInterfaces.WorkItem) => void): void;
     getRevisions(id: number, top: number, skip: number, expand: WorkItemTrackingInterfaces.WorkItemExpand, onResult: (err: any, statusCode: number, revisions: WorkItemTrackingInterfaces.WorkItem[]) => void): void;
     evaluateRulesOnField(ruleEngineInput: WorkItemTrackingInterfaces.FieldsToEvaluate, onResult: (err: any, statusCode: number) => void): void;
     getUpdate(id: number, updateNumber: number, onResult: (err: any, statusCode: number, update: WorkItemTrackingInterfaces.WorkItemUpdate) => void): void;
     getUpdates(id: number, top: number, skip: number, onResult: (err: any, statusCode: number, updates: WorkItemTrackingInterfaces.WorkItemUpdate[]) => void): void;
-    queryByWiql(wiql: WorkItemTrackingInterfaces.Wiql, teamContext: TfsCoreInterfaces.TeamContext, onResult: (err: any, statusCode: number, wiql: WorkItemTrackingInterfaces.WorkItemQueryResult) => void): void;
-    queryById(id: string, teamContext: TfsCoreInterfaces.TeamContext, onResult: (err: any, statusCode: number, wiql: WorkItemTrackingInterfaces.WorkItemQueryResult) => void): void;
-    getReportingLinks(project: string, types: string[], watermark: number, startDateTime: Date, onResult: (err: any, statusCode: number, workItemLink: WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch) => void): void;
+    queryByWiql(wiql: WorkItemTrackingInterfaces.Wiql, teamContext: TfsCoreInterfaces.TeamContext, timePrecision: boolean, onResult: (err: any, statusCode: number, wiql: WorkItemTrackingInterfaces.WorkItemQueryResult) => void): void;
+    queryById(id: string, teamContext: TfsCoreInterfaces.TeamContext, timePrecision: boolean, onResult: (err: any, statusCode: number, wiql: WorkItemTrackingInterfaces.WorkItemQueryResult) => void): void;
+    getReportingLinks(project: string, types: string[], continuationToken: string, startDateTime: Date, onResult: (err: any, statusCode: number, workItemLink: WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch) => void): void;
     getRelationType(relation: string, onResult: (err: any, statusCode: number, workItemRelationType: WorkItemTrackingInterfaces.WorkItemRelationType) => void): void;
     getRelationTypes(onResult: (err: any, statusCode: number, workItemRelationTypes: WorkItemTrackingInterfaces.WorkItemRelationType[]) => void): void;
-    readReportingRevisionsGet(project: string, fields: string[], types: string[], watermark: number, startDateTime: Date, includeIdentityRef: boolean, onResult: (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => void): void;
-    readReportingRevisionsPost(filter: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsFilter, project: string, watermark: number, startDateTime: Date, onResult: (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => void): void;
-    createWorkItem(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, project: string, type: string, validateOnly: boolean, bypassRules: boolean, onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => void): void;
+    readReportingRevisionsGet(project: string, fields: string[], types: string[], continuationToken: string, startDateTime: Date, includeIdentityRef: boolean, includeDeleted: boolean, includeTagRef: boolean, onResult: (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => void): void;
+    readReportingRevisionsPost(filter: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsFilter, project: string, continuationToken: string, startDateTime: Date, onResult: (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => void): void;
+    deleteWorkItem(id: number, destroy: boolean, onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItemDelete) => void): void;
     getWorkItem(id: number, fields: string[], asOf: Date, expand: WorkItemTrackingInterfaces.WorkItemExpand, onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => void): void;
     getWorkItems(ids: number[], fields: string[], asOf: Date, expand: WorkItemTrackingInterfaces.WorkItemExpand, onResult: (err: any, statusCode: number, workItems: WorkItemTrackingInterfaces.WorkItem[]) => void): void;
     updateWorkItem(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, id: number, validateOnly: boolean, bypassRules: boolean, onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => void): void;
+    createWorkItem(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, project: string, type: string, validateOnly: boolean, bypassRules: boolean, onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => void): void;
     getWorkItemTemplate(project: string, type: string, fields: string, asOf: Date, expand: WorkItemTrackingInterfaces.WorkItemExpand, onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => void): void;
-    updateWorkItemTemplate(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, project: string, type: string, validateOnly: boolean, bypassRules: boolean, onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => void): void;
     getWorkItemTypeCategories(project: string, onResult: (err: any, statusCode: number, workItemTypeCategories: WorkItemTrackingInterfaces.WorkItemTypeCategory[]) => void): void;
     getWorkItemTypeCategory(project: string, category: string, onResult: (err: any, statusCode: number, workItemTypeCategorie: WorkItemTrackingInterfaces.WorkItemTypeCategory) => void): void;
     getWorkItemType(project: string, type: string, onResult: (err: any, statusCode: number, workItemType: WorkItemTrackingInterfaces.WorkItemType) => void): void;
@@ -86,24 +90,28 @@ export interface IQWorkItemTrackingApi extends basem.QClientApiBase {
     getQueries(project: string, expand?: WorkItemTrackingInterfaces.QueryExpand, depth?: number, includeDeleted?: boolean): Q.Promise<WorkItemTrackingInterfaces.QueryHierarchyItem[]>;
     getQuery(project: string, query: string, expand?: WorkItemTrackingInterfaces.QueryExpand, depth?: number, includeDeleted?: boolean): Q.Promise<WorkItemTrackingInterfaces.QueryHierarchyItem>;
     updateQuery(queryUpdate: WorkItemTrackingInterfaces.QueryHierarchyItem, project: string, query: string, undeleteDescendants?: boolean): Q.Promise<WorkItemTrackingInterfaces.QueryHierarchyItem>;
+    destroyWorkItem(id: number, project?: string): Q.Promise<void>;
+    getDeletedWorkItem(id: number, project?: string): Q.Promise<WorkItemTrackingInterfaces.WorkItemDelete>;
+    getDeletedWorkItems(project?: string, ids?: number[]): Q.Promise<WorkItemTrackingInterfaces.WorkItemDeleteReference[]>;
+    restoreWorkItem(payload: WorkItemTrackingInterfaces.WorkItemDeleteUpdate, id: number, project?: string): Q.Promise<WorkItemTrackingInterfaces.WorkItemDelete>;
     getRevision(id: number, revisionNumber: number, expand?: WorkItemTrackingInterfaces.WorkItemExpand): Q.Promise<WorkItemTrackingInterfaces.WorkItem>;
     getRevisions(id: number, top?: number, skip?: number, expand?: WorkItemTrackingInterfaces.WorkItemExpand): Q.Promise<WorkItemTrackingInterfaces.WorkItem[]>;
     evaluateRulesOnField(ruleEngineInput: WorkItemTrackingInterfaces.FieldsToEvaluate): Q.Promise<void>;
     getUpdate(id: number, updateNumber: number): Q.Promise<WorkItemTrackingInterfaces.WorkItemUpdate>;
     getUpdates(id: number, top?: number, skip?: number): Q.Promise<WorkItemTrackingInterfaces.WorkItemUpdate[]>;
-    queryByWiql(wiql: WorkItemTrackingInterfaces.Wiql, teamContext?: TfsCoreInterfaces.TeamContext): Q.Promise<WorkItemTrackingInterfaces.WorkItemQueryResult>;
-    queryById(id: string, teamContext?: TfsCoreInterfaces.TeamContext): Q.Promise<WorkItemTrackingInterfaces.WorkItemQueryResult>;
-    getReportingLinks(project?: string, types?: string[], watermark?: number, startDateTime?: Date): Q.Promise<WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch>;
+    queryByWiql(wiql: WorkItemTrackingInterfaces.Wiql, teamContext?: TfsCoreInterfaces.TeamContext, timePrecision?: boolean): Q.Promise<WorkItemTrackingInterfaces.WorkItemQueryResult>;
+    queryById(id: string, teamContext?: TfsCoreInterfaces.TeamContext, timePrecision?: boolean): Q.Promise<WorkItemTrackingInterfaces.WorkItemQueryResult>;
+    getReportingLinks(project?: string, types?: string[], continuationToken?: string, startDateTime?: Date): Q.Promise<WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch>;
     getRelationType(relation: string): Q.Promise<WorkItemTrackingInterfaces.WorkItemRelationType>;
     getRelationTypes(): Q.Promise<WorkItemTrackingInterfaces.WorkItemRelationType[]>;
-    readReportingRevisionsGet(project?: string, fields?: string[], types?: string[], watermark?: number, startDateTime?: Date, includeIdentityRef?: boolean): Q.Promise<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>;
-    readReportingRevisionsPost(filter: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsFilter, project?: string, watermark?: number, startDateTime?: Date): Q.Promise<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>;
-    createWorkItem(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, project: string, type: string, validateOnly?: boolean, bypassRules?: boolean): Q.Promise<WorkItemTrackingInterfaces.WorkItem>;
+    readReportingRevisionsGet(project?: string, fields?: string[], types?: string[], continuationToken?: string, startDateTime?: Date, includeIdentityRef?: boolean, includeDeleted?: boolean, includeTagRef?: boolean): Q.Promise<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>;
+    readReportingRevisionsPost(filter: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsFilter, project?: string, continuationToken?: string, startDateTime?: Date): Q.Promise<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>;
+    deleteWorkItem(id: number, destroy?: boolean): Q.Promise<WorkItemTrackingInterfaces.WorkItemDelete>;
     getWorkItem(id: number, fields?: string[], asOf?: Date, expand?: WorkItemTrackingInterfaces.WorkItemExpand): Q.Promise<WorkItemTrackingInterfaces.WorkItem>;
     getWorkItems(ids: number[], fields?: string[], asOf?: Date, expand?: WorkItemTrackingInterfaces.WorkItemExpand): Q.Promise<WorkItemTrackingInterfaces.WorkItem[]>;
     updateWorkItem(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, id: number, validateOnly?: boolean, bypassRules?: boolean): Q.Promise<WorkItemTrackingInterfaces.WorkItem>;
+    createWorkItem(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, project: string, type: string, validateOnly?: boolean, bypassRules?: boolean): Q.Promise<WorkItemTrackingInterfaces.WorkItem>;
     getWorkItemTemplate(project: string, type: string, fields?: string, asOf?: Date, expand?: WorkItemTrackingInterfaces.WorkItemExpand): Q.Promise<WorkItemTrackingInterfaces.WorkItem>;
-    updateWorkItemTemplate(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, project: string, type: string, validateOnly?: boolean, bypassRules?: boolean): Q.Promise<WorkItemTrackingInterfaces.WorkItem>;
     getWorkItemTypeCategories(project: string): Q.Promise<WorkItemTrackingInterfaces.WorkItemTypeCategory[]>;
     getWorkItemTypeCategory(project: string, category: string): Q.Promise<WorkItemTrackingInterfaces.WorkItemTypeCategory>;
     getWorkItemType(project: string, type: string): Q.Promise<WorkItemTrackingInterfaces.WorkItemType>;
@@ -145,7 +153,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         customHeaders = customHeaders || {};
         customHeaders["Content-Type"] = "application/octet-stream";
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "e07b5fa4-1499-494d-a496-64b860fd64ff", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "e07b5fa4-1499-494d-a496-64b860fd64ff", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -179,7 +187,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             fileName: fileName,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "e07b5fa4-1499-494d-a496-64b860fd64ff", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "e07b5fa4-1499-494d-a496-64b860fd64ff", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -213,7 +221,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             fileName: fileName,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "e07b5fa4-1499-494d-a496-64b860fd64ff", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "e07b5fa4-1499-494d-a496-64b860fd64ff", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -245,7 +253,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$depth': depth,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "a70579d1-f53a-48ee-a5be-7be8659023b9", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a70579d1-f53a-48ee-a5be-7be8659023b9", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -279,7 +287,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             path: path
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "5a172953-1b41-49d3-840a-33f79c3ce89f", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "5a172953-1b41-49d3-840a-33f79c3ce89f", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -317,7 +325,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$reclassifyId': reclassifyId,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "5a172953-1b41-49d3-840a-33f79c3ce89f", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "5a172953-1b41-49d3-840a-33f79c3ce89f", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -355,7 +363,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$depth': depth,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "5a172953-1b41-49d3-840a-33f79c3ce89f", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "5a172953-1b41-49d3-840a-33f79c3ce89f", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -389,7 +397,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             path: path
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "5a172953-1b41-49d3-840a-33f79c3ce89f", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "5a172953-1b41-49d3-840a-33f79c3ce89f", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -415,7 +423,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             field: field
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "b51fd764-e5c2-4b9b-aaf7-3395cf4bdd94", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "b51fd764-e5c2-4b9b-aaf7-3395cf4bdd94", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -438,7 +446,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         var routeValues: any = {
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "b51fd764-e5c2-4b9b-aaf7-3395cf4bdd94", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "b51fd764-e5c2-4b9b-aaf7-3395cf4bdd94", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -475,7 +483,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$skip': skip,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "f74eba29-47a1-4152-9381-84040aced527", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "f74eba29-47a1-4152-9381-84040aced527", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -506,7 +514,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             revisionNumber: revisionNumber
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "f74eba29-47a1-4152-9381-84040aced527", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "f74eba29-47a1-4152-9381-84040aced527", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -539,7 +547,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             query: query
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -568,7 +576,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             query: query
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -608,7 +616,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$includeDeleted': includeDeleted,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -651,7 +659,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$includeDeleted': includeDeleted,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -688,13 +696,134 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$undeleteDescendants': undeleteDescendants,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a67d190c-c41f-424b-814d-0e906f659301", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem, responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem, responseIsCollection: false };
             
             this.restClient.update(url, apiVersion, queryUpdate, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param {number} id
+     * @param {string} project - Project ID or project name
+     * @param onResult callback function
+     */
+    public destroyWorkItem(
+        id: number,
+        project: string,
+        onResult: (err: any, statusCode: number) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project,
+            id: id
+        };
+
+        this.vsoClient.getVersioningData("3.0-preview.1", "wit", "b70d8d39-926c-465e-b927-b1bf0e5ca0e0", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
+            
+            this.restClient.delete(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode);
+        });
+    }
+
+    /**
+     * @param {number} id
+     * @param {string} project - Project ID or project name
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemDelete
+     */
+    public getDeletedWorkItem(
+        id: number,
+        project: string,
+        onResult: (err: any, statusCode: number, recyclebin: WorkItemTrackingInterfaces.WorkItemDelete) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project,
+            id: id
+        };
+
+        this.vsoClient.getVersioningData("3.0-preview.1", "wit", "b70d8d39-926c-465e-b927-b1bf0e5ca0e0", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemDelete, responseIsCollection: false };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number[]} ids
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemDeleteReference[]
+     */
+    public getDeletedWorkItems(
+        project: string,
+        ids: number[],
+        onResult: (err: any, statusCode: number, recyclebin: WorkItemTrackingInterfaces.WorkItemDeleteReference[]) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project
+        };
+
+        var queryValues: any = {
+            ids: ids && ids.join(","),
+        };
+        
+        this.vsoClient.getVersioningData("3.0-preview.1", "wit", "b70d8d39-926c-465e-b927-b1bf0e5ca0e0", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemDeleteReference, responseIsCollection: true };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param {WorkItemTrackingInterfaces.WorkItemDeleteUpdate} payload
+     * @param {number} id
+     * @param {string} project - Project ID or project name
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemDelete
+     */
+    public restoreWorkItem(
+        payload: WorkItemTrackingInterfaces.WorkItemDeleteUpdate,
+        id: number,
+        project: string,
+        onResult: (err: any, statusCode: number, recyclebin: WorkItemTrackingInterfaces.WorkItemDelete) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project,
+            id: id
+        };
+
+        this.vsoClient.getVersioningData("3.0-preview.1", "wit", "b70d8d39-926c-465e-b927-b1bf0e5ca0e0", routeValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemDeleteUpdate, responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemDelete, responseIsCollection: false };
+            
+            this.restClient.update(url, apiVersion, payload, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -725,7 +854,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$expand': expand,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "a00c85a5-80fa-4565-99c3-bcd2181434bb", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a00c85a5-80fa-4565-99c3-bcd2181434bb", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -765,7 +894,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$expand': expand,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "a00c85a5-80fa-4565-99c3-bcd2181434bb", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a00c85a5-80fa-4565-99c3-bcd2181434bb", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -792,7 +921,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         var routeValues: any = {
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "wit", "1a3a1536-dca6-4509-b9c3-dd9bb2981506", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "wit", "1a3a1536-dca6-4509-b9c3-dd9bb2981506", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -823,7 +952,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             updateNumber: updateNumber
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "6570bf97-d02c-4a91-8d93-3abe9895b1a9", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "6570bf97-d02c-4a91-8d93-3abe9895b1a9", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -860,7 +989,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$skip': skip,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "6570bf97-d02c-4a91-8d93-3abe9895b1a9", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "6570bf97-d02c-4a91-8d93-3abe9895b1a9", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -878,11 +1007,13 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      * 
      * @param {WorkItemTrackingInterfaces.Wiql} wiql - The query containing the wiql.
      * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     * @param {boolean} timePrecision
      * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemQueryResult
      */
     public queryByWiql(
         wiql: WorkItemTrackingInterfaces.Wiql,
         teamContext: TfsCoreInterfaces.TeamContext,
+        timePrecision: boolean,
         onResult: (err: any, statusCode: number, wiql: WorkItemTrackingInterfaces.WorkItemQueryResult) => void
         ): void {
 
@@ -894,7 +1025,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             team: team
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "1a9c53f7-f243-4447-b110-35ef023636e4", routeValues)
+        var queryValues: any = {
+            timePrecision: timePrecision,
+        };
+        
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "1a9c53f7-f243-4447-b110-35ef023636e4", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -912,11 +1047,13 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      * 
      * @param {string} id - The query id.
      * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     * @param {boolean} timePrecision
      * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemQueryResult
      */
     public queryById(
         id: string,
         teamContext: TfsCoreInterfaces.TeamContext,
+        timePrecision: boolean,
         onResult: (err: any, statusCode: number, wiql: WorkItemTrackingInterfaces.WorkItemQueryResult) => void
         ): void {
 
@@ -929,7 +1066,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             id: id
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "a02355f5-5f8a-4671-8e32-369d23aac83d", routeValues)
+        var queryValues: any = {
+            timePrecision: timePrecision,
+        };
+        
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "a02355f5-5f8a-4671-8e32-369d23aac83d", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -947,14 +1088,14 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      * 
      * @param {string} project - Project ID or project name
      * @param {string[]} types - A list of types to filter the results to specific work item types. Omit this parameter to get work item links of all work item types.
-     * @param {number} watermark - Specifies the watermark to start the batch from. Omit this parameter to get the first batch of links.
+     * @param {string} continuationToken - Specifies the continuationToken to start the batch from. Omit this parameter to get the first batch of links.
      * @param {Date} startDateTime - Date/time to use as a starting point for link changes. Only link changes that occurred after that date/time will be returned. Cannot be used in conjunction with 'watermark' parameter.
      * @param onResult callback function with the resulting WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch
      */
     public getReportingLinks(
         project: string,
         types: string[],
-        watermark: number,
+        continuationToken: string,
         startDateTime: Date,
         onResult: (err: any, statusCode: number, workItemLink: WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch) => void
         ): void {
@@ -965,11 +1106,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
         var queryValues: any = {
             types: types && types.join(","),
-            watermark: watermark,
+            continuationToken: continuationToken,
             startDateTime: startDateTime,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "wit", "b5b5b6d0-0308-40a1-b3f4-b9bb3c66878f", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "b5b5b6d0-0308-40a1-b3f4-b9bb3c66878f", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -997,7 +1138,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             relation: relation
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "f5d33bc9-5b49-4a3c-a9bd-f3cd46dd2165", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "f5d33bc9-5b49-4a3c-a9bd-f3cd46dd2165", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1020,7 +1161,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         var routeValues: any = {
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "f5d33bc9-5b49-4a3c-a9bd-f3cd46dd2165", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "f5d33bc9-5b49-4a3c-a9bd-f3cd46dd2165", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1034,23 +1175,27 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-     * Get a batch of work item revisions
+     * Get a batch of work item revisions with the option of including deleted items
      * 
      * @param {string} project - Project ID or project name
      * @param {string[]} fields - A list of fields to return in work item revisions. Omit this parameter to get all reportable fields.
      * @param {string[]} types - A list of types to filter the results to specific work item types. Omit this parameter to get work item revisions of all work item types.
-     * @param {number} watermark - Specifies the watermark to start the batch from. Omit this parameter to get the first batch of revisions.
+     * @param {string} continuationToken - Specifies the watermark to start the batch from. Omit this parameter to get the first batch of revisions.
      * @param {Date} startDateTime - Date/time to use as a starting point for revisions, all revisions will occur after this date/time. Cannot be used in conjunction with 'watermark' parameter.
      * @param {boolean} includeIdentityRef - Return an identity reference instead of a string value for identity fields.
+     * @param {boolean} includeDeleted - Specify if the deleted item should be returned.
+     * @param {boolean} includeTagRef - Specify if the tag objects should be returned for System.Tags field.
      * @param onResult callback function with the resulting WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch
      */
     public readReportingRevisionsGet(
         project: string,
         fields: string[],
         types: string[],
-        watermark: number,
+        continuationToken: string,
         startDateTime: Date,
         includeIdentityRef: boolean,
+        includeDeleted: boolean,
+        includeTagRef: boolean,
         onResult: (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => void
         ): void {
 
@@ -1061,12 +1206,14 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         var queryValues: any = {
             fields: fields && fields.join(","),
             types: types && types.join(","),
-            watermark: watermark,
+            continuationToken: continuationToken,
             startDateTime: startDateTime,
             includeIdentityRef: includeIdentityRef,
+            includeDeleted: includeDeleted,
+            includeTagRef: includeTagRef,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "wit", "f828fe59-dd87-495d-a17c-7a8d6211ca6c", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "f828fe59-dd87-495d-a17c-7a8d6211ca6c", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1084,14 +1231,14 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      * 
      * @param {WorkItemTrackingInterfaces.ReportingWorkItemRevisionsFilter} filter - An object that contains request settings: field filter, type filter, identity format
      * @param {string} project - Project ID or project name
-     * @param {number} watermark - Specifies the watermark to start the batch from. Omit this parameter to get the first batch of revisions.
+     * @param {string} continuationToken - Specifies the watermark to start the batch from. Omit this parameter to get the first batch of revisions.
      * @param {Date} startDateTime - Date/time to use as a starting point for revisions, all revisions will occur after this date/time. Cannot be used in conjunction with 'watermark' parameter.
      * @param onResult callback function with the resulting WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch
      */
     public readReportingRevisionsPost(
         filter: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsFilter,
         project: string,
-        watermark: number,
+        continuationToken: string,
         startDateTime: Date,
         onResult: (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => void
         ): void {
@@ -1101,11 +1248,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         };
 
         var queryValues: any = {
-            watermark: watermark,
+            continuationToken: continuationToken,
             startDateTime: startDateTime,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "wit", "f828fe59-dd87-495d-a17c-7a8d6211ca6c", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "f828fe59-dd87-495d-a17c-7a8d6211ca6c", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1119,43 +1266,31 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-     * @param {VSSInterfaces.JsonPatchDocument} document
-     * @param {string} project
-     * @param {string} type
-     * @param {boolean} validateOnly
-     * @param {boolean} bypassRules
-     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItem
+     * @param {number} id
+     * @param {boolean} destroy
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItemDelete
      */
-    public createWorkItem(
-        customHeaders: VsoBaseInterfaces.IHeaders,
-        document: VSSInterfaces.JsonPatchDocument,
-        project: string,
-        type: string,
-        validateOnly: boolean,
-        bypassRules: boolean,
-        onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => void
+    public deleteWorkItem(
+        id: number,
+        destroy: boolean,
+        onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItemDelete) => void
         ): void {
 
         var routeValues: any = {
-            project: project,
-            type: type
+            id: id
         };
 
         var queryValues: any = {
-            validateOnly: validateOnly,
-            bypassRules: bypassRules,
+            destroy: destroy,
         };
         
-        customHeaders = customHeaders || {};
-        customHeaders["Content-Type"] = "application/json-patch+json";
-
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "62d3d110-0047-428c-ad3c-4fe872c91c74", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
-            var serializationData = { requestTypeMetadata: VSSInterfaces.TypeInfo.JsonPatchDocument, responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItem, responseIsCollection: false };
+            var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItemDelete, responseIsCollection: false };
             
-            this.restClient.create(url, apiVersion, document, customHeaders, serializationData, onResult);
+            this.restClient.delete(url, apiVersion, null, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1189,7 +1324,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$expand': expand,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1229,7 +1364,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$expand': expand,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1270,13 +1405,57 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         customHeaders = customHeaders || {};
         customHeaders["Content-Type"] = "application/json-patch+json";
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = { requestTypeMetadata: VSSInterfaces.TypeInfo.JsonPatchDocument, responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItem, responseIsCollection: false };
             
             this.restClient.update(url, apiVersion, document, customHeaders, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * @param {VSSInterfaces.JsonPatchDocument} document
+     * @param {string} project - Project ID or project name
+     * @param {string} type
+     * @param {boolean} validateOnly
+     * @param {boolean} bypassRules
+     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItem
+     */
+    public createWorkItem(
+        customHeaders: VsoBaseInterfaces.IHeaders,
+        document: VSSInterfaces.JsonPatchDocument,
+        project: string,
+        type: string,
+        validateOnly: boolean,
+        bypassRules: boolean,
+        onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project,
+            type: type
+        };
+
+        var queryValues: any = {
+            validateOnly: validateOnly,
+            bypassRules: bypassRules,
+        };
+        
+        customHeaders = customHeaders || {};
+        customHeaders["Content-Type"] = "application/json-patch+json";
+
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "62d3d110-0047-428c-ad3c-4fe872c91c74", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = { requestTypeMetadata: VSSInterfaces.TypeInfo.JsonPatchDocument, responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItem, responseIsCollection: false };
+            
+            this.restClient.create(url, apiVersion, document, customHeaders, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1313,57 +1492,13 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             '$expand': expand,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "62d3d110-0047-428c-ad3c-4fe872c91c74", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "62d3d110-0047-428c-ad3c-4fe872c91c74", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItem, responseIsCollection: false };
             
             this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-        })
-        .fail((error) => {
-            onResult(error, error.statusCode, null);
-        });
-    }
-
-    /**
-     * @param {VSSInterfaces.JsonPatchDocument} document
-     * @param {string} project - Project ID or project name
-     * @param {string} type
-     * @param {boolean} validateOnly
-     * @param {boolean} bypassRules
-     * @param onResult callback function with the resulting WorkItemTrackingInterfaces.WorkItem
-     */
-    public updateWorkItemTemplate(
-        customHeaders: VsoBaseInterfaces.IHeaders,
-        document: VSSInterfaces.JsonPatchDocument,
-        project: string,
-        type: string,
-        validateOnly: boolean,
-        bypassRules: boolean,
-        onResult: (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => void
-        ): void {
-
-        var routeValues: any = {
-            project: project,
-            type: type
-        };
-
-        var queryValues: any = {
-            validateOnly: validateOnly,
-            bypassRules: bypassRules,
-        };
-        
-        customHeaders = customHeaders || {};
-        customHeaders["Content-Type"] = "application/json-patch+json";
-
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "62d3d110-0047-428c-ad3c-4fe872c91c74", routeValues, queryValues)
-        .then((versioningData: vsom.ClientVersioningData) => {
-            var url: string = versioningData.requestUrl;
-            var apiVersion: string = versioningData.apiVersion;
-            var serializationData = { requestTypeMetadata: VSSInterfaces.TypeInfo.JsonPatchDocument, responseTypeMetadata: WorkItemTrackingInterfaces.TypeInfo.WorkItem, responseIsCollection: false };
-            
-            this.restClient.update(url, apiVersion, document, customHeaders, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1383,7 +1518,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             project: project
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "9b9f5734-36c8-415e-ba67-f83b45c31408", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "9b9f5734-36c8-415e-ba67-f83b45c31408", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1414,7 +1549,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             category: category
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "9b9f5734-36c8-415e-ba67-f83b45c31408", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "9b9f5734-36c8-415e-ba67-f83b45c31408", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1445,7 +1580,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             type: type
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "7c8d7a76-4a09-43e8-b5df-bd792f4ac6aa", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "7c8d7a76-4a09-43e8-b5df-bd792f4ac6aa", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1471,7 +1606,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             project: project
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "wit", "7c8d7a76-4a09-43e8-b5df-bd792f4ac6aa", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "wit", "7c8d7a76-4a09-43e8-b5df-bd792f4ac6aa", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1505,7 +1640,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             field: field
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "wit", "bd293ce5-3d25-4192-8e67-e8092e879efb", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "wit", "bd293ce5-3d25-4192-8e67-e8092e879efb", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1542,7 +1677,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             exportGlobalLists: exportGlobalLists,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "wit", "8637ac8b-5eb6-4f90-b3f7-4f2ff576a459", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "wit", "8637ac8b-5eb6-4f90-b3f7-4f2ff576a459", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1572,7 +1707,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             project: project
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "wit", "8637ac8b-5eb6-4f90-b3f7-4f2ff576a459", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "wit", "8637ac8b-5eb6-4f90-b3f7-4f2ff576a459", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -2050,6 +2185,104 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
     }
 
     /**
+    * @param {number} id
+    * @param {string} project - Project ID or project name
+    */
+    public destroyWorkItem(
+        id: number,
+        project?: string
+        ): Q.Promise<void> {
+    
+        var deferred = Q.defer<void>();
+
+        this.api.destroyWorkItem(id, project, (err: any, statusCode: number) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(null);
+            }
+        });
+
+        return <Q.Promise<void>>deferred.promise;
+    }
+
+    /**
+    * @param {number} id
+    * @param {string} project - Project ID or project name
+    */
+    public getDeletedWorkItem(
+        id: number,
+        project?: string
+        ): Q.Promise<WorkItemTrackingInterfaces.WorkItemDelete> {
+    
+        var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemDelete>();
+
+        this.api.getDeletedWorkItem(id, project, (err: any, statusCode: number, recyclebin: WorkItemTrackingInterfaces.WorkItemDelete) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(recyclebin);
+            }
+        });
+
+        return <Q.Promise<WorkItemTrackingInterfaces.WorkItemDelete>>deferred.promise;
+    }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number[]} ids
+    */
+    public getDeletedWorkItems(
+        project?: string,
+        ids?: number[]
+        ): Q.Promise<WorkItemTrackingInterfaces.WorkItemDeleteReference[]> {
+    
+        var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemDeleteReference[]>();
+
+        this.api.getDeletedWorkItems(project, ids, (err: any, statusCode: number, recyclebin: WorkItemTrackingInterfaces.WorkItemDeleteReference[]) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(recyclebin);
+            }
+        });
+
+        return <Q.Promise<WorkItemTrackingInterfaces.WorkItemDeleteReference[]>>deferred.promise;
+    }
+
+    /**
+    * @param {WorkItemTrackingInterfaces.WorkItemDeleteUpdate} payload
+    * @param {number} id
+    * @param {string} project - Project ID or project name
+    */
+    public restoreWorkItem(
+        payload: WorkItemTrackingInterfaces.WorkItemDeleteUpdate,
+        id: number,
+        project?: string
+        ): Q.Promise<WorkItemTrackingInterfaces.WorkItemDelete> {
+    
+        var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemDelete>();
+
+        this.api.restoreWorkItem(payload, id, project, (err: any, statusCode: number, recyclebin: WorkItemTrackingInterfaces.WorkItemDelete) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(recyclebin);
+            }
+        });
+
+        return <Q.Promise<WorkItemTrackingInterfaces.WorkItemDelete>>deferred.promise;
+    }
+
+    /**
     * Returns a fully hydrated work item for the requested revision
     * 
     * @param {number} id
@@ -2190,15 +2423,17 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
     * 
     * @param {WorkItemTrackingInterfaces.Wiql} wiql - The query containing the wiql.
     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {boolean} timePrecision
     */
     public queryByWiql(
         wiql: WorkItemTrackingInterfaces.Wiql,
-        teamContext?: TfsCoreInterfaces.TeamContext
+        teamContext?: TfsCoreInterfaces.TeamContext,
+        timePrecision?: boolean
         ): Q.Promise<WorkItemTrackingInterfaces.WorkItemQueryResult> {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemQueryResult>();
 
-        this.api.queryByWiql(wiql, teamContext, (err: any, statusCode: number, wiql: WorkItemTrackingInterfaces.WorkItemQueryResult) => {
+        this.api.queryByWiql(wiql, teamContext, timePrecision, (err: any, statusCode: number, wiql: WorkItemTrackingInterfaces.WorkItemQueryResult) => {
             if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2216,15 +2451,17 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
     * 
     * @param {string} id - The query id.
     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {boolean} timePrecision
     */
     public queryById(
         id: string,
-        teamContext?: TfsCoreInterfaces.TeamContext
+        teamContext?: TfsCoreInterfaces.TeamContext,
+        timePrecision?: boolean
         ): Q.Promise<WorkItemTrackingInterfaces.WorkItemQueryResult> {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemQueryResult>();
 
-        this.api.queryById(id, teamContext, (err: any, statusCode: number, wiql: WorkItemTrackingInterfaces.WorkItemQueryResult) => {
+        this.api.queryById(id, teamContext, timePrecision, (err: any, statusCode: number, wiql: WorkItemTrackingInterfaces.WorkItemQueryResult) => {
             if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2242,19 +2479,19 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
     * 
     * @param {string} project - Project ID or project name
     * @param {string[]} types - A list of types to filter the results to specific work item types. Omit this parameter to get work item links of all work item types.
-    * @param {number} watermark - Specifies the watermark to start the batch from. Omit this parameter to get the first batch of links.
+    * @param {string} continuationToken - Specifies the continuationToken to start the batch from. Omit this parameter to get the first batch of links.
     * @param {Date} startDateTime - Date/time to use as a starting point for link changes. Only link changes that occurred after that date/time will be returned. Cannot be used in conjunction with 'watermark' parameter.
     */
     public getReportingLinks(
         project?: string,
         types?: string[],
-        watermark?: number,
+        continuationToken?: string,
         startDateTime?: Date
         ): Q.Promise<WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch> {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch>();
 
-        this.api.getReportingLinks(project, types, watermark, startDateTime, (err: any, statusCode: number, workItemLink: WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch) => {
+        this.api.getReportingLinks(project, types, continuationToken, startDateTime, (err: any, statusCode: number, workItemLink: WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch) => {
             if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2312,27 +2549,31 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
     }
 
     /**
-    * Get a batch of work item revisions
+    * Get a batch of work item revisions with the option of including deleted items
     * 
     * @param {string} project - Project ID or project name
     * @param {string[]} fields - A list of fields to return in work item revisions. Omit this parameter to get all reportable fields.
     * @param {string[]} types - A list of types to filter the results to specific work item types. Omit this parameter to get work item revisions of all work item types.
-    * @param {number} watermark - Specifies the watermark to start the batch from. Omit this parameter to get the first batch of revisions.
+    * @param {string} continuationToken - Specifies the watermark to start the batch from. Omit this parameter to get the first batch of revisions.
     * @param {Date} startDateTime - Date/time to use as a starting point for revisions, all revisions will occur after this date/time. Cannot be used in conjunction with 'watermark' parameter.
     * @param {boolean} includeIdentityRef - Return an identity reference instead of a string value for identity fields.
+    * @param {boolean} includeDeleted - Specify if the deleted item should be returned.
+    * @param {boolean} includeTagRef - Specify if the tag objects should be returned for System.Tags field.
     */
     public readReportingRevisionsGet(
         project?: string,
         fields?: string[],
         types?: string[],
-        watermark?: number,
+        continuationToken?: string,
         startDateTime?: Date,
-        includeIdentityRef?: boolean
+        includeIdentityRef?: boolean,
+        includeDeleted?: boolean,
+        includeTagRef?: boolean
         ): Q.Promise<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch> {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>();
 
-        this.api.readReportingRevisionsGet(project, fields, types, watermark, startDateTime, includeIdentityRef, (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => {
+        this.api.readReportingRevisionsGet(project, fields, types, continuationToken, startDateTime, includeIdentityRef, includeDeleted, includeTagRef, (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => {
             if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2350,19 +2591,19 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
     * 
     * @param {WorkItemTrackingInterfaces.ReportingWorkItemRevisionsFilter} filter - An object that contains request settings: field filter, type filter, identity format
     * @param {string} project - Project ID or project name
-    * @param {number} watermark - Specifies the watermark to start the batch from. Omit this parameter to get the first batch of revisions.
+    * @param {string} continuationToken - Specifies the watermark to start the batch from. Omit this parameter to get the first batch of revisions.
     * @param {Date} startDateTime - Date/time to use as a starting point for revisions, all revisions will occur after this date/time. Cannot be used in conjunction with 'watermark' parameter.
     */
     public readReportingRevisionsPost(
         filter: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsFilter,
         project?: string,
-        watermark?: number,
+        continuationToken?: string,
         startDateTime?: Date
         ): Q.Promise<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch> {
     
         var deferred = Q.defer<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>();
 
-        this.api.readReportingRevisionsPost(filter, project, watermark, startDateTime, (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => {
+        this.api.readReportingRevisionsPost(filter, project, continuationToken, startDateTime, (err: any, statusCode: number, workItemRevision: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch) => {
             if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2376,24 +2617,17 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
     }
 
     /**
-    * @param {VSSInterfaces.JsonPatchDocument} document
-    * @param {string} project
-    * @param {string} type
-    * @param {boolean} validateOnly
-    * @param {boolean} bypassRules
+    * @param {number} id
+    * @param {boolean} destroy
     */
-    public createWorkItem(
-        customHeaders: any,
-        document: VSSInterfaces.JsonPatchDocument,
-        project: string,
-        type: string,
-        validateOnly?: boolean,
-        bypassRules?: boolean
-        ): Q.Promise<WorkItemTrackingInterfaces.WorkItem> {
+    public deleteWorkItem(
+        id: number,
+        destroy?: boolean
+        ): Q.Promise<WorkItemTrackingInterfaces.WorkItemDelete> {
     
-        var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItem>();
+        var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItemDelete>();
 
-        this.api.createWorkItem(customHeaders, document, project, type, validateOnly, bypassRules, (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => {
+        this.api.deleteWorkItem(id, destroy, (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItemDelete) => {
             if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2403,7 +2637,7 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
             }
         });
 
-        return <Q.Promise<WorkItemTrackingInterfaces.WorkItem>>deferred.promise;
+        return <Q.Promise<WorkItemTrackingInterfaces.WorkItemDelete>>deferred.promise;
     }
 
     /**
@@ -2496,6 +2730,37 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
     }
 
     /**
+    * @param {VSSInterfaces.JsonPatchDocument} document
+    * @param {string} project - Project ID or project name
+    * @param {string} type
+    * @param {boolean} validateOnly
+    * @param {boolean} bypassRules
+    */
+    public createWorkItem(
+        customHeaders: any,
+        document: VSSInterfaces.JsonPatchDocument,
+        project: string,
+        type: string,
+        validateOnly?: boolean,
+        bypassRules?: boolean
+        ): Q.Promise<WorkItemTrackingInterfaces.WorkItem> {
+    
+        var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItem>();
+
+        this.api.createWorkItem(customHeaders, document, project, type, validateOnly, bypassRules, (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(workItem);
+            }
+        });
+
+        return <Q.Promise<WorkItemTrackingInterfaces.WorkItem>>deferred.promise;
+    }
+
+    /**
     * Returns a single work item from a template
     * 
     * @param {string} project - Project ID or project name
@@ -2515,37 +2780,6 @@ export class QWorkItemTrackingApi extends basem.QClientApiBase implements IQWork
         var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItem>();
 
         this.api.getWorkItemTemplate(project, type, fields, asOf, expand, (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(workItem);
-            }
-        });
-
-        return <Q.Promise<WorkItemTrackingInterfaces.WorkItem>>deferred.promise;
-    }
-
-    /**
-    * @param {VSSInterfaces.JsonPatchDocument} document
-    * @param {string} project - Project ID or project name
-    * @param {string} type
-    * @param {boolean} validateOnly
-    * @param {boolean} bypassRules
-    */
-    public updateWorkItemTemplate(
-        customHeaders: any,
-        document: VSSInterfaces.JsonPatchDocument,
-        project: string,
-        type: string,
-        validateOnly?: boolean,
-        bypassRules?: boolean
-        ): Q.Promise<WorkItemTrackingInterfaces.WorkItem> {
-    
-        var deferred = Q.defer<WorkItemTrackingInterfaces.WorkItem>();
-
-        this.api.updateWorkItemTemplate(customHeaders, document, project, type, validateOnly, bypassRules, (err: any, statusCode: number, workItem: WorkItemTrackingInterfaces.WorkItem) => {
             if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);

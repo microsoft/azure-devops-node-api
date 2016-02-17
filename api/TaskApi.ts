@@ -89,7 +89,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             type: type
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "distributedtask", "eb55e5d6-2f30-4295-b5ed-38da50b1fc52", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "eb55e5d6-2f30-4295-b5ed-38da50b1fc52", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -139,7 +139,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
         customHeaders = customHeaders || {};
         customHeaders["Content-Type"] = "application/octet-stream";
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "distributedtask", "7898f959-9cdf-4096-b29e-7f293031629e", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "7898f959-9cdf-4096-b29e-7f293031629e", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -183,7 +183,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             name: name
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "distributedtask", "7898f959-9cdf-4096-b29e-7f293031629e", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "7898f959-9cdf-4096-b29e-7f293031629e", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -227,7 +227,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             name: name
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "distributedtask", "7898f959-9cdf-4096-b29e-7f293031629e", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "7898f959-9cdf-4096-b29e-7f293031629e", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -268,7 +268,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             type: type
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "distributedtask", "7898f959-9cdf-4096-b29e-7f293031629e", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "7898f959-9cdf-4096-b29e-7f293031629e", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -308,7 +308,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             recordId: recordId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "distributedtask", "858983e4-19bd-4c5e-864c-507b59b58b12", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "858983e4-19bd-4c5e-864c-507b59b58b12", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -349,7 +349,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
         customHeaders = customHeaders || {};
         customHeaders["Content-Type"] = "application/octet-stream";
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "distributedtask", "46f5667d-263a-4684-91b1-dff7fdcf64e2", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "46f5667d-263a-4684-91b1-dff7fdcf64e2", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -383,7 +383,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             planId: planId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "distributedtask", "46f5667d-263a-4684-91b1-dff7fdcf64e2", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "46f5667d-263a-4684-91b1-dff7fdcf64e2", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -427,7 +427,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             endLine: endLine,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "distributedtask", "46f5667d-263a-4684-91b1-dff7fdcf64e2", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "46f5667d-263a-4684-91b1-dff7fdcf64e2", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -459,7 +459,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             planId: planId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "distributedtask", "46f5667d-263a-4684-91b1-dff7fdcf64e2", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "46f5667d-263a-4684-91b1-dff7fdcf64e2", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -491,7 +491,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             planId: planId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "distributedtask", "5cecd946-d704-471e-a45f-3b4064fcfaba", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "5cecd946-d704-471e-a45f-3b4064fcfaba", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -532,7 +532,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             changeId: changeId,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "distributedtask", "8893bc5b-35b2-4be7-83cb-99e683551db4", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "8893bc5b-35b2-4be7-83cb-99e683551db4", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -569,7 +569,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             timelineId: timelineId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "distributedtask", "8893bc5b-35b2-4be7-83cb-99e683551db4", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "8893bc5b-35b2-4be7-83cb-99e683551db4", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -603,7 +603,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             planId: planId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "distributedtask", "83597576-cc2c-453c-bea6-2882ae6a1653", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "83597576-cc2c-453c-bea6-2882ae6a1653", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -638,7 +638,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             timelineId: timelineId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "distributedtask", "83597576-cc2c-453c-bea6-2882ae6a1653", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "83597576-cc2c-453c-bea6-2882ae6a1653", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -682,7 +682,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             includeRecords: includeRecords,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "distributedtask", "83597576-cc2c-453c-bea6-2882ae6a1653", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "83597576-cc2c-453c-bea6-2882ae6a1653", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -714,7 +714,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             planId: planId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "distributedtask", "83597576-cc2c-453c-bea6-2882ae6a1653", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "83597576-cc2c-453c-bea6-2882ae6a1653", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;

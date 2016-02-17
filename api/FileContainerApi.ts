@@ -75,7 +75,7 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
         customHeaders = customHeaders || {};
         customHeaders["Content-Type"] = "application/octet-stream";
 
-        this.vsoClient.getVersioningData("2.2-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -111,7 +111,7 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             scope: scope,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -148,7 +148,7 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             scope: scope,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -182,7 +182,7 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             artifactUris: artifactUris,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -232,7 +232,7 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             isShallow: isShallow,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -266,7 +266,7 @@ export class FileContainerApi extends basem.ClientApiBase implements IFileContai
             itemPath: itemPath,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.3", "Container", "e71a64ac-b2b5-4230-a4c0-dad657cf97e2", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.3", "Container", "e71a64ac-b2b5-4230-a4c0-dad657cf97e2", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;

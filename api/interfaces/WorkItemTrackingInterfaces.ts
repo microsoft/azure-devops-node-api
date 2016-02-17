@@ -163,6 +163,7 @@ export interface ReportingWorkItemRevisionsFilter {
 }
 
 export interface StreamedBatch<T> {
+    continuationToken: string;
     isLastBatch: boolean;
     nextLink: string;
     values: T[];
@@ -187,6 +188,19 @@ export interface Wiql {
     query: string;
 }
 
+export interface WitBatchRequest {
+    body: string;
+    headers: { [key: string] : string; };
+    method: string;
+    uri: string;
+}
+
+export interface WitBatchResponse {
+    body: string;
+    code: number;
+    headers: { [key: string] : string; };
+}
+
 export interface WorkItem extends WorkItemTrackingResource {
     fields: { [key: string] : any; };
     id: number;
@@ -198,8 +212,29 @@ export interface WorkItemClassificationNode extends WorkItemTrackingResource {
     attributes: { [key: string] : any; };
     children: WorkItemClassificationNode[];
     id: number;
+    identifier: string;
     name: string;
     structureType: TreeNodeStructureType;
+}
+
+export interface WorkItemDelete extends WorkItemDeleteReference {
+    resource: WorkItem;
+}
+
+export interface WorkItemDeleteReference {
+    code: number;
+    deletedBy: string;
+    deletedDate: string;
+    id: number;
+    message: string;
+    name: string;
+    project: string;
+    type: string;
+    url: string;
+}
+
+export interface WorkItemDeleteUpdate {
+    isDeleted: boolean;
 }
 
 export enum WorkItemExpand {
@@ -479,10 +514,25 @@ export var TypeInfo = {
     Wiql: {
         fields: <any>null
     },
+    WitBatchRequest: {
+        fields: <any>null
+    },
+    WitBatchResponse: {
+        fields: <any>null
+    },
     WorkItem: {
         fields: <any>null
     },
     WorkItemClassificationNode: {
+        fields: <any>null
+    },
+    WorkItemDelete: {
+        fields: <any>null
+    },
+    WorkItemDeleteReference: {
+        fields: <any>null
+    },
+    WorkItemDeleteUpdate: {
         fields: <any>null
     },
     WorkItemExpand: {
@@ -646,6 +696,12 @@ TypeInfo.StreamedBatch.fields = {
 TypeInfo.Wiql.fields = {
 };
 
+TypeInfo.WitBatchRequest.fields = {
+};
+
+TypeInfo.WitBatchResponse.fields = {
+};
+
 TypeInfo.WorkItem.fields = {
     relations: {
         isArray: true,
@@ -661,6 +717,18 @@ TypeInfo.WorkItemClassificationNode.fields = {
     structureType: {
         enumType: TypeInfo.TreeNodeStructureType
     },
+};
+
+TypeInfo.WorkItemDelete.fields = {
+    resource: {
+        typeInfo: TypeInfo.WorkItem
+    },
+};
+
+TypeInfo.WorkItemDeleteReference.fields = {
+};
+
+TypeInfo.WorkItemDeleteUpdate.fields = {
 };
 
 TypeInfo.WorkItemField.fields = {
@@ -829,8 +897,6 @@ TypeInfo.WorkItemTypeTemplateUpdateModel.fields = {
 
 TypeInfo.WorkItemUpdate.fields = {
     fields: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkItemFieldUpdate
     },
     relations: {
         typeInfo: TypeInfo.WorkItemRelationUpdates
