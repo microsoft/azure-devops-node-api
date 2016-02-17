@@ -201,6 +201,25 @@ export class VsoClient {
         return this.restClient.options(requestUrl, onResult);
     }
 
+    private getSerializedObject(object: any): string {
+        let value:string = "";
+        let first:boolean = true;
+
+        for (var property in object) {
+            if (object.hasOwnProperty(property)) {
+                let prop = object[property];
+                if (first && prop !== undefined) {
+                    value += property + "=" + encodeURIComponent(prop);
+                    first = false;
+                } else if (prop !== undefined) {
+                    value += "&" + property +"=" + encodeURIComponent(prop);
+                }
+            }
+        }
+
+        return value;
+    }
+
     protected getRequestUrl(routeTemplate: string, area: string, resource: string, routeValues: any, queryParams?: any): string {
 
         // Add area/resource route values (based on the location)
@@ -219,12 +238,18 @@ export class VsoClient {
         var first = true;
         for (var queryValue in queryParams) {
             if (queryParams[queryValue] != null) {
-                if (first) {
-                    relativeUrl += "?" + queryValue + "=" + queryParams[queryValue];
-                    first = false;
+                var value = queryParams[queryValue];
+                var valueString = null;
+                if (typeof(value) === 'object') {
+                    valueString = this.getSerializedObject(value);
+                } else {
+                    valueString = queryValue + "=" + encodeURIComponent(queryParams[queryValue]);
                 }
-                else {
-                    relativeUrl += "&" + queryValue + "=" + queryParams[queryValue];
+                if (first) {
+                    relativeUrl += "?" + valueString;
+                    first = false;
+                } else {
+                    relativeUrl += "&" + valueString;
                 }
             }
         }
