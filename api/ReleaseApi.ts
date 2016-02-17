@@ -121,7 +121,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             releaseId: releaseId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "f2571c27-bf50-4938-b396-32d109ddef26", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "f2571c27-bf50-4938-b396-32d109ddef26", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -159,7 +159,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             releaseIdsFilter: releaseIdsFilter && releaseIdsFilter.join(","),
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "b47c6458-e73b-47cb-a770-4df1e8813a91", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "b47c6458-e73b-47cb-a770-4df1e8813a91", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -188,7 +188,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             approvalStepId: approvalStepId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "250c7158-852e-4130-a00f-a0cce9b72d05", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "250c7158-852e-4130-a00f-a0cce9b72d05", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -219,7 +219,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             approvalId: approvalId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "9328e074-59fb-465a-89d9-b09c82ee5109", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "9328e074-59fb-465a-89d9-b09c82ee5109", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -257,7 +257,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             '$top': top,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "8dcf9fe9-ca37-4113-8ee1-37928e98407c", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "8dcf9fe9-ca37-4113-8ee1-37928e98407c", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -285,7 +285,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "d8f96f24-8ea7-4cb6-baab-2df8fc515665", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "d8f96f24-8ea7-4cb6-baab-2df8fc515665", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -314,7 +314,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             definitionId: definitionId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "d8f96f24-8ea7-4cb6-baab-2df8fc515665", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "d8f96f24-8ea7-4cb6-baab-2df8fc515665", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -343,7 +343,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             definitionId: definitionId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "d8f96f24-8ea7-4cb6-baab-2df8fc515665", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "d8f96f24-8ea7-4cb6-baab-2df8fc515665", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -381,7 +381,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             '$expand': expand,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "d8f96f24-8ea7-4cb6-baab-2df8fc515665", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "d8f96f24-8ea7-4cb6-baab-2df8fc515665", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -419,7 +419,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             '$expand': expand,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "d8f96f24-8ea7-4cb6-baab-2df8fc515665", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "d8f96f24-8ea7-4cb6-baab-2df8fc515665", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -447,7 +447,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "d8f96f24-8ea7-4cb6-baab-2df8fc515665", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "d8f96f24-8ea7-4cb6-baab-2df8fc515665", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -479,7 +479,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             environmentId: environmentId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "a7e426b1-03dc-48af-9dfe-c98bac612dcb", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "a7e426b1-03dc-48af-9dfe-c98bac612dcb", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -513,7 +513,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             environmentId: environmentId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "a7e426b1-03dc-48af-9dfe-c98bac612dcb", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "a7e426b1-03dc-48af-9dfe-c98bac612dcb", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -541,7 +541,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "6b03b696-824e-4479-8eb2-6644a51aba89", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "6b03b696-824e-4479-8eb2-6644a51aba89", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -573,7 +573,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             templateId: templateId,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "6b03b696-824e-4479-8eb2-6644a51aba89", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "6b03b696-824e-4479-8eb2-6644a51aba89", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -605,7 +605,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             templateId: templateId,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "6b03b696-824e-4479-8eb2-6644a51aba89", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "6b03b696-824e-4479-8eb2-6644a51aba89", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -631,7 +631,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "6b03b696-824e-4479-8eb2-6644a51aba89", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "6b03b696-824e-4479-8eb2-6644a51aba89", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -659,7 +659,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "71dd499b-317d-45ea-9134-140ea1932b5e", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "71dd499b-317d-45ea-9134-140ea1932b5e", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -688,7 +688,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             releaseId: releaseId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "c37fbab5-214b-48e4-a55b-cb6b4f6e4038", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "c37fbab5-214b-48e4-a55b-cb6b4f6e4038", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -729,7 +729,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             attemptId: attemptId,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "e71ba1ed-c0a4-4a28-a61f-2dd5f68cf3fd", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "e71ba1ed-c0a4-4a28-a61f-2dd5f68cf3fd", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -757,7 +757,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -786,7 +786,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             releaseId: releaseId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -821,7 +821,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             includeAllApprovals: includeAllApprovals,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -859,7 +859,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             includeArtifact: includeArtifact,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -930,7 +930,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             artifactVersionId: artifactVersionId,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -961,7 +961,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             releaseId: releaseId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -992,7 +992,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             releaseId: releaseId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1021,7 +1021,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             definitionId: definitionId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "258b82e0-9d41-43f3-86d6-fef14ddd44bc", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "258b82e0-9d41-43f3-86d6-fef14ddd44bc", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1053,7 +1053,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             revision: revision
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "258b82e0-9d41-43f3-86d6-fef14ddd44bc", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "258b82e0-9d41-43f3-86d6-fef14ddd44bc", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1085,7 +1085,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             typeId: typeId,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "a9c09fe4-901e-4b2e-b05d-9888ad883ae9", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "a9c09fe4-901e-4b2e-b05d-9888ad883ae9", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1123,7 +1123,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             attemptId: attemptId,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "36b276e0-3c70-4320-a63c-1a2e1466a0d1", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "36b276e0-3c70-4320-a63c-1a2e1466a0d1", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1149,7 +1149,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "8efc2a3c-1fc8-4f6d-9822-75e98cecb48f", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "8efc2a3c-1fc8-4f6d-9822-75e98cecb48f", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1181,7 +1181,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             releaseDefinitionId: releaseDefinitionId,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "30fc787e-a9e0-4a07-9fbc-3e903aa051d2", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "30fc787e-a9e0-4a07-9fbc-3e903aa051d2", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1209,7 +1209,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "30fc787e-a9e0-4a07-9fbc-3e903aa051d2", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "30fc787e-a9e0-4a07-9fbc-3e903aa051d2", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1247,7 +1247,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             '$top': top,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "Release", "4f165cc0-875c-4768-b148-f12f78769fab", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "4f165cc0-875c-4768-b148-f12f78769fab", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;

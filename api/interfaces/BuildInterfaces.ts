@@ -264,6 +264,10 @@ export interface BuildBadge {
     imageUrl: string;
 }
 
+export interface BuildChangesCalculatedEvent extends BuildUpdatedEvent {
+    changes: Change[];
+}
+
 export interface BuildCompletedEvent extends BuildUpdatedEvent {
 }
 
@@ -439,6 +443,10 @@ export interface BuildDeployment {
     sourceBuild: ShallowReference;
 }
 
+export interface BuildDestroyedEvent extends RealtimeBuildEvent {
+    build: Build;
+}
+
 /**
  * Represents a build log.
  */
@@ -562,6 +570,9 @@ export enum BuildQueryOrder {
     FinishTimeDescending = 3,
 }
 
+export interface BuildQueuedEvent extends BuildUpdatedEvent {
+}
+
 export enum BuildReason {
     /**
      * No reason. This value should not be used.
@@ -603,6 +614,44 @@ export enum BuildReason {
      * All reasons.
      */
     All = 239,
+}
+
+export interface BuildReference {
+    _links: any;
+    /**
+     * Build number/name of the build
+     */
+    buildNumber: string;
+    /**
+     * Time that the build was completed
+     */
+    finishTime: Date;
+    /**
+     * Id of the build
+     */
+    id: number;
+    /**
+     * Time that the build was queued
+     */
+    queueTime: Date;
+    /**
+     * The build result
+     */
+    result: BuildResult;
+    /**
+     * Time that the build was started
+     */
+    startTime: Date;
+    /**
+     * Status of the build
+     */
+    status: BuildStatus;
+}
+
+export interface BuildReportMetadata {
+    buildId: number;
+    content: string;
+    type: string;
 }
 
 export interface BuildRepository {
@@ -685,6 +734,7 @@ export interface BuildServer {
 }
 
 export interface BuildSettings {
+    daysToKeepDeletedBuildsBeforeDestroy: number;
     defaultRetentionPolicy: RetentionPolicy;
     maximumRetentionPolicy: RetentionPolicy;
 }
@@ -812,6 +862,7 @@ export interface ContinuousDeploymentDefinition {
 export interface ContinuousIntegrationTrigger extends BuildTrigger {
     batchChanges: boolean;
     branchFilters: string[];
+    maxConcurrentBuildsPerBranch: number;
     /**
      * The polling interval in seconds.
      */
@@ -855,6 +906,14 @@ export enum DefinitionQueryOrder {
      * Order by created on/last modified time descending.
      */
     LastModifiedDescending = 2,
+    /**
+     * Order by definition name ascending.
+     */
+    DefinitionNameAscending = 3,
+    /**
+     * Order by definition name descending.
+     */
+    DefinitionNameDescending = 4,
 }
 
 export enum DefinitionQueueStatus {
@@ -995,6 +1054,11 @@ export interface DeploymentDeploy extends Deployment {
  */
 export interface DeploymentTest extends Deployment {
     runId: number;
+}
+
+export interface GatedCheckInTrigger extends BuildTrigger {
+    pathFilters: string[];
+    runContinuousIntegration: boolean;
 }
 
 export enum GetOption {
@@ -1168,6 +1232,7 @@ export interface RetentionPolicy {
     daysToKeep: number;
     deleteBuildRecord: boolean;
     deleteTestResults: boolean;
+    minimumToKeep: number;
 }
 
 export interface Schedule {
@@ -1505,6 +1570,9 @@ export var TypeInfo = {
     BuildBadge: {
         fields: <any>null
     },
+    BuildChangesCalculatedEvent: {
+        fields: <any>null
+    },
     BuildCompletedEvent: {
         fields: <any>null
     },
@@ -1542,6 +1610,9 @@ export var TypeInfo = {
         fields: <any>null
     },
     BuildDeployment: {
+        fields: <any>null
+    },
+    BuildDestroyedEvent: {
         fields: <any>null
     },
     BuildLog: {
@@ -1594,6 +1665,9 @@ export var TypeInfo = {
             "finishTimeDescending": 3,
         }
     },
+    BuildQueuedEvent: {
+        fields: <any>null
+    },
     BuildReason: {
         enumValues: {
             "none": 0,
@@ -1607,6 +1681,12 @@ export var TypeInfo = {
             "triggered": 175,
             "all": 239,
         }
+    },
+    BuildReference: {
+        fields: <any>null
+    },
+    BuildReportMetadata: {
+        fields: <any>null
     },
     BuildRepository: {
         fields: <any>null
@@ -1688,6 +1768,8 @@ export var TypeInfo = {
             "none": 0,
             "lastModifiedAscending": 1,
             "lastModifiedDescending": 2,
+            "definitionNameAscending": 3,
+            "definitionNameDescending": 4,
         }
     },
     DefinitionQueueStatus: {
@@ -1738,6 +1820,9 @@ export var TypeInfo = {
         fields: <any>null
     },
     DeploymentTest: {
+        fields: <any>null
+    },
+    GatedCheckInTrigger: {
         fields: <any>null
     },
     GetOption: {
@@ -2008,6 +2093,16 @@ TypeInfo.BuildArtifactAddedEvent.fields = {
 TypeInfo.BuildBadge.fields = {
 };
 
+TypeInfo.BuildChangesCalculatedEvent.fields = {
+    build: {
+        typeInfo: TypeInfo.Build
+    },
+    changes: {
+        isArray: true,
+        typeInfo: TypeInfo.Change
+    },
+};
+
 TypeInfo.BuildCompletedEvent.fields = {
     build: {
         typeInfo: TypeInfo.Build
@@ -2074,8 +2169,6 @@ TypeInfo.BuildDefinition.fields = {
         enumType: TypeInfo.DefinitionType
     },
     variables: {
-        isArray: true,
-        typeInfo: TypeInfo.BuildDefinitionVariable
     },
 };
 
@@ -2178,6 +2271,12 @@ TypeInfo.BuildDeployment.fields = {
     },
 };
 
+TypeInfo.BuildDestroyedEvent.fields = {
+    build: {
+        typeInfo: TypeInfo.Build
+    },
+};
+
 TypeInfo.BuildLog.fields = {
     createdOn: {
         isDate: true,
@@ -2229,6 +2328,33 @@ TypeInfo.BuildProcessTemplate.fields = {
     templateType: {
         enumType: TypeInfo.ProcessTemplateType
     },
+};
+
+TypeInfo.BuildQueuedEvent.fields = {
+    build: {
+        typeInfo: TypeInfo.Build
+    },
+};
+
+TypeInfo.BuildReference.fields = {
+    finishTime: {
+        isDate: true,
+    },
+    queueTime: {
+        isDate: true,
+    },
+    result: {
+        enumType: TypeInfo.BuildResult
+    },
+    startTime: {
+        isDate: true,
+    },
+    status: {
+        enumType: TypeInfo.BuildStatus
+    },
+};
+
+TypeInfo.BuildReportMetadata.fields = {
 };
 
 TypeInfo.BuildRepository.fields = {
@@ -2369,6 +2495,12 @@ TypeInfo.DeploymentDeploy.fields = {
 };
 
 TypeInfo.DeploymentTest.fields = {
+};
+
+TypeInfo.GatedCheckInTrigger.fields = {
+    triggerType: {
+        enumType: TypeInfo.DefinitionTriggerType
+    },
 };
 
 TypeInfo.InformationNode.fields = {
