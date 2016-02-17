@@ -252,6 +252,7 @@ export interface ReleaseApproval {
     approvalType: ApprovalType;
     approvedBy: VSSInterfaces.IdentityRef;
     approver: VSSInterfaces.IdentityRef;
+    attempt: number;
     comments: string;
     createdOn: Date;
     history: ReleaseApprovalHistory[];
@@ -890,8 +891,6 @@ TypeInfo.ApprovalPendingEvent.fields = {
 
 TypeInfo.Artifact.fields = {
     definitionReference: {
-        isArray: true,
-        typeInfo: TypeInfo.ArtifactSourceReference
     },
 };
 
@@ -1019,8 +1018,6 @@ TypeInfo.Release.fields = {
         enumType: TypeInfo.ReleaseStatus
     },
     variables: {
-        isArray: true,
-        typeInfo: TypeInfo.ConfigurationVariableValue
     },
 };
 
@@ -1108,8 +1105,6 @@ TypeInfo.ReleaseDefinition.fields = {
         typeInfo: TypeInfo.ReleaseTrigger
     },
     variables: {
-        isArray: true,
-        typeInfo: TypeInfo.ConfigurationVariableValue
     },
 };
 
@@ -1157,8 +1152,6 @@ TypeInfo.ReleaseDefinitionEnvironment.fields = {
         typeInfo: TypeInfo.ReleaseDefinitionApprovals
     },
     variables: {
-        isArray: true,
-        typeInfo: TypeInfo.ConfigurationVariableValue
     },
 };
 
@@ -1243,8 +1236,6 @@ TypeInfo.ReleaseEnvironment.fields = {
         enumType: TypeInfo.EnvironmentStatus
     },
     variables: {
-        isArray: true,
-        typeInfo: TypeInfo.ConfigurationVariableValue
     },
     workflowTasks: {
         isArray: true,

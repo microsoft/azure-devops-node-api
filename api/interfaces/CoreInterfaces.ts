@@ -146,6 +146,9 @@ export interface TeamProject extends TeamProjectReference {
      * The links to other objects related to this object.
      */
     _links: any;
+    /**
+     * Set of capabilities this project has (such as process template & version control).
+     */
     capabilities: { [key: string] : { [key: string] : string; }; };
     /**
      * The shallow ref to the default team.
