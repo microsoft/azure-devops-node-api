@@ -53,6 +53,9 @@ export interface FileContainer {
      * Uri of the artifact associated with the container.
      */
     artifactUri: string;
+    /**
+     * Download Url for the content of this item.
+     */
     contentLocation: string;
     /**
      * Owner.
@@ -109,6 +112,9 @@ export interface FileContainerItem {
      */
     containerId: number;
     contentId: number[];
+    /**
+     * Download Url for the content of this item.
+     */
     contentLocation: string;
     /**
      * Creator.

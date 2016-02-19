@@ -202,6 +202,15 @@ export interface GitCommitToCreate {
     pathActions: GitPathAction[];
 }
 
+export interface GitDeletedRepository {
+    createdDate: Date;
+    deletedBy: VSSInterfaces.IdentityRef;
+    deletedDate: Date;
+    id: string;
+    name: string;
+    project: TfsCoreInterfaces.TeamProjectReference;
+}
+
 export interface GitHistoryQueryResults extends HistoryQueryResults<GitItem> {
     /**
      * Seed commit used for querying history.  Used for skip feature.
@@ -276,32 +285,6 @@ export interface GitItemRequestData {
     latestProcessedChange: boolean;
 }
 
-/**
- * Encapsulates the reference metadata of a Git media object.
- */
-export interface GitMediaObjectRef {
-    /**
-     * Gets or sets the reference links of the Git media object.
-     */
-    _links: any;
-    /**
-     * Gets or sets the Git media object identifier. This Id property duplicates the Oid property, but is required by the VSTS REST specification.
-     */
-    id: string;
-    /**
-     * Gets or sets the Git media object identifier. This property exists for adherence to the GitHub Git Media contract.
-     */
-    oid: string;
-    /**
-     * Gets or sets the size of the Git media object in bytes. This property exists for adherence to the GitHub Git Media contract.
-     */
-    size: number;
-    /**
-     * Gets or sets the URL for the Git media object.
-     */
-    url: string;
-}
-
 export enum GitObjectType {
     Bad = 0,
     Commit = 1,
@@ -329,12 +312,19 @@ export enum GitPathActions {
     Rename = 4,
 }
 
+export enum GitPermissionScope {
+    Project = 0,
+    Repository = 1,
+    Branch = 2,
+}
+
 export interface GitPullRequest {
     _links: any;
     closedDate: Date;
     codeReviewId: number;
     commits: GitCommitRef[];
     completionOptions: GitPullRequestCompletionOptions;
+    completionQueueTime: Date;
     createdBy: VSSInterfaces.IdentityRef;
     creationDate: Date;
     description: string;
@@ -353,11 +343,13 @@ export interface GitPullRequest {
     title: string;
     upgraded: boolean;
     url: string;
+    workItemRefs: VSSInterfaces.ResourceRef[];
 }
 
 export interface GitPullRequestCompletionOptions {
     deleteSourceBranch: boolean;
     mergeCommitMessage: string;
+    squashMerge: boolean;
 }
 
 export interface GitPullRequestSearchCriteria {
@@ -533,7 +525,7 @@ export interface GitRefUpdateResultSet {
     countFailed: number;
     countSucceeded: number;
     pushCorrelationId: string;
-    pushIds: { [key: number] : number; };
+    pushIds: { [key: string] : number; };
     pushTime: Date;
     results: GitRefUpdateResult[];
 }
@@ -651,8 +643,13 @@ export enum GitStatusState {
     NotSet = 0,
     Pending = 1,
     Succeeded = 2,
-    Failure = 3,
+    Failed = 3,
     Error = 4,
+}
+
+export interface GitSuggestion {
+    properties: { [key: string] : any; };
+    type: string;
 }
 
 export interface GitTargetVersionDescriptor extends GitVersionDescriptor {
@@ -983,8 +980,16 @@ export interface TfvcHistoryEntry extends HistoryEntry<TfvcItem> {
 export interface TfvcItem extends ItemModel {
     changeDate: Date;
     deletionId: number;
+    /**
+     * MD5 hash as a base 64 string, applies to files only.
+     */
+    hashValue: string;
     isBranch: boolean;
     isPendingChange: boolean;
+    /**
+     * The size of the file, if applicable.
+     */
+    size: number;
     version: number;
 }
 
@@ -1167,14 +1172,28 @@ export enum VersionControlChangeType {
 }
 
 export interface VersionControlProjectInfo {
+    defaultSourceControlType: TfsCoreInterfaces.SourceControlTypes;
     project: TfsCoreInterfaces.TeamProjectReference;
     supportsGit: boolean;
     supportsTFVC: boolean;
 }
 
 export enum VersionControlRecursionType {
+    /**
+     * Only return the specified item.
+     */
     None = 0,
+    /**
+     * Return the specified item and its direct children.
+     */
     OneLevel = 1,
+    /**
+     * Return the specified item and its direct children, as well as recursive chains of nested child folders that only contain a single folder.
+     */
+    OneLevelPlusNestedEmptyFolders = 4,
+    /**
+     * Return specified item and all descendants
+     */
     Full = 120,
 }
 
@@ -1227,6 +1246,9 @@ export var TypeInfo = {
     GitCommitToCreate: {
         fields: <any>null
     },
+    GitDeletedRepository: {
+        fields: <any>null
+    },
     GitHistoryQueryResults: {
         fields: <any>null
     },
@@ -1237,9 +1259,6 @@ export var TypeInfo = {
         fields: <any>null
     },
     GitItemRequestData: {
-        fields: <any>null
-    },
-    GitMediaObjectRef: {
         fields: <any>null
     },
     GitObjectType: {
@@ -1264,6 +1283,13 @@ export var TypeInfo = {
             "delete": 2,
             "add": 3,
             "rename": 4,
+        }
+    },
+    GitPermissionScope: {
+        enumValues: {
+            "project": 0,
+            "repository": 1,
+            "branch": 2,
         }
     },
     GitPullRequest: {
@@ -1357,9 +1383,12 @@ export var TypeInfo = {
             "notSet": 0,
             "pending": 1,
             "succeeded": 2,
-            "failure": 3,
+            "failed": 3,
             "error": 4,
         }
+    },
+    GitSuggestion: {
+        fields: <any>null
     },
     GitTargetVersionDescriptor: {
         fields: <any>null
@@ -1557,6 +1586,7 @@ export var TypeInfo = {
         enumValues: {
             "none": 0,
             "oneLevel": 1,
+            "oneLevelPlusNestedEmptyFolders": 4,
             "full": 120,
         }
     },
@@ -1578,6 +1608,8 @@ TypeInfo.ChangeCountDictionary.fields = {
 };
 
 TypeInfo.ChangeList.fields = {
+    changeCounts: {
+    },
     creationDate: {
         isDate: true,
     },
@@ -1665,6 +1697,8 @@ TypeInfo.GitCommitChanges.fields = {
 };
 
 TypeInfo.GitCommitDiffs.fields = {
+    changeCounts: {
+    },
     changes: {
         isArray: true,
         typeInfo: TypeInfo.GitChange
@@ -1694,6 +1728,21 @@ TypeInfo.GitCommitToCreate.fields = {
     pathActions: {
         isArray: true,
         typeInfo: TypeInfo.GitPathAction
+    },
+};
+
+TypeInfo.GitDeletedRepository.fields = {
+    createdDate: {
+        isDate: true,
+    },
+    deletedBy: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+    deletedDate: {
+        isDate: true,
+    },
+    project: {
+        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
     },
 };
 
@@ -1731,9 +1780,6 @@ TypeInfo.GitItemRequestData.fields = {
     },
 };
 
-TypeInfo.GitMediaObjectRef.fields = {
-};
-
 TypeInfo.GitPathAction.fields = {
     action: {
         enumType: TypeInfo.GitPathActions
@@ -1750,6 +1796,9 @@ TypeInfo.GitPullRequest.fields = {
     },
     completionOptions: {
         typeInfo: TypeInfo.GitPullRequestCompletionOptions
+    },
+    completionQueueTime: {
+        isDate: true,
     },
     createdBy: {
         typeInfo: VSSInterfaces.TypeInfo.IdentityRef
@@ -1778,6 +1827,10 @@ TypeInfo.GitPullRequest.fields = {
     },
     status: {
         enumType: TypeInfo.PullRequestStatus
+    },
+    workItemRefs: {
+        isArray: true,
+        typeInfo: VSSInterfaces.TypeInfo.ResourceRef
     },
 };
 
@@ -1898,6 +1951,9 @@ TypeInfo.GitStatus.fields = {
 };
 
 TypeInfo.GitStatusContext.fields = {
+};
+
+TypeInfo.GitSuggestion.fields = {
 };
 
 TypeInfo.GitTargetVersionDescriptor.fields = {
@@ -2220,6 +2276,9 @@ TypeInfo.UpdateRefsRequest.fields = {
 };
 
 TypeInfo.VersionControlProjectInfo.fields = {
+    defaultSourceControlType: {
+        typeInfo: TfsCoreInterfaces.TypeInfo.SourceControlTypes
+    },
     project: {
         typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
     },

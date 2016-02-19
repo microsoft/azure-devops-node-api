@@ -32,17 +32,17 @@ export interface IBuildApi extends basem.ClientApiBase {
     getBuildBadgeData(project: string, repoType: string, repoId: string, branchName: string, onResult: (err: any, statusCode: number, buildbadge: string) => void): void;
     deleteBuild(buildId: number, project: string, onResult: (err: any, statusCode: number) => void): void;
     getBuild(buildId: number, project: string, propertyFilters: string, onResult: (err: any, statusCode: number, build: BuildInterfaces.Build) => void): void;
-    getBuilds(project: string, definitions: number[], queues: number[], buildNumber: string, minFinishTime: Date, maxFinishTime: Date, requestedFor: string, reasonFilter: BuildInterfaces.BuildReason, statusFilter: BuildInterfaces.BuildStatus, resultFilter: BuildInterfaces.BuildResult, tagFilters: string[], properties: string[], type: BuildInterfaces.DefinitionType, top: number, continuationToken: string, maxBuildsPerDefinition: number, deletedFilter: BuildInterfaces.QueryDeletedOption, queryOrder: BuildInterfaces.BuildQueryOrder, onResult: (err: any, statusCode: number, builds: BuildInterfaces.Build[]) => void): void;
-    queueBuild(build: BuildInterfaces.Build, project: string, ignoreWarnings: boolean, onResult: (err: any, statusCode: number, build: BuildInterfaces.Build) => void): void;
+    getBuilds(project: string, definitions: number[], queues: number[], buildNumber: string, minFinishTime: Date, maxFinishTime: Date, requestedFor: string, reasonFilter: BuildInterfaces.BuildReason, statusFilter: BuildInterfaces.BuildStatus, resultFilter: BuildInterfaces.BuildResult, tagFilters: string[], properties: string[], type: BuildInterfaces.DefinitionType, top: number, continuationToken: string, maxBuildsPerDefinition: number, deletedFilter: BuildInterfaces.QueryDeletedOption, queryOrder: BuildInterfaces.BuildQueryOrder, branchName: string, onResult: (err: any, statusCode: number, builds: BuildInterfaces.Build[]) => void): void;
+    queueBuild(build: BuildInterfaces.Build, project: string, ignoreWarnings: boolean, checkInTicket: string, onResult: (err: any, statusCode: number, build: BuildInterfaces.Build) => void): void;
     updateBuild(build: BuildInterfaces.Build, buildId: number, project: string, onResult: (err: any, statusCode: number, build: BuildInterfaces.Build) => void): void;
-    getBuildCommits(project: string, buildId: number, top: number, onResult: (err: any, statusCode: number, changes: BuildInterfaces.Change[]) => void): void;
+    getBuildChanges(project: string, buildId: number, continuationToken: string, top: number, includeSourceChange: boolean, onResult: (err: any, statusCode: number, changes: BuildInterfaces.Change[]) => void): void;
     getChangesBetweenBuilds(project: string, fromBuildId: number, toBuildId: number, top: number, onResult: (err: any, statusCode: number, changes: BuildInterfaces.Change[]) => void): void;
     getBuildController(controllerId: number, onResult: (err: any, statusCode: number, Controller: BuildInterfaces.BuildController) => void): void;
     getBuildControllers(name: string, onResult: (err: any, statusCode: number, Controllers: BuildInterfaces.BuildController[]) => void): void;
     createDefinition(definition: BuildInterfaces.BuildDefinition, project: string, definitionToCloneId: number, definitionToCloneRevision: number, onResult: (err: any, statusCode: number, definition: BuildInterfaces.BuildDefinition) => void): void;
     deleteDefinition(definitionId: number, project: string, onResult: (err: any, statusCode: number) => void): void;
     getDefinition(definitionId: number, project: string, revision: number, propertyFilters: string[], onResult: (err: any, statusCode: number, definition: BuildInterfaces.DefinitionReference) => void): void;
-    getDefinitions(project: string, name: string, type: BuildInterfaces.DefinitionType, repositoryId: string, repositoryType: string, queryOrder: BuildInterfaces.DefinitionQueryOrder, top: number, onResult: (err: any, statusCode: number, definitions: BuildInterfaces.DefinitionReference[]) => void): void;
+    getDefinitions(project: string, name: string, type: BuildInterfaces.DefinitionType, repositoryId: string, repositoryType: string, queryOrder: BuildInterfaces.DefinitionQueryOrder, top: number, continuationToken: string, onResult: (err: any, statusCode: number, definitions: BuildInterfaces.DefinitionReference[]) => void): void;
     updateDefinition(definition: BuildInterfaces.BuildDefinition, definitionId: number, project: string, secretsSourceDefinitionId: number, secretsSourceDefinitionRevision: number, onResult: (err: any, statusCode: number, definition: BuildInterfaces.BuildDefinition) => void): void;
     getBuildDeployments(project: string, buildId: number, onResult: (err: any, statusCode: number, deployments: BuildInterfaces.Deployment[]) => void): void;
     getBuildLog(project: string, buildId: number, logId: number, startLine: number, endLine: number, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
@@ -53,6 +53,8 @@ export interface IBuildApi extends basem.ClientApiBase {
     deleteQueue(id: number, onResult: (err: any, statusCode: number) => void): void;
     getAgentPoolQueue(controllerId: number, onResult: (err: any, statusCode: number, queue: BuildInterfaces.AgentPoolQueue) => void): void;
     getQueues(name: string, onResult: (err: any, statusCode: number, queues: BuildInterfaces.AgentPoolQueue[]) => void): void;
+    getBuildReport(project: string, buildId: number, type: string, onResult: (err: any, statusCode: number, report: BuildInterfaces.BuildReportMetadata) => void): void;
+    getBuildReportHtmlContent(project: string, buildId: number, type: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void;
     getResourceUsage(onResult: (err: any, statusCode: number, ResourceUsage: BuildInterfaces.BuildResourceUsage) => void): void;
     getDefinitionRevisions(project: string, definitionId: number, onResult: (err: any, statusCode: number, revisions: BuildInterfaces.BuildDefinitionRevision[]) => void): void;
     getBuildSettings(onResult: (err: any, statusCode: number, setting: BuildInterfaces.BuildSettings) => void): void;
@@ -82,17 +84,17 @@ export interface IQBuildApi extends basem.QClientApiBase {
     getBuildBadgeData(project: string, repoType: string, repoId?: string, branchName?: string): Q.Promise<string>;
     deleteBuild(buildId: number, project?: string): Q.Promise<void>;
     getBuild(buildId: number, project?: string, propertyFilters?: string): Q.Promise<BuildInterfaces.Build>;
-    getBuilds(project?: string, definitions?: number[], queues?: number[], buildNumber?: string, minFinishTime?: Date, maxFinishTime?: Date, requestedFor?: string, reasonFilter?: BuildInterfaces.BuildReason, statusFilter?: BuildInterfaces.BuildStatus, resultFilter?: BuildInterfaces.BuildResult, tagFilters?: string[], properties?: string[], type?: BuildInterfaces.DefinitionType, top?: number, continuationToken?: string, maxBuildsPerDefinition?: number, deletedFilter?: BuildInterfaces.QueryDeletedOption, queryOrder?: BuildInterfaces.BuildQueryOrder): Q.Promise<BuildInterfaces.Build[]>;
-    queueBuild(build: BuildInterfaces.Build, project?: string, ignoreWarnings?: boolean): Q.Promise<BuildInterfaces.Build>;
+    getBuilds(project?: string, definitions?: number[], queues?: number[], buildNumber?: string, minFinishTime?: Date, maxFinishTime?: Date, requestedFor?: string, reasonFilter?: BuildInterfaces.BuildReason, statusFilter?: BuildInterfaces.BuildStatus, resultFilter?: BuildInterfaces.BuildResult, tagFilters?: string[], properties?: string[], type?: BuildInterfaces.DefinitionType, top?: number, continuationToken?: string, maxBuildsPerDefinition?: number, deletedFilter?: BuildInterfaces.QueryDeletedOption, queryOrder?: BuildInterfaces.BuildQueryOrder, branchName?: string): Q.Promise<BuildInterfaces.Build[]>;
+    queueBuild(build: BuildInterfaces.Build, project?: string, ignoreWarnings?: boolean, checkInTicket?: string): Q.Promise<BuildInterfaces.Build>;
     updateBuild(build: BuildInterfaces.Build, buildId: number, project?: string): Q.Promise<BuildInterfaces.Build>;
-    getBuildCommits(project: string, buildId: number, top?: number): Q.Promise<BuildInterfaces.Change[]>;
+    getBuildChanges(project: string, buildId: number, continuationToken?: string, top?: number, includeSourceChange?: boolean): Q.Promise<BuildInterfaces.Change[]>;
     getChangesBetweenBuilds(project: string, fromBuildId?: number, toBuildId?: number, top?: number): Q.Promise<BuildInterfaces.Change[]>;
     getBuildController(controllerId: number): Q.Promise<BuildInterfaces.BuildController>;
     getBuildControllers(name?: string): Q.Promise<BuildInterfaces.BuildController[]>;
     createDefinition(definition: BuildInterfaces.BuildDefinition, project?: string, definitionToCloneId?: number, definitionToCloneRevision?: number): Q.Promise<BuildInterfaces.BuildDefinition>;
     deleteDefinition(definitionId: number, project?: string): Q.Promise<void>;
     getDefinition(definitionId: number, project?: string, revision?: number, propertyFilters?: string[]): Q.Promise<BuildInterfaces.DefinitionReference>;
-    getDefinitions(project?: string, name?: string, type?: BuildInterfaces.DefinitionType, repositoryId?: string, repositoryType?: string, queryOrder?: BuildInterfaces.DefinitionQueryOrder, top?: number): Q.Promise<BuildInterfaces.DefinitionReference[]>;
+    getDefinitions(project?: string, name?: string, type?: BuildInterfaces.DefinitionType, repositoryId?: string, repositoryType?: string, queryOrder?: BuildInterfaces.DefinitionQueryOrder, top?: number, continuationToken?: string): Q.Promise<BuildInterfaces.DefinitionReference[]>;
     updateDefinition(definition: BuildInterfaces.BuildDefinition, definitionId: number, project?: string, secretsSourceDefinitionId?: number, secretsSourceDefinitionRevision?: number): Q.Promise<BuildInterfaces.BuildDefinition>;
     getBuildDeployments(project: string, buildId: number): Q.Promise<BuildInterfaces.Deployment[]>;
     getBuildLog(project: string, buildId: number, logId: number, startLine?: number, endLine?: number): Q.Promise<NodeJS.ReadableStream>;
@@ -103,6 +105,8 @@ export interface IQBuildApi extends basem.QClientApiBase {
     deleteQueue(id: number): Q.Promise<void>;
     getAgentPoolQueue(controllerId: number): Q.Promise<BuildInterfaces.AgentPoolQueue>;
     getQueues(name?: string): Q.Promise<BuildInterfaces.AgentPoolQueue[]>;
+    getBuildReport(project: string, buildId: number, type?: string): Q.Promise<BuildInterfaces.BuildReportMetadata>;
+    getBuildReportHtmlContent(project: string, buildId: number, type?: string): Q.Promise<NodeJS.ReadableStream>;
     getResourceUsage(): Q.Promise<BuildInterfaces.BuildResourceUsage>;
     getDefinitionRevisions(project: string, definitionId: number): Q.Promise<BuildInterfaces.BuildDefinitionRevision[]>;
     getBuildSettings(): Q.Promise<BuildInterfaces.BuildSettings>;
@@ -147,7 +151,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.3", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.3", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -184,7 +188,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             artifactName: artifactName,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.3", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.3", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -221,7 +225,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             artifactName: artifactName,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.3", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.3", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -252,7 +256,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.3", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.3", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -287,7 +291,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             branchName: branchName,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "de6a4df8-22cd-44ee-af2d-39f6aa7a4261", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "de6a4df8-22cd-44ee-af2d-39f6aa7a4261", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -325,7 +329,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             branchName: branchName,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "build", "21b3b9ce-fad5-4567-9ad0-80679794e003", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "build", "21b3b9ce-fad5-4567-9ad0-80679794e003", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -363,7 +367,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             branchName: branchName,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.1", "build", "21b3b9ce-fad5-4567-9ad0-80679794e003", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "build", "21b3b9ce-fad5-4567-9ad0-80679794e003", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -394,7 +398,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -431,7 +435,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             propertyFilters: propertyFilters,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -465,6 +469,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
      * @param {number} maxBuildsPerDefinition
      * @param {BuildInterfaces.QueryDeletedOption} deletedFilter
      * @param {BuildInterfaces.BuildQueryOrder} queryOrder
+     * @param {string} branchName
      * @param onResult callback function with the resulting BuildInterfaces.Build[]
      */
     public getBuilds(
@@ -486,6 +491,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         maxBuildsPerDefinition: number,
         deletedFilter: BuildInterfaces.QueryDeletedOption,
         queryOrder: BuildInterfaces.BuildQueryOrder,
+        branchName: string,
         onResult: (err: any, statusCode: number, builds: BuildInterfaces.Build[]) => void
         ): void {
 
@@ -511,9 +517,10 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             maxBuildsPerDefinition: maxBuildsPerDefinition,
             deletedFilter: deletedFilter,
             queryOrder: queryOrder,
+            branchName: branchName,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -532,12 +539,14 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
      * @param {BuildInterfaces.Build} build
      * @param {string} project - Project ID or project name
      * @param {boolean} ignoreWarnings
+     * @param {string} checkInTicket
      * @param onResult callback function with the resulting BuildInterfaces.Build
      */
     public queueBuild(
         build: BuildInterfaces.Build,
         project: string,
         ignoreWarnings: boolean,
+        checkInTicket: string,
         onResult: (err: any, statusCode: number, build: BuildInterfaces.Build) => void
         ): void {
 
@@ -547,9 +556,10 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
         var queryValues: any = {
             ignoreWarnings: ignoreWarnings,
+            checkInTicket: checkInTicket,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -582,7 +592,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -600,13 +610,17 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
      * 
      * @param {string} project - Project ID or project name
      * @param {number} buildId
+     * @param {string} continuationToken
      * @param {number} top - The maximum number of changes to return
+     * @param {boolean} includeSourceChange
      * @param onResult callback function with the resulting BuildInterfaces.Change[]
      */
-    public getBuildCommits(
+    public getBuildChanges(
         project: string,
         buildId: number,
+        continuationToken: string,
         top: number,
+        includeSourceChange: boolean,
         onResult: (err: any, statusCode: number, changes: BuildInterfaces.Change[]) => void
         ): void {
 
@@ -616,10 +630,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         };
 
         var queryValues: any = {
+            continuationToken: continuationToken,
             '$top': top,
+            includeSourceChange: includeSourceChange,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "54572c7b-bbd3-45d4-80dc-28be08941620", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "54572c7b-bbd3-45d4-80dc-28be08941620", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -659,7 +675,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             '$top': top,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "f10f0ea5-18a1-43ec-a8fb-2042c7be9b43", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "f10f0ea5-18a1-43ec-a8fb-2042c7be9b43", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -687,7 +703,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             controllerId: controllerId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "fcac1932-2ee1-437f-9b6f-7f696be858f6", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "fcac1932-2ee1-437f-9b6f-7f696be858f6", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -718,7 +734,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             name: name,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "fcac1932-2ee1-437f-9b6f-7f696be858f6", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "fcac1932-2ee1-437f-9b6f-7f696be858f6", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -757,7 +773,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             definitionToCloneRevision: definitionToCloneRevision,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -788,7 +804,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             definitionId: definitionId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -828,7 +844,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             propertyFilters: propertyFilters && propertyFilters.join(","),
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -851,6 +867,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
      * @param {string} repositoryType
      * @param {BuildInterfaces.DefinitionQueryOrder} queryOrder
      * @param {number} top
+     * @param {string} continuationToken
      * @param onResult callback function with the resulting BuildInterfaces.DefinitionReference[]
      */
     public getDefinitions(
@@ -861,6 +878,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         repositoryType: string,
         queryOrder: BuildInterfaces.DefinitionQueryOrder,
         top: number,
+        continuationToken: string,
         onResult: (err: any, statusCode: number, definitions: BuildInterfaces.DefinitionReference[]) => void
         ): void {
 
@@ -875,9 +893,10 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             repositoryType: repositoryType,
             queryOrder: queryOrder,
             '$top': top,
+            continuationToken: continuationToken,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -919,7 +938,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             secretsSourceDefinitionRevision: secretsSourceDefinitionRevision,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -950,7 +969,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "f275be9a-556a-4ee9-b72f-f9c8370ccaee", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "f275be9a-556a-4ee9-b72f-f9c8370ccaee", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -993,7 +1012,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             endLine: endLine,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1024,7 +1043,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1055,7 +1074,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1081,7 +1100,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "591cb5a4-2d46-4f3a-a697-5cd42b6bd332", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "591cb5a4-2d46-4f3a-a697-5cd42b6bd332", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1108,7 +1127,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         var routeValues: any = {
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1139,7 +1158,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             id: id,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1167,7 +1186,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             controllerId: controllerId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1198,13 +1217,87 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             name: name,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "09f2a4b8-08c9-4991-85c3-d698937568be", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.AgentPoolQueue, responseIsCollection: true };
             
             this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * Gets report for a build
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} buildId
+     * @param {string} type
+     * @param onResult callback function with the resulting BuildInterfaces.BuildReportMetadata
+     */
+    public getBuildReport(
+        project: string,
+        buildId: number,
+        type: string,
+        onResult: (err: any, statusCode: number, report: BuildInterfaces.BuildReportMetadata) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project,
+            buildId: buildId
+        };
+
+        var queryValues: any = {
+            type: type,
+        };
+        
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "45bcaa88-67e1-4042-a035-56d3b4a7d44c", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildReportMetadata, responseIsCollection: false };
+            
+            this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+        })
+        .fail((error) => {
+            onResult(error, error.statusCode, null);
+        });
+    }
+
+    /**
+     * Gets report for a build
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} buildId
+     * @param {string} type
+     * @param onResult callback function with the resulting any
+     */
+    public getBuildReportHtmlContent(
+        project: string,
+        buildId: number,
+        type: string,
+        onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void
+        ): void {
+
+        var routeValues: any = {
+            project: project,
+            buildId: buildId
+        };
+
+        var queryValues: any = {
+            type: type,
+        };
+        
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "45bcaa88-67e1-4042-a035-56d3b4a7d44c", routeValues, queryValues)
+        .then((versioningData: vsom.ClientVersioningData) => {
+            var url: string = versioningData.requestUrl;
+            var apiVersion: string = versioningData.apiVersion;
+            var serializationData = {  responseIsCollection: false };
+            
+            this.httpClient.getStream(url, apiVersion, "text/html", onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);
@@ -1221,7 +1314,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         var routeValues: any = {
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "3813d06c-9e36-4ea1-aac3-61a485d60e3d", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "3813d06c-9e36-4ea1-aac3-61a485d60e3d", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1252,7 +1345,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             definitionId: definitionId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "7c116775-52e5-453e-8c5d-914d9762d8c4", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "7c116775-52e5-453e-8c5d-914d9762d8c4", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1275,7 +1368,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         var routeValues: any = {
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "build", "aa8c1c9c-ef8b-474a-b8c4-785c7b191d0d", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "build", "aa8c1c9c-ef8b-474a-b8c4-785c7b191d0d", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1302,7 +1395,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         var routeValues: any = {
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "build", "aa8c1c9c-ef8b-474a-b8c4-785c7b191d0d", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "build", "aa8c1c9c-ef8b-474a-b8c4-785c7b191d0d", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1336,7 +1429,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             tag: tag
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1369,7 +1462,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1403,7 +1496,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             tag: tag
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1434,7 +1527,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             buildId: buildId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1460,7 +1553,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "d84ac5c6-edc7-43d5-adc9-1b34be5dea09", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "d84ac5c6-edc7-43d5-adc9-1b34be5dea09", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1491,7 +1584,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             templateId: templateId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1522,7 +1615,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             templateId: templateId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1548,7 +1641,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1581,7 +1674,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             templateId: templateId
         };
 
-        this.vsoClient.getVersioningData("2.2-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues)
+        this.vsoClient.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1621,7 +1714,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             changeId: changeId,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "8baac422-4c6e-4de5-8532-db96d92acffa", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "8baac422-4c6e-4de5-8532-db96d92acffa", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1658,7 +1751,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             '$top': top,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "5a21f5d2-5642-47e4-a0bd-1356e6731bee", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "5a21f5d2-5642-47e4-a0bd-1356e6731bee", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1697,7 +1790,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             '$top': top,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "5a21f5d2-5642-47e4-a0bd-1356e6731bee", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "5a21f5d2-5642-47e4-a0bd-1356e6731bee", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -1737,7 +1830,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             '$top': top,
         };
         
-        this.vsoClient.getVersioningData("2.2-preview.2", "build", "52ba8915-5518-42e3-a4bb-b0182d159e2d", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.0-preview.2", "build", "52ba8915-5518-42e3-a4bb-b0182d159e2d", routeValues, queryValues)
         .then((versioningData: vsom.ClientVersioningData) => {
             var url: string = versioningData.requestUrl;
             var apiVersion: string = versioningData.apiVersion;
@@ -2026,6 +2119,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {number} maxBuildsPerDefinition
     * @param {BuildInterfaces.QueryDeletedOption} deletedFilter
     * @param {BuildInterfaces.BuildQueryOrder} queryOrder
+    * @param {string} branchName
     */
     public getBuilds(
         project?: string,
@@ -2045,12 +2139,13 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
         continuationToken?: string,
         maxBuildsPerDefinition?: number,
         deletedFilter?: BuildInterfaces.QueryDeletedOption,
-        queryOrder?: BuildInterfaces.BuildQueryOrder
+        queryOrder?: BuildInterfaces.BuildQueryOrder,
+        branchName?: string
         ): Q.Promise<BuildInterfaces.Build[]> {
     
         var deferred = Q.defer<BuildInterfaces.Build[]>();
 
-        this.api.getBuilds(project, definitions, queues, buildNumber, minFinishTime, maxFinishTime, requestedFor, reasonFilter, statusFilter, resultFilter, tagFilters, properties, type, top, continuationToken, maxBuildsPerDefinition, deletedFilter, queryOrder, (err: any, statusCode: number, builds: BuildInterfaces.Build[]) => {
+        this.api.getBuilds(project, definitions, queues, buildNumber, minFinishTime, maxFinishTime, requestedFor, reasonFilter, statusFilter, resultFilter, tagFilters, properties, type, top, continuationToken, maxBuildsPerDefinition, deletedFilter, queryOrder, branchName, (err: any, statusCode: number, builds: BuildInterfaces.Build[]) => {
             if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2069,16 +2164,18 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {BuildInterfaces.Build} build
     * @param {string} project - Project ID or project name
     * @param {boolean} ignoreWarnings
+    * @param {string} checkInTicket
     */
     public queueBuild(
         build: BuildInterfaces.Build,
         project?: string,
-        ignoreWarnings?: boolean
+        ignoreWarnings?: boolean,
+        checkInTicket?: string
         ): Q.Promise<BuildInterfaces.Build> {
     
         var deferred = Q.defer<BuildInterfaces.Build>();
 
-        this.api.queueBuild(build, project, ignoreWarnings, (err: any, statusCode: number, build: BuildInterfaces.Build) => {
+        this.api.queueBuild(build, project, ignoreWarnings, checkInTicket, (err: any, statusCode: number, build: BuildInterfaces.Build) => {
             if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2124,17 +2221,21 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * 
     * @param {string} project - Project ID or project name
     * @param {number} buildId
+    * @param {string} continuationToken
     * @param {number} top - The maximum number of changes to return
+    * @param {boolean} includeSourceChange
     */
-    public getBuildCommits(
+    public getBuildChanges(
         project: string,
         buildId: number,
-        top?: number
+        continuationToken?: string,
+        top?: number,
+        includeSourceChange?: boolean
         ): Q.Promise<BuildInterfaces.Change[]> {
     
         var deferred = Q.defer<BuildInterfaces.Change[]>();
 
-        this.api.getBuildCommits(project, buildId, top, (err: any, statusCode: number, changes: BuildInterfaces.Change[]) => {
+        this.api.getBuildChanges(project, buildId, continuationToken, top, includeSourceChange, (err: any, statusCode: number, changes: BuildInterfaces.Change[]) => {
             if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2321,6 +2422,7 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
     * @param {string} repositoryType
     * @param {BuildInterfaces.DefinitionQueryOrder} queryOrder
     * @param {number} top
+    * @param {string} continuationToken
     */
     public getDefinitions(
         project?: string,
@@ -2329,12 +2431,13 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
         repositoryId?: string,
         repositoryType?: string,
         queryOrder?: BuildInterfaces.DefinitionQueryOrder,
-        top?: number
+        top?: number,
+        continuationToken?: string
         ): Q.Promise<BuildInterfaces.DefinitionReference[]> {
     
         var deferred = Q.defer<BuildInterfaces.DefinitionReference[]>();
 
-        this.api.getDefinitions(project, name, type, repositoryId, repositoryType, queryOrder, top, (err: any, statusCode: number, definitions: BuildInterfaces.DefinitionReference[]) => {
+        this.api.getDefinitions(project, name, type, repositoryId, repositoryType, queryOrder, top, continuationToken, (err: any, statusCode: number, definitions: BuildInterfaces.DefinitionReference[]) => {
             if (err) {
                 err.statusCode = statusCode;
                 deferred.reject(err);
@@ -2605,6 +2708,62 @@ export class QBuildApi extends basem.QClientApiBase implements IQBuildApi {
         });
 
         return <Q.Promise<BuildInterfaces.AgentPoolQueue[]>>deferred.promise;
+    }
+
+    /**
+    * Gets report for a build
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} buildId
+    * @param {string} type
+    */
+    public getBuildReport(
+        project: string,
+        buildId: number,
+        type?: string
+        ): Q.Promise<BuildInterfaces.BuildReportMetadata> {
+    
+        var deferred = Q.defer<BuildInterfaces.BuildReportMetadata>();
+
+        this.api.getBuildReport(project, buildId, type, (err: any, statusCode: number, report: BuildInterfaces.BuildReportMetadata) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(report);
+            }
+        });
+
+        return <Q.Promise<BuildInterfaces.BuildReportMetadata>>deferred.promise;
+    }
+
+    /**
+    * Gets report for a build
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} buildId
+    * @param {string} type
+    */
+    public getBuildReportHtmlContent(
+        project: string,
+        buildId: number,
+        type?: string
+        ): Q.Promise<NodeJS.ReadableStream> {
+    
+        var deferred = Q.defer<NodeJS.ReadableStream>();
+
+        this.api.getBuildReportHtmlContent(project, buildId, type, (err: any, statusCode: number, report: NodeJS.ReadableStream) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(report);
+            }
+        });
+
+        return <Q.Promise<NodeJS.ReadableStream>>deferred.promise;
     }
 
     /**

@@ -29,6 +29,11 @@ export interface AgentRefreshMessage {
     timeout: any;
 }
 
+export interface AuthorizationHeader {
+    name: string;
+    value: string;
+}
+
 export enum ConnectedServiceKind {
     /**
      * Custom or unknown service
@@ -62,12 +67,24 @@ export interface DataSourceBinding {
     dataSourceName: string;
     endpointId: string;
     parameters: { [key: string] : string; };
+    resultTemplate: string;
     target: string;
 }
 
 export interface EndpointAuthorization {
     parameters: { [key: string] : string; };
     scheme: string;
+}
+
+export interface EndpointUrl {
+    displayName: string;
+    helpText: string;
+    value: string;
+}
+
+export interface HelpLink {
+    text: string;
+    url: string;
 }
 
 export interface Issue {
@@ -102,7 +119,7 @@ export interface JobCompletedEvent extends JobEvent {
 export interface JobEnvironment {
     endpoints: ServiceEndpoint[];
     mask: MaskHint[];
-    options: { [key: number] : JobOption; };
+    options: { [key: string] : JobOption; };
     /**
      * Gets or sets the endpoint used for communicating back to the calling service.
      */
@@ -150,7 +167,7 @@ export enum MaskType {
 
 export interface PlanEnvironment {
     mask: MaskHint[];
-    options: { [key: number] : JobOption; };
+    options: { [key: string] : JobOption; };
     variables: { [key: string] : string; };
 }
 
@@ -193,7 +210,9 @@ export interface ServiceEndpoint {
 }
 
 export interface ServiceEndpointAuthenticationScheme {
+    authorizationHeaders: AuthorizationHeader[];
     displayName: string;
+    endpointHeaders: AuthorizationHeader[];
     inputDescriptors: FormInputInterfaces.InputDescriptor[];
     scheme: string;
 }
@@ -203,8 +222,10 @@ export interface ServiceEndpointType {
     dataSources: DataSource[];
     description: string;
     displayName: string;
+    endpointUrl: EndpointUrl;
+    helpLink: HelpLink;
+    helpMarkDown: string;
     name: string;
-    url: string;
 }
 
 export interface TaskAgent extends TaskAgentReference {
@@ -217,18 +238,10 @@ export interface TaskAgent extends TaskAgentReference {
      */
     createdOn: Date;
     /**
-     * Gets or sets a value indicating whether or not this agent should be enabled for job execution.
-     */
-    enabled: boolean;
-    /**
      * Gets or sets the maximum job parallelism allowed on this host.
      */
     maxParallelism: number;
     properties: any;
-    /**
-     * Gets the current connectivity status of the agent.
-     */
-    status: TaskAgentStatus;
     /**
      * Gets the date on which the last connectivity status change occurred.
      */
@@ -325,6 +338,11 @@ export enum TaskAgentQueueActionFilter {
 }
 
 export interface TaskAgentReference {
+    _links: any;
+    /**
+     * Gets or sets a value indicating whether or not this agent should be enabled for job execution.
+     */
+    enabled: boolean;
     /**
      * Gets the identifier of the agent.
      */
@@ -333,6 +351,10 @@ export interface TaskAgentReference {
      * Gets the name of the agent.
      */
     name: string;
+    /**
+     * Gets the current connectivity status of the agent.
+     */
+    status: TaskAgentStatus;
     /**
      * Gets the version of the agent.
      */
@@ -401,11 +423,15 @@ export interface TaskDefinitionEndpoint {
      */
     connectionId: string;
     /**
+     * An Json based keyselector to filter response returned by fetching the endpoint Url.A Json based keyselector must be prefixed with "jsonpath:". KeySelector can be used to specify the filter to get the keys for the values specified with Selector.  The following keyselector defines an Json for extracting nodes named 'ServiceName'.  endpoint.KeySelector = "jsonpath://ServiceName";
+     */
+    keySelector: string;
+    /**
      * The scope as understood by Connected Services. Essentialy, a project-id for now.
      */
     scope: string;
     /**
-     * An XPath/Json based selector to filter response returned by fetching the endpoint Url. An XPath based selector must be prefixed with the string "xpath:". A Json based selector must be prefixed with "json:".  The following selector defines an XPath for extracting nodes named 'ServiceName'.  endpoint.Selector = "xpath://ServiceName";
+     * An XPath/Json based selector to filter response returned by fetching the endpoint Url. An XPath based selector must be prefixed with the string "xpath:". A Json based selector must be prefixed with "jsonpath:".  The following selector defines an XPath for extracting nodes named 'ServiceName'.  endpoint.Selector = "xpath://ServiceName";
      */
     selector: string;
     /**
@@ -433,6 +459,7 @@ export interface TaskGroupDefinition {
     displayName: string;
     isExpanded: boolean;
     name: string;
+    tags: string[];
 }
 
 export interface TaskInputDefinition {
@@ -563,6 +590,7 @@ export enum TaskResult {
 export interface TaskSourceDefinition {
     authKey: string;
     endpoint: string;
+    keySelector: string;
     selector: string;
     target: string;
 }
@@ -707,6 +735,9 @@ export var TypeInfo = {
     AgentRefreshMessage: {
         fields: <any>null
     },
+    AuthorizationHeader: {
+        fields: <any>null
+    },
     ConnectedServiceKind: {
         enumValues: {
             "custom": 0,
@@ -723,6 +754,12 @@ export var TypeInfo = {
         fields: <any>null
     },
     EndpointAuthorization: {
+        fields: <any>null
+    },
+    EndpointUrl: {
+        fields: <any>null
+    },
+    HelpLink: {
         fields: <any>null
     },
     Issue: {
@@ -941,6 +978,9 @@ TypeInfo.AgentQueueEvent.fields = {
 TypeInfo.AgentRefreshMessage.fields = {
 };
 
+TypeInfo.AuthorizationHeader.fields = {
+};
+
 TypeInfo.DataSource.fields = {
 };
 
@@ -948,6 +988,12 @@ TypeInfo.DataSourceBinding.fields = {
 };
 
 TypeInfo.EndpointAuthorization.fields = {
+};
+
+TypeInfo.EndpointUrl.fields = {
+};
+
+TypeInfo.HelpLink.fields = {
 };
 
 TypeInfo.Issue.fields = {
@@ -981,8 +1027,6 @@ TypeInfo.JobEnvironment.fields = {
         typeInfo: TypeInfo.MaskHint
     },
     options: {
-        isArray: true,
-        typeInfo: TypeInfo.JobOption
     },
     systemConnection: {
         typeInfo: TypeInfo.ServiceEndpoint
@@ -1026,8 +1070,6 @@ TypeInfo.PlanEnvironment.fields = {
         typeInfo: TypeInfo.MaskHint
     },
     options: {
-        isArray: true,
-        typeInfo: TypeInfo.JobOption
     },
 };
 
@@ -1047,6 +1089,14 @@ TypeInfo.ServiceEndpoint.fields = {
 };
 
 TypeInfo.ServiceEndpointAuthenticationScheme.fields = {
+    authorizationHeaders: {
+        isArray: true,
+        typeInfo: TypeInfo.AuthorizationHeader
+    },
+    endpointHeaders: {
+        isArray: true,
+        typeInfo: TypeInfo.AuthorizationHeader
+    },
     inputDescriptors: {
         isArray: true,
         typeInfo: FormInputInterfaces.TypeInfo.InputDescriptor
@@ -1061,6 +1111,12 @@ TypeInfo.ServiceEndpointType.fields = {
     dataSources: {
         isArray: true,
         typeInfo: TypeInfo.DataSource
+    },
+    endpointUrl: {
+        typeInfo: TypeInfo.EndpointUrl
+    },
+    helpLink: {
+        typeInfo: TypeInfo.HelpLink
     },
 };
 
@@ -1141,6 +1197,9 @@ TypeInfo.TaskAgentQueue.fields = {
 };
 
 TypeInfo.TaskAgentReference.fields = {
+    status: {
+        enumType: TypeInfo.TaskAgentStatus
+    },
 };
 
 TypeInfo.TaskAgentSession.fields = {

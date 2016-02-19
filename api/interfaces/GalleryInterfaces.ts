@@ -10,7 +10,6 @@
 
 "use strict";
 
-import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
 export enum AcquisitionAssignmentType {
@@ -23,6 +22,36 @@ export enum AcquisitionAssignmentType {
      * Assign for all users in the account
      */
     All = 2,
+}
+
+export interface AcquisitionOperation {
+    /**
+     * State of the the AcquisitionOperation for the current user
+     */
+    operationState: AcquisitionOperationState;
+    /**
+     * AcquisitionOperationType: install, request, buy, etc...
+     */
+    operationType: AcquisitionOperationType;
+    /**
+     * Optional reason to justify current state. Typically used with Disallow state.
+     */
+    reason: string;
+}
+
+export enum AcquisitionOperationState {
+    /**
+     * Not allowed to use this AcquisitionOperation
+     */
+    Disallow = 0,
+    /**
+     * Allowed to use this AcquisitionOperation
+     */
+    Allow = 1,
+    /**
+     * Operation has already been completed and is no longer available
+     */
+    Completed = 3,
 }
 
 export enum AcquisitionOperationType {
@@ -46,6 +75,10 @@ export enum AcquisitionOperationType {
      * Not yet used
      */
     Request = 4,
+    /**
+     * No action found
+     */
+    None = 5,
 }
 
 /**
@@ -53,17 +86,27 @@ export enum AcquisitionOperationType {
  */
 export interface AcquisitionOptions {
     /**
+     * Default Operation for the ItemId in this target
+     */
+    defaultOperation: AcquisitionOperation;
+    /**
      * The item id that this options refer to
      */
     itemId: string;
     /**
      * Operations allowed for the ItemId in this target
      */
-    operations: AcquisitionOperationType[];
+    operations: AcquisitionOperation[];
     /**
      * The target that this options refer to
      */
     target: string;
+}
+
+export enum ConcernCategory {
+    General = 1,
+    Abusive = 2,
+    Spam = 4,
 }
 
 /**
@@ -124,6 +167,38 @@ export interface ExtensionFilterResult {
      * The PagingToken is returned from a request when more records exist that match the result than were requested or could be returned. A follow-up query with this paging token can be used to retrieve more results.
      */
     pagingToken: string;
+    /**
+     * This is the additional optional metadata for the given result. E.g. Total count of results which is useful in case of paged results
+     */
+    resultMetadata: ExtensionFilterResultMetadata[];
+}
+
+/**
+ * ExtensionFilterResultMetadata is one set of metadata for the result e.g. Total count. There can be multiple metadata items for one metadata.
+ */
+export interface ExtensionFilterResultMetadata {
+    /**
+     * The metadata items for the category
+     */
+    metadataItems: MetadataItem[];
+    /**
+     * Defines the category of metadata items
+     */
+    metadataType: string;
+}
+
+/**
+ * Represents the component pieces of an extensions fully qualified name, along with the fully qualified name.
+ */
+export interface ExtensionIdentifier {
+    /**
+     * The ExtensionName component part of the fully qualified ExtensionIdentifier
+     */
+    extensionName: string;
+    /**
+     * The PublisherName component part of the fully qualified ExtensionIdentifier
+     */
+    publisherName: string;
 }
 
 /**
@@ -137,9 +212,58 @@ export interface ExtensionPackage {
 }
 
 /**
+ * Policy with a set of permissions on extension operations
+ */
+export interface ExtensionPolicy {
+    /**
+     * Permissions on 'Install' operation
+     */
+    install: ExtensionPolicyFlags;
+    /**
+     * Permission on 'Request' operation
+     */
+    request: ExtensionPolicyFlags;
+}
+
+export enum ExtensionPolicyFlags {
+    /**
+     * No permission
+     */
+    None = 0,
+    /**
+     * Permission on private extensions
+     */
+    Private = 1,
+    /**
+     * Permission on public extensions
+     */
+    Public = 2,
+    /**
+     * Premission in extensions that are in preview
+     */
+    Preview = 4,
+    /**
+     * Premission in relased extensions
+     */
+    Released = 8,
+    /**
+     * Permission in 1st party extensions
+     */
+    FirstParty = 16,
+    /**
+     * Mask that defines all permissions
+     */
+    All = 31,
+}
+
+/**
  * An ExtensionQuery is used to search the gallery for a set of extensions that match one of many filter values.
  */
 export interface ExtensionQuery {
+    /**
+     * When retrieving extensions with a query; frequently the caller only needs a small subset of the assets. The caller may specify a list of asset types that should be returned if the extension contains it. All other assets will not be returned.
+     */
+    assetTypes: string[];
     /**
      * Each filter is a unique query and will have matching set of extensions returned from the request. Each result will have the same index in the resulting array that the filter had in the incoming query.
      */
@@ -183,6 +307,14 @@ export enum ExtensionQueryFilterType {
      * The InstallationTarget for an extension defines the target consumer for the extension. This may be something like VS, VSOnline, or VSCode
      */
     InstallationTarget = 8,
+    /**
+     * Query for featured extensions, no value is allowed when using the query type.
+     */
+    Featured = 9,
+    /**
+     * The SearchText provided by the user to search for extensions
+     */
+    SearchText = 10,
 }
 
 export enum ExtensionQueryFlags {
@@ -227,7 +359,11 @@ export enum ExtensionQueryFlags {
      */
     IncludeStatistics = 256,
     /**
-     * AllAttributes is designed to be a mask that defines all sub-elements of the extension should be returned.
+     * When retrieving versions from a query, only include the latest version of the extensions that matched. This is useful when the caller doesn't need all the published versions. It will save a significant size in the returned payload.
+     */
+    IncludeLatestVersionOnly = 512,
+    /**
+     * AllAttributes is designed to be a mask that defines all sub-elements of the extension should be returned.  NOTE: This is not actually All flags. This is now locked to the set defined since changing this enum would be a breaking change and would change the behavior of anyone using it. Try not to use this value when making calls to the service, instead be explicit about the options required.
      */
     AllAttributes = 479,
 }
@@ -295,6 +431,20 @@ export interface FilterCriteria {
 
 export interface InstallationTarget {
     target: string;
+}
+
+/**
+ * MetadataItem is one value of metadata under a given category of metadata
+ */
+export interface MetadataItem {
+    /**
+     * The count of the metadata item
+     */
+    count: number;
+    /**
+     * The name of the metadata item
+     */
+    name: string;
 }
 
 export enum PagingDirection {
@@ -380,6 +530,7 @@ export interface Publisher {
  */
 export interface PublisherFacts {
     displayName: string;
+    flags: PublisherFlags;
     publisherId: string;
     publisherName: string;
 }
@@ -417,28 +568,23 @@ export enum PublisherFlags {
     ServiceFlags = 3,
 }
 
-export interface PublisherPermission {
-    identity: VSSInterfaces.IdentityRef;
-    permissions: PublisherPermissions;
-}
-
 export enum PublisherPermissions {
     /**
      * This gives the bearer the rights to read Publishers and Extensions.
      */
     Read = 1,
     /**
-     * This gives the bearer the rights to update Publishers and Extensions (but not the ability to Create them).
+     * This gives the bearer the rights to update, delete, and share Extensions (but not the ability to create them).
      */
-    Write = 2,
+    UpdateExtension = 2,
     /**
      * This gives the bearer the rights to create new Publishers at the root of the namespace.
      */
-    Create = 4,
+    CreatePublisher = 4,
     /**
      * This gives the bearer the rights to create new Extensions within a publisher.
      */
-    Publish = 8,
+    PublishExtension = 8,
     /**
      * Admin gives the bearer the rights to manage restricted attributes of Publishers and Extensions.
      */
@@ -451,6 +597,26 @@ export enum PublisherPermissions {
      * PrivateRead is another form of read designed to allow higher privilege accessors the ability to read private extensions.
      */
     PrivateRead = 64,
+    /**
+     * This gives the bearer the rights to delete any extension.
+     */
+    DeleteExtension = 128,
+    /**
+     * This gives the bearer the rights edit the publisher settings.
+     */
+    EditSettings = 256,
+    /**
+     * This gives the bearer the rights to see all permissions on the publisher.
+     */
+    ViewPermissions = 512,
+    /**
+     * This gives the bearer the rights to assign permissions on the publisher.
+     */
+    ManagePermissions = 1024,
+    /**
+     * This gives the bearer the rights to delete the publisher.
+     */
+    DeletePublisher = 2048,
 }
 
 /**
@@ -516,6 +682,10 @@ export interface QueryFilter {
      */
     direction: PagingDirection;
     /**
+     * The page number requested by the user. If not provided 1 is assumed by default.
+     */
+    pageNumber: number;
+    /**
      * The page size defines the number of results the caller wants for this filter. The count can't exceed the overall query size limits.
      */
     pageSize: number;
@@ -523,11 +693,148 @@ export interface QueryFilter {
      * The paging token is a distinct type of filter and the other filter fields are ignored. The paging token represents the continuation of a previously executed query. The information about where in the result and what fields are being filtered are embeded in the token.
      */
     pagingToken: string;
+    /**
+     * Defines the type of sorting to be applied on the results. The page slice is cut of the sorted results only.
+     */
+    sortBy: number;
+    /**
+     * Defines the order of sorting, 1 for Ascending, 2 for Descending, else default ordering based on the SortBy value
+     */
+    sortOrder: number;
+}
+
+export interface Review {
+    /**
+     * Unique identifier of a review item
+     */
+    id: number;
+    /**
+     * Flag for soft deletion
+     */
+    isDeleted: boolean;
+    /**
+     * Version of the product for which review was submitted
+     */
+    productVersion: string;
+    /**
+     * Rating procided by the user
+     */
+    rating: number;
+    /**
+     * Text description of the review
+     */
+    text: string;
+    /**
+     * Title of the review
+     */
+    title: string;
+    /**
+     * Time when the review was edited/updated
+     */
+    updatedDate: Date;
+    /**
+     * Id of the user who submitted the review
+     */
+    userId: string;
+}
+
+export interface ReviewsResult {
+    /**
+     * Flag indicating if there are more reviews to be shown (for paging)
+     */
+    hasMoreReviews: boolean;
+    /**
+     * List of reviews
+     */
+    reviews: Review[];
+    /**
+     * Count of total review items
+     */
+    totalReviewCount: number;
 }
 
 export enum SigningKeyPermissions {
     Read = 1,
     Write = 2,
+}
+
+export enum SortByType {
+    /**
+     * The results will be sorted by relevance in case search query is given, if no search query resutls will be provided as is
+     */
+    Relevance = 0,
+    /**
+     * The results will be sorted as per Last Updated date of the extensions with recently updated at the top
+     */
+    LastUpdatedDate = 1,
+    /**
+     * Results will be sorted Alphabetically as per the title of the extension
+     */
+    Title = 2,
+    /**
+     * Results will be sorted Alphabetically as per Publisher title
+     */
+    Publisher = 3,
+    /**
+     * Results will be sorted by Install Count
+     */
+    InstallCount = 4,
+}
+
+export enum SortOrderType {
+    /**
+     * Results will be sorted in the default order as per the sorting type defined. The default varies for each type, e.g. for Relevance, default is Descnding, for Title default is Ascending etc.
+     */
+    Default = 0,
+    /**
+     * The results will be sorted in Ascending order
+     */
+    Ascending = 1,
+    /**
+     * The results will be sorted in Descending order
+     */
+    Descending = 2,
+}
+
+/**
+ * Represents the extension policy applied to a given user
+ */
+export interface UserExtensionPolicy {
+    /**
+     * User display name that this policy refers to
+     */
+    displayName: string;
+    /**
+     * The extension policy applied to the user
+     */
+    permissions: ExtensionPolicy;
+    /**
+     * User id that this policy refers to
+     */
+    userId: string;
+}
+
+export interface UserReportedConcern {
+    /**
+     * Category of the concern
+     */
+    category: ConcernCategory;
+    /**
+     * User comment associated with the report
+     */
+    concernText: string;
+    /**
+     * Id of the review which was reported
+     */
+    reviewId: number;
+    /**
+     * Date the report was submitted
+     */
+    submittedDate: Date;
+    /**
+     * Id of the user who reported a review
+     */
+    userId: string;
 }
 
 export var TypeInfo = {
@@ -538,6 +845,16 @@ export var TypeInfo = {
             "all": 2,
         }
     },
+    AcquisitionOperation: {
+        fields: <any>null
+    },
+    AcquisitionOperationState: {
+        enumValues: {
+            "disallow": 0,
+            "allow": 1,
+            "completed": 3,
+        }
+    },
     AcquisitionOperationType: {
         enumValues: {
             "get": 0,
@@ -545,10 +862,18 @@ export var TypeInfo = {
             "buy": 2,
             "try": 3,
             "request": 4,
+            "none": 5,
         }
     },
     AcquisitionOptions: {
         fields: <any>null
+    },
+    ConcernCategory: {
+        enumValues: {
+            "general": 1,
+            "abusive": 2,
+            "spam": 4,
+        }
     },
     ExtensionAcquisitionRequest: {
         fields: <any>null
@@ -559,8 +884,28 @@ export var TypeInfo = {
     ExtensionFilterResult: {
         fields: <any>null
     },
+    ExtensionFilterResultMetadata: {
+        fields: <any>null
+    },
+    ExtensionIdentifier: {
+        fields: <any>null
+    },
     ExtensionPackage: {
         fields: <any>null
+    },
+    ExtensionPolicy: {
+        fields: <any>null
+    },
+    ExtensionPolicyFlags: {
+        enumValues: {
+            "none": 0,
+            "private": 1,
+            "public": 2,
+            "preview": 4,
+            "released": 8,
+            "firstParty": 16,
+            "all": 31,
+        }
     },
     ExtensionQuery: {
         fields: <any>null
@@ -575,6 +920,8 @@ export var TypeInfo = {
             "contributionType": 6,
             "name": 7,
             "installationTarget": 8,
+            "featured": 9,
+            "searchText": 10,
         }
     },
     ExtensionQueryFlags: {
@@ -589,6 +936,7 @@ export var TypeInfo = {
             "includeInstallationTargets": 64,
             "includeAssetUri": 128,
             "includeStatistics": 256,
+            "includeLatestVersionOnly": 512,
             "allAttributes": 479,
         }
     },
@@ -622,6 +970,9 @@ export var TypeInfo = {
         fields: <any>null
     },
     InstallationTarget: {
+        fields: <any>null
+    },
+    MetadataItem: {
         fields: <any>null
     },
     PagingDirection: {
@@ -664,18 +1015,20 @@ export var TypeInfo = {
             "serviceFlags": 3,
         }
     },
-    PublisherPermission: {
-        fields: <any>null
-    },
     PublisherPermissions: {
         enumValues: {
             "read": 1,
-            "write": 2,
-            "create": 4,
-            "publish": 8,
+            "updateExtension": 2,
+            "createPublisher": 4,
+            "publishExtension": 8,
             "admin": 16,
             "trustedPartner": 32,
             "privateRead": 64,
+            "deleteExtension": 128,
+            "editSettings": 256,
+            "viewPermissions": 512,
+            "managePermissions": 1024,
+            "deletePublisher": 2048,
         }
     },
     PublisherQuery: {
@@ -700,18 +1053,58 @@ export var TypeInfo = {
     QueryFilter: {
         fields: <any>null
     },
+    Review: {
+        fields: <any>null
+    },
+    ReviewsResult: {
+        fields: <any>null
+    },
     SigningKeyPermissions: {
         enumValues: {
             "read": 1,
             "write": 2,
         }
     },
+    SortByType: {
+        enumValues: {
+            "relevance": 0,
+            "lastUpdatedDate": 1,
+            "title": 2,
+            "publisher": 3,
+            "installCount": 4,
+        }
+    },
+    SortOrderType: {
+        enumValues: {
+            "default": 0,
+            "ascending": 1,
+            "descending": 2,
+        }
+    },
+    UserExtensionPolicy: {
+        fields: <any>null
+    },
+    UserReportedConcern: {
+        fields: <any>null
+    },
+};
+
+TypeInfo.AcquisitionOperation.fields = {
+    operationState: {
+        enumType: TypeInfo.AcquisitionOperationState
+    },
+    operationType: {
+        enumType: TypeInfo.AcquisitionOperationType
+    },
 };
 
 TypeInfo.AcquisitionOptions.fields = {
+    defaultOperation: {
+        typeInfo: TypeInfo.AcquisitionOperation
+    },
     operations: {
         isArray: true,
-        enumType: TypeInfo.AcquisitionOperationType
+        typeInfo: TypeInfo.AcquisitionOperation
     },
 };
 
@@ -732,9 +1125,32 @@ TypeInfo.ExtensionFilterResult.fields = {
         isArray: true,
         typeInfo: TypeInfo.PublishedExtension
     },
+    resultMetadata: {
+        isArray: true,
+        typeInfo: TypeInfo.ExtensionFilterResultMetadata
+    },
+};
+
+TypeInfo.ExtensionFilterResultMetadata.fields = {
+    metadataItems: {
+        isArray: true,
+        typeInfo: TypeInfo.MetadataItem
+    },
+};
+
+TypeInfo.ExtensionIdentifier.fields = {
 };
 
 TypeInfo.ExtensionPackage.fields = {
+};
+
+TypeInfo.ExtensionPolicy.fields = {
+    install: {
+        enumType: TypeInfo.ExtensionPolicyFlags
+    },
+    request: {
+        enumType: TypeInfo.ExtensionPolicyFlags
+    },
 };
 
 TypeInfo.ExtensionQuery.fields = {
@@ -779,6 +1195,9 @@ TypeInfo.FilterCriteria.fields = {
 TypeInfo.InstallationTarget.fields = {
 };
 
+TypeInfo.MetadataItem.fields = {
+};
+
 TypeInfo.PublishedExtension.fields = {
     flags: {
         enumType: TypeInfo.PublishedExtensionFlags
@@ -821,21 +1240,15 @@ TypeInfo.Publisher.fields = {
 };
 
 TypeInfo.PublisherFacts.fields = {
+    flags: {
+        enumType: TypeInfo.PublisherFlags
+    },
 };
 
 TypeInfo.PublisherFilterResult.fields = {
     publishers: {
         isArray: true,
         typeInfo: TypeInfo.Publisher
-    },
-};
-
-TypeInfo.PublisherPermission.fields = {
-    identity: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    permissions: {
-        enumType: TypeInfo.PublisherPermissions
     },
 };
 
@@ -863,5 +1276,33 @@ TypeInfo.QueryFilter.fields = {
     },
     direction: {
         enumType: TypeInfo.PagingDirection
+    },
+};
+
+TypeInfo.Review.fields = {
+    updatedDate: {
+        isDate: true,
+    },
+};
+
+TypeInfo.ReviewsResult.fields = {
+    reviews: {
+        isArray: true,
+        typeInfo: TypeInfo.Review
+    },
+};
+
+TypeInfo.UserExtensionPolicy.fields = {
+    permissions: {
+        typeInfo: TypeInfo.ExtensionPolicy
+    },
+};
+
+TypeInfo.UserReportedConcern.fields = {
+    category: {
+        enumType: TypeInfo.ConcernCategory
+    },
+    submittedDate: {
+        isDate: true,
     },
 };

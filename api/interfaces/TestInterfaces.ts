@@ -14,14 +14,20 @@ import TfsCoreInterfaces = require("../interfaces/CoreInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
+export interface AggregatedDataForResultTrend {
+    /**
+     * This is tests execution duration.
+     */
+    duration: any;
+    resultsByOutcome: { [key: number] : AggregatedResultsByOutcome; };
+    testResultsContext: TestResultsContext;
+}
+
 export interface AggregatedResultsAnalysis {
     duration: any;
-    increaseInDuration: any;
-    increaseInFailures: number;
-    increaseInPassedTests: number;
-    increaseInTotalTests: number;
-    previousBuild: BuildReference;
-    resultsByOutcome: AggregatedResultsByOutcome[];
+    previousContext: TestResultsContext;
+    resultsByOutcome: { [key: number] : AggregatedResultsByOutcome; };
+    resultsDifference: AggregatedResultsDifference;
     totalTests: number;
 }
 
@@ -31,9 +37,11 @@ export interface AggregatedResultsByOutcome {
     outcome: TestOutcome;
 }
 
-export interface AggregatedResultsWithDetails {
-    groupByField: string;
-    resultsForGroup: TestResultsDetailsForGroup[];
+export interface AggregatedResultsDifference {
+    increaseInDuration: any;
+    increaseInFailures: number;
+    increaseInPassedTests: number;
+    increaseInTotalTests: number;
 }
 
 export enum AttachmentType {
@@ -78,10 +86,125 @@ export interface BuildCoverage {
 }
 
 export interface BuildReference {
+    branchName: string;
     buildSystem: string;
+    definitionId: number;
     id: number;
     number: string;
     uri: string;
+}
+
+export interface CloneOperationInformation {
+    cloneStatistics: CloneStatistics;
+    /**
+     * If the operation is complete, the DateTime of completion. If operation is not complete, this is DateTime.MaxValue
+     */
+    completionDate: Date;
+    /**
+     * DateTime when the operation was started
+     */
+    creationDate: Date;
+    /**
+     * Shallow reference of the destination
+     */
+    destinationObject: ShallowReference;
+    /**
+     * Shallow reference of the destination
+     */
+    destinationPlan: ShallowReference;
+    /**
+     * Shallow reference of the destination
+     */
+    destinationProject: ShallowReference;
+    /**
+     * If the operation has Failed, Message contains the reason for failure. Null otherwise.
+     */
+    message: string;
+    /**
+     * The ID of the operation
+     */
+    opId: number;
+    /**
+     * The type of the object generated as a result of the Clone operation
+     */
+    resultObjectType: ResultObjectType;
+    /**
+     * Shallow reference of the source
+     */
+    sourceObject: ShallowReference;
+    /**
+     * Shallow reference of the source
+     */
+    sourcePlan: ShallowReference;
+    /**
+     * Shallow reference of the source
+     */
+    sourceProject: ShallowReference;
+    /**
+     * Current state of the operation. When State reaches Suceeded or Failed, the operation is complete
+     */
+    state: CloneOperationState;
+    /**
+     * Url for geting the clone information
+     */
+    url: string;
+}
+
+export enum CloneOperationState {
+    Failed = 2,
+    InProgress = 1,
+    Queued = 0,
+    Succeeded = 3,
+}
+
+export interface CloneOptions {
+    /**
+     * If set to true requirements will be cloned
+     */
+    cloneRequirements: boolean;
+    /**
+     * copy all suites from a source plan
+     */
+    copyAllSuites: boolean;
+    /**
+     * copy ancestor hieracrchy
+     */
+    copyAncestorHierarchy: boolean;
+    /**
+     * Name of the workitem type of the clone
+     */
+    destinationWorkItemType: string;
+    /**
+     * Key value pairs where the key value is overridden by the value.
+     */
+    overrideParameters: { [key: string] : string; };
+    /**
+     * Comment on the link that will link the new clone  test case to the original Set null for no comment
+     */
+    relatedLinkComment: string;
+}
+
+export interface CloneStatistics {
+    /**
+     * Number of Requirments cloned so far.
+     */
+    clonedRequirementsCount: number;
+    /**
+     * Number of shared steps cloned so far.
+     */
+    clonedSharedStepsCount: number;
+    /**
+     * Number of test cases cloned so far
+     */
+    clonedTestCasesCount: number;
+    /**
+     * Total number of requirements to be cloned
+     */
+    totalRequirementsCount: number;
+    /**
+     * Total number of test cases to be cloned
+     */
+    totalTestCasesCount: number;
 }
 
 /**
@@ -195,11 +318,11 @@ export enum CustomTestFieldScope {
 
 export enum CustomTestFieldType {
     Bit = 2,
+    DateTime = 4,
     Int = 8,
     Float = 6,
-    Guid = 14,
-    DateTime = 4,
     String = 12,
+    Guid = 14,
 }
 
 /**
@@ -214,6 +337,7 @@ export interface DtlEnvironmentDetails {
 export interface FailingSince {
     build: BuildReference;
     date: Date;
+    release: ReleaseReference;
 }
 
 export interface FunctionCoverage {
@@ -243,6 +367,11 @@ export interface ModuleCoverage {
     signature: string;
     signatureAge: number;
     statistics: CoverageStatistics;
+}
+
+export interface NameValuePair {
+    name: string;
+    value: string;
 }
 
 export interface PlanUpdateModel {
@@ -279,6 +408,13 @@ export interface QueryModel {
     query: string;
 }
 
+export interface ReleaseReference {
+    definitionId: number;
+    environmentDefinitionId: number;
+    environmentId: number;
+    id: number;
+}
+
 export interface Response {
     error: string;
     id: string;
@@ -290,6 +426,11 @@ export enum ResultDetails {
     None = 0,
     Iterations = 1,
     WorkItems = 2,
+}
+
+export enum ResultObjectType {
+    TestSuite = 0,
+    TestPlan = 1,
 }
 
 export enum ResultOutcome {
@@ -475,6 +616,7 @@ export interface TestCaseResult {
     owner: VSSInterfaces.IdentityRef;
     priority: number;
     project: ShallowReference;
+    releaseReference: ReleaseReference;
     resetCount: number;
     resolutionState: string;
     resolutionStateId: number;
@@ -548,6 +690,68 @@ export interface TestCaseResultUpdateModel {
     testResult: ShallowReference;
 }
 
+export interface TestConfiguration {
+    /**
+     * Area of the configuration
+     */
+    area: ShallowReference;
+    /**
+     * Description of the configuration
+     */
+    description: string;
+    /**
+     * Id of the configuration
+     */
+    id: number;
+    /**
+     * Is the configuration a default for the test plans
+     */
+    isDefault: boolean;
+    /**
+     * Last Updated By  Reference
+     */
+    lastUpdatedBy: VSSInterfaces.IdentityRef;
+    /**
+     * Last Updated Data
+     */
+    lastUpdatedDate: Date;
+    /**
+     * Name of the configuration
+     */
+    name: string;
+    /**
+     * Project to which the configuration belongs
+     */
+    project: ShallowReference;
+    /**
+     * Revision of the the configuration
+     */
+    revision: number;
+    /**
+     * State of the configuration
+     */
+    state: TestConfigurationState;
+    /**
+     * Url of Configuration Resource
+     */
+    url: string;
+    /**
+     * Dictionary of Test Variable, Selected Value
+     */
+    values: NameValuePair[];
+}
+
+export enum TestConfigurationState {
+    /**
+     * The configuration can be used for new test runs.
+     */
+    Active = 1,
+    /**
+     * The configuration has been retired and should not be used for new test runs.
+     */
+    Inactive = 2,
+}
+
 export interface TestEnvironment {
     environmentId: string;
     environmentName: string;
@@ -562,7 +766,7 @@ export interface TestFailuresAnalysis {
     existingFailures: TestFailureDetails;
     fixedTests: TestFailureDetails;
     newFailures: TestFailureDetails;
-    previousBuild: BuildReference;
+    previousContext: TestResultsContext;
 }
 
 export interface TestIterationDetailsModel {
@@ -682,6 +886,12 @@ export interface TestPlan {
     url: string;
 }
 
+export interface TestPlanCloneRequest {
+    cloneOptions: CloneOptions;
+    destinationTestPlan: TestPlan;
+    suiteIds: number[];
+}
+
 export interface TestPlansWithSelection {
     lastSelectedPlan: number;
     lastSelectedSuite: number;
@@ -710,13 +920,6 @@ export interface TestPoint {
     testPlan: ShallowReference;
     url: string;
     workItemProperties: any[];
-}
-
-export interface TestReport {
-    aggregatedResultsAnalysis: AggregatedResultsAnalysis;
-    build: BuildReference;
-    teamProject: TfsCoreInterfaces.TeamProjectReference;
-    testFailures: TestFailuresAnalysis;
 }
 
 export interface TestResolutionState {
@@ -771,10 +974,41 @@ export interface TestResultParameterModel {
     value: string;
 }
 
+export interface TestResultsContext {
+    build: BuildReference;
+    contextType: TestResultsContextType;
+    release: ReleaseReference;
+}
+
+export enum TestResultsContextType {
+    Build = 1,
+    Release = 2,
+}
+
+export interface TestResultsDetails {
+    groupByField: string;
+    resultsForGroup: TestResultsDetailsForGroup[];
+}
+
 export interface TestResultsDetailsForGroup {
-    groupByValue: string;
-    results: TestCaseResult[];
-    resultsCountByOutcome: AggregatedResultsByOutcome[];
+    groupByValue: any;
+    ids: TestCaseResultIdentifier[];
+    resultsCountByOutcome: { [key: number] : AggregatedResultsByOutcome; };
+}
+
+export interface TestResultSummary {
+    aggregatedResultsAnalysis: AggregatedResultsAnalysis;
+    teamProject: TfsCoreInterfaces.TeamProjectReference;
+    testFailures: TestFailuresAnalysis;
+    testResultsContext: TestResultsContext;
+}
+
+export interface TestResultTrendFilter {
+    branchNames: string[];
+    buildCount: number;
+    definitionIds: number[];
+    publishContext: string;
+    testRunTitles: string[];
 }
 
 export interface TestRun {
@@ -913,6 +1147,7 @@ export interface TestSettings {
 
 export interface TestSuite {
     areaUri: string;
+    children: TestSuite[];
     defaultConfigurations: ShallowReference[];
     id: number;
     inheritDefaultConfigurations: boolean;
@@ -932,7 +1167,45 @@ export interface TestSuite {
     suiteType: string;
     testCaseCount: number;
     testCasesUrl: string;
+    text: string;
     url: string;
+}
+
+export interface TestSuiteCloneRequest {
+    cloneOptions: CloneOptions;
+    destinationSuiteId: number;
+    destinationSuiteProjectName: string;
+}
+
+export interface TestVariable {
+    /**
+     * Description of the test variable
+     */
+    description: string;
+    /**
+     * Id of the test variable
+     */
+    id: number;
+    /**
+     * Name of the test variable
+     */
+    name: string;
+    /**
+     * Project to which the test variable belongs
+     */
+    project: ShallowReference;
+    /**
+     * Revision
+     */
+    revision: number;
+    /**
+     * Url of the test variable
+     */
+    url: string;
+    /**
+     * List of allowed values
+     */
+    values: string[];
 }
 
 export interface WorkItemReference {
@@ -943,13 +1216,16 @@ export interface WorkItemReference {
 }
 
 export var TypeInfo = {
+    AggregatedDataForResultTrend: {
+        fields: <any>null
+    },
     AggregatedResultsAnalysis: {
         fields: <any>null
     },
     AggregatedResultsByOutcome: {
         fields: <any>null
     },
-    AggregatedResultsWithDetails: {
+    AggregatedResultsDifference: {
         fields: <any>null
     },
     AttachmentType: {
@@ -977,6 +1253,23 @@ export var TypeInfo = {
         fields: <any>null
     },
     BuildReference: {
+        fields: <any>null
+    },
+    CloneOperationInformation: {
+        fields: <any>null
+    },
+    CloneOperationState: {
+        enumValues: {
+            "failed": 2,
+            "inProgress": 1,
+            "queued": 0,
+            "succeeded": 3,
+        }
+    },
+    CloneOptions: {
+        fields: <any>null
+    },
+    CloneStatistics: {
         fields: <any>null
     },
     CodeCoverageData: {
@@ -1016,11 +1309,11 @@ export var TypeInfo = {
     CustomTestFieldType: {
         enumValues: {
             "bit": 2,
+            "dateTime": 4,
             "int": 8,
             "float": 6,
-            "guid": 14,
-            "dateTime": 4,
             "string": 12,
+            "guid": 14,
         }
     },
     DtlEnvironmentDetails: {
@@ -1044,6 +1337,9 @@ export var TypeInfo = {
     ModuleCoverage: {
         fields: <any>null
     },
+    NameValuePair: {
+        fields: <any>null
+    },
     PlanUpdateModel: {
         fields: <any>null
     },
@@ -1059,6 +1355,9 @@ export var TypeInfo = {
     QueryModel: {
         fields: <any>null
     },
+    ReleaseReference: {
+        fields: <any>null
+    },
     Response: {
         fields: <any>null
     },
@@ -1067,6 +1366,12 @@ export var TypeInfo = {
             "none": 0,
             "iterations": 1,
             "workItems": 2,
+        }
+    },
+    ResultObjectType: {
+        enumValues: {
+            "testSuite": 0,
+            "testPlan": 1,
         }
     },
     ResultOutcome: {
@@ -1136,6 +1441,15 @@ export var TypeInfo = {
     TestCaseResultUpdateModel: {
         fields: <any>null
     },
+    TestConfiguration: {
+        fields: <any>null
+    },
+    TestConfigurationState: {
+        enumValues: {
+            "active": 1,
+            "inactive": 2,
+        }
+    },
     TestEnvironment: {
         fields: <any>null
     },
@@ -1173,13 +1487,13 @@ export var TypeInfo = {
     TestPlan: {
         fields: <any>null
     },
+    TestPlanCloneRequest: {
+        fields: <any>null
+    },
     TestPlansWithSelection: {
         fields: <any>null
     },
     TestPoint: {
-        fields: <any>null
-    },
-    TestReport: {
         fields: <any>null
     },
     TestResolutionState: {
@@ -1194,7 +1508,25 @@ export var TypeInfo = {
     TestResultParameterModel: {
         fields: <any>null
     },
+    TestResultsContext: {
+        fields: <any>null
+    },
+    TestResultsContextType: {
+        enumValues: {
+            "build": 1,
+            "release": 2,
+        }
+    },
+    TestResultsDetails: {
+        fields: <any>null
+    },
     TestResultsDetailsForGroup: {
+        fields: <any>null
+    },
+    TestResultSummary: {
+        fields: <any>null
+    },
+    TestResultTrendFilter: {
         fields: <any>null
     },
     TestRun: {
@@ -1236,18 +1568,33 @@ export var TypeInfo = {
     TestSuite: {
         fields: <any>null
     },
+    TestSuiteCloneRequest: {
+        fields: <any>null
+    },
+    TestVariable: {
+        fields: <any>null
+    },
     WorkItemReference: {
         fields: <any>null
     },
 };
 
+TypeInfo.AggregatedDataForResultTrend.fields = {
+    resultsByOutcome: {
+    },
+    testResultsContext: {
+        typeInfo: TypeInfo.TestResultsContext
+    },
+};
+
 TypeInfo.AggregatedResultsAnalysis.fields = {
-    previousBuild: {
-        typeInfo: TypeInfo.BuildReference
+    previousContext: {
+        typeInfo: TypeInfo.TestResultsContext
     },
     resultsByOutcome: {
-        isArray: true,
-        typeInfo: TypeInfo.AggregatedResultsByOutcome
+    },
+    resultsDifference: {
+        typeInfo: TypeInfo.AggregatedResultsDifference
     },
 };
 
@@ -1257,11 +1604,7 @@ TypeInfo.AggregatedResultsByOutcome.fields = {
     },
 };
 
-TypeInfo.AggregatedResultsWithDetails.fields = {
-    resultsForGroup: {
-        isArray: true,
-        typeInfo: TypeInfo.TestResultsDetailsForGroup
-    },
+TypeInfo.AggregatedResultsDifference.fields = {
 };
 
 TypeInfo.BatchResponse.fields = {
@@ -1288,6 +1631,48 @@ TypeInfo.BuildCoverage.fields = {
 };
 
 TypeInfo.BuildReference.fields = {
+};
+
+TypeInfo.CloneOperationInformation.fields = {
+    cloneStatistics: {
+        typeInfo: TypeInfo.CloneStatistics
+    },
+    completionDate: {
+        isDate: true,
+    },
+    creationDate: {
+        isDate: true,
+    },
+    destinationObject: {
+        typeInfo: TypeInfo.ShallowReference
+    },
+    destinationPlan: {
+        typeInfo: TypeInfo.ShallowReference
+    },
+    destinationProject: {
+        typeInfo: TypeInfo.ShallowReference
+    },
+    resultObjectType: {
+        enumType: TypeInfo.ResultObjectType
+    },
+    sourceObject: {
+        typeInfo: TypeInfo.ShallowReference
+    },
+    sourcePlan: {
+        typeInfo: TypeInfo.ShallowReference
+    },
+    sourceProject: {
+        typeInfo: TypeInfo.ShallowReference
+    },
+    state: {
+        enumType: TypeInfo.CloneOperationState
+    },
+};
+
+TypeInfo.CloneOptions.fields = {
+};
+
+TypeInfo.CloneStatistics.fields = {
 };
 
 TypeInfo.CodeCoverageData.fields = {
@@ -1338,6 +1723,9 @@ TypeInfo.FailingSince.fields = {
     date: {
         isDate: true,
     },
+    release: {
+        typeInfo: TypeInfo.ReleaseReference
+    },
 };
 
 TypeInfo.FunctionCoverage.fields = {
@@ -1363,6 +1751,9 @@ TypeInfo.ModuleCoverage.fields = {
     statistics: {
         typeInfo: TypeInfo.CoverageStatistics
     },
+};
+
+TypeInfo.NameValuePair.fields = {
 };
 
 TypeInfo.PlanUpdateModel.fields = {
@@ -1405,6 +1796,9 @@ TypeInfo.PointWorkItemProperty.fields = {
 };
 
 TypeInfo.QueryModel.fields = {
+};
+
+TypeInfo.ReleaseReference.fields = {
 };
 
 TypeInfo.Response.fields = {
@@ -1595,6 +1989,9 @@ TypeInfo.TestCaseResult.fields = {
     project: {
         typeInfo: TypeInfo.ShallowReference
     },
+    releaseReference: {
+        typeInfo: TypeInfo.ReleaseReference
+    },
     runBy: {
         typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
@@ -1646,6 +2043,28 @@ TypeInfo.TestCaseResultUpdateModel.fields = {
     },
 };
 
+TypeInfo.TestConfiguration.fields = {
+    area: {
+        typeInfo: TypeInfo.ShallowReference
+    },
+    lastUpdatedBy: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+    lastUpdatedDate: {
+        isDate: true,
+    },
+    project: {
+        typeInfo: TypeInfo.ShallowReference
+    },
+    state: {
+        enumType: TypeInfo.TestConfigurationState
+    },
+    values: {
+        isArray: true,
+        typeInfo: TypeInfo.NameValuePair
+    },
+};
+
 TypeInfo.TestEnvironment.fields = {
 };
 
@@ -1666,8 +2085,8 @@ TypeInfo.TestFailuresAnalysis.fields = {
     newFailures: {
         typeInfo: TypeInfo.TestFailureDetails
     },
-    previousBuild: {
-        typeInfo: TypeInfo.BuildReference
+    previousContext: {
+        typeInfo: TypeInfo.TestResultsContext
     },
 };
 
@@ -1743,6 +2162,15 @@ TypeInfo.TestPlan.fields = {
     },
 };
 
+TypeInfo.TestPlanCloneRequest.fields = {
+    cloneOptions: {
+        typeInfo: TypeInfo.CloneOptions
+    },
+    destinationTestPlan: {
+        typeInfo: TypeInfo.TestPlan
+    },
+};
+
 TypeInfo.TestPlansWithSelection.fields = {
     plans: {
         isArray: true,
@@ -1780,21 +2208,6 @@ TypeInfo.TestPoint.fields = {
     },
     testPlan: {
         typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.TestReport.fields = {
-    aggregatedResultsAnalysis: {
-        typeInfo: TypeInfo.AggregatedResultsAnalysis
-    },
-    build: {
-        typeInfo: TypeInfo.BuildReference
-    },
-    teamProject: {
-        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
-    },
-    testFailures: {
-        typeInfo: TypeInfo.TestFailuresAnalysis
     },
 };
 
@@ -1841,15 +2254,50 @@ TypeInfo.TestResultModelBase.fields = {
 TypeInfo.TestResultParameterModel.fields = {
 };
 
-TypeInfo.TestResultsDetailsForGroup.fields = {
-    results: {
+TypeInfo.TestResultsContext.fields = {
+    build: {
+        typeInfo: TypeInfo.BuildReference
+    },
+    contextType: {
+        enumType: TypeInfo.TestResultsContextType
+    },
+    release: {
+        typeInfo: TypeInfo.ReleaseReference
+    },
+};
+
+TypeInfo.TestResultsDetails.fields = {
+    resultsForGroup: {
         isArray: true,
-        typeInfo: TypeInfo.TestCaseResult
+        typeInfo: TypeInfo.TestResultsDetailsForGroup
+    },
+};
+
+TypeInfo.TestResultsDetailsForGroup.fields = {
+    ids: {
+        isArray: true,
+        typeInfo: TypeInfo.TestCaseResultIdentifier
     },
     resultsCountByOutcome: {
-        isArray: true,
-        typeInfo: TypeInfo.AggregatedResultsByOutcome
     },
+};
+
+TypeInfo.TestResultSummary.fields = {
+    aggregatedResultsAnalysis: {
+        typeInfo: TypeInfo.AggregatedResultsAnalysis
+    },
+    teamProject: {
+        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
+    },
+    testFailures: {
+        typeInfo: TypeInfo.TestFailuresAnalysis
+    },
+    testResultsContext: {
+        typeInfo: TypeInfo.TestResultsContext
+    },
+};
+
+TypeInfo.TestResultTrendFilter.fields = {
 };
 
 TypeInfo.TestRun.fields = {
@@ -1941,6 +2389,10 @@ TypeInfo.TestSettings.fields = {
 };
 
 TypeInfo.TestSuite.fields = {
+    children: {
+        isArray: true,
+        typeInfo: TypeInfo.TestSuite
+    },
     defaultConfigurations: {
         isArray: true,
         typeInfo: TypeInfo.ShallowReference
@@ -1965,6 +2417,18 @@ TypeInfo.TestSuite.fields = {
     },
     suites: {
         isArray: true,
+        typeInfo: TypeInfo.ShallowReference
+    },
+};
+
+TypeInfo.TestSuiteCloneRequest.fields = {
+    cloneOptions: {
+        typeInfo: TypeInfo.CloneOptions
+    },
+};
+
+TypeInfo.TestVariable.fields = {
+    project: {
         typeInfo: TypeInfo.ShallowReference
     },
 };
