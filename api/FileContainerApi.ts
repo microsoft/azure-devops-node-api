@@ -184,7 +184,7 @@ class ChunkStream extends stream.Writable {
         
         this._startRange = endRange;
         
-        this._api._createItem(headers, new BufferStream(this._buffer), this._containerId, this._itemPath, this._scope, (err: any, statusCode: number, item: FileContainerInterfaces.FileContainerItem) => {
+        this._api._createItem(headers, new BufferStream(this._buffer, this._length), this._containerId, this._itemPath, this._scope, (err: any, statusCode: number, item: FileContainerInterfaces.FileContainerItem) => {
             if (newBuffer) {
                 this._length = newBuffer.length;
                 newBuffer.copy(this._buffer);
@@ -207,19 +207,21 @@ class ChunkStream extends stream.Writable {
 class BufferStream extends stream.Readable {
     private _buffer: Buffer;
     private _position: number = 0;
+    private _length: number = 0;
     
-    constructor(buffer: Buffer) {
+    constructor(buffer: Buffer, length: number) {
         super();
         this._buffer = buffer;
+        this._length = length;
     }
     
     _read(size: number): void {
-        if (this._position >= this._buffer.length) {
+        if (this._position >= this._length) {
             this.push(null);
             return;
         }
         
-        let end: number = Math.min(this._position + size, this._buffer.length);
+        let end: number = Math.min(this._position + size, this._length);
         this.push(this._buffer.slice(this._position, end));
         this._position = end;
     }
