@@ -19,12 +19,13 @@
   },
   "devDependencies": {
     "del": "^1.1.1",
+    "dts-generator": "1.5.0",
     "gulp": "^3.8.11",
     "gulp-gzip": "^1.0.0",
     "gulp-mocha": "^2.0.0",
-    "gulp-tsc": "^0.10.1",
+    "gulp-typescript": "2.9.0",
     "merge2": "^0.3.1",
     "mocha": "^2.1.0",
-    "dts-generator": "1.5.0"
+    "typescript": "1.8.0-dev.20160107"
   }
 }
