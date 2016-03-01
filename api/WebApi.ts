@@ -14,6 +14,8 @@ import testm = require('./TestApi');
 import tfvcm = require('./TfvcApi');
 import workitemtrackingm = require('./WorkItemTrackingApi');
 import releasem = require('./ReleaseApi');
+import accountsm = require('./AccountsApi');
+import locationsm = require('./LocationsApi');
 
 import apivm = require('./handlers/apiversion');
 import basicm = require('./handlers/basiccreds');
@@ -147,5 +149,21 @@ export class WebApi {
 
     public getQReleaseApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): releasem.IQReleaseApi {
         return new releasem.QReleaseApi(serverUrl, handlers);
+    }
+    
+    public getAccountsApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): accountsm.IAccountsApi {
+        return new accountsm.AccountsApi(serverUrl, handlers);
+    }
+
+    public getQAccountsApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): accountsm.IQAccountsApi {
+        return new accountsm.QAccountsApi(serverUrl, handlers);
+    }
+
+    public getLocationsApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): locationsm.ILocationsApi {
+        return new locationsm.LocationsApi(serverUrl, handlers);
+    }
+
+    public getQLocationsApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): locationsm.IQLocationsApi {
+        return new locationsm.QLocationsApi(serverUrl, handlers);
     }
 }
