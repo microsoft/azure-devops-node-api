@@ -10,8 +10,7 @@
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
-/// <reference path="../node/node.d.ts"/>
-/// <reference path="../q/Q.d.ts"/>
+/// <reference path="../typings/main.d.ts"/>
 
 import Q = require('q');
 import restm = require('./RestClient');

@@ -1,3 +1,5 @@
+/// <reference path="../typings/main.d.ts"/>
+
 /**
 * Metadata for deserializing an enum field on a contract/type
 */

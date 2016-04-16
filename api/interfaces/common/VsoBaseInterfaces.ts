@@ -5,6 +5,8 @@
 // API Client Interfaces
 //----------------------------------------------------------------------------
 
+/// <reference path="../../../typings/main.d.ts"/>
+
 import Serialization = require('../../Serialization');
 
 /**

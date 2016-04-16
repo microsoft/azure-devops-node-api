@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "target": "ES5",
+        "removeComments": false,
+        "sourceMap": false,
+        "declaration": true,
+        "rootDir": "api",
+        "outDir": "_build/"
+    },
+    "exclude": [
+        "node_modules",
+        "typings",
+        "_build"        
+    ]
+}

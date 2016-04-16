@@ -1,3 +1,5 @@
+/// <reference path="../typings/main.d.ts"/>
+
 import basem = require('./ClientApiBases');
 import ifm = require("./interfaces/common/VsoBaseInterfaces");
 import taskagentbasem = require('./TaskAgentApiBase');

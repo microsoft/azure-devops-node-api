@@ -3,14 +3,12 @@ var path = require('path');
 var gulp = require('gulp');
 var del = require('del');
 var mocha = require('gulp-mocha');
-var gts = require('gulp-typescript');
-var typescript = require('typescript');
+var ts = require('gulp-typescript');
 var dtsgen = require('dts-generator');
 
-var srcDir = path.join(__dirname, 'api');
+var proj = ts.createProject('./tsconfig.json', { typescript: require('typescript') });
 
-var proj = gts.createProject('./tsconfig.json', { typescript: typescript });
-var ts = gts(proj);
+var buildDir = '_build/';
 
 function errorHandler(err) {
     console.error(err.message);
@@ -18,14 +16,13 @@ function errorHandler(err) {
 }
 
 gulp.task('clean', function (done) {
-    return del(['_build', '_def'], done);
+    return del([buildDir, '_def'], done);
 });
 
 gulp.task('compile', ['clean'], function () {
-    return gulp.src(['./api/**/*.ts'], { base: './api'})
-        .pipe(ts)
-        .pipe(gulp.dest('api'))
-        .on('error', errorHandler)
+    var tsResult = gulp.src(['./api/**/*.ts'], { base: './api'}).pipe(ts(proj));     
+        
+    return tsResult.js.pipe(gulp.dest(buildDir));
 });
 
 // builds the whole api and drops definition files (.d.ts files) in place
@@ -38,12 +35,7 @@ gulp.task('compile', ['clean'], function () {
 // });
 
 
-gulp.task('publishBuild', ['compile'], function () {
-    return gulp.src(['api/**/*.js'])
-        .pipe(gulp.dest('_build'));
-});
-
-gulp.task('publishDefinitions', ['compile'], function () {
+/*gulp.task('publishDefinitions', ['compile'], function () {
     return dtsgen.generate({
         name: 'vso-node-api',
         baseDir: 'api',
@@ -51,19 +43,13 @@ gulp.task('publishDefinitions', ['compile'], function () {
         externs: ['../node/node.d.ts', '../q/Q.d.ts'],
         out: '_def/vso-node-api.d.ts'
     });
-});
+});*/
 
 gulp.task('copy', ['compile'], function () {
     return gulp.src(['package.json', 'LICENSE', 'README.md'])
-        .pipe(gulp.dest('_build'));
+        .pipe(gulp.dest(buildDir));
 });
 
-gulp.task('postPublish', ['publishDefinitions', 'publishBuild', 'copy'], function () {
-
-    return del(['api/**/*.js']);
-    //done();
-});
-
-gulp.task('publish', ['postPublish']);
+gulp.task('publish', ['copy']);
 
 gulp.task('default', ['publish']);

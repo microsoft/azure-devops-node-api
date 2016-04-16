@@ -33,3 +33,5 @@ node_modules
 # OSX
 .DS_Store
 
+# Typings
+typings/

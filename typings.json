@@ -1,0 +1,9 @@
+{
+  "name": "vso-node-api",
+  "dependencies": {},
+  "devDependencies": {},
+  "ambientDependencies": {
+    "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#484e00f72f5572ffaea7cbbf8bcb02ae90ec9bd4",
+    "q": "github:DefinitelyTyped/DefinitelyTyped/q/Q.d.ts#904e8f5cd2f478ad951ed71fb8a1bd84ffdacf8c"
+  }
+}
