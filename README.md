@@ -1,16 +1,105 @@
-# vso-node-api
-Node client for Visual Studio Online/TFS REST APIs
+# Visual Studio Team Services Client for Node.js
 
-## Goals and Scope
+Integrate with Visual Studio Team Services from your Node.js apps.
 
-  * **Complete coverage**: All VSO services and resources
-  * **Always up to date**: Generated and released every sprint by the Visual Studio Online team
-  * **Share what we use**: Used by our apps including the [VSO build agent](https://github.com/Microsoft/vso-agent)
-  * **Patterns**: Use traditional node call back patterns or Q Promises.  Async/Await when available in ts.
-  * **Definition Files**: generate typescript d.ts files for all services
-  * **Authentication Flows**: Alternate Credentials, Personal Access Tokens and OAuth flows 
-  * **Versioning and Negotiation**: Same versioning mechanism and negoation as the other VSO clients.  Shares code/logic with VSO web UI code
+## Get started
 
+### Install the library
+```
+npm install vso-node-api
+```
 
+### Create a connection
+```javascript
+var vsts = require('vso-node-api');
 
+var collectionUrl = "https://fabrikam.visualstudio.com/defaultcollection";
+var creds = vsts.getBasicHandler("myaltusername", "myaltpassword");
+ 
+var connection = new vsts.WebApi(collectionUrl, creds);    
+```
+
+#### Auth options:
+
+* For general development and testing, a [personal access token](https://www.visualstudio.com/en-us/get-started/setup/use-personal-access-tokens-to-authenticate) is recommended.
+  ```javascript
+  vsts.getBasicHandler(token, "");
+  ```
+
+* For production, [OAuth access token](https://www.visualstudio.com/en-us/integrate/get-started/auth/oauth) are recommended.
+  ```javascript
+  vsts.getBearerHandler(token);
+  ```
+
+### Get an instance of a client
+
+The library provides both promise-based and callback style APIs. Your choice.
+
+```javascript
+// Promise style Git client
+var gitApi = connection.getQGitApi();
+
+// Callback style Git client
+var gitApi = connection.getGitApi();
+```
+
+#### Available clients
+
+* Build
+* Core
+* FileContainer
+* Gallery
+* Git
+* Release
+* TaskAgent
+* Task
+* Test
+* Tfvc
+* Web
+* WorkItemTracking
+
+### Use the client
+
+#### Promise style (recommended)
+ 
+```javascript
+var gitApi = connection.getQGitApi();
+
+var projectName = "MyProject";
+var repoName = "MyRepo";
+
+// Get latest pull requests from the repo
+gitApi.getPullRequests(repoName, {}, projectName).then(function(pullRequests) {    
+    pullRequests.forEach(function(pullRequest) {
+        // Display each pull request
+        console.log(pullRequest.pullRequestId + ": "+ pullRequest.title);             
+    });              
+}, function(error) {
+    console.log(error);
+});
+```
+
+#### Callback style
+
+```javascript
+// Get latest pull requests from the repo
+gitApi.getPullRequests(repoName, {}, projectName, null, null, null, function(error, status, pullRequests) {
+    if (error) {
+        console.log(error); 
+    } else {       
+        pullRequests.forEach(function(pullRequest) {
+            // Display each pull request
+            console.log(pullRequest.pullRequestId + ": "+ pullRequest.title);             
+        }); 
+    }
+});
+```
+
+## APIs
+
+To see what APIs are available, see the appropriate client interface. For example, [GitApi.ts](https://github.com/Microsoft/vsts-node-api/blob/master/api/GitApi.ts)
+
+## Contributing
+
+To contribute to this repository, see the [contribution guide](./CONTRIBUTING.md)
 
