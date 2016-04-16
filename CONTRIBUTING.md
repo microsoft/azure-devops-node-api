@@ -6,7 +6,7 @@ One of the best ways to contribute is to participate in discussions and request 
 
 Start or join into a discussion on the [issue tracker](https://github.com/Microsoft/vsts-node-api/issues).
 
-## Bugs and library feature requests
+## Bugs feature requests
 
 Create a [new issue](https://github.com/Microsoft/vsts-node-api/issues/new).
 
