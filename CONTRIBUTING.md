@@ -12,7 +12,7 @@ Create a [new issue](https://github.com/Microsoft/vsts-node-api/issues/new).
 
 ## General contribution guide
 
-> Keep in mind: most of the code in this repository is auto-generated, but you can contribute to the non-generated aspects of the library. 
+> **Note**: most of the code in this repository is auto-generated, but you can contribute to the non-generated aspects of the library. 
 
 1. Unless it is a trivial change, make sure that there is a corresponding issue for your change first. If there is none, create one.
 2. Create a fork in GitHub

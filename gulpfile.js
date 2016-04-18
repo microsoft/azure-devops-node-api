@@ -6,7 +6,7 @@ var mocha = require('gulp-mocha');
 var ts = require('gulp-typescript');
 var dtsgen = require('dts-generator');
 
-var proj = ts.createProject('./tsconfig.json', { typescript: require('typescript') });
+var proj = ts.createProject('./tsconfig.json', { typescript: require('typescript'), declaration: true });
 
 var buildDir = '_build/';
 
@@ -35,21 +35,24 @@ gulp.task('compile', ['clean'], function () {
 // });
 
 
-/*gulp.task('publishDefinitions', ['compile'], function () {
-    return dtsgen.generate({
+gulp.task('publishDefinitions', ['compile'], function () {
+    return dtsgen.default({
         name: 'vso-node-api',
+        module: "commonjs",
+        main: 'WebApi',
+        target: "es5",
         baseDir: 'api',
         files: [ 'WebApi.ts' ],
-        externs: ['../node/node.d.ts', '../q/Q.d.ts'],
+        externs: ['../typings/main.d.ts'],
         out: '_def/vso-node-api.d.ts'
     });
-});*/
+});
 
 gulp.task('copy', ['compile'], function () {
     return gulp.src(['package.json', 'LICENSE', 'README.md'])
         .pipe(gulp.dest(buildDir));
 });
 
-gulp.task('publish', ['copy']);
+gulp.task('publish', ['copy', 'publishDefinitions']);
 
 gulp.task('default', ['publish']);
