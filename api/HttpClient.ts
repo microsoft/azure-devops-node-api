@@ -153,6 +153,14 @@ export class HttpClient implements ifm.IHttpClient {
             reqData = JSON.stringify(objs, null, 2);
             options.headers["Content-Length"] = Buffer.byteLength(reqData, 'utf8');
         }
+        
+        var callbackCalled: boolean = false;
+        var handleResult = (err: any, res: http.ClientResponse, contents: string) => {
+            if (!callbackCalled) {
+                callbackCalled = true;
+                onResult(err, res, contents);
+            }
+        };
 
         var req = protocol.request(options, function (res) {
             var output = '';
@@ -164,7 +172,7 @@ export class HttpClient implements ifm.IHttpClient {
 
             res.on('end', function () {
                 // res has statusCode and headers
-                onResult(null, res, output);
+                handleResult(null, res, output);
             });
         });
 
@@ -177,12 +185,13 @@ export class HttpClient implements ifm.IHttpClient {
             if (socket) {
                 socket.end();
             }
+            handleResult(new Error('Request timeout: ' + options.path), null, null);
         });
 
         req.on('error', function (err) {
             // err has statusCode property
             // res should have headers
-            onResult(err, null, null);
+            handleResult(err, null, null);
         });
 
         if (reqData) {
