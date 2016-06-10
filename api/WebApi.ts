@@ -18,6 +18,7 @@ import releasem = require('./ReleaseApi');
 import apivm = require('./handlers/apiversion');
 import basicm = require('./handlers/basiccreds');
 import bearm = require('./handlers/bearertoken');
+import ntlmm = require('./handlers/ntlm');
 
 /**
  * Methods to return handler objects (see handlers folder)
@@ -28,6 +29,10 @@ export function getVersionHandler(apiVersion: string) {
 
 export function getBasicHandler(username: string, password: string) {
     return new basicm.BasicCredentialHandler(username, password);
+}
+
+export function getNtlmHandler(username: string, password: string, workstation?: string, domain?: string) {
+    return new ntlmm.NtlmCredentialHandler(username, password, workstation, domain);
 }
 
 export function getBearerHandler(token) {
