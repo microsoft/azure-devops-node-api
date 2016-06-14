@@ -54,7 +54,7 @@ export interface IBasicCredentials {
 
 export interface IRequestHandler {
     prepareRequest(options: any): void;
-    canHandleAuthentication(headers: any): boolean;
+    canHandleAuthentication(res: IHttpResponse): boolean;
     handleAuthentication(httpClient, protocol, options, objs, finalCallback): void;
 }
 

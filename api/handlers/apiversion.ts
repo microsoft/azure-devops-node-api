@@ -21,7 +21,7 @@ export class ApiVersionHandler implements VsoBaseInterfaces.IRequestHandler {
     }
 
     // This handler cannot handle 401
-    canHandleAuthentication(headers: any): boolean {
+    canHandleAuthentication(res: VsoBaseInterfaces.IHttpResponse): boolean {
         return false;
     }
 

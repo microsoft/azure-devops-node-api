@@ -20,7 +20,7 @@ export class BearerCredentialHandler implements VsoBaseInterfaces.IRequestHandle
     }
 
     // This handler cannot handle 401
-    canHandleAuthentication(headers: any): boolean {
+    canHandleAuthentication(res: VsoBaseInterfaces.IHttpResponse): boolean {
         return false;
     }
 

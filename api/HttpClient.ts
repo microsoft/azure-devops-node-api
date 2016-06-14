@@ -148,28 +148,22 @@ export class HttpClient implements ifm.IHttpClient {
 
     request(protocol: any, options: any, objs: any, onResult: (err: any, res: http.ClientResponse, contents: string) => void): void {
         // Set up a callback to pass off 401s to an authentication handler that can deal with it
-        let self = this;
-        var callback = function (err, res, contents) {
-            if (res !== undefined && res.statusCode === 401) {
-                // Find the first authentication handler that can handle the 401
-                var authHandler;
-                if (self.handlers) {
-                    self.handlers.some(function (handler, index, handlers) {
-                        // Find the first one that can handle the auth based on the headers
-                        if (handler.canHandleAuthentication(res.headers)) {
-                            authHandler = handler;
-                            return true;
-                        }
-                        return false;
-                    });
-                }
-                if (authHandler !== undefined) {
-                    authHandler.handleAuthentication(self, protocol, options, objs, onResult);
-                } else {
-                    // No auth handler found, call onResult normally
-                    onResult(err, res, contents);
-                }
+        var callback = (err: any, res: http.ClientResponse, contents: string) => {
+            var authHandler;
+            if (this.handlers) {
+                this.handlers.some(function (handler, index, handlers) {
+                    // Find the first one that can handle the auth based on the response
+                    if (handler.canHandleAuthentication(res)) {
+                        authHandler = handler;
+                        return true;
+                    }
+                    return false;
+                });
+            }
+            if (authHandler !== undefined) {
+                authHandler.handleAuthentication(this, protocol, options, objs, onResult);
             } else {
+                // No auth handler found, call onResult normally
                 onResult(err, res, contents);
             }
         };

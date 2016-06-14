@@ -31,18 +31,20 @@ export class NtlmCredentialHandler implements VsoBaseInterfaces.IRequestHandler 
         // No headers or options need to be set.  We keep the credentials on the handler itself.
     }
 
-    canHandleAuthentication(headers: any): boolean {
-        // Ensure that we're talking NTLM here
-        // Once we have the www-authenticate header, split it so we can ensure we can talk NTLM
-        var wwwAuthenticate = headers['www-authenticate'];
-        if (wwwAuthenticate !== undefined) {
-            var mechanisms = wwwAuthenticate.split(', ');
-            var idx =  mechanisms.indexOf("NTLM");
-            if (idx >= 0) {
-                // Check specifically for 'NTLM' since www-authenticate header can also contain
-                // the Authorization value to use in the form of 'NTLM TlRMTVNT....AAAADw=='
-                if (mechanisms[idx].length == 4) {
-                    return true;
+    canHandleAuthentication(res: VsoBaseInterfaces.IHttpResponse): boolean {
+        if (res !== undefined && res.statusCode === 401) {
+            // Ensure that we're talking NTLM here
+            // Once we have the www-authenticate header, split it so we can ensure we can talk NTLM
+            var wwwAuthenticate = res.headers['www-authenticate'];
+            if (wwwAuthenticate !== undefined) {
+                var mechanisms = wwwAuthenticate.split(', ');
+                var idx =  mechanisms.indexOf("NTLM");
+                if (idx >= 0) {
+                    // Check specifically for 'NTLM' since www-authenticate header can also contain
+                    // the Authorization value to use in the form of 'NTLM TlRMTVNT....AAAADw=='
+                    if (mechanisms[idx].length == 4) {
+                        return true;
+                    }
                 }
             }
         }
@@ -55,8 +57,8 @@ export class NtlmCredentialHandler implements VsoBaseInterfaces.IRequestHandler 
         var ntlmOptions = _.extend(options, {
             username: this.username,
             password: this.password,
-            domain: (this.domain !== undefined) ? this.domain : '',
-            workstation: (this.workstation !== undefined) ? this.workstation : ''
+            domain: this.domain || '',
+            workstation: this.workstation || ''
         });
         var keepaliveAgent;
         if (httpClient.isSsl === true) {
@@ -97,8 +99,9 @@ export class NtlmCredentialHandler implements VsoBaseInterfaces.IRequestHandler 
 
     // The following method is an adaptation of code found at https://github.com/SamDecrock/node-http-ntlm/blob/master/httpntlm.js
     private sendType3Message(httpClient, protocol, options, objs, keepaliveAgent, res, callback): void {
-        if (!res.headers['www-authenticate'])
+        if (!res.headers['www-authenticate']) {
             return callback(new Error('www-authenticate not found on response of second request'));
+        }
         // parse type2 message from server:
         var type2msg = ntlm.parseType2Message(res.headers['www-authenticate']);
         // create type3 message:
