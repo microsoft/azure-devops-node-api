@@ -18,6 +18,7 @@ import releasem = require('./ReleaseApi');
 import apivm = require('./handlers/apiversion');
 import basicm = require('./handlers/basiccreds');
 import bearm = require('./handlers/bearertoken');
+import patm = require('./handlers/personalaccesstoken');
 
 /**
  * Methods to return handler objects (see handlers folder)
@@ -32,6 +33,10 @@ export function getBasicHandler(username: string, password: string) {
 
 export function getBearerHandler(token) {
     return new bearm.BearerCredentialHandler(token);
+}
+
+export function getPersonalAccessTokenHandler(token) {
+    return new patm.PersonalAccessTokenCredentialHandler(token);
 }
 
 // ---------------------------------------------------------------------------
