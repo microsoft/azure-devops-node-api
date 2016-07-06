@@ -15,6 +15,7 @@ export class HttpClient implements ifm.IHttpClient {
     userAgent: string;
     handlers: ifm.IRequestHandler[];
     socketTimeout: number;
+    isSsl: boolean;
 
     constructor(userAgent: string, handlers?: ifm.IRequestHandler[], socketTimeout?: number) {
         this.userAgent = userAgent;
@@ -93,6 +94,7 @@ export class HttpClient implements ifm.IHttpClient {
         var usingSsl = parsedUrl.protocol === 'https:';
         var prot: any = usingSsl ? https : http;
         var defaultPort = usingSsl ? 443 : 80;
+        this.isSsl = usingSsl;
 
         var proxyUrl: url.Url;
         if (process.env.HTTP_PROXY) {
@@ -120,9 +122,8 @@ export class HttpClient implements ifm.IHttpClient {
                 path: (parsedUrl.pathname || '') + (parsedUrl.search || ''),
                 method: method,
                 headers: {}
-            }            
+            }
         }
-
 
         options.headers = headers;
 
@@ -146,6 +147,31 @@ export class HttpClient implements ifm.IHttpClient {
     }
 
     request(protocol: any, options: any, objs: any, onResult: (err: any, res: http.ClientResponse, contents: string) => void): void {
+        // Set up a callback to pass off 401s to an authentication handler that can deal with it
+        var callback = (err: any, res: http.ClientResponse, contents: string) => {
+            var authHandler;
+            if (this.handlers) {
+                this.handlers.some(function (handler, index, handlers) {
+                    // Find the first one that can handle the auth based on the response
+                    if (handler.canHandleAuthentication(res)) {
+                        authHandler = handler;
+                        return true;
+                    }
+                    return false;
+                });
+            }
+            if (authHandler !== undefined) {
+                authHandler.handleAuthentication(this, protocol, options, objs, onResult);
+            } else {
+                // No auth handler found, call onResult normally
+                onResult(err, res, contents);
+            }
+        };
+
+        this.requestInternal(protocol, options, objs, callback);
+    }
+
+    requestInternal(protocol: any, options: any, objs: any, onResult: (err: any, res: http.ClientResponse, contents: string) => void): void {
         var reqData;
         var socket;
 
@@ -153,7 +179,7 @@ export class HttpClient implements ifm.IHttpClient {
             reqData = JSON.stringify(objs, null, 2);
             options.headers["Content-Length"] = Buffer.byteLength(reqData, 'utf8');
         }
-        
+
         var callbackCalled: boolean = false;
         var handleResult = (err: any, res: http.ClientResponse, contents: string) => {
             if (!callbackCalled) {

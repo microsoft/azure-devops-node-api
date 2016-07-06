@@ -18,4 +18,12 @@ export class BearerCredentialHandler implements VsoBaseInterfaces.IRequestHandle
         options.headers['Authorization'] = 'Bearer ' + this.token;
         options.headers['X-TFS-FedAuthRedirect'] = 'Suppress';
     }
+
+    // This handler cannot handle 401
+    canHandleAuthentication(res: VsoBaseInterfaces.IHttpResponse): boolean {
+        return false;
+    }
+
+    handleAuthentication(httpClient, protocol, options, objs, finalCallback): void {
+    }
 }

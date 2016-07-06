@@ -20,4 +20,12 @@ export class BasicCredentialHandler implements VsoBaseInterfaces.IRequestHandler
         options.headers['Authorization'] = 'Basic ' + new Buffer(this.username + ':' + this.password).toString('base64');
         options.headers['X-TFS-FedAuthRedirect'] = 'Suppress';
     }
+
+    // This handler cannot handle 401
+    canHandleAuthentication(res: VsoBaseInterfaces.IHttpResponse): boolean {
+        return false;
+    }
+
+    handleAuthentication(httpClient, protocol, options, objs, finalCallback): void {
+    }
 }

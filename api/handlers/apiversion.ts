@@ -19,4 +19,12 @@ export class ApiVersionHandler implements VsoBaseInterfaces.IRequestHandler {
     		options.headers["Accept"] = options.headers['Accept'] + '; api-version=' + this.apiVersion;	
     	}
     }
+
+    // This handler cannot handle 401
+    canHandleAuthentication(res: VsoBaseInterfaces.IHttpResponse): boolean {
+        return false;
+    }
+
+    handleAuthentication(httpClient, protocol, options, objs, finalCallback): void {
+    }
 }

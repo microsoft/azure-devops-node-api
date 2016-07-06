@@ -39,7 +39,7 @@ gulp.task('compile', ['clean'], function () {
 
 
 gulp.task('publishBuild', ['compile'], function () {
-    return gulp.src(['api/**/*.js'])
+    return gulp.src(['api/**/*.js', 'api/**/opensource/**'])
         .pipe(gulp.dest('_build'));
 });
 
@@ -60,7 +60,7 @@ gulp.task('copy', ['compile'], function () {
 
 gulp.task('postPublish', ['publishDefinitions', 'publishBuild', 'copy'], function () {
 
-    return del(['api/**/*.js']);
+    return del(['api/**/*.js', '!api/opensource/**/*.js']);
     //done();
 });
 
