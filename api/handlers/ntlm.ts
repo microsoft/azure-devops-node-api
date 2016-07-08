@@ -32,7 +32,7 @@ export class NtlmCredentialHandler implements VsoBaseInterfaces.IRequestHandler 
     }
 
     canHandleAuthentication(res: VsoBaseInterfaces.IHttpResponse): boolean {
-        if (res !== undefined && res.statusCode === 401) {
+        if (res && res.statusCode === 401) {
             // Ensure that we're talking NTLM here
             // Once we have the www-authenticate header, split it so we can ensure we can talk NTLM
             var wwwAuthenticate = res.headers['www-authenticate'];
