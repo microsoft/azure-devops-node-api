@@ -18,6 +18,11 @@ export interface AttachmentReference {
     url: string;
 }
 
+export enum CommentSortOrder {
+    Asc = 1,
+    Desc = 2,
+}
+
 export interface FieldDependentRule extends WorkItemTrackingResource {
     dependentFields: WorkItemFieldReference[];
 }
@@ -42,12 +47,9 @@ export enum FieldType {
     Boolean = 9,
 }
 
-export enum FieldUsage {
+export enum GetFieldsExpand {
     None = 0,
-    WorkItem = 1,
-    WorkItemLink = 2,
-    Tree = 3,
-    WorkItemTypeExtension = 4,
+    ExtensionFields = 1,
 }
 
 export interface IdentityReference {
@@ -61,6 +63,11 @@ export interface Link {
     rel: string;
     title: string;
     url: string;
+}
+
+export enum LinkChangeType {
+    Create = 0,
+    Remove = 1,
 }
 
 export enum LinkQueryMode {
@@ -105,6 +112,8 @@ export interface QueryHierarchyItem extends WorkItemTrackingResource {
     children: QueryHierarchyItem[];
     clauses: WorkItemQueryClause;
     columns: WorkItemFieldReference[];
+    createdBy: IdentityReference;
+    createdDate: Date;
     filterOptions: LinkQueryMode;
     hasChildren: boolean;
     id: string;
@@ -112,6 +121,8 @@ export interface QueryHierarchyItem extends WorkItemTrackingResource {
     isFolder: boolean;
     isInvalidSyntax: boolean;
     isPublic: boolean;
+    lastModifiedBy: IdentityReference;
+    lastModifiedDate: Date;
     linkClauses: WorkItemQueryClause;
     name: string;
     path: string;
@@ -133,9 +144,18 @@ export enum QueryType {
     OneHop = 3,
 }
 
+export enum ReportingRevisionsExpand {
+    None = 0,
+    Fields = 1,
+}
+
 export interface ReportingWorkItemLink {
+    changedBy: VSSInterfaces.IdentityRef;
     changedDate: Date;
+    changedOperation: LinkChangeType;
+    comment: string;
     isActive: boolean;
+    linkType: string;
     rel: string;
     sourceId: number;
     targetId: number;
@@ -153,9 +173,21 @@ export interface ReportingWorkItemRevisionsFilter {
      */
     fields: string[];
     /**
+     * Include deleted work item in the result.
+     */
+    includeDeleted: boolean;
+    /**
      * Return an identity reference instead of a string value for identity fields.
      */
     includeIdentityRef: boolean;
+    /**
+     * Include only the latest version of a work item, skipping over all previous revisions of the work item.
+     */
+    includeLatestOnly: boolean;
+    /**
+     * Include tag reference instead of string value for System.Tags field
+     */
+    includeTagRef: boolean;
     /**
      * A list of types to filter the results to specific work item types. Omit this parameter to get work item revisions of all work item types.
      */
@@ -217,6 +249,20 @@ export interface WorkItemClassificationNode extends WorkItemTrackingResource {
     structureType: TreeNodeStructureType;
 }
 
+export interface WorkItemComment extends WorkItemTrackingResource {
+    revisedBy: IdentityReference;
+    revisedDate: Date;
+    revision: number;
+    text: string;
+}
+
+export interface WorkItemComments {
+    comments: WorkItemComment[];
+    count: number;
+    fromRevisionCount: number;
+    totalCount: number;
+}
+
 export interface WorkItemDelete extends WorkItemDeleteReference {
     resource: WorkItem;
 }
@@ -241,7 +287,8 @@ export enum WorkItemExpand {
     None = 0,
     Relations = 1,
     Fields = 2,
-    All = 3,
+    Links = 3,
+    All = 4,
 }
 
 export interface WorkItemField extends WorkItemTrackingResource {
@@ -328,6 +375,37 @@ export interface WorkItemRevisionReference extends WorkItemReference {
     rev: number;
 }
 
+export interface WorkItemStateTransition {
+    to: string;
+}
+
+export interface WorkItemTemplate {
+    description: string;
+    fields: { [key: string] : string; };
+    id: string;
+    name: string;
+    ownerId: string;
+    url: string;
+    workItemTypeName: string;
+}
+
+export interface WorkItemTemplateReference {
+    description: string;
+    id: string;
+    name: string;
+    ownerId: string;
+    url: string;
+    workItemTypeName: string;
+}
+
+export interface WorkItemTemplateReplaceContent {
+    description: string;
+    fields: { [key: string] : string; };
+    name: string;
+    ownerId: string;
+    workItemTypeName: string;
+}
+
 export interface WorkItemTrackingReference extends WorkItemTrackingResource {
     name: string;
     referenceName: string;
@@ -343,8 +421,10 @@ export interface WorkItemTrackingResourceReference {
 
 export interface WorkItemType extends WorkItemTrackingResource {
     description: string;
+    fieldInstances: WorkItemTypeFieldInstance[];
     fields: WorkItemTypeFieldInstance[];
     name: string;
+    transitions: { [key: string] : WorkItemStateTransition[]; };
     xmlForm: string;
 }
 
@@ -355,7 +435,8 @@ export interface WorkItemTypeCategory extends WorkItemTrackingResource {
     workItemTypes: WorkItemTypeReference[];
 }
 
-export interface WorkItemTypeFieldInstance {
+export interface WorkItemTypeFieldInstance extends WorkItemFieldReference {
+    alwaysRequired: boolean;
     field: WorkItemFieldReference;
     helpText: string;
 }
@@ -389,6 +470,12 @@ export var TypeInfo = {
     AttachmentReference: {
         fields: <any>null
     },
+    CommentSortOrder: {
+        enumValues: {
+            "asc": 1,
+            "desc": 2,
+        }
+    },
     FieldDependentRule: {
         fields: <any>null
     },
@@ -409,13 +496,10 @@ export var TypeInfo = {
             "boolean": 9,
         }
     },
-    FieldUsage: {
+    GetFieldsExpand: {
         enumValues: {
             "none": 0,
-            "workItem": 1,
-            "workItemLink": 2,
-            "tree": 3,
-            "workItemTypeExtension": 4,
+            "extensionFields": 1,
         }
     },
     IdentityReference: {
@@ -423,6 +507,12 @@ export var TypeInfo = {
     },
     Link: {
         fields: <any>null
+    },
+    LinkChangeType: {
+        enumValues: {
+            "create": 0,
+            "remove": 1,
+        }
     },
     LinkQueryMode: {
         enumValues: {
@@ -478,6 +568,12 @@ export var TypeInfo = {
             "oneHop": 3,
         }
     },
+    ReportingRevisionsExpand: {
+        enumValues: {
+            "none": 0,
+            "fields": 1,
+        }
+    },
     ReportingWorkItemLink: {
         fields: <any>null
     },
@@ -526,6 +622,12 @@ export var TypeInfo = {
     WorkItemClassificationNode: {
         fields: <any>null
     },
+    WorkItemComment: {
+        fields: <any>null
+    },
+    WorkItemComments: {
+        fields: <any>null
+    },
     WorkItemDelete: {
         fields: <any>null
     },
@@ -540,7 +642,8 @@ export var TypeInfo = {
             "none": 0,
             "relations": 1,
             "fields": 2,
-            "all": 3,
+            "links": 3,
+            "all": 4,
         }
     },
     WorkItemField: {
@@ -583,6 +686,18 @@ export var TypeInfo = {
         fields: <any>null
     },
     WorkItemRevisionReference: {
+        fields: <any>null
+    },
+    WorkItemStateTransition: {
+        fields: <any>null
+    },
+    WorkItemTemplate: {
+        fields: <any>null
+    },
+    WorkItemTemplateReference: {
+        fields: <any>null
+    },
+    WorkItemTemplateReplaceContent: {
         fields: <any>null
     },
     WorkItemTrackingReference: {
@@ -654,8 +769,20 @@ TypeInfo.QueryHierarchyItem.fields = {
         isArray: true,
         typeInfo: TypeInfo.WorkItemFieldReference
     },
+    createdBy: {
+        typeInfo: TypeInfo.IdentityReference
+    },
+    createdDate: {
+        isDate: true,
+    },
     filterOptions: {
         enumType: TypeInfo.LinkQueryMode
+    },
+    lastModifiedBy: {
+        typeInfo: TypeInfo.IdentityReference
+    },
+    lastModifiedDate: {
+        isDate: true,
     },
     linkClauses: {
         typeInfo: TypeInfo.WorkItemQueryClause
@@ -676,8 +803,14 @@ TypeInfo.QueryHierarchyItem.fields = {
 };
 
 TypeInfo.ReportingWorkItemLink.fields = {
+    changedBy: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
     changedDate: {
         isDate: true,
+    },
+    changedOperation: {
+        enumType: TypeInfo.LinkChangeType
     },
 };
 
@@ -716,6 +849,22 @@ TypeInfo.WorkItemClassificationNode.fields = {
     },
     structureType: {
         enumType: TypeInfo.TreeNodeStructureType
+    },
+};
+
+TypeInfo.WorkItemComment.fields = {
+    revisedBy: {
+        typeInfo: TypeInfo.IdentityReference
+    },
+    revisedDate: {
+        isDate: true,
+    },
+};
+
+TypeInfo.WorkItemComments.fields = {
+    comments: {
+        isArray: true,
+        typeInfo: TypeInfo.WorkItemComment
     },
 };
 
@@ -848,6 +997,18 @@ TypeInfo.WorkItemRelationUpdates.fields = {
 TypeInfo.WorkItemRevisionReference.fields = {
 };
 
+TypeInfo.WorkItemStateTransition.fields = {
+};
+
+TypeInfo.WorkItemTemplate.fields = {
+};
+
+TypeInfo.WorkItemTemplateReference.fields = {
+};
+
+TypeInfo.WorkItemTemplateReplaceContent.fields = {
+};
+
 TypeInfo.WorkItemTrackingReference.fields = {
 };
 
@@ -858,9 +1019,15 @@ TypeInfo.WorkItemTrackingResourceReference.fields = {
 };
 
 TypeInfo.WorkItemType.fields = {
+    fieldInstances: {
+        isArray: true,
+        typeInfo: TypeInfo.WorkItemTypeFieldInstance
+    },
     fields: {
         isArray: true,
         typeInfo: TypeInfo.WorkItemTypeFieldInstance
+    },
+    transitions: {
     },
 };
 

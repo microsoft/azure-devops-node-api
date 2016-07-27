@@ -93,6 +93,18 @@ export interface Build {
      */
     deleted: boolean;
     /**
+     * Process or person that deleted the build
+     */
+    deletedBy: VSSInterfaces.IdentityRef;
+    /**
+     * Date the build was deleted
+     */
+    deletedDate: Date;
+    /**
+     * Description of how the build was deleted
+     */
+    deletedReason: string;
+    /**
      * Demands
      */
     demands: any[];
@@ -125,6 +137,10 @@ export interface Build {
      * Parameters for the build
      */
     parameters: string;
+    /**
+     * Orchestration plans associated with the build (build, cleanup)
+     */
+    plans: TaskOrchestrationPlanReference[];
     /**
      * The build's priority
      */
@@ -174,6 +190,10 @@ export interface Build {
      * The build result
      */
     result: BuildResult;
+    /**
+     * Specifies if Build should be retained by Release
+     */
+    retainedByRelease: boolean;
     /**
      * Source branch
      */
@@ -300,7 +320,6 @@ export interface BuildController extends ShallowReference {
 }
 
 export interface BuildDefinition extends BuildDefinitionReference {
-    _links: any;
     /**
      * Indicates whether badges are enabled for this definition
      */
@@ -354,14 +373,20 @@ export interface BuildDefinitionChangingEvent {
 }
 
 export interface BuildDefinitionReference extends DefinitionReference {
+    _links: any;
     /**
      * The author of the definition.
      */
     authoredBy: VSSInterfaces.IdentityRef;
     /**
+     * The default branch of this definition
+     */
+    defaultBranch: string;
+    /**
      * If this is a draft definition, it might have a parent
      */
     draftOf: DefinitionReference;
+    metrics: BuildMetric[];
     /**
      * The quality of the definition document (draft, etc.)
      */
@@ -416,6 +441,7 @@ export interface BuildDefinitionStep {
     enabled: boolean;
     inputs: { [key: string] : string; };
     task: TaskDefinitionReference;
+    timeoutInMinutes: number;
 }
 
 export interface BuildDefinitionTemplate {
@@ -481,6 +507,25 @@ export interface BuildLogReference {
      * Full link to the log resource.
      */
     url: string;
+}
+
+export interface BuildMetric {
+    /**
+     * Scoped date of the metric
+     */
+    date: Date;
+    /**
+     * The int value of the metric
+     */
+    intValue: number;
+    /**
+     * The name of the metric
+     */
+    name: string;
+    /**
+     * The scope of the metric
+     */
+    scope: string;
 }
 
 export interface BuildOption {
@@ -607,13 +652,17 @@ export enum BuildReason {
      */
     CheckInShelveset = 128,
     /**
+     * The build was started by a pull request. Added in resource version 3.
+     */
+    PullRequest = 256,
+    /**
      * The build was triggered for retention policy purposes.
      */
-    Triggered = 175,
+    Triggered = 431,
     /**
      * All reasons.
      */
-    All = 239,
+    All = 495,
 }
 
 export interface BuildReference {
@@ -634,6 +683,10 @@ export interface BuildReference {
      * Time that the build was queued
      */
     queueTime: Date;
+    /**
+     * The identity on whose behalf the build was queued
+     */
+    requestedFor: VSSInterfaces.IdentityRef;
     /**
      * The build result
      */
@@ -691,6 +744,7 @@ export interface BuildRequestValidationResult {
 
 export interface BuildResourceUsage {
     distributedTaskAgents: number;
+    paidPrivateAgentSlots: number;
     totalUsage: number;
     xamlControllers: number;
 }
@@ -863,6 +917,7 @@ export interface ContinuousIntegrationTrigger extends BuildTrigger {
     batchChanges: boolean;
     branchFilters: string[];
     maxConcurrentBuildsPerBranch: number;
+    pathFilters: string[];
     /**
      * The polling interval in seconds.
      */
@@ -939,6 +994,10 @@ export interface DefinitionReference extends ShallowReference {
      * The date the definition was created
      */
     createdDate: Date;
+    /**
+     * The path this definitions belongs to
+     */
+    path: string;
     /**
      * The project.
      */
@@ -1056,9 +1115,56 @@ export interface DeploymentTest extends Deployment {
     runId: number;
 }
 
+export interface Folder {
+    /**
+     * Process or person who created the folder
+     */
+    createdBy: VSSInterfaces.IdentityRef;
+    /**
+     * Creation date of the folder
+     */
+    createdOn: Date;
+    /**
+     * The description of the folder
+     */
+    description: string;
+    /**
+     * Process or person that last changed the folder
+     */
+    lastChangedBy: VSSInterfaces.IdentityRef;
+    /**
+     * Date the folder was last changed
+     */
+    lastChangedDate: Date;
+    /**
+     * The path of the folder
+     */
+    path: string;
+    /**
+     * The project.
+     */
+    project: TfsCoreInterfaces.TeamProjectReference;
+}
+
+export enum FolderQueryOrder {
+    /**
+     * No order
+     */
+    None = 0,
+    /**
+     * Order by folder name and path ascending.
+     */
+    FolderAscending = 1,
+    /**
+     * Order by folder name and path descending.
+     */
+    FolderDescending = 2,
+}
+
 export interface GatedCheckInTrigger extends BuildTrigger {
     pathFilters: string[];
     runContinuousIntegration: boolean;
+    useWorkspaceMappings: boolean;
 }
 
 export enum GetOption {
@@ -1228,6 +1334,7 @@ export interface RequestReference {
 
 export interface RetentionPolicy {
     artifacts: string[];
+    artifactTypesToDelete: string[];
     branches: string[];
     daysToKeep: number;
     deleteBuildRecord: boolean;
@@ -1343,17 +1450,28 @@ export interface SvnWorkspace {
     mappings: SvnMappingDetails[];
 }
 
+export interface SyncBuildCompletedEvent extends BuildUpdatedEvent {
+}
+
+export interface SyncBuildStartedEvent extends BuildUpdatedEvent {
+}
+
 export interface TaskAgentPoolReference {
     id: number;
     name: string;
 }
 
 export interface TaskDefinitionReference {
+    definitionType: string;
     id: string;
     versionSpec: string;
 }
 
 export interface TaskOrchestrationPlanReference {
+    /**
+     * Orchestration Type for Build (build, cleanup etc.)
+     */
+    orchestrationType: number;
     planId: string;
 }
 
@@ -1621,6 +1739,9 @@ export var TypeInfo = {
     BuildLogReference: {
         fields: <any>null
     },
+    BuildMetric: {
+        fields: <any>null
+    },
     BuildOption: {
         fields: <any>null
     },
@@ -1678,8 +1799,9 @@ export var TypeInfo = {
             "userCreated": 32,
             "validateShelveset": 64,
             "checkInShelveset": 128,
-            "triggered": 175,
-            "all": 239,
+            "pullRequest": 256,
+            "triggered": 431,
+            "all": 495,
         }
     },
     BuildReference: {
@@ -1822,6 +1944,16 @@ export var TypeInfo = {
     DeploymentTest: {
         fields: <any>null
     },
+    Folder: {
+        fields: <any>null
+    },
+    FolderQueryOrder: {
+        enumValues: {
+            "none": 0,
+            "folderAscending": 1,
+            "folderDescending": 2,
+        }
+    },
     GatedCheckInTrigger: {
         fields: <any>null
     },
@@ -1922,6 +2054,12 @@ export var TypeInfo = {
     SvnWorkspace: {
         fields: <any>null
     },
+    SyncBuildCompletedEvent: {
+        fields: <any>null
+    },
+    SyncBuildStartedEvent: {
+        fields: <any>null
+    },
     TaskAgentPoolReference: {
         fields: <any>null
     },
@@ -2000,6 +2138,12 @@ TypeInfo.Build.fields = {
     definition: {
         typeInfo: TypeInfo.DefinitionReference
     },
+    deletedBy: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+    deletedDate: {
+        isDate: true,
+    },
     finishTime: {
         isDate: true,
     },
@@ -2013,6 +2157,10 @@ TypeInfo.Build.fields = {
         typeInfo: TypeInfo.BuildLogReference
     },
     orchestrationPlan: {
+        typeInfo: TypeInfo.TaskOrchestrationPlanReference
+    },
+    plans: {
+        isArray: true,
         typeInfo: TypeInfo.TaskOrchestrationPlanReference
     },
     priority: {
@@ -2138,6 +2286,10 @@ TypeInfo.BuildDefinition.fields = {
     jobAuthorizationScope: {
         enumType: TypeInfo.BuildAuthorizationScope
     },
+    metrics: {
+        isArray: true,
+        typeInfo: TypeInfo.BuildMetric
+    },
     options: {
         isArray: true,
         typeInfo: TypeInfo.BuildOption
@@ -2202,6 +2354,10 @@ TypeInfo.BuildDefinitionReference.fields = {
     },
     draftOf: {
         typeInfo: TypeInfo.DefinitionReference
+    },
+    metrics: {
+        isArray: true,
+        typeInfo: TypeInfo.BuildMetric
     },
     project: {
         typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
@@ -2289,6 +2445,12 @@ TypeInfo.BuildLog.fields = {
 TypeInfo.BuildLogReference.fields = {
 };
 
+TypeInfo.BuildMetric.fields = {
+    date: {
+        isDate: true,
+    },
+};
+
 TypeInfo.BuildOption.fields = {
     definition: {
         typeInfo: TypeInfo.BuildOptionDefinitionReference
@@ -2342,6 +2504,9 @@ TypeInfo.BuildReference.fields = {
     },
     queueTime: {
         isDate: true,
+    },
+    requestedFor: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
     result: {
         enumType: TypeInfo.BuildResult
@@ -2497,6 +2662,24 @@ TypeInfo.DeploymentDeploy.fields = {
 TypeInfo.DeploymentTest.fields = {
 };
 
+TypeInfo.Folder.fields = {
+    createdBy: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+    createdOn: {
+        isDate: true,
+    },
+    lastChangedBy: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+    lastChangedDate: {
+        isDate: true,
+    },
+    project: {
+        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
+    },
+};
+
 TypeInfo.GatedCheckInTrigger.fields = {
     triggerType: {
         enumType: TypeInfo.DefinitionTriggerType
@@ -2562,6 +2745,18 @@ TypeInfo.SvnWorkspace.fields = {
     mappings: {
         isArray: true,
         typeInfo: TypeInfo.SvnMappingDetails
+    },
+};
+
+TypeInfo.SyncBuildCompletedEvent.fields = {
+    build: {
+        typeInfo: TypeInfo.Build
+    },
+};
+
+TypeInfo.SyncBuildStartedEvent.fields = {
+    build: {
+        typeInfo: TypeInfo.Build
     },
 };
 

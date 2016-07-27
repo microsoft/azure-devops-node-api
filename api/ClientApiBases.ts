@@ -28,24 +28,11 @@ export class ClientApiBase {
         this.userAgent = userAgent;
         this.httpClient.userAgent = userAgent;
     }
-
-    connect(onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this.restClient.getJson(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, null, onResult);
-    }
-}
-
-export class QClientApiBase {
-
-    api: ClientApiBase;
-
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], api: typeof ClientApiBase) {
-        this.api = new api(baseUrl, handlers);
-    }
-
+    
     public connect(): Q.Promise<any> {
         var defer = Q.defer();
-
-        this.api.connect((err: any, statusCode: number, obj: any) => {
+        
+        this.restClient.getJson(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, null, (err: any, statusCode: number, obj: any) => {
             if (err) {
                 err.statusCode = statusCode;
                 defer.reject(err);
@@ -54,7 +41,7 @@ export class QClientApiBase {
                 defer.resolve(obj);
             }
         });
-
+        
         return defer.promise;
     }
 }

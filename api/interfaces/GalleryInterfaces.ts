@@ -103,6 +103,79 @@ export interface AcquisitionOptions {
     target: string;
 }
 
+export interface Answers {
+    /**
+     * Gets or sets the vs marketplace extension name
+     */
+    vSMarketplaceExtensionName: string;
+    /**
+     * Gets or sets the vs marketplace publsiher name
+     */
+    vSMarketplacePublisherName: string;
+}
+
+export interface AssetDetails {
+    /**
+     * Gets or sets the Answers, which contains vs marketplace extension name and publisher name
+     */
+    answers: Answers;
+    /**
+     * Gets or sets the VS publisher Id
+     */
+    publisherNaturalIdentifier: string;
+}
+
+export interface AzurePublisher {
+    azurePublisherId: string;
+    publisherName: string;
+}
+
+export interface AzureRestApiRequestModel {
+    /**
+     * Gets or sets the Asset details
+     */
+    assetDetails: AssetDetails;
+    /**
+     * Gets or sets the asset id
+     */
+    assetId: string;
+    /**
+     * Gets or sets the asset version
+     */
+    assetVersion: number;
+    /**
+     * Gets or sets the customer support email
+     */
+    customerSupportEmail: string;
+    /**
+     * Gets or sets the integration contact email
+     */
+    integrationContactEmail: string;
+    /**
+     * Gets or sets the asset version
+     */
+    operation: string;
+    /**
+     * Gets or sets the plan identifier if any.
+     */
+    planId: string;
+    /**
+     * Gets or sets the publisher id
+     */
+    publisherId: string;
+    /**
+     * Gets or sets the resource type
+     */
+    type: string;
+}
+
+export interface AzureRestApiResponseModel extends AzureRestApiRequestModel {
+    /**
+     * Gets or sets the Asset operation status
+     */
+    operationStatus: RestApiResponseStatusModel;
+}
+
 export enum ConcernCategory {
     General = 1,
     Abusive = 2,
@@ -141,6 +214,18 @@ export interface ExtensionAcquisitionRequest {
      * A list of target guids where the item should be acquired (installed, requested, etc.), such as account id
      */
     targets: string[];
+}
+
+export interface ExtensionBadge {
+    description: string;
+    imgUri: string;
+    link: string;
+}
+
+export interface ExtensionCategory {
+    categoryId: number;
+    categoryName: string;
+    language: string;
 }
 
 export interface ExtensionFile {
@@ -315,6 +400,14 @@ export enum ExtensionQueryFilterType {
      * The SearchText provided by the user to search for extensions
      */
     SearchText = 10,
+    /**
+     * Query for extensions that are featured in their own category, The filterValue for this is name of category of extensions.
+     */
+    FeaturedInCategory = 11,
+    /**
+     * When retrieving extensions from a query, exclude the extensions which are having the given flags. The value specified for this filter should be a string representing the integer values of the flags to be excluded. In case of mulitple flags to be specified, a logical OR of the interger values should be given as value for this filter This should be at most one filter of this type. This filter is only supported when search text is specified
+     */
+    ExcludeWithFlags = 12,
 }
 
 export enum ExtensionQueryFlags {
@@ -394,10 +487,19 @@ export enum ExtensionStatisticOperation {
     Set = 1,
     Increment = 2,
     Decrement = 3,
+    Delete = 4,
+}
+
+export interface ExtensionStatisticUpdate {
+    extensionName: string;
+    operation: ExtensionStatisticOperation;
+    publisherName: string;
+    statistic: ExtensionStatistic;
 }
 
 export interface ExtensionVersion {
     assetUri: string;
+    badges: ExtensionBadge[];
     files: ExtensionFile[];
     flags: ExtensionVersionFlags;
     lastUpdated: Date;
@@ -467,7 +569,15 @@ export interface PublishedExtension {
     installationTargets: InstallationTarget[];
     lastUpdated: Date;
     longDescription: string;
+    /**
+     * Date on which the extension was first uploaded.
+     */
+    publishedDate: Date;
     publisher: PublisherFacts;
+    /**
+     * Date on which the extension first went public.
+     */
+    releaseDate: Date;
     sharedWith: ExtensionShare[];
     shortDescription: string;
     statistics: ExtensionStatistic[];
@@ -497,6 +607,10 @@ export enum PublishedExtensionFlags {
      */
     Trusted = 8,
     /**
+     * The Paid flag indicates that the commerce can be enabled for this extension. Publisher needs to setup Offer/Pricing plan in Azure. If Paid flag is set and a corresponding Offer is not available, the extension will automatically be marked as Preview. If the publisher intends to make the extension Paid in the future, it is mandatory to set the Preview flag. This is currently available only for VSTS extensions only.
+     */
+    Paid = 16,
+    /**
      * This extension registration is public, making its visibilty open to the public. This means all tenants have the ability to install this extension. Without this flag the extension will be private and will need to be shared with the tenants that can install it.
      */
     Public = 256,
@@ -512,10 +626,15 @@ export enum PublishedExtensionFlags {
      * The Preview flag indicates that the extension is still under preview (not yet of "release" quality). These extensions may be decorated differently in the gallery and may have different policies applied to them.
      */
     Preview = 2048,
+    /**
+     * The Deprecated flag indicates that the extension can't be installed/downloaded/updated. Users who have installed such an extension can continue to use the extension.
+     */
+    Deprecated = 4096,
 }
 
 export interface Publisher {
     displayName: string;
+    emailAddress: string[];
     extensions: PublishedExtension[];
     flags: PublisherFlags;
     lastUpdated: Date;
@@ -633,21 +752,6 @@ export interface PublisherQuery {
     flags: PublisherQueryFlags;
 }
 
-export enum PublisherQueryFilterType {
-    /**
-     * The values are used as tags. All tags are treated as "OR" conditions with each other. There may be some value put on the number of matched tags from the query.
-     */
-    Tag = 1,
-    /**
-     * The Values are an PublisherName or fragment that is used to match other extension names.
-     */
-    DisplayName = 2,
-    /**
-     * The My Query filter is used to retrieve the set of publishers that I have access to publish extesions into. All Values are ignored and the calling user is used as the filter in this case.
-     */
-    My = 3,
-}
-
 export enum PublisherQueryFlags {
     /**
      * None is used to retrieve only the basic publisher details.
@@ -657,6 +761,10 @@ export enum PublisherQueryFlags {
      * Is used to include a list of basic extension details for all extensions published by the requested publisher.
      */
     IncludeExtensions = 1,
+    /**
+     * Is used to include email address of all the users who are marked as owners for the publisher
+     */
+    IncludeEmailAddress = 2,
 }
 
 /**
@@ -703,6 +811,51 @@ export interface QueryFilter {
     sortOrder: number;
 }
 
+export enum RestApiResponseStatus {
+    /**
+     * The operation is completed.
+     */
+    Completed = 0,
+    /**
+     * The operation is failed.
+     */
+    Failed = 1,
+    /**
+     * The operation is in progress.
+     */
+    Inprogress = 2,
+    /**
+     * The operation is in skipped.
+     */
+    Skipped = 3,
+}
+
+/**
+ * REST Api Response
+ */
+export interface RestApiResponseStatusModel {
+    /**
+     * Gets or sets the operation details
+     */
+    operationDetails: any;
+    /**
+     * Gets or sets the operation id
+     */
+    operationId: string;
+    /**
+     * Gets or sets the completed status percentage
+     */
+    percentageCompleted: number;
+    /**
+     * Gets or sets the status
+     */
+    status: RestApiResponseStatus;
+    /**
+     * Gets or sets the status message
+     */
+    statusMessage: string;
+}
+
 export interface Review {
     /**
      * Unique identifier of a review item
@@ -721,6 +874,10 @@ export interface Review {
      */
     rating: number;
     /**
+     * Reply, if any, for this review
+     */
+    reply: ReviewReply;
+    /**
      * Text description of the review
      */
     text: string;
@@ -733,7 +890,91 @@ export interface Review {
      */
     updatedDate: Date;
     /**
+     * Name of the user
+     */
+    userDisplayName: string;
+    /**
      * Id of the user who submitted the review
+     */
+    userId: string;
+}
+
+export enum ReviewFilterOptions {
+    /**
+     * No filtering, all reviews are returned (default option)
+     */
+    None = 0,
+    /**
+     * Filter out review items with empty review text
+     */
+    FilterEmptyReviews = 1,
+    /**
+     * Filter out review items with empty usernames
+     */
+    FilterEmptyUserNames = 2,
+}
+
+export interface ReviewPatch {
+    /**
+     * Denotes the patch operation type
+     */
+    operation: ReviewPatchOperation;
+    /**
+     * Use when patch operation is FlagReview
+     */
+    reportedConcern: UserReportedConcern;
+    /**
+     * Use when patch operation is EditReview
+     */
+    reviewItem: Review;
+}
+
+export enum ReviewPatchOperation {
+    /**
+     * Flag a review
+     */
+    FlagReview = 1,
+    /**
+     * Update an existing review
+     */
+    UpdateReview = 2,
+    /**
+     * Submit a reply for a review
+     */
+    ReplyToReview = 3,
+}
+
+export interface ReviewReply {
+    /**
+     * Id of the reply
+     */
+    id: number;
+    /**
+     * Flag for soft deletion
+     */
+    isDeleted: boolean;
+    /**
+     * Version of the product when the reply was submitted or updated
+     */
+    productVersion: string;
+    /**
+     * Content of the reply
+     */
+    replyText: string;
+    /**
+     * Id of the review, to which this reply belongs
+     */
+    reviewId: number;
+    /**
+     * Title of the reply
+     */
+    title: string;
+    /**
+     * Date the reply was submitted or updated
+     */
+    updatedDate: Date;
+    /**
+     * Id of the user who left the reply
      */
     userId: string;
 }
@@ -751,11 +992,6 @@ export interface ReviewsResult {
      * Count of total review items
      */
     totalReviewCount: number;
-}
-
-export enum SigningKeyPermissions {
-    Read = 1,
-    Write = 2,
 }
 
 export enum SortByType {
@@ -779,6 +1015,30 @@ export enum SortByType {
      * Results will be sorted by Install Count
      */
     InstallCount = 4,
+    /**
+     * The results will be sorted as per Published date of the extensions
+     */
+    PublishedDate = 5,
+    /**
+     * The results will be sorted as per Average ratings of the extensions
+     */
+    AverageRating = 6,
+    /**
+     * The results will be sorted as per Trending Daily Score of the extensions
+     */
+    TrendingDaily = 7,
+    /**
+     * The results will be sorted as per Trending weekly Score of the extensions
+     */
+    TrendingWeekly = 8,
+    /**
+     * The results will be sorted as per Trending monthly Score of the extensions
+     */
+    TrendingMonthly = 9,
+    /**
+     * The results will be sorted as per ReleaseDate of the extensions (date on which the extension first went public)
+     */
+    ReleaseDate = 10,
 }
 
 export enum SortOrderType {
@@ -868,6 +1128,21 @@ export var TypeInfo = {
     AcquisitionOptions: {
         fields: <any>null
     },
+    Answers: {
+        fields: <any>null
+    },
+    AssetDetails: {
+        fields: <any>null
+    },
+    AzurePublisher: {
+        fields: <any>null
+    },
+    AzureRestApiRequestModel: {
+        fields: <any>null
+    },
+    AzureRestApiResponseModel: {
+        fields: <any>null
+    },
     ConcernCategory: {
         enumValues: {
             "general": 1,
@@ -876,6 +1151,12 @@ export var TypeInfo = {
         }
     },
     ExtensionAcquisitionRequest: {
+        fields: <any>null
+    },
+    ExtensionBadge: {
+        fields: <any>null
+    },
+    ExtensionCategory: {
         fields: <any>null
     },
     ExtensionFile: {
@@ -922,6 +1203,8 @@ export var TypeInfo = {
             "installationTarget": 8,
             "featured": 9,
             "searchText": 10,
+            "featuredInCategory": 11,
+            "excludeWithFlags": 12,
         }
     },
     ExtensionQueryFlags: {
@@ -955,7 +1238,11 @@ export var TypeInfo = {
             "set": 1,
             "increment": 2,
             "decrement": 3,
+            "delete": 4,
         }
+    },
+    ExtensionStatisticUpdate: {
+        fields: <any>null
     },
     ExtensionVersion: {
         fields: <any>null
@@ -991,10 +1278,12 @@ export var TypeInfo = {
             "builtIn": 2,
             "validated": 4,
             "trusted": 8,
+            "paid": 16,
             "public": 256,
             "multiVersion": 512,
             "system": 1024,
             "preview": 2048,
+            "deprecated": 4096,
         }
     },
     Publisher: {
@@ -1034,17 +1323,11 @@ export var TypeInfo = {
     PublisherQuery: {
         fields: <any>null
     },
-    PublisherQueryFilterType: {
-        enumValues: {
-            "tag": 1,
-            "displayName": 2,
-            "my": 3,
-        }
-    },
     PublisherQueryFlags: {
         enumValues: {
             "none": 0,
             "includeExtensions": 1,
+            "includeEmailAddress": 2,
         }
     },
     PublisherQueryResult: {
@@ -1053,17 +1336,42 @@ export var TypeInfo = {
     QueryFilter: {
         fields: <any>null
     },
+    RestApiResponseStatus: {
+        enumValues: {
+            "completed": 0,
+            "failed": 1,
+            "inprogress": 2,
+            "skipped": 3,
+        }
+    },
+    RestApiResponseStatusModel: {
+        fields: <any>null
+    },
     Review: {
+        fields: <any>null
+    },
+    ReviewFilterOptions: {
+        enumValues: {
+            "none": 0,
+            "filterEmptyReviews": 1,
+            "filterEmptyUserNames": 2,
+        }
+    },
+    ReviewPatch: {
+        fields: <any>null
+    },
+    ReviewPatchOperation: {
+        enumValues: {
+            "flagReview": 1,
+            "updateReview": 2,
+            "replyToReview": 3,
+        }
+    },
+    ReviewReply: {
         fields: <any>null
     },
     ReviewsResult: {
         fields: <any>null
-    },
-    SigningKeyPermissions: {
-        enumValues: {
-            "read": 1,
-            "write": 2,
-        }
     },
     SortByType: {
         enumValues: {
@@ -1072,6 +1380,12 @@ export var TypeInfo = {
             "title": 2,
             "publisher": 3,
             "installCount": 4,
+            "publishedDate": 5,
+            "averageRating": 6,
+            "trendingDaily": 7,
+            "trendingWeekly": 8,
+            "trendingMonthly": 9,
+            "releaseDate": 10,
         }
     },
     SortOrderType: {
@@ -1108,6 +1422,33 @@ TypeInfo.AcquisitionOptions.fields = {
     },
 };
 
+TypeInfo.Answers.fields = {
+};
+
+TypeInfo.AssetDetails.fields = {
+    answers: {
+        typeInfo: TypeInfo.Answers
+    },
+};
+
+TypeInfo.AzurePublisher.fields = {
+};
+
+TypeInfo.AzureRestApiRequestModel.fields = {
+    assetDetails: {
+        typeInfo: TypeInfo.AssetDetails
+    },
+};
+
+TypeInfo.AzureRestApiResponseModel.fields = {
+    assetDetails: {
+        typeInfo: TypeInfo.AssetDetails
+    },
+    operationStatus: {
+        typeInfo: TypeInfo.RestApiResponseStatusModel
+    },
+};
+
 TypeInfo.ExtensionAcquisitionRequest.fields = {
     assignmentType: {
         enumType: TypeInfo.AcquisitionAssignmentType
@@ -1115,6 +1456,12 @@ TypeInfo.ExtensionAcquisitionRequest.fields = {
     operationType: {
         enumType: TypeInfo.AcquisitionOperationType
     },
+};
+
+TypeInfo.ExtensionBadge.fields = {
+};
+
+TypeInfo.ExtensionCategory.fields = {
 };
 
 TypeInfo.ExtensionFile.fields = {
@@ -1176,7 +1523,20 @@ TypeInfo.ExtensionShare.fields = {
 TypeInfo.ExtensionStatistic.fields = {
 };
 
+TypeInfo.ExtensionStatisticUpdate.fields = {
+    operation: {
+        enumType: TypeInfo.ExtensionStatisticOperation
+    },
+    statistic: {
+        typeInfo: TypeInfo.ExtensionStatistic
+    },
+};
+
 TypeInfo.ExtensionVersion.fields = {
+    badges: {
+        isArray: true,
+        typeInfo: TypeInfo.ExtensionBadge
+    },
     files: {
         isArray: true,
         typeInfo: TypeInfo.ExtensionFile
@@ -1209,8 +1569,14 @@ TypeInfo.PublishedExtension.fields = {
     lastUpdated: {
         isDate: true,
     },
+    publishedDate: {
+        isDate: true,
+    },
     publisher: {
         typeInfo: TypeInfo.PublisherFacts
+    },
+    releaseDate: {
+        isDate: true,
     },
     sharedWith: {
         isArray: true,
@@ -1279,7 +1645,34 @@ TypeInfo.QueryFilter.fields = {
     },
 };
 
+TypeInfo.RestApiResponseStatusModel.fields = {
+    status: {
+        enumType: TypeInfo.RestApiResponseStatus
+    },
+};
+
 TypeInfo.Review.fields = {
+    reply: {
+        typeInfo: TypeInfo.ReviewReply
+    },
+    updatedDate: {
+        isDate: true,
+    },
+};
+
+TypeInfo.ReviewPatch.fields = {
+    operation: {
+        enumType: TypeInfo.ReviewPatchOperation
+    },
+    reportedConcern: {
+        typeInfo: TypeInfo.UserReportedConcern
+    },
+    reviewItem: {
+        typeInfo: TypeInfo.Review
+    },
+};
+
+TypeInfo.ReviewReply.fields = {
     updatedDate: {
         isDate: true,
     },

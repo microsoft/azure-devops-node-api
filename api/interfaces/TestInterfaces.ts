@@ -56,6 +56,7 @@ export enum AttachmentType {
     TmiTestRunReverseDeploymentFiles = 8,
     TmiTestResultDetail = 9,
     TmiTestRunSummary = 10,
+    ConsoleLog = 11,
 }
 
 export interface BatchResponse {
@@ -91,6 +92,7 @@ export interface BuildReference {
     definitionId: number;
     id: number;
     number: string;
+    repositoryId: string;
     uri: string;
 }
 
@@ -348,11 +350,6 @@ export interface FunctionCoverage {
     statistics: CoverageStatistics;
 }
 
-export enum GroupTestResultsBy {
-    None = 0,
-    AutomatedTestStorage = 1,
-}
-
 export interface LastResultDetails {
     dateCompleted: Date;
     duration: number;
@@ -398,10 +395,20 @@ export interface PointAssignment {
 }
 
 export interface PointUpdateModel {
+    outcome: string;
+    resetToActive: boolean;
+    tester: VSSInterfaces.IdentityRef;
 }
 
 export interface PointWorkItemProperty {
     workItem: { key: string; value: any };
+}
+
+export interface PropertyBag {
+    /**
+     * Generic store for test session data
+     */
+    bag: { [key: string] : string; };
 }
 
 export interface QueryModel {
@@ -411,8 +418,11 @@ export interface QueryModel {
 export interface ReleaseReference {
     definitionId: number;
     environmentDefinitionId: number;
+    environmentDefinitionName: string;
     environmentId: number;
+    environmentName: string;
     id: number;
+    name: string;
 }
 
 export interface Response {
@@ -433,17 +443,21 @@ export enum ResultObjectType {
     TestPlan = 1,
 }
 
-export enum ResultOutcome {
-    Pass = 1,
-    Fail = 2,
-    Pending = 3,
-}
-
 export interface ResultRetentionSettings {
     automatedResultsRetentionDuration: number;
     lastUpdatedBy: VSSInterfaces.IdentityRef;
     lastUpdatedDate: Date;
     manualResultsRetentionDuration: number;
+}
+
+export interface ResultsFilter {
+    automatedTestName: string;
+    branch: string;
+    groupBy: string;
+    maxCompleteDate: Date;
+    resultsCount: number;
+    testResultsContext: TestResultsContext;
+    trendDays: number;
 }
 
 export interface ResultUpdateRequestModel {
@@ -558,6 +572,44 @@ export interface SharedStepModel {
 }
 
 export interface SuiteCreateModel {
+    name: string;
+    queryString: string;
+    requirementIds: number[];
+    suiteType: string;
+}
+
+export interface SuiteEntry {
+    /**
+     * Id of child suite in a suite
+     */
+    childSuiteId: number;
+    /**
+     * Sequence number for the test case or child suite in the suite
+     */
+    sequenceNumber: number;
+    /**
+     * Id for the suite
+     */
+    suiteId: number;
+    /**
+     * Id of a test case in a suite
+     */
+    testCaseId: number;
+}
+
+export interface SuiteEntryUpdateModel {
+    /**
+     * Id of child suite in a suite
+     */
+    childSuiteId: number;
+    /**
+     * Updated sequence number for the test case or child suite in the suite
+     */
+    sequenceNumber: number;
+    /**
+     * Id of a test case in a suite
+     */
+    testCaseId: number;
 }
 
 export interface SuiteTestCase {
@@ -572,6 +624,15 @@ export interface TestActionResultModel extends TestResultModelBase {
     actionPath: string;
     iterationId: number;
     sharedStepModel: SharedStepModel;
+    url: string;
+}
+
+export interface TestAttachment {
+    attachmentType: AttachmentType;
+    comment: string;
+    createdDate: Date;
+    fileName: string;
+    id: number;
     url: string;
 }
 
@@ -616,6 +677,7 @@ export interface TestCaseResult {
     owner: VSSInterfaces.IdentityRef;
     priority: number;
     project: ShallowReference;
+    release: ShallowReference;
     releaseReference: ReleaseReference;
     resetCount: number;
     resolutionState: string;
@@ -627,33 +689,11 @@ export interface TestCaseResult {
     state: string;
     testCase: ShallowReference;
     testCaseTitle: string;
+    testPlan: ShallowReference;
     testPoint: ShallowReference;
     testRun: ShallowReference;
+    testSuite: ShallowReference;
     url: string;
-}
-
-export interface TestCaseResult2 {
-    componentId: string;
-    custom: any;
-    endTime: Date;
-    exceptionStack: string;
-    externalArtifacts: string[];
-    externalRunId: string;
-    externalSystem: string;
-    externalTestId: string;
-    failureReasons: string[];
-    failureSummary: string;
-    investigationNotes: string;
-    isSuperseded: boolean;
-    isValid: boolean;
-    outcome: ResultOutcome;
-    resultCustomPropertiesTypeName: string;
-    resultId: string;
-    resultName: string;
-    runId: string;
-    startTime: Date;
-    testId: string;
-    tfsSecurityKey: string;
 }
 
 export interface TestCaseResultAttachmentModel {
@@ -801,6 +841,11 @@ export interface TestMessageLogDetails {
     message: string;
 }
 
+export interface TestMethod {
+    container: string;
+    name: string;
+}
+
 export enum TestOutcome {
     /**
      * Only used during an update to preserve the existing value.
@@ -887,9 +932,16 @@ export interface TestPlan {
 }
 
 export interface TestPlanCloneRequest {
-    cloneOptions: CloneOptions;
     destinationTestPlan: TestPlan;
+    options: CloneOptions;
     suiteIds: number[];
+}
+
+export interface TestPlanHubData {
+    selectedSuiteId: number;
+    testPlan: TestPlan;
+    testPoints: TestPoint[];
+    testSuites: TestSuite[];
 }
 
 export interface TestPlansWithSelection {
@@ -908,6 +960,7 @@ export interface TestPoint {
     lastResolutionStateId: number;
     lastResult: ShallowReference;
     lastResultDetails: LastResultDetails;
+    lastResultState: string;
     lastRunBuildNumber: string;
     lastTestRun: ShallowReference;
     lastUpdatedBy: VSSInterfaces.IdentityRef;
@@ -957,6 +1010,16 @@ export interface TestResultCreateModel {
     testPoint: ShallowReference;
 }
 
+export interface TestResultHistory {
+    groupByField: string;
+    resultsForGroup: TestResultHistoryDetailsForGroup[];
+}
+
+export interface TestResultHistoryDetailsForGroup {
+    groupByValue: any;
+    latestResult: TestCaseResult;
+}
+
 export interface TestResultModelBase {
     comment: string;
     completedDate: Date;
@@ -992,8 +1055,14 @@ export interface TestResultsDetails {
 
 export interface TestResultsDetailsForGroup {
     groupByValue: any;
-    ids: TestCaseResultIdentifier[];
+    results: TestCaseResult[];
     resultsCountByOutcome: { [key: number] : AggregatedResultsByOutcome; };
+}
+
+export interface TestResultsQuery {
+    fields: string[];
+    results: TestCaseResult[];
+    resultsFilter: ResultsFilter;
 }
 
 export interface TestResultSummary {
@@ -1007,8 +1076,10 @@ export interface TestResultTrendFilter {
     branchNames: string[];
     buildCount: number;
     definitionIds: number[];
+    maxCompleteDate: Date;
     publishContext: string;
     testRunTitles: string[];
+    trendDays: number;
 }
 
 export interface TestRun {
@@ -1040,6 +1111,7 @@ export interface TestRun {
     plan: ShallowReference;
     postProcessState: string;
     project: ShallowReference;
+    release: ReleaseReference;
     releaseEnvironmentUri: string;
     releaseUri: string;
     revision: number;
@@ -1063,37 +1135,6 @@ export interface TestRunCoverage {
     testRun: ShallowReference;
 }
 
-export enum TestRunState {
-    /**
-     * Only used during an update to preserve the existing value.
-     */
-    Unspecified = 0,
-    /**
-     * The run is still being created.  No tests have started yet.
-     */
-    NotStarted = 1,
-    /**
-     * Tests are running.
-     */
-    InProgress = 2,
-    /**
-     * All tests have completed or been skipped.
-     */
-    Completed = 3,
-    /**
-     * Run is stopped and remaing tests have been aborted
-     */
-    Aborted = 4,
-    /**
-     * Run is currently initializing This is a legacy state and should not be used any more
-     */
-    Waiting = 5,
-    /**
-     * Run requires investigation because of a test point failure This is a legacy state and should not be used any more
-     */
-    NeedsInvestigation = 6,
-}
-
 export interface TestRunStatistic {
     run: ShallowReference;
     runStatistics: RunStatistic[];
@@ -1109,6 +1150,145 @@ export enum TestRunSubstate {
     PendingAnalysis = 6,
     Analyzed = 7,
     CancellationInProgress = 8,
+}
+
+export interface TestSession {
+    /**
+     * Area path of the test session
+     */
+    area: ShallowReference;
+    /**
+     * Comments in the test session
+     */
+    comment: string;
+    /**
+     * Duration of the session
+     */
+    endDate: Date;
+    /**
+     * Id of the test session
+     */
+    id: number;
+    /**
+     * Last Updated By  Reference
+     */
+    lastUpdatedBy: VSSInterfaces.IdentityRef;
+    /**
+     * Last updated date
+     */
+    lastUpdatedDate: Date;
+    /**
+     * Owner of the test session
+     */
+    owner: VSSInterfaces.IdentityRef;
+    /**
+     * Project to which the test session belongs
+     */
+    project: ShallowReference;
+    /**
+     * Generic store for test session data
+     */
+    propertyBag: PropertyBag;
+    /**
+     * Revision of the test session
+     */
+    revision: number;
+    /**
+     * Source of the test session
+     */
+    source: TestSessionSource;
+    /**
+     * Start date
+     */
+    startDate: Date;
+    /**
+     * State of the test session
+     */
+    state: TestSessionState;
+    /**
+     * Title of the test session
+     */
+    title: string;
+    /**
+     * Url of Test Session Resource
+     */
+    url: string;
+}
+
+export interface TestSessionExploredWorkItemReference extends TestSessionWorkItemReference {
+    /**
+     * Workitem references of workitems filed as a part of the current workitem exploration.
+     */
+    associatedWorkItems: TestSessionWorkItemReference[];
+    /**
+     * Time when exploration of workitem ended.
+     */
+    endTime: Date;
+    /**
+     * Time when explore of workitem was started.
+     */
+    startTime: Date;
+}
+
+export enum TestSessionSource {
+    /**
+     * Source of test session uncertain as it is stale
+     */
+    Unkonown = 0,
+    /**
+     * The session was created from Microsoft Test Manager exploratory desktop tool.
+     */
+    XTDesktop = 1,
+    /**
+     * The session was created from feedback client.
+     */
+    FeedbackDesktop = 2,
+    /**
+     * The session was created from browser extension.
+     */
+    XTWeb = 3,
+    /**
+     * The session was created from browser extension.
+     */
+    FeedbackWeb = 4,
+}
+
+export enum TestSessionState {
+    /**
+     * Only used during an update to preserve the existing value.
+     */
+    Unspecified = 0,
+    /**
+     * The session is still being created.
+     */
+    NotStarted = 1,
+    /**
+     * The session is running.
+     */
+    InProgress = 2,
+    /**
+     * The session has paused.
+     */
+    Paused = 3,
+    /**
+     * The session has completed.
+     */
+    Completed = 4,
+    /**
+     * This is required for Feedback session which are declined
+     */
+    Declined = 5,
+}
+
+export interface TestSessionWorkItemReference {
+    /**
+     * Id of the workitem
+     */
+    id: number;
+    /**
+     * Type of the workitem
+     */
+    type: string;
 }
 
 /**
@@ -1177,6 +1357,16 @@ export interface TestSuiteCloneRequest {
     destinationSuiteProjectName: string;
 }
 
+export interface TestSummaryForWorkItem {
+    summary: AggregatedDataForResultTrend;
+    workItem: WorkItemReference;
+}
+
+export interface TestToWorkItemLinks {
+    test: TestMethod;
+    workItems: WorkItemReference[];
+}
+
 export interface TestVariable {
     /**
      * Description of the test variable
@@ -1211,8 +1401,14 @@ export interface TestVariable {
 export interface WorkItemReference {
     id: string;
     name: string;
+    type: string;
     url: string;
     webUrl: string;
+}
+
+export interface WorkItemToTestLinks {
+    tests: TestMethod[];
+    workItem: WorkItemReference;
 }
 
 export var TypeInfo = {
@@ -1241,6 +1437,7 @@ export var TypeInfo = {
             "tmiTestRunReverseDeploymentFiles": 8,
             "tmiTestResultDetail": 9,
             "tmiTestRunSummary": 10,
+            "consoleLog": 11,
         }
     },
     BatchResponse: {
@@ -1325,12 +1522,6 @@ export var TypeInfo = {
     FunctionCoverage: {
         fields: <any>null
     },
-    GroupTestResultsBy: {
-        enumValues: {
-            "none": 0,
-            "automatedTestStorage": 1,
-        }
-    },
     LastResultDetails: {
         fields: <any>null
     },
@@ -1350,6 +1541,9 @@ export var TypeInfo = {
         fields: <any>null
     },
     PointWorkItemProperty: {
+        fields: <any>null
+    },
+    PropertyBag: {
         fields: <any>null
     },
     QueryModel: {
@@ -1374,14 +1568,10 @@ export var TypeInfo = {
             "testPlan": 1,
         }
     },
-    ResultOutcome: {
-        enumValues: {
-            "pass": 1,
-            "fail": 2,
-            "pending": 3,
-        }
-    },
     ResultRetentionSettings: {
+        fields: <any>null
+    },
+    ResultsFilter: {
         fields: <any>null
     },
     ResultUpdateRequestModel: {
@@ -1411,6 +1601,12 @@ export var TypeInfo = {
     SuiteCreateModel: {
         fields: <any>null
     },
+    SuiteEntry: {
+        fields: <any>null
+    },
+    SuiteEntryUpdateModel: {
+        fields: <any>null
+    },
     SuiteTestCase: {
         fields: <any>null
     },
@@ -1420,6 +1616,9 @@ export var TypeInfo = {
     TestActionResultModel: {
         fields: <any>null
     },
+    TestAttachment: {
+        fields: <any>null
+    },
     TestAttachmentReference: {
         fields: <any>null
     },
@@ -1427,9 +1626,6 @@ export var TypeInfo = {
         fields: <any>null
     },
     TestCaseResult: {
-        fields: <any>null
-    },
-    TestCaseResult2: {
         fields: <any>null
     },
     TestCaseResultAttachmentModel: {
@@ -1465,6 +1661,9 @@ export var TypeInfo = {
     TestMessageLogDetails: {
         fields: <any>null
     },
+    TestMethod: {
+        fields: <any>null
+    },
     TestOutcome: {
         enumValues: {
             "unspecified": 0,
@@ -1490,6 +1689,9 @@ export var TypeInfo = {
     TestPlanCloneRequest: {
         fields: <any>null
     },
+    TestPlanHubData: {
+        fields: <any>null
+    },
     TestPlansWithSelection: {
         fields: <any>null
     },
@@ -1500,6 +1702,12 @@ export var TypeInfo = {
         fields: <any>null
     },
     TestResultCreateModel: {
+        fields: <any>null
+    },
+    TestResultHistory: {
+        fields: <any>null
+    },
+    TestResultHistoryDetailsForGroup: {
         fields: <any>null
     },
     TestResultModelBase: {
@@ -1523,6 +1731,9 @@ export var TypeInfo = {
     TestResultsDetailsForGroup: {
         fields: <any>null
     },
+    TestResultsQuery: {
+        fields: <any>null
+    },
     TestResultSummary: {
         fields: <any>null
     },
@@ -1534,17 +1745,6 @@ export var TypeInfo = {
     },
     TestRunCoverage: {
         fields: <any>null
-    },
-    TestRunState: {
-        enumValues: {
-            "unspecified": 0,
-            "notStarted": 1,
-            "inProgress": 2,
-            "completed": 3,
-            "aborted": 4,
-            "waiting": 5,
-            "needsInvestigation": 6,
-        }
     },
     TestRunStatistic: {
         fields: <any>null
@@ -1562,6 +1762,34 @@ export var TypeInfo = {
             "cancellationInProgress": 8,
         }
     },
+    TestSession: {
+        fields: <any>null
+    },
+    TestSessionExploredWorkItemReference: {
+        fields: <any>null
+    },
+    TestSessionSource: {
+        enumValues: {
+            "unkonown": 0,
+            "xTDesktop": 1,
+            "feedbackDesktop": 2,
+            "xTWeb": 3,
+            "feedbackWeb": 4,
+        }
+    },
+    TestSessionState: {
+        enumValues: {
+            "unspecified": 0,
+            "notStarted": 1,
+            "inProgress": 2,
+            "paused": 3,
+            "completed": 4,
+            "declined": 5,
+        }
+    },
+    TestSessionWorkItemReference: {
+        fields: <any>null
+    },
     TestSettings: {
         fields: <any>null
     },
@@ -1571,10 +1799,19 @@ export var TypeInfo = {
     TestSuiteCloneRequest: {
         fields: <any>null
     },
+    TestSummaryForWorkItem: {
+        fields: <any>null
+    },
+    TestToWorkItemLinks: {
+        fields: <any>null
+    },
     TestVariable: {
         fields: <any>null
     },
     WorkItemReference: {
+        fields: <any>null
+    },
+    WorkItemToTestLinks: {
         fields: <any>null
     },
 };
@@ -1790,9 +2027,15 @@ TypeInfo.PointAssignment.fields = {
 };
 
 TypeInfo.PointUpdateModel.fields = {
+    tester: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
 };
 
 TypeInfo.PointWorkItemProperty.fields = {
+};
+
+TypeInfo.PropertyBag.fields = {
 };
 
 TypeInfo.QueryModel.fields = {
@@ -1810,6 +2053,15 @@ TypeInfo.ResultRetentionSettings.fields = {
     },
     lastUpdatedDate: {
         isDate: true,
+    },
+};
+
+TypeInfo.ResultsFilter.fields = {
+    maxCompleteDate: {
+        isDate: true,
+    },
+    testResultsContext: {
+        typeInfo: TypeInfo.TestResultsContext
     },
 };
 
@@ -1912,6 +2164,12 @@ TypeInfo.SharedStepModel.fields = {
 TypeInfo.SuiteCreateModel.fields = {
 };
 
+TypeInfo.SuiteEntry.fields = {
+};
+
+TypeInfo.SuiteEntryUpdateModel.fields = {
+};
+
 TypeInfo.SuiteTestCase.fields = {
     pointAssignments: {
         isArray: true,
@@ -1933,6 +2191,15 @@ TypeInfo.TestActionResultModel.fields = {
         typeInfo: TypeInfo.SharedStepModel
     },
     startedDate: {
+        isDate: true,
+    },
+};
+
+TypeInfo.TestAttachment.fields = {
+    attachmentType: {
+        enumType: TypeInfo.AttachmentType
+    },
+    createdDate: {
         isDate: true,
     },
 };
@@ -1989,6 +2256,9 @@ TypeInfo.TestCaseResult.fields = {
     project: {
         typeInfo: TypeInfo.ShallowReference
     },
+    release: {
+        typeInfo: TypeInfo.ShallowReference
+    },
     releaseReference: {
         typeInfo: TypeInfo.ReleaseReference
     },
@@ -2001,23 +2271,17 @@ TypeInfo.TestCaseResult.fields = {
     testCase: {
         typeInfo: TypeInfo.ShallowReference
     },
+    testPlan: {
+        typeInfo: TypeInfo.ShallowReference
+    },
     testPoint: {
         typeInfo: TypeInfo.ShallowReference
     },
     testRun: {
         typeInfo: TypeInfo.ShallowReference
     },
-};
-
-TypeInfo.TestCaseResult2.fields = {
-    endTime: {
-        isDate: true,
-    },
-    outcome: {
-        enumType: TypeInfo.ResultOutcome
-    },
-    startTime: {
-        isDate: true,
+    testSuite: {
+        typeInfo: TypeInfo.ShallowReference
     },
 };
 
@@ -2117,6 +2381,9 @@ TypeInfo.TestMessageLogDetails.fields = {
     },
 };
 
+TypeInfo.TestMethod.fields = {
+};
+
 TypeInfo.TestPlan.fields = {
     area: {
         typeInfo: TypeInfo.ShallowReference
@@ -2163,11 +2430,25 @@ TypeInfo.TestPlan.fields = {
 };
 
 TypeInfo.TestPlanCloneRequest.fields = {
-    cloneOptions: {
-        typeInfo: TypeInfo.CloneOptions
-    },
     destinationTestPlan: {
         typeInfo: TypeInfo.TestPlan
+    },
+    options: {
+        typeInfo: TypeInfo.CloneOptions
+    },
+};
+
+TypeInfo.TestPlanHubData.fields = {
+    testPlan: {
+        typeInfo: TypeInfo.TestPlan
+    },
+    testPoints: {
+        isArray: true,
+        typeInfo: TypeInfo.TestPoint
+    },
+    testSuites: {
+        isArray: true,
+        typeInfo: TypeInfo.TestSuite
     },
 };
 
@@ -2242,6 +2523,19 @@ TypeInfo.TestResultCreateModel.fields = {
     },
 };
 
+TypeInfo.TestResultHistory.fields = {
+    resultsForGroup: {
+        isArray: true,
+        typeInfo: TypeInfo.TestResultHistoryDetailsForGroup
+    },
+};
+
+TypeInfo.TestResultHistoryDetailsForGroup.fields = {
+    latestResult: {
+        typeInfo: TypeInfo.TestCaseResult
+    },
+};
+
 TypeInfo.TestResultModelBase.fields = {
     completedDate: {
         isDate: true,
@@ -2274,11 +2568,21 @@ TypeInfo.TestResultsDetails.fields = {
 };
 
 TypeInfo.TestResultsDetailsForGroup.fields = {
-    ids: {
+    results: {
         isArray: true,
-        typeInfo: TypeInfo.TestCaseResultIdentifier
+        typeInfo: TypeInfo.TestCaseResult
     },
     resultsCountByOutcome: {
+    },
+};
+
+TypeInfo.TestResultsQuery.fields = {
+    results: {
+        isArray: true,
+        typeInfo: TypeInfo.TestCaseResult
+    },
+    resultsFilter: {
+        typeInfo: TypeInfo.ResultsFilter
     },
 };
 
@@ -2298,6 +2602,9 @@ TypeInfo.TestResultSummary.fields = {
 };
 
 TypeInfo.TestResultTrendFilter.fields = {
+    maxCompleteDate: {
+        isDate: true,
+    },
 };
 
 TypeInfo.TestRun.fields = {
@@ -2347,6 +2654,9 @@ TypeInfo.TestRun.fields = {
     project: {
         typeInfo: TypeInfo.ShallowReference
     },
+    release: {
+        typeInfo: TypeInfo.ReleaseReference
+    },
     runStatistics: {
         isArray: true,
         typeInfo: TypeInfo.RunStatistic
@@ -2383,6 +2693,55 @@ TypeInfo.TestRunStatistic.fields = {
         isArray: true,
         typeInfo: TypeInfo.RunStatistic
     },
+};
+
+TypeInfo.TestSession.fields = {
+    area: {
+        typeInfo: TypeInfo.ShallowReference
+    },
+    endDate: {
+        isDate: true,
+    },
+    lastUpdatedBy: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+    lastUpdatedDate: {
+        isDate: true,
+    },
+    owner: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+    project: {
+        typeInfo: TypeInfo.ShallowReference
+    },
+    propertyBag: {
+        typeInfo: TypeInfo.PropertyBag
+    },
+    source: {
+        enumType: TypeInfo.TestSessionSource
+    },
+    startDate: {
+        isDate: true,
+    },
+    state: {
+        enumType: TypeInfo.TestSessionState
+    },
+};
+
+TypeInfo.TestSessionExploredWorkItemReference.fields = {
+    associatedWorkItems: {
+        isArray: true,
+        typeInfo: TypeInfo.TestSessionWorkItemReference
+    },
+    endTime: {
+        isDate: true,
+    },
+    startTime: {
+        isDate: true,
+    },
+};
+
+TypeInfo.TestSessionWorkItemReference.fields = {
 };
 
 TypeInfo.TestSettings.fields = {
@@ -2427,6 +2786,25 @@ TypeInfo.TestSuiteCloneRequest.fields = {
     },
 };
 
+TypeInfo.TestSummaryForWorkItem.fields = {
+    summary: {
+        typeInfo: TypeInfo.AggregatedDataForResultTrend
+    },
+    workItem: {
+        typeInfo: TypeInfo.WorkItemReference
+    },
+};
+
+TypeInfo.TestToWorkItemLinks.fields = {
+    test: {
+        typeInfo: TypeInfo.TestMethod
+    },
+    workItems: {
+        isArray: true,
+        typeInfo: TypeInfo.WorkItemReference
+    },
+};
+
 TypeInfo.TestVariable.fields = {
     project: {
         typeInfo: TypeInfo.ShallowReference
@@ -2434,4 +2812,14 @@ TypeInfo.TestVariable.fields = {
 };
 
 TypeInfo.WorkItemReference.fields = {
+};
+
+TypeInfo.WorkItemToTestLinks.fields = {
+    tests: {
+        isArray: true,
+        typeInfo: TypeInfo.TestMethod
+    },
+    workItem: {
+        typeInfo: TypeInfo.WorkItemReference
+    },
 };

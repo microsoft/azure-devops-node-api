@@ -226,6 +226,24 @@ export interface TeamProjectReference {
     url: string;
 }
 
+/**
+ * A data transfer object that stores the metadata associated with the creation of temporary data.
+ */
+export interface TemporaryDataCreatedDTO extends TemporaryDataDTO {
+    expirationDate: Date;
+    id: string;
+    url: string;
+}
+
+/**
+ * A data transfer object that stores the metadata associated with the temporary data.
+ */
+export interface TemporaryDataDTO {
+    expirationSeconds: number;
+    origin: string;
+    value: any;
+}
+
 export interface WebApiConnectedService extends WebApiConnectedServiceRef {
     /**
      * The user who did the OAuth authentication to created this service
@@ -430,6 +448,12 @@ export var TypeInfo = {
     TeamProjectReference: {
         fields: <any>null
     },
+    TemporaryDataCreatedDTO: {
+        fields: <any>null
+    },
+    TemporaryDataDTO: {
+        fields: <any>null
+    },
     WebApiConnectedService: {
         fields: <any>null
     },
@@ -515,6 +539,15 @@ TypeInfo.TeamProjectCollectionReference.fields = {
 };
 
 TypeInfo.TeamProjectReference.fields = {
+};
+
+TypeInfo.TemporaryDataCreatedDTO.fields = {
+    expirationDate: {
+        isDate: true,
+    },
+};
+
+TypeInfo.TemporaryDataDTO.fields = {
 };
 
 TypeInfo.WebApiConnectedService.fields = {

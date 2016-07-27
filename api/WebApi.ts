@@ -68,89 +68,45 @@ export class WebApi {
     }
 
     /**
-     * Each API has a method here to create the "vanilla" API as well as one with a Q Promise wrapper.
+     * Each API has a method here to create the client.
      */
-    public getQBuildApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): buildm.IQBuildApi {
-        return new buildm.QBuildApi(serverUrl, handlers);
-    }
-
     public getCoreApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): corem.ICoreApi {
         return new corem.CoreApi(serverUrl, handlers);
-    }
-
-    public getQCoreApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): corem.IQCoreApi {
-        return new corem.QCoreApi(serverUrl, handlers);
     }
 
     public getFileContainerApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): filecontainerm.IFileContainerApi {
         return new filecontainerm.FileContainerApi(serverUrl, handlers);
     }
 
-    public getQFileContainerApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): filecontainerm.IQFileContainerApi {
-        return new filecontainerm.QFileContainerApi(serverUrl, handlers);
-    }
-    
     public getGalleryApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): gallerym.IGalleryApi {
         return new gallerym.GalleryApi(serverUrl, handlers);
     }
 
-    public getQGalleryApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): gallerym.IQGalleryApi {
-        return new gallerym.QGalleryApi(serverUrl, handlers);
-    }
-    
     public getGitApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): gitm.IGitApi {
         return new gitm.GitApi(serverUrl, handlers);
     }
 
-    public getQGitApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): gitm.IQGitApi {
-        return new gitm.QGitApi(serverUrl, handlers);
-    } 
-    
     public getTaskApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): taskm.ITaskApi {
         return new taskm.TaskApi(serverUrl, handlers);
     }
 
-    public getQTaskApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): taskm.IQTaskApi {
-        return new taskm.QTaskApi(serverUrl, handlers);
-    }
-    
     public getTaskAgentApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): taskagentm.ITaskAgentApi {
         return new taskagentm.TaskAgentApi(serverUrl, handlers); 
     }
 
-    public getQTaskAgentApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): taskagentm.IQTaskAgentApi {
-        return new taskagentm.QTaskAgentApi(serverUrl, handlers);
-    }
-    
     public getTestApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): testm.ITestApi {
         return new testm.TestApi(serverUrl, handlers); 
-    }
-
-    public getQTestApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): testm.IQTestApi {
-        return new testm.QTestApi(serverUrl, handlers);
     }
 
     public getTfvcApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): tfvcm.ITfvcApi {
         return new tfvcm.TfvcApi(serverUrl, handlers);
     }
 
-    public getQTfvcApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): tfvcm.IQTfvcApi {
-        return new tfvcm.QTfvcApi(serverUrl, handlers);
-    }
-
     public getWorkItemTrackingApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): workitemtrackingm.IWorkItemTrackingApi {
         return new workitemtrackingm.WorkItemTrackingApi(serverUrl, handlers);
     }
 
-    public getQWorkItemTrackingApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): workitemtrackingm.IQWorkItemTrackingApi {
-        return new workitemtrackingm.QWorkItemTrackingApi(serverUrl, handlers);
-    }
-
     public getReleaseApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): releasem.IReleaseApi {
         return new releasem.ReleaseApi(serverUrl, handlers);
-    }
-
-    public getQReleaseApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): releasem.IQReleaseApi {
-        return new releasem.QReleaseApi(serverUrl, handlers);
     }
 }

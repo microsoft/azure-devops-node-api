@@ -14,6 +14,20 @@ import FormInputInterfaces = require("../interfaces/common/FormInputInterfaces")
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
+export interface AgentChangeEvent {
+    agent: TaskAgent;
+    eventType: string;
+    poolId: number;
+    timeStamp: Date;
+}
+
+export interface AgentJobRequestMessage extends JobRequestMessage {
+    lockedUntil: Date;
+    lockToken: string;
+    requestId: number;
+    tasks: TaskInstance[];
+}
+
 export interface AgentPoolEvent {
     eventType: string;
     pool: TaskAgentPool;
@@ -29,32 +43,28 @@ export interface AgentRefreshMessage {
     timeout: any;
 }
 
+export interface AgentRequestEvent {
+    eventType: string;
+    planId: string;
+    poolId: number;
+    reservedAgentId: number;
+    result: TaskResult;
+    timeStamp: Date;
+}
+
 export interface AuthorizationHeader {
     name: string;
     value: string;
 }
 
-export enum ConnectedServiceKind {
-    /**
-     * Custom or unknown service
-     */
-    Custom = 0,
-    /**
-     * Azure Subscription
-     */
-    AzureSubscription = 1,
-    /**
-     * Chef Connection
-     */
-    Chef = 2,
-    /**
-     * Generic Connection
-     */
-    Generic = 3,
-    /**
-     * GitHub Connection
-     */
-    GitHub = 4,
+export interface AzureSpnOperationStatus {
+    state: string;
+    statusMessage: string;
+}
+
+export interface AzureSubscription {
+    displayName: string;
+    subscriptionId: string;
 }
 
 export interface DataSource {
@@ -66,9 +76,22 @@ export interface DataSource {
 export interface DataSourceBinding {
     dataSourceName: string;
     endpointId: string;
+    endpointUrl: string;
     parameters: { [key: string] : string; };
+    resultSelector: string;
     resultTemplate: string;
     target: string;
+    transformationTemplate: string;
+}
+
+export interface DependencyBinding {
+    key: string;
+    value: string;
+}
+
+export interface DependsOn {
+    input: string;
+    map: DependencyBinding[];
 }
 
 export interface EndpointAuthorization {
@@ -77,8 +100,10 @@ export interface EndpointAuthorization {
 }
 
 export interface EndpointUrl {
+    dependsOn: DependsOn;
     displayName: string;
     helpText: string;
+    isVisible: string;
     value: string;
 }
 
@@ -132,6 +157,16 @@ export interface JobEvent {
     name: string;
 }
 
+export interface JobEventConfig {
+    timeout: string;
+}
+
+export interface JobEventsConfig {
+    jobAssigned: JobEventConfig;
+    jobCompleted: JobEventConfig;
+    jobStarted: JobEventConfig;
+}
+
 /**
  * Represents an option that may affect the way an agent runs the job.
  */
@@ -147,12 +182,12 @@ export interface JobRequestMessage {
     environment: JobEnvironment;
     jobId: string;
     jobName: string;
-    lockedUntil: Date;
-    lockToken: string;
+    messageType: string;
     plan: TaskOrchestrationPlanReference;
-    requestId: number;
-    tasks: TaskInstance[];
     timeline: TimelineReference;
+}
+
+export interface JobStartedEvent extends JobEvent {
 }
 
 export interface MaskHint {
@@ -165,10 +200,64 @@ export enum MaskType {
     Regex = 2,
 }
 
+export interface MetaTaskDefinition extends TaskDefinition {
+    owner: string;
+    tasks: MetaTaskStep[];
+}
+
+export interface MetaTaskStep {
+    alwaysRun: boolean;
+    continueOnError: boolean;
+    displayName: string;
+    enabled: boolean;
+    inputs: { [key: string] : string; };
+    task: TaskDefinitionReference;
+    timeoutInMinutes: number;
+}
+
+export interface PackageMetadata {
+    createdOn: Date;
+    /**
+     * A direct link to download the package.
+     */
+    downloadUrl: string;
+    /**
+     * MD5 hash as a base64 string
+     */
+    hashValue: string;
+    /**
+     * A link to documentation
+     */
+    infoUrl: string;
+    platform: string;
+    type: string;
+    version: PackageVersion;
+}
+
+export interface PackageVersion {
+    major: number;
+    minor: number;
+    patch: number;
+}
+
 export interface PlanEnvironment {
     mask: MaskHint[];
     options: { [key: string] : JobOption; };
     variables: { [key: string] : string; };
+}
+
+export interface SendJobResponse {
+    events: JobEventsConfig;
+    variables: { [key: string] : string; };
+}
+
+export interface ServerExecutionDefinition {
+    events: JobEventsConfig;
+}
+
+export interface ServerJobRequestMessage extends JobRequestMessage {
+    taskDefinition: TaskDefinition;
+    taskInstance: TaskInstance;
 }
 
 /**
@@ -195,9 +284,17 @@ export interface ServiceEndpoint {
      */
     id: string;
     /**
+     * EndPoint state indictor
+     */
+    isReady: boolean;
+    /**
      * Gets or sets the friendly name of the endpoint.
      */
     name: string;
+    /**
+     * Error message during creation/deletion of endpoint
+     */
+    operationStatus: any;
     readersGroup: VSSInterfaces.IdentityRef;
     /**
      * Gets or sets the type of the endpoint.
@@ -212,7 +309,6 @@ export interface ServiceEndpoint {
 export interface ServiceEndpointAuthenticationScheme {
     authorizationHeaders: AuthorizationHeader[];
     displayName: string;
-    endpointHeaders: AuthorizationHeader[];
     inputDescriptors: FormInputInterfaces.InputDescriptor[];
     scheme: string;
 }
@@ -225,6 +321,7 @@ export interface ServiceEndpointType {
     endpointUrl: EndpointUrl;
     helpLink: HelpLink;
     helpMarkDown: string;
+    inputDescriptors: FormInputInterfaces.InputDescriptor[];
     name: string;
 }
 
@@ -233,6 +330,10 @@ export interface TaskAgent extends TaskAgentReference {
      * Gets the request which is currently assigned to this agent.
      */
     assignedRequest: TaskAgentJobRequest;
+    /**
+     * Gets or sets the authorization information for this agent.
+     */
+    authorization: TaskAgentAuthorization;
     /**
      * Gets the date on which this agent was created.
      */
@@ -250,6 +351,24 @@ export interface TaskAgent extends TaskAgentReference {
     userCapabilities: { [key: string] : string; };
 }
 
+/**
+ * Provides data necessary for authorizing the agent using OAuth 2.0 authentication flows.
+ */
+export interface TaskAgentAuthorization {
+    /**
+     * Gets or sets the endpoint used to obtain access tokens from the configured token service.
+     */
+    authorizationUrl: string;
+    /**
+     * Gets or sets the client identifier for this agent.
+     */
+    clientId: string;
+    /**
+     * Gets or sets the public key used to verify the identity of this agent.
+     */
+    publicKey: TaskAgentPublicKey;
+}
+
 export interface TaskAgentJobRequest {
     assignTime: Date;
     definition: TaskOrchestrationOwner;
@@ -257,6 +376,7 @@ export interface TaskAgentJobRequest {
     finishTime: Date;
     hostId: string;
     jobId: string;
+    jobName: string;
     lockedUntil: Date;
     matchedAgents: TaskAgentReference[];
     owner: TaskOrchestrationOwner;
@@ -271,9 +391,25 @@ export interface TaskAgentJobRequest {
     serviceOwner: string;
 }
 
+/**
+ * Provides a contract for receiving messages from the task orchestrator.
+ */
 export interface TaskAgentMessage {
+    /**
+     * Gets or sets the body of the message. If the IV property is provided the body will need to be decrypted using the TaskAgentSession.EncryptionKey value in addition to the IV.
+     */
     body: string;
+    /**
+     * Gets or sets the intialization vector used to encrypt this message.
+     */
+    iV: number[];
+    /**
+     * Gets or sets the message identifier.
+     */
     messageId: number;
+    /**
+     * Gets or sets the message type, describing the data contract found in TaskAgentMessage.Body.
+     */
     messageType: string;
 }
 
@@ -323,11 +459,26 @@ export interface TaskAgentPoolReference {
     scope: string;
 }
 
+/**
+ * Represents the public key portion of an RSA asymmetric key.
+ */
+export interface TaskAgentPublicKey {
+    /**
+     * Gets or sets the exponent for the public key.
+     */
+    exponent: number[];
+    /**
+     * Gets or sets the modulus for the public key.
+     */
+    modulus: number[];
+}
+
 export interface TaskAgentQueue {
     groupScopeId: string;
     id: number;
     name: string;
     pool: TaskAgentPoolReference;
+    projectId: string;
     provisioned: boolean;
 }
 
@@ -361,11 +512,41 @@ export interface TaskAgentReference {
     version: string;
 }
 
+/**
+ * Represents a session for performing message exchanges from an agent.
+ */
 export interface TaskAgentSession {
+    /**
+     * Gets or sets the agent which is the target of the session.
+     */
     agent: TaskAgentReference;
+    /**
+     * Gets the key used to encrypt message traffic for this session.
+     */
+    encryptionKey: TaskAgentSessionKey;
+    /**
+     * Gets or sets the owner name of this session. Generally this will be the machine of origination.
+     */
     ownerName: string;
+    /**
+     * Gets the unique identifier for this session.
+     */
     sessionId: string;
     systemCapabilities: { [key: string] : string; };
+}
+
+/**
+ * Represents a symmetric key used for message-level encryption for communication sent to an agent.
+ */
+export interface TaskAgentSessionKey {
+    /**
+     * Gets or sets a value indicating whether or not the key value is encrypted. If this value is true, the property should be decrypted using the RSA key exchanged with the server during registration.
+     */
+    encrypted: boolean;
+    /**
+     * Gets or sets the symmetric key value.
+     */
+    value: number[];
 }
 
 export enum TaskAgentStatus {
@@ -395,9 +576,11 @@ export interface TaskDefinition {
     contributionIdentifier: string;
     contributionVersion: string;
     dataSourceBindings: DataSourceBinding[];
+    definitionType: string;
     demands: any[];
     description: string;
     disabled: boolean;
+    execution: { [key: string] : any; };
     friendlyName: string;
     groups: TaskGroupDefinition[];
     helpMarkDown: string;
@@ -444,6 +627,24 @@ export interface TaskDefinitionEndpoint {
     url: string;
 }
 
+export interface TaskDefinitionReference {
+    definitionType: string;
+    id: string;
+    versionSpec: string;
+}
+
+export enum TaskDefinitionStatus {
+    Preinstalled = 1,
+    ReceivedInstallOrUpdate = 2,
+    Installed = 3,
+    ReceivedUninstall = 4,
+    Uninstalled = 5,
+    RequestedUpdate = 6,
+    Updated = 7,
+    AlreadyUpToDate = 8,
+    InlineUpdateReceived = 9,
+}
+
 export interface TaskExecution {
     /**
      * The utility task to run.  Specifying this means that this task definition is simply a meta task to call another task. This is useful for tasks that call utility tasks like powershell and commandline
@@ -481,6 +682,7 @@ export interface TaskInstance extends TaskReference {
     displayName: string;
     enabled: boolean;
     instanceId: string;
+    timeoutInMinutes: number;
 }
 
 export interface TaskLog extends TaskLogReference {
@@ -499,6 +701,7 @@ export interface TaskLogReference {
 export interface TaskOrchestrationContainer extends TaskOrchestrationItem {
     children: TaskOrchestrationItem[];
     continueOnError: boolean;
+    data: { [key: string] : string; };
     parallel: boolean;
     rollback: TaskOrchestrationContainer;
 }
@@ -515,6 +718,7 @@ export enum TaskOrchestrationItemType {
 export interface TaskOrchestrationJob extends TaskOrchestrationItem {
     demands: any[];
     executeAs: VSSInterfaces.IdentityRef;
+    executionMode: string;
     executionTimeout: any;
     instanceId: string;
     name: string;
@@ -602,36 +806,6 @@ export interface TaskVersion {
     patch: number;
 }
 
-/**
- * Represents a shallow reference to a TeamProject.
- */
-export interface TeamProjectReference {
-    /**
-     * Project abbreviation.
-     */
-    abbreviation: string;
-    /**
-     * The project's description (if any).
-     */
-    description: string;
-    /**
-     * Project identifier.
-     */
-    id: string;
-    /**
-     * Project name.
-     */
-    name: string;
-    /**
-     * Project state.
-     */
-    state: any;
-    /**
-     * Url to the full version of the object.
-     */
-    url: string;
-}
-
 export interface Timeline extends TimelineReference {
     lastChangedBy: string;
     lastChangedOn: Date;
@@ -674,58 +848,13 @@ export interface TimelineReference {
     location: string;
 }
 
-export interface WebApiConnectedService extends WebApiConnectedServiceRef {
-    /**
-     * The user who did the OAuth authentication to created this service
-     */
-    authenticatedBy: VSSInterfaces.IdentityRef;
-    /**
-     * Extra description on the service.
-     */
-    description: string;
-    /**
-     * Friendly Name of service connection
-     */
-    friendlyName: string;
-    /**
-     * Id/Name of the connection service. For Ex: Subscription Id for Azure Connection
-     */
-    id: string;
-    /**
-     * The kind of service.
-     */
-    kind: string;
-    /**
-     * The project associated with this service
-     */
-    project: TeamProjectReference;
-    /**
-     * Optional uri to connect directly to the service such as https://windows.azure.com
-     */
-    serviceUri: string;
-}
-
-export interface WebApiConnectedServiceDetails extends WebApiConnectedServiceRef {
-    /**
-     * Meta data for service connection
-     */
-    connectedServiceMetaData: WebApiConnectedService;
-    /**
-     * Credential info
-     */
-    credentialsXml: string;
-    /**
-     * Optional uri to connect directly to the service such as https://windows.azure.com
-     */
-    endPoint: string;
-}
-
-export interface WebApiConnectedServiceRef {
-    id: string;
-    url: string;
-}
-
 export var TypeInfo = {
+    AgentChangeEvent: {
+        fields: <any>null
+    },
+    AgentJobRequestMessage: {
+        fields: <any>null
+    },
     AgentPoolEvent: {
         fields: <any>null
     },
@@ -735,22 +864,28 @@ export var TypeInfo = {
     AgentRefreshMessage: {
         fields: <any>null
     },
+    AgentRequestEvent: {
+        fields: <any>null
+    },
     AuthorizationHeader: {
         fields: <any>null
     },
-    ConnectedServiceKind: {
-        enumValues: {
-            "custom": 0,
-            "azureSubscription": 1,
-            "chef": 2,
-            "generic": 3,
-            "gitHub": 4,
-        }
+    AzureSpnOperationStatus: {
+        fields: <any>null
+    },
+    AzureSubscription: {
+        fields: <any>null
     },
     DataSource: {
         fields: <any>null
     },
     DataSourceBinding: {
+        fields: <any>null
+    },
+    DependencyBinding: {
+        fields: <any>null
+    },
+    DependsOn: {
         fields: <any>null
     },
     EndpointAuthorization: {
@@ -786,10 +921,19 @@ export var TypeInfo = {
     JobEvent: {
         fields: <any>null
     },
+    JobEventConfig: {
+        fields: <any>null
+    },
+    JobEventsConfig: {
+        fields: <any>null
+    },
     JobOption: {
         fields: <any>null
     },
     JobRequestMessage: {
+        fields: <any>null
+    },
+    JobStartedEvent: {
         fields: <any>null
     },
     MaskHint: {
@@ -801,7 +945,28 @@ export var TypeInfo = {
             "regex": 2,
         }
     },
+    MetaTaskDefinition: {
+        fields: <any>null
+    },
+    MetaTaskStep: {
+        fields: <any>null
+    },
+    PackageMetadata: {
+        fields: <any>null
+    },
+    PackageVersion: {
+        fields: <any>null
+    },
     PlanEnvironment: {
+        fields: <any>null
+    },
+    SendJobResponse: {
+        fields: <any>null
+    },
+    ServerExecutionDefinition: {
+        fields: <any>null
+    },
+    ServerJobRequestMessage: {
         fields: <any>null
     },
     ServiceEndpoint: {
@@ -816,6 +981,9 @@ export var TypeInfo = {
     TaskAgent: {
         fields: <any>null
     },
+    TaskAgentAuthorization: {
+        fields: <any>null
+    },
     TaskAgentJobRequest: {
         fields: <any>null
     },
@@ -826,6 +994,9 @@ export var TypeInfo = {
         fields: <any>null
     },
     TaskAgentPoolReference: {
+        fields: <any>null
+    },
+    TaskAgentPublicKey: {
         fields: <any>null
     },
     TaskAgentQueue: {
@@ -842,6 +1013,9 @@ export var TypeInfo = {
         fields: <any>null
     },
     TaskAgentSession: {
+        fields: <any>null
+    },
+    TaskAgentSessionKey: {
         fields: <any>null
     },
     TaskAgentStatus: {
@@ -861,6 +1035,22 @@ export var TypeInfo = {
     },
     TaskDefinitionEndpoint: {
         fields: <any>null
+    },
+    TaskDefinitionReference: {
+        fields: <any>null
+    },
+    TaskDefinitionStatus: {
+        enumValues: {
+            "preinstalled": 1,
+            "receivedInstallOrUpdate": 2,
+            "installed": 3,
+            "receivedUninstall": 4,
+            "uninstalled": 5,
+            "requestedUpdate": 6,
+            "updated": 7,
+            "alreadyUpToDate": 8,
+            "inlineUpdateReceived": 9,
+        }
     },
     TaskExecution: {
         fields: <any>null
@@ -933,9 +1123,6 @@ export var TypeInfo = {
     TaskVersion: {
         fields: <any>null
     },
-    TeamProjectReference: {
-        fields: <any>null
-    },
     Timeline: {
         fields: <any>null
     },
@@ -952,14 +1139,33 @@ export var TypeInfo = {
     TimelineReference: {
         fields: <any>null
     },
-    WebApiConnectedService: {
-        fields: <any>null
+};
+
+TypeInfo.AgentChangeEvent.fields = {
+    agent: {
+        typeInfo: TypeInfo.TaskAgent
     },
-    WebApiConnectedServiceDetails: {
-        fields: <any>null
+    timeStamp: {
+        isDate: true,
     },
-    WebApiConnectedServiceRef: {
-        fields: <any>null
+};
+
+TypeInfo.AgentJobRequestMessage.fields = {
+    environment: {
+        typeInfo: TypeInfo.JobEnvironment
+    },
+    lockedUntil: {
+        isDate: true,
+    },
+    plan: {
+        typeInfo: TypeInfo.TaskOrchestrationPlanReference
+    },
+    tasks: {
+        isArray: true,
+        typeInfo: TypeInfo.TaskInstance
+    },
+    timeline: {
+        typeInfo: TypeInfo.TimelineReference
     },
 };
 
@@ -978,7 +1184,22 @@ TypeInfo.AgentQueueEvent.fields = {
 TypeInfo.AgentRefreshMessage.fields = {
 };
 
+TypeInfo.AgentRequestEvent.fields = {
+    result: {
+        enumType: TypeInfo.TaskResult
+    },
+    timeStamp: {
+        isDate: true,
+    },
+};
+
 TypeInfo.AuthorizationHeader.fields = {
+};
+
+TypeInfo.AzureSpnOperationStatus.fields = {
+};
+
+TypeInfo.AzureSubscription.fields = {
 };
 
 TypeInfo.DataSource.fields = {
@@ -987,10 +1208,23 @@ TypeInfo.DataSource.fields = {
 TypeInfo.DataSourceBinding.fields = {
 };
 
+TypeInfo.DependencyBinding.fields = {
+};
+
+TypeInfo.DependsOn.fields = {
+    map: {
+        isArray: true,
+        typeInfo: TypeInfo.DependencyBinding
+    },
+};
+
 TypeInfo.EndpointAuthorization.fields = {
 };
 
 TypeInfo.EndpointUrl.fields = {
+    dependsOn: {
+        typeInfo: TypeInfo.DependsOn
+    },
 };
 
 TypeInfo.HelpLink.fields = {
@@ -1036,6 +1270,21 @@ TypeInfo.JobEnvironment.fields = {
 TypeInfo.JobEvent.fields = {
 };
 
+TypeInfo.JobEventConfig.fields = {
+};
+
+TypeInfo.JobEventsConfig.fields = {
+    jobAssigned: {
+        typeInfo: TypeInfo.JobEventConfig
+    },
+    jobCompleted: {
+        typeInfo: TypeInfo.JobEventConfig
+    },
+    jobStarted: {
+        typeInfo: TypeInfo.JobEventConfig
+    },
+};
+
 TypeInfo.JobOption.fields = {
 };
 
@@ -1043,19 +1292,15 @@ TypeInfo.JobRequestMessage.fields = {
     environment: {
         typeInfo: TypeInfo.JobEnvironment
     },
-    lockedUntil: {
-        isDate: true,
-    },
     plan: {
         typeInfo: TypeInfo.TaskOrchestrationPlanReference
-    },
-    tasks: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskInstance
     },
     timeline: {
         typeInfo: TypeInfo.TimelineReference
     },
+};
+
+TypeInfo.JobStartedEvent.fields = {
 };
 
 TypeInfo.MaskHint.fields = {
@@ -1064,12 +1309,89 @@ TypeInfo.MaskHint.fields = {
     },
 };
 
+TypeInfo.MetaTaskDefinition.fields = {
+    agentExecution: {
+        typeInfo: TypeInfo.TaskExecution
+    },
+    dataSourceBindings: {
+        isArray: true,
+        typeInfo: TypeInfo.DataSourceBinding
+    },
+    groups: {
+        isArray: true,
+        typeInfo: TypeInfo.TaskGroupDefinition
+    },
+    inputs: {
+        isArray: true,
+        typeInfo: TypeInfo.TaskInputDefinition
+    },
+    sourceDefinitions: {
+        isArray: true,
+        typeInfo: TypeInfo.TaskSourceDefinition
+    },
+    tasks: {
+        isArray: true,
+        typeInfo: TypeInfo.MetaTaskStep
+    },
+    version: {
+        typeInfo: TypeInfo.TaskVersion
+    },
+};
+
+TypeInfo.MetaTaskStep.fields = {
+    task: {
+        typeInfo: TypeInfo.TaskDefinitionReference
+    },
+};
+
+TypeInfo.PackageMetadata.fields = {
+    createdOn: {
+        isDate: true,
+    },
+    version: {
+        typeInfo: TypeInfo.PackageVersion
+    },
+};
+
+TypeInfo.PackageVersion.fields = {
+};
+
 TypeInfo.PlanEnvironment.fields = {
     mask: {
         isArray: true,
         typeInfo: TypeInfo.MaskHint
     },
     options: {
+    },
+};
+
+TypeInfo.SendJobResponse.fields = {
+    events: {
+        typeInfo: TypeInfo.JobEventsConfig
+    },
+};
+
+TypeInfo.ServerExecutionDefinition.fields = {
+    events: {
+        typeInfo: TypeInfo.JobEventsConfig
+    },
+};
+
+TypeInfo.ServerJobRequestMessage.fields = {
+    environment: {
+        typeInfo: TypeInfo.JobEnvironment
+    },
+    plan: {
+        typeInfo: TypeInfo.TaskOrchestrationPlanReference
+    },
+    taskDefinition: {
+        typeInfo: TypeInfo.TaskDefinition
+    },
+    taskInstance: {
+        typeInfo: TypeInfo.TaskInstance
+    },
+    timeline: {
+        typeInfo: TypeInfo.TimelineReference
     },
 };
 
@@ -1090,10 +1412,6 @@ TypeInfo.ServiceEndpoint.fields = {
 
 TypeInfo.ServiceEndpointAuthenticationScheme.fields = {
     authorizationHeaders: {
-        isArray: true,
-        typeInfo: TypeInfo.AuthorizationHeader
-    },
-    endpointHeaders: {
         isArray: true,
         typeInfo: TypeInfo.AuthorizationHeader
     },
@@ -1118,11 +1436,18 @@ TypeInfo.ServiceEndpointType.fields = {
     helpLink: {
         typeInfo: TypeInfo.HelpLink
     },
+    inputDescriptors: {
+        isArray: true,
+        typeInfo: FormInputInterfaces.TypeInfo.InputDescriptor
+    },
 };
 
 TypeInfo.TaskAgent.fields = {
     assignedRequest: {
         typeInfo: TypeInfo.TaskAgentJobRequest
+    },
+    authorization: {
+        typeInfo: TypeInfo.TaskAgentAuthorization
     },
     createdOn: {
         isDate: true,
@@ -1132,6 +1457,12 @@ TypeInfo.TaskAgent.fields = {
     },
     statusChangedOn: {
         isDate: true,
+    },
+};
+
+TypeInfo.TaskAgentAuthorization.fields = {
+    publicKey: {
+        typeInfo: TypeInfo.TaskAgentPublicKey
     },
 };
 
@@ -1190,6 +1521,9 @@ TypeInfo.TaskAgentPool.fields = {
 TypeInfo.TaskAgentPoolReference.fields = {
 };
 
+TypeInfo.TaskAgentPublicKey.fields = {
+};
+
 TypeInfo.TaskAgentQueue.fields = {
     pool: {
         typeInfo: TypeInfo.TaskAgentPoolReference
@@ -1206,6 +1540,12 @@ TypeInfo.TaskAgentSession.fields = {
     agent: {
         typeInfo: TypeInfo.TaskAgentReference
     },
+    encryptionKey: {
+        typeInfo: TypeInfo.TaskAgentSessionKey
+    },
+};
+
+TypeInfo.TaskAgentSessionKey.fields = {
 };
 
 TypeInfo.TaskAttachment.fields = {
@@ -1246,6 +1586,9 @@ TypeInfo.TaskDefinition.fields = {
 };
 
 TypeInfo.TaskDefinitionEndpoint.fields = {
+};
+
+TypeInfo.TaskDefinitionReference.fields = {
 };
 
 TypeInfo.TaskExecution.fields = {
@@ -1349,9 +1692,6 @@ TypeInfo.TaskSourceDefinition.fields = {
 TypeInfo.TaskVersion.fields = {
 };
 
-TypeInfo.TeamProjectReference.fields = {
-};
-
 TypeInfo.Timeline.fields = {
     lastChangedOn: {
         isDate: true,
@@ -1391,22 +1731,4 @@ TypeInfo.TimelineRecord.fields = {
 };
 
 TypeInfo.TimelineReference.fields = {
-};
-
-TypeInfo.WebApiConnectedService.fields = {
-    authenticatedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    project: {
-        typeInfo: TypeInfo.TeamProjectReference
-    },
-};
-
-TypeInfo.WebApiConnectedServiceDetails.fields = {
-    connectedServiceMetaData: {
-        typeInfo: TypeInfo.WebApiConnectedService
-    },
-};
-
-TypeInfo.WebApiConnectedServiceRef.fields = {
 };
