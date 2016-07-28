@@ -21,10 +21,6 @@ import FileContainerInterfaces = require("./interfaces/FileContainerInterfaces")
 import vsom = require('./VsoClient');
 
 export interface IFileContainerApi extends FileContainerApiBase.IFileContainerApiBase {
-    createItem(contentStream: NodeJS.ReadableStream, uncompressedLength: number, containerId: number, itemPath: string, scope: string, options: any, onResult: (err: any, statusCode: number, Container: FileContainerInterfaces.FileContainerItem) => void): void;
-}
-
-export interface IQFileContainerApi extends FileContainerApiBase.IQFileContainerApiBase {
     createItem(contentStream: NodeJS.ReadableStream, uncompressedLength: number, containerId: number, itemPath: string, scope: string, options: any): Q.Promise<FileContainerInterfaces.FileContainerItem>;
 }
 
@@ -33,14 +29,18 @@ export class FileContainerApi extends FileContainerApiBase.FileContainerApiBase 
         super(baseUrl, handlers);
     }
     
-    public createItem(contentStream: NodeJS.ReadableStream, uncompressedLength: number, containerId: number, itemPath: string, scope: string, options: any, onResult: (err: any, statusCode: number, Container: FileContainerInterfaces.FileContainerItem) => void): void {
+    public createItem(contentStream: NodeJS.ReadableStream, uncompressedLength: number, containerId: number, itemPath: string, scope: string, options: any): Q.Promise<FileContainerInterfaces.FileContainerItem> {
+        let deferred = Q.defer<FileContainerInterfaces.FileContainerItem>();
+
         let chunkStream = new ChunkStream(this, uncompressedLength, containerId, itemPath, scope, options);
         
         chunkStream.on('finish', () => {
-            onResult(null, null, chunkStream.getItem());
+            deferred.resolve(chunkStream.getItem());
         });
         
         contentStream.pipe(chunkStream);
+        
+        return <Q.Promise<FileContainerInterfaces.FileContainerItem>>deferred.promise;
     }
     
     public _createItem(
@@ -75,30 +75,6 @@ export class FileContainerApi extends FileContainerApiBase.FileContainerApiBase 
         .fail((error) => {
             onResult(error, error.statusCode, null);
         });
-    }
-}
-
-export class QFileContainerApi extends FileContainerApiBase.QFileContainerApiBase implements IQFileContainerApi {
-    api: FileContainerApi;
-    
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        super(baseUrl, handlers, FileContainerApi);
-    }
-    
-    public createItem(contentStream: NodeJS.ReadableStream, uncompressedLength: number, containerId: number, itemPath: string, scope: string, options: any): Q.Promise<FileContainerInterfaces.FileContainerItem> {
-        var deferred = Q.defer<FileContainerInterfaces.FileContainerItem>();
-
-        this.api.createItem(contentStream, uncompressedLength, containerId, itemPath, scope, options, (err: any, statusCode: number, item: FileContainerInterfaces.FileContainerItem) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(item);
-            }
-        });
-
-        return <Q.Promise<FileContainerInterfaces.FileContainerItem>>deferred.promise;
     }
 }
 

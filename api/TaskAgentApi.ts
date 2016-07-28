@@ -8,10 +8,6 @@ import TaskAgentInterfaces = require("./interfaces/TaskAgentInterfaces");
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 
 export interface ITaskAgentApi extends taskagentbasem.ITaskAgentApiBase {
-    uploadTaskDefinition(customHeaders: VsoBaseInterfaces.IHeaders, contentStream: NodeJS.ReadableStream, taskId: string, overwrite: boolean, onResult: (err: any, statusCode: number, obj: any) => void): void;
-}
-
-export interface IQTaskAgentApi extends taskagentbasem.IQTaskAgentApiBase {
     uploadTaskDefinition(customHeaders: VsoBaseInterfaces.IHeaders, contentStream: NodeJS.ReadableStream, taskId: string, overwrite: boolean) : Q.Promise<void>;
 }
 
@@ -31,32 +27,28 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
      * @param onResult callback function
      */
     public deleteTaskDefinition(
-        taskId: string,
-        onResult: (err: any, statusCode: number) => void
-        ): void {
+        taskId: string
+        ): Q.Promise<void> {
 
-        this.vsoClient.beginGetLocation("distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd")
-        .then((location: ifm.ApiResourceLocation) => {
-            if (location) {
-                // the resource exists at the url we were given. go!
-                super.deleteTaskDefinition(taskId, onResult);
-            }
-            else {
-                // this is the case when the server doesn't support collection-level task definitions
-                var fallbackClient = this._getFallbackClient(this.baseUrl);
-                if (!fallbackClient) {
-                    // couldn't convert
-                    throw new Error("Failed to find api location for area: distributedtask id: 60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd");
+        return this.vsoClient.beginGetLocation("distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd")
+            .then((location: ifm.ApiResourceLocation) => {
+                if (location) {
+                    // the resource exists at the url we were given. go!
+                    return super.deleteTaskDefinition(taskId);
                 }
                 else {
-                    // use the fallback client 
-                    fallbackClient.deleteTaskDefinition(taskId, onResult);
+                    // this is the case when the server doesn't support collection-level task definitions
+                    var fallbackClient = this._getFallbackClient(this.baseUrl);
+                    if (!fallbackClient) {
+                        // couldn't convert
+                        throw new Error("Failed to find api location for area: distributedtask id: 60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd");
+                    }
+                    else {
+                        // use the fallback client 
+                        return fallbackClient.deleteTaskDefinition(taskId);
+                    }
                 }
-            }
-        })
-        .fail((error) => {
-            onResult(error, error.statusCode);
-        });
+            });
     }
 
     /**
@@ -70,32 +62,28 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
         taskId: string,
         versionString: string,
         visibility: string[],
-        scopeLocal: boolean,
-        onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void
-        ): void {
+        scopeLocal: boolean
+        ): Q.Promise<NodeJS.ReadableStream> {
 
-        this.vsoClient.beginGetLocation("distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd")
-        .then((location: ifm.ApiResourceLocation) => {
-            if (location) {
-                // the resource exists at the url we were given. go!
-                super.getTaskContentZip(taskId, versionString, visibility, scopeLocal, onResult);
-            }
-            else {
-                // this is the case when the server doesn't support collection-level task definitions
-                var fallbackClient = this._getFallbackClient(this.baseUrl);
-                if (!fallbackClient) {
-                    // couldn't convert
-                    throw new Error("Failed to find api location for area: distributedtask id: 60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd");
+        return this.vsoClient.beginGetLocation("distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd")
+            .then((location: ifm.ApiResourceLocation) => {
+                if (location) {
+                    // the resource exists at the url we were given. go!
+                    return super.getTaskContentZip(taskId, versionString, visibility, scopeLocal);
                 }
                 else {
-                    // use the fallback client 
-                    fallbackClient.getTaskContentZip(taskId, versionString, visibility, scopeLocal, onResult);
+                    // this is the case when the server doesn't support collection-level task definitions
+                    var fallbackClient = this._getFallbackClient(this.baseUrl);
+                    if (!fallbackClient) {
+                        // couldn't convert
+                        throw new Error("Failed to find api location for area: distributedtask id: 60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd");
+                    }
+                    else {
+                        // use the fallback client 
+                        return fallbackClient.getTaskContentZip(taskId, versionString, visibility, scopeLocal);
+                    }
                 }
-            }
-        })
-        .fail((error) => {
-            onResult(error, error.statusCode, null);
-        });
+            });
     }
 
     /**
@@ -109,32 +97,28 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
         taskId: string,
         versionString: string,
         visibility: string[],
-        scopeLocal: boolean,
-        onResult: (err: any, statusCode: number, task: TaskAgentInterfaces.TaskDefinition) => void
-        ): void {
+        scopeLocal: boolean
+        ): Q.Promise<TaskAgentInterfaces.TaskDefinition> {
 
-        this.vsoClient.beginGetLocation("distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd")
-        .then((location: ifm.ApiResourceLocation) => {
-            if (location) {
-                // the resource exists at the url we were given. go!
-                super.getTaskDefinition(taskId, versionString, visibility, scopeLocal, onResult);
-            }
-            else {
-                // this is the case when the server doesn't support collection-level task definitions
-                var fallbackClient = this._getFallbackClient(this.baseUrl);
-                if (!fallbackClient) {
-                    // couldn't convert
-                    throw new Error("Failed to find api location for area: distributedtask id: 60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd");
+        return this.vsoClient.beginGetLocation("distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd")
+            .then((location: ifm.ApiResourceLocation) => {
+                if (location) {
+                    // the resource exists at the url we were given. go!
+                    return super.getTaskDefinition(taskId, versionString, visibility, scopeLocal);
                 }
                 else {
-                    // use the fallback client 
-                    fallbackClient.getTaskDefinition(taskId, versionString, visibility, scopeLocal, onResult);
+                    // this is the case when the server doesn't support collection-level task definitions
+                    var fallbackClient = this._getFallbackClient(this.baseUrl);
+                    if (!fallbackClient) {
+                        // couldn't convert
+                        throw new Error("Failed to find api location for area: distributedtask id: 60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd");
+                    }
+                    else {
+                        // use the fallback client 
+                        return fallbackClient.getTaskDefinition(taskId, versionString, visibility, scopeLocal);
+                    }
                 }
-            }
-        })
-        .fail((error) => {
-            onResult(error, error.statusCode, null);
-        });
+            });
     }
 
     /**
@@ -146,32 +130,28 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
     public getTaskDefinitions(
         taskId: string,
         visibility: string[],
-        scopeLocal: boolean,
-        onResult: (err: any, statusCode: number, tasks: TaskAgentInterfaces.TaskDefinition[]) => void
-        ): void {
+        scopeLocal: boolean
+        ): Q.Promise<TaskAgentInterfaces.TaskDefinition[]> {
 
-        this.vsoClient.beginGetLocation("distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd")
-        .then((location: ifm.ApiResourceLocation) => {
-            if (location) {
-                // the resource exists at the url we were given. go!
-                super.getTaskDefinitions(taskId, visibility, scopeLocal, onResult);
-            }
-            else {
-                // this is the case when the server doesn't support collection-level task definitions
-                var fallbackClient = this._getFallbackClient(this.baseUrl);
-                if (!fallbackClient) {
-                    // couldn't convert
-                    throw new Error("Failed to find api location for area: distributedtask id: 60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd");
+        return this.vsoClient.beginGetLocation("distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd")
+            .then((location: ifm.ApiResourceLocation) => {
+                if (location) {
+                    // the resource exists at the url we were given. go!
+                    return super.getTaskDefinitions(taskId, visibility, scopeLocal);
                 }
                 else {
-                    // use the fallback client 
-                    fallbackClient.getTaskDefinitions(taskId, visibility, scopeLocal, onResult);
+                    // this is the case when the server doesn't support collection-level task definitions
+                    var fallbackClient = this._getFallbackClient(this.baseUrl);
+                    if (!fallbackClient) {
+                        // couldn't convert
+                        throw new Error("Failed to find api location for area: distributedtask id: 60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd");
+                    }
+                    else {
+                        // use the fallback client 
+                        return fallbackClient.getTaskDefinitions(taskId, visibility, scopeLocal);
+                    }
                 }
-            }
-        })
-        .fail((error) => {
-            onResult(error, error.statusCode, null);
-        });
+            });
     }
     
 	/**
@@ -184,32 +164,28 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
         customHeaders: VsoBaseInterfaces.IHeaders,
         contentStream: NodeJS.ReadableStream,
         taskId: string,
-        overwrite: boolean,
-        onResult: (err: any, statusCode: number, obj: any) => void
-        ): void {
+        overwrite: boolean
+        ): Q.Promise<void> {
 
-        this.vsoClient.beginGetLocation("distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd")
-        .then((location: ifm.ApiResourceLocation) => {
-            if (location) {
-                // the resource exists at the url we were given. go!
-                this._uploadTaskDefinition(customHeaders, contentStream, taskId, overwrite, onResult);
-            }
-            else {
-                // this is the case when the server doesn't support collection-level task definitions
-                var fallbackClient = this._getFallbackClient(this.baseUrl);
-                if (!fallbackClient) {
-                    // couldn't convert
-                    throw new Error("Failed to find api location for area: distributedtask id: 60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd");
+        return this.vsoClient.beginGetLocation("distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd")
+            .then((location: ifm.ApiResourceLocation) => {
+                if (location) {
+                    // the resource exists at the url we were given. go!
+                    return this._uploadTaskDefinition(customHeaders, contentStream, taskId, overwrite);
                 }
                 else {
-                    // use the fallback client 
-                    fallbackClient._uploadTaskDefinition(customHeaders, contentStream, taskId, overwrite, onResult);
+                    // this is the case when the server doesn't support collection-level task definitions
+                    var fallbackClient = this._getFallbackClient(this.baseUrl);
+                    if (!fallbackClient) {
+                        // couldn't convert
+                        throw new Error("Failed to find api location for area: distributedtask id: 60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd");
+                    }
+                    else {
+                        // use the fallback client 
+                        return fallbackClient._uploadTaskDefinition(customHeaders, contentStream, taskId, overwrite);
+                    }
                 }
-            }
-        })
-        .fail((error) => {
-            onResult(error, error.statusCode, null);
-        });
+            });
     }
     
     /**
@@ -222,32 +198,40 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
         customHeaders: VsoBaseInterfaces.IHeaders,
         contentStream: NodeJS.ReadableStream,
         taskId: string,
-        overwrite: boolean,
-        onResult: (err: any, statusCode: number, obj: any) => void
-        ): void {
+        overwrite: boolean
+        ): Q.Promise<void> {
 
-        var routeValues: any = {
+        let routeValues: any = {
             taskId: taskId
         };
 
-        var queryValues: any = {
+        let queryValues: any = {
             overwrite: overwrite,
         };
         
         customHeaders = customHeaders || {};
         customHeaders["Content-Type"] = "application/octet-stream";
 
+        let deferred = Q.defer<void>();
+
         this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues, queryValues)
-        .then((versioningData: vsom.ClientVersioningData) => {
-            var url: string = versioningData.requestUrl;
-            var apiVersion: string = versioningData.apiVersion;
-            var serializationData = {  responseIsCollection: false };
+            .then((versioningData: vsom.ClientVersioningData) => {
+                var url: string = versioningData.requestUrl;
+                var apiVersion: string = versioningData.apiVersion;
+                var serializationData = {  responseIsCollection: false };
+                
+                this.restClient.uploadStream('PUT', url, apiVersion, contentStream, customHeaders, serializationData, (err: any, statusCode: number, obj: any) => {
+                    if (err) {
+                        err.statusCode = statusCode;
+                        deferred.reject(err);
+                    }
+                    else {
+                        deferred.resolve(null);
+                    }
+                });
+            });
             
-            this.restClient.uploadStream('PUT', url, apiVersion, contentStream, customHeaders, serializationData, onResult);
-        })
-        .fail((error) => {
-            onResult(error, error.statusCode, null);
-        });
+        return deferred.promise;
     }
     
     private _getFallbackClient(baseUrl: string): TaskAgentApi {
@@ -292,33 +276,4 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
         
         return accountUrl;
     }
-}
-
-export class QTaskAgentApi extends taskagentbasem.QTaskAgentApiBase implements IQTaskAgentApi {
-    api: TaskAgentApi;
-
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        super(baseUrl, handlers, TaskAgentApi);
-    }
-
-    /**
-    * @param {NodeJS.ReadableStream} contentStream
-    * @param {string} taskId
-    * @param {boolean} overwrite
-    */
-    public uploadTaskDefinition(customHeaders: VsoBaseInterfaces.IHeaders, contentStream: NodeJS.ReadableStream, taskId: string, overwrite: boolean) : Q.Promise<void> {
-        var deferred = Q.defer<void>();
-
-        this.api.uploadTaskDefinition(customHeaders, contentStream, taskId, overwrite, (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        });
-
-        return <Q.Promise<void>>deferred.promise;
-    }   
 }
