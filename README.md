@@ -76,9 +76,12 @@ Pre-reqs: [Node >= 4.4.7 LTS](https://nodejs.org) and [typescript (tsc) >= 1.8](
 Run `npm install` first
 
 Set environment variables using set or export:
-API_URL=https://fabrikam.visualstudio.com/defaultcollection
-API_TOKEN=cbdeb34vzyuk5l4gxc4qfczn3lko3avfkfqyb47etahq6axpcqha
-API_PROJECT=myProject
+
+API_URL=https://fabrikam.visualstudio.com/defaultcollection  
+
+API_TOKEN=cbdeb34vzyuk5l4gxc4qfczn3lko3avfkfqyb47etahq6axpcqha  
+
+API_PROJECT=myProject  
 
 ```bash
 $ npm run samples
