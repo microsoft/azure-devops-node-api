@@ -2,6 +2,9 @@
 _build
 _def
 
+# Samples
+samples/*.js 
+
 # Logs
 logs
 *.log

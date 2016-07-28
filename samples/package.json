@@ -1,0 +1,15 @@
+{
+  "name": "vsts-node-api-samples",
+  "version": "1.0.0",
+  "description": "VSTS Node Api Samples",
+  "main": "build.js",
+  "dependencies": {
+    "vso-node-api": "^4.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+}

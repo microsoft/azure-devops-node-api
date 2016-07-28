@@ -3,19 +3,18 @@
 
 import VsoBaseInterfaces = require('../interfaces/common/VsoBaseInterfaces');
 
-export class ApiVersionHandler implements VsoBaseInterfaces.IRequestHandler {
-    apiVersion: string;
+export class PersonalAccessTokenCredentialHandler implements VsoBaseInterfaces.IRequestHandler {
+    token: string;
 
-    constructor(apiVersion: string) {
-        this.apiVersion = apiVersion;
+    constructor(token: string) {
+        this.token = token;
     }
 
     // currently implements pre-authorization
     // TODO: support preAuth = false where it hooks on 401
     prepareRequest(options:any): void {
-    	if (options.headers && options.headers['Accept']) {
-    		options.headers["Accept"] = options.headers['Accept'] + '; api-version=' + this.apiVersion;	
-    	}
+        options.headers['Authorization'] = 'Basic ' + new Buffer('PAT:' + this.token).toString('base64');
+        options.headers['X-TFS-FedAuthRedirect'] = 'Suppress';
     }
 
     // This handler cannot handle 401

@@ -1,6 +1,10 @@
 {
     "compilerOptions": {
         "target": "ES5",
-        "module": "commonjs"
-    }
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "declaration": true,
+        "outDir": "_build"        
+    },
+    "files": ["api/index.ts"]
 }

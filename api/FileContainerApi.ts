@@ -10,9 +10,6 @@
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
-/// <reference path="../node/node.d.ts"/>
-/// <reference path="../q/Q.d.ts"/>
-
 import stream = require("stream");
 import Q = require('q');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');

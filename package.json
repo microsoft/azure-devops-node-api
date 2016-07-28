@@ -1,8 +1,14 @@
 {
   "name": "vso-node-api",
   "description": "Node client for Visual Studio Online/TFS REST APIs",
-  "version": "3.1.1",
+  "version": "4.0.0",
   "main": "./WebApi.js",
+  "typings": "./WebApi.d.ts",
+  "scripts": {
+    "build": "node make.js build",
+    "test": "node make.js test",
+    "samples": "node make.js samples"
+  },  
   "repository": {
     "type": "git",
     "url": "https://github.com/Microsoft/vso-node-api"
@@ -19,14 +25,6 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "del": "^1.1.1",
-    "dts-generator": "1.5.0",
-    "gulp": "^3.8.11",
-    "gulp-gzip": "^1.0.0",
-    "gulp-mocha": "^2.0.0",
-    "gulp-typescript": "2.9.0",
-    "merge2": "^0.3.1",
-    "mocha": "^2.1.0",
-    "typescript": "1.8.0-dev.20160107"
+    "shelljs": "^0.7.0"
   }
 }

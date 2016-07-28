@@ -19,6 +19,7 @@ import apivm = require('./handlers/apiversion');
 import basicm = require('./handlers/basiccreds');
 import bearm = require('./handlers/bearertoken');
 import ntlmm = require('./handlers/ntlm');
+import patm = require('./handlers/personalaccesstoken');
 
 /**
  * Methods to return handler objects (see handlers folder)
@@ -37,6 +38,10 @@ export function getNtlmHandler(username: string, password: string, workstation?:
 
 export function getBearerHandler(token) {
     return new bearm.BearerCredentialHandler(token);
+}
+
+export function getPersonalAccessTokenHandler(token) {
+    return new patm.PersonalAccessTokenCredentialHandler(token);
 }
 
 // ---------------------------------------------------------------------------
