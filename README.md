@@ -60,6 +60,11 @@ import * as bi from 'vso-node-api/interfaces/BuildInterfaces';
 async function run() {
     let project: string = 'myProject';
     let defs: bi.DefinitionReference[] = await vstsBuild.getDefinitions(project);
+
+    console.log('You have ' + defs.length + ' build definition(s)');
+    defs.forEach((defRef: bi.DefinitionReference) => {
+        console.log(defRef.name + ' (' + defRef.id + ')');
+    });    
 }
 
 run();
