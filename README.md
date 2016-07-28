@@ -22,7 +22,7 @@ var collectionUrl = "https://fabrikam.visualstudio.com/defaultcollection";
 
 // ideally from config
 let token: string = "cbdeb34vzyuk5l4gxc4qfczn3lko3avfkfqyb47etahq6axpcqha"; 
-  
+
 let authHandler = vm.getPersonalAccessTokenHandler(token); 
 var connect = new vsts.WebApi(collectionUrl, creds);    
 ```
@@ -52,11 +52,17 @@ let vstsBuild: ba.IBuildApi = connection.getBuildApi();
 
 ### Use the client
  
+Coding is easy using linear coding with async/await in typescript
+
 ```javascript
 import * as bi from 'vso-node-api/interfaces/BuildInterfaces';
 
-let project: string = 'myProject';
-let defs: bi.DefinitionReference[] = await vstsBuild.getDefinitions(project);
+async function run() {
+    let project: string = 'myProject';
+    let defs: bi.DefinitionReference[] = await vstsBuild.getDefinitions(project);
+}
+
+run();
 ```
 
 ## APIs
@@ -65,7 +71,8 @@ To see what APIs are available, see the appropriate client interface. For exampl
 
 ## Running Samples
 
-Pre-reqs: [Node >= 4.4.7 LTS](https://nodejs.org) and [typescript (tsc) >= 1.8](https://www.npmjs.com/package/typescript) 
+Pre-reqs: [Node >= 4.4.7 LTS](https://nodejs.org) and [typescript (tsc) >= 1.8](https://www.npmjs.com/package/typescript)  
+
 Run `npm install` first
 
 Set environment variables using set or export:
