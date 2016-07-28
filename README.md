@@ -8,6 +8,12 @@ Integrate with Visual Studio Team Services from your Node.js apps.
 
 See [samples](./samples) for complete coding examples
 
+### Typings
+
+Typings (.d.ts) are now distributed with the api, so intellisense and compile support just works from `tsc` and [vscode]()  
+
+![Intellisense](docs/intellisense.png)  
+
 ### Install the library
 ```
 npm install vso-node-api --save
