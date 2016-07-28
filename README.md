@@ -77,11 +77,16 @@ Run `npm install` first
 
 Set environment variables using set or export:
 
+```bash
 API_URL=https://fabrikam.visualstudio.com/defaultcollection  
 
+// use your token
 API_TOKEN=cbdeb34vzyuk5l4gxc4qfczn3lko3avfkfqyb47etahq6axpcqha  
 
 API_PROJECT=myProject  
+```
+
+Run samples:  
 
 ```bash
 $ npm run samples
