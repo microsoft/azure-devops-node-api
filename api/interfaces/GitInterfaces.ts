@@ -36,6 +36,7 @@ export interface AsyncRefOperationCommitLevelEventNotification extends AsyncGitO
 }
 
 export interface AsyncRefOperationCompletedNotification extends AsyncGitOperationNotification {
+    newRefName: string;
 }
 
 export interface AsyncRefOperationConflictNotification extends AsyncRefOperationCommitLevelEventNotification {
@@ -99,9 +100,13 @@ export interface ChangeListSearchCriteria {
      */
     fromVersion: string;
     /**
-     * Path of item to search under
+     * Path of item to search under. If the itemPaths memebr is used then it will take precedence over this.
      */
     itemPath: string;
+    /**
+     * List of item paths to search under. If this member is used then itemPath will be ignored.
+     */
+    itemPaths: string[];
     /**
      * Version of the items to search
      */
@@ -323,13 +328,31 @@ export interface GitHistoryQueryResults extends HistoryQueryResults<GitItem> {
     unprocessedCount: number;
 }
 
+export interface GitImportOperationNotification extends AsyncGitOperationNotification {
+    statusDetail: GitImportStatusDetail;
+}
+
 export interface GitImportRequest {
-    createdNewRepo: boolean;
+    _links: any;
     detailedStatus: GitImportStatusDetail;
     importRequestId: number;
+    /**
+     * Parameters for creating an import request
+     */
+    parameters: GitImportRequestParameters;
     repository: GitRepository;
-    sourceUrl: string;
     status: GitAsyncOperationStatus;
+    url: string;
+}
+
+/**
+ * Parameters for creating an import request
+ */
+export interface GitImportRequestParameters {
+    /**
+     * Url for the source repo
+     */
+    sourceUrl: string;
 }
 
 export interface GitImportStatusDetail {
@@ -1719,7 +1742,13 @@ export var TypeInfo = {
     GitHistoryQueryResults: {
         fields: <any>null
     },
+    GitImportOperationNotification: {
+        fields: <any>null
+    },
     GitImportRequest: {
+        fields: <any>null
+    },
+    GitImportRequestParameters: {
         fields: <any>null
     },
     GitImportStatusDetail: {
@@ -2375,9 +2404,18 @@ TypeInfo.GitFilePathsCollection.fields = {
 TypeInfo.GitHistoryQueryResults.fields = {
 };
 
+TypeInfo.GitImportOperationNotification.fields = {
+    statusDetail: {
+        typeInfo: TypeInfo.GitImportStatusDetail
+    },
+};
+
 TypeInfo.GitImportRequest.fields = {
     detailedStatus: {
         typeInfo: TypeInfo.GitImportStatusDetail
+    },
+    parameters: {
+        typeInfo: TypeInfo.GitImportRequestParameters
     },
     repository: {
         typeInfo: TypeInfo.GitRepository
@@ -2385,6 +2423,9 @@ TypeInfo.GitImportRequest.fields = {
     status: {
         enumType: TypeInfo.GitAsyncOperationStatus
     },
+};
+
+TypeInfo.GitImportRequestParameters.fields = {
 };
 
 TypeInfo.GitImportStatusDetail.fields = {

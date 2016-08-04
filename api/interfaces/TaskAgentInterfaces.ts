@@ -28,6 +28,10 @@ export interface AgentJobRequestMessage extends JobRequestMessage {
     tasks: TaskInstance[];
 }
 
+export interface AgentMigrationMessage {
+    accessToken: string;
+}
+
 export interface AgentPoolEvent {
     eventType: string;
     pool: TaskAgentPool;
@@ -65,6 +69,11 @@ export interface AzureSpnOperationStatus {
 export interface AzureSubscription {
     displayName: string;
     subscriptionId: string;
+}
+
+export interface AzureSubscriptionQueryResult {
+    errorMessage: string;
+    value: AzureSubscription[];
 }
 
 export interface DataSource {
@@ -855,6 +864,9 @@ export var TypeInfo = {
     AgentJobRequestMessage: {
         fields: <any>null
     },
+    AgentMigrationMessage: {
+        fields: <any>null
+    },
     AgentPoolEvent: {
         fields: <any>null
     },
@@ -874,6 +886,9 @@ export var TypeInfo = {
         fields: <any>null
     },
     AzureSubscription: {
+        fields: <any>null
+    },
+    AzureSubscriptionQueryResult: {
         fields: <any>null
     },
     DataSource: {
@@ -1169,6 +1184,9 @@ TypeInfo.AgentJobRequestMessage.fields = {
     },
 };
 
+TypeInfo.AgentMigrationMessage.fields = {
+};
+
 TypeInfo.AgentPoolEvent.fields = {
     pool: {
         typeInfo: TypeInfo.TaskAgentPool
@@ -1200,6 +1218,13 @@ TypeInfo.AzureSpnOperationStatus.fields = {
 };
 
 TypeInfo.AzureSubscription.fields = {
+};
+
+TypeInfo.AzureSubscriptionQueryResult.fields = {
+    value: {
+        isArray: true,
+        typeInfo: TypeInfo.AzureSubscription
+    },
 };
 
 TypeInfo.DataSource.fields = {
