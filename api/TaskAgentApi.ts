@@ -8,7 +8,7 @@ import TaskAgentInterfaces = require("./interfaces/TaskAgentInterfaces");
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 
 export interface ITaskAgentApi extends taskagentbasem.ITaskAgentApiBase {
-    uploadTaskDefinition(customHeaders: VsoBaseInterfaces.IHeaders, contentStream: NodeJS.ReadableStream, taskId: string, overwrite: boolean) : Q.Promise<void>;
+    uploadTaskDefinition(customHeaders: VsoBaseInterfaces.IHeaders, contentStream: NodeJS.ReadableStream, taskId: string, overwrite: boolean) : Promise<void>;
 }
 
 export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITaskAgentApi {
@@ -28,9 +28,9 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
      */
     public deleteTaskDefinition(
         taskId: string
-        ): Q.Promise<void> {
+        ): Promise<void> {
 
-        return this.vsoClient.beginGetLocation("distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd")
+        let promise = this.vsoClient.beginGetLocation("distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd")
             .then((location: ifm.ApiResourceLocation) => {
                 if (location) {
                     // the resource exists at the url we were given. go!
@@ -49,6 +49,8 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
                     }
                 }
             });
+            
+        return <Promise<void>>(<any>promise);
     }
 
     /**
@@ -63,9 +65,9 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
         versionString: string,
         visibility: string[],
         scopeLocal: boolean
-        ): Q.Promise<NodeJS.ReadableStream> {
+        ): Promise<NodeJS.ReadableStream> {
 
-        return this.vsoClient.beginGetLocation("distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd")
+        let promise = this.vsoClient.beginGetLocation("distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd")
             .then((location: ifm.ApiResourceLocation) => {
                 if (location) {
                     // the resource exists at the url we were given. go!
@@ -84,6 +86,8 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
                     }
                 }
             });
+            
+        return <Promise<NodeJS.ReadableStream>>(<any>promise);
     }
 
     /**
@@ -98,9 +102,9 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
         versionString: string,
         visibility: string[],
         scopeLocal: boolean
-        ): Q.Promise<TaskAgentInterfaces.TaskDefinition> {
+        ): Promise<TaskAgentInterfaces.TaskDefinition> {
 
-        return this.vsoClient.beginGetLocation("distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd")
+        let promise = this.vsoClient.beginGetLocation("distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd")
             .then((location: ifm.ApiResourceLocation) => {
                 if (location) {
                     // the resource exists at the url we were given. go!
@@ -119,6 +123,8 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
                     }
                 }
             });
+            
+        return <Promise<TaskAgentInterfaces.TaskDefinition>>(<any>promise);
     }
 
     /**
@@ -131,9 +137,9 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
         taskId: string,
         visibility: string[],
         scopeLocal: boolean
-        ): Q.Promise<TaskAgentInterfaces.TaskDefinition[]> {
+        ): Promise<TaskAgentInterfaces.TaskDefinition[]> {
 
-        return this.vsoClient.beginGetLocation("distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd")
+        let promise = this.vsoClient.beginGetLocation("distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd")
             .then((location: ifm.ApiResourceLocation) => {
                 if (location) {
                     // the resource exists at the url we were given. go!
@@ -152,6 +158,8 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
                     }
                 }
             });
+            
+        return <Promise<TaskAgentInterfaces.TaskDefinition[]>>(<any>promise);
     }
     
 	/**
@@ -165,9 +173,9 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
         contentStream: NodeJS.ReadableStream,
         taskId: string,
         overwrite: boolean
-        ): Q.Promise<void> {
+        ): Promise<void> {
 
-        return this.vsoClient.beginGetLocation("distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd")
+        let promise = this.vsoClient.beginGetLocation("distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd")
             .then((location: ifm.ApiResourceLocation) => {
                 if (location) {
                     // the resource exists at the url we were given. go!
@@ -186,6 +194,8 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
                     }
                 }
             });
+            
+        return <Promise<void>>(<any>promise);
     }
     
     /**

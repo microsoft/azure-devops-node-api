@@ -379,30 +379,14 @@ export interface WorkItemStateTransition {
     to: string;
 }
 
-export interface WorkItemTemplate {
-    description: string;
+export interface WorkItemTemplate extends WorkItemTemplateReference {
     fields: { [key: string] : string; };
-    id: string;
-    name: string;
-    ownerId: string;
-    url: string;
-    workItemTypeName: string;
 }
 
-export interface WorkItemTemplateReference {
+export interface WorkItemTemplateReference extends WorkItemTrackingResource {
     description: string;
     id: string;
     name: string;
-    ownerId: string;
-    url: string;
-    workItemTypeName: string;
-}
-
-export interface WorkItemTemplateReplaceContent {
-    description: string;
-    fields: { [key: string] : string; };
-    name: string;
-    ownerId: string;
     workItemTypeName: string;
 }
 
@@ -695,9 +679,6 @@ export var TypeInfo = {
         fields: <any>null
     },
     WorkItemTemplateReference: {
-        fields: <any>null
-    },
-    WorkItemTemplateReplaceContent: {
         fields: <any>null
     },
     WorkItemTrackingReference: {
@@ -1004,9 +985,6 @@ TypeInfo.WorkItemTemplate.fields = {
 };
 
 TypeInfo.WorkItemTemplateReference.fields = {
-};
-
-TypeInfo.WorkItemTemplateReplaceContent.fields = {
 };
 
 TypeInfo.WorkItemTrackingReference.fields = {

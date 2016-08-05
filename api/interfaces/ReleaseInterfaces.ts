@@ -237,6 +237,11 @@ export interface DataSourceBinding {
     transformationTemplate: string;
 }
 
+export interface DefinitionEnvironmentReference {
+    definitionEnvironmentId: number;
+    releaseDefinitionId: number;
+}
+
 export interface Deployment {
     attempt: number;
     definitionEnvironmentId: number;
@@ -269,6 +274,7 @@ export interface DeploymentApprovalPendingEvent {
 
 export interface DeploymentAttempt {
     attempt: number;
+    deploymentId: number;
     /**
      * Error log to show any unexpected error that occurred during executing deploy step
      */
@@ -316,6 +322,20 @@ export enum DeploymentOperationStatus {
     PhaseFailed = 1024,
     Canceled = 2048,
     PhaseCanceled = 4096,
+    ManualInterventionPending = 8192,
+}
+
+export interface DeploymentQueryParameters {
+    artifactSourceId: string;
+    artifactTypeId: string;
+    artifactVersions: string[];
+    deploymentStatus: DeploymentStatus;
+    environments: DefinitionEnvironmentReference[];
+    isDeleted: boolean;
+    latestDeploymentsOnly: boolean;
+    maxDeploymentsPerEnvironment: number;
+    operationStatus: DeploymentOperationStatus;
+    queryOrder: ReleaseQueryOrder;
 }
 
 export enum DeploymentReason {
@@ -721,7 +741,6 @@ export interface ReleaseEnvironment {
     releaseDefinition: ShallowReference;
     releaseDescription: string;
     releaseId: number;
-    runOptions: { [key: string] : string; };
     scheduledDeploymentTime: Date;
     schedules: ReleaseSchedule[];
     status: EnvironmentStatus;
@@ -1091,6 +1110,9 @@ export var TypeInfo = {
     DataSourceBinding: {
         fields: <any>null
     },
+    DefinitionEnvironmentReference: {
+        fields: <any>null
+    },
     Deployment: {
         fields: <any>null
     },
@@ -1125,7 +1147,11 @@ export var TypeInfo = {
             "phaseFailed": 1024,
             "canceled": 2048,
             "phaseCanceled": 4096,
+            "manualInterventionPending": 8192,
         }
+    },
+    DeploymentQueryParameters: {
+        fields: <any>null
     },
     DeploymentReason: {
         enumValues: {
@@ -1588,6 +1614,9 @@ TypeInfo.ControlOptions.fields = {
 TypeInfo.DataSourceBinding.fields = {
 };
 
+TypeInfo.DefinitionEnvironmentReference.fields = {
+};
+
 TypeInfo.Deployment.fields = {
     deploymentStatus: {
         enumType: TypeInfo.DeploymentStatus
@@ -1704,6 +1733,22 @@ TypeInfo.DeploymentJob.fields = {
     tasks: {
         isArray: true,
         typeInfo: TypeInfo.ReleaseTask
+    },
+};
+
+TypeInfo.DeploymentQueryParameters.fields = {
+    deploymentStatus: {
+        enumType: TypeInfo.DeploymentStatus
+    },
+    environments: {
+        isArray: true,
+        typeInfo: TypeInfo.DefinitionEnvironmentReference
+    },
+    operationStatus: {
+        enumType: TypeInfo.DeploymentOperationStatus
+    },
+    queryOrder: {
+        enumType: TypeInfo.ReleaseQueryOrder
     },
 };
 
