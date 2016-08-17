@@ -18,13 +18,13 @@ async function buildSample() {
         let defs: bi.DefinitionReference[] = await vstsBuild.getDefinitions(project);
         
         console.log('You have ' + defs.length + ' build definition(s)');
-        defs.forEach(async (defRef: bi.DefinitionReference) => {
-            
+        for (let i: number = 0; i < defs.length; i++) {
+            let defRef: bi.DefinitionReference = defs[i];
             let def: bi.BuildDefinition = await vstsBuild.getDefinition(defRef.id, project);
             let rep: bi.BuildRepository = def.repository;
 
-            console.log(defRef.name + ' (' + defRef.id + ') ' + 'repo ' + rep.type);
-        });
+            console.log(defRef.name + ' (' + defRef.id + ') ' + 'repo ' + rep.type);            
+        }
 
         // get top 25 successfully completed builds since 2016
         cm.heading('top 25 successfully completed builds for ' + project + 'project');
