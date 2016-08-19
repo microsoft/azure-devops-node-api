@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-/// <reference path="../node/tunnel.d.ts"/>
-
 import url = require("url");
 
 import http = require("http");
@@ -104,6 +102,7 @@ export class HttpClient implements ifm.IHttpClient {
             proxyUrl = url.parse(process.env.HTTP_PROXY);
         }
 
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
         var options: any = {
             host: parsedUrl.hostname,
             port: parsedUrl.port || defaultPort,
