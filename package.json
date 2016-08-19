@@ -22,7 +22,8 @@
   "license": "MIT",
   "dependencies": {
     "q": "^1.0.1",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "tunnel": "0.0.4"
   },
   "devDependencies": {
     "shelljs": "^0.7.0"

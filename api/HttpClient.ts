@@ -1,10 +1,13 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+/// <reference path="../node/tunnel.d.ts"/>
+
 import url = require("url");
 
 import http = require("http");
 import https = require("https");
+import tunnel = require("tunnel");
 import ifm = require('./interfaces/common/VsoBaseInterfaces');
 
 http.globalAgent.maxSockets = 100;
@@ -95,42 +98,45 @@ export class HttpClient implements ifm.IHttpClient {
         this.isSsl = usingSsl;
 
         var proxyUrl: url.Url;
-        if (process.env.HTTP_PROXY) {
+        if (process.env.HTTPS_PROXY && usingSsl) {
+            proxyUrl = url.parse(process.env.HTTPS_PROXY);
+        } else if (process.env.HTTP_PROXY) {
             proxyUrl = url.parse(process.env.HTTP_PROXY);
-            prot = proxyUrl.protocol === 'https:' ? https: http;
         }
 
-        var options: any = { headers: {}};
-
-        var useProxy = proxyUrl && proxyUrl.hostname;
-        if (useProxy) {
-            // TODO: support proxy-authorization
-            options = {
-                host: proxyUrl.hostname,
-                port: proxyUrl.port || 8888,
-                path: requestUrl,
-                method: method,
-                headers: {}
-            }
-        }
-        else {
-            options = {
-                host: parsedUrl.hostname,
-                port: parsedUrl.port || defaultPort,
-                path: (parsedUrl.pathname || '') + (parsedUrl.search || ''),
-                method: method,
-                headers: {}
-            }
-        }
-
-        options.headers = headers;
-
-        if (useProxy) {
-            options.headers['Host'] = parsedUrl.hostname;
-        }
+        var options: any = {
+            host: parsedUrl.hostname,
+            port: parsedUrl.port || defaultPort,
+            path: (parsedUrl.pathname || '') + (parsedUrl.search || ''),
+            method: method,
+            headers: headers || {}
+        };
 
         //options.headers["Accept"] = contentType;
         options.headers["User-Agent"] = this.userAgent;
+
+        var useProxy = proxyUrl && proxyUrl.hostname;
+        if (useProxy) {
+            var agentOptions: tunnel.TunnelOptions = {
+                maxSockets: http.globalAgent.maxSockets,
+                proxy: {
+                    // TODO: support proxy-authorization
+                    //proxyAuth: "user:password",
+                    host: proxyUrl.hostname,
+                    port: proxyUrl.port
+                }
+            };
+
+            var tunnelAgent: Function;
+            var overHttps = proxyUrl.protocol === 'https:';
+            if (usingSsl) {
+                tunnelAgent = overHttps ? tunnel.httpsOverHttps : tunnel.httpsOverHttp;
+            } else {
+                tunnelAgent = overHttps ? tunnel.httpOverHttps : tunnel.httpOverHttp;
+            }
+            
+            options.agent = tunnelAgent(agentOptions);
+        }
 
         if (this.handlers) {
             this.handlers.forEach((handler) => {
