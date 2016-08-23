@@ -3071,6 +3071,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             project: project,
             planId: planId,
             suiteId: suiteId,
+            action: 'TestCases',
             testCaseIds: testCaseIds
         };
 
@@ -3211,6 +3212,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             project: project,
             planId: planId,
             suiteId: suiteId,
+            action: 'TestCases',
             testCaseIds: testCaseIds
         };
 
