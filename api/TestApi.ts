@@ -3118,6 +3118,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             project: project,
             planId: planId,
             suiteId: suiteId,
+            action: 'TestCases',
             testCaseIds: testCaseIds
         };
 
@@ -3162,7 +3163,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         let routeValues: any = {
             project: project,
             planId: planId,
-            suiteId: suiteId
+            suiteId: suiteId,
+            action: 'TestCases'
         };
 
         this.vsoClient.getVersioningData("3.0-preview.2", "Test", "a4a1ec1c-b03f-41ca-8857-704594ecf58e", routeValues)
