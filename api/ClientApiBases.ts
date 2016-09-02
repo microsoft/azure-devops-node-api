@@ -29,7 +29,7 @@ export class ClientApiBase {
         this.httpClient.userAgent = userAgent;
     }
     
-    public connect(): Q.Promise<any> {
+    public connect(): Promise<any> {
         var defer = Q.defer();
         
         this.restClient.getJson(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, null, (err: any, statusCode: number, obj: any) => {
