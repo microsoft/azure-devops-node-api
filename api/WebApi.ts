@@ -4,7 +4,10 @@
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import basem = require('./ClientApiBases');
 import buildm = require('./BuildApi');
+import contributionsm = require("./ContributionsApi");
 import corem = require('./CoreApi');
+import extmgmtm = require("./ExtensionManagementApi");
+import featuremgmtm = require("./FeatureManagementApi");
 import filecontainerm = require('./FileContainerApi');
 import gallerym = require('./GalleryApi');
 import gitm = require('./GitApi');
@@ -77,6 +80,18 @@ export class WebApi {
      */
     public getCoreApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): corem.ICoreApi {
         return new corem.CoreApi(serverUrl, handlers);
+    }
+
+    public getContributionsApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): contributionsm.ContributionsApi {
+        return new contributionsm.ContributionsApi(serverUrl, handlers);
+    }
+
+    public getExtensionManagementApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): extmgmtm.IExtensionManagementApi {
+        return new extmgmtm.ExtensionManagementApi(serverUrl, handlers);
+    }
+
+    public getFeatureManagementApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): featuremgmtm.FeatureManagementApi {
+        return new featuremgmtm.FeatureManagementApi(serverUrl, handlers);
     }
 
     public getFileContainerApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): filecontainerm.IFileContainerApi {
