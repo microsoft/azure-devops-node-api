@@ -27,6 +27,10 @@ export class NtlmCredentialHandler implements VsoBaseInterfaces.IRequestHandler 
 
     prepareRequest(options:any): void {
         // No headers or options need to be set.  We keep the credentials on the handler itself.
+        // If a (proxy) agent is set, remove it as we don't support proxy for NTLM at this time
+        if (options.agent) {
+            delete options.agent;
+        }
     }
 
     canHandleAuthentication(res: VsoBaseInterfaces.IHttpResponse): boolean {
