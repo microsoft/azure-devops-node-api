@@ -37,6 +37,10 @@ export interface IGitApi extends basem.ClientApiBase {
     getPushCommits(repositoryId: string, pushId: number, project?: string, top?: number, skip?: number, includeLinks?: boolean): Promise<GitInterfaces.GitCommitRef[]>;
     getCommitsBatch(searchCriteria: GitInterfaces.GitQueryCommitsCriteria, repositoryId: string, project?: string, skip?: number, top?: number, includeStatuses?: boolean): Promise<GitInterfaces.GitCommitRef[]>;
     getDeletedRepositories(project: string): Promise<GitInterfaces.GitDeletedRepository[]>;
+    createImportRequest(importRequest: GitInterfaces.GitImportRequest, project: string, repositoryId: string, validateParameters?: boolean): Promise<GitInterfaces.GitImportRequest>;
+    getImportRequest(project: string, repositoryId: string, importRequestId: number): Promise<GitInterfaces.GitImportRequest>;
+    queryImportRequests(project: string, repositoryId: string, includeAbandoned?: boolean): Promise<GitInterfaces.GitImportRequest[]>;
+    updateImportRequest(importRequestToUpdate: GitInterfaces.GitImportRequest, project: string, repositoryId: string, importRequestId: number): Promise<GitInterfaces.GitImportRequest>;
     getItem(repositoryId: string, path: string, project?: string, scopePath?: string, recursionLevel?: GitInterfaces.VersionControlRecursionType, includeContentMetadata?: boolean, latestProcessedChange?: boolean, download?: boolean, versionDescriptor?: GitInterfaces.GitVersionDescriptor): Promise<GitInterfaces.GitItem>;
     getItemContent(repositoryId: string, path: string, project?: string, scopePath?: string, recursionLevel?: GitInterfaces.VersionControlRecursionType, includeContentMetadata?: boolean, latestProcessedChange?: boolean, download?: boolean, versionDescriptor?: GitInterfaces.GitVersionDescriptor): Promise<NodeJS.ReadableStream>;
     getItems(repositoryId: string, project?: string, scopePath?: string, recursionLevel?: GitInterfaces.VersionControlRecursionType, includeContentMetadata?: boolean, latestProcessedChange?: boolean, download?: boolean, includeLinks?: boolean, versionDescriptor?: GitInterfaces.GitVersionDescriptor): Promise<GitInterfaces.GitItem[]>;
@@ -45,6 +49,9 @@ export interface IGitApi extends basem.ClientApiBase {
     getItemsBatch(requestData: GitInterfaces.GitItemRequestData, repositoryId: string, project?: string): Promise<GitInterfaces.GitItem[][]>;
     getPullRequestIterationCommits(repositoryId: string, pullRequestId: number, iterationId: number, project?: string): Promise<GitInterfaces.GitCommitRef[]>;
     getPullRequestCommits(repositoryId: string, pullRequestId: number, project?: string): Promise<GitInterfaces.GitCommitRef[]>;
+    getPullRequestConflict(repositoryId: string, pullRequestId: number, conflictId: number, project?: string): Promise<GitInterfaces.GitConflict>;
+    getPullRequestConflicts(repositoryId: string, pullRequestId: number, project?: string, skip?: number, top?: number, includeObsolete?: boolean): Promise<GitInterfaces.GitConflict[]>;
+    updatePullRequestConflict(conflict: GitInterfaces.GitConflict, repositoryId: string, pullRequestId: number, conflictId: number, project?: string): Promise<GitInterfaces.GitConflict>;
     getPullRequestIterationChanges(repositoryId: string, pullRequestId: number, iterationId: number, project?: string, top?: number, skip?: number, compareTo?: number): Promise<GitInterfaces.GitPullRequestIterationChanges>;
     getPullRequestIteration(repositoryId: string, pullRequestId: number, iterationId: number, project?: string): Promise<GitInterfaces.GitPullRequestIteration>;
     getPullRequestIterations(repositoryId: string, pullRequestId: number, project?: string, includeCommits?: boolean): Promise<GitInterfaces.GitPullRequestIteration[]>;
@@ -66,16 +73,21 @@ export interface IGitApi extends basem.ClientApiBase {
     createPullRequestStatus(status: GitInterfaces.GitPullRequestStatus, repositoryId: string, pullRequestId: number, project?: string): Promise<GitInterfaces.GitPullRequestStatus>;
     getPullRequestStatus(repositoryId: string, pullRequestId: number, statusId: number, project?: string): Promise<GitInterfaces.GitPullRequestStatus>;
     getPullRequestStatuses(repositoryId: string, pullRequestId: number, project?: string): Promise<GitInterfaces.GitPullRequestStatus[]>;
+    createComment(comment: GitInterfaces.Comment, repositoryId: string, pullRequestId: number, threadId: number, project?: string): Promise<GitInterfaces.Comment>;
+    deleteComment(repositoryId: string, pullRequestId: number, threadId: number, commentId: number, project?: string): Promise<void>;
+    getComment(repositoryId: string, pullRequestId: number, threadId: number, commentId: number, project?: string): Promise<GitInterfaces.Comment>;
+    getComments(repositoryId: string, pullRequestId: number, threadId: number, project?: string): Promise<GitInterfaces.Comment[]>;
+    updateComment(comment: GitInterfaces.Comment, repositoryId: string, pullRequestId: number, threadId: number, commentId: number, project?: string): Promise<GitInterfaces.Comment>;
     createThread(commentThread: GitInterfaces.GitPullRequestCommentThread, repositoryId: string, pullRequestId: number, project?: string): Promise<GitInterfaces.GitPullRequestCommentThread>;
-    getPullRequestThread(repositoryId: string, pullRequestId: number, threadId: number, project?: string): Promise<GitInterfaces.GitPullRequestCommentThread>;
-    getThreads(repositoryId: string, pullRequestId: number, project?: string): Promise<GitInterfaces.GitPullRequestCommentThread[]>;
+    getPullRequestThread(repositoryId: string, pullRequestId: number, threadId: number, project?: string, iteration?: number, baseIteration?: number): Promise<GitInterfaces.GitPullRequestCommentThread>;
+    getThreads(repositoryId: string, pullRequestId: number, project?: string, iteration?: number, baseIteration?: number): Promise<GitInterfaces.GitPullRequestCommentThread[]>;
     updateThread(commentThread: GitInterfaces.GitPullRequestCommentThread, repositoryId: string, pullRequestId: number, threadId: number, project?: string): Promise<GitInterfaces.GitPullRequestCommentThread>;
     getPullRequestWorkItems(repositoryId: string, pullRequestId: number, project?: string): Promise<GitInterfaces.AssociatedWorkItem[]>;
     createPush(push: GitInterfaces.GitPush, repositoryId: string, project?: string): Promise<GitInterfaces.GitPush>;
     getPush(repositoryId: string, pushId: number, project?: string, includeCommits?: number, includeRefUpdates?: boolean): Promise<GitInterfaces.GitPush>;
     getPushes(repositoryId: string, project?: string, skip?: number, top?: number, searchCriteria?: GitInterfaces.GitPushSearchCriteria): Promise<GitInterfaces.GitPush[]>;
     createRefLockRequest(refLockRequest: GitInterfaces.GitRefLockRequest, project: string, repositoryId: string): Promise<void>;
-    getRefs(repositoryId: string, project?: string, filter?: string, includeLinks?: boolean): Promise<GitInterfaces.GitRef[]>;
+    getRefs(repositoryId: string, project?: string, filter?: string, includeLinks?: boolean, latestStatusesOnly?: boolean): Promise<GitInterfaces.GitRef[]>;
     updateRefs(refUpdates: GitInterfaces.GitRefUpdate[], repositoryId: string, project?: string, projectId?: string): Promise<GitInterfaces.GitRefUpdateResult[]>;
     createFavorite(favorite: GitInterfaces.GitRefFavorite, project: string): Promise<GitInterfaces.GitRefFavorite>;
     deleteRefFavorite(project: string, favoriteId: number): Promise<void>;
@@ -83,7 +95,7 @@ export interface IGitApi extends basem.ClientApiBase {
     getRefFavorites(project: string, repositoryId?: string, identityId?: string): Promise<GitInterfaces.GitRefFavorite[]>;
     createRepository(gitRepositoryToCreate: GitInterfaces.GitRepository, project?: string): Promise<GitInterfaces.GitRepository>;
     deleteRepository(repositoryId: string, project?: string): Promise<void>;
-    getRepositories(project?: string, includeLinks?: boolean): Promise<GitInterfaces.GitRepository[]>;
+    getRepositories(project?: string, includeLinks?: boolean, includeAllUrls?: boolean): Promise<GitInterfaces.GitRepository[]>;
     getRepository(repositoryId: string, project?: string): Promise<GitInterfaces.GitRepository>;
     updateRepository(newRepositoryInfo: GitInterfaces.GitRepository, repositoryId: string, project?: string): Promise<GitInterfaces.GitRepository>;
     createRevert(revertToCreate: GitInterfaces.GitAsyncRefOperationParameters, project: string, repositoryId: string): Promise<GitInterfaces.GitRevert>;
@@ -91,6 +103,7 @@ export interface IGitApi extends basem.ClientApiBase {
     getRevertForRefName(project: string, repositoryId: string, refName: string): Promise<GitInterfaces.GitRevert>;
     createCommitStatus(gitCommitStatusToCreate: GitInterfaces.GitStatus, commitId: string, repositoryId: string, project?: string): Promise<GitInterfaces.GitStatus>;
     getStatuses(commitId: string, repositoryId: string, project?: string, top?: number, skip?: number, latestOnly?: boolean): Promise<GitInterfaces.GitStatus[]>;
+    getSuggestions(repositoryId: string, project?: string): Promise<GitInterfaces.GitSuggestion[]>;
     getTree(repositoryId: string, sha1: string, project?: string, projectId?: string, recursive?: boolean, fileName?: string): Promise<GitInterfaces.GitTreeRef>;
     getTreeZip(repositoryId: string, sha1: string, project?: string, projectId?: string, recursive?: boolean, fileName?: string): Promise<NodeJS.ReadableStream>;
 }
@@ -140,7 +153,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             fileName: fileName,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "7b28e929-2c99-405d-9c5c-6167a06e6816", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "7b28e929-2c99-405d-9c5c-6167a06e6816", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -195,7 +208,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             fileName: fileName,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "7b28e929-2c99-405d-9c5c-6167a06e6816", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "7b28e929-2c99-405d-9c5c-6167a06e6816", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -246,7 +259,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             filename: filename,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "7b28e929-2c99-405d-9c5c-6167a06e6816", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "7b28e929-2c99-405d-9c5c-6167a06e6816", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -301,7 +314,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             fileName: fileName,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "7b28e929-2c99-405d-9c5c-6167a06e6816", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "7b28e929-2c99-405d-9c5c-6167a06e6816", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -353,7 +366,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             baseVersionDescriptor: baseVersionDescriptor,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "d5b216de-d8d5-4d32-ae76-51df755b16d3", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "d5b216de-d8d5-4d32-ae76-51df755b16d3", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -402,7 +415,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             baseVersionDescriptor: baseVersionDescriptor,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "d5b216de-d8d5-4d32-ae76-51df755b16d3", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "d5b216de-d8d5-4d32-ae76-51df755b16d3", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -447,7 +460,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "d5b216de-d8d5-4d32-ae76-51df755b16d3", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "d5b216de-d8d5-4d32-ae76-51df755b16d3", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -502,7 +515,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             skip: skip,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "5bf884f5-3e07-42e9-afb8-1b872267bf16", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "5bf884f5-3e07-42e9-afb8-1b872267bf16", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -545,7 +558,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "033bad68-9a14-43d1-90e0-59cb8856fef6", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "033bad68-9a14-43d1-90e0-59cb8856fef6", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -589,7 +602,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "033bad68-9a14-43d1-90e0-59cb8856fef6", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "033bad68-9a14-43d1-90e0-59cb8856fef6", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -636,7 +649,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             refName: refName,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "033bad68-9a14-43d1-90e0-59cb8856fef6", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "033bad68-9a14-43d1-90e0-59cb8856fef6", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -688,7 +701,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             changeCount: changeCount,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "c2570c3b-5b3f-41b8-98bf-5407bfde8d58", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "c2570c3b-5b3f-41b8-98bf-5407bfde8d58", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -743,7 +756,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             '$top': top,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "c2570c3b-5b3f-41b8-98bf-5407bfde8d58", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "c2570c3b-5b3f-41b8-98bf-5407bfde8d58", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -801,7 +814,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             includeLinks: includeLinks,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "c2570c3b-5b3f-41b8-98bf-5407bfde8d58", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "c2570c3b-5b3f-41b8-98bf-5407bfde8d58", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -858,7 +871,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             includeStatuses: includeStatuses,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "6400dfb2-0bcb-462b-b992-5a57f8f1416c", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "6400dfb2-0bcb-462b-b992-5a57f8f1416c", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -898,13 +911,207 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "2b6869c4-cb25-42b5-b7a3-0d3e6be0a11a", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "2b6869c4-cb25-42b5-b7a3-0d3e6be0a11a", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitDeletedRepository, responseIsCollection: true };
                 
                 this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+            })
+            .fail((error) => {
+                onResult(error, error.statusCode, null);
+            });
+
+        return deferred.promise;
+    }
+
+    /**
+    * Create an import request
+    * 
+    * @param {GitInterfaces.GitImportRequest} importRequest
+    * @param {string} project - Project ID or project name
+    * @param {string} repositoryId
+    * @param {boolean} validateParameters
+    */
+    public createImportRequest(
+        importRequest: GitInterfaces.GitImportRequest,
+        project: string,
+        repositoryId: string,
+        validateParameters?: boolean
+        ): Promise<GitInterfaces.GitImportRequest> {
+    
+        let deferred = Q.defer<GitInterfaces.GitImportRequest>();
+
+        let onResult = (err: any, statusCode: number, ImportRequest: GitInterfaces.GitImportRequest) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(ImportRequest);
+            }
+        };
+
+        let routeValues: any = {
+            project: project,
+            repositoryId: repositoryId
+        };
+
+        let queryValues: any = {
+            validateParameters: validateParameters,
+        };
+        
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "01828ddc-3600-4a41-8633-99b3a73a0eb3", routeValues, queryValues)
+            .then((versioningData: vsom.ClientVersioningData) => {
+                let url: string = versioningData.requestUrl;
+                let apiVersion: string = versioningData.apiVersion;
+                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitImportRequest, responseTypeMetadata: GitInterfaces.TypeInfo.GitImportRequest, responseIsCollection: false };
+                
+                this.restClient.create(url, apiVersion, importRequest, null, serializationData, onResult);
+            })
+            .fail((error) => {
+                onResult(error, error.statusCode, null);
+            });
+
+        return deferred.promise;
+    }
+
+    /**
+    * Retrieve a particular import request
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {string} repositoryId
+    * @param {number} importRequestId
+    */
+    public getImportRequest(
+        project: string,
+        repositoryId: string,
+        importRequestId: number
+        ): Promise<GitInterfaces.GitImportRequest> {
+    
+        let deferred = Q.defer<GitInterfaces.GitImportRequest>();
+
+        let onResult = (err: any, statusCode: number, ImportRequest: GitInterfaces.GitImportRequest) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(ImportRequest);
+            }
+        };
+
+        let routeValues: any = {
+            project: project,
+            repositoryId: repositoryId,
+            importRequestId: importRequestId
+        };
+
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "01828ddc-3600-4a41-8633-99b3a73a0eb3", routeValues)
+            .then((versioningData: vsom.ClientVersioningData) => {
+                let url: string = versioningData.requestUrl;
+                let apiVersion: string = versioningData.apiVersion;
+                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitImportRequest, responseIsCollection: false };
+                
+                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+            })
+            .fail((error) => {
+                onResult(error, error.statusCode, null);
+            });
+
+        return deferred.promise;
+    }
+
+    /**
+    * Retrieve import requests for a repository
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {string} repositoryId
+    * @param {boolean} includeAbandoned
+    */
+    public queryImportRequests(
+        project: string,
+        repositoryId: string,
+        includeAbandoned?: boolean
+        ): Promise<GitInterfaces.GitImportRequest[]> {
+    
+        let deferred = Q.defer<GitInterfaces.GitImportRequest[]>();
+
+        let onResult = (err: any, statusCode: number, ImportRequests: GitInterfaces.GitImportRequest[]) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(ImportRequests);
+            }
+        };
+
+        let routeValues: any = {
+            project: project,
+            repositoryId: repositoryId
+        };
+
+        let queryValues: any = {
+            includeAbandoned: includeAbandoned,
+        };
+        
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "01828ddc-3600-4a41-8633-99b3a73a0eb3", routeValues, queryValues)
+            .then((versioningData: vsom.ClientVersioningData) => {
+                let url: string = versioningData.requestUrl;
+                let apiVersion: string = versioningData.apiVersion;
+                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitImportRequest, responseIsCollection: true };
+                
+                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+            })
+            .fail((error) => {
+                onResult(error, error.statusCode, null);
+            });
+
+        return deferred.promise;
+    }
+
+    /**
+    * Update an import request
+    * 
+    * @param {GitInterfaces.GitImportRequest} importRequestToUpdate
+    * @param {string} project - Project ID or project name
+    * @param {string} repositoryId
+    * @param {number} importRequestId
+    */
+    public updateImportRequest(
+        importRequestToUpdate: GitInterfaces.GitImportRequest,
+        project: string,
+        repositoryId: string,
+        importRequestId: number
+        ): Promise<GitInterfaces.GitImportRequest> {
+    
+        let deferred = Q.defer<GitInterfaces.GitImportRequest>();
+
+        let onResult = (err: any, statusCode: number, ImportRequest: GitInterfaces.GitImportRequest) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(ImportRequest);
+            }
+        };
+
+        let routeValues: any = {
+            project: project,
+            repositoryId: repositoryId,
+            importRequestId: importRequestId
+        };
+
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "01828ddc-3600-4a41-8633-99b3a73a0eb3", routeValues)
+            .then((versioningData: vsom.ClientVersioningData) => {
+                let url: string = versioningData.requestUrl;
+                let apiVersion: string = versioningData.apiVersion;
+                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitImportRequest, responseTypeMetadata: GitInterfaces.TypeInfo.GitImportRequest, responseIsCollection: false };
+                
+                this.restClient.update(url, apiVersion, importRequestToUpdate, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -965,7 +1172,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             versionDescriptor: versionDescriptor,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -1032,7 +1239,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             versionDescriptor: versionDescriptor,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -1099,7 +1306,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             versionDescriptor: versionDescriptor,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -1166,7 +1373,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             versionDescriptor: versionDescriptor,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -1233,7 +1440,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             versionDescriptor: versionDescriptor,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "fb93c0db-47ed-4a31-8c20-47552878fb44", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -1278,7 +1485,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "630fd2e4-fb88-4f85-ad21-13f3fd1fbca9", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "630fd2e4-fb88-4f85-ad21-13f3fd1fbca9", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -1327,7 +1534,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             iterationId: iterationId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "e7ea0883-095f-4926-b5fb-f24691c26fb9", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "e7ea0883-095f-4926-b5fb-f24691c26fb9", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -1373,13 +1580,171 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             pullRequestId: pullRequestId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "52823034-34a8-4576-922c-8d8b77e9e4c4", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "52823034-34a8-4576-922c-8d8b77e9e4c4", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitRef, responseIsCollection: true };
                 
                 this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+            })
+            .fail((error) => {
+                onResult(error, error.statusCode, null);
+            });
+
+        return deferred.promise;
+    }
+
+    /**
+    * Retrieve one conflict for a pull request by ID
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} conflictId
+    * @param {string} project - Project ID or project name
+    */
+    public getPullRequestConflict(
+        repositoryId: string,
+        pullRequestId: number,
+        conflictId: number,
+        project?: string
+        ): Promise<GitInterfaces.GitConflict> {
+    
+        let deferred = Q.defer<GitInterfaces.GitConflict>();
+
+        let onResult = (err: any, statusCode: number, PullRequestConflict: GitInterfaces.GitConflict) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(PullRequestConflict);
+            }
+        };
+
+        let routeValues: any = {
+            project: project,
+            repositoryId: repositoryId,
+            pullRequestId: pullRequestId,
+            conflictId: conflictId
+        };
+
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "d840fb74-bbef-42d3-b250-564604c054a4", routeValues)
+            .then((versioningData: vsom.ClientVersioningData) => {
+                let url: string = versioningData.requestUrl;
+                let apiVersion: string = versioningData.apiVersion;
+                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitConflict, responseIsCollection: false };
+                
+                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+            })
+            .fail((error) => {
+                onResult(error, error.statusCode, null);
+            });
+
+        return deferred.promise;
+    }
+
+    /**
+    * Retrieve all conflicts for a pull request
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {string} project - Project ID or project name
+    * @param {number} skip
+    * @param {number} top
+    * @param {boolean} includeObsolete
+    */
+    public getPullRequestConflicts(
+        repositoryId: string,
+        pullRequestId: number,
+        project?: string,
+        skip?: number,
+        top?: number,
+        includeObsolete?: boolean
+        ): Promise<GitInterfaces.GitConflict[]> {
+    
+        let deferred = Q.defer<GitInterfaces.GitConflict[]>();
+
+        let onResult = (err: any, statusCode: number, PullRequestConflicts: GitInterfaces.GitConflict[]) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(PullRequestConflicts);
+            }
+        };
+
+        let routeValues: any = {
+            project: project,
+            repositoryId: repositoryId,
+            pullRequestId: pullRequestId
+        };
+
+        let queryValues: any = {
+            '$skip': skip,
+            '$top': top,
+            includeObsolete: includeObsolete,
+        };
+        
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "d840fb74-bbef-42d3-b250-564604c054a4", routeValues, queryValues)
+            .then((versioningData: vsom.ClientVersioningData) => {
+                let url: string = versioningData.requestUrl;
+                let apiVersion: string = versioningData.apiVersion;
+                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitConflict, responseIsCollection: true };
+                
+                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+            })
+            .fail((error) => {
+                onResult(error, error.statusCode, null);
+            });
+
+        return deferred.promise;
+    }
+
+    /**
+    * Update merge conflict resolution
+    * 
+    * @param {GitInterfaces.GitConflict} conflict
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} conflictId
+    * @param {string} project - Project ID or project name
+    */
+    public updatePullRequestConflict(
+        conflict: GitInterfaces.GitConflict,
+        repositoryId: string,
+        pullRequestId: number,
+        conflictId: number,
+        project?: string
+        ): Promise<GitInterfaces.GitConflict> {
+    
+        let deferred = Q.defer<GitInterfaces.GitConflict>();
+
+        let onResult = (err: any, statusCode: number, PullRequestConflict: GitInterfaces.GitConflict) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(PullRequestConflict);
+            }
+        };
+
+        let routeValues: any = {
+            project: project,
+            repositoryId: repositoryId,
+            pullRequestId: pullRequestId,
+            conflictId: conflictId
+        };
+
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "d840fb74-bbef-42d3-b250-564604c054a4", routeValues)
+            .then((versioningData: vsom.ClientVersioningData) => {
+                let url: string = versioningData.requestUrl;
+                let apiVersion: string = versioningData.apiVersion;
+                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitConflict, responseTypeMetadata: GitInterfaces.TypeInfo.GitConflict, responseIsCollection: false };
+                
+                this.restClient.update(url, apiVersion, conflict, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1432,7 +1797,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             '$compareTo': compareTo,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "4216bdcf-b6b1-4d59-8b82-c34cc183fc8b", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "4216bdcf-b6b1-4d59-8b82-c34cc183fc8b", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -1479,7 +1844,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             iterationId: iterationId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "d43911ee-6958-46b0-a42b-8445b8a0d004", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "d43911ee-6958-46b0-a42b-8445b8a0d004", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -1529,7 +1894,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             includeCommits: includeCommits,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "d43911ee-6958-46b0-a42b-8445b8a0d004", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "d43911ee-6958-46b0-a42b-8445b8a0d004", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -1574,7 +1939,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "b3a6eebe-9cf0-49ea-b6cb-1a4c5f5007b0", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "b3a6eebe-9cf0-49ea-b6cb-1a4c5f5007b0", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -1625,7 +1990,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             reviewerId: reviewerId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "4b6702c7-aa35-4b89-9c96-b9abf6d3e540", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "4b6702c7-aa35-4b89-9c96-b9abf6d3e540", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -1673,7 +2038,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             pullRequestId: pullRequestId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "4b6702c7-aa35-4b89-9c96-b9abf6d3e540", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "4b6702c7-aa35-4b89-9c96-b9abf6d3e540", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -1722,7 +2087,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             reviewerId: reviewerId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "4b6702c7-aa35-4b89-9c96-b9abf6d3e540", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "4b6702c7-aa35-4b89-9c96-b9abf6d3e540", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -1771,7 +2136,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             reviewerId: reviewerId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "4b6702c7-aa35-4b89-9c96-b9abf6d3e540", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "4b6702c7-aa35-4b89-9c96-b9abf6d3e540", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -1817,7 +2182,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             pullRequestId: pullRequestId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "4b6702c7-aa35-4b89-9c96-b9abf6d3e540", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "4b6702c7-aa35-4b89-9c96-b9abf6d3e540", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -1857,7 +2222,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             pullRequestId: pullRequestId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "01a46dea-7d46-4d40-bc84-319e7c260d99", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "01a46dea-7d46-4d40-bc84-319e7c260d99", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -1912,7 +2277,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             '$top': top,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "a5d28130-9cd2-40fa-9f08-902e7daa9efb", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "a5d28130-9cd2-40fa-9f08-902e7daa9efb", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -1957,7 +2322,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "9946fd70-0d40-406e-b686-b4744cbbcc37", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "9946fd70-0d40-406e-b686-b4744cbbcc37", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -2021,7 +2386,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             includeWorkItemRefs: includeWorkItemRefs,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "9946fd70-0d40-406e-b686-b4744cbbcc37", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "9946fd70-0d40-406e-b686-b4744cbbcc37", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -2079,7 +2444,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             '$top': top,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "9946fd70-0d40-406e-b686-b4744cbbcc37", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "9946fd70-0d40-406e-b686-b4744cbbcc37", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -2127,7 +2492,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             pullRequestId: pullRequestId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "9946fd70-0d40-406e-b686-b4744cbbcc37", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "9946fd70-0d40-406e-b686-b4744cbbcc37", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -2178,7 +2543,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             iterationId: iterationId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "75cf11c5-979f-4038-a76e-058a06adf2bf", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "75cf11c5-979f-4038-a76e-058a06adf2bf", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -2230,7 +2595,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             statusId: statusId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "75cf11c5-979f-4038-a76e-058a06adf2bf", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "75cf11c5-979f-4038-a76e-058a06adf2bf", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -2279,7 +2644,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             iterationId: iterationId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "75cf11c5-979f-4038-a76e-058a06adf2bf", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "75cf11c5-979f-4038-a76e-058a06adf2bf", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -2327,7 +2692,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             pullRequestId: pullRequestId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -2376,7 +2741,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             statusId: statusId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -2422,13 +2787,271 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             pullRequestId: pullRequestId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestStatus, responseIsCollection: true };
                 
                 this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+            })
+            .fail((error) => {
+                onResult(error, error.statusCode, null);
+            });
+
+        return deferred.promise;
+    }
+
+    /**
+    * Create a pull request review comment
+    * 
+    * @param {GitInterfaces.Comment} comment
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} threadId
+    * @param {string} project - Project ID or project name
+    */
+    public createComment(
+        comment: GitInterfaces.Comment,
+        repositoryId: string,
+        pullRequestId: number,
+        threadId: number,
+        project?: string
+        ): Promise<GitInterfaces.Comment> {
+    
+        let deferred = Q.defer<GitInterfaces.Comment>();
+
+        let onResult = (err: any, statusCode: number, PullRequestThreadComment: GitInterfaces.Comment) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(PullRequestThreadComment);
+            }
+        };
+
+        let routeValues: any = {
+            project: project,
+            repositoryId: repositoryId,
+            pullRequestId: pullRequestId,
+            threadId: threadId
+        };
+
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b", routeValues)
+            .then((versioningData: vsom.ClientVersioningData) => {
+                let url: string = versioningData.requestUrl;
+                let apiVersion: string = versioningData.apiVersion;
+                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.Comment, responseTypeMetadata: GitInterfaces.TypeInfo.Comment, responseIsCollection: false };
+                
+                this.restClient.create(url, apiVersion, comment, null, serializationData, onResult);
+            })
+            .fail((error) => {
+                onResult(error, error.statusCode, null);
+            });
+
+        return deferred.promise;
+    }
+
+    /**
+    * Delete a pull request comment by id for a pull request
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} threadId
+    * @param {number} commentId
+    * @param {string} project - Project ID or project name
+    */
+    public deleteComment(
+        repositoryId: string,
+        pullRequestId: number,
+        threadId: number,
+        commentId: number,
+        project?: string
+        ): Promise<void> {
+    
+        let deferred = Q.defer<void>();
+
+        let onResult = (err: any, statusCode: number) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(null);
+            }
+        };
+
+        let routeValues: any = {
+            project: project,
+            repositoryId: repositoryId,
+            pullRequestId: pullRequestId,
+            threadId: threadId,
+            commentId: commentId
+        };
+
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b", routeValues)
+            .then((versioningData: vsom.ClientVersioningData) => {
+                let url: string = versioningData.requestUrl;
+                let apiVersion: string = versioningData.apiVersion;
+                let serializationData = {  responseIsCollection: false };
+                
+                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
+            })
+            .fail((error) => {
+                onResult(error, error.statusCode);
+            });
+
+        return deferred.promise;
+    }
+
+    /**
+    * Get a pull request comment by id for a pull request
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} threadId
+    * @param {number} commentId
+    * @param {string} project - Project ID or project name
+    */
+    public getComment(
+        repositoryId: string,
+        pullRequestId: number,
+        threadId: number,
+        commentId: number,
+        project?: string
+        ): Promise<GitInterfaces.Comment> {
+    
+        let deferred = Q.defer<GitInterfaces.Comment>();
+
+        let onResult = (err: any, statusCode: number, PullRequestThreadComment: GitInterfaces.Comment) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(PullRequestThreadComment);
+            }
+        };
+
+        let routeValues: any = {
+            project: project,
+            repositoryId: repositoryId,
+            pullRequestId: pullRequestId,
+            threadId: threadId,
+            commentId: commentId
+        };
+
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b", routeValues)
+            .then((versioningData: vsom.ClientVersioningData) => {
+                let url: string = versioningData.requestUrl;
+                let apiVersion: string = versioningData.apiVersion;
+                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.Comment, responseIsCollection: false };
+                
+                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+            })
+            .fail((error) => {
+                onResult(error, error.statusCode, null);
+            });
+
+        return deferred.promise;
+    }
+
+    /**
+    * Get all pull request comments in a thread.
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} threadId
+    * @param {string} project - Project ID or project name
+    */
+    public getComments(
+        repositoryId: string,
+        pullRequestId: number,
+        threadId: number,
+        project?: string
+        ): Promise<GitInterfaces.Comment[]> {
+    
+        let deferred = Q.defer<GitInterfaces.Comment[]>();
+
+        let onResult = (err: any, statusCode: number, PullRequestThreadComments: GitInterfaces.Comment[]) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(PullRequestThreadComments);
+            }
+        };
+
+        let routeValues: any = {
+            project: project,
+            repositoryId: repositoryId,
+            pullRequestId: pullRequestId,
+            threadId: threadId
+        };
+
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b", routeValues)
+            .then((versioningData: vsom.ClientVersioningData) => {
+                let url: string = versioningData.requestUrl;
+                let apiVersion: string = versioningData.apiVersion;
+                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.Comment, responseIsCollection: true };
+                
+                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+            })
+            .fail((error) => {
+                onResult(error, error.statusCode, null);
+            });
+
+        return deferred.promise;
+    }
+
+    /**
+    * Update a pull request review comment thread
+    * 
+    * @param {GitInterfaces.Comment} comment
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} threadId
+    * @param {number} commentId
+    * @param {string} project - Project ID or project name
+    */
+    public updateComment(
+        comment: GitInterfaces.Comment,
+        repositoryId: string,
+        pullRequestId: number,
+        threadId: number,
+        commentId: number,
+        project?: string
+        ): Promise<GitInterfaces.Comment> {
+    
+        let deferred = Q.defer<GitInterfaces.Comment>();
+
+        let onResult = (err: any, statusCode: number, PullRequestThreadComment: GitInterfaces.Comment) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(PullRequestThreadComment);
+            }
+        };
+
+        let routeValues: any = {
+            project: project,
+            repositoryId: repositoryId,
+            pullRequestId: pullRequestId,
+            threadId: threadId,
+            commentId: commentId
+        };
+
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b", routeValues)
+            .then((versioningData: vsom.ClientVersioningData) => {
+                let url: string = versioningData.requestUrl;
+                let apiVersion: string = versioningData.apiVersion;
+                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.Comment, responseTypeMetadata: GitInterfaces.TypeInfo.Comment, responseIsCollection: false };
+                
+                this.restClient.update(url, apiVersion, comment, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2470,7 +3093,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             pullRequestId: pullRequestId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "ab6e2e5d-a0b7-4153-b64a-a4efe0d49449", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "ab6e2e5d-a0b7-4153-b64a-a4efe0d49449", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -2492,12 +3115,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     * @param {number} pullRequestId
     * @param {number} threadId
     * @param {string} project - Project ID or project name
+    * @param {number} iteration
+    * @param {number} baseIteration
     */
     public getPullRequestThread(
         repositoryId: string,
         pullRequestId: number,
         threadId: number,
-        project?: string
+        project?: string,
+        iteration?: number,
+        baseIteration?: number
         ): Promise<GitInterfaces.GitPullRequestCommentThread> {
     
         let deferred = Q.defer<GitInterfaces.GitPullRequestCommentThread>();
@@ -2519,7 +3146,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             threadId: threadId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "ab6e2e5d-a0b7-4153-b64a-a4efe0d49449", routeValues)
+        let queryValues: any = {
+            '$iteration': iteration,
+            '$baseIteration': baseIteration,
+        };
+        
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "ab6e2e5d-a0b7-4153-b64a-a4efe0d49449", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -2540,11 +3172,15 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     * @param {string} repositoryId
     * @param {number} pullRequestId
     * @param {string} project - Project ID or project name
+    * @param {number} iteration
+    * @param {number} baseIteration
     */
     public getThreads(
         repositoryId: string,
         pullRequestId: number,
-        project?: string
+        project?: string,
+        iteration?: number,
+        baseIteration?: number
         ): Promise<GitInterfaces.GitPullRequestCommentThread[]> {
     
         let deferred = Q.defer<GitInterfaces.GitPullRequestCommentThread[]>();
@@ -2565,7 +3201,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             pullRequestId: pullRequestId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "ab6e2e5d-a0b7-4153-b64a-a4efe0d49449", routeValues)
+        let queryValues: any = {
+            '$iteration': iteration,
+            '$baseIteration': baseIteration,
+        };
+        
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "ab6e2e5d-a0b7-4153-b64a-a4efe0d49449", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -2616,7 +3257,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             threadId: threadId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "ab6e2e5d-a0b7-4153-b64a-a4efe0d49449", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "ab6e2e5d-a0b7-4153-b64a-a4efe0d49449", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -2662,7 +3303,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             pullRequestId: pullRequestId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "0a637fcc-5370-4ce8-b0e8-98091f5f9482", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "0a637fcc-5370-4ce8-b0e8-98091f5f9482", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -2707,7 +3348,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "git", "ea98d07b-3c87-4971-8ede-a613694ffb55", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.2", "git", "ea98d07b-3c87-4971-8ede-a613694ffb55", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -2762,7 +3403,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             includeRefUpdates: includeRefUpdates,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.2", "git", "ea98d07b-3c87-4971-8ede-a613694ffb55", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.2", "git", "ea98d07b-3c87-4971-8ede-a613694ffb55", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -2817,7 +3458,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             searchCriteria: searchCriteria,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.2", "git", "ea98d07b-3c87-4971-8ede-a613694ffb55", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.2", "git", "ea98d07b-3c87-4971-8ede-a613694ffb55", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -2862,7 +3503,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "32863ac0-6a8a-4d9f-8afe-ba293b93ec3c", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "32863ac0-6a8a-4d9f-8afe-ba293b93ec3c", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -2884,12 +3525,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     * @param {string} project - Project ID or project name
     * @param {string} filter - [optional] A filter to apply to the refs.
     * @param {boolean} includeLinks - [optional] Specifies if referenceLinks should be included in the result. default is false.
+    * @param {boolean} latestStatusesOnly
     */
     public getRefs(
         repositoryId: string,
         project?: string,
         filter?: string,
-        includeLinks?: boolean
+        includeLinks?: boolean,
+        latestStatusesOnly?: boolean
         ): Promise<GitInterfaces.GitRef[]> {
     
         let deferred = Q.defer<GitInterfaces.GitRef[]>();
@@ -2912,9 +3555,10 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         let queryValues: any = {
             filter: filter,
             includeLinks: includeLinks,
+            latestStatusesOnly: latestStatusesOnly,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "2d874a60-a811-4f62-9c9f-963a6ea0a55b", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "2d874a60-a811-4f62-9c9f-963a6ea0a55b", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -2965,7 +3609,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             projectId: projectId,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "2d874a60-a811-4f62-9c9f-963a6ea0a55b", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "2d874a60-a811-4f62-9c9f-963a6ea0a55b", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -3007,7 +3651,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "876f70af-5792-485a-a1c7-d0a7b2f42bbb", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "876f70af-5792-485a-a1c7-d0a7b2f42bbb", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -3048,7 +3692,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             favoriteId: favoriteId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "876f70af-5792-485a-a1c7-d0a7b2f42bbb", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "876f70af-5792-485a-a1c7-d0a7b2f42bbb", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -3089,7 +3733,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             favoriteId: favoriteId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "876f70af-5792-485a-a1c7-d0a7b2f42bbb", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "876f70af-5792-485a-a1c7-d0a7b2f42bbb", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -3138,7 +3782,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             identityId: identityId,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "876f70af-5792-485a-a1c7-d0a7b2f42bbb", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "876f70af-5792-485a-a1c7-d0a7b2f42bbb", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -3180,7 +3824,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             project: project
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "225f7195-f9c7-4d14-ab28-a83f7ff77e1f", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "225f7195-f9c7-4d14-ab28-a83f7ff77e1f", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -3223,7 +3867,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "225f7195-f9c7-4d14-ab28-a83f7ff77e1f", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "225f7195-f9c7-4d14-ab28-a83f7ff77e1f", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -3243,10 +3887,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     * 
     * @param {string} project - Project ID or project name
     * @param {boolean} includeLinks
+    * @param {boolean} includeAllUrls
     */
     public getRepositories(
         project?: string,
-        includeLinks?: boolean
+        includeLinks?: boolean,
+        includeAllUrls?: boolean
         ): Promise<GitInterfaces.GitRepository[]> {
     
         let deferred = Q.defer<GitInterfaces.GitRepository[]>();
@@ -3267,9 +3913,10 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
         let queryValues: any = {
             includeLinks: includeLinks,
+            includeAllUrls: includeAllUrls,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "225f7195-f9c7-4d14-ab28-a83f7ff77e1f", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "225f7195-f9c7-4d14-ab28-a83f7ff77e1f", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -3310,7 +3957,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "225f7195-f9c7-4d14-ab28-a83f7ff77e1f", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "225f7195-f9c7-4d14-ab28-a83f7ff77e1f", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -3355,7 +4002,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "225f7195-f9c7-4d14-ab28-a83f7ff77e1f", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "225f7195-f9c7-4d14-ab28-a83f7ff77e1f", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -3398,7 +4045,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "bc866058-5449-4715-9cf1-a510b6ff193c", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "bc866058-5449-4715-9cf1-a510b6ff193c", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -3442,7 +4089,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "bc866058-5449-4715-9cf1-a510b6ff193c", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "bc866058-5449-4715-9cf1-a510b6ff193c", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -3489,7 +4136,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             refName: refName,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "bc866058-5449-4715-9cf1-a510b6ff193c", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "bc866058-5449-4715-9cf1-a510b6ff193c", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -3535,7 +4182,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             repositoryId: repositoryId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "428dd4fb-fda5-4722-af02-9313b80305da", routeValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "428dd4fb-fda5-4722-af02-9313b80305da", routeValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -3591,11 +4238,54 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             latestOnly: latestOnly,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "428dd4fb-fda5-4722-af02-9313b80305da", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "428dd4fb-fda5-4722-af02-9313b80305da", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitStatus, responseIsCollection: true };
+                
+                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+            })
+            .fail((error) => {
+                onResult(error, error.statusCode, null);
+            });
+
+        return deferred.promise;
+    }
+
+    /**
+    * Retrieve a set of suggestions (including a pull request suggestion).
+    * 
+    * @param {string} repositoryId
+    * @param {string} project - Project ID or project name
+    */
+    public getSuggestions(
+        repositoryId: string,
+        project?: string
+        ): Promise<GitInterfaces.GitSuggestion[]> {
+    
+        let deferred = Q.defer<GitInterfaces.GitSuggestion[]>();
+
+        let onResult = (err: any, statusCode: number, Suggestions: GitInterfaces.GitSuggestion[]) => {
+            if (err) {
+                err.statusCode = statusCode;
+                deferred.reject(err);
+            }
+            else {
+                deferred.resolve(Suggestions);
+            }
+        };
+
+        let routeValues: any = {
+            project: project,
+            repositoryId: repositoryId
+        };
+
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "9393b4fb-4445-4919-972b-9ad16f442d83", routeValues)
+            .then((versioningData: vsom.ClientVersioningData) => {
+                let url: string = versioningData.requestUrl;
+                let apiVersion: string = versioningData.apiVersion;
+                let serializationData = {  responseIsCollection: true };
                 
                 this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
             })
@@ -3647,7 +4337,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             fileName: fileName,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "729f6437-6f92-44ec-8bee-273a7111063c", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "729f6437-6f92-44ec-8bee-273a7111063c", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
@@ -3703,7 +4393,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             fileName: fileName,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.1", "git", "729f6437-6f92-44ec-8bee-273a7111063c", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.1-preview.1", "git", "729f6437-6f92-44ec-8bee-273a7111063c", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;

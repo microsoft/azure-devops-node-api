@@ -332,26 +332,4 @@ export class VsoClient {
 
         return result;
     }
-
-    public _getLinkResponseHeaders(xhr: XMLHttpRequest): { [relName: string]: string; } {
-        var results: { [relName: string]: string; } = {},
-            responseHeadersString = xhr.getAllResponseHeaders(), // cannot use xhr.getResponseHeader('Link') because jquery/IE bug
-            rheaders = /^(.*?):[ \t]*([^\r\n]*)\r?$/mg, // IE leaves an \r character at EOL
-            linkRegExp = /\<(.*?)\>;rel=\"(.*?)\"/g,
-            headerMatch: any,
-            linkMatch: any;
-
-        // In IE, the Link headers will be distinct, where as in Chrome, the Link headers will be comma delimited
-        if (responseHeadersString) {
-            while (headerMatch = rheaders.exec(responseHeadersString)) {
-                if (headerMatch[1].toLowerCase() === 'link') {
-                    while (linkMatch = linkRegExp.exec(headerMatch[2])) {
-                        results[linkMatch[2]] = linkMatch[1];
-                    }
-                }
-            }
-        }
-
-        return results;
-    }
 }
