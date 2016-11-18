@@ -7,6 +7,7 @@ import http = require("http");
 import https = require("https");
 import tunnel = require("tunnel");
 import ifm = require('./interfaces/common/VsoBaseInterfaces');
+import querystring = require('querystring');
 
 http.globalAgent.maxSockets = 100;
 
@@ -179,7 +180,14 @@ export class HttpClient implements ifm.IHttpClient {
         var socket;
 
         if (objs) {
-            reqData = JSON.stringify(objs, null, 2);
+            var urlEncFormContentType: boolean = options.headers["Content-Type"] && options.headers["Content-Type"].indexOf("application/x-www-form-urlencoded") != -1;
+            if(urlEncFormContentType) {
+                // Generate the URL-encoded form of the data
+                reqData = querystring.stringify(objs);
+            }
+            else {
+                reqData = JSON.stringify(objs, null, 2);
+            }
             options.headers["Content-Length"] = Buffer.byteLength(reqData, 'utf8');
         }
 
