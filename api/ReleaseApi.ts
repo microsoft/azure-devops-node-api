@@ -111,7 +111,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.AgentArtifactDefinition, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -152,7 +152,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseApproval, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -199,7 +199,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseApproval, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -242,7 +242,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseApproval, responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseApproval, responseIsCollection: false };
                 
-                this.restClient.update(url, apiVersion, approval, null, serializationData, onResult);
+                this.restCallbackClient.update(url, apiVersion, approval, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -307,7 +307,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseApproval, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -357,7 +357,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.Change, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -397,7 +397,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinition, responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinition, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, releaseDefinition, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, releaseDefinition, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -438,7 +438,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -479,7 +479,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinition, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -573,7 +573,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinition, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -623,7 +623,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinition, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -663,7 +663,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinition, responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinition, responseIsCollection: false };
                 
-                this.restClient.replace(url, apiVersion, releaseDefinition, null, serializationData, onResult);
+                this.restCallbackClient.replace(url, apiVersion, releaseDefinition, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -731,7 +731,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.Deployment, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -771,7 +771,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.DeploymentQueryParameters, responseTypeMetadata: ReleaseInterfaces.TypeInfo.Deployment, responseIsCollection: true };
                 
-                this.restClient.create(url, apiVersion, queryParameters, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, queryParameters, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -815,7 +815,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseEnvironment, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -861,7 +861,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseEnvironmentUpdateMetadata, responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseEnvironment, responseIsCollection: false };
                 
-                this.restClient.update(url, apiVersion, environmentUpdateData, null, serializationData, onResult);
+                this.restCallbackClient.update(url, apiVersion, environmentUpdateData, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -901,7 +901,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate, responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, template, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, template, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -945,7 +945,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -989,7 +989,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1027,7 +1027,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1068,7 +1068,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseRevision, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1108,7 +1108,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, query, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, query, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1296,7 +1296,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ManualIntervention, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1337,7 +1337,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ManualIntervention, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1383,7 +1383,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ManualInterventionUpdateMetadata, responseTypeMetadata: ReleaseInterfaces.TypeInfo.ManualIntervention, responseIsCollection: false };
                 
-                this.restClient.update(url, apiVersion, manualInterventionUpdateMetadata, null, serializationData, onResult);
+                this.restCallbackClient.update(url, apiVersion, manualInterventionUpdateMetadata, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1423,7 +1423,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseStartMetadata, responseTypeMetadata: ReleaseInterfaces.TypeInfo.Release, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, releaseStartMetadata, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, releaseStartMetadata, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1470,7 +1470,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -1517,7 +1517,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.Release, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1570,7 +1570,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinitionSummary, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1709,7 +1709,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.Release, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1756,7 +1756,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.replace(url, apiVersion, null, null, serializationData, onResult);
+                this.restCallbackClient.replace(url, apiVersion, null, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -1799,7 +1799,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.Release, responseTypeMetadata: ReleaseInterfaces.TypeInfo.Release, responseIsCollection: false };
                 
-                this.restClient.replace(url, apiVersion, release, null, serializationData, onResult);
+                this.restCallbackClient.replace(url, apiVersion, release, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1842,7 +1842,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseUpdateMetadata, responseTypeMetadata: ReleaseInterfaces.TypeInfo.Release, responseIsCollection: false };
                 
-                this.restClient.update(url, apiVersion, releaseUpdateMetadata, null, serializationData, onResult);
+                this.restCallbackClient.update(url, apiVersion, releaseUpdateMetadata, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1927,7 +1927,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinitionRevision, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1968,7 +1968,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.SummaryMailSection, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2011,7 +2011,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.MailMessage, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, mailMessage, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, mailMessage, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -2052,7 +2052,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2102,7 +2102,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseTask, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2149,7 +2149,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseTask, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2187,7 +2187,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ArtifactTypeDefinition, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2231,7 +2231,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2271,7 +2271,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, artifacts, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, artifacts, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2321,7 +2321,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);

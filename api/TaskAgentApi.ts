@@ -230,7 +230,7 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
                 var apiVersion: string = versioningData.apiVersion;
                 var serializationData = {  responseIsCollection: false };
 
-                this.restClient.uploadStream('PUT', url, apiVersion, contentStream, customHeaders, serializationData, (err: any, statusCode: number, obj: any) => {
+                this.restCallbackClient.uploadStream('PUT', url, apiVersion, contentStream, customHeaders, serializationData, (err: any, statusCode: number, obj: any) => {
                     if (err) {
                         err.statusCode = statusCode;
                         deferred.reject(err);

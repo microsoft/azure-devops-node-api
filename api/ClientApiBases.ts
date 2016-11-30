@@ -11,7 +11,8 @@ export class ClientApiBase {
     baseUrl: string;
     userAgent: string;
     httpClient: httpm.HttpCallbackClient;
-    restClient: restm.RestCallbackClient;
+    restCallbackClient: restm.RestCallbackClient;
+    restClient: restm.RestClient;
     vsoClient: vsom.VsoClient;
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], userAgent?: string);
@@ -19,8 +20,9 @@ export class ClientApiBase {
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], userAgent: string) {
         this.baseUrl = baseUrl;
         this.httpClient = new httpm.HttpCallbackClient(userAgent, handlers);
-        this.restClient = new restm.RestCallbackClient(this.httpClient);
-        this.vsoClient = new vsom.VsoClient(baseUrl, this.restClient);
+        this.restCallbackClient = new restm.RestCallbackClient(this.httpClient);
+        this.restClient = new restm.RestClient(userAgent, handlers);
+        this.vsoClient = new vsom.VsoClient(baseUrl, this.restCallbackClient);
         this.userAgent = userAgent;
     }
 
@@ -32,7 +34,7 @@ export class ClientApiBase {
     public connect(): Promise<any> {
         var defer = Q.defer();
         
-        this.restClient.get(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, null, (err: any, statusCode: number, obj: any) => {
+        this.restCallbackClient.get(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, null, (err: any, statusCode: number, obj: any) => {
             if (err) {
                 err.statusCode = statusCode;
                 defer.reject(err);
@@ -46,6 +48,6 @@ export class ClientApiBase {
     }
 
     public createAcceptHeader(type: string, apiVersion?: string): string {
-        return this.restClient.createAcceptHeader(type, apiVersion);
+        return this.restCallbackClient.createAcceptHeader(type, apiVersion);
     }    
 }

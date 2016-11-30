@@ -84,7 +84,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, connectedServiceCreationData, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, connectedServiceCreationData, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -125,7 +125,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -169,7 +169,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -209,7 +209,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, mruData, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, mruData, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -249,7 +249,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -287,7 +287,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -327,7 +327,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.update(url, apiVersion, mruData, null, serializationData, onResult);
+                this.restCallbackClient.update(url, apiVersion, mruData, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -377,7 +377,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -417,7 +417,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.Process, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -452,7 +452,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: CoreInterfaces.TypeInfo.Process, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -492,7 +492,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -538,7 +538,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -579,7 +579,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -628,7 +628,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -677,7 +677,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -716,7 +716,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: OperationsInterfaces.TypeInfo.OperationReference, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, projectToCreate, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, projectToCreate, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -756,7 +756,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: OperationsInterfaces.TypeInfo.OperationReference, responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -798,7 +798,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: OperationsInterfaces.TypeInfo.OperationReference, responseIsCollection: false };
                 
-                this.restClient.update(url, apiVersion, projectUpdate, null, serializationData, onResult);
+                this.restCallbackClient.update(url, apiVersion, projectUpdate, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -839,7 +839,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -881,7 +881,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, team, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, team, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -924,7 +924,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -967,7 +967,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1014,7 +1014,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1059,7 +1059,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.update(url, apiVersion, teamData, null, serializationData, onResult);
+                this.restCallbackClient.update(url, apiVersion, teamData, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);

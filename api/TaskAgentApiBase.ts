@@ -112,7 +112,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, agent, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, agent, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -153,7 +153,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -206,7 +206,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -262,7 +262,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -305,7 +305,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
                 
-                this.restClient.replace(url, apiVersion, agent, null, serializationData, onResult);
+                this.restCallbackClient.replace(url, apiVersion, agent, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -348,7 +348,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
                 
-                this.restClient.update(url, apiVersion, agent, null, serializationData, onResult);
+                this.restCallbackClient.update(url, apiVersion, agent, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -386,7 +386,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -425,7 +425,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.create(url, apiVersion, endpoint, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, endpoint, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -472,7 +472,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -513,7 +513,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -560,7 +560,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -607,7 +607,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -654,7 +654,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -694,7 +694,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, request, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, request, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -743,7 +743,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: false };
                 
-                this.restClient.update(url, apiVersion, request, null, serializationData, onResult);
+                this.restCallbackClient.update(url, apiVersion, request, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -790,7 +790,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -837,7 +837,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -881,7 +881,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, null, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, null, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -919,7 +919,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, null, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, null, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -965,7 +965,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, message, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, message, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -1005,7 +1005,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, definition, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, definition, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1046,7 +1046,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -1093,7 +1093,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1133,7 +1133,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.replace(url, apiVersion, definition, null, serializationData, onResult);
+                this.restCallbackClient.replace(url, apiVersion, definition, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1177,7 +1177,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.PackageMetadata, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1224,7 +1224,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.PackageMetadata, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1262,7 +1262,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1299,7 +1299,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, pool, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, pool, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1337,7 +1337,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -1381,7 +1381,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1425,7 +1425,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1465,7 +1465,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseIsCollection: false };
                 
-                this.restClient.update(url, apiVersion, pool, null, serializationData, onResult);
+                this.restCallbackClient.update(url, apiVersion, pool, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1503,7 +1503,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1543,7 +1543,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, queue, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, queue, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1581,7 +1581,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.replace(url, apiVersion, null, null, serializationData, onResult);
+                this.restCallbackClient.replace(url, apiVersion, null, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -1622,7 +1622,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -1669,7 +1669,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1716,7 +1716,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1762,7 +1762,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, binding, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, binding, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1804,7 +1804,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.create(url, apiVersion, binding, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, binding, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1844,7 +1844,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, endpoint, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, endpoint, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1885,7 +1885,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -1926,7 +1926,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1976,7 +1976,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2019,7 +2019,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.replace(url, apiVersion, endpoint, null, serializationData, onResult);
+                this.restCallbackClient.replace(url, apiVersion, endpoint, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2066,7 +2066,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.ServiceEndpointType, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2106,7 +2106,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentSession, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentSession, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, session, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, session, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2147,7 +2147,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -2185,7 +2185,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -2285,7 +2285,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2332,7 +2332,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2375,7 +2375,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
                 
-                this.restClient.replace(url, apiVersion, userCapabilities, null, serializationData, onResult);
+                this.restCallbackClient.replace(url, apiVersion, userCapabilities, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);

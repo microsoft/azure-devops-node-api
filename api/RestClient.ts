@@ -112,27 +112,27 @@ export class RestCallbackClient {
         this.versionParam = versionParam;
     }
 
-    get(url: string, apiVersion: string, customHeaders: ifm.IHeaders, serializationData: serm.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._getJson('GET', url, apiVersion, customHeaders, serializationData, onResult);
+    get(url: string, apiVersion: string, customHeaders: ifm.IHeaders, onResult: (err: any, statusCode: number, obj: any) => void, serializationData?: serm.SerializationData): void {
+        this._getJson('GET', url, apiVersion, customHeaders, onResult, serializationData);
     }
 
-    del(url: string, apiVersion: string, customHeaders: ifm.IHeaders, serializationData: serm.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._getJson('DELETE', url, apiVersion, customHeaders, serializationData, onResult);
+    del(url: string, apiVersion: string, customHeaders: ifm.IHeaders, onResult: (err: any, statusCode: number, obj: any) => void, serializationData?: serm.SerializationData): void {
+        this._getJson('DELETE', url, apiVersion, customHeaders, onResult, serializationData);
     }
 
-    create(url: string, apiVersion: string, resources: any, customHeaders: ifm.IHeaders, serializationData: serm.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._sendJson('POST', url, apiVersion, resources, customHeaders, serializationData, onResult);
+    create(url: string, apiVersion: string, resources: any, customHeaders: ifm.IHeaders, onResult: (err: any, statusCode: number, obj: any) => void, serializationData?: serm.SerializationData): void {
+        this._sendJson('POST', url, apiVersion, resources, customHeaders, onResult, serializationData);
     }
 
-    update(url: string, apiVersion: string, resources: any, customHeaders: ifm.IHeaders, serializationData: serm.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._sendJson('PATCH', url, apiVersion, resources, customHeaders, serializationData, onResult);
+    update(url: string, apiVersion: string, resources: any, customHeaders: ifm.IHeaders, onResult: (err: any, statusCode: number, obj: any) => void, serializationData?: serm.SerializationData): void {
+        this._sendJson('PATCH', url, apiVersion, resources, customHeaders, onResult, serializationData);
     }
 
     options(url: string, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._getJson('OPTIONS', url, "", null, null, onResult);
+        this._getJson('OPTIONS', url, "", null, onResult, null);
     }
 
-    uploadFile(verb: string, url: string, apiVersion: string, filePath: string, customHeaders: ifm.IHeaders, serializationData: serm.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+    uploadFile(verb: string, url: string, apiVersion: string, filePath: string, customHeaders: ifm.IHeaders, onResult: (err: any, statusCode: number, obj: any) => void, serializationData?: serm.SerializationData): void {
         fs.stat(filePath, (err, stats) => {
             if (err) {
                 onResult(err, 400, null);
@@ -144,11 +144,11 @@ export class RestCallbackClient {
 
             var contentStream: NodeJS.ReadableStream = fs.createReadStream(filePath);
 
-            this.uploadStream(verb, url, apiVersion, contentStream, headers, serializationData, onResult);
+            this.uploadStream(verb, url, apiVersion, contentStream, headers, onResult, serializationData);
         });
     }
 
-    uploadStream(verb: string, url: string, apiVersion: string, contentStream: NodeJS.ReadableStream, customHeaders: ifm.IHeaders, serializationData: serm.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+    uploadStream(verb: string, url: string, apiVersion: string, contentStream: NodeJS.ReadableStream, customHeaders: ifm.IHeaders, onResult: (err: any, statusCode: number, obj: any) => void, serializationData?: serm.SerializationData): void {
         var headers = customHeaders || {};
         headers["Accept"] = this.createAcceptHeader('application/json', apiVersion);
 
@@ -162,11 +162,11 @@ export class RestCallbackClient {
         });
     }
 
-    replace(url: string, apiVersion: string, resources: any, customHeaders: ifm.IHeaders, serializationData: serm.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._sendJson('PUT', url, apiVersion, resources, customHeaders, serializationData, onResult);
+    replace(url: string, apiVersion: string, resources: any, customHeaders: ifm.IHeaders, onResult: (err: any, statusCode: number, obj: any) => void, serializationData?: serm.SerializationData): void {
+        this._sendJson('PUT', url, apiVersion, resources, customHeaders, onResult, serializationData);
     }
 
-    _getJson(verb: string, url: string, apiVersion: string, customHeaders: ifm.IHeaders, serializationData: serm.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+    _getJson(verb: string, url: string, apiVersion: string, customHeaders: ifm.IHeaders, onResult: (err: any, statusCode: number, obj: any) => void, serializationData?: serm.SerializationData): void {
 
         var headers = {};
         headers["Accept"] = this.createAcceptHeader('application/json', apiVersion);
@@ -180,7 +180,7 @@ export class RestCallbackClient {
         });
     }
 
-    _sendJson(verb: string, url: string, apiVersion: string, resources: any, customHeaders: ifm.IHeaders, serializationData: serm.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+    _sendJson(verb: string, url: string, apiVersion: string, resources: any, customHeaders: ifm.IHeaders, onResult: (err: any, statusCode: number, obj: any) => void, serializationData?: serm.SerializationData): void {
         if (!resources) {
             throw new Error('invalid resource');
         }

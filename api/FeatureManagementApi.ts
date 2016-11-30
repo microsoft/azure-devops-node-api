@@ -64,7 +64,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -99,7 +99,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -142,7 +142,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureState, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -196,7 +196,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureState, responseTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureState, responseIsCollection: false };
                 
-                this.restClient.update(url, apiVersion, feature, null, serializationData, onResult);
+                this.restCallbackClient.update(url, apiVersion, feature, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -245,7 +245,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureState, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -305,7 +305,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureState, responseTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureState, responseIsCollection: false };
                 
-                this.restClient.update(url, apiVersion, feature, null, serializationData, onResult);
+                this.restCallbackClient.update(url, apiVersion, feature, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);

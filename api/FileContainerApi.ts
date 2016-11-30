@@ -67,7 +67,7 @@ export class FileContainerApi extends FileContainerApiBase.FileContainerApiBase 
             var apiVersion: string = versioningData.apiVersion;
             var serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainerItem, responseIsCollection: false };
 
-            this.restClient.uploadStream('PUT', url, apiVersion, contentStream, customHeaders, serializationData, onResult);
+            this.restCallbackClient.uploadStream('PUT', url, apiVersion, contentStream, customHeaders, serializationData, onResult);
         })
         .fail((error) => {
             onResult(error, error.statusCode, null);

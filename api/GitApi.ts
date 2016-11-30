@@ -159,7 +159,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -372,7 +372,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitBranchStats, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -421,7 +421,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitBranchStats, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -466,7 +466,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitQueryBranchStatsCriteria, responseTypeMetadata: GitInterfaces.TypeInfo.GitBranchStats, responseIsCollection: true };
                 
-                this.restClient.create(url, apiVersion, searchCriteria, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, searchCriteria, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -521,7 +521,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitChanges, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -564,7 +564,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitAsyncRefOperationParameters, responseTypeMetadata: GitInterfaces.TypeInfo.GitCherryPick, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, cherryPickToCreate, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, cherryPickToCreate, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -608,7 +608,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCherryPick, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -655,7 +655,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCherryPick, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -707,7 +707,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommit, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -762,7 +762,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitRef, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -820,7 +820,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitRef, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -877,7 +877,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitQueryCommitsCriteria, responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitRef, responseIsCollection: true };
                 
-                this.restClient.create(url, apiVersion, searchCriteria, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, searchCriteria, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -917,7 +917,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitDeletedRepository, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -968,7 +968,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitImportRequest, responseTypeMetadata: GitInterfaces.TypeInfo.GitImportRequest, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, importRequest, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, importRequest, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1014,7 +1014,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitImportRequest, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1063,7 +1063,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitImportRequest, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1111,7 +1111,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitImportRequest, responseTypeMetadata: GitInterfaces.TypeInfo.GitImportRequest, responseIsCollection: false };
                 
-                this.restClient.update(url, apiVersion, importRequestToUpdate, null, serializationData, onResult);
+                this.restCallbackClient.update(url, apiVersion, importRequestToUpdate, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1178,7 +1178,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitItem, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1312,7 +1312,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitItem, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1491,7 +1491,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitItemRequestData, responseTypeMetadata: GitInterfaces.TypeInfo.GitItem, responseIsCollection: true };
                 
-                this.restClient.create(url, apiVersion, requestData, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, requestData, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1540,7 +1540,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitRef, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1586,7 +1586,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitRef, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1635,7 +1635,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitConflict, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1693,7 +1693,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitConflict, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1744,7 +1744,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitConflict, responseTypeMetadata: GitInterfaces.TypeInfo.GitConflict, responseIsCollection: false };
                 
-                this.restClient.update(url, apiVersion, conflict, null, serializationData, onResult);
+                this.restCallbackClient.update(url, apiVersion, conflict, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1803,7 +1803,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestIterationChanges, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1850,7 +1850,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestIteration, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1900,7 +1900,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestIteration, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1945,7 +1945,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestQuery, responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestQuery, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, queries, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, queries, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1996,7 +1996,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.replace(url, apiVersion, reviewer, null, serializationData, onResult);
+                this.restCallbackClient.replace(url, apiVersion, reviewer, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2044,7 +2044,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.create(url, apiVersion, reviewers, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, reviewers, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2093,7 +2093,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -2142,7 +2142,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2188,7 +2188,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2228,7 +2228,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2283,7 +2283,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2328,7 +2328,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, gitPullRequestToCreate, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, gitPullRequestToCreate, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2392,7 +2392,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2450,7 +2450,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2498,7 +2498,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: false };
                 
-                this.restClient.update(url, apiVersion, gitPullRequestToUpdate, null, serializationData, onResult);
+                this.restCallbackClient.update(url, apiVersion, gitPullRequestToUpdate, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2549,7 +2549,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestStatus, responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestStatus, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, status, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, status, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2601,7 +2601,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestStatus, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2650,7 +2650,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestStatus, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2698,7 +2698,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestStatus, responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestStatus, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, status, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, status, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2747,7 +2747,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestStatus, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2793,7 +2793,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestStatus, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2844,7 +2844,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.Comment, responseTypeMetadata: GitInterfaces.TypeInfo.Comment, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, comment, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, comment, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2896,7 +2896,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -2948,7 +2948,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.Comment, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2997,7 +2997,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.Comment, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3051,7 +3051,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.Comment, responseTypeMetadata: GitInterfaces.TypeInfo.Comment, responseIsCollection: false };
                 
-                this.restClient.update(url, apiVersion, comment, null, serializationData, onResult);
+                this.restCallbackClient.update(url, apiVersion, comment, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3099,7 +3099,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestCommentThread, responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestCommentThread, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, commentThread, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, commentThread, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3157,7 +3157,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestCommentThread, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3212,7 +3212,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestCommentThread, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3263,7 +3263,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestCommentThread, responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestCommentThread, responseIsCollection: false };
                 
-                this.restClient.update(url, apiVersion, commentThread, null, serializationData, onResult);
+                this.restCallbackClient.update(url, apiVersion, commentThread, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3309,7 +3309,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3354,7 +3354,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitPush, responseTypeMetadata: GitInterfaces.TypeInfo.GitPush, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, push, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, push, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3409,7 +3409,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPush, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3464,7 +3464,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPush, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3509,7 +3509,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, refLockRequest, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, refLockRequest, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -3564,7 +3564,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitRef, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3615,7 +3615,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitRefUpdateResult, responseIsCollection: true };
                 
-                this.restClient.create(url, apiVersion, refUpdates, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, refUpdates, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3657,7 +3657,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitRefFavorite, responseTypeMetadata: GitInterfaces.TypeInfo.GitRefFavorite, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, favorite, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, favorite, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3698,7 +3698,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -3739,7 +3739,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitRefFavorite, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3788,7 +3788,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitRefFavorite, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3830,7 +3830,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, gitRepositoryToCreate, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, gitRepositoryToCreate, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3873,7 +3873,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -3922,7 +3922,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3963,7 +3963,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -4008,7 +4008,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.update(url, apiVersion, newRepositoryInfo, null, serializationData, onResult);
+                this.restCallbackClient.update(url, apiVersion, newRepositoryInfo, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -4051,7 +4051,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitAsyncRefOperationParameters, responseTypeMetadata: GitInterfaces.TypeInfo.GitRevert, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, revertToCreate, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, revertToCreate, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -4095,7 +4095,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitRevert, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -4142,7 +4142,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitRevert, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -4188,7 +4188,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitStatus, responseTypeMetadata: GitInterfaces.TypeInfo.GitStatus, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, gitCommitStatusToCreate, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, gitCommitStatusToCreate, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -4244,7 +4244,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitStatus, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -4287,7 +4287,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -4343,7 +4343,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitTreeRef, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);

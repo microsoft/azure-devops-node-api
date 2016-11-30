@@ -58,7 +58,7 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, query, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, query, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -105,7 +105,7 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ContributionsInterfaces.TypeInfo.InstalledExtension, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -152,7 +152,7 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ContributionsInterfaces.TypeInfo.InstalledExtension, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);

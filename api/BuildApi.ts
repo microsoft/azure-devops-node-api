@@ -19,6 +19,7 @@ import basem = require('./ClientApiBases');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import BuildInterfaces = require("./interfaces/BuildInterfaces");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
+import serm = require('./Serialization');
 
 export interface IBuildApi extends basem.ClientApiBase {
     createArtifact(artifact: BuildInterfaces.BuildArtifact, buildId: number, project?: string): Promise<BuildInterfaces.BuildArtifact>;
@@ -86,40 +87,35 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} buildId
     * @param {string} project - Project ID or project name
     */
-    public createArtifact(
+    public async createArtifact(
         artifact: BuildInterfaces.BuildArtifact,
         buildId: number,
         project?: string
         ): Promise<BuildInterfaces.BuildArtifact> {
     
         let deferred = Q.defer<BuildInterfaces.BuildArtifact>();
-
-        let onResult = (err: any, statusCode: number, artifact: BuildInterfaces.BuildArtifact) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(artifact);
-            }
-        };
-
         let routeValues: any = {
             project: project,
             buildId: buildId
         };
 
-        this.vsoClient.getVersioningData("3.0-preview.3", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
-                
-                this.restClient.create(url, apiVersion, artifact, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+        try {
+            let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                                                                            "3.0-preview.3", 
+                                                                            "build", 
+                                                                            "1db06c96-014e-44e1-ac91-90b2d4b3e984", 
+                                                                            routeValues);
+
+            let url: string = verData.requestUrl;
+            let apiVersion: string = verData.apiVersion;    
+            let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, artifact);
+            let serializationData = {  responseIsCollection: false };
+            artifact = serm.ContractSerializer.serialize(res.result, serializationData, true);
+            deferred.resolve(artifact);
+        }
+        catch (err) {
+            deferred.reject(err);
+        }
 
         return deferred.promise;
     }
@@ -131,24 +127,13 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {string} artifactName
     * @param {string} project - Project ID or project name
     */
-    public getArtifact(
+    public async getArtifact(
         buildId: number,
         artifactName: string,
         project?: string
         ): Promise<BuildInterfaces.BuildArtifact> {
     
         let deferred = Q.defer<BuildInterfaces.BuildArtifact>();
-
-        let onResult = (err: any, statusCode: number, artifact: BuildInterfaces.BuildArtifact) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(artifact);
-            }
-        };
-
         let routeValues: any = {
             project: project,
             buildId: buildId
@@ -158,17 +143,24 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             artifactName: artifactName,
         };
         
-        this.vsoClient.getVersioningData("3.0-preview.3", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+        try {
+            let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                                                                            "3.0-preview.3", 
+                                                                            "build", 
+                                                                            "1db06c96-014e-44e1-ac91-90b2d4b3e984", 
+                                                                            routeValues,
+                                                                            queryValues);
+            let url: string = verData.requestUrl;
+            let apiVersion: string = verData.apiVersion;
+            let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+            let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion);
+            let artifact: BuildInterfaces.BuildArtifact = serm.ContractSerializer.serialize(res.result, serializationData, true);
+            deferred.resolve(artifact);
+        }
+        catch (err) {
+            deferred.reject(err);
+        }
 
         return deferred.promise;
     }
@@ -256,7 +248,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -303,7 +295,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -353,7 +345,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -403,7 +395,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -446,7 +438,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -495,7 +487,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -598,7 +590,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -649,7 +641,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.Build, responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, build, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, build, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -694,7 +686,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.Build, responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: false };
                 
-                this.restClient.update(url, apiVersion, build, null, serializationData, onResult);
+                this.restCallbackClient.update(url, apiVersion, build, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -736,7 +728,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.Build, responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: true };
                 
-                this.restClient.update(url, apiVersion, builds, null, serializationData, onResult);
+                this.restCallbackClient.update(url, apiVersion, builds, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -791,7 +783,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Change, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -843,7 +835,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Change, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -883,7 +875,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildController, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -926,7 +918,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildController, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -977,7 +969,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, definition, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, definition, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1020,7 +1012,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -1072,7 +1064,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1148,7 +1140,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionReference, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1202,7 +1194,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseIsCollection: false };
                 
-                this.restClient.replace(url, apiVersion, definition, null, serializationData, onResult);
+                this.restCallbackClient.replace(url, apiVersion, definition, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1247,7 +1239,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.Folder, responseTypeMetadata: BuildInterfaces.TypeInfo.Folder, responseIsCollection: false };
                 
-                this.restClient.replace(url, apiVersion, folder, null, serializationData, onResult);
+                this.restCallbackClient.replace(url, apiVersion, folder, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1290,7 +1282,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -1339,7 +1331,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Folder, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1384,7 +1376,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.Folder, responseTypeMetadata: BuildInterfaces.TypeInfo.Folder, responseIsCollection: false };
                 
-                this.restClient.create(url, apiVersion, folder, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, folder, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1494,7 +1486,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1537,7 +1529,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildLog, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1629,7 +1621,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildMetric, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1667,7 +1659,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildOptionDefinition, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1716,7 +1708,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1800,7 +1792,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1843,7 +1835,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionRevision, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1878,7 +1870,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1917,7 +1909,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.update(url, apiVersion, settings, null, serializationData, onResult);
+                this.restCallbackClient.update(url, apiVersion, settings, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1963,7 +1955,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.replace(url, apiVersion, null, null, serializationData, onResult);
+                this.restCallbackClient.replace(url, apiVersion, null, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2008,7 +2000,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.create(url, apiVersion, tags, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, tags, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2054,7 +2046,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2097,7 +2089,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2135,7 +2127,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2178,7 +2170,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -2221,7 +2213,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionTemplate, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2259,7 +2251,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionTemplate, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2304,7 +2296,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionTemplate, responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionTemplate, responseIsCollection: false };
                 
-                this.restClient.replace(url, apiVersion, template, null, serializationData, onResult);
+                this.restCallbackClient.replace(url, apiVersion, template, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2359,7 +2351,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Timeline, responseIsCollection: false };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2408,7 +2400,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2459,7 +2451,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.create(url, apiVersion, commitIds, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, commitIds, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2511,7 +2503,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, onResult, serializationData);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);

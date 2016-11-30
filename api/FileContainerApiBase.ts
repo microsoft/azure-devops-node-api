@@ -72,7 +72,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainerItem, responseIsCollection: true };
                 
-                this.restClient.create(url, apiVersion, items, null, serializationData, onResult);
+                this.restCallbackClient.create(url, apiVersion, items, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -121,7 +121,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.del(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -167,7 +167,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainer, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -229,7 +229,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainerItem, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -275,7 +275,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainerItem, responseIsCollection: true };
                 
-                this.restClient.get(url, apiVersion, null, serializationData, onResult);
+                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
