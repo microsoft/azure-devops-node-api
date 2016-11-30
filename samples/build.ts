@@ -8,8 +8,7 @@ let vsts: vm.WebApi = cm.getWebApi();
 let vstsBuild: ba.IBuildApi = vsts.getBuildApi();
 
 async function buildSample() {
-    try
-    {
+    try {
         cm.banner('Build Samples');
         let project = cm.getProject();
 
@@ -23,11 +22,11 @@ async function buildSample() {
             let def: bi.BuildDefinition = await vstsBuild.getDefinition(defRef.id, project);
             let rep: bi.BuildRepository = def.repository;
 
-            console.log(defRef.name + ' (' + defRef.id + ') ' + 'repo ' + rep.type);            
+            console.log(defRef.name + ' (' + defRef.id + ') ' + 'repo ' + rep.type);
         }
 
         // get top 25 successfully completed builds since 2016
-        cm.heading('top 25 successfully completed builds for ' + project + 'project');
+        cm.heading('top 25 successfully completed builds for ' + project + ' project');
         let builds: bi.Build[] = await vstsBuild.getBuilds(
                         project, 
                         null,                       // definitions: number[] 
