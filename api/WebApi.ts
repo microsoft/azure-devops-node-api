@@ -17,8 +17,6 @@ import testm = require('./TestApi');
 import tfvcm = require('./TfvcApi');
 import workitemtrackingm = require('./WorkItemTrackingApi');
 import releasem = require('./ReleaseApi');
-
-import apivm = require('./handlers/apiversion');
 import basicm = require('./handlers/basiccreds');
 import bearm = require('./handlers/bearertoken');
 import ntlmm = require('./handlers/ntlm');
@@ -27,9 +25,6 @@ import patm = require('./handlers/personalaccesstoken');
 /**
  * Methods to return handler objects (see handlers folder)
  */
-export function getVersionHandler(apiVersion: string) {
-    return new apivm.ApiVersionHandler(apiVersion);
-}
 
 export function getBasicHandler(username: string, password: string) {
     return new basicm.BasicCredentialHandler(username, password);
@@ -59,13 +54,23 @@ export class WebApi {
 
     /*
      * Factory to return client apis and handlers
-     * @param defaultServerUrl default server url to use when creating new apis from factory methods
-     * @param defaultAuthHandler default authentication credentials to use when creating new apis from factory methods
+     * @param defaultUrl default server url to use when creating new apis from factory methods
+     * @param authHandler default authentication credentials to use when creating new apis from factory methods
      */
-    constructor(serverUrl: string, authHandler: VsoBaseInterfaces.IRequestHandler) {
-        this.serverUrl = serverUrl;
+    constructor(defaultUrl: string, authHandler: VsoBaseInterfaces.IRequestHandler) {
+        this.serverUrl = defaultUrl;
         this.authHandler = authHandler;
     }
+
+    /**
+     *  Convenience factory to create with a bearer token.
+     * @param defaultServerUrl default server url to use when creating new apis from factory methods
+     * @param defaultAuthHandler default authentication credentials to use when creating new apis from factory methods
+     */ 
+    public static createWithBearerToken(defaultUrl: string, token: string) {
+        let bearerHandler = getBearerHandler(token);
+        return new this(defaultUrl, bearerHandler);
+    } 
 
     /**
      * Each factory method can take a serverUrl and a list of handlers

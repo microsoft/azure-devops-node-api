@@ -10,16 +10,16 @@ import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 export class ClientApiBase {
     baseUrl: string;
     userAgent: string;
-    httpClient: httpm.HttpClient;
-    restClient: restm.RestClient;
+    httpClient: httpm.HttpCallbackClient;
+    restClient: restm.RestCallbackClient;
     vsoClient: vsom.VsoClient;
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], userAgent?: string);
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], userAgent: string) {
         this.baseUrl = baseUrl;
-        this.httpClient = new httpm.HttpClient(userAgent, handlers);
-        this.restClient = new restm.RestClient(this.httpClient);
+        this.httpClient = new httpm.HttpCallbackClient(userAgent, handlers);
+        this.restClient = new restm.RestCallbackClient(this.httpClient);
         this.vsoClient = new vsom.VsoClient(baseUrl, this.restClient);
         this.userAgent = userAgent;
     }
@@ -32,7 +32,7 @@ export class ClientApiBase {
     public connect(): Promise<any> {
         var defer = Q.defer();
         
-        this.restClient.getJson(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, null, (err: any, statusCode: number, obj: any) => {
+        this.restClient.get(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, null, (err: any, statusCode: number, obj: any) => {
             if (err) {
                 err.statusCode = statusCode;
                 defer.reject(err);
@@ -44,4 +44,8 @@ export class ClientApiBase {
         
         return defer.promise;
     }
+
+    public createAcceptHeader(type: string, apiVersion?: string): string {
+        return this.restClient.createAcceptHeader(type, apiVersion);
+    }    
 }

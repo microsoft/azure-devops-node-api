@@ -2,20 +2,214 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 import fs = require("fs");
+import Q = require('q');
 import http = require("http");
 import httpm = require('./HttpClient');
 import ifm = require("./interfaces/common/VsoBaseInterfaces");
-import Serialization = require('./Serialization');
+import serm = require('./Serialization');
 
-/**
- * getJSON:  REST get request returning JSON object(s)
- * @param options: http options object
- * @param callback: callback to pass the results JSON object(s) back
- */
+export interface IRestClientResponse {
+    statusCode: number,
+    result: any
+}
 
-var getJsonResponse = function (contents) {
-    var json = JSON.parse(contents);
-    return json;
+export class RestClient {
+    client: RestCallbackClient;
+
+    constructor(userAgent: string, handlers?: ifm.IRequestHandler[], socketTimeout?: number, versionParam: string = 'api-version') {
+        let httpc: httpm.HttpCallbackClient = new httpm.HttpCallbackClient(userAgent, handlers, socketTimeout);
+        this.client = new RestCallbackClient(httpc, versionParam);
+    }
+
+    public get(requestUrl: string, 
+               apiVersion: string, 
+               additionalHeaders?: ifm.IHeaders, 
+               serializationData?: serm.SerializationData): Promise<IRestClientResponse> {
+
+        return this._getJson('GET', requestUrl, apiVersion, additionalHeaders || {}, serializationData);
+    }
+
+    public del(requestUrl: string, 
+               apiVersion: string, 
+               additionalHeaders?: ifm.IHeaders, 
+               serializationData?: serm.SerializationData): Promise<IRestClientResponse> {
+
+        return this._getJson('DELETE', requestUrl, apiVersion, additionalHeaders || {}, serializationData);
+    }
+
+    public create(requestUrl: string, 
+                apiVersion: string, 
+                objs: any, 
+                additionalHeaders?: ifm.IHeaders, 
+                serializationData?: serm.SerializationData): Promise<IRestClientResponse> {
+
+        return this._sendRequest('POST', requestUrl, apiVersion, objs, additionalHeaders || {}, serializationData);
+    }
+
+    public update(requestUrl: string, 
+                 apiVersion: string, 
+                 objs: any, 
+                 additionalHeaders?: ifm.IHeaders, 
+                 serializationData?: serm.SerializationData): Promise<IRestClientResponse> {
+
+        return this._sendRequest('PATCH', requestUrl, apiVersion, objs, additionalHeaders || {}, serializationData);
+    }
+
+    private _getJson(verb: string, 
+                     requestUrl: string, 
+                     apiVersion: string, 
+                     headers: ifm.IHeaders, 
+                     serializationData: serm.SerializationData): Promise<IRestClientResponse> {
+
+        let deferred = Q.defer<IRestClientResponse>();
+        this.client._getJson(verb, requestUrl, apiVersion, headers, serializationData, (err:any, statusCode: number, obj: any) => {
+            if (err) {
+                deferred.reject(err);
+            }
+            else {
+                let res: IRestClientResponse = <IRestClientResponse>{};
+                res.statusCode = statusCode;
+                res.result = obj;
+                deferred.resolve(res);
+            }
+        });
+
+        return deferred.promise;        
+    }
+
+    private _sendRequest(verb: string, 
+                         requestUrl: string, 
+                         apiVersion: string, 
+                         objs: any, 
+                         headers: ifm.IHeaders, 
+                         serializationData: serm.SerializationData): Promise<IRestClientResponse> {
+
+        let deferred = Q.defer<IRestClientResponse>();
+        this.client._sendJson(verb, requestUrl, apiVersion, objs, headers, serializationData, (err:any, statusCode: number, obj: any) => {
+            if (err) {
+                deferred.reject(err);
+            }
+            else {
+                let res: IRestClientResponse = <IRestClientResponse>{};
+                res.statusCode = statusCode;
+                res.result = obj;
+                deferred.resolve(res);
+            }
+        });
+
+        return deferred.promise;        
+    }    
+}
+
+export class RestCallbackClient {
+    baseUrl: string;
+    basePath: string;
+    httpClient: httpm.HttpCallbackClient;
+    versionParam: string;
+
+    constructor(httpClient: httpm.HttpCallbackClient, versionParam: string = 'api-version') {
+        this.httpClient = httpClient;
+        this.versionParam = versionParam;
+    }
+
+    get(url: string, apiVersion: string, customHeaders: ifm.IHeaders, serializationData: serm.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        this._getJson('GET', url, apiVersion, customHeaders, serializationData, onResult);
+    }
+
+    del(url: string, apiVersion: string, customHeaders: ifm.IHeaders, serializationData: serm.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        this._getJson('DELETE', url, apiVersion, customHeaders, serializationData, onResult);
+    }
+
+    create(url: string, apiVersion: string, resources: any, customHeaders: ifm.IHeaders, serializationData: serm.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        this._sendJson('POST', url, apiVersion, resources, customHeaders, serializationData, onResult);
+    }
+
+    update(url: string, apiVersion: string, resources: any, customHeaders: ifm.IHeaders, serializationData: serm.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        this._sendJson('PATCH', url, apiVersion, resources, customHeaders, serializationData, onResult);
+    }
+
+    options(url: string, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        this._getJson('OPTIONS', url, "", null, null, onResult);
+    }
+
+    uploadFile(verb: string, url: string, apiVersion: string, filePath: string, customHeaders: ifm.IHeaders, serializationData: serm.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        fs.stat(filePath, (err, stats) => {
+            if (err) {
+                onResult(err, 400, null);
+                return;
+            }
+
+            var headers = customHeaders || {};
+            headers["Content-Length"] = stats.size;
+
+            var contentStream: NodeJS.ReadableStream = fs.createReadStream(filePath);
+
+            this.uploadStream(verb, url, apiVersion, contentStream, headers, serializationData, onResult);
+        });
+    }
+
+    uploadStream(verb: string, url: string, apiVersion: string, contentStream: NodeJS.ReadableStream, customHeaders: ifm.IHeaders, serializationData: serm.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        var headers = customHeaders || {};
+        headers["Accept"] = this.createAcceptHeader('application/json', apiVersion);
+
+        this.httpClient.sendStream(verb, url, contentStream, headers, (err: any, res: ifm.IHttpResponse, contents: string) => {
+            if (err) {
+                onResult(err, err.statusCode, contents);
+                return;
+            }
+
+            _processResponse(url, res, contents, serializationData, onResult);
+        });
+    }
+
+    replace(url: string, apiVersion: string, resources: any, customHeaders: ifm.IHeaders, serializationData: serm.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        this._sendJson('PUT', url, apiVersion, resources, customHeaders, serializationData, onResult);
+    }
+
+    _getJson(verb: string, url: string, apiVersion: string, customHeaders: ifm.IHeaders, serializationData: serm.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+
+        var headers = {};
+        headers["Accept"] = this.createAcceptHeader('application/json', apiVersion);
+        this.httpClient.get(verb, url, headers, (err: any, res: ifm.IHttpResponse, contents: string) => {
+            if (err) {
+                onResult(err, err.statusCode, null);
+                return;
+            }
+
+            _processResponse(url, res, contents, serializationData, onResult);
+        });
+    }
+
+    _sendJson(verb: string, url: string, apiVersion: string, resources: any, customHeaders: ifm.IHeaders, serializationData: serm.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
+        if (!resources) {
+            throw new Error('invalid resource');
+        }
+
+        var headers = customHeaders || {};
+        headers["Accept"] = this.createAcceptHeader('application/json', apiVersion);
+        headers["Content-Type"] = headers["Content-Type"] || 'application/json; charset=utf-8';
+        
+        let data: string;
+        if(serializationData) {
+            data = serm.ContractSerializer.serialize(resources, serializationData.requestTypeMetadata, true);
+        }
+
+        data = JSON.stringify(resources, null, 2);
+
+        this.httpClient.send(verb, url, data, headers, (err: any, res: ifm.IHttpResponse, contents: string) => {
+            if (err) {
+                onResult(err, err.statusCode, null);
+                return;
+            }
+
+            _processResponse(url, res, contents, serializationData, onResult);
+        });
+    }
+
+    public createAcceptHeader(type: string, apiVersion?: string): string {
+        return type + (apiVersion ? (';' + this.versionParam + '=' + apiVersion) : '');
+    }    
+
 }
 
 var httpCodes = {
@@ -45,156 +239,42 @@ var httpCodes = {
     504: "Gateway Timeout"
 }
 
-export function processResponse(url, res, contents, serializationData: Serialization.SerializationData, onResult) {
+function _processResponse(url: string, 
+                                res: ifm.IHttpResponse, 
+                                contents: string, 
+                                serializationData: serm.SerializationData, 
+                                onResult: (err: any, statusCode: number, obj: any) => void) {
+    let jsonObj: any;
+
+    if (contents && contents.length > 0) {
+        try {
+            if (serializationData) {
+                jsonObj = JSON.parse(contents);
+                jsonObj = serm.ContractSerializer.deserialize(jsonObj, serializationData.responseTypeMetadata, false, serializationData.responseIsCollection);
+            }
+            else {
+                jsonObj = JSON.parse(contents);
+            }
+        } catch (e) {
+            onResult(new Error('Invalid Resource'), res.statusCode, null);
+            return;            
+        }
+    }
+
     if (res.statusCode > 299) {
-        // not success
+        // default error message
         var msg = httpCodes[res.statusCode] ? "Failed Request: " + httpCodes[res.statusCode] : "Failed Request";
         msg += '(' + res.statusCode + ') - ';
 
-        if (contents && contents.length > 0) {
-            var jsonObj = null;
-            try {
-                jsonObj = JSON.parse(contents);
-            } catch (e) {}
-
-            if (jsonObj && jsonObj.message) {
-                msg += jsonObj.message;
-            } else {
-                msg += url;
-            }
+        // if exception/error in body, attempt to get better error
+        if (jsonObj && jsonObj.message) {
+            msg += jsonObj.message;
+        } else {
+            msg += url;
         }
 
         onResult(new Error(msg), res.statusCode, null);
     } else {
-        try {
-            var jsonObj = null;
-            if (contents && contents.length > 0) {
-                jsonObj = JSON.parse(contents);
-                if (serializationData) {
-                    jsonObj = Serialization.ContractSerializer.deserialize(jsonObj, serializationData.responseTypeMetadata, false, serializationData.responseIsCollection);
-                }
-            }
-        } catch (e) {
-
-            onResult(new Error('Invalid Resource'), res.statusCode, null);
-            return;
-        }
-
         onResult(null, res.statusCode, jsonObj);
     }
 };
-
-export function enumToString(enumType: any, enumValue: number, camelCase: boolean) {
-    var valueString = enumType[enumValue];
-
-    if (valueString && camelCase) {
-        if (valueString.length <= 1) {
-            valueString = valueString.toLowerCase();
-        }
-        else {
-            valueString = valueString.substring(0, 1).toLowerCase() + valueString.substring(1);
-        }
-    }
-
-    return valueString;
-}
-
-export class RestClient implements ifm.IRestClient {
-    baseUrl: string;
-    basePath: string;
-    httpClient: ifm.IHttpClient;
-
-    constructor(httpClient: ifm.IHttpClient) {
-        this.httpClient = httpClient;
-    }
-
-    getJson(url: string, apiVersion: string, customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._getJson('GET', url, apiVersion, customHeaders, serializationData, onResult);
-    }
-
-    options(url: string, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._getJson('OPTIONS', url, "", null, null, onResult);
-    }
-
-    delete(url: string, apiVersion: string, customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._getJson('DELETE', url, apiVersion, customHeaders, serializationData, onResult);
-    }
-
-    create(url: string, apiVersion: string, resources: any, customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._sendJson('POST', url, apiVersion, resources, customHeaders, serializationData, onResult);
-    }
-
-    update(url: string, apiVersion: string, resources: any, customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._sendJson('PATCH', url, apiVersion, resources, customHeaders, serializationData, onResult);
-    }
-
-    uploadFile(verb: string, url: string, apiVersion: string, filePath: string, customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        fs.stat(filePath, (err, stats) => {
-            if (err) {
-                onResult(err, 400, null);
-                return;
-            }
-
-            var headers = customHeaders || {};
-            headers["Content-Length"] = stats.size;
-
-            var contentStream: NodeJS.ReadableStream = fs.createReadStream(filePath);
-
-            this.uploadStream(verb, url, apiVersion, contentStream, headers, serializationData, onResult);
-        });
-    }
-
-    uploadStream(verb: string, url: string, apiVersion: string, contentStream: NodeJS.ReadableStream, customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-
-        var headers = customHeaders || {};
-        headers["Accept"] = this.httpClient.makeAcceptHeader('application/json', apiVersion);
-
-        this.httpClient.sendFile(verb, url, contentStream, headers, (err: any, res: ifm.IHttpResponse, contents: string) => {
-            if (err) {
-                onResult(err, err.statusCode, contents);
-                return;
-            }
-
-            processResponse(url, res, contents, serializationData, onResult);
-        });
-    }
-
-    replace(url: string, apiVersion: string, resources: any, customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-        this._sendJson('PUT', url, apiVersion, resources, customHeaders, serializationData, onResult);
-    }
-
-    _getJson(verb: string, url: string, apiVersion: string, customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-
-        var headers = {};
-        headers["Accept"] = this.httpClient.makeAcceptHeader('application/json', apiVersion);
-        this.httpClient.get(verb, url, headers, (err: any, res: ifm.IHttpResponse, contents: string) => {
-            if (err) {
-                onResult(err, err.statusCode, null);
-                return;
-            }
-
-            processResponse(url, res, contents, serializationData, onResult);
-        });
-    }
-
-    _sendJson(verb: string, url: string, apiVersion: string, data: any, customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-
-        var headers = customHeaders || {};
-        headers["Accept"] = this.httpClient.makeAcceptHeader('application/json', apiVersion);
-        headers["Content-Type"] = headers["Content-Type"] || 'application/json; charset=utf-8';
-        
-        if(serializationData) {
-            data = Serialization.ContractSerializer.serialize(data, serializationData.requestTypeMetadata, true);
-        }
-
-        this.httpClient.send(verb, url, data, headers, (err: any, res: ifm.IHttpResponse, contents: string) => {
-            if (err) {
-                onResult(err, err.statusCode, null);
-                return;
-            }
-
-            processResponse(url, res, contents, serializationData, onResult);
-        });
-    }
-
-}

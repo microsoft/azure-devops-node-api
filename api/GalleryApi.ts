@@ -138,7 +138,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
+                this.restClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -226,7 +226,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
+                this.restClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -276,7 +276,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GalleryInterfaces.TypeInfo.AcquisitionOptions, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -368,8 +368,8 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
-                
-                this.httpClient.getStream(url, apiVersion, "application/octet-stream", onResult);
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                this.httpClient.getStream(url, accept, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -421,8 +421,8 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
-                
-                this.httpClient.getStream(url, apiVersion, "application/octet-stream", onResult);
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                this.httpClient.getStream(url, accept, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -474,8 +474,8 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
-                
-                this.httpClient.getStream(url, apiVersion, "application/octet-stream", onResult);
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                this.httpClient.getStream(url, accept, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -557,7 +557,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -598,7 +598,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -641,8 +641,8 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
-                
-                this.httpClient.getStream(url, apiVersion, "application/octet-stream", onResult);
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                this.httpClient.getStream(url, accept, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -766,7 +766,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
+                this.restClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -813,7 +813,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GalleryInterfaces.TypeInfo.PublishedExtension, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -940,7 +940,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
+                this.restClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -993,7 +993,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GalleryInterfaces.TypeInfo.PublishedExtension, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1125,8 +1125,8 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
-                
-                this.httpClient.getStream(url, apiVersion, "application/octet-stream", onResult);
+                let accept: string = this.createAcceptHeader("application/octent-stream", apiVersion);
+                this.httpClient.getStream(url, accept, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1184,8 +1184,8 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
-                
-                this.httpClient.getStream(url, apiVersion, "application/octet-stream", onResult);
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                this.httpClient.getStream(url, accept, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1297,7 +1297,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
+                this.restClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -1341,7 +1341,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GalleryInterfaces.TypeInfo.Publisher, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1439,7 +1439,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GalleryInterfaces.TypeInfo.ReviewsResult, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1530,7 +1530,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
+                this.restClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -1697,7 +1697,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);

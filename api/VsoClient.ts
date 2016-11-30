@@ -46,11 +46,11 @@ export class VsoClient {
     private _locationsByAreaPromises: { [areaName: string]: Q.Promise<VssApiResourceLocationLookup>; };
     private _initializationPromise: Q.Promise<any>;
 
-    restClient: ifm.IRestClient;
+    restClient: restm.RestCallbackClient;
     baseUrl: string;
     basePath: string;
 
-    constructor(baseUrl: string, restClient: restm.RestClient) {
+    constructor(baseUrl: string, restClient: restm.RestCallbackClient) {
         this.baseUrl = baseUrl;
         this.basePath = url.parse(baseUrl).pathname;
         this.restClient = restClient;

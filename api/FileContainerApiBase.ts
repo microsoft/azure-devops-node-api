@@ -121,7 +121,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
+                this.restClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -167,7 +167,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainer, responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -229,7 +229,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainerItem, responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -275,7 +275,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainerItem, responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);

@@ -154,7 +154,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestActionResultModel, responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -303,8 +303,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
-                
-                this.httpClient.getStream(url, apiVersion, "application/octet-stream", onResult);
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                this.httpClient.getStream(url, accept, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -350,7 +350,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestAttachment, responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -398,8 +398,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
-                
-                this.httpClient.getStream(url, apiVersion, "application/zip", onResult);
+                let accept: string = this.createAcceptHeader("application/zip", apiVersion);
+                this.httpClient.getStream(url, accept, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -487,8 +487,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
-                
-                this.httpClient.getStream(url, apiVersion, "application/octet-stream", onResult);
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                this.httpClient.getStream(url, accept, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -531,7 +531,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestAttachment, responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -576,8 +576,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let url: string = versioningData.requestUrl;
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
-                
-                this.httpClient.getStream(url, apiVersion, "application/zip", onResult);
+                let accept: string = this.createAcceptHeader("application/zip", apiVersion);
+                this.httpClient.getStream(url, accept, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -621,7 +621,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -668,7 +668,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.CloneOperationInformation, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -804,7 +804,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -851,7 +851,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -946,7 +946,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1027,7 +1027,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
+                this.restClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -1068,7 +1068,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestConfiguration, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1118,7 +1118,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestConfiguration, responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1245,7 +1245,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.CustomTestFieldDefinition, responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1338,7 +1338,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestIterationDetailsModel, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1388,7 +1388,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestIterationDetailsModel, responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1429,7 +1429,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestMessageLogDetails, responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1482,7 +1482,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1563,7 +1563,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
+                this.restClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -1604,7 +1604,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPlan, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1660,7 +1660,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPlan, responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1756,7 +1756,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPoint, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1824,7 +1824,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPoint, responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1929,7 +1929,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestResultsDetails, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1988,7 +1988,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestResultsDetails, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2026,7 +2026,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.ResultRetentionSettings, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2159,7 +2159,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2212,7 +2212,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2348,7 +2348,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestResultSummary, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2404,7 +2404,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestResultSummary, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2571,7 +2571,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2652,7 +2652,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
+                this.restClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -2693,7 +2693,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestRun, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2758,7 +2758,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestRun, responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2905,7 +2905,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSession, responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -2990,7 +2990,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3127,7 +3127,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3171,7 +3171,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3218,7 +3218,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
+                this.restClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -3308,7 +3308,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
+                this.restClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -3358,7 +3358,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3414,7 +3414,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3501,7 +3501,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3582,7 +3582,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
+                this.restClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -3623,7 +3623,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3704,7 +3704,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
+                this.restClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -3745,7 +3745,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3792,7 +3792,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -3922,7 +3922,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
+                this.restClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -4025,7 +4025,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);

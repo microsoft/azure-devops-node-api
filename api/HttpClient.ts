@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+import Q = require('q');
 import url = require("url");
-
 import http = require("http");
 import https = require("https");
 import tunnel = require("tunnel");
@@ -10,7 +10,71 @@ import ifm = require('./interfaces/common/VsoBaseInterfaces');
 
 http.globalAgent.maxSockets = 100;
 
-export class HttpClient implements ifm.IHttpClient {
+export interface IHttpClientResponse {
+    statusCode: number,
+    stream: NodeJS.ReadableStream; 
+    contents: string;
+}
+
+export class HttpClient {
+    client: HttpCallbackClient;
+
+    constructor(userAgent: string, handlers?: ifm.IRequestHandler[], socketTimeout?: number) {
+        this.client = new HttpCallbackClient(userAgent, handlers, socketTimeout);
+    }
+
+    public get(requestUrl: string, additionalHeaders?: ifm.IHeaders): Promise<IHttpClientResponse> {
+        return this._getRequest('GET', requestUrl, additionalHeaders || {});
+    }
+
+    public del(requestUrl: string, additionalHeaders?: ifm.IHeaders): Promise<IHttpClientResponse> {
+        return this._getRequest('DELETE', requestUrl, additionalHeaders || {});
+    }
+
+    public post(requestUrl: string, data: string, additionalHeaders?: ifm.IHeaders): Promise<IHttpClientResponse> {
+        return this._sendRequest('POST', requestUrl, data, additionalHeaders || {});
+    }
+
+    public patch(requestUrl: string, data: string, additionalHeaders?: ifm.IHeaders): Promise<IHttpClientResponse> {
+        return this._sendRequest('PATCH', requestUrl, data, additionalHeaders || {});
+    }
+
+    private _getRequest(verb: string, requestUrl: string, headers: ifm.IHeaders): Promise<IHttpClientResponse> {
+        let deferred = Q.defer<IHttpClientResponse>();
+        this.client.get(verb, requestUrl, headers, (err:any, res: http.IncomingMessage, contents: string) => {
+            if (err) {                
+                deferred.reject(err);
+            }
+            else {
+                let hres: IHttpClientResponse = <IHttpClientResponse>{};
+                hres.statusCode = res.statusCode;
+                hres.contents = contents;
+                deferred.resolve(hres);
+            }
+        });
+
+        return deferred.promise;        
+    }
+
+    private _sendRequest(verb: string, requestUrl: string, data: string, headers: ifm.IHeaders): Promise<IHttpClientResponse> {
+        let deferred = Q.defer<IHttpClientResponse>();
+        this.client.send(verb, requestUrl, data, headers, (err:any, res: http.ClientResponse, contents: string) => {
+            if (err) {                
+                deferred.reject(err);
+            }
+            else {
+                let hres: IHttpClientResponse = <IHttpClientResponse>{};
+                hres.statusCode = res.statusCode;
+                hres.contents = contents;
+                deferred.resolve(hres);
+            }
+        });
+
+        return deferred.promise;        
+    }    
+}
+
+export class HttpCallbackClient {
     userAgent: string;
     handlers: ifm.IRequestHandler[];
     socketTimeout: number;
@@ -19,30 +83,25 @@ export class HttpClient implements ifm.IHttpClient {
     constructor(userAgent: string, handlers?: ifm.IRequestHandler[], socketTimeout?: number) {
         this.userAgent = userAgent;
         this.handlers = handlers;
-        if (socketTimeout) {
-            this.socketTimeout = socketTimeout;
-        } else {
-            // Default 3 minutes
-            this.socketTimeout = 3 * 60000;
-        }
+        this.socketTimeout = socketTimeout ? socketTimeout : 3 * 60000;
     }
 
-    get(verb: string, requestUrl: string, headers: ifm.IHeaders, onResult: (err: any, res: http.ClientResponse, contents: string) => void): void {
+    get(verb: string, requestUrl: string, headers: ifm.IHeaders, onResult: (err: any, res: http.IncomingMessage, contents: string) => void): void {
         var options = this._getOptions(verb, requestUrl, headers);
         this.request(options.protocol, options.options, null, onResult);
     }
 
     // POST, PATCH, PUT
-    send(verb: string, requestUrl: string, objs: any, headers: ifm.IHeaders, onResult: (err: any, res: http.ClientResponse, contents: string) => void): void {
+    send(verb: string, requestUrl: string, data: string, headers: ifm.IHeaders, onResult: (err: any, res: http.ClientResponse, contents: string) => void): void {
         var options = this._getOptions(verb, requestUrl, headers);
-        this.request(options.protocol, options.options, objs, onResult);
+        this.request(options.protocol, options.options, data, onResult);
     }
 
-    sendFile(verb: string, requestUrl: string, content: NodeJS.ReadableStream, headers: ifm.IHeaders, onResult: (err: any, res: http.ClientResponse, contents: string) => void): void {
+    sendStream(verb: string, requestUrl: string, stream: NodeJS.ReadableStream, headers: ifm.IHeaders, onResult: (err: any, res: http.ClientResponse, contents: string) => void): void {
         var options = this._getOptions(verb, requestUrl, headers);
 
-        var req = options.protocol.request(options.options, function (res) {
-            var output = '';
+        var req = options.protocol.request(options.options, (res) => {
+            let output: string = '';
 
             res.on('data', function (chunk) {
                 output += chunk;
@@ -60,16 +119,15 @@ export class HttpClient implements ifm.IHttpClient {
             onResult(err, null, null);
         });
 
-        content.on('close', function () {
+        stream.on('close', function () {
             req.end();
         });
 
-        content.pipe(req);
+        stream.pipe(req);
     }
 
-    getStream(requestUrl: string, apiVersion: string, type: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void {
+    getStream(requestUrl: string, accept: string, onResult: (err: any, statusCode: number, res: NodeJS.ReadableStream) => void): void {
         var headers = {};
-        headers['Accept'] = this.makeAcceptHeader(type, apiVersion);
         var options = this._getOptions('GET', requestUrl, headers);
 
         var req = options.protocol.request(options.options, function (res) {
@@ -83,11 +141,95 @@ export class HttpClient implements ifm.IHttpClient {
         req.end();
     }
 
-    makeAcceptHeader(type: string, apiVersion: string): string {
-        return type + (apiVersion ? (";api-version=" + apiVersion) : "");
+    /**
+     * Makes an http request delegating authentication to handlers.
+     * returns http result as contents buffer
+     * All other methods such as get, post, and patch ultimately call this.
+     */
+    request(protocol: any, options: any, data: string, onResult: (err: any, res: http.IncomingMessage, contents: string) => void): void {
+        // Set up a callback to pass off 401s to an authentication handler that can deal with it
+        var callback = (err: any, res: http.ClientResponse, contents: string) => {
+            var authHandler;
+            if (this.handlers) {
+                this.handlers.some(function (handler, index, handlers) {
+                    // Find the first one that can handle the auth based on the response
+                    if (handler.canHandleAuthentication(res)) {
+                        authHandler = handler;
+                        return true;
+                    }
+                    return false;
+                });
+            }
+            if (authHandler !== undefined) {
+                authHandler.handleAuthentication(this, protocol, options, data, onResult);
+            } else {
+                // No auth handler found, call onResult normally
+                onResult(err, res, contents);
+            }
+        };
+
+        this.requestRaw(protocol, options, data, callback);
     }
 
-    _getOptions(method: string, requestUrl: string, headers: any): any {
+    /**
+     * Makes a raw http request.
+     * All other methods such as get, post, patch, and request ultimately call this.
+     */
+    requestRaw(protocol: any, options: any, data: string, onResult: (err: any, res: http.IncomingMessage, contents: string) => void): void {
+        var socket;
+
+        if (data) {
+            options.headers["Content-Length"] = Buffer.byteLength(data, 'utf8');
+        }
+
+        var callbackCalled: boolean = false;
+        var handleResult = (err: any, res: http.ClientResponse, contents: string) => {
+            if (!callbackCalled) {
+                callbackCalled = true;
+                onResult(err, res, contents);
+            }
+        };
+
+        var req = protocol.request(options, (res) => {
+            let output: string = '';
+            res.setEncoding('utf8');
+
+            res.on('data', (chunk: string) => {
+                output += chunk;
+            });
+
+            res.on('end', () => {
+                // res has statusCode and headers
+                handleResult(null, res, output);
+            });
+        });
+
+        req.on('socket', (sock) => {
+            socket = sock;
+        });
+
+        // If we ever get disconnected, we want the socket to timeout eventually
+        req.setTimeout(this.socketTimeout, function() {
+            if (socket) {
+                socket.end();
+            }
+            handleResult(new Error('Request timeout: ' + options.path), null, null);
+        });
+
+        req.on('error', function (err) {
+            // err has statusCode property
+            // res should have headers
+            handleResult(err, null, null);
+        });
+
+        if (data) {
+            req.write(data, 'utf8');
+        }
+
+        req.end();
+    }
+
+    private _getOptions(method: string, requestUrl: string, headers: any): any {
 
         var parsedUrl: url.Url = url.parse(requestUrl);
         var usingSsl = parsedUrl.protocol === 'https:';
@@ -111,7 +253,6 @@ export class HttpClient implements ifm.IHttpClient {
             headers: headers || {}
         };
 
-        //options.headers["Accept"] = contentType;
         options.headers["User-Agent"] = this.userAgent;
 
         var useProxy = proxyUrl && proxyUrl.hostname;
@@ -147,86 +288,5 @@ export class HttpClient implements ifm.IHttpClient {
             protocol: prot,
             options: options,
         };
-    }
-
-    request(protocol: any, options: any, objs: any, onResult: (err: any, res: http.ClientResponse, contents: string) => void): void {
-        // Set up a callback to pass off 401s to an authentication handler that can deal with it
-        var callback = (err: any, res: http.ClientResponse, contents: string) => {
-            var authHandler;
-            if (this.handlers) {
-                this.handlers.some(function (handler, index, handlers) {
-                    // Find the first one that can handle the auth based on the response
-                    if (handler.canHandleAuthentication(res)) {
-                        authHandler = handler;
-                        return true;
-                    }
-                    return false;
-                });
-            }
-            if (authHandler !== undefined) {
-                authHandler.handleAuthentication(this, protocol, options, objs, onResult);
-            } else {
-                // No auth handler found, call onResult normally
-                onResult(err, res, contents);
-            }
-        };
-
-        this.requestInternal(protocol, options, objs, callback);
-    }
-
-    requestInternal(protocol: any, options: any, objs: any, onResult: (err: any, res: http.ClientResponse, contents: string) => void): void {
-        var reqData;
-        var socket;
-
-        if (objs) {
-            reqData = JSON.stringify(objs, null, 2);
-            options.headers["Content-Length"] = Buffer.byteLength(reqData, 'utf8');
-        }
-
-        var callbackCalled: boolean = false;
-        var handleResult = (err: any, res: http.ClientResponse, contents: string) => {
-            if (!callbackCalled) {
-                callbackCalled = true;
-                onResult(err, res, contents);
-            }
-        };
-
-        var req = protocol.request(options, function (res) {
-            var output = '';
-            res.setEncoding('utf8');
-
-            res.on('data', function (chunk) {
-                output += chunk;
-            });
-
-            res.on('end', function () {
-                // res has statusCode and headers
-                handleResult(null, res, output);
-            });
-        });
-
-        req.on('socket', function(sock) {
-            socket = sock;
-        });
-
-        // If we ever get disconnected, we want the socket to timeout eventually
-        req.setTimeout(this.socketTimeout, function() {
-            if (socket) {
-                socket.end();
-            }
-            handleResult(new Error('Request timeout: ' + options.path), null, null);
-        });
-
-        req.on('error', function (err) {
-            // err has statusCode property
-            // res should have headers
-            handleResult(err, null, null);
-        });
-
-        if (reqData) {
-            req.write(reqData, 'utf8');
-        }
-
-        req.end();
-    }
+    }    
 }

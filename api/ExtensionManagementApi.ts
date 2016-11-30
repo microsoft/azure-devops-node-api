@@ -90,7 +90,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.AcquisitionOptions, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -276,7 +276,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
+                this.restClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -329,7 +329,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -379,7 +379,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -573,7 +573,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.ExtensionState, responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -660,7 +660,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.InstalledExtension, responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -744,7 +744,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.InstalledExtension, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -838,7 +838,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
+                this.restClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -876,7 +876,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: GalleryInterfaces.TypeInfo.UserExtensionPolicy, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -963,7 +963,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.RequestedExtension, responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -1053,7 +1053,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
+                this.restClient.del(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode);
@@ -1131,7 +1131,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);

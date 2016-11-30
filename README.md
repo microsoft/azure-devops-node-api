@@ -102,6 +102,12 @@ Run samples:
 $ npm run samples
 ```
 
+Run a specific sample:
+
+```bash
+$ npm run samples -- http
+```
+
 ## Contributing
 
 To contribute to this repository, see the [contribution guide](./CONTRIBUTING.md)

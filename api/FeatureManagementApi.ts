@@ -64,7 +64,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -99,7 +99,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseIsCollection: true };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -142,7 +142,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureState, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
@@ -245,7 +245,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                 let apiVersion: string = versioningData.apiVersion;
                 let serializationData = {  responseTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureState, responseIsCollection: false };
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
+                this.restClient.get(url, apiVersion, null, serializationData, onResult);
             })
             .fail((error) => {
                 onResult(error, error.statusCode, null);
