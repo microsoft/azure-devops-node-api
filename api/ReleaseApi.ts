@@ -11,11 +11,11 @@
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
 
-import Q = require('q');
 import restm = require('./RestClient');
 import httpm = require('./HttpClient');
 import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
+import serm = require('./Serialization');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import FormInputInterfaces = require("./interfaces/common/FormInputInterfaces");
 import ReleaseInterfaces = require("./interfaces/ReleaseInterfaces");
@@ -27,14 +27,15 @@ export interface IReleaseApi extends basem.ClientApiBase {
     updateReleaseApproval(approval: ReleaseInterfaces.ReleaseApproval, project: string, approvalId: number): Promise<ReleaseInterfaces.ReleaseApproval>;
     getApprovals(project: string, assignedToFilter?: string, statusFilter?: ReleaseInterfaces.ApprovalStatus, releaseIdsFilter?: number[], typeFilter?: ReleaseInterfaces.ApprovalType, top?: number, continuationToken?: number, queryOrder?: ReleaseInterfaces.ReleaseQueryOrder, includeMyGroupApprovals?: boolean): Promise<ReleaseInterfaces.ReleaseApproval[]>;
     getReleaseChanges(project: string, releaseId: number, baseReleaseId?: number, top?: number): Promise<ReleaseInterfaces.Change[]>;
+    setupContinuousDeployment(configData: ReleaseInterfaces.ContinuousDeploymentSetupData, project: string): Promise<string>;
     createReleaseDefinition(releaseDefinition: ReleaseInterfaces.ReleaseDefinition, project: string): Promise<ReleaseInterfaces.ReleaseDefinition>;
     deleteReleaseDefinition(project: string, definitionId: number): Promise<void>;
     getReleaseDefinition(project: string, definitionId: number): Promise<ReleaseInterfaces.ReleaseDefinition>;
     getReleaseDefinitionRevision(project: string, definitionId: number, revision: number): Promise<NodeJS.ReadableStream>;
-    getReleaseDefinitions(project: string, searchText?: string, expand?: ReleaseInterfaces.ReleaseDefinitionExpands): Promise<ReleaseInterfaces.ReleaseDefinition[]>;
+    getReleaseDefinitions(project: string, searchText?: string, expand?: ReleaseInterfaces.ReleaseDefinitionExpands, top?: number, continuationToken?: string, queryOrder?: ReleaseInterfaces.ReleaseDefinitionQueryOrder): Promise<ReleaseInterfaces.ReleaseDefinition[]>;
     getReleaseDefinitionsForArtifactSource(project: string, artifactType: string, artifactSourceId: string, expand?: ReleaseInterfaces.ReleaseDefinitionExpands): Promise<ReleaseInterfaces.ReleaseDefinition[]>;
     updateReleaseDefinition(releaseDefinition: ReleaseInterfaces.ReleaseDefinition, project: string): Promise<ReleaseInterfaces.ReleaseDefinition>;
-    getDeployments(project: string, definitionId?: number, definitionEnvironmentId?: number, createdBy?: string, operationStatus?: ReleaseInterfaces.DeploymentStatus, deploymentStatus?: ReleaseInterfaces.DeploymentStatus, latestAttemptsOnly?: boolean, queryOrder?: ReleaseInterfaces.ReleaseQueryOrder, top?: number, continuationToken?: number): Promise<ReleaseInterfaces.Deployment[]>;
+    getDeployments(project: string, definitionId?: number, definitionEnvironmentId?: number, createdBy?: string, minModifiedTime?: Date, maxModifiedTime?: Date, deploymentStatus?: ReleaseInterfaces.DeploymentStatus, operationStatus?: ReleaseInterfaces.DeploymentOperationStatus, latestAttemptsOnly?: boolean, queryOrder?: ReleaseInterfaces.ReleaseQueryOrder, top?: number, continuationToken?: number): Promise<ReleaseInterfaces.Deployment[]>;
     getDeploymentsForMultipleEnvironments(queryParameters: ReleaseInterfaces.DeploymentQueryParameters, project: string): Promise<ReleaseInterfaces.Deployment[]>;
     getReleaseEnvironment(project: string, releaseId: number, environmentId: number): Promise<ReleaseInterfaces.ReleaseEnvironment>;
     updateReleaseEnvironment(environmentUpdateData: ReleaseInterfaces.ReleaseEnvironmentUpdateMetadata, project: string, releaseId: number, environmentId: number): Promise<ReleaseInterfaces.ReleaseEnvironment>;
@@ -42,6 +43,9 @@ export interface IReleaseApi extends basem.ClientApiBase {
     deleteDefinitionEnvironmentTemplate(project: string, templateId: string): Promise<void>;
     getDefinitionEnvironmentTemplate(project: string, templateId: string): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>;
     listDefinitionEnvironmentTemplates(project: string): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]>;
+    createFavorites(favoriteItems: ReleaseInterfaces.FavoriteItem[], project: string, scope: string, identityId?: string): Promise<ReleaseInterfaces.FavoriteItem[]>;
+    deleteFavorites(project: string, scope: string, identityId?: string, favoriteItemIds?: string): Promise<void>;
+    getFavorites(project: string, scope: string, identityId?: string): Promise<ReleaseInterfaces.FavoriteItem[]>;
     getReleaseHistory(project: string, releaseId: number): Promise<ReleaseInterfaces.ReleaseRevision[]>;
     getInputValues(query: FormInputInterfaces.InputValuesQuery, project: string): Promise<FormInputInterfaces.InputValuesQuery>;
     getLog(project: string, releaseId: number, environmentId: number, taskId: number, attemptId?: number): Promise<NodeJS.ReadableStream>;
@@ -50,15 +54,19 @@ export interface IReleaseApi extends basem.ClientApiBase {
     getManualIntervention(project: string, releaseId: number, manualInterventionId: number): Promise<ReleaseInterfaces.ManualIntervention>;
     getManualInterventions(project: string, releaseId: number): Promise<ReleaseInterfaces.ManualIntervention[]>;
     updateManualIntervention(manualInterventionUpdateMetadata: ReleaseInterfaces.ManualInterventionUpdateMetadata, project: string, releaseId: number, manualInterventionId: number): Promise<ReleaseInterfaces.ManualIntervention>;
+    getMetrics(project: string, minMetricsTime?: Date): Promise<ReleaseInterfaces.Metric[]>;
+    getReleaseProjects(artifactType: string, artifactSourceId: string): Promise<ReleaseInterfaces.ProjectReference[]>;
+    getReleases(project?: string, definitionId?: number, definitionEnvironmentId?: number, searchText?: string, createdBy?: string, statusFilter?: ReleaseInterfaces.ReleaseStatus, environmentStatusFilter?: number, minCreatedTime?: Date, maxCreatedTime?: Date, queryOrder?: ReleaseInterfaces.ReleaseQueryOrder, top?: number, continuationToken?: number, expand?: ReleaseInterfaces.ReleaseExpands, artifactTypeId?: string, sourceId?: string, artifactVersionId?: string, sourceBranchFilter?: string, isDeleted?: boolean): Promise<ReleaseInterfaces.Release[]>;
     createRelease(releaseStartMetadata: ReleaseInterfaces.ReleaseStartMetadata, project: string): Promise<ReleaseInterfaces.Release>;
     deleteRelease(project: string, releaseId: number, comment?: string): Promise<void>;
     getRelease(project: string, releaseId: number, includeAllApprovals?: boolean): Promise<ReleaseInterfaces.Release>;
     getReleaseDefinitionSummary(project: string, definitionId: number, releaseCount: number, includeArtifact?: boolean, definitionEnvironmentIdsFilter?: number[]): Promise<ReleaseInterfaces.ReleaseDefinitionSummary>;
     getReleaseRevision(project: string, releaseId: number, definitionSnapshotRevision: number): Promise<NodeJS.ReadableStream>;
-    getReleases(project: string, definitionId?: number, definitionEnvironmentId?: number, searchText?: string, createdBy?: string, statusFilter?: ReleaseInterfaces.ReleaseStatus, environmentStatusFilter?: number, minCreatedTime?: Date, maxCreatedTime?: Date, queryOrder?: ReleaseInterfaces.ReleaseQueryOrder, top?: number, continuationToken?: number, expand?: ReleaseInterfaces.ReleaseExpands, artifactTypeId?: string, sourceId?: string, artifactVersionId?: string, sourceBranchFilter?: string, isDeleted?: boolean): Promise<ReleaseInterfaces.Release[]>;
     undeleteRelease(project: string, releaseId: number, comment: string): Promise<void>;
     updateRelease(release: ReleaseInterfaces.Release, project: string, releaseId: number): Promise<ReleaseInterfaces.Release>;
     updateReleaseResource(releaseUpdateMetadata: ReleaseInterfaces.ReleaseUpdateMetadata, project: string, releaseId: number): Promise<ReleaseInterfaces.Release>;
+    getReleaseSettings(project: string): Promise<ReleaseInterfaces.ReleaseSettings>;
+    updateReleaseSettings(releaseSettings: ReleaseInterfaces.ReleaseSettings, project: string): Promise<ReleaseInterfaces.ReleaseSettings>;
     getDefinitionRevision(project: string, definitionId: number, revision: number): Promise<NodeJS.ReadableStream>;
     getReleaseDefinitionHistory(project: string, definitionId: number): Promise<ReleaseInterfaces.ReleaseDefinitionRevision[]>;
     getSummaryMailSections(project: string, releaseId: number): Promise<ReleaseInterfaces.SummaryMailSection[]>;
@@ -66,6 +74,7 @@ export interface IReleaseApi extends basem.ClientApiBase {
     getSourceBranches(project: string, definitionId: number): Promise<string[]>;
     getTasks(project: string, releaseId: number, environmentId: number, attemptId?: number): Promise<ReleaseInterfaces.ReleaseTask[]>;
     getTasksForTaskGroup(project: string, releaseId: number, environmentId: number, releaseDeployPhaseId: number): Promise<ReleaseInterfaces.ReleaseTask[]>;
+    getQueuedReleases(projectId?: string, releaseId?: number): Promise<ReleaseInterfaces.QueuedReleaseData[]>;
     getArtifactTypeDefinitions(project: string): Promise<ReleaseInterfaces.ArtifactTypeDefinition[]>;
     getArtifactVersions(project: string, releaseDefinitionId: number): Promise<ReleaseInterfaces.ArtifactVersionQueryResult>;
     getArtifactVersionsForSources(artifacts: ReleaseInterfaces.Artifact[], project: string): Promise<ReleaseInterfaces.ArtifactVersionQueryResult>;
@@ -83,82 +92,76 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {string} project - Project ID or project name
     * @param {number} releaseId
     */
-    public getAgentArtifactDefinitions(
+    public async getAgentArtifactDefinitions(
         project: string,
         releaseId: number
         ): Promise<ReleaseInterfaces.AgentArtifactDefinition[]> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.AgentArtifactDefinition[]>();
 
-        let onResult = (err: any, statusCode: number, agentartifacts: ReleaseInterfaces.AgentArtifactDefinition[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(agentartifacts);
-            }
-        };
+        return new Promise<ReleaseInterfaces.AgentArtifactDefinition[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId
+            };
 
-        let routeValues: any = {
-            project: project,
-            releaseId: releaseId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "f2571c27-bf50-4938-b396-32d109ddef26",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "f2571c27-bf50-4938-b396-32d109ddef26", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.AgentArtifactDefinition, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.AgentArtifactDefinition, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} approvalStepId
     */
-    public getApprovalHistory(
+    public async getApprovalHistory(
         project: string,
         approvalStepId: number
         ): Promise<ReleaseInterfaces.ReleaseApproval> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ReleaseApproval>();
 
-        let onResult = (err: any, statusCode: number, approval: ReleaseInterfaces.ReleaseApproval) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(approval);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ReleaseApproval>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                approvalStepId: approvalStepId
+            };
 
-        let routeValues: any = {
-            project: project,
-            approvalStepId: approvalStepId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "250c7158-852e-4130-a00f-a0cce9b72d05",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "250c7158-852e-4130-a00f-a0cce9b72d05", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseApproval, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseApproval, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -166,46 +169,44 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {number} approvalId
     * @param {boolean} includeHistory
     */
-    public getApproval(
+    public async getApproval(
         project: string,
         approvalId: number,
         includeHistory?: boolean
         ): Promise<ReleaseInterfaces.ReleaseApproval> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ReleaseApproval>();
 
-        let onResult = (err: any, statusCode: number, approval: ReleaseInterfaces.ReleaseApproval) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(approval);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ReleaseApproval>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                approvalId: approvalId
+            };
 
-        let routeValues: any = {
-            project: project,
-            approvalId: approvalId
-        };
+            let queryValues: any = {
+                includeHistory: includeHistory,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "9328e074-59fb-465a-89d9-b09c82ee5109",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            includeHistory: includeHistory,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "9328e074-59fb-465a-89d9-b09c82ee5109", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseApproval, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseApproval, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -213,42 +214,39 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {string} project - Project ID or project name
     * @param {number} approvalId
     */
-    public updateReleaseApproval(
+    public async updateReleaseApproval(
         approval: ReleaseInterfaces.ReleaseApproval,
         project: string,
         approvalId: number
         ): Promise<ReleaseInterfaces.ReleaseApproval> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ReleaseApproval>();
 
-        let onResult = (err: any, statusCode: number, approval: ReleaseInterfaces.ReleaseApproval) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(approval);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ReleaseApproval>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                approvalId: approvalId
+            };
 
-        let routeValues: any = {
-            project: project,
-            approvalId: approvalId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "9328e074-59fb-465a-89d9-b09c82ee5109",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "9328e074-59fb-465a-89d9-b09c82ee5109", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseApproval, responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseApproval, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.update(url, apiVersion, approval, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, approval, null);
+                let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseApproval, responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseApproval, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -262,7 +260,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {ReleaseInterfaces.ReleaseQueryOrder} queryOrder
     * @param {boolean} includeMyGroupApprovals
     */
-    public getApprovals(
+    public async getApprovals(
         project: string,
         assignedToFilter?: string,
         statusFilter?: ReleaseInterfaces.ApprovalStatus,
@@ -273,47 +271,45 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         queryOrder?: ReleaseInterfaces.ReleaseQueryOrder,
         includeMyGroupApprovals?: boolean
         ): Promise<ReleaseInterfaces.ReleaseApproval[]> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ReleaseApproval[]>();
 
-        let onResult = (err: any, statusCode: number, approvals: ReleaseInterfaces.ReleaseApproval[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(approvals);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ReleaseApproval[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                assignedToFilter: assignedToFilter,
+                statusFilter: statusFilter,
+                releaseIdsFilter: releaseIdsFilter && releaseIdsFilter.join(","),
+                typeFilter: typeFilter,
+                top: top,
+                continuationToken: continuationToken,
+                queryOrder: queryOrder,
+                includeMyGroupApprovals: includeMyGroupApprovals,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.2",
+                    "Release",
+                    "b47c6458-e73b-47cb-a770-4df1e8813a91",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            assignedToFilter: assignedToFilter,
-            statusFilter: statusFilter,
-            releaseIdsFilter: releaseIdsFilter && releaseIdsFilter.join(","),
-            typeFilter: typeFilter,
-            top: top,
-            continuationToken: continuationToken,
-            queryOrder: queryOrder,
-            includeMyGroupApprovals: includeMyGroupApprovals,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "Release", "b47c6458-e73b-47cb-a770-4df1e8813a91", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseApproval, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseApproval, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -322,170 +318,196 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {number} baseReleaseId
     * @param {number} top
     */
-    public getReleaseChanges(
+    public async getReleaseChanges(
         project: string,
         releaseId: number,
         baseReleaseId?: number,
         top?: number
         ): Promise<ReleaseInterfaces.Change[]> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.Change[]>();
 
-        let onResult = (err: any, statusCode: number, changes: ReleaseInterfaces.Change[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(changes);
-            }
-        };
+        return new Promise<ReleaseInterfaces.Change[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId
+            };
 
-        let routeValues: any = {
-            project: project,
-            releaseId: releaseId
-        };
+            let queryValues: any = {
+                baseReleaseId: baseReleaseId,
+                '$top': top,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "8dcf9fe9-ca37-4113-8ee1-37928e98407c",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            baseReleaseId: baseReleaseId,
-            '$top': top,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "8dcf9fe9-ca37-4113-8ee1-37928e98407c", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.Change, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.Change, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-        return deferred.promise;
+    /**
+    * @param {ReleaseInterfaces.ContinuousDeploymentSetupData} configData
+    * @param {string} project - Project ID or project name
+    */
+    public async setupContinuousDeployment(
+        configData: ReleaseInterfaces.ContinuousDeploymentSetupData,
+        project: string
+        ): Promise<string> {
+
+        return new Promise<string>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.2",
+                    "Release",
+                    "c5788899-1e84-439b-b5f9-dbc10ecffe24",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, configData, null);
+                let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ContinuousDeploymentSetupData, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {ReleaseInterfaces.ReleaseDefinition} releaseDefinition
     * @param {string} project - Project ID or project name
     */
-    public createReleaseDefinition(
+    public async createReleaseDefinition(
         releaseDefinition: ReleaseInterfaces.ReleaseDefinition,
         project: string
         ): Promise<ReleaseInterfaces.ReleaseDefinition> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ReleaseDefinition>();
 
-        let onResult = (err: any, statusCode: number, definition: ReleaseInterfaces.ReleaseDefinition) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(definition);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ReleaseDefinition>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.3",
+                    "Release",
+                    "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.3", "Release", "d8f96f24-8ea7-4cb6-baab-2df8fc515665", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinition, responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinition, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, releaseDefinition, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, releaseDefinition, null);
+                let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinition, responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinition, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} definitionId
     */
-    public deleteReleaseDefinition(
+    public async deleteReleaseDefinition(
         project: string,
         definitionId: number
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId
+            };
 
-        let routeValues: any = {
-            project: project,
-            definitionId: definitionId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.3",
+                    "Release",
+                    "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.3", "Release", "d8f96f24-8ea7-4cb6-baab-2df8fc515665", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} definitionId
     */
-    public getReleaseDefinition(
+    public async getReleaseDefinition(
         project: string,
         definitionId: number
         ): Promise<ReleaseInterfaces.ReleaseDefinition> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ReleaseDefinition>();
 
-        let onResult = (err: any, statusCode: number, definition: ReleaseInterfaces.ReleaseDefinition) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(definition);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ReleaseDefinition>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId
+            };
 
-        let routeValues: any = {
-            project: project,
-            definitionId: definitionId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.3",
+                    "Release",
+                    "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.3", "Release", "d8f96f24-8ea7-4cb6-baab-2df8fc515665", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinition, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinition, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -493,93 +515,104 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {number} definitionId
     * @param {number} revision
     */
-    public getReleaseDefinitionRevision(
+    public async getReleaseDefinitionRevision(
         project: string,
         definitionId: number,
         revision: number
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, definition: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(definition);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let onResult = (err: any, statusCode: number, definition: NodeJS.ReadableStream) => {
+                if (err) {
+                    err.statusCode = statusCode;
+                    reject(err);
+                }
+                else {
+                    resolve(definition);
+                }
+            };
 
-        let routeValues: any = {
-            project: project,
-            definitionId: definitionId
-        };
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId
+            };
 
-        let queryValues: any = {
-            revision: revision,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.3", "Release", "d8f96f24-8ea7-4cb6-baab-2df8fc515665", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+            let queryValues: any = {
+                revision: revision,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.3",
+                    "Release",
+                    "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
                 this.httpClient.getStream(url, accept, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {string} searchText
     * @param {ReleaseInterfaces.ReleaseDefinitionExpands} expand
+    * @param {number} top
+    * @param {string} continuationToken
+    * @param {ReleaseInterfaces.ReleaseDefinitionQueryOrder} queryOrder
     */
-    public getReleaseDefinitions(
+    public async getReleaseDefinitions(
         project: string,
         searchText?: string,
-        expand?: ReleaseInterfaces.ReleaseDefinitionExpands
+        expand?: ReleaseInterfaces.ReleaseDefinitionExpands,
+        top?: number,
+        continuationToken?: string,
+        queryOrder?: ReleaseInterfaces.ReleaseDefinitionQueryOrder
         ): Promise<ReleaseInterfaces.ReleaseDefinition[]> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ReleaseDefinition[]>();
 
-        let onResult = (err: any, statusCode: number, definitions: ReleaseInterfaces.ReleaseDefinition[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(definitions);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ReleaseDefinition[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                searchText: searchText,
+                '$expand': expand,
+                '$top': top,
+                continuationToken: continuationToken,
+                queryOrder: queryOrder,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.3",
+                    "Release",
+                    "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            searchText: searchText,
-            '$expand': expand,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.3", "Release", "d8f96f24-8ea7-4cb6-baab-2df8fc515665", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinition, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinition, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -588,88 +621,83 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {string} artifactSourceId
     * @param {ReleaseInterfaces.ReleaseDefinitionExpands} expand
     */
-    public getReleaseDefinitionsForArtifactSource(
+    public async getReleaseDefinitionsForArtifactSource(
         project: string,
         artifactType: string,
         artifactSourceId: string,
         expand?: ReleaseInterfaces.ReleaseDefinitionExpands
         ): Promise<ReleaseInterfaces.ReleaseDefinition[]> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ReleaseDefinition[]>();
 
-        let onResult = (err: any, statusCode: number, definitions: ReleaseInterfaces.ReleaseDefinition[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(definitions);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ReleaseDefinition[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                artifactType: artifactType,
+                artifactSourceId: artifactSourceId,
+                '$expand': expand,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.3",
+                    "Release",
+                    "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            artifactType: artifactType,
-            artifactSourceId: artifactSourceId,
-            '$expand': expand,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.3", "Release", "d8f96f24-8ea7-4cb6-baab-2df8fc515665", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinition, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinition, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {ReleaseInterfaces.ReleaseDefinition} releaseDefinition
     * @param {string} project - Project ID or project name
     */
-    public updateReleaseDefinition(
+    public async updateReleaseDefinition(
         releaseDefinition: ReleaseInterfaces.ReleaseDefinition,
         project: string
         ): Promise<ReleaseInterfaces.ReleaseDefinition> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ReleaseDefinition>();
 
-        let onResult = (err: any, statusCode: number, definition: ReleaseInterfaces.ReleaseDefinition) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(definition);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ReleaseDefinition>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.3",
+                    "Release",
+                    "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.3", "Release", "d8f96f24-8ea7-4cb6-baab-2df8fc515665", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinition, responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinition, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.replace(url, apiVersion, releaseDefinition, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.replace(url, apiVersion, releaseDefinition, null);
+                let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinition, responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinition, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -677,107 +705,108 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {number} definitionId
     * @param {number} definitionEnvironmentId
     * @param {string} createdBy
-    * @param {ReleaseInterfaces.DeploymentStatus} operationStatus
+    * @param {Date} minModifiedTime
+    * @param {Date} maxModifiedTime
     * @param {ReleaseInterfaces.DeploymentStatus} deploymentStatus
+    * @param {ReleaseInterfaces.DeploymentOperationStatus} operationStatus
     * @param {boolean} latestAttemptsOnly
     * @param {ReleaseInterfaces.ReleaseQueryOrder} queryOrder
     * @param {number} top
     * @param {number} continuationToken
     */
-    public getDeployments(
+    public async getDeployments(
         project: string,
         definitionId?: number,
         definitionEnvironmentId?: number,
         createdBy?: string,
-        operationStatus?: ReleaseInterfaces.DeploymentStatus,
+        minModifiedTime?: Date,
+        maxModifiedTime?: Date,
         deploymentStatus?: ReleaseInterfaces.DeploymentStatus,
+        operationStatus?: ReleaseInterfaces.DeploymentOperationStatus,
         latestAttemptsOnly?: boolean,
         queryOrder?: ReleaseInterfaces.ReleaseQueryOrder,
         top?: number,
         continuationToken?: number
         ): Promise<ReleaseInterfaces.Deployment[]> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.Deployment[]>();
 
-        let onResult = (err: any, statusCode: number, deployments: ReleaseInterfaces.Deployment[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(deployments);
-            }
-        };
+        return new Promise<ReleaseInterfaces.Deployment[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                definitionId: definitionId,
+                definitionEnvironmentId: definitionEnvironmentId,
+                createdBy: createdBy,
+                minModifiedTime: minModifiedTime,
+                maxModifiedTime: maxModifiedTime,
+                deploymentStatus: deploymentStatus,
+                operationStatus: operationStatus,
+                latestAttemptsOnly: latestAttemptsOnly,
+                queryOrder: queryOrder,
+                '$top': top,
+                continuationToken: continuationToken,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "b005ef73-cddc-448e-9ba2-5193bf36b19f",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            definitionId: definitionId,
-            definitionEnvironmentId: definitionEnvironmentId,
-            createdBy: createdBy,
-            operationStatus: operationStatus,
-            deploymentStatus: deploymentStatus,
-            latestAttemptsOnly: latestAttemptsOnly,
-            queryOrder: queryOrder,
-            '$top': top,
-            continuationToken: continuationToken,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "b005ef73-cddc-448e-9ba2-5193bf36b19f", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.Deployment, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.Deployment, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {ReleaseInterfaces.DeploymentQueryParameters} queryParameters
     * @param {string} project - Project ID or project name
     */
-    public getDeploymentsForMultipleEnvironments(
+    public async getDeploymentsForMultipleEnvironments(
         queryParameters: ReleaseInterfaces.DeploymentQueryParameters,
         project: string
         ): Promise<ReleaseInterfaces.Deployment[]> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.Deployment[]>();
 
-        let onResult = (err: any, statusCode: number, deployment: ReleaseInterfaces.Deployment[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(deployment);
-            }
-        };
+        return new Promise<ReleaseInterfaces.Deployment[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "b005ef73-cddc-448e-9ba2-5193bf36b19f",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "b005ef73-cddc-448e-9ba2-5193bf36b19f", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.DeploymentQueryParameters, responseTypeMetadata: ReleaseInterfaces.TypeInfo.Deployment, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, queryParameters, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, queryParameters, null);
+                let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.DeploymentQueryParameters, responseTypeMetadata: ReleaseInterfaces.TypeInfo.Deployment, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -785,43 +814,40 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {number} releaseId
     * @param {number} environmentId
     */
-    public getReleaseEnvironment(
+    public async getReleaseEnvironment(
         project: string,
         releaseId: number,
         environmentId: number
         ): Promise<ReleaseInterfaces.ReleaseEnvironment> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ReleaseEnvironment>();
 
-        let onResult = (err: any, statusCode: number, environment: ReleaseInterfaces.ReleaseEnvironment) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(environment);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ReleaseEnvironment>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId,
+                environmentId: environmentId
+            };
 
-        let routeValues: any = {
-            project: project,
-            releaseId: releaseId,
-            environmentId: environmentId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.4",
+                    "Release",
+                    "a7e426b1-03dc-48af-9dfe-c98bac612dcb",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.4", "Release", "a7e426b1-03dc-48af-9dfe-c98bac612dcb", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseEnvironment, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseEnvironment, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -830,291 +856,412 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {number} releaseId
     * @param {number} environmentId
     */
-    public updateReleaseEnvironment(
+    public async updateReleaseEnvironment(
         environmentUpdateData: ReleaseInterfaces.ReleaseEnvironmentUpdateMetadata,
         project: string,
         releaseId: number,
         environmentId: number
         ): Promise<ReleaseInterfaces.ReleaseEnvironment> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ReleaseEnvironment>();
 
-        let onResult = (err: any, statusCode: number, environment: ReleaseInterfaces.ReleaseEnvironment) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(environment);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ReleaseEnvironment>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId,
+                environmentId: environmentId
+            };
 
-        let routeValues: any = {
-            project: project,
-            releaseId: releaseId,
-            environmentId: environmentId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.4",
+                    "Release",
+                    "a7e426b1-03dc-48af-9dfe-c98bac612dcb",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.4", "Release", "a7e426b1-03dc-48af-9dfe-c98bac612dcb", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseEnvironmentUpdateMetadata, responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseEnvironment, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.update(url, apiVersion, environmentUpdateData, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, environmentUpdateData, null);
+                let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseEnvironmentUpdateMetadata, responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseEnvironment, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate} template
     * @param {string} project - Project ID or project name
     */
-    public createDefinitionEnvironmentTemplate(
+    public async createDefinitionEnvironmentTemplate(
         template: ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate,
         project: string
         ): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>();
 
-        let onResult = (err: any, statusCode: number, environmenttemplate: ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(environmenttemplate);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.2",
+                    "Release",
+                    "6b03b696-824e-4479-8eb2-6644a51aba89",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Release", "6b03b696-824e-4479-8eb2-6644a51aba89", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate, responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, template, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, template, null);
+                let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate, responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {string} templateId
     */
-    public deleteDefinitionEnvironmentTemplate(
+    public async deleteDefinitionEnvironmentTemplate(
         project: string,
         templateId: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                templateId: templateId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.2",
+                    "Release",
+                    "6b03b696-824e-4479-8eb2-6644a51aba89",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            templateId: templateId,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "Release", "6b03b696-824e-4479-8eb2-6644a51aba89", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {string} templateId
     */
-    public getDefinitionEnvironmentTemplate(
+    public async getDefinitionEnvironmentTemplate(
         project: string,
         templateId: string
         ): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>();
 
-        let onResult = (err: any, statusCode: number, environmenttemplate: ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(environmenttemplate);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                templateId: templateId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.2",
+                    "Release",
+                    "6b03b696-824e-4479-8eb2-6644a51aba89",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            templateId: templateId,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "Release", "6b03b696-824e-4479-8eb2-6644a51aba89", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     */
-    public listDefinitionEnvironmentTemplates(
+    public async listDefinitionEnvironmentTemplates(
         project: string
         ): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]>();
 
-        let onResult = (err: any, statusCode: number, environmenttemplates: ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(environmenttemplates);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.2",
+                    "Release",
+                    "6b03b696-824e-4479-8eb2-6644a51aba89",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Release", "6b03b696-824e-4479-8eb2-6644a51aba89", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-        return deferred.promise;
+    /**
+    * @param {ReleaseInterfaces.FavoriteItem[]} favoriteItems
+    * @param {string} project - Project ID or project name
+    * @param {string} scope
+    * @param {string} identityId
+    */
+    public async createFavorites(
+        favoriteItems: ReleaseInterfaces.FavoriteItem[],
+        project: string,
+        scope: string,
+        identityId?: string
+        ): Promise<ReleaseInterfaces.FavoriteItem[]> {
+
+        return new Promise<ReleaseInterfaces.FavoriteItem[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                scope: scope
+            };
+
+            let queryValues: any = {
+                identityId: identityId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "938f7222-9acb-48fe-b8a3-4eda04597171",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, favoriteItems, null);
+                let serializationData = {  responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {string} scope
+    * @param {string} identityId
+    * @param {string} favoriteItemIds
+    */
+    public async deleteFavorites(
+        project: string,
+        scope: string,
+        identityId?: string,
+        favoriteItemIds?: string
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                scope: scope
+            };
+
+            let queryValues: any = {
+                identityId: identityId,
+                favoriteItemIds: favoriteItemIds,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "938f7222-9acb-48fe-b8a3-4eda04597171",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {string} scope
+    * @param {string} identityId
+    */
+    public async getFavorites(
+        project: string,
+        scope: string,
+        identityId?: string
+        ): Promise<ReleaseInterfaces.FavoriteItem[]> {
+
+        return new Promise<ReleaseInterfaces.FavoriteItem[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                scope: scope
+            };
+
+            let queryValues: any = {
+                identityId: identityId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "938f7222-9acb-48fe-b8a3-4eda04597171",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} releaseId
     */
-    public getReleaseHistory(
+    public async getReleaseHistory(
         project: string,
         releaseId: number
         ): Promise<ReleaseInterfaces.ReleaseRevision[]> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ReleaseRevision[]>();
 
-        let onResult = (err: any, statusCode: number, history: ReleaseInterfaces.ReleaseRevision[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(history);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ReleaseRevision[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId
+            };
 
-        let routeValues: any = {
-            project: project,
-            releaseId: releaseId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "23f461c8-629a-4144-a076-3054fa5f268a",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "23f461c8-629a-4144-a076-3054fa5f268a", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseRevision, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseRevision, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {FormInputInterfaces.InputValuesQuery} query
     * @param {string} project - Project ID or project name
     */
-    public getInputValues(
+    public async getInputValues(
         query: FormInputInterfaces.InputValuesQuery,
         project: string
         ): Promise<FormInputInterfaces.InputValuesQuery> {
-    
-        let deferred = Q.defer<FormInputInterfaces.InputValuesQuery>();
 
-        let onResult = (err: any, statusCode: number, inputvaluesquery: FormInputInterfaces.InputValuesQuery) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(inputvaluesquery);
-            }
-        };
+        return new Promise<FormInputInterfaces.InputValuesQuery>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "71dd499b-317d-45ea-9134-140ea1932b5e",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "71dd499b-317d-45ea-9134-140ea1932b5e", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, query, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, query, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1124,91 +1271,98 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {number} taskId
     * @param {number} attemptId
     */
-    public getLog(
+    public async getLog(
         project: string,
         releaseId: number,
         environmentId: number,
         taskId: number,
         attemptId?: number
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, log: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(log);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let onResult = (err: any, statusCode: number, log: NodeJS.ReadableStream) => {
+                if (err) {
+                    err.statusCode = statusCode;
+                    reject(err);
+                }
+                else {
+                    resolve(log);
+                }
+            };
 
-        let routeValues: any = {
-            project: project,
-            releaseId: releaseId,
-            environmentId: environmentId,
-            taskId: taskId
-        };
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId,
+                environmentId: environmentId,
+                taskId: taskId
+            };
 
-        let queryValues: any = {
-            attemptId: attemptId,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "e71ba1ed-c0a4-4a28-a61f-2dd5f68cf3fd", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+            let queryValues: any = {
+                attemptId: attemptId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "e71ba1ed-c0a4-4a28-a61f-2dd5f68cf3fd",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
                 this.httpClient.getStream(url, accept, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} releaseId
     */
-    public getLogs(
+    public async getLogs(
         project: string,
         releaseId: number
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, log: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(log);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let onResult = (err: any, statusCode: number, log: NodeJS.ReadableStream) => {
+                if (err) {
+                    err.statusCode = statusCode;
+                    reject(err);
+                }
+                else {
+                    resolve(log);
+                }
+            };
 
-        let routeValues: any = {
-            project: project,
-            releaseId: releaseId
-        };
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId
+            };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Release", "c37fbab5-214b-48e4-a55b-cb6b4f6e4038", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.2",
+                    "Release",
+                    "c37fbab5-214b-48e4-a55b-cb6b4f6e4038",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
                 this.httpClient.getStream(url, accept, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1218,47 +1372,50 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {number} releaseDeployPhaseId
     * @param {number} taskId
     */
-    public getTaskLog(
+    public async getTaskLog(
         project: string,
         releaseId: number,
         environmentId: number,
         releaseDeployPhaseId: number,
         taskId: number
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, log: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(log);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let onResult = (err: any, statusCode: number, log: NodeJS.ReadableStream) => {
+                if (err) {
+                    err.statusCode = statusCode;
+                    reject(err);
+                }
+                else {
+                    resolve(log);
+                }
+            };
 
-        let routeValues: any = {
-            project: project,
-            releaseId: releaseId,
-            environmentId: environmentId,
-            releaseDeployPhaseId: releaseDeployPhaseId,
-            taskId: taskId
-        };
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId,
+                environmentId: environmentId,
+                releaseDeployPhaseId: releaseDeployPhaseId,
+                taskId: taskId
+            };
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Release", "17c91af7-09fd-4256-bff1-c24ee4f73bc0", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.2",
+                    "Release",
+                    "17c91af7-09fd-4256-bff1-c24ee4f73bc0",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
                 this.httpClient.getStream(url, accept, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1266,84 +1423,78 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {number} releaseId
     * @param {number} manualInterventionId
     */
-    public getManualIntervention(
+    public async getManualIntervention(
         project: string,
         releaseId: number,
         manualInterventionId: number
         ): Promise<ReleaseInterfaces.ManualIntervention> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ManualIntervention>();
 
-        let onResult = (err: any, statusCode: number, manualIntervention: ReleaseInterfaces.ManualIntervention) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(manualIntervention);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ManualIntervention>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId,
+                manualInterventionId: manualInterventionId
+            };
 
-        let routeValues: any = {
-            project: project,
-            releaseId: releaseId,
-            manualInterventionId: manualInterventionId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "616c46e4-f370-4456-adaa-fbaf79c7b79e",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "616c46e4-f370-4456-adaa-fbaf79c7b79e", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ManualIntervention, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ManualIntervention, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} releaseId
     */
-    public getManualInterventions(
+    public async getManualInterventions(
         project: string,
         releaseId: number
         ): Promise<ReleaseInterfaces.ManualIntervention[]> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ManualIntervention[]>();
 
-        let onResult = (err: any, statusCode: number, manualInterventions: ReleaseInterfaces.ManualIntervention[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(manualInterventions);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ManualIntervention[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId
+            };
 
-        let routeValues: any = {
-            project: project,
-            releaseId: releaseId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "616c46e4-f370-4456-adaa-fbaf79c7b79e",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "616c46e4-f370-4456-adaa-fbaf79c7b79e", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ManualIntervention, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ManualIntervention, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1352,278 +1503,125 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {number} releaseId
     * @param {number} manualInterventionId
     */
-    public updateManualIntervention(
+    public async updateManualIntervention(
         manualInterventionUpdateMetadata: ReleaseInterfaces.ManualInterventionUpdateMetadata,
         project: string,
         releaseId: number,
         manualInterventionId: number
         ): Promise<ReleaseInterfaces.ManualIntervention> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ManualIntervention>();
 
-        let onResult = (err: any, statusCode: number, manualIntervention: ReleaseInterfaces.ManualIntervention) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(manualIntervention);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ManualIntervention>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId,
+                manualInterventionId: manualInterventionId
+            };
 
-        let routeValues: any = {
-            project: project,
-            releaseId: releaseId,
-            manualInterventionId: manualInterventionId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "616c46e4-f370-4456-adaa-fbaf79c7b79e",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "616c46e4-f370-4456-adaa-fbaf79c7b79e", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, manualInterventionUpdateMetadata, null);
                 let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ManualInterventionUpdateMetadata, responseTypeMetadata: ReleaseInterfaces.TypeInfo.ManualIntervention, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
                 
-                this.restCallbackClient.update(url, apiVersion, manualInterventionUpdateMetadata, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
-    }
-
-    /**
-    * @param {ReleaseInterfaces.ReleaseStartMetadata} releaseStartMetadata
-    * @param {string} project - Project ID or project name
-    */
-    public createRelease(
-        releaseStartMetadata: ReleaseInterfaces.ReleaseStartMetadata,
-        project: string
-        ): Promise<ReleaseInterfaces.Release> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.Release>();
-
-        let onResult = (err: any, statusCode: number, release: ReleaseInterfaces.Release) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
             }
-            else {
-                deferred.resolve(release);
+            catch (err) {
+                reject(err);
             }
-        };
-
-        let routeValues: any = {
-            project: project
-        };
-
-        this.vsoClient.getVersioningData("3.0-preview.4", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseStartMetadata, responseTypeMetadata: ReleaseInterfaces.TypeInfo.Release, responseIsCollection: false };
-                
-                this.restCallbackClient.create(url, apiVersion, releaseStartMetadata, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
-    * @param {number} releaseId
-    * @param {string} comment
+    * @param {Date} minMetricsTime
     */
-    public deleteRelease(
+    public async getMetrics(
         project: string,
-        releaseId: number,
-        comment?: string
-        ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
+        minMetricsTime?: Date
+        ): Promise<ReleaseInterfaces.Metric[]> {
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<ReleaseInterfaces.Metric[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project,
-            releaseId: releaseId
-        };
+            let queryValues: any = {
+                minMetricsTime: minMetricsTime,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "cd1502bb-3c73-4e11-80a6-d11308dceae5",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            comment: comment,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.4", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} releaseId
-    * @param {boolean} includeAllApprovals
+    * @param {string} artifactType
+    * @param {string} artifactSourceId
     */
-    public getRelease(
-        project: string,
-        releaseId: number,
-        includeAllApprovals?: boolean
-        ): Promise<ReleaseInterfaces.Release> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.Release>();
+    public async getReleaseProjects(
+        artifactType: string,
+        artifactSourceId: string
+        ): Promise<ReleaseInterfaces.ProjectReference[]> {
 
-        let onResult = (err: any, statusCode: number, release: ReleaseInterfaces.Release) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(release);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ProjectReference[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-            project: project,
-            releaseId: releaseId
-        };
+            let queryValues: any = {
+                artifactType: artifactType,
+                artifactSourceId: artifactSourceId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "917ace4a-79d1-45a7-987c-7be4db4268fa",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            includeAllApprovals: includeAllApprovals,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.4", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.Release, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
-    }
-
-    /**
-    * @param {string} project - Project ID or project name
-    * @param {number} definitionId
-    * @param {number} releaseCount
-    * @param {boolean} includeArtifact
-    * @param {number[]} definitionEnvironmentIdsFilter
-    */
-    public getReleaseDefinitionSummary(
-        project: string,
-        definitionId: number,
-        releaseCount: number,
-        includeArtifact?: boolean,
-        definitionEnvironmentIdsFilter?: number[]
-        ): Promise<ReleaseInterfaces.ReleaseDefinitionSummary> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ReleaseDefinitionSummary>();
-
-        let onResult = (err: any, statusCode: number, release: ReleaseInterfaces.ReleaseDefinitionSummary) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(release);
-            }
-        };
-
-        let routeValues: any = {
-            project: project
-        };
-
-        let queryValues: any = {
-            definitionId: definitionId,
-            releaseCount: releaseCount,
-            includeArtifact: includeArtifact,
-            definitionEnvironmentIdsFilter: definitionEnvironmentIdsFilter && definitionEnvironmentIdsFilter.join(","),
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.4", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinitionSummary, responseIsCollection: false };
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
-    }
-
-    /**
-    * @param {string} project - Project ID or project name
-    * @param {number} releaseId
-    * @param {number} definitionSnapshotRevision
-    */
-    public getReleaseRevision(
-        project: string,
-        releaseId: number,
-        definitionSnapshotRevision: number
-        ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
-
-        let onResult = (err: any, statusCode: number, release: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
             }
-            else {
-                deferred.resolve(release);
+            catch (err) {
+                reject(err);
             }
-        };
-
-        let routeValues: any = {
-            project: project,
-            releaseId: releaseId
-        };
-
-        let queryValues: any = {
-            definitionSnapshotRevision: definitionSnapshotRevision,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.4", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
-                let accept: string = this.createAcceptHeader("text/plain", apiVersion);
-                this.httpClient.getStream(url, accept, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+        });
     }
 
     /**
@@ -1646,8 +1644,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {string} sourceBranchFilter
     * @param {boolean} isDeleted
     */
-    public getReleases(
-        project: string,
+    public async getReleases(
+        project?: string,
         definitionId?: number,
         definitionEnvironmentId?: number,
         searchText?: string,
@@ -1666,56 +1664,91 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         sourceBranchFilter?: string,
         isDeleted?: boolean
         ): Promise<ReleaseInterfaces.Release[]> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.Release[]>();
 
-        let onResult = (err: any, statusCode: number, releases: ReleaseInterfaces.Release[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(releases);
-            }
-        };
+        return new Promise<ReleaseInterfaces.Release[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                definitionId: definitionId,
+                definitionEnvironmentId: definitionEnvironmentId,
+                searchText: searchText,
+                createdBy: createdBy,
+                statusFilter: statusFilter,
+                environmentStatusFilter: environmentStatusFilter,
+                minCreatedTime: minCreatedTime,
+                maxCreatedTime: maxCreatedTime,
+                queryOrder: queryOrder,
+                '$top': top,
+                continuationToken: continuationToken,
+                '$expand': expand,
+                artifactTypeId: artifactTypeId,
+                sourceId: sourceId,
+                artifactVersionId: artifactVersionId,
+                sourceBranchFilter: sourceBranchFilter,
+                isDeleted: isDeleted,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.4",
+                    "Release",
+                    "a166fde7-27ad-408e-ba75-703c2cc9d500",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            definitionId: definitionId,
-            definitionEnvironmentId: definitionEnvironmentId,
-            searchText: searchText,
-            createdBy: createdBy,
-            statusFilter: statusFilter,
-            environmentStatusFilter: environmentStatusFilter,
-            minCreatedTime: minCreatedTime,
-            maxCreatedTime: maxCreatedTime,
-            queryOrder: queryOrder,
-            '$top': top,
-            continuationToken: continuationToken,
-            '$expand': expand,
-            artifactTypeId: artifactTypeId,
-            sourceId: sourceId,
-            artifactVersionId: artifactVersionId,
-            sourceBranchFilter: sourceBranchFilter,
-            isDeleted: isDeleted,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.4", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.Release, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.Release, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-        return deferred.promise;
+    /**
+    * @param {ReleaseInterfaces.ReleaseStartMetadata} releaseStartMetadata
+    * @param {string} project - Project ID or project name
+    */
+    public async createRelease(
+        releaseStartMetadata: ReleaseInterfaces.ReleaseStartMetadata,
+        project: string
+        ): Promise<ReleaseInterfaces.Release> {
+
+        return new Promise<ReleaseInterfaces.Release>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.4",
+                    "Release",
+                    "a166fde7-27ad-408e-ba75-703c2cc9d500",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, releaseStartMetadata, null);
+                let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseStartMetadata, responseTypeMetadata: ReleaseInterfaces.TypeInfo.Release, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1723,46 +1756,236 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {number} releaseId
     * @param {string} comment
     */
-    public undeleteRelease(
+    public async deleteRelease(
+        project: string,
+        releaseId: number,
+        comment?: string
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId
+            };
+
+            let queryValues: any = {
+                comment: comment,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.4",
+                    "Release",
+                    "a166fde7-27ad-408e-ba75-703c2cc9d500",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {boolean} includeAllApprovals
+    */
+    public async getRelease(
+        project: string,
+        releaseId: number,
+        includeAllApprovals?: boolean
+        ): Promise<ReleaseInterfaces.Release> {
+
+        return new Promise<ReleaseInterfaces.Release>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId
+            };
+
+            let queryValues: any = {
+                includeAllApprovals: includeAllApprovals,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.4",
+                    "Release",
+                    "a166fde7-27ad-408e-ba75-703c2cc9d500",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.Release, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    * @param {number} releaseCount
+    * @param {boolean} includeArtifact
+    * @param {number[]} definitionEnvironmentIdsFilter
+    */
+    public async getReleaseDefinitionSummary(
+        project: string,
+        definitionId: number,
+        releaseCount: number,
+        includeArtifact?: boolean,
+        definitionEnvironmentIdsFilter?: number[]
+        ): Promise<ReleaseInterfaces.ReleaseDefinitionSummary> {
+
+        return new Promise<ReleaseInterfaces.ReleaseDefinitionSummary>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
+
+            let queryValues: any = {
+                definitionId: definitionId,
+                releaseCount: releaseCount,
+                includeArtifact: includeArtifact,
+                definitionEnvironmentIdsFilter: definitionEnvironmentIdsFilter && definitionEnvironmentIdsFilter.join(","),
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.4",
+                    "Release",
+                    "a166fde7-27ad-408e-ba75-703c2cc9d500",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinitionSummary, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {number} definitionSnapshotRevision
+    */
+    public async getReleaseRevision(
+        project: string,
+        releaseId: number,
+        definitionSnapshotRevision: number
+        ): Promise<NodeJS.ReadableStream> {
+
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let onResult = (err: any, statusCode: number, release: NodeJS.ReadableStream) => {
+                if (err) {
+                    err.statusCode = statusCode;
+                    reject(err);
+                }
+                else {
+                    resolve(release);
+                }
+            };
+
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId
+            };
+
+            let queryValues: any = {
+                definitionSnapshotRevision: definitionSnapshotRevision,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.4",
+                    "Release",
+                    "a166fde7-27ad-408e-ba75-703c2cc9d500",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let accept: string = this.createAcceptHeader("text/plain", apiVersion);
+                this.httpClient.getStream(url, accept, onResult);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {string} comment
+    */
+    public async undeleteRelease(
         project: string,
         releaseId: number,
         comment: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId
+            };
 
-        let routeValues: any = {
-            project: project,
-            releaseId: releaseId
-        };
+            let queryValues: any = {
+                comment: comment,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.4",
+                    "Release",
+                    "a166fde7-27ad-408e-ba75-703c2cc9d500",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            comment: comment,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.4", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.replace(url, apiVersion, null, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.replace(url, apiVersion, null, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1770,42 +1993,39 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {string} project - Project ID or project name
     * @param {number} releaseId
     */
-    public updateRelease(
+    public async updateRelease(
         release: ReleaseInterfaces.Release,
         project: string,
         releaseId: number
         ): Promise<ReleaseInterfaces.Release> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.Release>();
 
-        let onResult = (err: any, statusCode: number, release: ReleaseInterfaces.Release) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(release);
-            }
-        };
+        return new Promise<ReleaseInterfaces.Release>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId
+            };
 
-        let routeValues: any = {
-            project: project,
-            releaseId: releaseId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.4",
+                    "Release",
+                    "a166fde7-27ad-408e-ba75-703c2cc9d500",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.4", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.Release, responseTypeMetadata: ReleaseInterfaces.TypeInfo.Release, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.replace(url, apiVersion, release, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.replace(url, apiVersion, release, null);
+                let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.Release, responseTypeMetadata: ReleaseInterfaces.TypeInfo.Release, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1813,42 +2033,113 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {string} project - Project ID or project name
     * @param {number} releaseId
     */
-    public updateReleaseResource(
+    public async updateReleaseResource(
         releaseUpdateMetadata: ReleaseInterfaces.ReleaseUpdateMetadata,
         project: string,
         releaseId: number
         ): Promise<ReleaseInterfaces.Release> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.Release>();
 
-        let onResult = (err: any, statusCode: number, release: ReleaseInterfaces.Release) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(release);
-            }
-        };
+        return new Promise<ReleaseInterfaces.Release>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId
+            };
 
-        let routeValues: any = {
-            project: project,
-            releaseId: releaseId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.4",
+                    "Release",
+                    "a166fde7-27ad-408e-ba75-703c2cc9d500",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.4", "Release", "a166fde7-27ad-408e-ba75-703c2cc9d500", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseUpdateMetadata, responseTypeMetadata: ReleaseInterfaces.TypeInfo.Release, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.update(url, apiVersion, releaseUpdateMetadata, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, releaseUpdateMetadata, null);
+                let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseUpdateMetadata, responseTypeMetadata: ReleaseInterfaces.TypeInfo.Release, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-        return deferred.promise;
+    /**
+    * @param {string} project - Project ID or project name
+    */
+    public async getReleaseSettings(
+        project: string
+        ): Promise<ReleaseInterfaces.ReleaseSettings> {
+
+        return new Promise<ReleaseInterfaces.ReleaseSettings>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "c63c3718-7cfd-41e0-b89b-81c1ca143437",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * Updates the release settings
+    * 
+    * @param {ReleaseInterfaces.ReleaseSettings} releaseSettings
+    * @param {string} project - Project ID or project name
+    */
+    public async updateReleaseSettings(
+        releaseSettings: ReleaseInterfaces.ReleaseSettings,
+        project: string
+        ): Promise<ReleaseInterfaces.ReleaseSettings> {
+
+        return new Promise<ReleaseInterfaces.ReleaseSettings>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "c63c3718-7cfd-41e0-b89b-81c1ca143437",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.replace(url, apiVersion, releaseSettings, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1856,125 +2147,122 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {number} definitionId
     * @param {number} revision
     */
-    public getDefinitionRevision(
+    public async getDefinitionRevision(
         project: string,
         definitionId: number,
         revision: number
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, revision: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(revision);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let onResult = (err: any, statusCode: number, revision: NodeJS.ReadableStream) => {
+                if (err) {
+                    err.statusCode = statusCode;
+                    reject(err);
+                }
+                else {
+                    resolve(revision);
+                }
+            };
 
-        let routeValues: any = {
-            project: project,
-            definitionId: definitionId,
-            revision: revision
-        };
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId,
+                revision: revision
+            };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "258b82e0-9d41-43f3-86d6-fef14ddd44bc", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "258b82e0-9d41-43f3-86d6-fef14ddd44bc",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
                 this.httpClient.getStream(url, accept, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} definitionId
     */
-    public getReleaseDefinitionHistory(
+    public async getReleaseDefinitionHistory(
         project: string,
         definitionId: number
         ): Promise<ReleaseInterfaces.ReleaseDefinitionRevision[]> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ReleaseDefinitionRevision[]>();
 
-        let onResult = (err: any, statusCode: number, revisions: ReleaseInterfaces.ReleaseDefinitionRevision[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(revisions);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ReleaseDefinitionRevision[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId
+            };
 
-        let routeValues: any = {
-            project: project,
-            definitionId: definitionId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "258b82e0-9d41-43f3-86d6-fef14ddd44bc",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "258b82e0-9d41-43f3-86d6-fef14ddd44bc", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinitionRevision, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseDefinitionRevision, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} releaseId
     */
-    public getSummaryMailSections(
+    public async getSummaryMailSections(
         project: string,
         releaseId: number
         ): Promise<ReleaseInterfaces.SummaryMailSection[]> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.SummaryMailSection[]>();
 
-        let onResult = (err: any, statusCode: number, sendmail: ReleaseInterfaces.SummaryMailSection[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(sendmail);
-            }
-        };
+        return new Promise<ReleaseInterfaces.SummaryMailSection[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId
+            };
 
-        let routeValues: any = {
-            project: project,
-            releaseId: releaseId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "224e92b2-8d13-4c14-b120-13d877c516f8",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "224e92b2-8d13-4c14-b120-13d877c516f8", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.SummaryMailSection, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.SummaryMailSection, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1982,83 +2270,77 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {string} project - Project ID or project name
     * @param {number} releaseId
     */
-    public sendSummaryMail(
+    public async sendSummaryMail(
         mailMessage: ReleaseInterfaces.MailMessage,
         project: string,
         releaseId: number
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId
+            };
 
-        let routeValues: any = {
-            project: project,
-            releaseId: releaseId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "224e92b2-8d13-4c14-b120-13d877c516f8",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "224e92b2-8d13-4c14-b120-13d877c516f8", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.MailMessage, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, mailMessage, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, mailMessage, null);
+                let serializationData = { requestTypeMetadata: ReleaseInterfaces.TypeInfo.MailMessage, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} definitionId
     */
-    public getSourceBranches(
+    public async getSourceBranches(
         project: string,
         definitionId: number
         ): Promise<string[]> {
-    
-        let deferred = Q.defer<string[]>();
 
-        let onResult = (err: any, statusCode: number, sourcebranches: string[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(sourcebranches);
-            }
-        };
+        return new Promise<string[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId
+            };
 
-        let routeValues: any = {
-            project: project,
-            definitionId: definitionId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "0e5def23-78b3-461f-8198-1558f25041c8",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "0e5def23-78b3-461f-8198-1558f25041c8", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2067,48 +2349,46 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {number} environmentId
     * @param {number} attemptId
     */
-    public getTasks(
+    public async getTasks(
         project: string,
         releaseId: number,
         environmentId: number,
         attemptId?: number
         ): Promise<ReleaseInterfaces.ReleaseTask[]> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ReleaseTask[]>();
 
-        let onResult = (err: any, statusCode: number, tasks: ReleaseInterfaces.ReleaseTask[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(tasks);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ReleaseTask[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId,
+                environmentId: environmentId
+            };
 
-        let routeValues: any = {
-            project: project,
-            releaseId: releaseId,
-            environmentId: environmentId
-        };
+            let queryValues: any = {
+                attemptId: attemptId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "36b276e0-3c70-4320-a63c-1a2e1466a0d1",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            attemptId: attemptId,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "36b276e0-3c70-4320-a63c-1a2e1466a0d1", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseTask, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseTask, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2117,167 +2397,200 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {number} environmentId
     * @param {number} releaseDeployPhaseId
     */
-    public getTasksForTaskGroup(
+    public async getTasksForTaskGroup(
         project: string,
         releaseId: number,
         environmentId: number,
         releaseDeployPhaseId: number
         ): Promise<ReleaseInterfaces.ReleaseTask[]> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ReleaseTask[]>();
 
-        let onResult = (err: any, statusCode: number, tasks: ReleaseInterfaces.ReleaseTask[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(tasks);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ReleaseTask[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId,
+                environmentId: environmentId,
+                releaseDeployPhaseId: releaseDeployPhaseId
+            };
 
-        let routeValues: any = {
-            project: project,
-            releaseId: releaseId,
-            environmentId: environmentId,
-            releaseDeployPhaseId: releaseDeployPhaseId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.2",
+                    "Release",
+                    "4259191d-4b0a-4409-9fb3-09f22ab9bc47",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Release", "4259191d-4b0a-4409-9fb3-09f22ab9bc47", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseTask, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ReleaseTask, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-        return deferred.promise;
+    /**
+    * Returns throttled queue as per the task hub license of parallel releases
+    * 
+    * @param {string} projectId
+    * @param {number} releaseId
+    */
+    public async getQueuedReleases(
+        projectId?: string,
+        releaseId?: number
+        ): Promise<ReleaseInterfaces.QueuedReleaseData[]> {
+
+        return new Promise<ReleaseInterfaces.QueuedReleaseData[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+            };
+
+            let queryValues: any = {
+                projectId: projectId,
+                releaseId: releaseId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "cf6fc7ba-4ad9-403b-86e6-e372cd3b2327",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     */
-    public getArtifactTypeDefinitions(
+    public async getArtifactTypeDefinitions(
         project: string
         ): Promise<ReleaseInterfaces.ArtifactTypeDefinition[]> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ArtifactTypeDefinition[]>();
 
-        let onResult = (err: any, statusCode: number, types: ReleaseInterfaces.ArtifactTypeDefinition[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(types);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ArtifactTypeDefinition[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "8efc2a3c-1fc8-4f6d-9822-75e98cecb48f",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "8efc2a3c-1fc8-4f6d-9822-75e98cecb48f", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ArtifactTypeDefinition, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ReleaseInterfaces.TypeInfo.ArtifactTypeDefinition, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} releaseDefinitionId
     */
-    public getArtifactVersions(
+    public async getArtifactVersions(
         project: string,
         releaseDefinitionId: number
         ): Promise<ReleaseInterfaces.ArtifactVersionQueryResult> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ArtifactVersionQueryResult>();
 
-        let onResult = (err: any, statusCode: number, version: ReleaseInterfaces.ArtifactVersionQueryResult) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(version);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ArtifactVersionQueryResult>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                releaseDefinitionId: releaseDefinitionId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "30fc787e-a9e0-4a07-9fbc-3e903aa051d2",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            releaseDefinitionId: releaseDefinitionId,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "30fc787e-a9e0-4a07-9fbc-3e903aa051d2", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {ReleaseInterfaces.Artifact[]} artifacts
     * @param {string} project - Project ID or project name
     */
-    public getArtifactVersionsForSources(
+    public async getArtifactVersionsForSources(
         artifacts: ReleaseInterfaces.Artifact[],
         project: string
         ): Promise<ReleaseInterfaces.ArtifactVersionQueryResult> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ArtifactVersionQueryResult>();
 
-        let onResult = (err: any, statusCode: number, version: ReleaseInterfaces.ArtifactVersionQueryResult) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(version);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ArtifactVersionQueryResult>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "30fc787e-a9e0-4a07-9fbc-3e903aa051d2",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "30fc787e-a9e0-4a07-9fbc-3e903aa051d2", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, artifacts, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, artifacts, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2286,48 +2599,46 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {number} baseReleaseId
     * @param {number} top
     */
-    public getReleaseWorkItemsRefs(
+    public async getReleaseWorkItemsRefs(
         project: string,
         releaseId: number,
         baseReleaseId?: number,
         top?: number
         ): Promise<ReleaseInterfaces.ReleaseWorkItemRef[]> {
-    
-        let deferred = Q.defer<ReleaseInterfaces.ReleaseWorkItemRef[]>();
 
-        let onResult = (err: any, statusCode: number, workitems: ReleaseInterfaces.ReleaseWorkItemRef[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(workitems);
-            }
-        };
+        return new Promise<ReleaseInterfaces.ReleaseWorkItemRef[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId
+            };
 
-        let routeValues: any = {
-            project: project,
-            releaseId: releaseId
-        };
+            let queryValues: any = {
+                baseReleaseId: baseReleaseId,
+                '$top': top,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Release",
+                    "4f165cc0-875c-4768-b148-f12f78769fab",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            baseReleaseId: baseReleaseId,
-            '$top': top,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Release", "4f165cc0-875c-4768-b148-f12f78769fab", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
 }

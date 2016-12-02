@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 import fs = require("fs");
-import Q = require('q');
 import http = require("http");
 import httpm = require('./HttpClient');
 import ifm = require("./interfaces/common/VsoBaseInterfaces");
@@ -55,26 +54,50 @@ export class RestClient {
         return this._sendRequest('PATCH', requestUrl, apiVersion, objs, additionalHeaders || {}, serializationData);
     }
 
+    public replace(requestUrl: string, 
+                 apiVersion: string, 
+                 objs: any, 
+                 additionalHeaders?: ifm.IHeaders, 
+                 serializationData?: serm.SerializationData): Promise<IRestClientResponse> {
+
+        return this._sendRequest('PUT', requestUrl, apiVersion, objs, additionalHeaders || {}, serializationData);
+    }
+
+    public uploadStream(verb: string, url: string, apiVersion: string, contentStream: NodeJS.ReadableStream, additionalHeaders: ifm.IHeaders, serializationData?: serm.SerializationData): Promise<IRestClientResponse> {
+        return new Promise<IRestClientResponse>((resolve, reject) => {
+            this.client.uploadStream(verb, url, apiVersion, contentStream, additionalHeaders || {}, (err:any, statusCode: number, obj: any) => {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    let res: IRestClientResponse = <IRestClientResponse>{};
+                    res.statusCode = statusCode;
+                    res.result = obj;
+                    resolve(res);
+                }
+            }, serializationData);
+        });
+    }
+
     private _getJson(verb: string, 
                      requestUrl: string, 
                      apiVersion: string, 
                      headers: ifm.IHeaders, 
                      serializationData: serm.SerializationData): Promise<IRestClientResponse> {
 
-        let deferred = Q.defer<IRestClientResponse>();
-        this.client._getJson(verb, requestUrl, apiVersion, headers, serializationData, (err:any, statusCode: number, obj: any) => {
-            if (err) {
-                deferred.reject(err);
-            }
-            else {
-                let res: IRestClientResponse = <IRestClientResponse>{};
-                res.statusCode = statusCode;
-                res.result = obj;
-                deferred.resolve(res);
-            }
+        return new Promise<IRestClientResponse>((resolve, reject) => {
+            this.client._getJson(verb, requestUrl, apiVersion, headers, (err:any, statusCode: number, obj: any) => {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    let res: IRestClientResponse = <IRestClientResponse>{};
+                    res.statusCode = statusCode;
+                    res.result = obj;
+                    resolve(res);
+                }
+            }, serializationData);
         });
-
-        return deferred.promise;        
     }
 
     private _sendRequest(verb: string, 
@@ -84,20 +107,19 @@ export class RestClient {
                          headers: ifm.IHeaders, 
                          serializationData: serm.SerializationData): Promise<IRestClientResponse> {
 
-        let deferred = Q.defer<IRestClientResponse>();
-        this.client._sendJson(verb, requestUrl, apiVersion, objs, headers, serializationData, (err:any, statusCode: number, obj: any) => {
-            if (err) {
-                deferred.reject(err);
-            }
-            else {
-                let res: IRestClientResponse = <IRestClientResponse>{};
-                res.statusCode = statusCode;
-                res.result = obj;
-                deferred.resolve(res);
-            }
+        return new Promise<IRestClientResponse>((resolve, reject) => {
+            this.client._sendJson(verb, requestUrl, apiVersion, objs, headers, (err:any, statusCode: number, obj: any) => {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    let res: IRestClientResponse = <IRestClientResponse>{};
+                    res.statusCode = statusCode;
+                    res.result = obj;
+                    resolve(res);
+                }
+            }, serializationData);
         });
-
-        return deferred.promise;        
     }    
 }
 

@@ -11,11 +11,11 @@
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
 
-import Q = require('q');
 import restm = require('./RestClient');
 import httpm = require('./HttpClient');
 import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
+import serm = require('./Serialization');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import ExtensionManagementInterfaces = require("./interfaces/ExtensionManagementInterfaces");
 import GalleryInterfaces = require("./interfaces/GalleryInterfaces");
@@ -57,83 +57,78 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     * @param {boolean} testCommerce
     * @param {boolean} isFreeOrTrialInstall
     */
-    public getAcquisitionOptions(
+    public async getAcquisitionOptions(
         itemId: string,
         testCommerce?: boolean,
         isFreeOrTrialInstall?: boolean
         ): Promise<ExtensionManagementInterfaces.AcquisitionOptions> {
-    
-        let deferred = Q.defer<ExtensionManagementInterfaces.AcquisitionOptions>();
 
-        let onResult = (err: any, statusCode: number, AcquisitionOption: ExtensionManagementInterfaces.AcquisitionOptions) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(AcquisitionOption);
-            }
-        };
+        return new Promise<ExtensionManagementInterfaces.AcquisitionOptions>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            let queryValues: any = {
+                itemId: itemId,
+                testCommerce: testCommerce,
+                isFreeOrTrialInstall: isFreeOrTrialInstall,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "288dff58-d13b-468e-9671-0fb754e9398c",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            itemId: itemId,
-            testCommerce: testCommerce,
-            isFreeOrTrialInstall: isFreeOrTrialInstall,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "288dff58-d13b-468e-9671-0fb754e9398c", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.AcquisitionOptions, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.AcquisitionOptions, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {ExtensionManagementInterfaces.ExtensionAcquisitionRequest} acquisitionRequest
     */
-    public requestAcquisition(
+    public async requestAcquisition(
         acquisitionRequest: ExtensionManagementInterfaces.ExtensionAcquisitionRequest
         ): Promise<ExtensionManagementInterfaces.ExtensionAcquisitionRequest> {
-    
-        let deferred = Q.defer<ExtensionManagementInterfaces.ExtensionAcquisitionRequest>();
 
-        let onResult = (err: any, statusCode: number, AcquisitionRequest: ExtensionManagementInterfaces.ExtensionAcquisitionRequest) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(AcquisitionRequest);
-            }
-        };
+        return new Promise<ExtensionManagementInterfaces.ExtensionAcquisitionRequest>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "da616457-eed3-4672-92d7-18d21f5c1658",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "da616457-eed3-4672-92d7-18d21f5c1658", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: ExtensionManagementInterfaces.TypeInfo.ExtensionAcquisitionRequest, responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.ExtensionAcquisitionRequest, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, acquisitionRequest, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, acquisitionRequest, null);
+                let serializationData = { requestTypeMetadata: ExtensionManagementInterfaces.TypeInfo.ExtensionAcquisitionRequest, responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.ExtensionAcquisitionRequest, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -141,43 +136,40 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     * @param {string} extensionName
     * @param {string} registrationId
     */
-    public registerAuthorization(
+    public async registerAuthorization(
         publisherName: string,
         extensionName: string,
         registrationId: string
         ): Promise<ExtensionManagementInterfaces.ExtensionAuthorization> {
-    
-        let deferred = Q.defer<ExtensionManagementInterfaces.ExtensionAuthorization>();
 
-        let onResult = (err: any, statusCode: number, Authorization: ExtensionManagementInterfaces.ExtensionAuthorization) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Authorization);
-            }
-        };
+        return new Promise<ExtensionManagementInterfaces.ExtensionAuthorization>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                registrationId: registrationId
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName,
-            registrationId: registrationId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "f21cfc80-d2d2-4248-98bb-7820c74c4606",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "f21cfc80-d2d2-4248-98bb-7820c74c4606", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.replace(url, apiVersion, null, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.replace(url, apiVersion, null, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -188,7 +180,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     * @param {string} scopeValue
     * @param {string} collectionName
     */
-    public createDocumentByName(
+    public async createDocumentByName(
         doc: any,
         publisherName: string,
         extensionName: string,
@@ -196,40 +188,37 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
         scopeValue: string,
         collectionName: string
         ): Promise<any> {
-    
-        let deferred = Q.defer<any>();
 
-        let onResult = (err: any, statusCode: number, Data: any) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Data);
-            }
-        };
+        return new Promise<any>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                scopeType: scopeType,
+                scopeValue: scopeValue,
+                collectionName: collectionName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName,
-            scopeType: scopeType,
-            scopeValue: scopeValue,
-            collectionName: collectionName
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, doc, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, doc, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -240,7 +229,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     * @param {string} collectionName
     * @param {string} documentId
     */
-    public deleteDocumentByName(
+    public async deleteDocumentByName(
         publisherName: string,
         extensionName: string,
         scopeType: string,
@@ -248,41 +237,38 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
         collectionName: string,
         documentId: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                scopeType: scopeType,
+                scopeValue: scopeValue,
+                collectionName: collectionName,
+                documentId: documentId
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName,
-            scopeType: scopeType,
-            scopeValue: scopeValue,
-            collectionName: collectionName,
-            documentId: documentId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -293,7 +279,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     * @param {string} collectionName
     * @param {string} documentId
     */
-    public getDocumentByName(
+    public async getDocumentByName(
         publisherName: string,
         extensionName: string,
         scopeType: string,
@@ -301,41 +287,38 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
         collectionName: string,
         documentId: string
         ): Promise<any> {
-    
-        let deferred = Q.defer<any>();
 
-        let onResult = (err: any, statusCode: number, Data: any) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Data);
-            }
-        };
+        return new Promise<any>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                scopeType: scopeType,
+                scopeValue: scopeValue,
+                collectionName: collectionName,
+                documentId: documentId
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName,
-            scopeType: scopeType,
-            scopeValue: scopeValue,
-            collectionName: collectionName,
-            documentId: documentId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -345,47 +328,44 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     * @param {string} scopeValue
     * @param {string} collectionName
     */
-    public getDocumentsByName(
+    public async getDocumentsByName(
         publisherName: string,
         extensionName: string,
         scopeType: string,
         scopeValue: string,
         collectionName: string
         ): Promise<any[]> {
-    
-        let deferred = Q.defer<any[]>();
 
-        let onResult = (err: any, statusCode: number, Data: any[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Data);
-            }
-        };
+        return new Promise<any[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                scopeType: scopeType,
+                scopeValue: scopeValue,
+                collectionName: collectionName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName,
-            scopeType: scopeType,
-            scopeValue: scopeValue,
-            collectionName: collectionName
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
                 let serializationData = {  responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -396,7 +376,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     * @param {string} scopeValue
     * @param {string} collectionName
     */
-    public setDocumentByName(
+    public async setDocumentByName(
         doc: any,
         publisherName: string,
         extensionName: string,
@@ -404,40 +384,37 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
         scopeValue: string,
         collectionName: string
         ): Promise<any> {
-    
-        let deferred = Q.defer<any>();
 
-        let onResult = (err: any, statusCode: number, Data: any) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Data);
-            }
-        };
+        return new Promise<any>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                scopeType: scopeType,
+                scopeValue: scopeValue,
+                collectionName: collectionName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName,
-            scopeType: scopeType,
-            scopeValue: scopeValue,
-            collectionName: collectionName
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.replace(url, apiVersion, doc, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.replace(url, apiVersion, doc, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -448,7 +425,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     * @param {string} scopeValue
     * @param {string} collectionName
     */
-    public updateDocumentByName(
+    public async updateDocumentByName(
         doc: any,
         publisherName: string,
         extensionName: string,
@@ -456,40 +433,37 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
         scopeValue: string,
         collectionName: string
         ): Promise<any> {
-    
-        let deferred = Q.defer<any>();
 
-        let onResult = (err: any, statusCode: number, Data: any) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Data);
-            }
-        };
+        return new Promise<any>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                scopeType: scopeType,
+                scopeValue: scopeValue,
+                collectionName: collectionName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName,
-            scopeType: scopeType,
-            scopeValue: scopeValue,
-            collectionName: collectionName
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.update(url, apiVersion, doc, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, doc, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -497,42 +471,39 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     * @param {string} publisherName
     * @param {string} extensionName
     */
-    public queryCollectionsByName(
+    public async queryCollectionsByName(
         collectionQuery: ExtensionManagementInterfaces.ExtensionDataCollectionQuery,
         publisherName: string,
         extensionName: string
         ): Promise<ExtensionManagementInterfaces.ExtensionDataCollection[]> {
-    
-        let deferred = Q.defer<ExtensionManagementInterfaces.ExtensionDataCollection[]>();
 
-        let onResult = (err: any, statusCode: number, ExtensionDataCollectionQuery: ExtensionManagementInterfaces.ExtensionDataCollection[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ExtensionDataCollectionQuery);
-            }
-        };
+        return new Promise<ExtensionManagementInterfaces.ExtensionDataCollection[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "56c331f1-ce53-4318-adfd-4db5c52a7a2e",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "56c331f1-ce53-4318-adfd-4db5c52a7a2e", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, collectionQuery, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, collectionQuery, null);
+                let serializationData = {  responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -540,83 +511,78 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     * @param {boolean} includeErrors
     * @param {boolean} includeInstallationIssues
     */
-    public getStates(
+    public async getStates(
         includeDisabled?: boolean,
         includeErrors?: boolean,
         includeInstallationIssues?: boolean
         ): Promise<ExtensionManagementInterfaces.ExtensionState[]> {
-    
-        let deferred = Q.defer<ExtensionManagementInterfaces.ExtensionState[]>();
 
-        let onResult = (err: any, statusCode: number, ExtensionStates: ExtensionManagementInterfaces.ExtensionState[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ExtensionStates);
-            }
-        };
+        return new Promise<ExtensionManagementInterfaces.ExtensionState[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            let queryValues: any = {
+                includeDisabled: includeDisabled,
+                includeErrors: includeErrors,
+                includeInstallationIssues: includeInstallationIssues,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "92755d3d-9a8a-42b3-8a4d-87359fe5aa93",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            includeDisabled: includeDisabled,
-            includeErrors: includeErrors,
-            includeInstallationIssues: includeInstallationIssues,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "92755d3d-9a8a-42b3-8a4d-87359fe5aa93", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.ExtensionState, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.ExtensionState, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {ExtensionManagementInterfaces.InstalledExtensionQuery} query
     */
-    public queryExtensions(
+    public async queryExtensions(
         query: ExtensionManagementInterfaces.InstalledExtensionQuery
         ): Promise<ExtensionManagementInterfaces.InstalledExtension[]> {
-    
-        let deferred = Q.defer<ExtensionManagementInterfaces.InstalledExtension[]>();
 
-        let onResult = (err: any, statusCode: number, InstalledExtensionQuery: ExtensionManagementInterfaces.InstalledExtension[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(InstalledExtensionQuery);
-            }
-        };
+        return new Promise<ExtensionManagementInterfaces.InstalledExtension[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "046c980f-1345-4ce2-bf85-b46d10ff4cfd",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "046c980f-1345-4ce2-bf85-b46d10ff4cfd", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.InstalledExtension, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, query, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, query, null);
+                let serializationData = {  responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.InstalledExtension, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -625,85 +591,80 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     * @param {string[]} assetTypes
     * @param {boolean} includeInstallationIssues
     */
-    public getInstalledExtensions(
+    public async getInstalledExtensions(
         includeDisabledExtensions?: boolean,
         includeErrors?: boolean,
         assetTypes?: string[],
         includeInstallationIssues?: boolean
         ): Promise<ExtensionManagementInterfaces.InstalledExtension[]> {
-    
-        let deferred = Q.defer<ExtensionManagementInterfaces.InstalledExtension[]>();
 
-        let onResult = (err: any, statusCode: number, InstalledExtensions: ExtensionManagementInterfaces.InstalledExtension[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(InstalledExtensions);
-            }
-        };
+        return new Promise<ExtensionManagementInterfaces.InstalledExtension[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            let queryValues: any = {
+                includeDisabledExtensions: includeDisabledExtensions,
+                includeErrors: includeErrors,
+                assetTypes: assetTypes && assetTypes.join(":"),
+                includeInstallationIssues: includeInstallationIssues,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "275424d0-c844-4fe2-bda6-04933a1357d8",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            includeDisabledExtensions: includeDisabledExtensions,
-            includeErrors: includeErrors,
-            assetTypes: assetTypes && assetTypes.join(":"),
-            includeInstallationIssues: includeInstallationIssues,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "275424d0-c844-4fe2-bda6-04933a1357d8", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.InstalledExtension, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.InstalledExtension, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {ExtensionManagementInterfaces.InstalledExtension} extension
     */
-    public updateInstalledExtension(
+    public async updateInstalledExtension(
         extension: ExtensionManagementInterfaces.InstalledExtension
         ): Promise<ExtensionManagementInterfaces.InstalledExtension> {
-    
-        let deferred = Q.defer<ExtensionManagementInterfaces.InstalledExtension>();
 
-        let onResult = (err: any, statusCode: number, InstalledExtension: ExtensionManagementInterfaces.InstalledExtension) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(InstalledExtension);
-            }
-        };
+        return new Promise<ExtensionManagementInterfaces.InstalledExtension>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "275424d0-c844-4fe2-bda6-04933a1357d8",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "275424d0-c844-4fe2-bda6-04933a1357d8", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: ExtensionManagementInterfaces.TypeInfo.InstalledExtension, responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.InstalledExtension, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.update(url, apiVersion, extension, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, extension, null);
+                let serializationData = { requestTypeMetadata: ExtensionManagementInterfaces.TypeInfo.InstalledExtension, responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.InstalledExtension, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -711,46 +672,44 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     * @param {string} extensionName
     * @param {string[]} assetTypes
     */
-    public getInstalledExtensionByName(
+    public async getInstalledExtensionByName(
         publisherName: string,
         extensionName: string,
         assetTypes?: string[]
         ): Promise<ExtensionManagementInterfaces.InstalledExtension> {
-    
-        let deferred = Q.defer<ExtensionManagementInterfaces.InstalledExtension>();
 
-        let onResult = (err: any, statusCode: number, InstalledExtensionsByName: ExtensionManagementInterfaces.InstalledExtension) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(InstalledExtensionsByName);
-            }
-        };
+        return new Promise<ExtensionManagementInterfaces.InstalledExtension>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName
-        };
+            let queryValues: any = {
+                assetTypes: assetTypes && assetTypes.join(":"),
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "fb0da285-f23e-4b56-8b53-3ef5f9f6de66",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            assetTypes: assetTypes && assetTypes.join(":"),
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "fb0da285-f23e-4b56-8b53-3ef5f9f6de66", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.InstalledExtension, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.InstalledExtension, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -758,43 +717,40 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     * @param {string} extensionName
     * @param {string} version
     */
-    public installExtensionByName(
+    public async installExtensionByName(
         publisherName: string,
         extensionName: string,
         version?: string
         ): Promise<ExtensionManagementInterfaces.InstalledExtension> {
-    
-        let deferred = Q.defer<ExtensionManagementInterfaces.InstalledExtension>();
 
-        let onResult = (err: any, statusCode: number, InstalledExtensionsByName: ExtensionManagementInterfaces.InstalledExtension) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(InstalledExtensionsByName);
-            }
-        };
+        return new Promise<ExtensionManagementInterfaces.InstalledExtension>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                version: version
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName,
-            version: version
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "fb0da285-f23e-4b56-8b53-3ef5f9f6de66",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "fb0da285-f23e-4b56-8b53-3ef5f9f6de66", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.InstalledExtension, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, null, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, null, null);
+                let serializationData = {  responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.InstalledExtension, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -803,86 +759,81 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     * @param {string} reason
     * @param {string} reasonCode
     */
-    public uninstallExtensionByName(
+    public async uninstallExtensionByName(
         publisherName: string,
         extensionName: string,
         reason?: string,
         reasonCode?: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName
-        };
+            let queryValues: any = {
+                reason: reason,
+                reasonCode: reasonCode,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "fb0da285-f23e-4b56-8b53-3ef5f9f6de66",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            reason: reason,
-            reasonCode: reasonCode,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "fb0da285-f23e-4b56-8b53-3ef5f9f6de66", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} userId
     */
-    public getPolicies(
+    public async getPolicies(
         userId: string
         ): Promise<GalleryInterfaces.UserExtensionPolicy> {
-    
-        let deferred = Q.defer<GalleryInterfaces.UserExtensionPolicy>();
 
-        let onResult = (err: any, statusCode: number, Policie: GalleryInterfaces.UserExtensionPolicy) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Policie);
-            }
-        };
+        return new Promise<GalleryInterfaces.UserExtensionPolicy>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                userId: userId
+            };
 
-        let routeValues: any = {
-            userId: userId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "e5cc8c09-407b-4867-8319-2ae3338cbf6f",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "e5cc8c09-407b-4867-8319-2ae3338cbf6f", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: GalleryInterfaces.TypeInfo.UserExtensionPolicy, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: GalleryInterfaces.TypeInfo.UserExtensionPolicy, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -892,84 +843,79 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     * @param {string} requesterId
     * @param {ExtensionManagementInterfaces.ExtensionRequestState} state
     */
-    public resolveRequest(
+    public async resolveRequest(
         rejectMessage: string,
         publisherName: string,
         extensionName: string,
         requesterId: string,
         state: ExtensionManagementInterfaces.ExtensionRequestState
         ): Promise<number> {
-    
-        let deferred = Q.defer<number>();
 
-        let onResult = (err: any, statusCode: number, RequestedExtension: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(RequestedExtension);
-            }
-        };
+        return new Promise<number>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                requesterId: requesterId
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName,
-            requesterId: requesterId
-        };
+            let queryValues: any = {
+                state: state,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "aa93e1f3-511c-4364-8b9c-eb98818f2e0b",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            state: state,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "aa93e1f3-511c-4364-8b9c-eb98818f2e0b", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.update(url, apiVersion, rejectMessage, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, rejectMessage, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     */
-    public getRequests(
+    public async getRequests(
         ): Promise<ExtensionManagementInterfaces.RequestedExtension[]> {
-    
-        let deferred = Q.defer<ExtensionManagementInterfaces.RequestedExtension[]>();
 
-        let onResult = (err: any, statusCode: number, RequestedExtensions: ExtensionManagementInterfaces.RequestedExtension[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(RequestedExtensions);
-            }
-        };
+        return new Promise<ExtensionManagementInterfaces.RequestedExtension[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "216b978f-b164-424e-ada2-b77561e842b7",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "216b978f-b164-424e-ada2-b77561e842b7", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.RequestedExtension, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.RequestedExtension, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -978,88 +924,83 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     * @param {string} extensionName
     * @param {ExtensionManagementInterfaces.ExtensionRequestState} state
     */
-    public resolveAllRequests(
+    public async resolveAllRequests(
         rejectMessage: string,
         publisherName: string,
         extensionName: string,
         state: ExtensionManagementInterfaces.ExtensionRequestState
         ): Promise<number> {
-    
-        let deferred = Q.defer<number>();
 
-        let onResult = (err: any, statusCode: number, RequestedExtension: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(RequestedExtension);
-            }
-        };
+        return new Promise<number>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName
-        };
+            let queryValues: any = {
+                state: state,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "ba93e1f3-511c-4364-8b9c-eb98818f2e0b",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            state: state,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "ba93e1f3-511c-4364-8b9c-eb98818f2e0b", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.update(url, apiVersion, rejectMessage, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, rejectMessage, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} publisherName
     * @param {string} extensionName
     */
-    public deleteRequest(
+    public async deleteRequest(
         publisherName: string,
         extensionName: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "f5afca1e-a728-4294-aa2d-4af0173431b5",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "f5afca1e-a728-4294-aa2d-4af0173431b5", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1067,77 +1008,71 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     * @param {string} extensionName
     * @param {string} requestMessage
     */
-    public requestExtension(
+    public async requestExtension(
         publisherName: string,
         extensionName: string,
         requestMessage: string
         ): Promise<ExtensionManagementInterfaces.RequestedExtension> {
-    
-        let deferred = Q.defer<ExtensionManagementInterfaces.RequestedExtension>();
 
-        let onResult = (err: any, statusCode: number, RequestedExtension: ExtensionManagementInterfaces.RequestedExtension) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(RequestedExtension);
-            }
-        };
+        return new Promise<ExtensionManagementInterfaces.RequestedExtension>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "f5afca1e-a728-4294-aa2d-4af0173431b5",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "f5afca1e-a728-4294-aa2d-4af0173431b5", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.RequestedExtension, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, requestMessage, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, requestMessage, null);
+                let serializationData = {  responseTypeMetadata: ExtensionManagementInterfaces.TypeInfo.RequestedExtension, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     */
-    public getToken(
+    public async getToken(
         ): Promise<string> {
-    
-        let deferred = Q.defer<string>();
 
-        let onResult = (err: any, statusCode: number, Token: string) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Token);
-            }
-        };
+        return new Promise<string>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "ExtensionManagement",
+                    "3a2e24ed-1d6f-4cb2-9f3b-45a96bbfaf50",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "ExtensionManagement", "3a2e24ed-1d6f-4cb2-9f3b-45a96bbfaf50", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
 }

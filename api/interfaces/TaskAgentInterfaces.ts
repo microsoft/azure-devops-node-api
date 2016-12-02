@@ -10,6 +10,7 @@
 
 "use strict";
 
+import DistributedTaskCommonInterfaces = require("../interfaces/DistributedTaskCommonInterfaces");
 import FormInputInterfaces = require("../interfaces/common/FormInputInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
@@ -17,6 +18,7 @@ import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 export interface AgentChangeEvent {
     agent: TaskAgent;
     eventType: string;
+    pool: TaskAgentPoolReference;
     poolId: number;
     timeStamp: Date;
 }
@@ -69,6 +71,8 @@ export interface AzureSpnOperationStatus {
 export interface AzureSubscription {
     displayName: string;
     subscriptionId: string;
+    subscriptionTenantId: string;
+    subscriptionTenantName: string;
 }
 
 export interface AzureSubscriptionQueryResult {
@@ -82,15 +86,14 @@ export interface DataSource {
     resultSelector: string;
 }
 
-export interface DataSourceBinding {
+export interface DataSourceBinding extends DistributedTaskCommonInterfaces.DataSourceBindingBase {
+}
+
+export interface DataSourceDetails {
     dataSourceName: string;
-    endpointId: string;
-    endpointUrl: string;
+    dataSourceUrl: string;
     parameters: { [key: string] : string; };
     resultSelector: string;
-    resultTemplate: string;
-    target: string;
-    transformationTemplate: string;
 }
 
 export interface DependencyBinding {
@@ -101,6 +104,28 @@ export interface DependencyBinding {
 export interface DependsOn {
     input: string;
     map: DependencyBinding[];
+}
+
+export interface DeploymentMachine {
+    agent: TaskAgentReference;
+    tags: string[];
+}
+
+export interface DeploymentMachineGroup extends DeploymentMachineGroupReference {
+    machines: DeploymentMachine[];
+    size: number;
+}
+
+export interface DeploymentMachineGroupReference {
+    id: number;
+    name: string;
+    pool: TaskAgentPoolReference;
+    projectId: string;
+}
+
+export interface DeploymentMachinesChangeEvent {
+    machineGroupReference: DeploymentMachineGroupReference;
+    machines: DeploymentMachine[];
 }
 
 export interface EndpointAuthorization {
@@ -143,6 +168,7 @@ export interface JobCancelMessage {
 }
 
 export interface JobCompletedEvent extends JobEvent {
+    outputVariables: { [key: string] : VariableValue; };
     requestId: number;
     result: TaskResult;
 }
@@ -199,6 +225,12 @@ export interface JobRequestMessage {
 export interface JobStartedEvent extends JobEvent {
 }
 
+export enum MachineGroupActionFilter {
+    None = 0,
+    Manage = 2,
+    Use = 16,
+}
+
 export interface MaskHint {
     type: MaskType;
     value: string;
@@ -224,12 +256,22 @@ export interface MetaTaskStep {
     timeoutInMinutes: number;
 }
 
+/**
+ * Represents a downloadable package.
+ */
 export interface PackageMetadata {
+    /**
+     * The date the package was created
+     */
     createdOn: Date;
     /**
      * A direct link to download the package.
      */
     downloadUrl: string;
+    /**
+     * The UI uses this to display instructions, i.e. "unzip MyAgent.zip"
+     */
+    filename: string;
     /**
      * MD5 hash as a base64 string
      */
@@ -238,8 +280,17 @@ export interface PackageMetadata {
      * A link to documentation
      */
     infoUrl: string;
+    /**
+     * The platform (win7, linux, etc.)
+     */
     platform: string;
+    /**
+     * The type of package (e.g. "agent")
+     */
     type: string;
+    /**
+     * The package version.
+     */
     version: PackageVersion;
 }
 
@@ -253,6 +304,10 @@ export interface PlanEnvironment {
     mask: MaskHint[];
     options: { [key: string] : JobOption; };
     variables: { [key: string] : string; };
+}
+
+export interface ResultTransformationDetails {
+    resultTemplate: string;
 }
 
 export interface SendJobResponse {
@@ -322,6 +377,25 @@ export interface ServiceEndpointAuthenticationScheme {
     scheme: string;
 }
 
+export interface ServiceEndpointDetails {
+    authorization: EndpointAuthorization;
+    data: { [key: string] : string; };
+    type: string;
+    url: string;
+}
+
+export interface ServiceEndpointRequest {
+    dataSourceDetails: DataSourceDetails;
+    resultTransformationDetails: ResultTransformationDetails;
+    serviceEndpointDetails: ServiceEndpointDetails;
+}
+
+export interface ServiceEndpointRequestResult {
+    errorMessage: string;
+    result: any;
+    statusCode: string;
+}
+
 export interface ServiceEndpointType {
     authenticationSchemes: ServiceEndpointAuthenticationScheme[];
     dataSources: DataSource[];
@@ -330,6 +404,7 @@ export interface ServiceEndpointType {
     endpointUrl: EndpointUrl;
     helpLink: HelpLink;
     helpMarkDown: string;
+    iconUrl: string;
     inputDescriptors: FormInputInterfaces.InputDescriptor[];
     name: string;
 }
@@ -380,6 +455,7 @@ export interface TaskAgentAuthorization {
 
 export interface TaskAgentJobRequest {
     assignTime: Date;
+    data: { [key: string] : string; };
     definition: TaskOrchestrationOwner;
     demands: any[];
     finishTime: Date;
@@ -462,10 +538,25 @@ export interface TaskAgentPool extends TaskAgentPoolReference {
     size: number;
 }
 
+export enum TaskAgentPoolActionFilter {
+    None = 0,
+    Manage = 2,
+    Use = 16,
+}
+
 export interface TaskAgentPoolReference {
     id: number;
     name: string;
+    /**
+     * Gets or sets the type of the pool
+     */
+    poolType: TaskAgentPoolType;
     scope: string;
+}
+
+export enum TaskAgentPoolType {
+    Automation = 1,
+    Deployment = 2,
 }
 
 /**
@@ -602,6 +693,9 @@ export interface TaskDefinition {
     name: string;
     packageLocation: string;
     packageType: string;
+    preview: boolean;
+    releaseNotes: string;
+    runsOn: string[];
     serverOwned: boolean;
     sourceDefinitions: TaskSourceDefinition[];
     sourceLocation: string;
@@ -665,6 +759,11 @@ export interface TaskExecution {
     platformInstructions: { [key: string] : { [key: string] : string; }; };
 }
 
+export interface TaskGroup extends TaskDefinition {
+    owner: string;
+    tasks: TaskGroupStep[];
+}
+
 export interface TaskGroupDefinition {
     displayName: string;
     isExpanded: boolean;
@@ -672,17 +771,27 @@ export interface TaskGroupDefinition {
     tags: string[];
 }
 
-export interface TaskInputDefinition {
-    defaultValue: string;
-    groupName: string;
-    helpMarkDown: string;
-    label: string;
-    name: string;
-    options: { [key: string] : string; };
-    properties: { [key: string] : string; };
-    required: boolean;
-    type: string;
-    visibleRule: string;
+export interface TaskGroupStep {
+    alwaysRun: boolean;
+    continueOnError: boolean;
+    displayName: string;
+    enabled: boolean;
+    inputs: { [key: string] : string; };
+    task: TaskDefinitionReference;
+    timeoutInMinutes: number;
+}
+
+export interface TaskHubLicenseDetails {
+    enterpriseUsersCount: number;
+    freeLicenseCount: number;
+    hasLicenseCountEverUpdated: boolean;
+    msdnUsersCount: number;
+    purchasedHostedLicenseCount: number;
+    purchasedLicenseCount: number;
+    totalLicenseCount: number;
+}
+
+export interface TaskInputDefinition extends DistributedTaskCommonInterfaces.TaskInputDefinitionBase {
 }
 
 export interface TaskInstance extends TaskReference {
@@ -711,6 +820,7 @@ export interface TaskOrchestrationContainer extends TaskOrchestrationItem {
     children: TaskOrchestrationItem[];
     continueOnError: boolean;
     data: { [key: string] : string; };
+    maxConcurrency: number;
     parallel: boolean;
     rollback: TaskOrchestrationContainer;
 }
@@ -745,6 +855,7 @@ export interface TaskOrchestrationPlan extends TaskOrchestrationPlanReference {
     environment: PlanEnvironment;
     finishTime: Date;
     implementation: TaskOrchestrationContainer;
+    planGroup: string;
     requestedById: string;
     requestedForId: string;
     result: TaskResult;
@@ -800,12 +911,7 @@ export enum TaskResult {
     Abandoned = 5,
 }
 
-export interface TaskSourceDefinition {
-    authKey: string;
-    endpoint: string;
-    keySelector: string;
-    selector: string;
-    target: string;
+export interface TaskSourceDefinition extends DistributedTaskCommonInterfaces.TaskSourceDefinitionBase {
 }
 
 export interface TaskVersion {
@@ -857,6 +963,28 @@ export interface TimelineReference {
     location: string;
 }
 
+export interface VariableGroup {
+    createdBy: VSSInterfaces.IdentityRef;
+    createdOn: Date;
+    description: string;
+    id: number;
+    modifiedBy: VSSInterfaces.IdentityRef;
+    modifiedOn: Date;
+    name: string;
+    variables: { [key: string] : VariableValue; };
+}
+
+export enum VariableGroupActionFilter {
+    None = 0,
+    Manage = 2,
+    Use = 16,
+}
+
+export interface VariableValue {
+    isSecret: boolean;
+    value: string;
+}
+
 export var TypeInfo = {
     AgentChangeEvent: {
         fields: <any>null
@@ -897,10 +1025,25 @@ export var TypeInfo = {
     DataSourceBinding: {
         fields: <any>null
     },
+    DataSourceDetails: {
+        fields: <any>null
+    },
     DependencyBinding: {
         fields: <any>null
     },
     DependsOn: {
+        fields: <any>null
+    },
+    DeploymentMachine: {
+        fields: <any>null
+    },
+    DeploymentMachineGroup: {
+        fields: <any>null
+    },
+    DeploymentMachineGroupReference: {
+        fields: <any>null
+    },
+    DeploymentMachinesChangeEvent: {
         fields: <any>null
     },
     EndpointAuthorization: {
@@ -951,6 +1094,13 @@ export var TypeInfo = {
     JobStartedEvent: {
         fields: <any>null
     },
+    MachineGroupActionFilter: {
+        enumValues: {
+            "none": 0,
+            "manage": 2,
+            "use": 16,
+        }
+    },
     MaskHint: {
         fields: <any>null
     },
@@ -975,6 +1125,9 @@ export var TypeInfo = {
     PlanEnvironment: {
         fields: <any>null
     },
+    ResultTransformationDetails: {
+        fields: <any>null
+    },
     SendJobResponse: {
         fields: <any>null
     },
@@ -988,6 +1141,15 @@ export var TypeInfo = {
         fields: <any>null
     },
     ServiceEndpointAuthenticationScheme: {
+        fields: <any>null
+    },
+    ServiceEndpointDetails: {
+        fields: <any>null
+    },
+    ServiceEndpointRequest: {
+        fields: <any>null
+    },
+    ServiceEndpointRequestResult: {
         fields: <any>null
     },
     ServiceEndpointType: {
@@ -1008,8 +1170,21 @@ export var TypeInfo = {
     TaskAgentPool: {
         fields: <any>null
     },
+    TaskAgentPoolActionFilter: {
+        enumValues: {
+            "none": 0,
+            "manage": 2,
+            "use": 16,
+        }
+    },
     TaskAgentPoolReference: {
         fields: <any>null
+    },
+    TaskAgentPoolType: {
+        enumValues: {
+            "automation": 1,
+            "deployment": 2,
+        }
     },
     TaskAgentPublicKey: {
         fields: <any>null
@@ -1070,7 +1245,16 @@ export var TypeInfo = {
     TaskExecution: {
         fields: <any>null
     },
+    TaskGroup: {
+        fields: <any>null
+    },
     TaskGroupDefinition: {
+        fields: <any>null
+    },
+    TaskGroupStep: {
+        fields: <any>null
+    },
+    TaskHubLicenseDetails: {
         fields: <any>null
     },
     TaskInputDefinition: {
@@ -1154,11 +1338,27 @@ export var TypeInfo = {
     TimelineReference: {
         fields: <any>null
     },
+    VariableGroup: {
+        fields: <any>null
+    },
+    VariableGroupActionFilter: {
+        enumValues: {
+            "none": 0,
+            "manage": 2,
+            "use": 16,
+        }
+    },
+    VariableValue: {
+        fields: <any>null
+    },
 };
 
 TypeInfo.AgentChangeEvent.fields = {
     agent: {
         typeInfo: TypeInfo.TaskAgent
+    },
+    pool: {
+        typeInfo: TypeInfo.TaskAgentPoolReference
     },
     timeStamp: {
         isDate: true,
@@ -1233,6 +1433,9 @@ TypeInfo.DataSource.fields = {
 TypeInfo.DataSourceBinding.fields = {
 };
 
+TypeInfo.DataSourceDetails.fields = {
+};
+
 TypeInfo.DependencyBinding.fields = {
 };
 
@@ -1240,6 +1443,38 @@ TypeInfo.DependsOn.fields = {
     map: {
         isArray: true,
         typeInfo: TypeInfo.DependencyBinding
+    },
+};
+
+TypeInfo.DeploymentMachine.fields = {
+    agent: {
+        typeInfo: TypeInfo.TaskAgentReference
+    },
+};
+
+TypeInfo.DeploymentMachineGroup.fields = {
+    machines: {
+        isArray: true,
+        typeInfo: TypeInfo.DeploymentMachine
+    },
+    pool: {
+        typeInfo: TypeInfo.TaskAgentPoolReference
+    },
+};
+
+TypeInfo.DeploymentMachineGroupReference.fields = {
+    pool: {
+        typeInfo: TypeInfo.TaskAgentPoolReference
+    },
+};
+
+TypeInfo.DeploymentMachinesChangeEvent.fields = {
+    machineGroupReference: {
+        typeInfo: TypeInfo.DeploymentMachineGroupReference
+    },
+    machines: {
+        isArray: true,
+        typeInfo: TypeInfo.DeploymentMachine
     },
 };
 
@@ -1271,6 +1506,8 @@ TypeInfo.JobCancelMessage.fields = {
 };
 
 TypeInfo.JobCompletedEvent.fields = {
+    outputVariables: {
+    },
     result: {
         enumType: TypeInfo.TaskResult
     },
@@ -1390,6 +1627,9 @@ TypeInfo.PlanEnvironment.fields = {
     },
 };
 
+TypeInfo.ResultTransformationDetails.fields = {
+};
+
 TypeInfo.SendJobResponse.fields = {
     events: {
         typeInfo: TypeInfo.JobEventsConfig
@@ -1444,6 +1684,27 @@ TypeInfo.ServiceEndpointAuthenticationScheme.fields = {
         isArray: true,
         typeInfo: FormInputInterfaces.TypeInfo.InputDescriptor
     },
+};
+
+TypeInfo.ServiceEndpointDetails.fields = {
+    authorization: {
+        typeInfo: TypeInfo.EndpointAuthorization
+    },
+};
+
+TypeInfo.ServiceEndpointRequest.fields = {
+    dataSourceDetails: {
+        typeInfo: TypeInfo.DataSourceDetails
+    },
+    resultTransformationDetails: {
+        typeInfo: TypeInfo.ResultTransformationDetails
+    },
+    serviceEndpointDetails: {
+        typeInfo: TypeInfo.ServiceEndpointDetails
+    },
+};
+
+TypeInfo.ServiceEndpointRequestResult.fields = {
 };
 
 TypeInfo.ServiceEndpointType.fields = {
@@ -1538,12 +1799,18 @@ TypeInfo.TaskAgentPool.fields = {
     createdOn: {
         isDate: true,
     },
+    poolType: {
+        enumType: TypeInfo.TaskAgentPoolType
+    },
     serviceAccountsGroup: {
         typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
 };
 
 TypeInfo.TaskAgentPoolReference.fields = {
+    poolType: {
+        enumType: TypeInfo.TaskAgentPoolType
+    },
 };
 
 TypeInfo.TaskAgentPublicKey.fields = {
@@ -1622,7 +1889,45 @@ TypeInfo.TaskExecution.fields = {
     },
 };
 
+TypeInfo.TaskGroup.fields = {
+    agentExecution: {
+        typeInfo: TypeInfo.TaskExecution
+    },
+    dataSourceBindings: {
+        isArray: true,
+        typeInfo: TypeInfo.DataSourceBinding
+    },
+    groups: {
+        isArray: true,
+        typeInfo: TypeInfo.TaskGroupDefinition
+    },
+    inputs: {
+        isArray: true,
+        typeInfo: TypeInfo.TaskInputDefinition
+    },
+    sourceDefinitions: {
+        isArray: true,
+        typeInfo: TypeInfo.TaskSourceDefinition
+    },
+    tasks: {
+        isArray: true,
+        typeInfo: TypeInfo.TaskGroupStep
+    },
+    version: {
+        typeInfo: TypeInfo.TaskVersion
+    },
+};
+
 TypeInfo.TaskGroupDefinition.fields = {
+};
+
+TypeInfo.TaskGroupStep.fields = {
+    task: {
+        typeInfo: TypeInfo.TaskDefinitionReference
+    },
+};
+
+TypeInfo.TaskHubLicenseDetails.fields = {
 };
 
 TypeInfo.TaskInputDefinition.fields = {
@@ -1756,4 +2061,24 @@ TypeInfo.TimelineRecord.fields = {
 };
 
 TypeInfo.TimelineReference.fields = {
+};
+
+TypeInfo.VariableGroup.fields = {
+    createdBy: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+    createdOn: {
+        isDate: true,
+    },
+    modifiedBy: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+    modifiedOn: {
+        isDate: true,
+    },
+    variables: {
+    },
+};
+
+TypeInfo.VariableValue.fields = {
 };

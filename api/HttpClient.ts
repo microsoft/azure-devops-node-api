@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-import Q = require('q');
 import url = require("url");
 import http = require("http");
 import https = require("https");
@@ -40,37 +39,35 @@ export class HttpClient {
     }
 
     private _getRequest(verb: string, requestUrl: string, headers: ifm.IHeaders): Promise<IHttpClientResponse> {
-        let deferred = Q.defer<IHttpClientResponse>();
-        this.client.get(verb, requestUrl, headers, (err:any, res: http.IncomingMessage, contents: string) => {
-            if (err) {                
-                deferred.reject(err);
-            }
-            else {
-                let hres: IHttpClientResponse = <IHttpClientResponse>{};
-                hres.statusCode = res.statusCode;
-                hres.contents = contents;
-                deferred.resolve(hres);
-            }
+        return new Promise<IHttpClientResponse>((resolve, reject) => {
+            this.client.get(verb, requestUrl, headers, (err:any, res: http.IncomingMessage, contents: string) => {
+                if (err) {                
+                    reject(err);
+                }
+                else {
+                    let hres: IHttpClientResponse = <IHttpClientResponse>{};
+                    hres.statusCode = res.statusCode;
+                    hres.contents = contents;
+                    resolve(hres);
+                }
+            });
         });
-
-        return deferred.promise;        
     }
 
     private _sendRequest(verb: string, requestUrl: string, data: string, headers: ifm.IHeaders): Promise<IHttpClientResponse> {
-        let deferred = Q.defer<IHttpClientResponse>();
-        this.client.send(verb, requestUrl, data, headers, (err:any, res: http.ClientResponse, contents: string) => {
-            if (err) {                
-                deferred.reject(err);
-            }
-            else {
-                let hres: IHttpClientResponse = <IHttpClientResponse>{};
-                hres.statusCode = res.statusCode;
-                hres.contents = contents;
-                deferred.resolve(hres);
-            }
+        return new Promise<IHttpClientResponse>((resolve, reject) => {
+            this.client.send(verb, requestUrl, data, headers, (err:any, res: http.ClientResponse, contents: string) => {
+                if (err) {                
+                    reject(err);
+                }
+                else {
+                    let hres: IHttpClientResponse = <IHttpClientResponse>{};
+                    hres.statusCode = res.statusCode;
+                    hres.contents = contents;
+                    resolve(hres);
+                }
+            });
         });
-
-        return deferred.promise;        
     }    
 }
 

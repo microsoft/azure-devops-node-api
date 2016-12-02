@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-import Q = require('q');
 import restm = require('./RestClient');
 import httpm = require('./HttpClient');
 import vsom = require('./VsoClient');
@@ -32,19 +31,17 @@ export class ClientApiBase {
     }
     
     public connect(): Promise<any> {
-        var defer = Q.defer();
-        
-        this.restCallbackClient.get(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, null, (err: any, statusCode: number, obj: any) => {
-            if (err) {
-                err.statusCode = statusCode;
-                defer.reject(err);
-            }
-            else {
-                defer.resolve(obj);
-            }
+        return new Promise((resolve, reject) => {
+            this.restCallbackClient.get(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, (err: any, statusCode: number, obj: any) => {
+                if (err) {
+                    err.statusCode = statusCode;
+                    reject(err);
+                }
+                else {
+                    resolve(obj);
+                }
+            }, null);
         });
-        
-        return defer.promise;
     }
 
     public createAcceptHeader(type: string, apiVersion?: string): string {

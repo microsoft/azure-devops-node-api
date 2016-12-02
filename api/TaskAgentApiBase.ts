@@ -11,11 +11,11 @@
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
 
-import Q = require('q');
 import restm = require('./RestClient');
 import httpm = require('./HttpClient');
 import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
+import serm = require('./Serialization');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import TaskAgentInterfaces = require("./interfaces/TaskAgentInterfaces");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
@@ -27,53 +27,68 @@ export interface ITaskAgentApiBase extends basem.ClientApiBase {
     getAgents(poolId: number, agentName?: string, includeCapabilities?: boolean, includeAssignedRequest?: boolean, propertyFilters?: string[], demands?: string[]): Promise<TaskAgentInterfaces.TaskAgent[]>;
     replaceAgent(agent: TaskAgentInterfaces.TaskAgent, poolId: number, agentId: number): Promise<TaskAgentInterfaces.TaskAgent>;
     updateAgent(agent: TaskAgentInterfaces.TaskAgent, poolId: number, agentId: number): Promise<TaskAgentInterfaces.TaskAgent>;
-    getAzureSubscriptions(scopeIdentifier: string): Promise<TaskAgentInterfaces.AzureSubscriptionQueryResult>;
+    getAzureSubscriptions(): Promise<TaskAgentInterfaces.AzureSubscriptionQueryResult>;
     queryEndpoint(endpoint: TaskAgentInterfaces.TaskDefinitionEndpoint): Promise<string[]>;
+    getTaskHubLicenseDetails(hubName: string, includeEnterpriseUsersCount?: boolean): Promise<TaskAgentInterfaces.TaskHubLicenseDetails>;
+    updateTaskHubLicenseDetails(taskHubLicenseDetails: TaskAgentInterfaces.TaskHubLicenseDetails, hubName: string): Promise<TaskAgentInterfaces.TaskHubLicenseDetails>;
     deleteAgentRequest(poolId: number, requestId: number, lockToken: string): Promise<void>;
     getAgentRequest(poolId: number, requestId: number): Promise<TaskAgentInterfaces.TaskAgentJobRequest>;
     getAgentRequestsForAgent(poolId: number, agentId: number, completedRequestCount?: number): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>;
-    getAgentRequestsForAgents(poolId: number, agentIds: number[], completedRequestCount?: number): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>;
+    getAgentRequestsForAgents(poolId: number, agentIds?: number[], completedRequestCount?: number): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>;
     getAgentRequestsForPlan(poolId: number, planId: string, jobId?: string): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>;
     queueAgentRequest(request: TaskAgentInterfaces.TaskAgentJobRequest, poolId: number): Promise<TaskAgentInterfaces.TaskAgentJobRequest>;
     updateAgentRequest(request: TaskAgentInterfaces.TaskAgentJobRequest, poolId: number, requestId: number, lockToken: string): Promise<TaskAgentInterfaces.TaskAgentJobRequest>;
+    addDeploymentMachineGroup(machineGroup: TaskAgentInterfaces.DeploymentMachineGroup, project: string): Promise<TaskAgentInterfaces.DeploymentMachineGroup>;
+    deleteDeploymentMachineGroup(project: string, machineGroupId: number): Promise<void>;
+    getDeploymentMachineGroup(project: string, machineGroupId: number, actionFilter?: TaskAgentInterfaces.MachineGroupActionFilter): Promise<TaskAgentInterfaces.DeploymentMachineGroup>;
+    getDeploymentMachineGroups(project: string, machineGroupName?: string, actionFilter?: TaskAgentInterfaces.MachineGroupActionFilter): Promise<TaskAgentInterfaces.DeploymentMachineGroup[]>;
+    updateDeploymentMachineGroup(machineGroup: TaskAgentInterfaces.DeploymentMachineGroup, project: string, machineGroupId: number): Promise<TaskAgentInterfaces.DeploymentMachineGroup>;
+    getDeploymentMachines(project: string, machineGroupId: number, tagFilters?: string[]): Promise<TaskAgentInterfaces.DeploymentMachine[]>;
+    updateDeploymentMachines(deploymentMachines: TaskAgentInterfaces.DeploymentMachine[], project: string, machineGroupId: number): Promise<TaskAgentInterfaces.DeploymentMachine[]>;
     deleteMessage(poolId: number, messageId: number, sessionId: string): Promise<void>;
     getMessage(poolId: number, sessionId: string, lastMessageId?: number): Promise<TaskAgentInterfaces.TaskAgentMessage>;
     refreshAgent(poolId: number, agentId: number): Promise<void>;
     refreshAgents(poolId: number): Promise<void>;
     sendMessage(message: TaskAgentInterfaces.TaskAgentMessage, poolId: number, requestId: number): Promise<void>;
-    addMetaTaskDefinition(definition: TaskAgentInterfaces.MetaTaskDefinition, project: string): Promise<TaskAgentInterfaces.MetaTaskDefinition>;
-    deleteMetaTaskDefinition(project: string, metaTaskDefinitionId: string): Promise<void>;
-    getMetaTaskDefinitions(project: string, metaTaskDefinitionId?: string, expanded?: boolean): Promise<TaskAgentInterfaces.MetaTaskDefinition[]>;
-    updateMetaTaskDefinition(definition: TaskAgentInterfaces.MetaTaskDefinition, project: string): Promise<TaskAgentInterfaces.MetaTaskDefinition>;
     getPackage(packageType: string, platform: string, version: string): Promise<TaskAgentInterfaces.PackageMetadata>;
     getPackages(packageType?: string, platform?: string, top?: number): Promise<TaskAgentInterfaces.PackageMetadata[]>;
     getAgentPoolRoles(poolId?: number): Promise<VSSInterfaces.IdentityRef[]>;
     addAgentPool(pool: TaskAgentInterfaces.TaskAgentPool): Promise<TaskAgentInterfaces.TaskAgentPool>;
     deleteAgentPool(poolId: number): Promise<void>;
-    getAgentPool(poolId: number, properties?: string[]): Promise<TaskAgentInterfaces.TaskAgentPool>;
-    getAgentPools(poolName?: string, properties?: string[]): Promise<TaskAgentInterfaces.TaskAgentPool[]>;
+    getAgentPool(poolId: number, properties?: string[], actionFilter?: TaskAgentInterfaces.TaskAgentPoolActionFilter): Promise<TaskAgentInterfaces.TaskAgentPool>;
+    getAgentPools(poolName?: string, properties?: string[], poolType?: TaskAgentInterfaces.TaskAgentPoolType, actionFilter?: TaskAgentInterfaces.TaskAgentPoolActionFilter): Promise<TaskAgentInterfaces.TaskAgentPool[]>;
     updateAgentPool(pool: TaskAgentInterfaces.TaskAgentPool, poolId: number): Promise<TaskAgentInterfaces.TaskAgentPool>;
     getAgentQueueRoles(queueId?: number): Promise<VSSInterfaces.IdentityRef[]>;
     addAgentQueue(queue: TaskAgentInterfaces.TaskAgentQueue, project?: string): Promise<TaskAgentInterfaces.TaskAgentQueue>;
-    createQueuesForAgentPools(project?: string): Promise<void>;
+    createTeamProject(project?: string): Promise<void>;
     deleteAgentQueue(queueId: number, project?: string): Promise<void>;
     getAgentQueue(queueId: number, project?: string, actionFilter?: TaskAgentInterfaces.TaskAgentQueueActionFilter): Promise<TaskAgentInterfaces.TaskAgentQueue>;
     getAgentQueues(project?: string, queueName?: string, actionFilter?: TaskAgentInterfaces.TaskAgentQueueActionFilter): Promise<TaskAgentInterfaces.TaskAgentQueue[]>;
-    queryDataProvider(binding: TaskAgentInterfaces.DataSourceBinding, scopeIdentifier: string, endpointId: string): Promise<any>;
-    queryServiceEndpoint(binding: TaskAgentInterfaces.DataSourceBinding, scopeIdentifier: string): Promise<string[]>;
-    createServiceEndpoint(endpoint: TaskAgentInterfaces.ServiceEndpoint, scopeIdentifier: string): Promise<TaskAgentInterfaces.ServiceEndpoint>;
-    deleteServiceEndpoint(scopeIdentifier: string, endpointId: string): Promise<void>;
-    getServiceEndpointDetails(scopeIdentifier: string, endpointId: string): Promise<TaskAgentInterfaces.ServiceEndpoint>;
-    getServiceEndpoints(scopeIdentifier: string, type?: string, authSchemes?: string[], endpointIds?: string[]): Promise<TaskAgentInterfaces.ServiceEndpoint[]>;
-    updateServiceEndpoint(endpoint: TaskAgentInterfaces.ServiceEndpoint, scopeIdentifier: string, endpointId: string): Promise<TaskAgentInterfaces.ServiceEndpoint>;
-    getServiceEndpointTypes(scopeIdentifier: string, type?: string, scheme?: string): Promise<TaskAgentInterfaces.ServiceEndpointType[]>;
+    executeServiceEndpointRequest(serviceEndpointRequest: TaskAgentInterfaces.ServiceEndpointRequest, project: string, endpointId: string): Promise<TaskAgentInterfaces.ServiceEndpointRequestResult>;
+    queryServiceEndpoint(binding: TaskAgentInterfaces.DataSourceBinding, project: string): Promise<string[]>;
+    createServiceEndpoint(endpoint: TaskAgentInterfaces.ServiceEndpoint, project: string): Promise<TaskAgentInterfaces.ServiceEndpoint>;
+    deleteServiceEndpoint(project: string, endpointId: string): Promise<void>;
+    getServiceEndpointDetails(project: string, endpointId: string): Promise<TaskAgentInterfaces.ServiceEndpoint>;
+    getServiceEndpoints(project: string, type?: string, authSchemes?: string[], endpointIds?: string[], includeFailed?: boolean): Promise<TaskAgentInterfaces.ServiceEndpoint[]>;
+    updateServiceEndpoint(endpoint: TaskAgentInterfaces.ServiceEndpoint, project: string, endpointId: string): Promise<TaskAgentInterfaces.ServiceEndpoint>;
+    getServiceEndpointTypes(type?: string, scheme?: string): Promise<TaskAgentInterfaces.ServiceEndpointType[]>;
     createAgentSession(session: TaskAgentInterfaces.TaskAgentSession, poolId: number): Promise<TaskAgentInterfaces.TaskAgentSession>;
     deleteAgentSession(poolId: number, sessionId: string): Promise<void>;
+    addTaskGroup(taskGroup: TaskAgentInterfaces.TaskGroup, project: string): Promise<TaskAgentInterfaces.TaskGroup>;
+    deleteTaskGroup(project: string, taskGroupId: string): Promise<void>;
+    getTaskGroups(project: string, taskGroupId?: string, expanded?: boolean): Promise<TaskAgentInterfaces.TaskGroup[]>;
+    updateTaskGroup(taskGroup: TaskAgentInterfaces.TaskGroup, project: string): Promise<TaskAgentInterfaces.TaskGroup>;
     deleteTaskDefinition(taskId: string): Promise<void>;
     getTaskContentZip(taskId: string, versionString: string, visibility?: string[], scopeLocal?: boolean): Promise<NodeJS.ReadableStream>;
     getTaskDefinition(taskId: string, versionString: string, visibility?: string[], scopeLocal?: boolean): Promise<TaskAgentInterfaces.TaskDefinition>;
     getTaskDefinitions(taskId?: string, visibility?: string[], scopeLocal?: boolean): Promise<TaskAgentInterfaces.TaskDefinition[]>;
     updateAgentUserCapabilities(userCapabilities: { [key: string] : string; }, poolId: number, agentId: number): Promise<TaskAgentInterfaces.TaskAgent>;
+    addVariableGroup(group: TaskAgentInterfaces.VariableGroup, project: string): Promise<TaskAgentInterfaces.VariableGroup>;
+    deleteVariableGroup(project: string, groupId: number): Promise<void>;
+    getVariableGroup(project: string, groupId: number): Promise<TaskAgentInterfaces.VariableGroup>;
+    getVariableGroups(project: string, groupName?: string, actionFilter?: TaskAgentInterfaces.VariableGroupActionFilter): Promise<TaskAgentInterfaces.VariableGroup[]>;
+    getVariableGroupsById(project: string, groupIds: number[]): Promise<TaskAgentInterfaces.VariableGroup[]>;
+    updateVariableGroup(group: TaskAgentInterfaces.VariableGroup, project: string, groupId: number): Promise<TaskAgentInterfaces.VariableGroup>;
 }
 
 export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentApiBase {
@@ -85,81 +100,75 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     * @param {TaskAgentInterfaces.TaskAgent} agent
     * @param {number} poolId
     */
-    public addAgent(
+    public async addAgent(
         agent: TaskAgentInterfaces.TaskAgent,
         poolId: number
         ): Promise<TaskAgentInterfaces.TaskAgent> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskAgent>();
 
-        let onResult = (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(agent);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskAgent>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId
+            };
 
-        let routeValues: any = {
-            poolId: poolId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "e298ef32-5878-4cab-993c-043836571f42",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, agent, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, agent, null);
+                let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {number} poolId
     * @param {number} agentId
     */
-    public deleteAgent(
+    public async deleteAgent(
         poolId: number,
         agentId: number
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId,
+                agentId: agentId
+            };
 
-        let routeValues: any = {
-            poolId: poolId,
-            agentId: agentId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "e298ef32-5878-4cab-993c-043836571f42",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -169,50 +178,48 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     * @param {boolean} includeAssignedRequest
     * @param {string[]} propertyFilters
     */
-    public getAgent(
+    public async getAgent(
         poolId: number,
         agentId: number,
         includeCapabilities?: boolean,
         includeAssignedRequest?: boolean,
         propertyFilters?: string[]
         ): Promise<TaskAgentInterfaces.TaskAgent> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskAgent>();
 
-        let onResult = (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(agent);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskAgent>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId,
+                agentId: agentId
+            };
 
-        let routeValues: any = {
-            poolId: poolId,
-            agentId: agentId
-        };
+            let queryValues: any = {
+                includeCapabilities: includeCapabilities,
+                includeAssignedRequest: includeAssignedRequest,
+                propertyFilters: propertyFilters && propertyFilters.join(","),
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "e298ef32-5878-4cab-993c-043836571f42",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            includeCapabilities: includeCapabilities,
-            includeAssignedRequest: includeAssignedRequest,
-            propertyFilters: propertyFilters && propertyFilters.join(","),
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -223,7 +230,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     * @param {string[]} propertyFilters
     * @param {string[]} demands
     */
-    public getAgents(
+    public async getAgents(
         poolId: number,
         agentName?: string,
         includeCapabilities?: boolean,
@@ -231,44 +238,42 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         propertyFilters?: string[],
         demands?: string[]
         ): Promise<TaskAgentInterfaces.TaskAgent[]> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskAgent[]>();
 
-        let onResult = (err: any, statusCode: number, agents: TaskAgentInterfaces.TaskAgent[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(agents);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskAgent[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId
+            };
 
-        let routeValues: any = {
-            poolId: poolId
-        };
+            let queryValues: any = {
+                agentName: agentName,
+                includeCapabilities: includeCapabilities,
+                includeAssignedRequest: includeAssignedRequest,
+                propertyFilters: propertyFilters && propertyFilters.join(","),
+                demands: demands && demands.join(","),
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "e298ef32-5878-4cab-993c-043836571f42",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            agentName: agentName,
-            includeCapabilities: includeCapabilities,
-            includeAssignedRequest: includeAssignedRequest,
-            propertyFilters: propertyFilters && propertyFilters.join(","),
-            demands: demands && demands.join(","),
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
                 let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -276,42 +281,39 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     * @param {number} poolId
     * @param {number} agentId
     */
-    public replaceAgent(
+    public async replaceAgent(
         agent: TaskAgentInterfaces.TaskAgent,
         poolId: number,
         agentId: number
         ): Promise<TaskAgentInterfaces.TaskAgent> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskAgent>();
 
-        let onResult = (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(agent);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskAgent>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId,
+                agentId: agentId
+            };
 
-        let routeValues: any = {
-            poolId: poolId,
-            agentId: agentId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "e298ef32-5878-4cab-993c-043836571f42",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.replace(url, apiVersion, agent, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.replace(url, apiVersion, agent, null);
+                let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -319,80 +321,71 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     * @param {number} poolId
     * @param {number} agentId
     */
-    public updateAgent(
+    public async updateAgent(
         agent: TaskAgentInterfaces.TaskAgent,
         poolId: number,
         agentId: number
         ): Promise<TaskAgentInterfaces.TaskAgent> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskAgent>();
 
-        let onResult = (err: any, statusCode: number, agent: TaskAgentInterfaces.TaskAgent) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(agent);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskAgent>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId,
+                agentId: agentId
+            };
 
-        let routeValues: any = {
-            poolId: poolId,
-            agentId: agentId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "e298ef32-5878-4cab-993c-043836571f42",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e298ef32-5878-4cab-993c-043836571f42", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.update(url, apiVersion, agent, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, agent, null);
+                let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
-    * @param {string} scopeIdentifier - The project GUID to scope the request
     */
-    public getAzureSubscriptions(
-        scopeIdentifier: string
+    public async getAzureSubscriptions(
         ): Promise<TaskAgentInterfaces.AzureSubscriptionQueryResult> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.AzureSubscriptionQueryResult>();
 
-        let onResult = (err: any, statusCode: number, azurermsubscription: TaskAgentInterfaces.AzureSubscriptionQueryResult) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(azurermsubscription);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.AzureSubscriptionQueryResult>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-            scopeIdentifier: scopeIdentifier
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "bcd6189c-0303-471f-a8e1-acb22b74d700",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "bcd6189c-0303-471f-a8e1-acb22b74d700", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -400,38 +393,114 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     * 
     * @param {TaskAgentInterfaces.TaskDefinitionEndpoint} endpoint - Describes the URL to fetch.
     */
-    public queryEndpoint(
+    public async queryEndpoint(
         endpoint: TaskAgentInterfaces.TaskDefinitionEndpoint
         ): Promise<string[]> {
-    
-        let deferred = Q.defer<string[]>();
 
-        let onResult = (err: any, statusCode: number, endpoint: string[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(endpoint);
-            }
-        };
+        return new Promise<string[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "f223b809-8c33-4b7d-b53f-07232569b5d6",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "f223b809-8c33-4b7d-b53f-07232569b5d6", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, endpoint, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, endpoint, null);
+                let serializationData = {  responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-        return deferred.promise;
+    /**
+    * @param {string} hubName
+    * @param {boolean} includeEnterpriseUsersCount
+    */
+    public async getTaskHubLicenseDetails(
+        hubName: string,
+        includeEnterpriseUsersCount?: boolean
+        ): Promise<TaskAgentInterfaces.TaskHubLicenseDetails> {
+
+        return new Promise<TaskAgentInterfaces.TaskHubLicenseDetails>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                hubName: hubName
+            };
+
+            let queryValues: any = {
+                includeEnterpriseUsersCount: includeEnterpriseUsersCount,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "f9f0f436-b8a1-4475-9041-1ccdbf8f0128",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {TaskAgentInterfaces.TaskHubLicenseDetails} taskHubLicenseDetails
+    * @param {string} hubName
+    */
+    public async updateTaskHubLicenseDetails(
+        taskHubLicenseDetails: TaskAgentInterfaces.TaskHubLicenseDetails,
+        hubName: string
+        ): Promise<TaskAgentInterfaces.TaskHubLicenseDetails> {
+
+        return new Promise<TaskAgentInterfaces.TaskHubLicenseDetails>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                hubName: hubName
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "f9f0f436-b8a1-4475-9041-1ccdbf8f0128",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.replace(url, apiVersion, taskHubLicenseDetails, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -439,87 +508,82 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     * @param {number} requestId
     * @param {string} lockToken
     */
-    public deleteAgentRequest(
+    public async deleteAgentRequest(
         poolId: number,
         requestId: number,
         lockToken: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId,
+                requestId: requestId
+            };
 
-        let routeValues: any = {
-            poolId: poolId,
-            requestId: requestId
-        };
+            let queryValues: any = {
+                lockToken: lockToken,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "fc825784-c92a-4299-9221-998a02d1b54f",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            lockToken: lockToken,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {number} poolId
     * @param {number} requestId
     */
-    public getAgentRequest(
+    public async getAgentRequest(
         poolId: number,
         requestId: number
         ): Promise<TaskAgentInterfaces.TaskAgentJobRequest> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskAgentJobRequest>();
 
-        let onResult = (err: any, statusCode: number, jobrequest: TaskAgentInterfaces.TaskAgentJobRequest) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(jobrequest);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskAgentJobRequest>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId,
+                requestId: requestId
+            };
 
-        let routeValues: any = {
-            poolId: poolId,
-            requestId: requestId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "fc825784-c92a-4299-9221-998a02d1b54f",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -527,46 +591,44 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     * @param {number} agentId
     * @param {number} completedRequestCount
     */
-    public getAgentRequestsForAgent(
+    public async getAgentRequestsForAgent(
         poolId: number,
         agentId: number,
         completedRequestCount?: number
         ): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskAgentJobRequest[]>();
 
-        let onResult = (err: any, statusCode: number, jobrequests: TaskAgentInterfaces.TaskAgentJobRequest[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(jobrequests);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId
+            };
 
-        let routeValues: any = {
-            poolId: poolId
-        };
+            let queryValues: any = {
+                agentId: agentId,
+                completedRequestCount: completedRequestCount,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "fc825784-c92a-4299-9221-998a02d1b54f",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            agentId: agentId,
-            completedRequestCount: completedRequestCount,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -574,46 +636,44 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     * @param {number[]} agentIds
     * @param {number} completedRequestCount
     */
-    public getAgentRequestsForAgents(
+    public async getAgentRequestsForAgents(
         poolId: number,
-        agentIds: number[],
+        agentIds?: number[],
         completedRequestCount?: number
         ): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskAgentJobRequest[]>();
 
-        let onResult = (err: any, statusCode: number, jobrequests: TaskAgentInterfaces.TaskAgentJobRequest[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(jobrequests);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId
+            };
 
-        let routeValues: any = {
-            poolId: poolId
-        };
+            let queryValues: any = {
+                agentIds: agentIds && agentIds.join(","),
+                completedRequestCount: completedRequestCount,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "fc825784-c92a-4299-9221-998a02d1b54f",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            agentIds: agentIds && agentIds.join(","),
-            completedRequestCount: completedRequestCount,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -621,86 +681,81 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     * @param {string} planId
     * @param {string} jobId
     */
-    public getAgentRequestsForPlan(
+    public async getAgentRequestsForPlan(
         poolId: number,
         planId: string,
         jobId?: string
         ): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskAgentJobRequest[]>();
 
-        let onResult = (err: any, statusCode: number, jobrequests: TaskAgentInterfaces.TaskAgentJobRequest[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(jobrequests);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId
+            };
 
-        let routeValues: any = {
-            poolId: poolId
-        };
+            let queryValues: any = {
+                planId: planId,
+                jobId: jobId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "fc825784-c92a-4299-9221-998a02d1b54f",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            planId: planId,
-            jobId: jobId,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TaskAgentInterfaces.TaskAgentJobRequest} request
     * @param {number} poolId
     */
-    public queueAgentRequest(
+    public async queueAgentRequest(
         request: TaskAgentInterfaces.TaskAgentJobRequest,
         poolId: number
         ): Promise<TaskAgentInterfaces.TaskAgentJobRequest> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskAgentJobRequest>();
 
-        let onResult = (err: any, statusCode: number, jobrequest: TaskAgentInterfaces.TaskAgentJobRequest) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(jobrequest);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskAgentJobRequest>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId
+            };
 
-        let routeValues: any = {
-            poolId: poolId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "fc825784-c92a-4299-9221-998a02d1b54f",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, request, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, request, null);
+                let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -709,47 +764,335 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     * @param {number} requestId
     * @param {string} lockToken
     */
-    public updateAgentRequest(
+    public async updateAgentRequest(
         request: TaskAgentInterfaces.TaskAgentJobRequest,
         poolId: number,
         requestId: number,
         lockToken: string
         ): Promise<TaskAgentInterfaces.TaskAgentJobRequest> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskAgentJobRequest>();
 
-        let onResult = (err: any, statusCode: number, jobrequest: TaskAgentInterfaces.TaskAgentJobRequest) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(jobrequest);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskAgentJobRequest>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId,
+                requestId: requestId
+            };
 
-        let routeValues: any = {
-            poolId: poolId,
-            requestId: requestId
-        };
+            let queryValues: any = {
+                lockToken: lockToken,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "fc825784-c92a-4299-9221-998a02d1b54f",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            lockToken: lockToken,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "fc825784-c92a-4299-9221-998a02d1b54f", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.update(url, apiVersion, request, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, request, null);
+                let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-        return deferred.promise;
+    /**
+    * @param {TaskAgentInterfaces.DeploymentMachineGroup} machineGroup
+    * @param {string} project - Project ID or project name
+    */
+    public async addDeploymentMachineGroup(
+        machineGroup: TaskAgentInterfaces.DeploymentMachineGroup,
+        project: string
+        ): Promise<TaskAgentInterfaces.DeploymentMachineGroup> {
+
+        return new Promise<TaskAgentInterfaces.DeploymentMachineGroup>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "d4adf50f-80c6-4ac8-9ca1-6e4e544286e9",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, machineGroup, null);
+                let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.DeploymentMachineGroup, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.DeploymentMachineGroup, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} machineGroupId
+    */
+    public async deleteDeploymentMachineGroup(
+        project: string,
+        machineGroupId: number
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                machineGroupId: machineGroupId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "d4adf50f-80c6-4ac8-9ca1-6e4e544286e9",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} machineGroupId
+    * @param {TaskAgentInterfaces.MachineGroupActionFilter} actionFilter
+    */
+    public async getDeploymentMachineGroup(
+        project: string,
+        machineGroupId: number,
+        actionFilter?: TaskAgentInterfaces.MachineGroupActionFilter
+        ): Promise<TaskAgentInterfaces.DeploymentMachineGroup> {
+
+        return new Promise<TaskAgentInterfaces.DeploymentMachineGroup>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                machineGroupId: machineGroupId
+            };
+
+            let queryValues: any = {
+                actionFilter: actionFilter,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "d4adf50f-80c6-4ac8-9ca1-6e4e544286e9",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.DeploymentMachineGroup, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {string} machineGroupName
+    * @param {TaskAgentInterfaces.MachineGroupActionFilter} actionFilter
+    */
+    public async getDeploymentMachineGroups(
+        project: string,
+        machineGroupName?: string,
+        actionFilter?: TaskAgentInterfaces.MachineGroupActionFilter
+        ): Promise<TaskAgentInterfaces.DeploymentMachineGroup[]> {
+
+        return new Promise<TaskAgentInterfaces.DeploymentMachineGroup[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
+
+            let queryValues: any = {
+                machineGroupName: machineGroupName,
+                actionFilter: actionFilter,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "d4adf50f-80c6-4ac8-9ca1-6e4e544286e9",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.DeploymentMachineGroup, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {TaskAgentInterfaces.DeploymentMachineGroup} machineGroup
+    * @param {string} project - Project ID or project name
+    * @param {number} machineGroupId
+    */
+    public async updateDeploymentMachineGroup(
+        machineGroup: TaskAgentInterfaces.DeploymentMachineGroup,
+        project: string,
+        machineGroupId: number
+        ): Promise<TaskAgentInterfaces.DeploymentMachineGroup> {
+
+        return new Promise<TaskAgentInterfaces.DeploymentMachineGroup>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                machineGroupId: machineGroupId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "d4adf50f-80c6-4ac8-9ca1-6e4e544286e9",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, machineGroup, null);
+                let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.DeploymentMachineGroup, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.DeploymentMachineGroup, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} machineGroupId
+    * @param {string[]} tagFilters
+    */
+    public async getDeploymentMachines(
+        project: string,
+        machineGroupId: number,
+        tagFilters?: string[]
+        ): Promise<TaskAgentInterfaces.DeploymentMachine[]> {
+
+        return new Promise<TaskAgentInterfaces.DeploymentMachine[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                machineGroupId: machineGroupId
+            };
+
+            let queryValues: any = {
+                tagFilters: tagFilters && tagFilters.join(","),
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "966c3874-c347-4b18-a90c-d509116717fd",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.DeploymentMachine, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {TaskAgentInterfaces.DeploymentMachine[]} deploymentMachines
+    * @param {string} project - Project ID or project name
+    * @param {number} machineGroupId
+    */
+    public async updateDeploymentMachines(
+        deploymentMachines: TaskAgentInterfaces.DeploymentMachine[],
+        project: string,
+        machineGroupId: number
+        ): Promise<TaskAgentInterfaces.DeploymentMachine[]> {
+
+        return new Promise<TaskAgentInterfaces.DeploymentMachine[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                machineGroupId: machineGroupId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "966c3874-c347-4b18-a90c-d509116717fd",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, deploymentMachines, null);
+                let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.DeploymentMachine, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.DeploymentMachine, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -757,46 +1100,44 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     * @param {number} messageId
     * @param {string} sessionId
     */
-    public deleteMessage(
+    public async deleteMessage(
         poolId: number,
         messageId: number,
         sessionId: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId,
+                messageId: messageId
+            };
 
-        let routeValues: any = {
-            poolId: poolId,
-            messageId: messageId
-        };
+            let queryValues: any = {
+                sessionId: sessionId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            sessionId: sessionId,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -804,128 +1145,121 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     * @param {string} sessionId
     * @param {number} lastMessageId
     */
-    public getMessage(
+    public async getMessage(
         poolId: number,
         sessionId: string,
         lastMessageId?: number
         ): Promise<TaskAgentInterfaces.TaskAgentMessage> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskAgentMessage>();
 
-        let onResult = (err: any, statusCode: number, message: TaskAgentInterfaces.TaskAgentMessage) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(message);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskAgentMessage>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId
+            };
 
-        let routeValues: any = {
-            poolId: poolId
-        };
+            let queryValues: any = {
+                sessionId: sessionId,
+                lastMessageId: lastMessageId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            sessionId: sessionId,
-            lastMessageId: lastMessageId,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {number} poolId
     * @param {number} agentId
     */
-    public refreshAgent(
+    public async refreshAgent(
         poolId: number,
         agentId: number
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId
+            };
 
-        let routeValues: any = {
-            poolId: poolId
-        };
+            let queryValues: any = {
+                agentId: agentId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            agentId: agentId,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, null, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, null, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {number} poolId
     */
-    public refreshAgents(
+    public async refreshAgents(
         poolId: number
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId
+            };
 
-        let routeValues: any = {
-            poolId: poolId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, null, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, null, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -933,213 +1267,43 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     * @param {number} poolId
     * @param {number} requestId
     */
-    public sendMessage(
+    public async sendMessage(
         message: TaskAgentInterfaces.TaskAgentMessage,
         poolId: number,
         requestId: number
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId
+            };
 
-        let routeValues: any = {
-            poolId: poolId
-        };
+            let queryValues: any = {
+                requestId: requestId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            requestId: requestId,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, message, null);
                 let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
                 
-                this.restCallbackClient.create(url, apiVersion, message, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
-    }
-
-    /**
-    * @param {TaskAgentInterfaces.MetaTaskDefinition} definition
-    * @param {string} project - Project ID or project name
-    */
-    public addMetaTaskDefinition(
-        definition: TaskAgentInterfaces.MetaTaskDefinition,
-        project: string
-        ): Promise<TaskAgentInterfaces.MetaTaskDefinition> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.MetaTaskDefinition>();
-
-        let onResult = (err: any, statusCode: number, metatask: TaskAgentInterfaces.MetaTaskDefinition) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
             }
-            else {
-                deferred.resolve(metatask);
+            catch (err) {
+                reject(err);
             }
-        };
-
-        let routeValues: any = {
-            project: project
-        };
-
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "71aa53a2-0ce0-46f2-856b-8cbc1cdffa4e", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
-                
-                this.restCallbackClient.create(url, apiVersion, definition, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
-    }
-
-    /**
-    * @param {string} project - Project ID or project name
-    * @param {string} metaTaskDefinitionId
-    */
-    public deleteMetaTaskDefinition(
-        project: string,
-        metaTaskDefinitionId: string
-        ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
-
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
-
-        let routeValues: any = {
-            project: project,
-            metaTaskDefinitionId: metaTaskDefinitionId
-        };
-
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "71aa53a2-0ce0-46f2-856b-8cbc1cdffa4e", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
-                
-                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
-    }
-
-    /**
-    * @param {string} project - Project ID or project name
-    * @param {string} metaTaskDefinitionId
-    * @param {boolean} expanded
-    */
-    public getMetaTaskDefinitions(
-        project: string,
-        metaTaskDefinitionId?: string,
-        expanded?: boolean
-        ): Promise<TaskAgentInterfaces.MetaTaskDefinition[]> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.MetaTaskDefinition[]>();
-
-        let onResult = (err: any, statusCode: number, metatask: TaskAgentInterfaces.MetaTaskDefinition[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(metatask);
-            }
-        };
-
-        let routeValues: any = {
-            project: project,
-            metaTaskDefinitionId: metaTaskDefinitionId
-        };
-
-        let queryValues: any = {
-            expanded: expanded,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "71aa53a2-0ce0-46f2-856b-8cbc1cdffa4e", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
-                
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
-    }
-
-    /**
-    * @param {TaskAgentInterfaces.MetaTaskDefinition} definition
-    * @param {string} project - Project ID or project name
-    */
-    public updateMetaTaskDefinition(
-        definition: TaskAgentInterfaces.MetaTaskDefinition,
-        project: string
-        ): Promise<TaskAgentInterfaces.MetaTaskDefinition> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.MetaTaskDefinition>();
-
-        let onResult = (err: any, statusCode: number, metatask: TaskAgentInterfaces.MetaTaskDefinition) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(metatask);
-            }
-        };
-
-        let routeValues: any = {
-            project: project
-        };
-
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "71aa53a2-0ce0-46f2-856b-8cbc1cdffa4e", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
-                
-                this.restCallbackClient.replace(url, apiVersion, definition, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+        });
     }
 
     /**
@@ -1147,43 +1311,40 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     * @param {string} platform
     * @param {string} version
     */
-    public getPackage(
+    public async getPackage(
         packageType: string,
         platform: string,
         version: string
         ): Promise<TaskAgentInterfaces.PackageMetadata> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.PackageMetadata>();
 
-        let onResult = (err: any, statusCode: number, _package: TaskAgentInterfaces.PackageMetadata) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(_package);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.PackageMetadata>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                packageType: packageType,
+                platform: platform,
+                version: version
+            };
 
-        let routeValues: any = {
-            packageType: packageType,
-            platform: platform,
-            version: version
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.2",
+                    "distributedtask",
+                    "8ffcd551-079c-493a-9c02-54346299d144",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "distributedtask", "8ffcd551-079c-493a-9c02-54346299d144", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.PackageMetadata, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.PackageMetadata, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1191,444 +1352,423 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     * @param {string} platform
     * @param {number} top
     */
-    public getPackages(
+    public async getPackages(
         packageType?: string,
         platform?: string,
         top?: number
         ): Promise<TaskAgentInterfaces.PackageMetadata[]> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.PackageMetadata[]>();
 
-        let onResult = (err: any, statusCode: number, packages: TaskAgentInterfaces.PackageMetadata[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(packages);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.PackageMetadata[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                packageType: packageType,
+                platform: platform
+            };
 
-        let routeValues: any = {
-            packageType: packageType,
-            platform: platform
-        };
+            let queryValues: any = {
+                '$top': top,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.2",
+                    "distributedtask",
+                    "8ffcd551-079c-493a-9c02-54346299d144",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            '$top': top,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "distributedtask", "8ffcd551-079c-493a-9c02-54346299d144", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.PackageMetadata, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.PackageMetadata, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {number} poolId
     */
-    public getAgentPoolRoles(
+    public async getAgentPoolRoles(
         poolId?: number
         ): Promise<VSSInterfaces.IdentityRef[]> {
-    
-        let deferred = Q.defer<VSSInterfaces.IdentityRef[]>();
 
-        let onResult = (err: any, statusCode: number, poolroles: VSSInterfaces.IdentityRef[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(poolroles);
-            }
-        };
+        return new Promise<VSSInterfaces.IdentityRef[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId
+            };
 
-        let routeValues: any = {
-            poolId: poolId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "381dd2bb-35cf-4103-ae8c-3c815b25763c",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "381dd2bb-35cf-4103-ae8c-3c815b25763c", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TaskAgentInterfaces.TaskAgentPool} pool
     */
-    public addAgentPool(
+    public async addAgentPool(
         pool: TaskAgentInterfaces.TaskAgentPool
         ): Promise<TaskAgentInterfaces.TaskAgentPool> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskAgentPool>();
 
-        let onResult = (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(pool);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskAgentPool>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "a8c47e17-4d56-4a56-92bb-de7ea7dc65be",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, pool, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, pool, null);
+                let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {number} poolId
     */
-    public deleteAgentPool(
+    public async deleteAgentPool(
         poolId: number
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId
+            };
 
-        let routeValues: any = {
-            poolId: poolId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "a8c47e17-4d56-4a56-92bb-de7ea7dc65be",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {number} poolId
     * @param {string[]} properties
+    * @param {TaskAgentInterfaces.TaskAgentPoolActionFilter} actionFilter
     */
-    public getAgentPool(
+    public async getAgentPool(
         poolId: number,
-        properties?: string[]
+        properties?: string[],
+        actionFilter?: TaskAgentInterfaces.TaskAgentPoolActionFilter
         ): Promise<TaskAgentInterfaces.TaskAgentPool> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskAgentPool>();
 
-        let onResult = (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(pool);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskAgentPool>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId
+            };
 
-        let routeValues: any = {
-            poolId: poolId
-        };
+            let queryValues: any = {
+                properties: properties && properties.join(","),
+                actionFilter: actionFilter,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "a8c47e17-4d56-4a56-92bb-de7ea7dc65be",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            properties: properties && properties.join(","),
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} poolName
     * @param {string[]} properties
+    * @param {TaskAgentInterfaces.TaskAgentPoolType} poolType
+    * @param {TaskAgentInterfaces.TaskAgentPoolActionFilter} actionFilter
     */
-    public getAgentPools(
+    public async getAgentPools(
         poolName?: string,
-        properties?: string[]
+        properties?: string[],
+        poolType?: TaskAgentInterfaces.TaskAgentPoolType,
+        actionFilter?: TaskAgentInterfaces.TaskAgentPoolActionFilter
         ): Promise<TaskAgentInterfaces.TaskAgentPool[]> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskAgentPool[]>();
 
-        let onResult = (err: any, statusCode: number, pools: TaskAgentInterfaces.TaskAgentPool[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(pools);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskAgentPool[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            let queryValues: any = {
+                poolName: poolName,
+                properties: properties && properties.join(","),
+                poolType: poolType,
+                actionFilter: actionFilter,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "a8c47e17-4d56-4a56-92bb-de7ea7dc65be",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            poolName: poolName,
-            properties: properties && properties.join(","),
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TaskAgentInterfaces.TaskAgentPool} pool
     * @param {number} poolId
     */
-    public updateAgentPool(
+    public async updateAgentPool(
         pool: TaskAgentInterfaces.TaskAgentPool,
         poolId: number
         ): Promise<TaskAgentInterfaces.TaskAgentPool> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskAgentPool>();
 
-        let onResult = (err: any, statusCode: number, pool: TaskAgentInterfaces.TaskAgentPool) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(pool);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskAgentPool>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId
+            };
 
-        let routeValues: any = {
-            poolId: poolId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "a8c47e17-4d56-4a56-92bb-de7ea7dc65be",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "a8c47e17-4d56-4a56-92bb-de7ea7dc65be", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.update(url, apiVersion, pool, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, pool, null);
+                let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentPool, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {number} queueId
     */
-    public getAgentQueueRoles(
+    public async getAgentQueueRoles(
         queueId?: number
         ): Promise<VSSInterfaces.IdentityRef[]> {
-    
-        let deferred = Q.defer<VSSInterfaces.IdentityRef[]>();
 
-        let onResult = (err: any, statusCode: number, queueroles: VSSInterfaces.IdentityRef[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(queueroles);
-            }
-        };
+        return new Promise<VSSInterfaces.IdentityRef[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                queueId: queueId
+            };
 
-        let routeValues: any = {
-            queueId: queueId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "b0c6d64d-c9fa-4946-b8de-77de623ee585",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "b0c6d64d-c9fa-4946-b8de-77de623ee585", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TaskAgentInterfaces.TaskAgentQueue} queue
     * @param {string} project - Project ID or project name
     */
-    public addAgentQueue(
+    public async addAgentQueue(
         queue: TaskAgentInterfaces.TaskAgentQueue,
         project?: string
         ): Promise<TaskAgentInterfaces.TaskAgentQueue> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskAgentQueue>();
 
-        let onResult = (err: any, statusCode: number, queue: TaskAgentInterfaces.TaskAgentQueue) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(queue);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskAgentQueue>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "900fa995-c559-4923-aae7-f8424fe4fbea",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "900fa995-c559-4923-aae7-f8424fe4fbea", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, queue, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, queue, null);
+                let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentQueue, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentQueue, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     */
-    public createQueuesForAgentPools(
+    public async createTeamProject(
         project?: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "900fa995-c559-4923-aae7-f8424fe4fbea",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "900fa995-c559-4923-aae7-f8424fe4fbea", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.replace(url, apiVersion, null, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.replace(url, apiVersion, null, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {number} queueId
     * @param {string} project - Project ID or project name
     */
-    public deleteAgentQueue(
+    public async deleteAgentQueue(
         queueId: number,
         project?: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                queueId: queueId
+            };
 
-        let routeValues: any = {
-            project: project,
-            queueId: queueId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "900fa995-c559-4923-aae7-f8424fe4fbea",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "900fa995-c559-4923-aae7-f8424fe4fbea", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1636,46 +1776,44 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     * @param {string} project - Project ID or project name
     * @param {TaskAgentInterfaces.TaskAgentQueueActionFilter} actionFilter
     */
-    public getAgentQueue(
+    public async getAgentQueue(
         queueId: number,
         project?: string,
         actionFilter?: TaskAgentInterfaces.TaskAgentQueueActionFilter
         ): Promise<TaskAgentInterfaces.TaskAgentQueue> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskAgentQueue>();
 
-        let onResult = (err: any, statusCode: number, queue: TaskAgentInterfaces.TaskAgentQueue) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(queue);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskAgentQueue>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                queueId: queueId
+            };
 
-        let routeValues: any = {
-            project: project,
-            queueId: queueId
-        };
+            let queryValues: any = {
+                actionFilter: actionFilter,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "900fa995-c559-4923-aae7-f8424fe4fbea",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            actionFilter: actionFilter,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "900fa995-c559-4923-aae7-f8424fe4fbea", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentQueue, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1683,515 +1821,640 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     * @param {string} queueName
     * @param {TaskAgentInterfaces.TaskAgentQueueActionFilter} actionFilter
     */
-    public getAgentQueues(
+    public async getAgentQueues(
         project?: string,
         queueName?: string,
         actionFilter?: TaskAgentInterfaces.TaskAgentQueueActionFilter
         ): Promise<TaskAgentInterfaces.TaskAgentQueue[]> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskAgentQueue[]>();
 
-        let onResult = (err: any, statusCode: number, queues: TaskAgentInterfaces.TaskAgentQueue[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(queues);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskAgentQueue[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                queueName: queueName,
+                actionFilter: actionFilter,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "900fa995-c559-4923-aae7-f8424fe4fbea",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            queueName: queueName,
-            actionFilter: actionFilter,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "900fa995-c559-4923-aae7-f8424fe4fbea", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentQueue, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
-    * @param {TaskAgentInterfaces.DataSourceBinding} binding
-    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {TaskAgentInterfaces.ServiceEndpointRequest} serviceEndpointRequest
+    * @param {string} project - Project ID or project name
     * @param {string} endpointId
     */
-    public queryDataProvider(
-        binding: TaskAgentInterfaces.DataSourceBinding,
-        scopeIdentifier: string,
+    public async executeServiceEndpointRequest(
+        serviceEndpointRequest: TaskAgentInterfaces.ServiceEndpointRequest,
+        project: string,
         endpointId: string
-        ): Promise<any> {
-    
-        let deferred = Q.defer<any>();
+        ): Promise<TaskAgentInterfaces.ServiceEndpointRequestResult> {
 
-        let onResult = (err: any, statusCode: number, serviceendpointproxy: any) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(serviceendpointproxy);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.ServiceEndpointRequestResult>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            scopeIdentifier: scopeIdentifier
-        };
+            let queryValues: any = {
+                endpointId: endpointId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.2",
+                    "distributedtask",
+                    "f956a7de-d766-43af-81b1-e9e349245634",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            endpointId: endpointId,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e3a44534-7b94-4add-a053-8af449589c62", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, binding, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, serviceEndpointRequest, null);
+                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.ServiceEndpointRequestResult, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * Proxy for a GET request defined by an service endpoint. The request is authorized using a data source in service endpoint. The response is filtered using an XPath/Json based selector.
     * 
     * @param {TaskAgentInterfaces.DataSourceBinding} binding - Describes the data source to fetch.
-    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} project - Project ID or project name
     */
-    public queryServiceEndpoint(
+    public async queryServiceEndpoint(
         binding: TaskAgentInterfaces.DataSourceBinding,
-        scopeIdentifier: string
+        project: string
         ): Promise<string[]> {
-    
-        let deferred = Q.defer<string[]>();
 
-        let onResult = (err: any, statusCode: number, serviceendpointproxy: string[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(serviceendpointproxy);
-            }
-        };
+        return new Promise<string[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            scopeIdentifier: scopeIdentifier
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.2",
+                    "distributedtask",
+                    "f956a7de-d766-43af-81b1-e9e349245634",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "e3a44534-7b94-4add-a053-8af449589c62", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, binding, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, binding, null);
+                let serializationData = {  responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TaskAgentInterfaces.ServiceEndpoint} endpoint
-    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} project - Project ID or project name
     */
-    public createServiceEndpoint(
+    public async createServiceEndpoint(
         endpoint: TaskAgentInterfaces.ServiceEndpoint,
-        scopeIdentifier: string
+        project: string
         ): Promise<TaskAgentInterfaces.ServiceEndpoint> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.ServiceEndpoint>();
 
-        let onResult = (err: any, statusCode: number, serviceendpoint: TaskAgentInterfaces.ServiceEndpoint) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(serviceendpoint);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.ServiceEndpoint>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            scopeIdentifier: scopeIdentifier
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.2",
+                    "distributedtask",
+                    "dca61d2f-3444-410a-b5ec-db2fc4efb4c5",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "ca373c13-fec3-4b30-9525-35a117731384", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, endpoint, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, endpoint, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
-    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} project - Project ID or project name
     * @param {string} endpointId
     */
-    public deleteServiceEndpoint(
-        scopeIdentifier: string,
+    public async deleteServiceEndpoint(
+        project: string,
         endpointId: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                endpointId: endpointId
+            };
 
-        let routeValues: any = {
-            scopeIdentifier: scopeIdentifier,
-            endpointId: endpointId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.2",
+                    "distributedtask",
+                    "dca61d2f-3444-410a-b5ec-db2fc4efb4c5",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "ca373c13-fec3-4b30-9525-35a117731384", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
-    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} project - Project ID or project name
     * @param {string} endpointId
     */
-    public getServiceEndpointDetails(
-        scopeIdentifier: string,
+    public async getServiceEndpointDetails(
+        project: string,
         endpointId: string
         ): Promise<TaskAgentInterfaces.ServiceEndpoint> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.ServiceEndpoint>();
 
-        let onResult = (err: any, statusCode: number, serviceendpoint: TaskAgentInterfaces.ServiceEndpoint) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(serviceendpoint);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.ServiceEndpoint>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                endpointId: endpointId
+            };
 
-        let routeValues: any = {
-            scopeIdentifier: scopeIdentifier,
-            endpointId: endpointId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.2",
+                    "distributedtask",
+                    "dca61d2f-3444-410a-b5ec-db2fc4efb4c5",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "ca373c13-fec3-4b30-9525-35a117731384", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
-    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} project - Project ID or project name
     * @param {string} type
     * @param {string[]} authSchemes
     * @param {string[]} endpointIds
+    * @param {boolean} includeFailed
     */
-    public getServiceEndpoints(
-        scopeIdentifier: string,
+    public async getServiceEndpoints(
+        project: string,
         type?: string,
         authSchemes?: string[],
-        endpointIds?: string[]
+        endpointIds?: string[],
+        includeFailed?: boolean
         ): Promise<TaskAgentInterfaces.ServiceEndpoint[]> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.ServiceEndpoint[]>();
 
-        let onResult = (err: any, statusCode: number, serviceendpoints: TaskAgentInterfaces.ServiceEndpoint[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(serviceendpoints);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.ServiceEndpoint[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            scopeIdentifier: scopeIdentifier
-        };
+            let queryValues: any = {
+                type: type,
+                authSchemes: authSchemes && authSchemes.join(","),
+                endpointIds: endpointIds && endpointIds.join(","),
+                includeFailed: includeFailed,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.2",
+                    "distributedtask",
+                    "dca61d2f-3444-410a-b5ec-db2fc4efb4c5",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            type: type,
-            authSchemes: authSchemes && authSchemes.join(","),
-            endpointIds: endpointIds && endpointIds.join(","),
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "ca373c13-fec3-4b30-9525-35a117731384", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TaskAgentInterfaces.ServiceEndpoint} endpoint
-    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} project - Project ID or project name
     * @param {string} endpointId
     */
-    public updateServiceEndpoint(
+    public async updateServiceEndpoint(
         endpoint: TaskAgentInterfaces.ServiceEndpoint,
-        scopeIdentifier: string,
+        project: string,
         endpointId: string
         ): Promise<TaskAgentInterfaces.ServiceEndpoint> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.ServiceEndpoint>();
 
-        let onResult = (err: any, statusCode: number, serviceendpoint: TaskAgentInterfaces.ServiceEndpoint) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(serviceendpoint);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.ServiceEndpoint>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                endpointId: endpointId
+            };
 
-        let routeValues: any = {
-            scopeIdentifier: scopeIdentifier,
-            endpointId: endpointId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.2",
+                    "distributedtask",
+                    "dca61d2f-3444-410a-b5ec-db2fc4efb4c5",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "ca373c13-fec3-4b30-9525-35a117731384", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.replace(url, apiVersion, endpoint, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.replace(url, apiVersion, endpoint, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
-    * @param {string} scopeIdentifier - The project GUID to scope the request
     * @param {string} type
     * @param {string} scheme
     */
-    public getServiceEndpointTypes(
-        scopeIdentifier: string,
+    public async getServiceEndpointTypes(
         type?: string,
         scheme?: string
         ): Promise<TaskAgentInterfaces.ServiceEndpointType[]> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.ServiceEndpointType[]>();
 
-        let onResult = (err: any, statusCode: number, serviceendpointtypes: TaskAgentInterfaces.ServiceEndpointType[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(serviceendpointtypes);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.ServiceEndpointType[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-            scopeIdentifier: scopeIdentifier
-        };
+            let queryValues: any = {
+                type: type,
+                scheme: scheme,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "7c74af83-8605-45c1-a30b-7a05d5d7f8c1",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            type: type,
-            scheme: scheme,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "7c74af83-8605-45c1-a30b-7a05d5d7f8c1", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.ServiceEndpointType, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.ServiceEndpointType, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TaskAgentInterfaces.TaskAgentSession} session
     * @param {number} poolId
     */
-    public createAgentSession(
+    public async createAgentSession(
         session: TaskAgentInterfaces.TaskAgentSession,
         poolId: number
         ): Promise<TaskAgentInterfaces.TaskAgentSession> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskAgentSession>();
 
-        let onResult = (err: any, statusCode: number, session: TaskAgentInterfaces.TaskAgentSession) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(session);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskAgentSession>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId
+            };
 
-        let routeValues: any = {
-            poolId: poolId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "134e239e-2df3-4794-a6f6-24f1f19ec8dc",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "134e239e-2df3-4794-a6f6-24f1f19ec8dc", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentSession, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentSession, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.create(url, apiVersion, session, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, session, null);
+                let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentSession, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgentSession, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {number} poolId
     * @param {string} sessionId
     */
-    public deleteAgentSession(
+    public async deleteAgentSession(
         poolId: number,
         sessionId: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId,
+                sessionId: sessionId
+            };
 
-        let routeValues: any = {
-            poolId: poolId,
-            sessionId: sessionId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "134e239e-2df3-4794-a6f6-24f1f19ec8dc",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "134e239e-2df3-4794-a6f6-24f1f19ec8dc", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
+                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-        return deferred.promise;
+    /**
+    * @param {TaskAgentInterfaces.TaskGroup} taskGroup
+    * @param {string} project - Project ID or project name
+    */
+    public async addTaskGroup(
+        taskGroup: TaskAgentInterfaces.TaskGroup,
+        project: string
+        ): Promise<TaskAgentInterfaces.TaskGroup> {
+
+        return new Promise<TaskAgentInterfaces.TaskGroup>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "6c08ffbf-dbf1-4f9a-94e5-a1cbd47005e7",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, taskGroup, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {string} taskGroupId
+    */
+    public async deleteTaskGroup(
+        project: string,
+        taskGroupId: string
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                taskGroupId: taskGroupId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "6c08ffbf-dbf1-4f9a-94e5-a1cbd47005e7",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {string} taskGroupId
+    * @param {boolean} expanded
+    */
+    public async getTaskGroups(
+        project: string,
+        taskGroupId?: string,
+        expanded?: boolean
+        ): Promise<TaskAgentInterfaces.TaskGroup[]> {
+
+        return new Promise<TaskAgentInterfaces.TaskGroup[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                taskGroupId: taskGroupId
+            };
+
+            let queryValues: any = {
+                expanded: expanded,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "6c08ffbf-dbf1-4f9a-94e5-a1cbd47005e7",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {TaskAgentInterfaces.TaskGroup} taskGroup
+    * @param {string} project - Project ID or project name
+    */
+    public async updateTaskGroup(
+        taskGroup: TaskAgentInterfaces.TaskGroup,
+        project: string
+        ): Promise<TaskAgentInterfaces.TaskGroup> {
+
+        return new Promise<TaskAgentInterfaces.TaskGroup>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "6c08ffbf-dbf1-4f9a-94e5-a1cbd47005e7",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.replace(url, apiVersion, taskGroup, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} taskId
     */
-    public deleteTaskDefinition(
+    public async deleteTaskDefinition(
         taskId: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                taskId: taskId
+            };
 
-        let routeValues: any = {
-            taskId: taskId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.del(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2200,48 +2463,52 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     * @param {string[]} visibility
     * @param {boolean} scopeLocal
     */
-    public getTaskContentZip(
+    public async getTaskContentZip(
         taskId: string,
         versionString: string,
         visibility?: string[],
         scopeLocal?: boolean
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, task: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(task);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let onResult = (err: any, statusCode: number, task: NodeJS.ReadableStream) => {
+                if (err) {
+                    err.statusCode = statusCode;
+                    reject(err);
+                }
+                else {
+                    resolve(task);
+                }
+            };
 
-        let routeValues: any = {
-            taskId: taskId,
-            versionString: versionString
-        };
+            let routeValues: any = {
+                taskId: taskId,
+                versionString: versionString
+            };
 
-        let queryValues: any = {
-            visibility: visibility,
-            scopeLocal: scopeLocal,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+            let queryValues: any = {
+                visibility: visibility,
+                scopeLocal: scopeLocal,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
                 this.httpClient.getStream(url, accept, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2250,48 +2517,46 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     * @param {string[]} visibility
     * @param {boolean} scopeLocal
     */
-    public getTaskDefinition(
+    public async getTaskDefinition(
         taskId: string,
         versionString: string,
         visibility?: string[],
         scopeLocal?: boolean
         ): Promise<TaskAgentInterfaces.TaskDefinition> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskDefinition>();
 
-        let onResult = (err: any, statusCode: number, task: TaskAgentInterfaces.TaskDefinition) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(task);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskDefinition>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                taskId: taskId,
+                versionString: versionString
+            };
 
-        let routeValues: any = {
-            taskId: taskId,
-            versionString: versionString
-        };
+            let queryValues: any = {
+                visibility: visibility,
+                scopeLocal: scopeLocal,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            visibility: visibility,
-            scopeLocal: scopeLocal,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2299,46 +2564,44 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     * @param {string[]} visibility
     * @param {boolean} scopeLocal
     */
-    public getTaskDefinitions(
+    public async getTaskDefinitions(
         taskId?: string,
         visibility?: string[],
         scopeLocal?: boolean
         ): Promise<TaskAgentInterfaces.TaskDefinition[]> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskDefinition[]>();
 
-        let onResult = (err: any, statusCode: number, tasks: TaskAgentInterfaces.TaskDefinition[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(tasks);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskDefinition[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                taskId: taskId
+            };
 
-        let routeValues: any = {
-            taskId: taskId
-        };
+            let queryValues: any = {
+                visibility: visibility,
+                scopeLocal: scopeLocal,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            visibility: visibility,
-            scopeLocal: scopeLocal,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.get(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2346,42 +2609,279 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     * @param {number} poolId
     * @param {number} agentId
     */
-    public updateAgentUserCapabilities(
+    public async updateAgentUserCapabilities(
         userCapabilities: { [key: string] : string; },
         poolId: number,
         agentId: number
         ): Promise<TaskAgentInterfaces.TaskAgent> {
-    
-        let deferred = Q.defer<TaskAgentInterfaces.TaskAgent>();
 
-        let onResult = (err: any, statusCode: number, usercapabilitie: TaskAgentInterfaces.TaskAgent) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(usercapabilitie);
-            }
-        };
+        return new Promise<TaskAgentInterfaces.TaskAgent>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                poolId: poolId,
+                agentId: agentId
+            };
 
-        let routeValues: any = {
-            poolId: poolId,
-            agentId: agentId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "30ba3ada-fedf-4da8-bbb5-dacf2f82e176",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "30ba3ada-fedf-4da8-bbb5-dacf2f82e176", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
                 
-                this.restCallbackClient.replace(url, apiVersion, userCapabilities, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+                let res: restm.IRestClientResponse = await this.restClient.replace(url, apiVersion, userCapabilities, null);
+                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.TaskAgent, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-        return deferred.promise;
+    /**
+    * @param {TaskAgentInterfaces.VariableGroup} group
+    * @param {string} project - Project ID or project name
+    */
+    public async addVariableGroup(
+        group: TaskAgentInterfaces.VariableGroup,
+        project: string
+        ): Promise<TaskAgentInterfaces.VariableGroup> {
+
+        return new Promise<TaskAgentInterfaces.VariableGroup>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "f5b09dd5-9d54-45a1-8b5a-1c8287d634cc",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, group, null);
+                let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.VariableGroup, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.VariableGroup, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} groupId
+    */
+    public async deleteVariableGroup(
+        project: string,
+        groupId: number
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                groupId: groupId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "f5b09dd5-9d54-45a1-8b5a-1c8287d634cc",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} groupId
+    */
+    public async getVariableGroup(
+        project: string,
+        groupId: number
+        ): Promise<TaskAgentInterfaces.VariableGroup> {
+
+        return new Promise<TaskAgentInterfaces.VariableGroup>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                groupId: groupId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "f5b09dd5-9d54-45a1-8b5a-1c8287d634cc",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.VariableGroup, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {string} groupName
+    * @param {TaskAgentInterfaces.VariableGroupActionFilter} actionFilter
+    */
+    public async getVariableGroups(
+        project: string,
+        groupName?: string,
+        actionFilter?: TaskAgentInterfaces.VariableGroupActionFilter
+        ): Promise<TaskAgentInterfaces.VariableGroup[]> {
+
+        return new Promise<TaskAgentInterfaces.VariableGroup[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
+
+            let queryValues: any = {
+                groupName: groupName,
+                actionFilter: actionFilter,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "f5b09dd5-9d54-45a1-8b5a-1c8287d634cc",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.VariableGroup, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number[]} groupIds
+    */
+    public async getVariableGroupsById(
+        project: string,
+        groupIds: number[]
+        ): Promise<TaskAgentInterfaces.VariableGroup[]> {
+
+        return new Promise<TaskAgentInterfaces.VariableGroup[]>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
+
+            let queryValues: any = {
+                groupIds: groupIds && groupIds.join(","),
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "f5b09dd5-9d54-45a1-8b5a-1c8287d634cc",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: TaskAgentInterfaces.TypeInfo.VariableGroup, responseIsCollection: true };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {TaskAgentInterfaces.VariableGroup} group
+    * @param {string} project - Project ID or project name
+    * @param {number} groupId
+    */
+    public async updateVariableGroup(
+        group: TaskAgentInterfaces.VariableGroup,
+        project: string,
+        groupId: number
+        ): Promise<TaskAgentInterfaces.VariableGroup> {
+
+        return new Promise<TaskAgentInterfaces.VariableGroup>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project,
+                groupId: groupId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "distributedtask",
+                    "f5b09dd5-9d54-45a1-8b5a-1c8287d634cc",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.replace(url, apiVersion, group, null);
+                let serializationData = { requestTypeMetadata: TaskAgentInterfaces.TypeInfo.VariableGroup, responseTypeMetadata: TaskAgentInterfaces.TypeInfo.VariableGroup, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
 }

@@ -10,12 +10,17 @@
 
 "use strict";
 
+import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
 /**
  * A feature that can be enabled or disabled
  */
 export interface ContributedFeature {
+    /**
+     * Named links describing the feature
+     */
+    _links: any;
     /**
      * If true, the feature is enabled unless overridden at some scope
      */
@@ -103,6 +108,24 @@ export interface ContributedFeatureState {
     state: ContributedFeatureEnabledValue;
 }
 
+/**
+ * A query for the effective contributed feature states for a list of feature ids
+ */
+export interface ContributedFeatureStateQuery {
+    /**
+     * The list of feature ids to query
+     */
+    featureIds: string[];
+    /**
+     * The query result containing the current feature states for each of the queried feature ids
+     */
+    featureStates: { [key: string] : ContributedFeatureState; };
+    /**
+     * A dictionary of scope values (project name, etc.) to use in the query (if querying across scopes)
+     */
+    scopeValues: { [key: string] : string; };
+}
+
 export var TypeInfo = {
     ContributedFeature: {
         fields: <any>null
@@ -121,6 +144,9 @@ export var TypeInfo = {
         fields: <any>null
     },
     ContributedFeatureState: {
+        fields: <any>null
+    },
+    ContributedFeatureStateQuery: {
         fields: <any>null
     },
 };
@@ -148,5 +174,10 @@ TypeInfo.ContributedFeatureState.fields = {
     },
     state: {
         enumType: TypeInfo.ContributedFeatureEnabledValue
+    },
+};
+
+TypeInfo.ContributedFeatureStateQuery.fields = {
+    featureStates: {
     },
 };

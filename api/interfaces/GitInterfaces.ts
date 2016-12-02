@@ -49,6 +49,42 @@ export interface AsyncRefOperationProgressNotification extends AsyncRefOperation
     progress: number;
 }
 
+/**
+ * Meta data for a file attached to an artifact
+ */
+export interface Attachment {
+    _links: any;
+    /**
+     * The person that uploaded this attachment
+     */
+    author: VSSInterfaces.IdentityRef;
+    /**
+     * Content hash of on-disk representation of file content. Its calculated by the server by using SHA1 hash function.
+     */
+    contentHash: string;
+    /**
+     * The time the attachment was uploaded
+     */
+    createdDate: Date;
+    /**
+     * The description of the attachment, can be null.
+     */
+    description: string;
+    /**
+     * The display name of the attachment, can't be null or empty.
+     */
+    displayName: string;
+    /**
+     * Id of the code review attachment
+     */
+    id: number;
+    properties: any;
+    /**
+     * The url to download the content of the attachment
+     */
+    url: string;
+}
+
 export interface Change<T> {
     changeType: VersionControlChangeType;
     item: T;
@@ -1724,6 +1760,20 @@ export interface RemoteRepositoryValidation {
 }
 
 /**
+ * Context used while sharing a pull request.
+ */
+export interface ShareNotificationContext {
+    /**
+     * Optional user note or message.
+     */
+    message: string;
+    /**
+     * Identities of users who will receive a share notification.
+     */
+    receivers: VSSInterfaces.IdentityRef[];
+}
+
+/**
  * Represents a Supported IDE entity.
  */
 export interface SupportedIde {
@@ -2130,6 +2180,9 @@ export var TypeInfo = {
         fields: <any>null
     },
     AsyncRefOperationProgressNotification: {
+        fields: <any>null
+    },
+    Attachment: {
         fields: <any>null
     },
     Change: {
@@ -2679,6 +2732,9 @@ export var TypeInfo = {
     RemoteRepositoryValidation: {
         fields: <any>null
     },
+    ShareNotificationContext: {
+        fields: <any>null
+    },
     SupportedIde: {
         fields: <any>null
     },
@@ -2845,6 +2901,15 @@ TypeInfo.AsyncRefOperationGeneralFailureNotification.fields = {
 };
 
 TypeInfo.AsyncRefOperationProgressNotification.fields = {
+};
+
+TypeInfo.Attachment.fields = {
+    author: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+    createdDate: {
+        isDate: true,
+    },
 };
 
 TypeInfo.Change.fields = {
@@ -4266,6 +4331,13 @@ TypeInfo.PullRequestTabExtensionConfig.fields = {
 };
 
 TypeInfo.RemoteRepositoryValidation.fields = {
+};
+
+TypeInfo.ShareNotificationContext.fields = {
+    receivers: {
+        isArray: true,
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
 };
 
 TypeInfo.SupportedIde.fields = {

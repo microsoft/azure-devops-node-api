@@ -3,7 +3,6 @@
 //*******************************************************************************************************
 
 /// Imports of 3rd Party ///
-import Q = require("q");
 import url = require("url");
 import path = require("path");
 /// Import base rest class ///
@@ -43,8 +42,8 @@ export class VsoClient {
 
     private static APIS_RELATIVE_PATH = "_apis";
     private static PREVIEW_INDICATOR = "-preview.";
-    private _locationsByAreaPromises: { [areaName: string]: Q.Promise<VssApiResourceLocationLookup>; };
-    private _initializationPromise: Q.Promise<any>;
+    private _locationsByAreaPromises: { [areaName: string]: Promise<VssApiResourceLocationLookup>; };
+    private _initializationPromise: Promise<any>;
 
     restClient: restm.RestCallbackClient;
     baseUrl: string;
@@ -55,7 +54,7 @@ export class VsoClient {
         this.basePath = url.parse(baseUrl).pathname;
         this.restClient = restClient;
         this._locationsByAreaPromises = {};
-        this._initializationPromise = Q.fcall(() => true);
+        this._initializationPromise = Promise.resolve(true);
     }
 
     /**
@@ -89,51 +88,49 @@ export class VsoClient {
     /**
     * Gets the route template for a resource based on its location ID and negotiates the api version
     */
-    public getVersioningData(apiVersion: string, area: string, locationId: string, routeValues: any, queryParams?: any): Q.Promise<ClientVersioningData> {
+    public getVersioningData(apiVersion: string, area: string, locationId: string, routeValues: any, queryParams?: any): Promise<ClientVersioningData> {
         var requestUrl;
-        var deferred = Q.defer<ClientVersioningData>();
+        
+        return new Promise<ClientVersioningData>((resolve, reject) => {
+            this.beginGetLocation(area, locationId)
+                .then((location: ifm.ApiResourceLocation) => {
+                    if (!location) { 
+                        throw new Error("Failed to find api location for area: " + area + " id: " + locationId);
+                    }
+                    
+                    if (!apiVersion) {
+                        // Use the latest version of the resource if the api version was not specified in the request.
+                        apiVersion = location.maxVersion + VsoClient.PREVIEW_INDICATOR + location.resourceVersion;
+                    }
+                    else {
+                        if (this.compareResourceVersions(location.minVersion, apiVersion) > 1) {
+                            // Client is older than the server. The server no longer supports this resource (deprecated).
+                            throw new InvalidApiResourceVersionError("The client being used is older than the server. The server no longer supports this resource (deprecated). Update the client.");
+                        }
+                        else if (this.compareResourceVersions(location.maxVersion, apiVersion) < 1) {
+                            // Client is newer than the server. Negotiate down to the latest version on the server
+                            apiVersion = location.maxVersion + VsoClient.PREVIEW_INDICATOR + location.resourceVersion;
+                        }
+                    }
 
-        this.beginGetLocation(area, locationId)
-        .then((location: ifm.ApiResourceLocation) => {
-            if (!location) { 
-                throw new Error("Failed to find api location for area: " + area + " id: " + locationId);
-            }
-            
-            if (!apiVersion) {
-                // Use the latest version of the resource if the api version was not specified in the request.
-                apiVersion = location.maxVersion + VsoClient.PREVIEW_INDICATOR + location.resourceVersion;
-            }
-            else {
-                if (this.compareResourceVersions(location.minVersion, apiVersion) > 1) {
-                    // Client is older than the server. The server no longer supports this resource (deprecated).
-                    throw new InvalidApiResourceVersionError("The client being used is older than the server. The server no longer supports this resource (deprecated). Update the client.");
-                }
-                else if (this.compareResourceVersions(location.maxVersion, apiVersion) < 1) {
-                    // Client is newer than the server. Negotiate down to the latest version on the server
-                    apiVersion = location.maxVersion + VsoClient.PREVIEW_INDICATOR + location.resourceVersion;
-                }
-            }
+                    requestUrl = this.getRequestUrl(location.routeTemplate, location.area, location.resourceName, routeValues, queryParams);
 
-            requestUrl = this.getRequestUrl(location.routeTemplate, location.area, location.resourceName, routeValues, queryParams);
-
-            var versionData = {
-                apiVersion: apiVersion,
-                requestUrl: requestUrl
-            };
-            deferred.resolve(versionData);
-        })
-        .fail((err) => {
-            deferred.reject(err);
+                    var versionData = {
+                        apiVersion: apiVersion,
+                        requestUrl: requestUrl
+                    };
+                    resolve(versionData);
+                }, (err) => {
+                    reject(err);
+                });
         });
-
-        return deferred.promise;
     }
     
     /**
      * Sets a promise that is waited on before any requests are issued. Can be used to asynchronously
      * set the request url and auth token manager.
      */
-    public _setInitializationPromise(promise: Q.Promise<any>) {
+    public _setInitializationPromise(promise: Promise<any>) {
         if (promise) {
             this._initializationPromise = promise;
         }
@@ -145,7 +142,7 @@ export class VsoClient {
      * @param area resource area name
      * @param locationId Guid of the location to get
      */
-    public beginGetLocation(area: string, locationId: string): Q.Promise<ifm.ApiResourceLocation> {
+    public beginGetLocation(area: string, locationId: string): Promise<ifm.ApiResourceLocation> {
         return this._initializationPromise.then(() => {
             return this.beginGetAreaLocations(area);
         }).then((areaLocations: VssApiResourceLocationLookup) => {
@@ -153,33 +150,32 @@ export class VsoClient {
         });
     }
 
-    private beginGetAreaLocations(area: string): Q.Promise<VssApiResourceLocationLookup> {
+    private beginGetAreaLocations(area: string): Promise<VssApiResourceLocationLookup> {
         var areaLocationsPromise = this._locationsByAreaPromises[area];
         if (!areaLocationsPromise) {
 
-            var deferred = Q.defer<VssApiResourceLocationLookup>();
-            areaLocationsPromise = deferred.promise;
+            areaLocationsPromise = new Promise<VssApiResourceLocationLookup>((resolve, reject) => {
+                var requestUrl = this.resolveUrl(VsoClient.APIS_RELATIVE_PATH + "/" + area);
 
-            var requestUrl = this.resolveUrl(VsoClient.APIS_RELATIVE_PATH + "/" + area);
-
-            this._issueOptionsRequest(requestUrl, (err: any, statusCode: number, locationsResult: any) => {
-                if (err) {
-                    err.statusCode = statusCode;
-                    deferred.reject(err);
-                }
-                else {
-                    var locationsLookup: VssApiResourceLocationLookup = {};
-
-                    var resourceLocations: ifm.ApiResourceLocation[] = locationsResult.value;
-
-                    var i;
-                    for (i = 0; i < locationsResult.count; i++) {
-                        var resourceLocation = resourceLocations[i];
-                        locationsLookup[resourceLocation.id.toLowerCase()] = resourceLocation;
+                this._issueOptionsRequest(requestUrl, (err: any, statusCode: number, locationsResult: any) => {
+                    if (err) {
+                        err.statusCode = statusCode;
+                        reject(err);
                     }
+                    else {
+                        var locationsLookup: VssApiResourceLocationLookup = {};
 
-                    deferred.resolve(locationsLookup);
-                }
+                        var resourceLocations: ifm.ApiResourceLocation[] = locationsResult.value;
+
+                        var i;
+                        for (i = 0; i < locationsResult.count; i++) {
+                            var resourceLocation = resourceLocations[i];
+                            locationsLookup[resourceLocation.id.toLowerCase()] = resourceLocation;
+                        }
+
+                        resolve(locationsLookup);
+                    }
+                });
             });
 
             this._locationsByAreaPromises[area] = areaLocationsPromise;

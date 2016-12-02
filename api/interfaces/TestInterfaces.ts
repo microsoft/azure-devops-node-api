@@ -21,14 +21,23 @@ export interface AggregatedDataForResultTrend {
     duration: any;
     resultsByOutcome: { [key: number] : AggregatedResultsByOutcome; };
     testResultsContext: TestResultsContext;
+    totalTests: number;
 }
 
 export interface AggregatedResultsAnalysis {
     duration: any;
     previousContext: TestResultsContext;
+    resultsByCategory: AggregatedResultsByCategory[];
     resultsByOutcome: { [key: number] : AggregatedResultsByOutcome; };
     resultsDifference: AggregatedResultsDifference;
     totalTests: number;
+}
+
+export interface AggregatedResultsByCategory {
+    count: number;
+    groupByField: string;
+    groupByValue: any;
+    testOutcome: TestOutcome;
 }
 
 export interface AggregatedResultsByOutcome {
@@ -40,6 +49,7 @@ export interface AggregatedResultsByOutcome {
 export interface AggregatedResultsDifference {
     increaseInDuration: any;
     increaseInFailures: number;
+    increaseInOtherTests: number;
     increaseInPassedTests: number;
     increaseInTotalTests: number;
 }
@@ -903,7 +913,11 @@ export enum TestOutcome {
      * Test is currently executing. Added this for TCM charts
      */
     InProgress = 13,
-    MaxValue = 13,
+    /**
+     * Test is not impacted. Added fot TIA.
+     */
+    NotImpacted = 14,
+    MaxValue = 14,
 }
 
 export interface TestPlan {
@@ -1234,7 +1248,7 @@ export enum TestSessionSource {
     /**
      * Source of test session uncertain as it is stale
      */
-    Unkonown = 0,
+    Unknown = 0,
     /**
      * The session was created from Microsoft Test Manager exploratory desktop tool.
      */
@@ -1251,6 +1265,14 @@ export enum TestSessionSource {
      * The session was created from browser extension.
      */
     FeedbackWeb = 4,
+    /**
+     * The session was created from web access using Microsoft Test Manager exploratory desktop tool.
+     */
+    XTDesktop2 = 5,
+    /**
+     * To show sessions from all supported sources.
+     */
+    SessionInsightsForAll = 6,
 }
 
 export enum TestSessionState {
@@ -1416,6 +1438,9 @@ export var TypeInfo = {
         fields: <any>null
     },
     AggregatedResultsAnalysis: {
+        fields: <any>null
+    },
+    AggregatedResultsByCategory: {
         fields: <any>null
     },
     AggregatedResultsByOutcome: {
@@ -1680,7 +1705,8 @@ export var TypeInfo = {
             "notApplicable": 11,
             "paused": 12,
             "inProgress": 13,
-            "maxValue": 13,
+            "notImpacted": 14,
+            "maxValue": 14,
         }
     },
     TestPlan: {
@@ -1770,11 +1796,13 @@ export var TypeInfo = {
     },
     TestSessionSource: {
         enumValues: {
-            "unkonown": 0,
+            "unknown": 0,
             "xTDesktop": 1,
             "feedbackDesktop": 2,
             "xTWeb": 3,
             "feedbackWeb": 4,
+            "xTDesktop2": 5,
+            "sessionInsightsForAll": 6,
         }
     },
     TestSessionState: {
@@ -1828,10 +1856,20 @@ TypeInfo.AggregatedResultsAnalysis.fields = {
     previousContext: {
         typeInfo: TypeInfo.TestResultsContext
     },
+    resultsByCategory: {
+        isArray: true,
+        typeInfo: TypeInfo.AggregatedResultsByCategory
+    },
     resultsByOutcome: {
     },
     resultsDifference: {
         typeInfo: TypeInfo.AggregatedResultsDifference
+    },
+};
+
+TypeInfo.AggregatedResultsByCategory.fields = {
+    testOutcome: {
+        enumType: TypeInfo.TestOutcome
     },
 };
 

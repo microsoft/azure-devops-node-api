@@ -10,6 +10,7 @@
 
 "use strict";
 
+import DistributedTaskCommonInterfaces = require("../interfaces/DistributedTaskCommonInterfaces");
 import TfsCoreInterfaces = require("../interfaces/CoreInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
@@ -350,13 +351,20 @@ export interface BuildDefinition extends BuildDefinitionReference {
      * Gets or sets the job execution timeout in minutes for builds which are queued against this definition
      */
     jobTimeoutInMinutes: number;
+    latestBuild: Build;
+    latestCompletedBuild: Build;
     options: BuildOption[];
+    /**
+     * Process Parameters
+     */
+    processParameters: DistributedTaskCommonInterfaces.ProcessParameters;
     properties: any;
     /**
      * The repository
      */
     repository: BuildRepository;
     retentionRules: RetentionPolicy[];
+    tags: string[];
     triggers: BuildTrigger[];
     variables: { [key: string] : BuildDefinitionVariable; };
 }
@@ -378,10 +386,6 @@ export interface BuildDefinitionReference extends DefinitionReference {
      * The author of the definition.
      */
     authoredBy: VSSInterfaces.IdentityRef;
-    /**
-     * The default branch of this definition
-     */
-    defaultBranch: string;
     /**
      * If this is a draft definition, it might have a parent
      */
@@ -448,6 +452,7 @@ export interface BuildDefinitionTemplate {
     canDelete: boolean;
     category: string;
     description: string;
+    icons: { [key: string] : string; };
     iconTaskId: string;
     id: string;
     name: string;
@@ -1317,6 +1322,19 @@ export interface RealtimeBuildEvent {
     buildId: number;
 }
 
+export enum RepositoryCleanOptions {
+    Source = 0,
+    SourceAndOutputDir = 1,
+    /**
+     * Re-create $(build.sourcesDirectory)
+     */
+    SourceDir = 2,
+    /**
+     * Re-create $(agnet.buildDirectory) which contains $(build.sourcesDirectory), $(build.binariesDirectory) and any folders that left from previous build.
+     */
+    AllBuildDir = 3,
+}
+
 export interface RequestReference {
     /**
      * Id of the resource
@@ -2014,6 +2032,14 @@ export var TypeInfo = {
     RealtimeBuildEvent: {
         fields: <any>null
     },
+    RepositoryCleanOptions: {
+        enumValues: {
+            "source": 0,
+            "sourceAndOutputDir": 1,
+            "sourceDir": 2,
+            "allBuildDir": 3,
+        }
+    },
     RequestReference: {
         fields: <any>null
     },
@@ -2286,6 +2312,12 @@ TypeInfo.BuildDefinition.fields = {
     jobAuthorizationScope: {
         enumType: TypeInfo.BuildAuthorizationScope
     },
+    latestBuild: {
+        typeInfo: TypeInfo.Build
+    },
+    latestCompletedBuild: {
+        typeInfo: TypeInfo.Build
+    },
     metrics: {
         isArray: true,
         typeInfo: TypeInfo.BuildMetric
@@ -2293,6 +2325,9 @@ TypeInfo.BuildDefinition.fields = {
     options: {
         isArray: true,
         typeInfo: TypeInfo.BuildOption
+    },
+    processParameters: {
+        typeInfo: DistributedTaskCommonInterfaces.TypeInfo.ProcessParameters
     },
     project: {
         typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference

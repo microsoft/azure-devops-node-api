@@ -190,6 +190,53 @@ export interface ContributionConstraint {
     relationships: string[];
 }
 
+export enum ContributionLicensingBehaviorType {
+    /**
+     * Default value - only include the contribution if the user is licensed for the extension
+     */
+    OnlyIfLicensed = 0,
+    /**
+     * Only include the contribution if the user is NOT licensed for the extension
+     */
+    OnlyIfUnlicensed = 1,
+    /**
+     * Always include the contribution regardless of whether or not the user is licensed for the extension
+     */
+    AlwaysInclude = 2,
+}
+
+/**
+ * A query that can be issued for contribution nodes
+ */
+export interface ContributionNodeQuery {
+    /**
+     * The contribution ids of the nodes to find.
+     */
+    contributionIds: string[];
+    /**
+     * Indicator if contribution provider details should be included in the result.
+     */
+    includeProviderDetails: boolean;
+    /**
+     * Query options tpo be used when fetching ContributionNodes
+     */
+    queryOptions: ContributionQueryOptions;
+}
+
+/**
+ * Result of a contribution node query.  Wraps the resulting contribution nodes and provider details.
+ */
+export interface ContributionNodeQueryResult {
+    /**
+     * Map of contribution ids to corresponding node.
+     */
+    nodes: { [key: string] : SerializedContributionNode; };
+    /**
+     * Map of provder ids to the corresponding provider details object.
+     */
+    providerDetails: { [key: string] : ContributionProviderDetails; };
+}
+
 /**
  * Description about a property of a contribution type
  */
@@ -257,6 +304,45 @@ export enum ContributionPropertyType {
      * Value is an arbitrary/custom object
      */
     Object = 512,
+}
+
+export interface ContributionProviderDetails {
+    /**
+     * Friendly name for the provider.
+     */
+    displayName: string;
+    /**
+     * Unique identifier for this provider. The provider name can be used to cache the contribution data and refer back to it when looking for changes
+     */
+    name: string;
+    /**
+     * Properties associated with the provider
+     */
+    properties: { [key: string] : string; };
+}
+
+export enum ContributionQueryOptions {
+    None = 0,
+    /**
+     * Include the direct contributions that have the ids queried.
+     */
+    IncludeSelf = 16,
+    /**
+     * Include the contributions that directly target the contributions queried.
+     */
+    IncludeChildren = 32,
+    /**
+     * Include the contributions from the entire sub-tree targetting the contributions queried.
+     */
+    IncludeSubTree = 96,
+    /**
+     * Include the contribution being queried as well as all contributions that target them recursively.
+     */
+    IncludeAll = 112,
+    /**
+     * Some callers may want the entire tree back without constraint evaluation being performed.
+     */
+    IgnoreConstraints = 256,
 }
 
 /**
@@ -484,6 +570,16 @@ export enum ExtensionFlags {
 }
 
 /**
+ * How an extension should handle including contributions based on licensing
+ */
+export interface ExtensionLicensing {
+    /**
+     * A list of contributions which deviate from the default licensing behavior
+     */
+    overrides: LicensingOverride[];
+}
+
+/**
  * Base class for extension properties which are shared by the extension manifest and the extension model
  */
 export interface ExtensionManifest {
@@ -508,9 +604,17 @@ export interface ExtensionManifest {
      */
     eventCallbacks: ExtensionEventCallbackCollection;
     /**
+     * Secondary location that can be used as base for other relative uri's defined in extension
+     */
+    fallbackBaseUri: string;
+    /**
      * Language Culture Name set by the Gallery
      */
     language: string;
+    /**
+     * How this extension behaves with respect to licensing
+     */
+    licensing: ExtensionLicensing;
     /**
      * Version of the extension manifest format/content
      */
@@ -760,6 +864,20 @@ export enum InstalledExtensionStateIssueType {
 }
 
 /**
+ * Maps a contribution to a licensing behavior
+ */
+export interface LicensingOverride {
+    /**
+     * How the inclusion of this contribution should change based on licensing
+     */
+    behavior: ContributionLicensingBehaviorType;
+    /**
+     * Fully qualified contribution id which we want to define licensing behavior for
+     */
+    id: string;
+}
+
+/**
  * A request for an extension (to be installed or have a license assigned)
  */
 export interface RequestedExtension {
@@ -801,6 +919,24 @@ export interface Scope {
     description: string;
     title: string;
     value: string;
+}
+
+/**
+ * Representaion of a ContributionNode that can be used for serialized to clients.
+ */
+export interface SerializedContributionNode {
+    /**
+     * List of ids for contributions which are children to the current contribution.
+     */
+    children: string[];
+    /**
+     * Contribution associated with this node.
+     */
+    contribution: Contribution;
+    /**
+     * List of ids for contributions which are parents to the current contribution.
+     */
+    parents: string[];
 }
 
 /**
@@ -864,6 +1000,19 @@ export var TypeInfo = {
     ContributionConstraint: {
         fields: <any>null
     },
+    ContributionLicensingBehaviorType: {
+        enumValues: {
+            "onlyIfLicensed": 0,
+            "onlyIfUnlicensed": 1,
+            "alwaysInclude": 2,
+        }
+    },
+    ContributionNodeQuery: {
+        fields: <any>null
+    },
+    ContributionNodeQueryResult: {
+        fields: <any>null
+    },
     ContributionPropertyDescription: {
         fields: <any>null
     },
@@ -880,6 +1029,19 @@ export var TypeInfo = {
             "dictionary": 128,
             "array": 256,
             "object": 512,
+        }
+    },
+    ContributionProviderDetails: {
+        fields: <any>null
+    },
+    ContributionQueryOptions: {
+        enumValues: {
+            "none": 0,
+            "includeSelf": 16,
+            "includeChildren": 32,
+            "includeSubTree": 96,
+            "includeAll": 112,
+            "ignoreConstraints": 256,
         }
     },
     ContributionType: {
@@ -926,6 +1088,9 @@ export var TypeInfo = {
             "builtIn": 1,
             "trusted": 2,
         }
+    },
+    ExtensionLicensing: {
+        fields: <any>null
     },
     ExtensionManifest: {
         fields: <any>null
@@ -979,6 +1144,9 @@ export var TypeInfo = {
             "error": 1,
         }
     },
+    LicensingOverride: {
+        fields: <any>null
+    },
     RequestedExtension: {
         fields: <any>null
     },
@@ -986,6 +1154,9 @@ export var TypeInfo = {
         fields: <any>null
     },
     Scope: {
+        fields: <any>null
+    },
+    SerializedContributionNode: {
         fields: <any>null
     },
     SupportedExtension: {
@@ -1032,10 +1203,26 @@ TypeInfo.ContributionBase.fields = {
 TypeInfo.ContributionConstraint.fields = {
 };
 
+TypeInfo.ContributionNodeQuery.fields = {
+    queryOptions: {
+        enumType: TypeInfo.ContributionQueryOptions
+    },
+};
+
+TypeInfo.ContributionNodeQueryResult.fields = {
+    nodes: {
+    },
+    providerDetails: {
+    },
+};
+
 TypeInfo.ContributionPropertyDescription.fields = {
     type: {
         enumType: TypeInfo.ContributionPropertyType
     },
+};
+
+TypeInfo.ContributionProviderDetails.fields = {
 };
 
 TypeInfo.ContributionType.fields = {
@@ -1127,6 +1314,13 @@ TypeInfo.ExtensionEventCallbackCollection.fields = {
     },
 };
 
+TypeInfo.ExtensionLicensing.fields = {
+    overrides: {
+        isArray: true,
+        typeInfo: TypeInfo.LicensingOverride
+    },
+};
+
 TypeInfo.ExtensionManifest.fields = {
     contributions: {
         isArray: true,
@@ -1138,6 +1332,9 @@ TypeInfo.ExtensionManifest.fields = {
     },
     eventCallbacks: {
         typeInfo: TypeInfo.ExtensionEventCallbackCollection
+    },
+    licensing: {
+        typeInfo: TypeInfo.ExtensionLicensing
     },
 };
 
@@ -1209,6 +1406,9 @@ TypeInfo.InstalledExtension.fields = {
     lastPublished: {
         isDate: true,
     },
+    licensing: {
+        typeInfo: TypeInfo.ExtensionLicensing
+    },
 };
 
 TypeInfo.InstalledExtensionQuery.fields = {
@@ -1237,6 +1437,12 @@ TypeInfo.InstalledExtensionStateIssue.fields = {
     },
 };
 
+TypeInfo.LicensingOverride.fields = {
+    behavior: {
+        enumType: TypeInfo.ContributionLicensingBehaviorType
+    },
+};
+
 TypeInfo.RequestedExtension.fields = {
     extensionRequests: {
         isArray: true,
@@ -1248,6 +1454,12 @@ TypeInfo.ResolvedDataProvider.fields = {
 };
 
 TypeInfo.Scope.fields = {
+};
+
+TypeInfo.SerializedContributionNode.fields = {
+    contribution: {
+        typeInfo: TypeInfo.Contribution
+    },
 };
 
 TypeInfo.SupportedExtension.fields = {

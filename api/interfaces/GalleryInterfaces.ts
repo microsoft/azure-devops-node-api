@@ -176,6 +176,31 @@ export interface AzureRestApiResponseModel extends AzureRestApiRequestModel {
     operationStatus: RestApiResponseStatusModel;
 }
 
+/**
+ * This is the set of categories in response to the get category query
+ */
+export interface CategoriesResult {
+    categories: ExtensionCategory[];
+}
+
+/**
+ * Definition of one title of a category
+ */
+export interface CategoryLanguageTitle {
+    /**
+     * The language for which the title is applicable
+     */
+    lang: string;
+    /**
+     * The language culture id of the lang parameter
+     */
+    lcid: number;
+    /**
+     * Actual title to be shown on the UI
+     */
+    title: string;
+}
+
 export enum ConcernCategory {
     General = 1,
     Abusive = 2,
@@ -223,9 +248,34 @@ export interface ExtensionBadge {
 }
 
 export interface ExtensionCategory {
+    /**
+     * The name of the products with which this category is associated to.
+     */
+    associatedProducts: string[];
     categoryId: number;
+    /**
+     * This is the internal name for a category
+     */
     categoryName: string;
+    /**
+     * This parameter is obsolete. Refer to LanguageTitles for langauge specific titles
+     */
     language: string;
+    /**
+     * The list of all the titles of this category in various languages
+     */
+    languageTitles: CategoryLanguageTitle[];
+    /**
+     * This is the internal name of the parent if this is associated with a parent
+     */
+    parentCategoryName: string;
+}
+
+export enum ExtensionDeploymentTechnology {
+    Exe = 1,
+    Msi = 2,
+    Vsix = 3,
+    ReferralLink = 4,
 }
 
 export interface ExtensionFile {
@@ -405,9 +455,17 @@ export enum ExtensionQueryFilterType {
      */
     FeaturedInCategory = 11,
     /**
-     * When retrieving extensions from a query, exclude the extensions which are having the given flags. The value specified for this filter should be a string representing the integer values of the flags to be excluded. In case of mulitple flags to be specified, a logical OR of the interger values should be given as value for this filter This should be at most one filter of this type. This filter is only supported when search text is specified
+     * When retrieving extensions from a query, exclude the extensions which are having the given flags. The value specified for this filter should be a string representing the integer values of the flags to be excluded. In case of mulitple flags to be specified, a logical OR of the interger values should be given as value for this filter This should be at most one filter of this type. This only acts as a restrictive filter after. In case of having a particular flag in both IncludeWithFlags and ExcludeWithFlags, excludeFlags will remove the included extensions giving empty result for that flag.
      */
     ExcludeWithFlags = 12,
+    /**
+     * When retrieving extensions from a query, include the extensions which are having the given flags. The value specified for this filter should be a string representing the integer values of the flags to be included. In case of mulitple flags to be specified, a logical OR of the interger values should be given as value for this filter This should be at most one filter of this type. This only acts as a restrictive filter after. In case of having a particular flag in both IncludeWithFlags and ExcludeWithFlags, excludeFlags will remove the included extensions giving empty result for that flag. In case of multiple flags given in IncludeWithFlags in ORed fashion, extensions having any of the given flags will be included.
+     */
+    IncludeWithFlags = 13,
+    /**
+     * Fitler the extensions based on the LCID values applicable. Any extensions which are not having any LCID values will also be filtered. This is currenlty only supported for VS extensions.
+     */
+    Lcid = 14,
 }
 
 export enum ExtensionQueryFlags {
@@ -456,6 +514,14 @@ export enum ExtensionQueryFlags {
      */
     IncludeLatestVersionOnly = 512,
     /**
+     * This flag switches the asset uri to use GetAssetByName instead of CDN When this is used, values of base asset uri and base asset uri fallback are switched When this is used, source of asset files are pointed to Gallery service always even if CDN is available
+     */
+    UseFallbackAssetUri = 1024,
+    /**
+     * This flag is used to get all the metadata values associated with the extension. This is not applicable to VSTS or VSCode extensions and usage is only internal.
+     */
+    IncludeMetadata = 2048,
+    /**
      * AllAttributes is designed to be a mask that defines all sub-elements of the extension should be returned.  NOTE: This is not actually All flags. This is now locked to the set defined since changing this enum would be a breaking change and would change the behavior of anyone using it. Try not to use this value when making calls to the service, instead be explicit about the options required.
      */
     AllAttributes = 479,
@@ -500,6 +566,7 @@ export interface ExtensionStatisticUpdate {
 export interface ExtensionVersion {
     assetUri: string;
     badges: ExtensionBadge[];
+    fallbackAssetUri: string;
     files: ExtensionFile[];
     flags: ExtensionVersionFlags;
     lastUpdated: Date;
@@ -562,6 +629,7 @@ export enum PagingDirection {
 
 export interface PublishedExtension {
     categories: string[];
+    deploymentType: ExtensionDeploymentTechnology;
     displayName: string;
     extensionId: string;
     extensionName: string;
@@ -627,9 +695,13 @@ export enum PublishedExtensionFlags {
      */
     Preview = 2048,
     /**
-     * The Deprecated flag indicates that the extension can't be installed/downloaded/updated. Users who have installed such an extension can continue to use the extension.
+     * The Unpublished flag indicates that the extension can't be installed/downloaded. Users who have installed such an extension can continue to use the extension.
      */
-    Deprecated = 4096,
+    Unpublished = 4096,
+    /**
+     * The Trial flag indicates that the extension is in Trial version. The flag is right now being used only with respec to Visual Studio extensions.
+     */
+    Trial = 8192,
 }
 
 export interface Publisher {
@@ -1039,6 +1111,10 @@ export enum SortByType {
      * The results will be sorted as per ReleaseDate of the extensions (date on which the extension first went public)
      */
     ReleaseDate = 10,
+    /**
+     * The results will be sorted as per Author defined in the VSix/Metadata. If not defined, publisher name is used This is specifically needed by VS IDE, other (new and old) clients are not encouraged to use this
+     */
+    Author = 11,
 }
 
 export enum SortOrderType {
@@ -1143,6 +1219,12 @@ export var TypeInfo = {
     AzureRestApiResponseModel: {
         fields: <any>null
     },
+    CategoriesResult: {
+        fields: <any>null
+    },
+    CategoryLanguageTitle: {
+        fields: <any>null
+    },
     ConcernCategory: {
         enumValues: {
             "general": 1,
@@ -1158,6 +1240,14 @@ export var TypeInfo = {
     },
     ExtensionCategory: {
         fields: <any>null
+    },
+    ExtensionDeploymentTechnology: {
+        enumValues: {
+            "exe": 1,
+            "msi": 2,
+            "vsix": 3,
+            "referralLink": 4,
+        }
     },
     ExtensionFile: {
         fields: <any>null
@@ -1205,6 +1295,8 @@ export var TypeInfo = {
             "searchText": 10,
             "featuredInCategory": 11,
             "excludeWithFlags": 12,
+            "includeWithFlags": 13,
+            "lcid": 14,
         }
     },
     ExtensionQueryFlags: {
@@ -1220,6 +1312,8 @@ export var TypeInfo = {
             "includeAssetUri": 128,
             "includeStatistics": 256,
             "includeLatestVersionOnly": 512,
+            "useFallbackAssetUri": 1024,
+            "includeMetadata": 2048,
             "allAttributes": 479,
         }
     },
@@ -1283,7 +1377,8 @@ export var TypeInfo = {
             "multiVersion": 512,
             "system": 1024,
             "preview": 2048,
-            "deprecated": 4096,
+            "unpublished": 4096,
+            "trial": 8192,
         }
     },
     Publisher: {
@@ -1386,6 +1481,7 @@ export var TypeInfo = {
             "trendingWeekly": 8,
             "trendingMonthly": 9,
             "releaseDate": 10,
+            "author": 11,
         }
     },
     SortOrderType: {
@@ -1449,6 +1545,16 @@ TypeInfo.AzureRestApiResponseModel.fields = {
     },
 };
 
+TypeInfo.CategoriesResult.fields = {
+    categories: {
+        isArray: true,
+        typeInfo: TypeInfo.ExtensionCategory
+    },
+};
+
+TypeInfo.CategoryLanguageTitle.fields = {
+};
+
 TypeInfo.ExtensionAcquisitionRequest.fields = {
     assignmentType: {
         enumType: TypeInfo.AcquisitionAssignmentType
@@ -1462,6 +1568,10 @@ TypeInfo.ExtensionBadge.fields = {
 };
 
 TypeInfo.ExtensionCategory.fields = {
+    languageTitles: {
+        isArray: true,
+        typeInfo: TypeInfo.CategoryLanguageTitle
+    },
 };
 
 TypeInfo.ExtensionFile.fields = {
@@ -1559,6 +1669,9 @@ TypeInfo.MetadataItem.fields = {
 };
 
 TypeInfo.PublishedExtension.fields = {
+    deploymentType: {
+        enumType: TypeInfo.ExtensionDeploymentTechnology
+    },
     flags: {
         enumType: TypeInfo.PublishedExtensionFlags
     },
