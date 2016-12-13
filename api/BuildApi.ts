@@ -585,7 +585,10 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 
                 let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
                 let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                let deserializedResult = serm.ContractSerializer.deserialize(res.result, 
+                                                                        serializationData.responseTypeMetadata, 
+                                                                        false, 
+                                                                        serializationData.responseIsCollection);
                 resolve(deserializedResult);
                 
             }

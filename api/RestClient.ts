@@ -15,7 +15,8 @@ export interface IRestClientResponse {
 export class RestClient {
     client: RestCallbackClient;
 
-    constructor(userAgent: string, handlers?: ifm.IRequestHandler[], socketTimeout?: number, versionParam: string = 'api-version') {
+    constructor(userAgent: string, handlers?: ifm.IRequestHandler[], socketTimeout?: number, versionParam?: string) {
+        versionParam = versionParam || 'api-version';
         let httpc: httpm.HttpCallbackClient = new httpm.HttpCallbackClient(userAgent, handlers, socketTimeout);
         this.client = new RestCallbackClient(httpc, versionParam);
     }
@@ -129,7 +130,8 @@ export class RestCallbackClient {
     httpClient: httpm.HttpCallbackClient;
     versionParam: string;
 
-    constructor(httpClient: httpm.HttpCallbackClient, versionParam: string = 'api-version') {
+    constructor(httpClient: httpm.HttpCallbackClient, versionParam?: string) {
+        versionParam = versionParam || 'api-version';
         this.httpClient = httpClient;
         this.versionParam = versionParam;
     }

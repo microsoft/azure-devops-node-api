@@ -76,62 +76,90 @@ export class WebApi {
      * Each factory method can take a serverUrl and a list of handlers
      * if these aren't provided, the default url and auth handler given to the constructor for this class will be used
      */
-    public getBuildApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): buildm.IBuildApi {
+    public getBuildApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): buildm.IBuildApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];
         return new buildm.BuildApi(serverUrl, handlers);
     }
 
     /**
      * Each API has a method here to create the client.
      */
-    public getCoreApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): corem.ICoreApi {
+    public getCoreApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): corem.ICoreApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
         return new corem.CoreApi(serverUrl, handlers);
     }
 
-    public getContributionsApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): contributionsm.ContributionsApi {
+    public getContributionsApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): contributionsm.ContributionsApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
         return new contributionsm.ContributionsApi(serverUrl, handlers);
     }
 
-    public getExtensionManagementApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): extmgmtm.IExtensionManagementApi {
+    public getExtensionManagementApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): extmgmtm.IExtensionManagementApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
         return new extmgmtm.ExtensionManagementApi(serverUrl, handlers);
     }
 
-    public getFeatureManagementApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): featuremgmtm.FeatureManagementApi {
+    public getFeatureManagementApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): featuremgmtm.FeatureManagementApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
         return new featuremgmtm.FeatureManagementApi(serverUrl, handlers);
     }
 
-    public getFileContainerApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): filecontainerm.IFileContainerApi {
+    public getFileContainerApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): filecontainerm.IFileContainerApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
         return new filecontainerm.FileContainerApi(serverUrl, handlers);
     }
 
-    public getGalleryApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): gallerym.IGalleryApi {
+    public getGalleryApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): gallerym.IGalleryApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
         return new gallerym.GalleryApi(serverUrl, handlers);
     }
 
-    public getGitApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): gitm.IGitApi {
+    public getGitApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): gitm.IGitApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
         return new gitm.GitApi(serverUrl, handlers);
     }
 
-    public getTaskApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): taskm.ITaskApi {
+    public getTaskApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): taskm.ITaskApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
         return new taskm.TaskApi(serverUrl, handlers);
     }
 
-    public getTaskAgentApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): taskagentm.ITaskAgentApi {
+    public getTaskAgentApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): taskagentm.ITaskAgentApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
         return new taskagentm.TaskAgentApi(serverUrl, handlers); 
     }
 
-    public getTestApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): testm.ITestApi {
+    public getTestApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): testm.ITestApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
         return new testm.TestApi(serverUrl, handlers); 
     }
 
-    public getTfvcApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): tfvcm.ITfvcApi {
+    public getTfvcApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): tfvcm.ITfvcApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
         return new tfvcm.TfvcApi(serverUrl, handlers);
     }
 
-    public getWorkItemTrackingApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): workitemtrackingm.IWorkItemTrackingApi {
+    public getWorkItemTrackingApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): workitemtrackingm.IWorkItemTrackingApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
         return new workitemtrackingm.WorkItemTrackingApi(serverUrl, handlers);
     }
 
-    public getReleaseApi(serverUrl: string = this.serverUrl, handlers: VsoBaseInterfaces.IRequestHandler[] = [this.authHandler]): releasem.IReleaseApi {
+    public getReleaseApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): releasem.IReleaseApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
         return new releasem.ReleaseApi(serverUrl, handlers);
     }
 }

@@ -51,7 +51,6 @@ async function buildSample() {
                         10                          // top: number
                         );
         
-        
         console.log(builds.length + ' builds returned');
         builds.forEach((build: bi.Build) => {
             console.log(build.buildNumber, bi.BuildResult[build.result], 'on', build.finishTime.toDateString());
