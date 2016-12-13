@@ -32,7 +32,7 @@ export class ClientApiBase {
     
     public connect(): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.restCallbackClient.get(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, (err: any, statusCode: number, obj: any) => {
+            this.restCallbackClient.get(this.vsoClient.resolveUrl('/_apis/connectionData'), "", (err: any, statusCode: number, obj: any) => {
                 if (err) {
                     err.statusCode = statusCode;
                     reject(err);

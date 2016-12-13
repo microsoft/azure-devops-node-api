@@ -40,7 +40,6 @@ export interface RequestInfo {
     options: http.RequestOptions;
     parsedUrl: url.Url;
     httpModule: any;
-    isHttps: boolean;
 }
 
 export function isHttps(requestUrl: string) {
@@ -49,7 +48,6 @@ export function isHttps(requestUrl: string) {
 }
 
 export class HttpClient {
-    client: HttpCallbackClient;
     userAgent: string;
     handlers: ifm.IRequestHandler[];
     socketTimeout: number;
@@ -58,8 +56,6 @@ export class HttpClient {
         this.userAgent = userAgent;
         this.handlers = handlers;
         this.socketTimeout = socketTimeout ? socketTimeout : 3 * 60000;
-
-        this.client = new HttpCallbackClient(userAgent, handlers, socketTimeout);
     }
 
     public get(requestUrl: string, additionalHeaders?: ifm.IHeaders): Promise<HttpClientResponse> {
@@ -187,12 +183,12 @@ export class HttpClient {
             info.options.agent = tunnelAgent(agentOptions);
         }
 
-        // this is wierd
-        // if (this.handlers) {
-        //     this.handlers.forEach((handler) => {
-        //         handler.prepareRequest(info.options);
-        //     });
-        // }
+        // gives handlers an opportunity to participate
+        if (this.handlers) {
+            this.handlers.forEach((handler) => {
+                handler.prepareRequest(info.options);
+            });
+        }
 
         return info;
     }        
