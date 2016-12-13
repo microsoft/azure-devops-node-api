@@ -23,16 +23,14 @@ export class RestClient {
 
     public get(requestUrl: string, 
                apiVersion: string, 
-               additionalHeaders?: ifm.IHeaders, 
-               serializationData?: serm.SerializationData): Promise<IRestClientResponse> {
+               additionalHeaders?: ifm.IHeaders): Promise<IRestClientResponse> {
 
         return this._getJson('GET', requestUrl, apiVersion, additionalHeaders || {});
     }
 
     public del(requestUrl: string, 
                apiVersion: string, 
-               additionalHeaders?: ifm.IHeaders, 
-               serializationData?: serm.SerializationData): Promise<IRestClientResponse> {
+               additionalHeaders?: ifm.IHeaders): Promise<IRestClientResponse> {
 
         return this._getJson('DELETE', requestUrl, apiVersion, additionalHeaders || {});
     }
@@ -40,8 +38,7 @@ export class RestClient {
     public create(requestUrl: string, 
                 apiVersion: string, 
                 objs: any, 
-                additionalHeaders?: ifm.IHeaders, 
-                serializationData?: serm.SerializationData): Promise<IRestClientResponse> {
+                additionalHeaders?: ifm.IHeaders): Promise<IRestClientResponse> {
 
         return this._sendRequest('POST', requestUrl, apiVersion, objs, additionalHeaders || {});
     }
@@ -49,8 +46,7 @@ export class RestClient {
     public update(requestUrl: string, 
                  apiVersion: string, 
                  objs: any, 
-                 additionalHeaders?: ifm.IHeaders, 
-                 serializationData?: serm.SerializationData): Promise<IRestClientResponse> {
+                 additionalHeaders?: ifm.IHeaders): Promise<IRestClientResponse> {
 
         return this._sendRequest('PATCH', requestUrl, apiVersion, objs, additionalHeaders || {});
     }
@@ -58,13 +54,12 @@ export class RestClient {
     public replace(requestUrl: string, 
                  apiVersion: string, 
                  objs: any, 
-                 additionalHeaders?: ifm.IHeaders, 
-                 serializationData?: serm.SerializationData): Promise<IRestClientResponse> {
+                 additionalHeaders?: ifm.IHeaders): Promise<IRestClientResponse> {
 
         return this._sendRequest('PUT', requestUrl, apiVersion, objs, additionalHeaders || {});
     }
 
-    public uploadStream(verb: string, url: string, apiVersion: string, contentStream: NodeJS.ReadableStream, additionalHeaders: ifm.IHeaders, serializationData?: serm.SerializationData): Promise<IRestClientResponse> {
+    public uploadStream(verb: string, url: string, apiVersion: string, contentStream: NodeJS.ReadableStream, additionalHeaders: ifm.IHeaders): Promise<IRestClientResponse> {
         return new Promise<IRestClientResponse>((resolve, reject) => {
             this.client.uploadStream(verb, url, apiVersion, contentStream, additionalHeaders || {}, (err:any, statusCode: number, obj: any) => {
                 if (err) {
@@ -76,7 +71,7 @@ export class RestClient {
                     res.result = obj;
                     resolve(res);
                 }
-            }, serializationData);
+            });
         });
     }
 
