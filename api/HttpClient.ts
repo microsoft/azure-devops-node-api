@@ -9,10 +9,32 @@ import ifm = require('./interfaces/common/VsoBaseInterfaces');
 
 http.globalAgent.maxSockets = 100;
 
-export interface IHttpClientResponse {
-    statusCode: number,
-    stream: NodeJS.ReadableStream; 
-    contents: string;
+export enum HttpCodes {
+    OK = 200,
+    MultipleChoices = 300,
+    MovedPermanantly = 301,
+    ResourceMoved = 302,
+    NotModified = 304,
+    UseProxy = 305,
+    SwitchProxy = 306,
+    TemporaryRedirect = 307,
+    PermanentRedirect = 308,
+    BadRequest = 400,
+    Unauthorized = 401,
+    PaymentRequired = 402,
+    Forbidden = 403,
+    NotFound = 404,
+    MethodNotAllowed = 405,
+    NotAcceptable = 406,
+    ProxyAuthenticationRequired = 407,
+    RequestTimeout = 408,
+    Conflict = 409,
+    Gone = 410,
+    InternalServerError = 500,
+    NotImplemented = 501,
+    BadGateway = 502,
+    ServiceUnavailable = 503,
+    GatewayTimeout = 504,
 }
 
 export class HttpClientResponse {
@@ -74,18 +96,28 @@ export class HttpClient {
         return this.request('PATCH', requestUrl, data, additionalHeaders || {});
     }
 
+    public put(requestUrl: string, data: string, additionalHeaders?: ifm.IHeaders): Promise<HttpClientResponse> {
+        return this.request('PUT', requestUrl, data, additionalHeaders || {});
+    }    
+
+    public sendStream(verb: string, requestUrl: string, stream: NodeJS.ReadableStream, additionalHeaders?: ifm.IHeaders): Promise<HttpClientResponse> {
+        return this.request(verb, requestUrl, stream, additionalHeaders);
+    }
+
     /**
      * Makes a raw http request.
      * All other methods such as get, post, patch, and request ultimately call this.
      * Prefer get, del, post and patch
      */
-    public request(verb: string, requestUrl: string, data: any, headers: ifm.IHeaders): Promise<HttpClientResponse> {
+    public request(verb: string, requestUrl: string, data: string | NodeJS.ReadableStream, headers: ifm.IHeaders): Promise<HttpClientResponse> {
         return new Promise<HttpClientResponse>(async(resolve, reject) => {
             try {
                 var info: RequestInfo = this._prepareRequest(verb, requestUrl, headers);
                 let res: HttpClientResponse = await this._requestRaw(info, data);
                 
                 // TODO: check 401 if handled
+
+                // TODO: retry support
 
                 resolve(res);
             }
@@ -97,11 +129,13 @@ export class HttpClient {
         });
     }
 
-    private _requestRaw(info: RequestInfo, data: string): Promise<HttpClientResponse> {
+    private _requestRaw(info: RequestInfo, data: string | NodeJS.ReadableStream): Promise<HttpClientResponse> {
         return new Promise<HttpClientResponse>((resolve, reject) => {
             let socket;
 
-            if (data) {
+            let isDataString = typeof(data) === 'string';
+
+            if (typeof(data) === 'string') {
                 info.options.headers["Content-Length"] = Buffer.byteLength(data, 'utf8');
             }
 
@@ -128,11 +162,20 @@ export class HttpClient {
                 reject(err);
             });
 
-            if (data) {
+            if (data && typeof(data) === 'string') {
                 req.write(data, 'utf8');
             }
 
-            req.end();            
+            if (data && typeof(data) !== 'string') {
+                data.on('close', function () {
+                    req.end();
+                });
+
+                data.pipe(req);
+            }
+            else {
+                req.end();
+            }
         });
     }
 

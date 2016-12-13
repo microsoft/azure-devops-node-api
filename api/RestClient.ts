@@ -13,108 +13,132 @@ export interface IRestClientResponse {
 }
 
 export class RestClient {
-    client: RestCallbackClient;
+    client: httpm.HttpClient;
+    versionParam: string;
 
     constructor(userAgent: string, handlers?: ifm.IRequestHandler[], socketTimeout?: number, versionParam?: string) {
-        versionParam = versionParam || 'api-version';
-        let httpc: httpm.HttpCallbackClient = new httpm.HttpCallbackClient(userAgent, handlers, socketTimeout);
-        this.client = new RestCallbackClient(httpc, versionParam);
+        // TODO: should we really do this?
+        this.versionParam = versionParam || 'api-version';
+        this.client = new httpm.HttpClient(userAgent, handlers, socketTimeout);
     }
 
-    public get(requestUrl: string, 
+    public async get(requestUrl: string, 
                apiVersion: string, 
                additionalHeaders?: ifm.IHeaders): Promise<IRestClientResponse> {
 
-        return this._getJson('GET', requestUrl, apiVersion, additionalHeaders || {});
+        var headers = additionalHeaders || {};                    
+        headers["Accept"] = this.createAcceptHeader('application/json', apiVersion);         
+        
+        let res: httpm.HttpClientResponse = await this.client.get(requestUrl, headers);
+        return this._processResponse(res);
     }
 
-    public del(requestUrl: string, 
+    public async del(requestUrl: string, 
                apiVersion: string, 
                additionalHeaders?: ifm.IHeaders): Promise<IRestClientResponse> {
 
-        return this._getJson('DELETE', requestUrl, apiVersion, additionalHeaders || {});
+        var headers = additionalHeaders || {};                    
+        headers["Accept"] = this.createAcceptHeader('application/json', apiVersion);     
+        
+        let res: httpm.HttpClientResponse = await this.client.del(requestUrl, headers);
+        return this._processResponse(res);
     }
 
-    public create(requestUrl: string, 
+    public async create(requestUrl: string, 
                 apiVersion: string, 
-                objs: any, 
+                resources: any, 
                 additionalHeaders?: ifm.IHeaders): Promise<IRestClientResponse> {
-
-        return this._sendRequest('POST', requestUrl, apiVersion, objs, additionalHeaders || {});
+        
+        var headers = additionalHeaders || {};                    
+        headers["Accept"] = this.createAcceptHeader('application/json', apiVersion);
+        headers["Content-Type"] = headers["Content-Type"] || 'application/json; charset=utf-8';        
+        
+        let data: string = JSON.stringify(resources, null, 2);
+        let res: httpm.HttpClientResponse = await this.client.post(requestUrl, data, headers);
+        return this._processResponse(res);
     }
 
-    public update(requestUrl: string, 
+    public async update(requestUrl: string, 
                  apiVersion: string, 
-                 objs: any, 
+                 resources: any, 
                  additionalHeaders?: ifm.IHeaders): Promise<IRestClientResponse> {
 
-        return this._sendRequest('PATCH', requestUrl, apiVersion, objs, additionalHeaders || {});
+        var headers = additionalHeaders || {};                    
+        headers["Accept"] = this.createAcceptHeader('application/json', apiVersion);
+        headers["Content-Type"] = headers["Content-Type"] || 'application/json; charset=utf-8';        
+        
+        let data: string = JSON.stringify(resources, null, 2);
+        let res: httpm.HttpClientResponse = await this.client.patch(requestUrl, data, headers);
+        return this._processResponse(res);
     }
 
-    public replace(requestUrl: string, 
+    public async replace(requestUrl: string, 
                  apiVersion: string, 
-                 objs: any, 
+                 resources: any, 
                  additionalHeaders?: ifm.IHeaders): Promise<IRestClientResponse> {
 
-        return this._sendRequest('PUT', requestUrl, apiVersion, objs, additionalHeaders || {});
+        var headers = additionalHeaders || {};                    
+        headers["Accept"] = this.createAcceptHeader('application/json', apiVersion);
+        headers["Content-Type"] = headers["Content-Type"] || 'application/json; charset=utf-8';        
+        
+        let data: string = JSON.stringify(resources, null, 2);
+        let res: httpm.HttpClientResponse = await this.client.put(requestUrl, data, headers);
+        return this._processResponse(res);
     }
 
-    public uploadStream(verb: string, url: string, apiVersion: string, contentStream: NodeJS.ReadableStream, additionalHeaders: ifm.IHeaders): Promise<IRestClientResponse> {
-        return new Promise<IRestClientResponse>((resolve, reject) => {
-            this.client.uploadStream(verb, url, apiVersion, contentStream, additionalHeaders || {}, (err:any, statusCode: number, obj: any) => {
-                if (err) {
-                    reject(err);
-                }
-                else {
-                    let res: IRestClientResponse = <IRestClientResponse>{};
-                    res.statusCode = statusCode;
-                    res.result = obj;
-                    resolve(res);
-                }
-            });
-        });
+    public async uploadStream(verb: string, requestUrl: string, apiVersion: string, stream: NodeJS.ReadableStream, additionalHeaders: ifm.IHeaders): Promise<IRestClientResponse> {
+        var headers = additionalHeaders || {};
+        headers["Accept"] = this.createAcceptHeader('application/json', apiVersion);
+
+        let res: httpm.HttpClientResponse = await this.client.sendStream(verb, requestUrl, stream, headers);
+        return this._processResponse(res);
     }
 
-    private _getJson(verb: string, 
-                     requestUrl: string, 
-                     apiVersion: string, 
-                     headers: ifm.IHeaders): Promise<IRestClientResponse> {
-
-        return new Promise<IRestClientResponse>((resolve, reject) => {
-            this.client._getJson(verb, requestUrl, apiVersion, headers, (err:any, statusCode: number, obj: any) => {
-                if (err) {
-                    reject(err);
-                }
-                else {
-                    let res: IRestClientResponse = <IRestClientResponse>{};
-                    res.statusCode = statusCode;
-                    res.result = obj;
-                    resolve(res);
-                }
-            });
-        });
+    public createAcceptHeader(type: string, apiVersion?: string): string {
+        return type + (apiVersion ? (';' + this.versionParam + '=' + apiVersion) : '');
     }
 
-    private _sendRequest(verb: string, 
-                         requestUrl: string, 
-                         apiVersion: string, 
-                         objs: any, 
-                         headers: ifm.IHeaders): Promise<IRestClientResponse> {
+    private async _processResponse(res: httpm.HttpClientResponse): Promise<IRestClientResponse> {
+        return new Promise<IRestClientResponse>(async(resolve, reject) => {
+            let rres: IRestClientResponse = <IRestClientResponse>{};
+            let statusCode: number = res.message.statusCode;
+            rres.statusCode = statusCode;
 
-        return new Promise<IRestClientResponse>((resolve, reject) => {
-            this.client._sendJson(verb, requestUrl, apiVersion, objs, headers, (err:any, statusCode: number, obj: any) => {
-                if (err) {
-                    reject(err);
+            // not found leads to null obj returned
+            if (statusCode == httpm.HttpCodes.NotFound) {    
+                resolve(rres);
+            }
+
+            let obj: any;
+
+            // get the result from the body
+            try {
+                let contents: string = await res.readBody();
+                if (contents && contents.length > 0) {
+                    obj = JSON.parse(contents);
+                    rres.result = obj;
                 }
-                else {
-                    let res: IRestClientResponse = <IRestClientResponse>{};
-                    res.statusCode = statusCode;
-                    res.result = obj;
-                    resolve(res);
+            }
+            catch (err) {
+                reject(new Error('Invalid Resource'));
+            }
+
+            if (statusCode > 299) {
+                let msg: string;
+
+                // if exception/error in body, attempt to get better error
+                if (obj && obj.message) {
+                    msg = obj.message;
+                } else {
+                    msg = "Failed request: (" + statusCode + ") " + res.message.url;
                 }
-            });
-        });
-    }    
+
+                reject(new Error(msg));
+            } else {
+                resolve(rres);
+            }            
+        });        
+    } 
 }
 
 export class RestCallbackClient {
