@@ -14,14 +14,14 @@ export class NtlmCredentialHandler implements VsoBaseInterfaces.IRequestHandler 
     workstation: string;
     domain: string;
 
-    constructor(username: string, password: string,  domain?: string, workstation?: string) {
+    constructor(username: string, password: string,  workstation?: string, domain?: string) {
         this.username = username;
         this.password = password;
-        if (domain !== undefined) {
-            this.domain = domain;
-        }
         if (workstation !== undefined) {
             this.workstation = workstation;
+        }
+        if (domain !== undefined) {
+            this.domain = domain;
         }
     }
 
