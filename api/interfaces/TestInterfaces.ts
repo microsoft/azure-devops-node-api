@@ -1500,20 +1500,6 @@ export enum MessageType {
 }
 
 /**
- * This class is used to provide the filters used for discovery
- */
-export interface RunFilter {
-    /**
-     * filter for the test case sources (test containers)
-     */
-    sourceFilter: string;
-    /**
-     * filter for the test cases
-     */
-    testCaseFilter: string;
-}
-
-/**
  * Sliced Data passed from server to agent post slicing
  */
 export interface SlicedTestData {
