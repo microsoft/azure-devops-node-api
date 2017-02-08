@@ -7,7 +7,7 @@ import * as bi from 'vso-node-api/interfaces/BuildInterfaces';
 let vsts: vm.WebApi = cm.getWebApi();
 let vstsBuild: ba.IBuildApi = vsts.getBuildApi();
 
-async function buildSample() {
+export async function run() {
     try
     {
         cm.banner('Build Samples');
@@ -17,7 +17,7 @@ async function buildSample() {
         // list definitions
         cm.heading('Build Definitions for ' + project);
         let defs: bi.DefinitionReference[] = await vstsBuild.getDefinitions(project);
-
+        
         console.log('You have ' + defs.length + ' build definition(s)');
 
         // save off last def to create a new definition below
@@ -102,9 +102,3 @@ async function buildSample() {
     }
 
 }
-
-export function run() {
-    buildSample();
-}
-
-
