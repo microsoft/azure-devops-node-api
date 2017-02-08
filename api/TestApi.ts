@@ -111,6 +111,12 @@ export interface ITestApi extends basem.ClientApiBase {
     deleteTestMethodToWorkItemLink(project: string, testName: string, workItemId: number): Promise<boolean>;
     queryTestMethodLinkedWorkItems(project: string, testName: string): Promise<TestInterfaces.TestToWorkItemLinks>;
     queryTestResultWorkItems(project: string, workItemCategory: string, automatedTestName?: string, testCaseId?: number, maxCompleteDate?: Date, days?: number, workItemCount?: number): Promise<TestInterfaces.WorkItemReference[]>;
+    createAgent(testAgent: TestInterfaces.TestAgent): Promise<TestInterfaces.TestAgent>;
+    deleteAgent(id: number): Promise<void>;
+    getAgent(id: number): Promise<TestInterfaces.TestAgent>;
+    updateDistributedTestRun(distributedTestRun: TestInterfaces.DistributedTestRun, project: string): Promise<TestInterfaces.DistributedTestRun>;
+    getSlice(testAgentId: number): Promise<TestInterfaces.TestAutomationRunSlice>;
+    updateSlice(sliceDetails: TestInterfaces.TestAutomationRunSlice): Promise<void>;
 }
 
 export class TestApi extends basem.ClientApiBase implements ITestApi {
@@ -4031,6 +4037,225 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let serializationData = {  responseIsCollection: true };
                 let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
                 resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+     /**
+    * http://(tfsserver):8080/tfs/DefaultCollection/_apis/test/agents Request: Json of TestAgent
+    * 
+    * @param {TestInterfaces.TestAgent} testAgent
+    */
+    public async createAgent(
+        testAgent: TestInterfaces.TestAgent
+        ): Promise<TestInterfaces.TestAgent> {
+
+        return new Promise<TestInterfaces.TestAgent>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Test",
+                    "0f1857de-6e56-4010-9ea7-f29b80b911c4",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, testAgent, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * http://(tfsserver):8080/tfs/DefaultCollection/_apis/test/agents/id Request: Json of id
+    * 
+    * @param {number} id
+    */
+    public async deleteAgent(
+        id: number
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                id: id
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Test",
+                    "0f1857de-6e56-4010-9ea7-f29b80b911c4",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * http://(tfsserver):8080/tfs/DefaultCollection/_apis/test/agents/id Request: Json of id
+    * 
+    * @param {number} id
+    */
+    public async getAgent(
+        id: number
+        ): Promise<TestInterfaces.TestAgent> {
+
+        return new Promise<TestInterfaces.TestAgent>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                id: id
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Test",
+                    "0f1857de-6e56-4010-9ea7-f29b80b911c4",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * http://(tfsserver):8080/tfs/DefaultCollection/_apis/test/DistributedTestRuns/ Request: Json of TestRun
+    * 
+    * @param {TestInterfaces.DistributedTestRun} distributedTestRun
+    * @param {string} project
+    */
+    public async updateDistributedTestRun(
+        distributedTestRun: TestInterfaces.DistributedTestRun,
+        project: string
+        ): Promise<TestInterfaces.DistributedTestRun> {
+
+        return new Promise<TestInterfaces.DistributedTestRun>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                project: project
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Test",
+                    "b7c4fe2a-9dd1-4dae-8b77-8412002de5a4",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, distributedTestRun, null);
+                let serializationData = {  responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * http://(tfsserver):8080/tfs/DefaultCollection/_apis/test/slices/[?testAgentId=1]
+    * 
+    * @param {number} testAgentId
+    */
+    public async getSlice(
+        testAgentId: number
+        ): Promise<TestInterfaces.TestAutomationRunSlice> {
+
+        return new Promise<TestInterfaces.TestAutomationRunSlice>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+                testAgentId: testAgentId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Test",
+                    "575891b2-50a3-474f-a963-7ca011c97500",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
+                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestAutomationRunSlice, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(deserializedResult);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {TestInterfaces.TestAutomationRunSlice} sliceDetails
+    */
+    public async updateSlice(
+        sliceDetails: TestInterfaces.TestAutomationRunSlice
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            
+            let routeValues: any = {
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.1-preview.1",
+                    "Test",
+                    "575891b2-50a3-474f-a963-7ca011c97500",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let apiVersion: string = verData.apiVersion;
+                
+                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, sliceDetails, null);
+                let serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestAutomationRunSlice, responseIsCollection: false };
+                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                resolve(null);
                 
             }
             catch (err) {
