@@ -145,7 +145,6 @@ export class RestClient implements ifm.IRestClient {
     }
 
     uploadStream(verb: string, url: string, apiVersion: string, contentStream: NodeJS.ReadableStream, customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-
         var headers = customHeaders || {};
         headers["Accept"] = this.httpClient.makeAcceptHeader('application/json', apiVersion);
 
@@ -164,8 +163,7 @@ export class RestClient implements ifm.IRestClient {
     }
 
     _getJson(verb: string, url: string, apiVersion: string, customHeaders: ifm.IHeaders, serializationData: Serialization.SerializationData, onResult: (err: any, statusCode: number, obj: any) => void): void {
-
-        var headers = {};
+        var headers = customHeaders || {};
         headers["Accept"] = this.httpClient.makeAcceptHeader('application/json', apiVersion);
         this.httpClient.get(verb, url, headers, (err: any, res: ifm.IHttpResponse, contents: string) => {
             if (err) {
