@@ -58,6 +58,21 @@ export interface Change<T> {
 }
 
 export interface ChangeCountDictionary {
+    None?: number;
+    Add?: number;
+    Edit?: number;
+    Encoding?: number;
+    Rename?: number;
+    Delete?: number;
+    Undelete?: number;
+    Branch?: number;
+    Merge?: number;
+    Lock?: number;
+    Rollback?: number;
+    SourceRename?: number;
+    TargetRename?: number;
+    Property?: number;
+    All?: number;
 }
 
 export interface ChangeList<T> {
