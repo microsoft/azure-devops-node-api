@@ -9,5 +9,8 @@ import * as cm from './common';
 let vsts: vm.WebApi = cm.getWebApi();
 
 import build = require('./build');
+import units = require('./units');
+
+units.run();
 build.run();
 
