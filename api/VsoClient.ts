@@ -17,13 +17,13 @@ interface VssApiResourceLocationLookup {
 
 export interface ClientVersioningData {
     /**
-    * The api version string to send in the request (e.g. "1.0" or "2.0-preview.2")
-    */
+     * The api version string to send in the request (e.g. "1.0" or "2.0-preview.2")
+     */
     apiVersion?: string;
 
     /**
-    * The request path string to send the request to.  Looked up via an options request with the location id.
-    */
+     * The request path string to send the request to.  Looked up via an options request with the location id.
+     */
     requestUrl?: string;
 }
 
@@ -37,8 +37,8 @@ export class InvalidApiResourceVersionError implements Error {
 }
 
 /**
-* Base class that should be used (derived from) to make requests to VSS REST apis
-*/
+ * Base class that should be used (derived from) to make requests to VSS REST apis
+ */
 export class VsoClient {
 
     private static APIS_RELATIVE_PATH = "_apis";
@@ -58,37 +58,65 @@ export class VsoClient {
         this._initializationPromise = Q.fcall(() => true);
     }
 
-    /**
-    * Compares the version on the server (locationVersion) to the api version given by the client (apiVersion).
-    * Returns a negative value if the location version is older (less than) the api version
-    * Returns 0 if the two are equal
-    * Returns a positive value if the location version is newer (greater than) the api version
-    */
-    private compareResourceVersions(locationVersion: string, apiVersion: string) {
-        // escape early if versions are the same
-        if (locationVersion == apiVersion) {
-            return 0;
-        }
-        // otherwise replaces the '-preview' flag and compares each .-separated piece of the string individually
-        locationVersion = locationVersion.replace(VsoClient.PREVIEW_INDICATOR, "");
-        apiVersion = apiVersion.replace(VsoClient.PREVIEW_INDICATOR, "");
-        var splitLocationVersion: string[] = locationVersion.split('.');
-        var splitApiVersion: string[] = apiVersion.split('.');
-        var i;
-        for (i = 0; i < Math.min(splitLocationVersion.length, splitApiVersion.length); i++) {
-            var locationVersionPart: number = parseInt(splitLocationVersion[i]);
-            var apiVersionPart: number = parseInt(splitApiVersion[i]);
-            if (locationVersionPart != apiVersionPart) {
-                return locationVersionPart - apiVersionPart;
+    protected autoNegotiateApiVersion(location: ifm.ApiResourceLocation, requestedVersion: string): string {
+        let negotiatedVersion: string;
+        let apiVersion: number;
+        let apiVersionString: string;
+
+        if (requestedVersion) {
+            let apiVersionRegEx = new RegExp('(\\d+(\\.\\d+)?)(-preview(\\.(\\d+))?)?');
+
+            // Need to handle 3 types of api versions + invalid apiversion
+            // '2.1-preview.1' = ["2.1-preview.1", "2.1", ".1", -preview.1", ".1", "1"]
+            // '2.1-preview' = ["2.1-preview", "2.1", ".1", "-preview", undefined, undefined]
+            // '2.1' = ["2.1", "2.1", ".1", undefined, undefined, undefined]
+
+            let isPreview = false;
+            let resourceVersion: number;
+
+            let regExExecArray = apiVersionRegEx.exec(requestedVersion);
+            if (regExExecArray) {
+                if (regExExecArray[1]) {
+                    // we have an api version
+                    apiVersion = +regExExecArray[1];
+                    apiVersionString = regExExecArray[1];
+                    if (regExExecArray[3]) {
+                        // requesting preview
+                        isPreview = true;
+                        if (regExExecArray[5]) { 
+                            // we have a resource version
+                            resourceVersion = +regExExecArray[5];
+                        }
+                    }
+
+                    // compare the location version and requestedversion
+                    if (apiVersion <= +location.releasedVersion
+                        || (!resourceVersion && apiVersion <= +location.maxVersion && isPreview)
+                        || (resourceVersion && apiVersion <= +location.maxVersion && resourceVersion <= +location.resourceVersion)) {
+                        negotiatedVersion = requestedVersion;
+                    }
+                    // else fall back to latest version of the resource from location
+                }
             }
         }
-        // if the strings aren't equal, but were the same all the way through the loop, then one version is longer (and thus newer) than the other
-        return splitLocationVersion.length - splitApiVersion.length;
+        if (!negotiatedVersion) {
+            // Use the latest version of the resource if the api version was not specified in the request or if the requested version is higher then the location's supported version
+            if (apiVersion < +location.maxVersion) {
+                negotiatedVersion = apiVersionString + "-preview";
+            }
+            else if (location.maxVersion === location.releasedVersion) {
+                negotiatedVersion = location.maxVersion;
+            }
+            else {
+                negotiatedVersion = location.maxVersion + "-preview." + location.resourceVersion;
+            }
+        }
+        return negotiatedVersion;
     }
 
     /**
-    * Gets the route template for a resource based on its location ID and negotiates the api version
-    */
+     * Gets the route template for a resource based on its location ID and negotiates the api version
+     */
     public getVersioningData(apiVersion: string, area: string, locationId: string, routeValues: any, queryParams?: any): Q.Promise<ClientVersioningData> {
         var requestUrl;
         var deferred = Q.defer<ClientVersioningData>();
@@ -98,22 +126,8 @@ export class VsoClient {
             if (!location) { 
                 throw new Error("Failed to find api location for area: " + area + " id: " + locationId);
             }
-            
-            if (!apiVersion) {
-                // Use the latest version of the resource if the api version was not specified in the request.
-                apiVersion = location.maxVersion + VsoClient.PREVIEW_INDICATOR + location.resourceVersion;
-            }
-            else {
-                if (this.compareResourceVersions(location.minVersion, apiVersion) > 1) {
-                    // Client is older than the server. The server no longer supports this resource (deprecated).
-                    throw new InvalidApiResourceVersionError("The client being used is older than the server. The server no longer supports this resource (deprecated). Update the client.");
-                }
-                else if (this.compareResourceVersions(location.maxVersion, apiVersion) < 1) {
-                    // Client is newer than the server. Negotiate down to the latest version on the server
-                    apiVersion = location.maxVersion + VsoClient.PREVIEW_INDICATOR + location.resourceVersion;
-                }
-            }
 
+            apiVersion = this.autoNegotiateApiVersion(location, apiVersion);
             requestUrl = this.getRequestUrl(location.routeTemplate, location.area, location.resourceName, routeValues, queryParams);
 
             var versionData = {
@@ -193,8 +207,8 @@ export class VsoClient {
     }
 
     /**
-    * Issues an OPTIONS request to get location objects from a location id
-    */
+     * Issues an OPTIONS request to get location objects from a location id
+     */
     public _issueOptionsRequest(requestUrl: string, onResult: (err: any, statusCode: number, locationsResult: any) => void): void {
         return this.restClient.options(requestUrl, onResult);
     }
@@ -256,9 +270,7 @@ export class VsoClient {
         return url.resolve(this.baseUrl, path.join(this.basePath, relativeUrl));
     }
 
-    /*
-    * helper method copied directly from VSS\WebAPI\restclient.ts
-    */
+    // helper method copied directly from VSS\WebAPI\restclient.ts
     private replaceRouteValues(routeTemplate: string, routeValues: any): string {
 
         var result = "",
