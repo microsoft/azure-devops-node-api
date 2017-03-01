@@ -10,9 +10,8 @@
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
-
-import restm = require('./RestClient');
-import httpm = require('./HttpClient');
+import * as restm from 'typed-rest-client/RestClient';
+import * as httpm from 'typed-rest-client/HttpClient';
 import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
 import serm = require('./Serialization');
@@ -112,12 +111,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, artifact, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let res: restm.IRestResponse<BuildInterfaces.BuildArtifact>;
+                res = await this.rest.create<BuildInterfaces.BuildArtifact>(url, artifact, options);
+
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.BuildArtifact, 
+                                    false); // isCollection
+                resolve(ret);
                 
             }
             catch (err) {
@@ -159,13 +162,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let res: restm.IRestResponse<BuildInterfaces.BuildArtifact>;
+                res = await this.rest.get<BuildInterfaces.BuildArtifact>(url, options);
+
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.BuildArtifact, 
+                                    false); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -187,16 +193,6 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
-            let onResult = (err: any, statusCode: number, artifact: NodeJS.ReadableStream) => {
-                if (err) {
-                    err.statusCode = statusCode;
-                    reject(err);
-                }
-                else {
-                    resolve(artifact);
-                }
-            };
-
             let routeValues: any = {
                 project: project,
                 buildId: buildId
@@ -218,7 +214,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let apiVersion: string = verData.apiVersion;
                 
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
-                this.httpClient.getStream(url, accept, onResult);
+                
+                resolve((await this.http.get(url, { "ACCEPT": accept })).message);
             }
             catch (err) {
                 reject(err);
@@ -252,12 +249,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let res: restm.IRestResponse<BuildInterfaces.BuildArtifact[]>;
+                res = await this.rest.get<BuildInterfaces.BuildArtifact[]>(url, options);
+
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.BuildArtifact, 
+                                    true); // isCollection
+                resolve(ret);
                 
             }
             catch (err) {
@@ -297,12 +298,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let res: restm.IRestResponse<string>; 
+                res = await this.rest.get<string>(url, options);
+                resolve(res.result);
                 
             }
             catch (err) {
@@ -345,12 +346,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let res: restm.IRestResponse<BuildInterfaces.BuildBadge>; 
+                res = await this.rest.get<BuildInterfaces.BuildBadge>(url, options);
+                
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.BuildBadge, 
+                                    false); // isCollection
+                resolve(ret);
                 
             }
             catch (err) {
@@ -393,12 +398,11 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let res: restm.IRestResponse<string> = await this.rest.get<string>(url, options);
+                resolve(res.result);
                 
             }
             catch (err) {
@@ -433,13 +437,11 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                let res: restm.IRestResponse<any> = await this.rest.del<any>(url, options);
                 resolve(null);
-                
             }
             catch (err) {
                 reject(err);
@@ -480,13 +482,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let res: restm.IRestResponse<BuildInterfaces.Build>; 
+                res = await this.rest.get<BuildInterfaces.Build>(url, options);
+
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.Build, 
+                                    false); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -581,16 +586,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.deserialize(res.result, 
-                                                                        serializationData.responseTypeMetadata, 
-                                                                        false, 
-                                                                        serializationData.responseIsCollection);
-                resolve(deserializedResult);
-                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<BuildInterfaces.Build[]> 
+                res = await this.rest.get<BuildInterfaces.Build[]>(url, options);
+
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.Build, 
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -633,13 +638,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<BuildInterfaces.Build>; 
+                res = await this.rest.create<BuildInterfaces.Build>(url, build, options);
                 
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, build, null);
-                let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.Build, responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.Build, 
+                                    false); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -675,12 +683,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, build, null);
-                let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.Build, responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let res: restm.IRestResponse<BuildInterfaces.Build>;
+                res = await this.rest.update<BuildInterfaces.Build>(url, build, options);
+                
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.Build, 
+                                    false); // isCollection
+                resolve(ret);
                 
             }
             catch (err) {
@@ -714,12 +726,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, builds, null);
-                let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.Build, responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let res: restm.IRestResponse<BuildInterfaces.Build[]>; 
+                res = await this.rest.update<BuildInterfaces.Build[]>(url, builds, options);
+                
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.Build, 
+                                    true); // isCollection
+                resolve(ret);
                 
             }
             catch (err) {
@@ -767,13 +783,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<BuildInterfaces.Change[]>;
+                res = await this.rest.get<BuildInterfaces.Change[]>(url, options);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Change, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.Change, 
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -817,13 +836,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Change, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let res: restm.IRestResponse<BuildInterfaces.Change[]>;
+                res = await this.rest.get<BuildInterfaces.Change[]>(url, options);
                 
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.Change, 
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -854,13 +876,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildController, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let res: restm.IRestResponse<BuildInterfaces.BuildController>;
+                res = await this.rest.get<BuildInterfaces.BuildController>(url, options);
                 
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.BuildController, 
+                                    false); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -895,13 +920,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildController, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let res: restm.IRestResponse<BuildInterfaces.BuildController[]>;
+                res = await this.rest.get<BuildInterfaces.BuildController[]>(url, options);
                 
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.BuildArtifact, 
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -944,13 +972,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, definition, null);
-                let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let res: restm.IRestResponse<BuildInterfaces.BuildDefinition>;
+                res = await this.rest.create<BuildInterfaces.BuildDefinition>(url, definition, options);
                 
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.BuildArtifact, 
+                                    false); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -984,13 +1015,11 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<void> = await this.rest.del<void>(url, options);
                 resolve(null);
-                
             }
             catch (err) {
                 reject(err);
@@ -1040,13 +1069,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let res: restm.IRestResponse<BuildInterfaces.BuildDefinition>;
+                res = await this.rest.get<BuildInterfaces.BuildDefinition>(url, options);
                 
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.BuildDefinition, 
+                                    false); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -1120,17 +1152,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionReference, responseIsCollection: true };
-                //let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                let deserializedResult = serm.ContractSerializer.deserialize(res.result, 
-                                                serializationData.responseTypeMetadata, 
-                                                false, 
-                                                serializationData.responseIsCollection);                
-                resolve(deserializedResult);
-                
+                let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionReference[]>;
+                res = await this.rest.get<BuildInterfaces.BuildDefinitionReference[]>(url, options);
+
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.BuildDefinitionReference, 
+                                    true); // isCollection
+                resolve(ret);                
             }
             catch (err) {
                 reject(err);
@@ -1176,13 +1207,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.replace(url, apiVersion, definition, null);
-                let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let res: restm.IRestResponse<BuildInterfaces.BuildDefinition>;
+                res = await this.rest.replace<BuildInterfaces.BuildDefinition>(url, definition, options);
+
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.BuildDefinition, 
+                                    false); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -1218,13 +1252,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<BuildInterfaces.Folder>;
+                res = await this.rest.replace<BuildInterfaces.Folder>(url, folder, options);
                 
-                let res: restm.IRestClientResponse = await this.restClient.replace(url, apiVersion, folder, null);
-                let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.Folder, responseTypeMetadata: BuildInterfaces.TypeInfo.Folder, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.Folder, 
+                                    false); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -1258,13 +1295,11 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<void> = await this.rest.del<void>(url, options);
                 resolve(null);
-                
             }
             catch (err) {
                 reject(err);
@@ -1305,13 +1340,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Folder, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let res: restm.IRestResponse<BuildInterfaces.Folder[]>;
+                res = await this.rest.get<BuildInterfaces.Folder[]>(url, options);
                 
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.Folder, 
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -1347,13 +1385,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<BuildInterfaces.Folder>; 
+                res = await this.rest.create<BuildInterfaces.Folder>(url, folder, options);
                 
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, folder, null);
-                let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.Folder, responseTypeMetadata: BuildInterfaces.TypeInfo.Folder, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.Folder, 
+                                    false); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -1411,8 +1452,9 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let url: string = verData.requestUrl;
                 let apiVersion: string = verData.apiVersion;
                 
-                let accept: string = this.createAcceptHeader("text/plain", apiVersion);
-                this.httpClient.getStream(url, accept, onResult);
+                let accept: string = this.createAcceptHeader("application/zip", apiVersion);
+                
+                resolve((await this.http.get(url, { "ACCEPT": accept })).message);
             }
             catch (err) {
                 reject(err);
@@ -1459,13 +1501,14 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let res: restm.IRestResponse<string[]> = await this.rest.get<string[]>(url, options);
+                let ret = this.formatResponse(res.result, 
+                                    null, 
+                                    true); // isCollection
+                resolve(ret);  
             }
             catch (err) {
                 reject(err);
@@ -1499,13 +1542,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<BuildInterfaces.BuildLog[]>;
+                res = await this.rest.get<BuildInterfaces.BuildLog[]>(url, options);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildLog, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.BuildLog, 
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -1549,9 +1595,9 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let apiVersion: string = verData.apiVersion;
-                
+
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
-                this.httpClient.getStream(url, accept, onResult);
+                resolve((await this.http.get(url, { "ACCEPT": accept })).message);
             }
             catch (err) {
                 reject(err);
@@ -1592,13 +1638,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<BuildInterfaces.BuildMetric[]>;
+                res = await this.rest.get<BuildInterfaces.BuildMetric[]>(url, options);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildMetric, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.BuildMetric, 
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -1639,13 +1688,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<BuildInterfaces.BuildMetric[]>;
+                res = await this.rest.get<BuildInterfaces.BuildMetric[]>(url, options);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildMetric, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.BuildMetric, 
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -1674,13 +1726,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildOptionDefinition, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let res: restm.IRestResponse<BuildInterfaces.BuildOptionDefinition[]>;
+                res = await this.rest.get<BuildInterfaces.BuildOptionDefinition[]>(url, options);
                 
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.BuildOptionDefinition, 
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -1721,13 +1776,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let res: restm.IRestResponse<BuildInterfaces.BuildReportMetadata>;
+                res = await this.rest.get<BuildInterfaces.BuildReportMetadata>(url, options);
                 
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.BuildReportMetadata, 
+                                    false); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -1778,9 +1836,9 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let apiVersion: string = verData.apiVersion;
-                
+
                 let accept: string = this.createAcceptHeader("text/html", apiVersion);
-                this.httpClient.getStream(url, accept, onResult);
+                resolve((await this.http.get(url, { "ACCEPT": accept })).message);
             }
             catch (err) {
                 reject(err);
@@ -1806,13 +1864,16 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let res: restm.IRestResponse<BuildInterfaces.BuildResourceUsage>;
+                res = await this.rest.get<BuildInterfaces.BuildResourceUsage>(url, options);
+
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.BuildResourceUsage, 
+                                    false); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -1846,13 +1907,15 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionRevision, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionRevision[]>;
+                res = await this.rest.get<BuildInterfaces.BuildDefinitionRevision[]>(url, options);
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.BuildArtifact, 
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -1878,13 +1941,15 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let res: restm.IRestResponse<BuildInterfaces.BuildSettings>;
+                res = await this.rest.get<BuildInterfaces.BuildSettings>(url, options);
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.BuildArtifact, 
+                                    false); // isCollection
+                resolve(ret);                
             }
             catch (err) {
                 reject(err);
@@ -1914,13 +1979,15 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, settings, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let res: restm.IRestResponse<BuildInterfaces.BuildSettings>;
+                res = await this.rest.update<BuildInterfaces.BuildSettings>(url, settings, options);
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.BuildArtifact, 
+                                    false); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -1957,13 +2024,14 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.replace(url, apiVersion, null, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let res: restm.IRestResponse<string[]> = await this.rest.replace<string[]>(url, null, null);
+                let ret = this.formatResponse(res.result, 
+                                    null, 
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -1999,13 +2067,15 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
                 
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, tags, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let res: restm.IRestResponse<string[]>;
+                res = await this.rest.create<string[]>(url, tags, options);
+                let ret = this.formatResponse(res.result, 
+                                    null, 
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -2042,13 +2112,15 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<string[]>;
+                res = await this.rest.del<string[]>(url, options);
+                let ret = this.formatResponse(res.result, 
+                                    null, 
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -2082,13 +2154,15 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<string[]>;
+                res = await this.rest.get<string[]>(url, options);
+                let ret = this.formatResponse(res.result, 
+                                    null, 
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -2125,13 +2199,15 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.replace(url, apiVersion, null, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<string[]>;
+                res = await this.rest.replace<string[]>(url, null, options);
+                let ret = this.formatResponse(res.result, 
+                                    null, 
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -2167,13 +2243,15 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, tags, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<string[]>;
+                res = await this.rest.create<string[]>(url, tags, options);
+                let ret = this.formatResponse(res.result, 
+                                    null, 
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -2210,13 +2288,15 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<string[]>;
+                res = await this.rest.del<string[]>(url, options);
+                let ret = this.formatResponse(res.result, 
+                                    null, 
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -2257,13 +2337,15 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<string[]>;
+                res = await this.rest.get<string[]>(url, options);
+                let ret = this.formatResponse(res.result, 
+                                    null, 
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -2292,13 +2374,15 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<string[]>;
+                res = await this.rest.get<string[]>(url, options);
+                let ret = this.formatResponse(res.result, 
+                                    null, 
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -2332,13 +2416,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
                 resolve(null);
-                
             }
             catch (err) {
                 reject(err);
@@ -2372,13 +2455,15 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionTemplate, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionTemplate>;
+                res = await this.rest.get<BuildInterfaces.BuildDefinitionTemplate>(url, options);
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.BuildDefinitionTemplate, 
+                                    false); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -2407,13 +2492,15 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionTemplate, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionTemplate[]>;
+                res = await this.rest.get<BuildInterfaces.BuildDefinitionTemplate[]>(url, options);
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.BuildDefinitionTemplate, 
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -2449,13 +2536,15 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.replace(url, apiVersion, template, null);
-                let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionTemplate, responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionTemplate, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionTemplate>;
+                res = await this.rest.replace<BuildInterfaces.BuildDefinitionTemplate>(url, template, options);
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.BuildDefinitionTemplate, 
+                                    false); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -2502,13 +2591,15 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Timeline, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<BuildInterfaces.Timeline>;
+                res = await this.rest.get<BuildInterfaces.Timeline>(url, options);
+                let ret = this.formatResponse(res.result, 
+                                    BuildInterfaces.TypeInfo.Timeline, 
+                                    false); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -2549,13 +2640,15 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<VSSInterfaces.ResourceRef[]>;
+                res = await this.rest.get<VSSInterfaces.ResourceRef[]>(url, options);
+                let ret = this.formatResponse(res.result,
+                                    VSSInterfaces.TypeInfo.ResourceRef,
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -2598,13 +2691,15 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, commitIds, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<VSSInterfaces.ResourceRef[]>;
+                res = await this.rest.create<VSSInterfaces.ResourceRef[]>(url, commitIds, options);
+                let ret = this.formatResponse(res.result, 
+                                    VSSInterfaces.TypeInfo.ResourceRef, 
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -2648,13 +2743,15 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                                
+                let res: restm.IRestResponse<VSSInterfaces.ResourceRef[]>;
+                res = await this.rest.get<VSSInterfaces.ResourceRef[]>(url, options);
+                let ret = this.formatResponse(res.result, 
+                                    VSSInterfaces.TypeInfo.ResourceRef, 
+                                    true); // isCollection
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
