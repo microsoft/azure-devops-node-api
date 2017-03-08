@@ -10,9 +10,8 @@
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
-
-import restm = require('./RestClient');
-import httpm = require('./HttpClient');
+import * as restm from 'typed-rest-client/RestClient';
+import * as httpm from 'typed-rest-client/HttpClient';
 import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
 import serm = require('./Serialization');
@@ -27,10 +26,10 @@ export interface IChatApi extends basem.ClientApiBase {
     updateChatMessage(messageUpdate: ChatInterfaces.MessageData, roomId: number, messageId: number): Promise<ChatInterfaces.Message>;
     createChatRoom(roomUpdate: ChatInterfaces.RoomData): Promise<ChatInterfaces.Room>;
     deleteChatRoom(roomId: number): Promise<void>;
-    getAllRooms(): Promise<ChatInterfaces.RoomCollection>;
+    getAllRooms(): Promise<ChatInterfaces.Room[]>;
     getChatRoomById(roomId: number): Promise<ChatInterfaces.Room>;
     updateChatRoom(roomUpdate: ChatInterfaces.RoomData, roomId: number): Promise<ChatInterfaces.Room>;
-    getAllChatRoomUsers(roomId: number): Promise<ChatInterfaces.UserCollection>;
+    getAllChatRoomUsers(roomId: number): Promise<ChatInterfaces.User[]>;
     getChatRoomUserById(roomId: number, userId: string): Promise<ChatInterfaces.User>;
     joinRoom(userUpdate: ChatInterfaces.UserData, roomId: number, userId: string): Promise<void>;
     leaveRoom(roomId: number, userId: string): Promise<void>;
@@ -53,7 +52,6 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
         ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 roomId: roomId,
                 messageId: messageId
@@ -61,18 +59,22 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "chat",
                     "7d11c820-4bdc-4bca-8957-9d74e32cdd20",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(null);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -91,25 +93,28 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
         ): Promise<ChatInterfaces.Message[]> {
 
         return new Promise<ChatInterfaces.Message[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 roomId: roomId
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "chat",
                     "7d11c820-4bdc-4bca-8957-9d74e32cdd20",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: ChatInterfaces.TypeInfo.Message, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<ChatInterfaces.Message[]>;
+                res = await this.rest.get<ChatInterfaces.Message[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              ChatInterfaces.TypeInfo.Message,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -130,7 +135,6 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
         ): Promise<ChatInterfaces.Message> {
 
         return new Promise<ChatInterfaces.Message>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 roomId: roomId,
                 messageId: messageId
@@ -138,18 +142,22 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "chat",
                     "7d11c820-4bdc-4bca-8957-9d74e32cdd20",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: ChatInterfaces.TypeInfo.Message, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<ChatInterfaces.Message>;
+                res = await this.rest.get<ChatInterfaces.Message>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              ChatInterfaces.TypeInfo.Message,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -170,25 +178,28 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
         ): Promise<ChatInterfaces.Message> {
 
         return new Promise<ChatInterfaces.Message>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 roomId: roomId
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "chat",
                     "7d11c820-4bdc-4bca-8957-9d74e32cdd20",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, messageUpdate, null);
-                let serializationData = {  responseTypeMetadata: ChatInterfaces.TypeInfo.Message, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<ChatInterfaces.Message>;
+                res = await this.rest.create<ChatInterfaces.Message>(url, messageUpdate, options);
+
+                let ret = this.formatResponse(res.result,
+                                              ChatInterfaces.TypeInfo.Message,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -211,7 +222,6 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
         ): Promise<ChatInterfaces.Message> {
 
         return new Promise<ChatInterfaces.Message>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 roomId: roomId,
                 messageId: messageId
@@ -219,18 +229,22 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "chat",
                     "7d11c820-4bdc-4bca-8957-9d74e32cdd20",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, messageUpdate, null);
-                let serializationData = {  responseTypeMetadata: ChatInterfaces.TypeInfo.Message, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<ChatInterfaces.Message>;
+                res = await this.rest.update<ChatInterfaces.Message>(url, messageUpdate, options);
+
+                let ret = this.formatResponse(res.result,
+                                              ChatInterfaces.TypeInfo.Message,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -249,24 +263,27 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
         ): Promise<ChatInterfaces.Room> {
 
         return new Promise<ChatInterfaces.Room>(async (resolve, reject) => {
-            
             let routeValues: any = {
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "chat",
                     "3d0e7ee0-a6c9-497e-9a2c-23b687e860e2",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, roomUpdate, null);
-                let serializationData = {  responseTypeMetadata: ChatInterfaces.TypeInfo.Room, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<ChatInterfaces.Room>;
+                res = await this.rest.create<ChatInterfaces.Room>(url, roomUpdate, options);
+
+                let ret = this.formatResponse(res.result,
+                                              ChatInterfaces.TypeInfo.Room,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -285,25 +302,28 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
         ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 roomId: roomId
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "chat",
                     "3d0e7ee0-a6c9-497e-9a2c-23b687e860e2",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(null);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -315,27 +335,30 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     /**
     */
     public async getAllRooms(
-        ): Promise<ChatInterfaces.RoomCollection> {
+        ): Promise<ChatInterfaces.Room[]> {
 
-        return new Promise<ChatInterfaces.RoomCollection>(async (resolve, reject) => {
-            
+        return new Promise<ChatInterfaces.Room[]>(async (resolve, reject) => {
             let routeValues: any = {
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "chat",
                     "3d0e7ee0-a6c9-497e-9a2c-23b687e860e2",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<ChatInterfaces.Room[]>;
+                res = await this.rest.get<ChatInterfaces.Room[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              ChatInterfaces.TypeInfo.Room,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -354,25 +377,28 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
         ): Promise<ChatInterfaces.Room> {
 
         return new Promise<ChatInterfaces.Room>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 roomId: roomId
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "chat",
                     "3d0e7ee0-a6c9-497e-9a2c-23b687e860e2",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: ChatInterfaces.TypeInfo.Room, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<ChatInterfaces.Room>;
+                res = await this.rest.get<ChatInterfaces.Room>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              ChatInterfaces.TypeInfo.Room,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -393,25 +419,28 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
         ): Promise<ChatInterfaces.Room> {
 
         return new Promise<ChatInterfaces.Room>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 roomId: roomId
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "chat",
                     "3d0e7ee0-a6c9-497e-9a2c-23b687e860e2",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, roomUpdate, null);
-                let serializationData = {  responseTypeMetadata: ChatInterfaces.TypeInfo.Room, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<ChatInterfaces.Room>;
+                res = await this.rest.update<ChatInterfaces.Room>(url, roomUpdate, options);
+
+                let ret = this.formatResponse(res.result,
+                                              ChatInterfaces.TypeInfo.Room,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -427,28 +456,31 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     */
     public async getAllChatRoomUsers(
         roomId: number
-        ): Promise<ChatInterfaces.UserCollection> {
+        ): Promise<ChatInterfaces.User[]> {
 
-        return new Promise<ChatInterfaces.UserCollection>(async (resolve, reject) => {
-            
+        return new Promise<ChatInterfaces.User[]>(async (resolve, reject) => {
             let routeValues: any = {
                 roomId: roomId
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "chat",
                     "01408881-1a9a-4cc9-981d-9333e354e9d9",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<ChatInterfaces.User[]>;
+                res = await this.rest.get<ChatInterfaces.User[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              ChatInterfaces.TypeInfo.User,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -469,7 +501,6 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
         ): Promise<ChatInterfaces.User> {
 
         return new Promise<ChatInterfaces.User>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 roomId: roomId,
                 userId: userId
@@ -477,18 +508,22 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "chat",
                     "01408881-1a9a-4cc9-981d-9333e354e9d9",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: ChatInterfaces.TypeInfo.User, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<ChatInterfaces.User>;
+                res = await this.rest.get<ChatInterfaces.User>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              ChatInterfaces.TypeInfo.User,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -511,7 +546,6 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
         ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 roomId: roomId,
                 userId: userId
@@ -519,18 +553,22 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "chat",
                     "01408881-1a9a-4cc9-981d-9333e354e9d9",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.replace(url, apiVersion, userUpdate, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(null);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.replace<void>(url, userUpdate, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -551,7 +589,6 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
         ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 roomId: roomId,
                 userId: userId
@@ -559,18 +596,22 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "chat",
                     "01408881-1a9a-4cc9-981d-9333e354e9d9",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(null);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {

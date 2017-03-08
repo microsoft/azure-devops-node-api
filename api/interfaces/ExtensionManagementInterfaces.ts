@@ -319,6 +319,10 @@ export interface ContributionProviderDetails {
      * Properties associated with the provider
      */
     properties: { [key: string] : string; };
+    /**
+     * Version of contributions assoicated with this contribution provider.
+     */
+    version: string;
 }
 
 export enum ContributionQueryOptions {
@@ -371,6 +375,21 @@ export interface DataProviderContext {
      * Generic property bag that contains context-specific properties that data providers can use when populating their data dictionary
      */
     properties: { [key: string] : any; };
+}
+
+export interface DataProviderExceptionDetails {
+    /**
+     * The type of the exception that was thrown.
+     */
+    exceptionType: string;
+    /**
+     * Message that is associated with the exception.
+     */
+    message: string;
+    /**
+     * The StackTrace from the exception turned into a string.
+     */
+    stackTrace: string;
 }
 
 /**
@@ -514,6 +533,33 @@ export interface ExtensionDataCollectionQuery {
     collections: ExtensionDataCollection[];
 }
 
+export interface ExtensionEvent {
+    /**
+     * The extension which has been updated
+     */
+    extension: GalleryInterfaces.PublishedExtension;
+    /**
+     * The current version of the extension that was updated
+     */
+    extensionVersion: string;
+    /**
+     * Name of the collection for which the extension was requested
+     */
+    host: ExtensionHost;
+    /**
+     * Gallery host url
+     */
+    links: ExtensionEventUrls;
+    /**
+     * Represents the user who initiated the update
+     */
+    modifiedBy: VSSInterfaces.IdentityRef;
+    /**
+     * The type of update that was made
+     */
+    updateType: ExtensionUpdateType;
+}
+
 /**
  * Base class for an event callback for an extension
  */
@@ -558,6 +604,13 @@ export interface ExtensionEventCallbackCollection {
     versionCheck: ExtensionEventCallback;
 }
 
+export interface ExtensionEventUrls extends ExtensionUrls {
+    /**
+     * Url of the extension management page
+     */
+    manageExtensionsPage: string;
+}
+
 export enum ExtensionFlags {
     /**
      * A built-in extension is installed for all VSTS accounts by default
@@ -567,6 +620,11 @@ export enum ExtensionFlags {
      * The extension comes from a fully-trusted publisher
      */
     Trusted = 2,
+}
+
+export interface ExtensionHost {
+    id: string;
+    name: string;
 }
 
 /**
@@ -663,31 +721,31 @@ export interface ExtensionRequest {
     resolvedBy: VSSInterfaces.IdentityRef;
 }
 
-export interface ExtensionRequestedEvent {
-    /**
-     * Name of the account for which the extension was requested
-     */
-    accountName: string;
-    /**
-     * The extension request object
-     */
-    extensionRequest: ExtensionRequest;
-    /**
-     * Gallery host url
-     */
-    galleryHostUrl: string;
-    /**
-     * Link to view the extension details page
-     */
-    itemUrl: string;
+export interface ExtensionRequestEvent {
     /**
      * The extension which has been requested
      */
-    publishedExtension: GalleryInterfaces.PublishedExtension;
+    extension: GalleryInterfaces.PublishedExtension;
     /**
-     * Linkk to view the extension request
+     * Information about the host for which this extension is requested
      */
-    requestUrl: string;
+    host: ExtensionHost;
+    /**
+     * Name of the collection for which the extension was requested
+     */
+    hostName: string;
+    /**
+     * Gallery host url
+     */
+    links: ExtensionRequestUrls;
+    /**
+     * The extension request object
+     */
+    request: ExtensionRequest;
+    /**
+     * The type of update that was made
+     */
+    updateType: ExtensionRequestUpdateType;
 }
 
 export enum ExtensionRequestState {
@@ -703,6 +761,20 @@ export enum ExtensionRequestState {
      * The request was rejected (extension not installed or license not assigned)
      */
     Rejected = 2,
+}
+
+export enum ExtensionRequestUpdateType {
+    Created = 1,
+    Approved = 2,
+    Rejected = 3,
+    Deleted = 4,
+}
+
+export interface ExtensionRequestUrls extends ExtensionUrls {
+    /**
+     * Link to view the extension request
+     */
+    requestPage: string;
 }
 
 /**
@@ -763,6 +835,27 @@ export enum ExtensionStateFlags {
      * Extension is currently in a warning state, that can cause a degraded experience. The degraded experience can be caused for example by some installation issues detected such as implicit demands not supported.
      */
     Warning = 512,
+}
+
+export enum ExtensionUpdateType {
+    Installed = 1,
+    Uninstalled = 2,
+    Enabled = 3,
+    Disabled = 4,
+    VersionUpdated = 5,
+    ActionRequired = 6,
+    ActionResolved = 7,
+}
+
+export interface ExtensionUrls {
+    /**
+     * Url of the extension icon
+     */
+    extensionIcon: string;
+    /**
+     * Link to view the extension details page
+     */
+    extensionPage: string;
 }
 
 /**
@@ -1050,6 +1143,9 @@ export var TypeInfo = {
     DataProviderContext: {
         fields: <any>null
     },
+    DataProviderExceptionDetails: {
+        fields: <any>null
+    },
     DataProviderQuery: {
         fields: <any>null
     },
@@ -1077,10 +1173,16 @@ export var TypeInfo = {
     ExtensionDataCollectionQuery: {
         fields: <any>null
     },
+    ExtensionEvent: {
+        fields: <any>null
+    },
     ExtensionEventCallback: {
         fields: <any>null
     },
     ExtensionEventCallbackCollection: {
+        fields: <any>null
+    },
+    ExtensionEventUrls: {
         fields: <any>null
     },
     ExtensionFlags: {
@@ -1088,6 +1190,9 @@ export var TypeInfo = {
             "builtIn": 1,
             "trusted": 2,
         }
+    },
+    ExtensionHost: {
+        fields: <any>null
     },
     ExtensionLicensing: {
         fields: <any>null
@@ -1098,7 +1203,7 @@ export var TypeInfo = {
     ExtensionRequest: {
         fields: <any>null
     },
-    ExtensionRequestedEvent: {
+    ExtensionRequestEvent: {
         fields: <any>null
     },
     ExtensionRequestState: {
@@ -1107,6 +1212,17 @@ export var TypeInfo = {
             "accepted": 1,
             "rejected": 2,
         }
+    },
+    ExtensionRequestUpdateType: {
+        enumValues: {
+            "created": 1,
+            "approved": 2,
+            "rejected": 3,
+            "deleted": 4,
+        }
+    },
+    ExtensionRequestUrls: {
+        fields: <any>null
     },
     ExtensionState: {
         fields: <any>null
@@ -1125,6 +1241,20 @@ export var TypeInfo = {
             "autoUpgradeError": 256,
             "warning": 512,
         }
+    },
+    ExtensionUpdateType: {
+        enumValues: {
+            "installed": 1,
+            "uninstalled": 2,
+            "enabled": 3,
+            "disabled": 4,
+            "versionUpdated": 5,
+            "actionRequired": 6,
+            "actionResolved": 7,
+        }
+    },
+    ExtensionUrls: {
+        fields: <any>null
     },
     InstalledExtension: {
         fields: <any>null
@@ -1233,6 +1363,9 @@ TypeInfo.ContributionType.fields = {
 TypeInfo.DataProviderContext.fields = {
 };
 
+TypeInfo.DataProviderExceptionDetails.fields = {
+};
+
 TypeInfo.DataProviderQuery.fields = {
     context: {
         typeInfo: TypeInfo.DataProviderContext
@@ -1287,6 +1420,24 @@ TypeInfo.ExtensionDataCollectionQuery.fields = {
     },
 };
 
+TypeInfo.ExtensionEvent.fields = {
+    extension: {
+        typeInfo: GalleryInterfaces.TypeInfo.PublishedExtension
+    },
+    host: {
+        typeInfo: TypeInfo.ExtensionHost
+    },
+    links: {
+        typeInfo: TypeInfo.ExtensionEventUrls
+    },
+    modifiedBy: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+    updateType: {
+        enumType: TypeInfo.ExtensionUpdateType
+    },
+};
+
 TypeInfo.ExtensionEventCallback.fields = {
 };
 
@@ -1312,6 +1463,12 @@ TypeInfo.ExtensionEventCallbackCollection.fields = {
     versionCheck: {
         typeInfo: TypeInfo.ExtensionEventCallback
     },
+};
+
+TypeInfo.ExtensionEventUrls.fields = {
+};
+
+TypeInfo.ExtensionHost.fields = {
 };
 
 TypeInfo.ExtensionLicensing.fields = {
@@ -1356,13 +1513,25 @@ TypeInfo.ExtensionRequest.fields = {
     },
 };
 
-TypeInfo.ExtensionRequestedEvent.fields = {
-    extensionRequest: {
-        typeInfo: TypeInfo.ExtensionRequest
-    },
-    publishedExtension: {
+TypeInfo.ExtensionRequestEvent.fields = {
+    extension: {
         typeInfo: GalleryInterfaces.TypeInfo.PublishedExtension
     },
+    host: {
+        typeInfo: TypeInfo.ExtensionHost
+    },
+    links: {
+        typeInfo: TypeInfo.ExtensionRequestUrls
+    },
+    request: {
+        typeInfo: TypeInfo.ExtensionRequest
+    },
+    updateType: {
+        enumType: TypeInfo.ExtensionRequestUpdateType
+    },
+};
+
+TypeInfo.ExtensionRequestUrls.fields = {
 };
 
 TypeInfo.ExtensionState.fields = {
@@ -1379,6 +1548,9 @@ TypeInfo.ExtensionState.fields = {
     lastVersionCheck: {
         isDate: true,
     },
+};
+
+TypeInfo.ExtensionUrls.fields = {
 };
 
 TypeInfo.InstalledExtension.fields = {

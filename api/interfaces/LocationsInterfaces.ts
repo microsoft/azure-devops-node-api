@@ -11,7 +11,6 @@
 "use strict";
 
 import IdentitiesInterfaces = require("../interfaces/IdentitiesInterfaces");
-import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
 export interface AccessMapping {
@@ -119,6 +118,12 @@ export enum RelativeToSetting {
     FullyQualified = 3,
 }
 
+export interface ResourceAreaInfo {
+    areaId: string;
+    areaName: string;
+    locationUrl: string;
+}
+
 export interface ServiceDefinition {
     description: string;
     displayName: string;
@@ -190,6 +195,9 @@ export var TypeInfo = {
             "fullyQualified": 3,
         }
     },
+    ResourceAreaInfo: {
+        fields: <any>null
+    },
     ServiceDefinition: {
         fields: <any>null
     },
@@ -232,6 +240,9 @@ TypeInfo.LocationServiceData.fields = {
         isArray: true,
         typeInfo: TypeInfo.ServiceDefinition
     },
+};
+
+TypeInfo.ResourceAreaInfo.fields = {
 };
 
 TypeInfo.ServiceDefinition.fields = {

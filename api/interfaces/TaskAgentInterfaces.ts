@@ -15,6 +15,37 @@ import FormInputInterfaces = require("../interfaces/common/FormInputInterfaces")
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
+export enum AadLoginPromptOption {
+    /**
+     * Do not provide a prompt option
+     */
+    NoOption = 0,
+    /**
+     * Force the user to login again.
+     */
+    Login = 1,
+    /**
+     * Force the user to select which account they are logging in with instead of automatically picking the user up from the session state. NOTE: This does not work for switching bewtween the variants of a dual-homed user.
+     */
+    SelectAccount = 2,
+    /**
+     * Force the user to login again.  Ignore current authentication state and force the user to authenticate again. This option should be used instead of Login.
+     */
+    FreshLogin = 3,
+}
+
+export interface AadOauthTokenRequest {
+    refresh: boolean;
+    resource: string;
+    tenantId: string;
+    token: string;
+}
+
+export interface AadOauthTokenResult {
+    accessToken: string;
+    refreshTokenCache: string;
+}
+
 export interface AgentChangeEvent {
     agent: TaskAgent;
     eventType: string;
@@ -44,8 +75,14 @@ export interface AgentQueueEvent {
     queue: TaskAgentQueue;
 }
 
+export interface AgentQueuesEvent {
+    eventType: string;
+    queues: TaskAgentQueue[];
+}
+
 export interface AgentRefreshMessage {
     agentId: number;
+    targetVersion: string;
     timeout: any;
 }
 
@@ -56,6 +93,12 @@ export interface AgentRequestEvent {
     reservedAgentId: number;
     result: TaskResult;
     timeStamp: Date;
+}
+
+export enum AuditAction {
+    Add = 1,
+    Update = 2,
+    Delete = 3,
 }
 
 export interface AuthorizationHeader {
@@ -101,9 +144,37 @@ export interface DependencyBinding {
     value: string;
 }
 
+export interface DependencyData {
+    input: string;
+    map: { key: string; value: { key: string; value: string }[] }[];
+}
+
 export interface DependsOn {
     input: string;
     map: DependencyBinding[];
+}
+
+export interface DeploymentGroup extends DeploymentGroupReference {
+    machineCount: number;
+    machines: DeploymentMachine[];
+}
+
+export enum DeploymentGroupActionFilter {
+    None = 0,
+    Manage = 2,
+    Use = 16,
+}
+
+export enum DeploymentGroupExpands {
+    None = 0,
+    Machines = 2,
+}
+
+export interface DeploymentGroupReference {
+    id: number;
+    name: string;
+    pool: TaskAgentPoolReference;
+    project: ProjectReference;
 }
 
 export interface DeploymentMachine {
@@ -120,11 +191,11 @@ export interface DeploymentMachineGroupReference {
     id: number;
     name: string;
     pool: TaskAgentPoolReference;
-    projectId: string;
+    project: ProjectReference;
 }
 
 export interface DeploymentMachinesChangeEvent {
-    machineGroupReference: DeploymentMachineGroupReference;
+    machineGroupReference: DeploymentGroupReference;
     machines: DeploymentMachine[];
 }
 
@@ -144,6 +215,17 @@ export interface EndpointUrl {
 export interface HelpLink {
     text: string;
     url: string;
+}
+
+export interface InputValidationItem {
+    isValid: boolean;
+    reason: string;
+    type: string;
+    value: string;
+}
+
+export interface InputValidationRequest {
+    inputs: { [key: string] : InputValidationItem; };
 }
 
 export interface Issue {
@@ -180,6 +262,7 @@ export interface JobEnvironment {
     endpoints: ServiceEndpoint[];
     mask: MaskHint[];
     options: { [key: string] : JobOption; };
+    secureFiles: SecureFile[];
     /**
      * Gets or sets the endpoint used for communicating back to the calling service.
      */
@@ -241,21 +324,6 @@ export enum MaskType {
     Regex = 2,
 }
 
-export interface MetaTaskDefinition extends TaskDefinition {
-    owner: string;
-    tasks: MetaTaskStep[];
-}
-
-export interface MetaTaskStep {
-    alwaysRun: boolean;
-    continueOnError: boolean;
-    displayName: string;
-    enabled: boolean;
-    inputs: { [key: string] : string; };
-    task: TaskDefinitionReference;
-    timeoutInMinutes: number;
-}
-
 /**
  * Represents a downloadable package.
  */
@@ -306,8 +374,36 @@ export interface PlanEnvironment {
     variables: { [key: string] : string; };
 }
 
+export enum PlanGroupStatusFilter {
+    Running = 1,
+    Queued = 2,
+    All = 3,
+}
+
+export interface ProjectReference {
+    id: string;
+    name: string;
+}
+
 export interface ResultTransformationDetails {
     resultTemplate: string;
+}
+
+export interface SecureFile {
+    createdBy: VSSInterfaces.IdentityRef;
+    createdOn: Date;
+    id: number;
+    modifiedBy: VSSInterfaces.IdentityRef;
+    modifiedOn: Date;
+    name: string;
+    properties: { [key: string] : string; };
+    ticket: string;
+}
+
+export enum SecureFileActionFilter {
+    None = 0,
+    Manage = 2,
+    Use = 16,
 }
 
 export interface SendJobResponse {
@@ -399,6 +495,7 @@ export interface ServiceEndpointRequestResult {
 export interface ServiceEndpointType {
     authenticationSchemes: ServiceEndpointAuthenticationScheme[];
     dataSources: DataSource[];
+    dependencyData: DependencyData[];
     description: string;
     displayName: string;
     endpointUrl: EndpointUrl;
@@ -426,6 +523,10 @@ export interface TaskAgent extends TaskAgentReference {
      * Gets or sets the maximum job parallelism allowed on this host.
      */
     maxParallelism: number;
+    /**
+     * Gets the pending update for this agent.
+     */
+    pendingUpdate: TaskAgentUpdate;
     properties: any;
     /**
      * Gets the date on which the last connectivity status change occurred.
@@ -519,10 +620,6 @@ export interface TaskAgentPool extends TaskAgentPoolReference {
      * Gets the scope identifier for groups/roles which are owned by this pool.
      */
     groupScopeId: string;
-    /**
-     * Gets or sets a value indicating whether or not this pool is managed by the service.
-     */
-    isHosted: boolean;
     properties: any;
     /**
      * Gets a value indicating whether or not roles have been provisioned for this pool.
@@ -544,8 +641,183 @@ export enum TaskAgentPoolActionFilter {
     Use = 16,
 }
 
+export interface TaskAgentPoolMaintenanceDefinition {
+    /**
+     * Enable maintenance
+     */
+    enabled: boolean;
+    /**
+     * Id
+     */
+    id: number;
+    /**
+     * Maintenance job timeout per agent
+     */
+    jobTimeoutInMinutes: number;
+    /**
+     * Max percentage of agents within a pool running maintenance job at given time
+     */
+    maxConcurrentAgentsPercentage: number;
+    options: TaskAgentPoolMaintenanceOptions;
+    /**
+     * Pool reference for the maintenance definition
+     */
+    pool: TaskAgentPoolReference;
+    retentionPolicy: TaskAgentPoolMaintenanceRetentionPolicy;
+    scheduleSetting: TaskAgentPoolMaintenanceSchedule;
+}
+
+export interface TaskAgentPoolMaintenanceJob {
+    /**
+     * The maintenance definition for the maintenance job
+     */
+    definitionId: number;
+    /**
+     * The total error counts during the maintenance job
+     */
+    errorCount: number;
+    /**
+     * Time that the maintenance job was completed
+     */
+    finishTime: Date;
+    /**
+     * Id of the maintenance job
+     */
+    jobId: number;
+    /**
+     * The log download url for the maintenance job
+     */
+    logsDownloadUrl: string;
+    /**
+     * Orchestration/Plan Id for the maintenance job
+     */
+    orchestrationId: string;
+    /**
+     * Pool reference for the maintenance job
+     */
+    pool: TaskAgentPoolReference;
+    /**
+     * Time that the maintenance job was queued
+     */
+    queueTime: Date;
+    /**
+     * The identity that queued the maintenance job
+     */
+    requestedBy: VSSInterfaces.IdentityRef;
+    /**
+     * The maintenance job result
+     */
+    result: TaskAgentPoolMaintenanceJobResult;
+    /**
+     * Time that the maintenance job was started
+     */
+    startTime: Date;
+    /**
+     * Status of the maintenance job
+     */
+    status: TaskAgentPoolMaintenanceJobStatus;
+    targetAgents: TaskAgentReference[];
+    /**
+     * The total warning counts during the maintenance job
+     */
+    warningCount: number;
+}
+
+export enum TaskAgentPoolMaintenanceJobResult {
+    Succeeded = 1,
+    Failed = 2,
+    Canceled = 4,
+}
+
+export enum TaskAgentPoolMaintenanceJobStatus {
+    InProgress = 1,
+    Completed = 2,
+    Cancelling = 4,
+    Queued = 8,
+}
+
+export interface TaskAgentPoolMaintenanceOptions {
+    /**
+     * time to consider a System.DefaultWorkingDirectory is stale
+     */
+    workingDirectoryExpirationInDays: number;
+}
+
+export interface TaskAgentPoolMaintenanceRetentionPolicy {
+    /**
+     * Number of records to keep for maintenance job executed with this definition.
+     */
+    numberOfHistoryRecordsToKeep: number;
+}
+
+export interface TaskAgentPoolMaintenanceSchedule {
+    /**
+     * Days for a build (flags enum for days of the week)
+     */
+    daysToBuild: TaskAgentPoolMaintenanceScheduleDays;
+    /**
+     * The Job Id of the Scheduled job that will queue the pool maintenance job.
+     */
+    scheduleJobId: string;
+    /**
+     * Local timezone hour to start
+     */
+    startHours: number;
+    /**
+     * Local timezone minute to start
+     */
+    startMinutes: number;
+    /**
+     * Time zone of the build schedule (string representation of the time zone id)
+     */
+    timeZoneId: string;
+}
+
+export enum TaskAgentPoolMaintenanceScheduleDays {
+    /**
+     * Do not run.
+     */
+    None = 0,
+    /**
+     * Run on Monday.
+     */
+    Monday = 1,
+    /**
+     * Run on Tuesday.
+     */
+    Tuesday = 2,
+    /**
+     * Run on Wednesday.
+     */
+    Wednesday = 4,
+    /**
+     * Run on Thursday.
+     */
+    Thursday = 8,
+    /**
+     * Run on Friday.
+     */
+    Friday = 16,
+    /**
+     * Run on Saturday.
+     */
+    Saturday = 32,
+    /**
+     * Run on Sunday.
+     */
+    Sunday = 64,
+    /**
+     * Run on all days of the week.
+     */
+    All = 127,
+}
+
 export interface TaskAgentPoolReference {
     id: number;
+    /**
+     * Gets or sets a value indicating whether or not this pool is managed by the service.
+     */
+    isHosted: boolean;
     name: string;
     /**
      * Gets or sets the type of the pool
@@ -654,6 +926,29 @@ export enum TaskAgentStatus {
     Online = 2,
 }
 
+export interface TaskAgentUpdate {
+    /**
+     * The current state of this agent update
+     */
+    currentState: string;
+    /**
+     * The identity that request the agent update
+     */
+    requestedBy: VSSInterfaces.IdentityRef;
+    /**
+     * Gets the date on which this agent update was requested.
+     */
+    requestTime: Date;
+    /**
+     * Gets or sets the source agent version of the agent update
+     */
+    sourceVersion: PackageVersion;
+    /**
+     * Gets or sets the target agent version of the agent update
+     */
+    targetVersion: PackageVersion;
+}
+
 export interface TaskAttachment {
     _links: any;
     createdOn: Date;
@@ -760,7 +1055,13 @@ export interface TaskExecution {
 }
 
 export interface TaskGroup extends TaskDefinition {
+    comment: string;
+    createdBy: VSSInterfaces.IdentityRef;
+    createdOn: Date;
+    modifiedBy: VSSInterfaces.IdentityRef;
+    modifiedOn: Date;
     owner: string;
+    revision: number;
     tasks: TaskGroupStep[];
 }
 
@@ -769,6 +1070,17 @@ export interface TaskGroupDefinition {
     isExpanded: boolean;
     name: string;
     tags: string[];
+    visibleRule: string;
+}
+
+export interface TaskGroupRevision {
+    changedBy: VSSInterfaces.IdentityRef;
+    changedDate: Date;
+    changeType: AuditAction;
+    comment: string;
+    fileId: number;
+    revision: number;
+    taskGroupId: string;
 }
 
 export interface TaskGroupStep {
@@ -796,6 +1108,7 @@ export interface TaskInputDefinition extends DistributedTaskCommonInterfaces.Tas
 
 export interface TaskInstance extends TaskReference {
     alwaysRun: boolean;
+    condition: string;
     continueOnError: boolean;
     displayName: string;
     enabled: boolean;
@@ -868,6 +1181,8 @@ export interface TaskOrchestrationPlan extends TaskOrchestrationPlanReference {
 export interface TaskOrchestrationPlanReference {
     artifactLocation: string;
     artifactUri: string;
+    definition: TaskOrchestrationOwner;
+    owner: TaskOrchestrationOwner;
     planId: string;
     planType: string;
     scopeIdentifier: string;
@@ -878,6 +1193,27 @@ export enum TaskOrchestrationPlanState {
     InProgress = 1,
     Queued = 2,
     Completed = 4,
+}
+
+export interface TaskOrchestrationQueuedPlan {
+    assignTime: Date;
+    definition: TaskOrchestrationOwner;
+    owner: TaskOrchestrationOwner;
+    planGroup: string;
+    planId: string;
+    poolId: number;
+    queuePosition: number;
+    queueTime: Date;
+    scopeIdentifier: string;
+}
+
+export interface TaskOrchestrationQueuedPlanGroup {
+    definition: TaskOrchestrationOwner;
+    owner: TaskOrchestrationOwner;
+    planGroup: string;
+    plans: TaskOrchestrationQueuedPlan[];
+    project: ProjectReference;
+    queuePosition: number;
 }
 
 export interface TaskPackageMetadata {
@@ -946,6 +1282,7 @@ export interface TimelineRecord {
     resultCode: string;
     startTime: Date;
     state: TimelineRecordState;
+    task: TaskReference;
     type: string;
     warningCount: number;
     workerName: string;
@@ -986,6 +1323,20 @@ export interface VariableValue {
 }
 
 export var TypeInfo = {
+    AadLoginPromptOption: {
+        enumValues: {
+            "noOption": 0,
+            "login": 1,
+            "selectAccount": 2,
+            "freshLogin": 3,
+        }
+    },
+    AadOauthTokenRequest: {
+        fields: <any>null
+    },
+    AadOauthTokenResult: {
+        fields: <any>null
+    },
     AgentChangeEvent: {
         fields: <any>null
     },
@@ -1001,11 +1352,21 @@ export var TypeInfo = {
     AgentQueueEvent: {
         fields: <any>null
     },
+    AgentQueuesEvent: {
+        fields: <any>null
+    },
     AgentRefreshMessage: {
         fields: <any>null
     },
     AgentRequestEvent: {
         fields: <any>null
+    },
+    AuditAction: {
+        enumValues: {
+            "add": 1,
+            "update": 2,
+            "delete": 3,
+        }
     },
     AuthorizationHeader: {
         fields: <any>null
@@ -1031,7 +1392,29 @@ export var TypeInfo = {
     DependencyBinding: {
         fields: <any>null
     },
+    DependencyData: {
+        fields: <any>null
+    },
     DependsOn: {
+        fields: <any>null
+    },
+    DeploymentGroup: {
+        fields: <any>null
+    },
+    DeploymentGroupActionFilter: {
+        enumValues: {
+            "none": 0,
+            "manage": 2,
+            "use": 16,
+        }
+    },
+    DeploymentGroupExpands: {
+        enumValues: {
+            "none": 0,
+            "machines": 2,
+        }
+    },
+    DeploymentGroupReference: {
         fields: <any>null
     },
     DeploymentMachine: {
@@ -1053,6 +1436,12 @@ export var TypeInfo = {
         fields: <any>null
     },
     HelpLink: {
+        fields: <any>null
+    },
+    InputValidationItem: {
+        fields: <any>null
+    },
+    InputValidationRequest: {
         fields: <any>null
     },
     Issue: {
@@ -1110,12 +1499,6 @@ export var TypeInfo = {
             "regex": 2,
         }
     },
-    MetaTaskDefinition: {
-        fields: <any>null
-    },
-    MetaTaskStep: {
-        fields: <any>null
-    },
     PackageMetadata: {
         fields: <any>null
     },
@@ -1125,8 +1508,28 @@ export var TypeInfo = {
     PlanEnvironment: {
         fields: <any>null
     },
+    PlanGroupStatusFilter: {
+        enumValues: {
+            "running": 1,
+            "queued": 2,
+            "all": 3,
+        }
+    },
+    ProjectReference: {
+        fields: <any>null
+    },
     ResultTransformationDetails: {
         fields: <any>null
+    },
+    SecureFile: {
+        fields: <any>null
+    },
+    SecureFileActionFilter: {
+        enumValues: {
+            "none": 0,
+            "manage": 2,
+            "use": 16,
+        }
     },
     SendJobResponse: {
         fields: <any>null
@@ -1177,6 +1580,49 @@ export var TypeInfo = {
             "use": 16,
         }
     },
+    TaskAgentPoolMaintenanceDefinition: {
+        fields: <any>null
+    },
+    TaskAgentPoolMaintenanceJob: {
+        fields: <any>null
+    },
+    TaskAgentPoolMaintenanceJobResult: {
+        enumValues: {
+            "succeeded": 1,
+            "failed": 2,
+            "canceled": 4,
+        }
+    },
+    TaskAgentPoolMaintenanceJobStatus: {
+        enumValues: {
+            "inProgress": 1,
+            "completed": 2,
+            "cancelling": 4,
+            "queued": 8,
+        }
+    },
+    TaskAgentPoolMaintenanceOptions: {
+        fields: <any>null
+    },
+    TaskAgentPoolMaintenanceRetentionPolicy: {
+        fields: <any>null
+    },
+    TaskAgentPoolMaintenanceSchedule: {
+        fields: <any>null
+    },
+    TaskAgentPoolMaintenanceScheduleDays: {
+        enumValues: {
+            "none": 0,
+            "monday": 1,
+            "tuesday": 2,
+            "wednesday": 4,
+            "thursday": 8,
+            "friday": 16,
+            "saturday": 32,
+            "sunday": 64,
+            "all": 127,
+        }
+    },
     TaskAgentPoolReference: {
         fields: <any>null
     },
@@ -1214,6 +1660,9 @@ export var TypeInfo = {
             "online": 2,
         }
     },
+    TaskAgentUpdate: {
+        fields: <any>null
+    },
     TaskAttachment: {
         fields: <any>null
     },
@@ -1249,6 +1698,9 @@ export var TypeInfo = {
         fields: <any>null
     },
     TaskGroupDefinition: {
+        fields: <any>null
+    },
+    TaskGroupRevision: {
         fields: <any>null
     },
     TaskGroupStep: {
@@ -1299,6 +1751,12 @@ export var TypeInfo = {
             "queued": 2,
             "completed": 4,
         }
+    },
+    TaskOrchestrationQueuedPlan: {
+        fields: <any>null
+    },
+    TaskOrchestrationQueuedPlanGroup: {
+        fields: <any>null
     },
     TaskPackageMetadata: {
         fields: <any>null
@@ -1353,6 +1811,12 @@ export var TypeInfo = {
     },
 };
 
+TypeInfo.AadOauthTokenRequest.fields = {
+};
+
+TypeInfo.AadOauthTokenResult.fields = {
+};
+
 TypeInfo.AgentChangeEvent.fields = {
     agent: {
         typeInfo: TypeInfo.TaskAgent
@@ -1399,6 +1863,13 @@ TypeInfo.AgentQueueEvent.fields = {
     },
 };
 
+TypeInfo.AgentQueuesEvent.fields = {
+    queues: {
+        isArray: true,
+        typeInfo: TypeInfo.TaskAgentQueue
+    },
+};
+
 TypeInfo.AgentRefreshMessage.fields = {
 };
 
@@ -1439,10 +1910,35 @@ TypeInfo.DataSourceDetails.fields = {
 TypeInfo.DependencyBinding.fields = {
 };
 
+TypeInfo.DependencyData.fields = {
+};
+
 TypeInfo.DependsOn.fields = {
     map: {
         isArray: true,
         typeInfo: TypeInfo.DependencyBinding
+    },
+};
+
+TypeInfo.DeploymentGroup.fields = {
+    machines: {
+        isArray: true,
+        typeInfo: TypeInfo.DeploymentMachine
+    },
+    pool: {
+        typeInfo: TypeInfo.TaskAgentPoolReference
+    },
+    project: {
+        typeInfo: TypeInfo.ProjectReference
+    },
+};
+
+TypeInfo.DeploymentGroupReference.fields = {
+    pool: {
+        typeInfo: TypeInfo.TaskAgentPoolReference
+    },
+    project: {
+        typeInfo: TypeInfo.ProjectReference
     },
 };
 
@@ -1460,17 +1956,23 @@ TypeInfo.DeploymentMachineGroup.fields = {
     pool: {
         typeInfo: TypeInfo.TaskAgentPoolReference
     },
+    project: {
+        typeInfo: TypeInfo.ProjectReference
+    },
 };
 
 TypeInfo.DeploymentMachineGroupReference.fields = {
     pool: {
         typeInfo: TypeInfo.TaskAgentPoolReference
     },
+    project: {
+        typeInfo: TypeInfo.ProjectReference
+    },
 };
 
 TypeInfo.DeploymentMachinesChangeEvent.fields = {
     machineGroupReference: {
-        typeInfo: TypeInfo.DeploymentMachineGroupReference
+        typeInfo: TypeInfo.DeploymentGroupReference
     },
     machines: {
         isArray: true,
@@ -1488,6 +1990,14 @@ TypeInfo.EndpointUrl.fields = {
 };
 
 TypeInfo.HelpLink.fields = {
+};
+
+TypeInfo.InputValidationItem.fields = {
+};
+
+TypeInfo.InputValidationRequest.fields = {
+    inputs: {
+    },
 };
 
 TypeInfo.Issue.fields = {
@@ -1523,6 +2033,10 @@ TypeInfo.JobEnvironment.fields = {
         typeInfo: TypeInfo.MaskHint
     },
     options: {
+    },
+    secureFiles: {
+        isArray: true,
+        typeInfo: TypeInfo.SecureFile
     },
     systemConnection: {
         typeInfo: TypeInfo.ServiceEndpoint
@@ -1571,41 +2085,6 @@ TypeInfo.MaskHint.fields = {
     },
 };
 
-TypeInfo.MetaTaskDefinition.fields = {
-    agentExecution: {
-        typeInfo: TypeInfo.TaskExecution
-    },
-    dataSourceBindings: {
-        isArray: true,
-        typeInfo: TypeInfo.DataSourceBinding
-    },
-    groups: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskGroupDefinition
-    },
-    inputs: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskInputDefinition
-    },
-    sourceDefinitions: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskSourceDefinition
-    },
-    tasks: {
-        isArray: true,
-        typeInfo: TypeInfo.MetaTaskStep
-    },
-    version: {
-        typeInfo: TypeInfo.TaskVersion
-    },
-};
-
-TypeInfo.MetaTaskStep.fields = {
-    task: {
-        typeInfo: TypeInfo.TaskDefinitionReference
-    },
-};
-
 TypeInfo.PackageMetadata.fields = {
     createdOn: {
         isDate: true,
@@ -1627,7 +2106,25 @@ TypeInfo.PlanEnvironment.fields = {
     },
 };
 
+TypeInfo.ProjectReference.fields = {
+};
+
 TypeInfo.ResultTransformationDetails.fields = {
+};
+
+TypeInfo.SecureFile.fields = {
+    createdBy: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+    createdOn: {
+        isDate: true,
+    },
+    modifiedBy: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+    modifiedOn: {
+        isDate: true,
+    },
 };
 
 TypeInfo.SendJobResponse.fields = {
@@ -1716,6 +2213,10 @@ TypeInfo.ServiceEndpointType.fields = {
         isArray: true,
         typeInfo: TypeInfo.DataSource
     },
+    dependencyData: {
+        isArray: true,
+        typeInfo: TypeInfo.DependencyData
+    },
     endpointUrl: {
         typeInfo: TypeInfo.EndpointUrl
     },
@@ -1737,6 +2238,9 @@ TypeInfo.TaskAgent.fields = {
     },
     createdOn: {
         isDate: true,
+    },
+    pendingUpdate: {
+        typeInfo: TypeInfo.TaskAgentUpdate
     },
     status: {
         enumType: TypeInfo.TaskAgentStatus
@@ -1807,6 +2311,61 @@ TypeInfo.TaskAgentPool.fields = {
     },
 };
 
+TypeInfo.TaskAgentPoolMaintenanceDefinition.fields = {
+    options: {
+        typeInfo: TypeInfo.TaskAgentPoolMaintenanceOptions
+    },
+    pool: {
+        typeInfo: TypeInfo.TaskAgentPoolReference
+    },
+    retentionPolicy: {
+        typeInfo: TypeInfo.TaskAgentPoolMaintenanceRetentionPolicy
+    },
+    scheduleSetting: {
+        typeInfo: TypeInfo.TaskAgentPoolMaintenanceSchedule
+    },
+};
+
+TypeInfo.TaskAgentPoolMaintenanceJob.fields = {
+    finishTime: {
+        isDate: true,
+    },
+    pool: {
+        typeInfo: TypeInfo.TaskAgentPoolReference
+    },
+    queueTime: {
+        isDate: true,
+    },
+    requestedBy: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+    result: {
+        enumType: TypeInfo.TaskAgentPoolMaintenanceJobResult
+    },
+    startTime: {
+        isDate: true,
+    },
+    status: {
+        enumType: TypeInfo.TaskAgentPoolMaintenanceJobStatus
+    },
+    targetAgents: {
+        isArray: true,
+        typeInfo: TypeInfo.TaskAgentReference
+    },
+};
+
+TypeInfo.TaskAgentPoolMaintenanceOptions.fields = {
+};
+
+TypeInfo.TaskAgentPoolMaintenanceRetentionPolicy.fields = {
+};
+
+TypeInfo.TaskAgentPoolMaintenanceSchedule.fields = {
+    daysToBuild: {
+        enumType: TypeInfo.TaskAgentPoolMaintenanceScheduleDays
+    },
+};
+
 TypeInfo.TaskAgentPoolReference.fields = {
     poolType: {
         enumType: TypeInfo.TaskAgentPoolType
@@ -1838,6 +2397,21 @@ TypeInfo.TaskAgentSession.fields = {
 };
 
 TypeInfo.TaskAgentSessionKey.fields = {
+};
+
+TypeInfo.TaskAgentUpdate.fields = {
+    requestedBy: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+    requestTime: {
+        isDate: true,
+    },
+    sourceVersion: {
+        typeInfo: TypeInfo.PackageVersion
+    },
+    targetVersion: {
+        typeInfo: TypeInfo.PackageVersion
+    },
 };
 
 TypeInfo.TaskAttachment.fields = {
@@ -1893,6 +2467,12 @@ TypeInfo.TaskGroup.fields = {
     agentExecution: {
         typeInfo: TypeInfo.TaskExecution
     },
+    createdBy: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+    createdOn: {
+        isDate: true,
+    },
     dataSourceBindings: {
         isArray: true,
         typeInfo: TypeInfo.DataSourceBinding
@@ -1904,6 +2484,12 @@ TypeInfo.TaskGroup.fields = {
     inputs: {
         isArray: true,
         typeInfo: TypeInfo.TaskInputDefinition
+    },
+    modifiedBy: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+    modifiedOn: {
+        isDate: true,
     },
     sourceDefinitions: {
         isArray: true,
@@ -1919,6 +2505,18 @@ TypeInfo.TaskGroup.fields = {
 };
 
 TypeInfo.TaskGroupDefinition.fields = {
+};
+
+TypeInfo.TaskGroupRevision.fields = {
+    changedBy: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+    changedDate: {
+        isDate: true,
+    },
+    changeType: {
+        enumType: TypeInfo.AuditAction
+    },
 };
 
 TypeInfo.TaskGroupStep.fields = {
@@ -1984,6 +2582,9 @@ TypeInfo.TaskOrchestrationOwner.fields = {
 };
 
 TypeInfo.TaskOrchestrationPlan.fields = {
+    definition: {
+        typeInfo: TypeInfo.TaskOrchestrationOwner
+    },
     environment: {
         typeInfo: TypeInfo.PlanEnvironment
     },
@@ -1992,6 +2593,9 @@ TypeInfo.TaskOrchestrationPlan.fields = {
     },
     implementation: {
         typeInfo: TypeInfo.TaskOrchestrationContainer
+    },
+    owner: {
+        typeInfo: TypeInfo.TaskOrchestrationOwner
     },
     result: {
         enumType: TypeInfo.TaskResult
@@ -2008,6 +2612,43 @@ TypeInfo.TaskOrchestrationPlan.fields = {
 };
 
 TypeInfo.TaskOrchestrationPlanReference.fields = {
+    definition: {
+        typeInfo: TypeInfo.TaskOrchestrationOwner
+    },
+    owner: {
+        typeInfo: TypeInfo.TaskOrchestrationOwner
+    },
+};
+
+TypeInfo.TaskOrchestrationQueuedPlan.fields = {
+    assignTime: {
+        isDate: true,
+    },
+    definition: {
+        typeInfo: TypeInfo.TaskOrchestrationOwner
+    },
+    owner: {
+        typeInfo: TypeInfo.TaskOrchestrationOwner
+    },
+    queueTime: {
+        isDate: true,
+    },
+};
+
+TypeInfo.TaskOrchestrationQueuedPlanGroup.fields = {
+    definition: {
+        typeInfo: TypeInfo.TaskOrchestrationOwner
+    },
+    owner: {
+        typeInfo: TypeInfo.TaskOrchestrationOwner
+    },
+    plans: {
+        isArray: true,
+        typeInfo: TypeInfo.TaskOrchestrationQueuedPlan
+    },
+    project: {
+        typeInfo: TypeInfo.ProjectReference
+    },
 };
 
 TypeInfo.TaskPackageMetadata.fields = {
@@ -2057,6 +2698,9 @@ TypeInfo.TimelineRecord.fields = {
     },
     state: {
         enumType: TypeInfo.TimelineRecordState
+    },
+    task: {
+        typeInfo: TypeInfo.TaskReference
     },
 };
 

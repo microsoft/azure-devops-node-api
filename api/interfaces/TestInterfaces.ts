@@ -26,23 +26,18 @@ export interface AggregatedDataForResultTrend {
 
 export interface AggregatedResultsAnalysis {
     duration: any;
+    notReportedResultsByOutcome: { [key: number] : AggregatedResultsByOutcome; };
     previousContext: TestResultsContext;
-    resultsByCategory: AggregatedResultsByCategory[];
     resultsByOutcome: { [key: number] : AggregatedResultsByOutcome; };
     resultsDifference: AggregatedResultsDifference;
     totalTests: number;
 }
 
-export interface AggregatedResultsByCategory {
-    count: number;
-    groupByField: string;
-    groupByValue: any;
-    testOutcome: TestOutcome;
-}
-
 export interface AggregatedResultsByOutcome {
     count: number;
     duration: any;
+    groupByField: string;
+    groupByValue: any;
     outcome: TestOutcome;
 }
 
@@ -404,6 +399,12 @@ export interface PointAssignment {
     tester: VSSInterfaces.IdentityRef;
 }
 
+export interface PointsFilter {
+    configurationNames: string[];
+    testcaseIds: number[];
+    testers: VSSInterfaces.IdentityRef[];
+}
+
 export interface PointUpdateModel {
     outcome: string;
     resetToActive: boolean;
@@ -539,6 +540,9 @@ export interface RunStatistic {
 
 export interface RunUpdateModel {
     build: ShallowReference;
+    buildDropLocation: string;
+    buildFlavor: string;
+    buildPlatform: string;
     comment: string;
     completedDate: string;
     controller: string;
@@ -551,6 +555,9 @@ export interface RunUpdateModel {
     iteration: string;
     logEntries: TestMessageLogDetails[];
     name: string;
+    releaseEnvironmentUri: string;
+    releaseUri: string;
+    sourceWorkflow: string;
     startedDate: string;
     state: string;
     substate: TestRunSubstate;
@@ -634,6 +641,10 @@ export interface TestActionResultModel extends TestResultModelBase {
     actionPath: string;
     iterationId: number;
     sharedStepModel: SharedStepModel;
+    /**
+     * This is step Id of test case. For shared step, it is step Id of shared step in test case workitem; step Id in shared step. Example: TestCase workitem has two steps: 1) Normal step with Id = 1 2) Shared Step with Id = 2. Inside shared step: a) Normal Step with Id = 1 Value for StepIdentifier for First step: "1" Second step: "2;1"
+     */
+    stepIdentifier: string;
     url: string;
 }
 
@@ -809,7 +820,7 @@ export interface TestEnvironment {
 
 export interface TestFailureDetails {
     count: number;
-    testResults: ShallowReference[];
+    testResults: TestCaseResultIdentifier[];
 }
 
 export interface TestFailuresAnalysis {
@@ -854,6 +865,15 @@ export interface TestMessageLogDetails {
 export interface TestMethod {
     container: string;
     name: string;
+}
+
+/**
+ * Class representing a reference to an operation.
+ */
+export interface TestOperationReference {
+    id: string;
+    status: string;
+    url: string;
 }
 
 export enum TestOutcome {
@@ -989,6 +1009,13 @@ export interface TestPoint {
     workItemProperties: any[];
 }
 
+export interface TestPointsQuery {
+    orderBy: string;
+    points: TestPoint[];
+    pointsFilter: PointsFilter;
+    witFields: string[];
+}
+
 export interface TestResolutionState {
     id: number;
     name: string;
@@ -1024,6 +1051,11 @@ export interface TestResultCreateModel {
     testPoint: ShallowReference;
 }
 
+export interface TestResultDocument {
+    operationReference: TestOperationReference;
+    payload: TestResultPayload;
+}
+
 export interface TestResultHistory {
     groupByField: string;
     resultsForGroup: TestResultHistoryDetailsForGroup[];
@@ -1047,8 +1079,18 @@ export interface TestResultParameterModel {
     actionPath: string;
     iterationId: number;
     parameterName: string;
+    /**
+     * This is step Id of test case. For shared step, it is step Id of shared step in test case workitem; step Id in shared step. Example: TestCase workitem has two steps: 1) Normal step with Id = 1 2) Shared Step with Id = 2. Inside shared step: a) Normal Step with Id = 1 Value for StepIdentifier for First step: "1" Second step: "2;1"
+     */
+    stepIdentifier: string;
     url: string;
     value: string;
+}
+
+export interface TestResultPayload {
+    comment: string;
+    name: string;
+    stream: string;
 }
 
 export interface TestResultsContext {
@@ -1433,171 +1475,11 @@ export interface WorkItemToTestLinks {
     workItem: WorkItemReference;
 }
 
-export enum AutomatedTestRunSliceStatus {
-    None = 0,
-    Pending = 1,
-    Allocated = 2,
-    Completed = 3,
-    Aborted = 4,
-    Cancelled = 5,
-}
-
-export enum AutomatedTestRunSliceType {
-    None = 0,
-    Discovery = 1,
-    Execution = 2,
-    SessionStart = 3,
-    SessionStop = 4,
-}
-
-export interface DistributedTestRun {
-    distributedTestRunCreateModel: DistributedTestRunCreateModel;
-    /**
-     * DTA Environment Uri
-     */
-    environmentUri: string;
-    /**
-     * Test Run Id
-     */
-    testRunId: number;
-}
-
-export interface DistributedTestRunCreateModel {
-    autEnvironmentUrl: string;
-    automated: boolean;
-    build: ShallowReference;
-    buildDropLocation: string;
-    buildFlavor: string;
-    buildPlatform: string;
-    configurationIds: number[];
-    environmentUrl: string;
-    name: string;
-    plan: ShallowReference;
-    pointIds: number[];
-    releaseEnvironmentUri: string;
-    releaseUri: string;
-    runTimeout: any;
-    sourceFilter: string;
-    testCaseFilter: string;
-    testConfigurationsMapping: string;
-    testSettings: ShallowReference;
-    type: string;
-}
-
-/**
- * Slices can send back information via the Message structure
- */
-export interface Message {
-    data: string;
-    type: MessageType;
-}
-
-export enum MessageType {
-    None = 0,
-    Error = 1,
-    Warning = 2,
-    Info = 3,
-}
-
-/**
- * Sliced Data passed from server to agent post slicing
- */
-export interface SlicedTestData {
-    /**
-     * ExecutorUri of Executor of testcase
-     */
-    executorUri: string;
-    /**
-     * Fully qualified Name of Testcase
-     */
-    fullyQualifiedName: string;
-    /**
-     * TestContainer of TestCase
-     */
-    source: string;
-}
-
-export interface TestAgent {
-    capabilities: string[];
-    dtlEnvironment: ShallowReference;
-    dtlMachine: ShallowReference;
-    id: number;
-    name: string;
-    testRunId: number;
-}
-
-/**
- * Represents the Slice of work that needs to be executed by Automation Test Agent. Data is categorized as below Slice related information e.g. Identity/Type etc Agent related information: Currently none. TestRun related information e.g. TcmRunId/ProjectName/TestContainers etc
- */
-export interface TestAutomationRunSlice {
-    /**
-     * Id of Slice Sent to ExecutionHost
-     */
-    id: number;
-    /**
-     * Results from the previous slice in jason format. e.g. Results from DiscoverySlice can be used by ExecutionSlice.
-     */
-    lastPhaseResults: SlicedTestData[];
-    /**
-     * Important messages related to the execution of the slice.
-     */
-    messages: Message[];
-    /**
-     * List of requirements on the slice that should be met for it to be assigned
-     */
-    requirements: string;
-    /**
-     * Results of the slice
-     */
-    results: string;
-    /**
-     * Status of the slice
-     */
-    status: AutomatedTestRunSliceStatus;
-    /**
-     * config Id of Executing Slice
-     */
-    testConfigId: number;
-    /**
-     * Test Configurations mapping
-     */
-    testConfigurationsMapping: string;
-    /**
-     * TestRunInformation should capture any information related to the TestRun
-     */
-    testRunInformation: TestRunInformation;
-    /**
-     * The type of slice being worked on
-     */
-    type: AutomatedTestRunSliceType;
-}
-
-/**
- * Captures the Automation TestRun related information needed by TestAgent to execute the TestRun slice.
- */
-export interface TestRunInformation {
-    filters: RunFilter;
-    isTestRunComplete: boolean;
-    projectReference: TfsCoreInterfaces.TeamProjectReference;
-    /**
-     * RunSettings Xml
-     */
-    runSettings: string;
-    tcmRun: ShallowReference;
-    /**
-     * Location of Test containers on Test agent machine.
-     */
-    testDropPath: string;
-}
-
 export var TypeInfo = {
     AggregatedDataForResultTrend: {
         fields: <any>null
     },
     AggregatedResultsAnalysis: {
-        fields: <any>null
-    },
-    AggregatedResultsByCategory: {
         fields: <any>null
     },
     AggregatedResultsByOutcome: {
@@ -1717,6 +1599,9 @@ export var TypeInfo = {
         fields: <any>null
     },
     PointAssignment: {
+        fields: <any>null
+    },
+    PointsFilter: {
         fields: <any>null
     },
     PointUpdateModel: {
@@ -1846,6 +1731,9 @@ export var TypeInfo = {
     TestMethod: {
         fields: <any>null
     },
+    TestOperationReference: {
+        fields: <any>null
+    },
     TestOutcome: {
         enumValues: {
             "unspecified": 0,
@@ -1881,10 +1769,16 @@ export var TypeInfo = {
     TestPoint: {
         fields: <any>null
     },
+    TestPointsQuery: {
+        fields: <any>null
+    },
     TestResolutionState: {
         fields: <any>null
     },
     TestResultCreateModel: {
+        fields: <any>null
+    },
+    TestResultDocument: {
         fields: <any>null
     },
     TestResultHistory: {
@@ -1897,6 +1791,9 @@ export var TypeInfo = {
         fields: <any>null
     },
     TestResultParameterModel: {
+        fields: <any>null
+    },
+    TestResultPayload: {
         fields: <any>null
     },
     TestResultsContext: {
@@ -1999,54 +1896,6 @@ export var TypeInfo = {
     WorkItemToTestLinks: {
         fields: <any>null
     },
-    AutomatedTestRunSliceStatus: {
-        enumValues: {
-            "none": 0,
-            "pending": 1,
-            "allocated": 2,
-            "completed": 3,
-            "aborted": 4,
-            "cancelled": 5,
-        }
-    },
-    AutomatedTestRunSliceType: {
-        enumValues: {
-            "none": 0,
-            "discovery": 1,
-            "execution": 2,
-            "sessionStart": 3,
-            "sessionStop": 4,
-        }
-    },
-    DistributedTestRun: {
-        fields: <any>null
-    },
-    DistributedTestRunCreateModel: {
-        fields: <any>null
-    },
-    Message: {
-        fields: <any>null
-    },
-    MessageType: {
-        enumValues: {
-            "none": 0,
-            "error": 1,
-            "warning": 2,
-            "info": 3,
-        }
-    },
-    SlicedTestData: {
-        fields: <any>null
-    },
-    TestAgent: {
-        fields: <any>null
-    },
-    TestAutomationRunSlice: {
-        fields: <any>null
-    },
-    TestRunInformation: {
-        fields: <any>null
-    },
 };
 
 TypeInfo.AggregatedDataForResultTrend.fields = {
@@ -2058,23 +1907,15 @@ TypeInfo.AggregatedDataForResultTrend.fields = {
 };
 
 TypeInfo.AggregatedResultsAnalysis.fields = {
+    notReportedResultsByOutcome: {
+    },
     previousContext: {
         typeInfo: TypeInfo.TestResultsContext
-    },
-    resultsByCategory: {
-        isArray: true,
-        typeInfo: TypeInfo.AggregatedResultsByCategory
     },
     resultsByOutcome: {
     },
     resultsDifference: {
         typeInfo: TypeInfo.AggregatedResultsDifference
-    },
-};
-
-TypeInfo.AggregatedResultsByCategory.fields = {
-    testOutcome: {
-        enumType: TypeInfo.TestOutcome
     },
 };
 
@@ -2265,6 +2106,13 @@ TypeInfo.PointAssignment.fields = {
         typeInfo: TypeInfo.ShallowReference
     },
     tester: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+};
+
+TypeInfo.PointsFilter.fields = {
+    testers: {
+        isArray: true,
         typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
 };
@@ -2578,7 +2426,7 @@ TypeInfo.TestEnvironment.fields = {
 TypeInfo.TestFailureDetails.fields = {
     testResults: {
         isArray: true,
-        typeInfo: TypeInfo.ShallowReference
+        typeInfo: TypeInfo.TestCaseResultIdentifier
     },
 };
 
@@ -2625,6 +2473,9 @@ TypeInfo.TestMessageLogDetails.fields = {
 };
 
 TypeInfo.TestMethod.fields = {
+};
+
+TypeInfo.TestOperationReference.fields = {
 };
 
 TypeInfo.TestPlan.fields = {
@@ -2735,6 +2586,16 @@ TypeInfo.TestPoint.fields = {
     },
 };
 
+TypeInfo.TestPointsQuery.fields = {
+    points: {
+        isArray: true,
+        typeInfo: TypeInfo.TestPoint
+    },
+    pointsFilter: {
+        typeInfo: TypeInfo.PointsFilter
+    },
+};
+
 TypeInfo.TestResolutionState.fields = {
     project: {
         typeInfo: TypeInfo.ShallowReference
@@ -2766,6 +2627,15 @@ TypeInfo.TestResultCreateModel.fields = {
     },
 };
 
+TypeInfo.TestResultDocument.fields = {
+    operationReference: {
+        typeInfo: TypeInfo.TestOperationReference
+    },
+    payload: {
+        typeInfo: TypeInfo.TestResultPayload
+    },
+};
+
 TypeInfo.TestResultHistory.fields = {
     resultsForGroup: {
         isArray: true,
@@ -2789,6 +2659,9 @@ TypeInfo.TestResultModelBase.fields = {
 };
 
 TypeInfo.TestResultParameterModel.fields = {
+};
+
+TypeInfo.TestResultPayload.fields = {
 };
 
 TypeInfo.TestResultsContext.fields = {
@@ -3064,73 +2937,5 @@ TypeInfo.WorkItemToTestLinks.fields = {
     },
     workItem: {
         typeInfo: TypeInfo.WorkItemReference
-    },
-};
-
-TypeInfo.DistributedTestRun.fields = {
-    distributedTestRunCreateModel: {
-        typeInfo: TypeInfo.DistributedTestRunCreateModel
-    },
-};
-
-TypeInfo.DistributedTestRunCreateModel.fields = {
-    build: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    plan: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    testSettings: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.Message.fields = {
-    type: {
-        enumType: TypeInfo.MessageType
-    },
-};
-
-TypeInfo.SlicedTestData.fields = {
-};
-
-TypeInfo.TestAgent.fields = {
-    dtlEnvironment: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    dtlMachine: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.TestAutomationRunSlice.fields = {
-    lastPhaseResults: {
-        isArray: true,
-        typeInfo: TypeInfo.SlicedTestData
-    },
-    messages: {
-        isArray: true,
-        typeInfo: TypeInfo.Message
-    },
-    status: {
-        enumType: TypeInfo.AutomatedTestRunSliceStatus
-    },
-    testRunInformation: {
-        typeInfo: TypeInfo.TestRunInformation
-    },
-    type: {
-        enumType: TypeInfo.AutomatedTestRunSliceType
-    },
-};
-
-TypeInfo.TestRunInformation.fields = {
-    filters: {
-        typeInfo: TypeInfo.RunFilter
-    },
-    projectReference: {
-        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
-    },
-    tcmRun: {
-        typeInfo: TypeInfo.ShallowReference
     },
 };

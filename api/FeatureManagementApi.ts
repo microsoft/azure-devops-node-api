@@ -10,9 +10,8 @@
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
-
-import restm = require('./RestClient');
-import httpm = require('./HttpClient');
+import * as restm from 'typed-rest-client/RestClient';
+import * as httpm from 'typed-rest-client/HttpClient';
 import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
 import serm = require('./Serialization');
@@ -46,25 +45,28 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
         ): Promise<FeatureManagementInterfaces.ContributedFeature> {
 
         return new Promise<FeatureManagementInterfaces.ContributedFeature>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 featureId: featureId
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "FeatureManagement",
                     "c4209f25-7a27-41dd-9f04-06080c7b6afd",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeature>;
+                res = await this.rest.get<FeatureManagementInterfaces.ContributedFeature>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -83,7 +85,6 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
         ): Promise<FeatureManagementInterfaces.ContributedFeature[]> {
 
         return new Promise<FeatureManagementInterfaces.ContributedFeature[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
             };
 
@@ -93,19 +94,23 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "FeatureManagement",
                     "c4209f25-7a27-41dd-9f04-06080c7b6afd",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeature[]>;
+                res = await this.rest.get<FeatureManagementInterfaces.ContributedFeature[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -126,7 +131,6 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
         ): Promise<FeatureManagementInterfaces.ContributedFeatureState> {
 
         return new Promise<FeatureManagementInterfaces.ContributedFeatureState>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 featureId: featureId,
                 userScope: userScope
@@ -134,18 +138,22 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "FeatureManagement",
                     "98911314-3f9b-4eaf-80e8-83900d8e85d9",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureState, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
+                res = await this.rest.get<FeatureManagementInterfaces.ContributedFeatureState>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              FeatureManagementInterfaces.TypeInfo.ContributedFeatureState,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -172,7 +180,6 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
         ): Promise<FeatureManagementInterfaces.ContributedFeatureState> {
 
         return new Promise<FeatureManagementInterfaces.ContributedFeatureState>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 featureId: featureId,
                 userScope: userScope
@@ -185,19 +192,23 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "FeatureManagement",
                     "98911314-3f9b-4eaf-80e8-83900d8e85d9",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, feature, null);
-                let serializationData = { requestTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureState, responseTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureState, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
+                res = await this.rest.update<FeatureManagementInterfaces.ContributedFeatureState>(url, feature, options);
+
+                let ret = this.formatResponse(res.result,
+                                              FeatureManagementInterfaces.TypeInfo.ContributedFeatureState,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -222,7 +233,6 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
         ): Promise<FeatureManagementInterfaces.ContributedFeatureState> {
 
         return new Promise<FeatureManagementInterfaces.ContributedFeatureState>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 featureId: featureId,
                 userScope: userScope,
@@ -232,18 +242,22 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "FeatureManagement",
                     "dd291e43-aa9f-4cee-8465-a93c78e414a4",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureState, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
+                res = await this.rest.get<FeatureManagementInterfaces.ContributedFeatureState>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              FeatureManagementInterfaces.TypeInfo.ContributedFeatureState,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -274,7 +288,6 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
         ): Promise<FeatureManagementInterfaces.ContributedFeatureState> {
 
         return new Promise<FeatureManagementInterfaces.ContributedFeatureState>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 featureId: featureId,
                 userScope: userScope,
@@ -289,19 +302,23 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "FeatureManagement",
                     "dd291e43-aa9f-4cee-8465-a93c78e414a4",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, feature, null);
-                let serializationData = { requestTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureState, responseTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureState, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
+                res = await this.rest.update<FeatureManagementInterfaces.ContributedFeatureState>(url, feature, options);
+
+                let ret = this.formatResponse(res.result,
+                                              FeatureManagementInterfaces.TypeInfo.ContributedFeatureState,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -320,24 +337,27 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
         ): Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery> {
 
         return new Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery>(async (resolve, reject) => {
-            
             let routeValues: any = {
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "FeatureManagement",
                     "2b4486ad-122b-400c-ae65-17b6672c1f9d",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, query, null);
-                let serializationData = { requestTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureStateQuery, responseTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureStateQuery, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureStateQuery>;
+                res = await this.rest.create<FeatureManagementInterfaces.ContributedFeatureStateQuery>(url, query, options);
+
+                let ret = this.formatResponse(res.result,
+                                              FeatureManagementInterfaces.TypeInfo.ContributedFeatureStateQuery,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -358,25 +378,28 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
         ): Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery> {
 
         return new Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 userScope: userScope
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "FeatureManagement",
                     "3f810f28-03e2-4239-b0bc-788add3005e5",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, query, null);
-                let serializationData = { requestTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureStateQuery, responseTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureStateQuery, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureStateQuery>;
+                res = await this.rest.create<FeatureManagementInterfaces.ContributedFeatureStateQuery>(url, query, options);
+
+                let ret = this.formatResponse(res.result,
+                                              FeatureManagementInterfaces.TypeInfo.ContributedFeatureStateQuery,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -401,7 +424,6 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
         ): Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery> {
 
         return new Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 userScope: userScope,
                 scopeName: scopeName,
@@ -410,18 +432,22 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "FeatureManagement",
                     "f29e997b-c2da-4d15-8380-765788a1a74c",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, query, null);
-                let serializationData = { requestTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureStateQuery, responseTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureStateQuery, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureStateQuery>;
+                res = await this.rest.create<FeatureManagementInterfaces.ContributedFeatureStateQuery>(url, query, options);
+
+                let ret = this.formatResponse(res.result,
+                                              FeatureManagementInterfaces.TypeInfo.ContributedFeatureStateQuery,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {

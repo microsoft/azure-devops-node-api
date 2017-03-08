@@ -10,9 +10,8 @@
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
-
-import restm = require('./RestClient');
-import httpm = require('./HttpClient');
+import * as restm from 'typed-rest-client/RestClient';
+import * as httpm from 'typed-rest-client/HttpClient';
 import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
 import serm = require('./Serialization');
@@ -66,7 +65,6 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<TfvcInterfaces.TfvcBranch> {
 
         return new Promise<TfvcInterfaces.TfvcBranch>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project
             };
@@ -79,19 +77,23 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "tfvc",
                     "bc1f417e-239d-42e7-85e1-76e80cb2d6eb",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcBranch, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcBranch>;
+                res = await this.rest.get<TfvcInterfaces.TfvcBranch>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcBranch,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -118,7 +120,6 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<TfvcInterfaces.TfvcBranch[]> {
 
         return new Promise<TfvcInterfaces.TfvcBranch[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project
             };
@@ -132,19 +133,23 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "tfvc",
                     "bc1f417e-239d-42e7-85e1-76e80cb2d6eb",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcBranch, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcBranch[]>;
+                res = await this.rest.get<TfvcInterfaces.TfvcBranch[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcBranch,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -169,7 +174,6 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<TfvcInterfaces.TfvcBranchRef[]> {
 
         return new Promise<TfvcInterfaces.TfvcBranchRef[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project
             };
@@ -182,19 +186,23 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "tfvc",
                     "bc1f417e-239d-42e7-85e1-76e80cb2d6eb",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcBranchRef, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcBranchRef[]>;
+                res = await this.rest.get<TfvcInterfaces.TfvcBranchRef[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcBranchRef,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -217,7 +225,6 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<TfvcInterfaces.TfvcChange[]> {
 
         return new Promise<TfvcInterfaces.TfvcChange[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 id: id
             };
@@ -229,19 +236,23 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "tfvc",
                     "f32b86f2-15b9-4fe6-81b1-6f8938617ee5",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChange, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcChange[]>;
+                res = await this.rest.get<TfvcInterfaces.TfvcChange[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcChange,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -260,25 +271,28 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<TfvcInterfaces.TfvcChangesetRef> {
 
         return new Promise<TfvcInterfaces.TfvcChangesetRef>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.2",
+                    "3.2-preview.3",
                     "tfvc",
                     "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, changeset, null);
-                let serializationData = { requestTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChangeset, responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChangesetRef, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcChangesetRef>;
+                res = await this.rest.create<TfvcInterfaces.TfvcChangesetRef>(url, changeset, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcChangesetRef,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -317,7 +331,6 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<TfvcInterfaces.TfvcChangeset> {
 
         return new Promise<TfvcInterfaces.TfvcChangeset>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 id: id
@@ -337,19 +350,23 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.2",
+                    "3.2-preview.3",
                     "tfvc",
                     "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChangeset, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcChangeset>;
+                res = await this.rest.get<TfvcInterfaces.TfvcChangeset>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcChangeset,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -359,7 +376,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Retrieve Tfvc changesets
+    * Retrieve Tfvc changesets Note: This is a new version of the GetChangesets API that doesn't expose the unneeded queryParams present in the 1.0 version of the API.
     * 
     * @param {string} project - Project ID or project name
     * @param {number} maxCommentLength
@@ -378,7 +395,6 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<TfvcInterfaces.TfvcChangesetRef[]> {
 
         return new Promise<TfvcInterfaces.TfvcChangesetRef[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project
             };
@@ -393,19 +409,23 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.2",
+                    "3.2-preview.3",
                     "tfvc",
                     "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChangesetRef, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcChangesetRef[]>;
+                res = await this.rest.get<TfvcInterfaces.TfvcChangesetRef[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcChangesetRef,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -422,24 +442,27 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<TfvcInterfaces.TfvcChangesetRef[]> {
 
         return new Promise<TfvcInterfaces.TfvcChangesetRef[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "tfvc",
                     "b7e7c173-803c-4fea-9ec8-31ee35c5502a",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, changesetsRequestData, null);
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChangesetRef, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcChangesetRef[]>;
+                res = await this.rest.create<TfvcInterfaces.TfvcChangesetRef[]>(url, changesetsRequestData, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcChangesetRef,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -456,25 +479,28 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<TfvcInterfaces.AssociatedWorkItem[]> {
 
         return new Promise<TfvcInterfaces.AssociatedWorkItem[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 id: id
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "tfvc",
                     "64ae0bea-1d71-47c9-a9e5-fe73f5ea0ff4",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.AssociatedWorkItem[]>;
+                res = await this.rest.get<TfvcInterfaces.AssociatedWorkItem[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -495,25 +521,28 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<TfvcInterfaces.TfvcItem[][]> {
 
         return new Promise<TfvcInterfaces.TfvcItem[][]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "tfvc",
                     "fe6f827b-5f64-480f-b8af-1eca3b80e833",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, itemRequestData, null);
-                let serializationData = { requestTypeMetadata: TfvcInterfaces.TypeInfo.TfvcItemRequestData, responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcItem, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcItem[][]>;
+                res = await this.rest.create<TfvcInterfaces.TfvcItem[][]>(url, itemRequestData, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcItem,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -534,32 +563,22 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
-            let onResult = (err: any, statusCode: number, ItemBatch: NodeJS.ReadableStream) => {
-                if (err) {
-                    err.statusCode = statusCode;
-                    reject(err);
-                }
-                else {
-                    resolve(ItemBatch);
-                }
-            };
-
             let routeValues: any = {
                 project: project
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "tfvc",
                     "fe6f827b-5f64-480f-b8af-1eca3b80e833",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
                 
+                let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
-                this.httpClient.getStream(url, accept, onResult);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
             }
             catch (err) {
                 reject(err);
@@ -568,7 +587,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Get Item Metadata and/or Content. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
+    * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
     * 
     * @param {string} path
     * @param {string} project - Project ID or project name
@@ -589,7 +608,6 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<TfvcInterfaces.TfvcItem> {
 
         return new Promise<TfvcInterfaces.TfvcItem>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project
             };
@@ -605,19 +623,23 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "tfvc",
                     "ba9fc436-9a38-4578-89d6-e4f3241f5040",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcItem, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcItem>;
+                res = await this.rest.get<TfvcInterfaces.TfvcItem>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcItem,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -627,7 +649,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Get Item Metadata and/or Content. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
+    * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
     * 
     * @param {string} path
     * @param {string} project - Project ID or project name
@@ -648,16 +670,6 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
-            let onResult = (err: any, statusCode: number, Item: NodeJS.ReadableStream) => {
-                if (err) {
-                    err.statusCode = statusCode;
-                    reject(err);
-                }
-                else {
-                    resolve(Item);
-                }
-            };
-
             let routeValues: any = {
                 project: project
             };
@@ -673,17 +685,17 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "tfvc",
                     "ba9fc436-9a38-4578-89d6-e4f3241f5040",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
                 
+                let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
-                this.httpClient.getStream(url, accept, onResult);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
             }
             catch (err) {
                 reject(err);
@@ -709,7 +721,6 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<TfvcInterfaces.TfvcItem[]> {
 
         return new Promise<TfvcInterfaces.TfvcItem[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project
             };
@@ -723,19 +734,23 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "tfvc",
                     "ba9fc436-9a38-4578-89d6-e4f3241f5040",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcItem, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcItem[]>;
+                res = await this.rest.get<TfvcInterfaces.TfvcItem[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcItem,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -745,7 +760,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Get Item Metadata and/or Content. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
+    * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
     * 
     * @param {string} path
     * @param {string} project - Project ID or project name
@@ -766,16 +781,6 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
-            let onResult = (err: any, statusCode: number, Item: NodeJS.ReadableStream) => {
-                if (err) {
-                    err.statusCode = statusCode;
-                    reject(err);
-                }
-                else {
-                    resolve(Item);
-                }
-            };
-
             let routeValues: any = {
                 project: project
             };
@@ -791,17 +796,17 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "tfvc",
                     "ba9fc436-9a38-4578-89d6-e4f3241f5040",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
                 
+                let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
-                this.httpClient.getStream(url, accept, onResult);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
             }
             catch (err) {
                 reject(err);
@@ -810,7 +815,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Get Item Metadata and/or Content. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
+    * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
     * 
     * @param {string} path
     * @param {string} project - Project ID or project name
@@ -831,16 +836,6 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
-            let onResult = (err: any, statusCode: number, Item: NodeJS.ReadableStream) => {
-                if (err) {
-                    err.statusCode = statusCode;
-                    reject(err);
-                }
-                else {
-                    resolve(Item);
-                }
-            };
-
             let routeValues: any = {
                 project: project
             };
@@ -856,17 +851,17 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "tfvc",
                     "ba9fc436-9a38-4578-89d6-e4f3241f5040",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
                 
+                let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
-                this.httpClient.getStream(url, accept, onResult);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
             }
             catch (err) {
                 reject(err);
@@ -888,7 +883,6 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<TfvcInterfaces.TfvcItem[]> {
 
         return new Promise<TfvcInterfaces.TfvcItem[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 labelId: labelId
             };
@@ -900,19 +894,23 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "tfvc",
                     "06166e34-de17-4b60-8cd1-23182a346fda",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcItem, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcItem[]>;
+                res = await this.rest.get<TfvcInterfaces.TfvcItem[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcItem,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -935,7 +933,6 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<TfvcInterfaces.TfvcLabel> {
 
         return new Promise<TfvcInterfaces.TfvcLabel>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 labelId: labelId
@@ -947,19 +944,23 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "tfvc",
                     "a5d9bd7f-b661-4d0e-b9be-d9c16affae54",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcLabel, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcLabel>;
+                res = await this.rest.get<TfvcInterfaces.TfvcLabel>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcLabel,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -984,7 +985,6 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<TfvcInterfaces.TfvcLabelRef[]> {
 
         return new Promise<TfvcInterfaces.TfvcLabelRef[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project
             };
@@ -997,19 +997,23 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "tfvc",
                     "a5d9bd7f-b661-4d0e-b9be-d9c16affae54",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcLabelRef, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcLabelRef[]>;
+                res = await this.rest.get<TfvcInterfaces.TfvcLabelRef[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcLabelRef,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -1032,7 +1036,6 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<TfvcInterfaces.TfvcChange[]> {
 
         return new Promise<TfvcInterfaces.TfvcChange[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
             };
 
@@ -1044,19 +1047,23 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "tfvc",
                     "dbaf075b-0445-4c34-9e5b-82292f856522",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChange, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcChange[]>;
+                res = await this.rest.get<TfvcInterfaces.TfvcChange[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcChange,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -1077,7 +1084,6 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<TfvcInterfaces.TfvcShelveset> {
 
         return new Promise<TfvcInterfaces.TfvcShelveset>(async (resolve, reject) => {
-            
             let routeValues: any = {
             };
 
@@ -1088,19 +1094,23 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "tfvc",
                     "e36d44fb-e907-4b0a-b194-f83f1ed32ad3",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcShelveset, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcShelveset>;
+                res = await this.rest.get<TfvcInterfaces.TfvcShelveset>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcShelveset,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -1123,7 +1133,6 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<TfvcInterfaces.TfvcShelvesetRef[]> {
 
         return new Promise<TfvcInterfaces.TfvcShelvesetRef[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
             };
 
@@ -1135,19 +1144,23 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "tfvc",
                     "e36d44fb-e907-4b0a-b194-f83f1ed32ad3",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcShelvesetRef, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcShelvesetRef[]>;
+                res = await this.rest.get<TfvcInterfaces.TfvcShelvesetRef[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcShelvesetRef,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -1166,7 +1179,6 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         ): Promise<TfvcInterfaces.AssociatedWorkItem[]> {
 
         return new Promise<TfvcInterfaces.AssociatedWorkItem[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
             };
 
@@ -1176,19 +1188,23 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "tfvc",
                     "a7a0c1c1-373e-425a-b031-a519474d743d",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.AssociatedWorkItem[]>;
+                res = await this.rest.get<TfvcInterfaces.AssociatedWorkItem[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
