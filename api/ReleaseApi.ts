@@ -55,7 +55,7 @@ export interface IReleaseApi extends basem.ClientApiBase {
     getRelease(project: string, releaseId: number, includeAllApprovals?: boolean): Promise<ReleaseInterfaces.Release>;
     getReleaseDefinitionSummary(project: string, definitionId: number, releaseCount: number, includeArtifact?: boolean, definitionEnvironmentIdsFilter?: number[]): Promise<ReleaseInterfaces.ReleaseDefinitionSummary>;
     getReleaseRevision(project: string, releaseId: number, definitionSnapshotRevision: number): Promise<NodeJS.ReadableStream>;
-    getReleases(project: string, definitionId?: number, definitionEnvironmentId?: number, searchText?: string, createdBy?: string, statusFilter?: ReleaseInterfaces.ReleaseStatus, environmentStatusFilter?: number, minCreatedTime?: Date, maxCreatedTime?: Date, queryOrder?: ReleaseInterfaces.ReleaseQueryOrder, top?: number, continuationToken?: number, expand?: ReleaseInterfaces.ReleaseExpands, artifactTypeId?: string, sourceId?: string, artifactVersionId?: string, sourceBranchFilter?: string, isDeleted?: boolean): Promise<ReleaseInterfaces.Release[]>;
+    getReleases(project: string, definitionId?: number, definitionEnvironmentId?: number, searchText?: string, createdBy?: string, statusFilter?: ReleaseInterfaces.ReleaseStatus, environmentStatusFilter?: ReleaseInterfaces.EnvironmentStatus, minCreatedTime?: Date, maxCreatedTime?: Date, queryOrder?: ReleaseInterfaces.ReleaseQueryOrder, top?: number, continuationToken?: number, expand?: ReleaseInterfaces.ReleaseExpands, artifactTypeId?: string, sourceId?: string, artifactVersionId?: string, sourceBranchFilter?: string, isDeleted?: boolean): Promise<ReleaseInterfaces.Release[]>;
     undeleteRelease(project: string, releaseId: number, comment: string): Promise<void>;
     updateRelease(release: ReleaseInterfaces.Release, project: string, releaseId: number): Promise<ReleaseInterfaces.Release>;
     updateReleaseResource(releaseUpdateMetadata: ReleaseInterfaces.ReleaseUpdateMetadata, project: string, releaseId: number): Promise<ReleaseInterfaces.Release>;
@@ -1633,7 +1633,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {string} searchText
     * @param {string} createdBy
     * @param {ReleaseInterfaces.ReleaseStatus} statusFilter
-    * @param {number} environmentStatusFilter
+    * @param {ReleaseInterfaces.EnvironmentStatus} environmentStatusFilter
     * @param {Date} minCreatedTime
     * @param {Date} maxCreatedTime
     * @param {ReleaseInterfaces.ReleaseQueryOrder} queryOrder
@@ -1653,7 +1653,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         searchText?: string,
         createdBy?: string,
         statusFilter?: ReleaseInterfaces.ReleaseStatus,
-        environmentStatusFilter?: number,
+        environmentStatusFilter?: ReleaseInterfaces.EnvironmentStatus,
         minCreatedTime?: Date,
         maxCreatedTime?: Date,
         queryOrder?: ReleaseInterfaces.ReleaseQueryOrder,
