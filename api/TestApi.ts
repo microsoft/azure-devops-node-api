@@ -10,12 +10,11 @@
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
-
-import Q = require('q');
-import restm = require('./RestClient');
-import httpm = require('./HttpClient');
+import * as restm from 'typed-rest-client/RestClient';
+import * as httpm from 'typed-rest-client/HttpClient';
 import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
+import serm = require('./Serialization');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import TestInterfaces = require("./interfaces/TestInterfaces");
 import TfsCoreInterfaces = require("./interfaces/CoreInterfaces");
@@ -42,7 +41,7 @@ export interface ITestApi extends basem.ClientApiBase {
     createTestConfiguration(testConfiguration: TestInterfaces.TestConfiguration, project: string): Promise<TestInterfaces.TestConfiguration>;
     deleteTestConfiguration(project: string, testConfigurationId: number): Promise<void>;
     getTestConfigurationById(project: string, testConfigurationId: number): Promise<TestInterfaces.TestConfiguration>;
-    getTestConfigurations(project: string, skip?: number, top?: number, includeAllProperties?: boolean): Promise<TestInterfaces.TestConfiguration[]>;
+    getTestConfigurations(project: string, skip?: number, top?: number, continuationToken?: string, includeAllProperties?: boolean): Promise<TestInterfaces.TestConfiguration[]>;
     updateTestConfiguration(testConfiguration: TestInterfaces.TestConfiguration, project: string, testConfigurationId: number): Promise<TestInterfaces.TestConfiguration>;
     addCustomFields(newFields: TestInterfaces.CustomTestFieldDefinition[], project: string): Promise<TestInterfaces.CustomTestFieldDefinition[]>;
     queryCustomFields(project: string, scopeFilter: TestInterfaces.CustomTestFieldScope): Promise<TestInterfaces.CustomTestFieldDefinition[]>;
@@ -59,8 +58,10 @@ export interface ITestApi extends basem.ClientApiBase {
     getPoint(project: string, planId: number, suiteId: number, pointIds: number, witFields?: string): Promise<TestInterfaces.TestPoint>;
     getPoints(project: string, planId: number, suiteId: number, witFields?: string, configurationId?: string, testCaseId?: string, testPointIds?: string, includePointDetails?: boolean, skip?: number, top?: number): Promise<TestInterfaces.TestPoint[]>;
     updateTestPoints(pointUpdateModel: TestInterfaces.PointUpdateModel, project: string, planId: number, suiteId: number, pointIds: string): Promise<TestInterfaces.TestPoint[]>;
+    getPointsByQuery(query: TestInterfaces.TestPointsQuery, project: string, skip?: number, top?: number): Promise<TestInterfaces.TestPointsQuery>;
     getTestResultDetailsForBuild(project: string, buildId: number, publishContext?: string, groupBy?: string, filter?: string, orderby?: string): Promise<TestInterfaces.TestResultsDetails>;
     getTestResultDetailsForRelease(project: string, releaseId: number, releaseEnvId: number, publishContext?: string, groupBy?: string, filter?: string, orderby?: string): Promise<TestInterfaces.TestResultsDetails>;
+    publishTestResultDocument(document: TestInterfaces.TestResultDocument, project: string, runId: number): Promise<TestInterfaces.TestResultDocument>;
     getResultRetentionSettings(project: string): Promise<TestInterfaces.ResultRetentionSettings>;
     updateResultRetentionSettings(retentionSettings: TestInterfaces.ResultRetentionSettings, project: string): Promise<TestInterfaces.ResultRetentionSettings>;
     addTestResultsToTestRun(results: TestInterfaces.TestCaseResult[], project: string, runId: number): Promise<TestInterfaces.TestCaseResult[]>;
@@ -73,6 +74,7 @@ export interface ITestApi extends basem.ClientApiBase {
     queryTestResultsSummaryForReleases(releases: TestInterfaces.ReleaseReference[], project: string): Promise<TestInterfaces.TestResultSummary[]>;
     queryTestSummaryByRequirement(resultsContext: TestInterfaces.TestResultsContext, project: string, workItemIds?: number[]): Promise<TestInterfaces.TestSummaryForWorkItem[]>;
     queryResultTrendForBuild(filter: TestInterfaces.TestResultTrendFilter, project: string): Promise<TestInterfaces.AggregatedDataForResultTrend[]>;
+    queryResultTrendForRelease(filter: TestInterfaces.TestResultTrendFilter, project: string): Promise<TestInterfaces.AggregatedDataForResultTrend[]>;
     getTestRunStatistics(project: string, runId: number): Promise<TestInterfaces.TestRunStatistic>;
     createTestRun(testRun: TestInterfaces.RunCreateModel, project: string): Promise<TestInterfaces.TestRun>;
     deleteTestRun(project: string, runId: number): Promise<void>;
@@ -82,6 +84,8 @@ export interface ITestApi extends basem.ClientApiBase {
     createTestSession(testSession: TestInterfaces.TestSession, teamContext: TfsCoreInterfaces.TeamContext): Promise<TestInterfaces.TestSession>;
     getTestSessions(teamContext: TfsCoreInterfaces.TeamContext, period?: number, allSessions?: boolean, includeAllProperties?: boolean, source?: TestInterfaces.TestSessionSource, includeOnlyCompletedSessions?: boolean): Promise<TestInterfaces.TestSession[]>;
     updateTestSession(testSession: TestInterfaces.TestSession, teamContext: TfsCoreInterfaces.TeamContext): Promise<TestInterfaces.TestSession>;
+    deleteSharedParameter(project: string, sharedParameterId: number): Promise<void>;
+    deleteSharedStep(project: string, sharedStepId: number): Promise<void>;
     getSuiteEntries(project: string, suiteId: number): Promise<TestInterfaces.SuiteEntry[]>;
     reorderSuiteEntries(suiteEntries: TestInterfaces.SuiteEntryUpdateModel[], project: string, suiteId: number): Promise<TestInterfaces.SuiteEntry[]>;
     addTestCasesToSuite(project: string, planId: number, suiteId: number, testCaseIds: string): Promise<TestInterfaces.SuiteTestCase[]>;
@@ -94,6 +98,7 @@ export interface ITestApi extends basem.ClientApiBase {
     getTestSuitesForPlan(project: string, planId: number, includeSuites?: boolean, skip?: number, top?: number, asTreeView?: boolean): Promise<TestInterfaces.TestSuite[]>;
     updateTestSuite(suiteUpdateModel: TestInterfaces.SuiteUpdateModel, project: string, planId: number, suiteId: number): Promise<TestInterfaces.TestSuite>;
     getSuitesByTestCaseId(testCaseId: number): Promise<TestInterfaces.TestSuite[]>;
+    deleteTestCase(project: string, testCaseId: number): Promise<void>;
     createTestSettings(testSettings: TestInterfaces.TestSettings, project: string): Promise<number>;
     deleteTestSettings(project: string, testSettingsId: number): Promise<void>;
     getTestSettingsById(project: string, testSettingsId: number): Promise<TestInterfaces.TestSettings>;
@@ -120,47 +125,47 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} iterationId
     * @param {string} actionPath
     */
-    public getActionResults(
+    public async getActionResults(
         project: string,
         runId: number,
         testCaseResultId: number,
         iterationId: number,
         actionPath?: string
         ): Promise<TestInterfaces.TestActionResultModel[]> {
-    
-        let deferred = Q.defer<TestInterfaces.TestActionResultModel[]>();
 
-        let onResult = (err: any, statusCode: number, ActionResults: TestInterfaces.TestActionResultModel[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ActionResults);
-            }
-        };
+        return new Promise<TestInterfaces.TestActionResultModel[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId,
+                testCaseResultId: testCaseResultId,
+                iterationId: iterationId,
+                actionPath: actionPath
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId,
-            testCaseResultId: testCaseResultId,
-            iterationId: iterationId,
-            actionPath: actionPath
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.3",
+                    "Test",
+                    "eaf40c31-ff84-4062-aafd-d5664be11a37",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.3", "Test", "eaf40c31-ff84-4062-aafd-d5664be11a37", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestActionResultModel, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestActionResultModel[]>;
+                res = await this.rest.get<TestInterfaces.TestActionResultModel[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestActionResultModel,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -171,7 +176,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} iterationId
     * @param {string} actionPath
     */
-    public createTestIterationResultAttachment(
+    public async createTestIterationResultAttachment(
         attachmentRequestModel: TestInterfaces.TestAttachmentRequestModel,
         project: string,
         runId: number,
@@ -179,43 +184,44 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         iterationId: number,
         actionPath?: string
         ): Promise<TestInterfaces.TestAttachmentReference> {
-    
-        let deferred = Q.defer<TestInterfaces.TestAttachmentReference>();
 
-        let onResult = (err: any, statusCode: number, Attachment: TestInterfaces.TestAttachmentReference) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Attachment);
-            }
-        };
+        return new Promise<TestInterfaces.TestAttachmentReference>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId,
+                testCaseResultId: testCaseResultId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId,
-            testCaseResultId: testCaseResultId
-        };
+            let queryValues: any = {
+                iterationId: iterationId,
+                actionPath: actionPath,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "2bffebe9-2f0f-4639-9af8-56129e9fed2d",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            iterationId: iterationId,
-            actionPath: actionPath,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "2bffebe9-2f0f-4639-9af8-56129e9fed2d", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestAttachmentReference>;
+                res = await this.rest.create<TestInterfaces.TestAttachmentReference>(url, attachmentRequestModel, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, attachmentRequestModel, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -224,44 +230,44 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} runId
     * @param {number} testCaseResultId
     */
-    public createTestResultAttachment(
+    public async createTestResultAttachment(
         attachmentRequestModel: TestInterfaces.TestAttachmentRequestModel,
         project: string,
         runId: number,
         testCaseResultId: number
         ): Promise<TestInterfaces.TestAttachmentReference> {
-    
-        let deferred = Q.defer<TestInterfaces.TestAttachmentReference>();
 
-        let onResult = (err: any, statusCode: number, Attachment: TestInterfaces.TestAttachmentReference) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Attachment);
-            }
-        };
+        return new Promise<TestInterfaces.TestAttachmentReference>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId,
+                testCaseResultId: testCaseResultId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId,
-            testCaseResultId: testCaseResultId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "2bffebe9-2f0f-4639-9af8-56129e9fed2d",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "2bffebe9-2f0f-4639-9af8-56129e9fed2d", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestAttachmentReference>;
+                res = await this.rest.create<TestInterfaces.TestAttachmentReference>(url, attachmentRequestModel, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, attachmentRequestModel, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -272,45 +278,38 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} testCaseResultId
     * @param {number} attachmentId
     */
-    public getTestResultAttachmentContent(
+    public async getTestResultAttachmentContent(
         project: string,
         runId: number,
         testCaseResultId: number,
         attachmentId: number
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, Attachment: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Attachment);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId,
+                testCaseResultId: testCaseResultId,
+                attachmentId: attachmentId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId,
-            testCaseResultId: testCaseResultId,
-            attachmentId: attachmentId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "2bffebe9-2f0f-4639-9af8-56129e9fed2d",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "2bffebe9-2f0f-4639-9af8-56129e9fed2d", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
                 
-                this.httpClient.getStream(url, apiVersion, "application/octet-stream", onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -320,43 +319,43 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} runId
     * @param {number} testCaseResultId
     */
-    public getTestResultAttachments(
+    public async getTestResultAttachments(
         project: string,
         runId: number,
         testCaseResultId: number
         ): Promise<TestInterfaces.TestAttachment[]> {
-    
-        let deferred = Q.defer<TestInterfaces.TestAttachment[]>();
 
-        let onResult = (err: any, statusCode: number, Attachments: TestInterfaces.TestAttachment[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Attachments);
-            }
-        };
+        return new Promise<TestInterfaces.TestAttachment[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId,
+                testCaseResultId: testCaseResultId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId,
-            testCaseResultId: testCaseResultId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "2bffebe9-2f0f-4639-9af8-56129e9fed2d",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "2bffebe9-2f0f-4639-9af8-56129e9fed2d", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestAttachment, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestAttachment[]>;
+                res = await this.rest.get<TestInterfaces.TestAttachment[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestAttachment,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -367,45 +366,38 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} testCaseResultId
     * @param {number} attachmentId
     */
-    public getTestResultAttachmentZip(
+    public async getTestResultAttachmentZip(
         project: string,
         runId: number,
         testCaseResultId: number,
         attachmentId: number
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, Attachment: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Attachment);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId,
+                testCaseResultId: testCaseResultId,
+                attachmentId: attachmentId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId,
-            testCaseResultId: testCaseResultId,
-            attachmentId: attachmentId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "2bffebe9-2f0f-4639-9af8-56129e9fed2d",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "2bffebe9-2f0f-4639-9af8-56129e9fed2d", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
                 
-                this.httpClient.getStream(url, apiVersion, "application/zip", onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/zip", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -413,42 +405,42 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {string} project - Project ID or project name
     * @param {number} runId
     */
-    public createTestRunAttachment(
+    public async createTestRunAttachment(
         attachmentRequestModel: TestInterfaces.TestAttachmentRequestModel,
         project: string,
         runId: number
         ): Promise<TestInterfaces.TestAttachmentReference> {
-    
-        let deferred = Q.defer<TestInterfaces.TestAttachmentReference>();
 
-        let onResult = (err: any, statusCode: number, Attachment: TestInterfaces.TestAttachmentReference) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Attachment);
-            }
-        };
+        return new Promise<TestInterfaces.TestAttachmentReference>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "4f004af4-a507-489c-9b13-cb62060beb11",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "4f004af4-a507-489c-9b13-cb62060beb11", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestAttachmentReference>;
+                res = await this.rest.create<TestInterfaces.TestAttachmentReference>(url, attachmentRequestModel, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, attachmentRequestModel, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -458,43 +450,36 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} runId
     * @param {number} attachmentId
     */
-    public getTestRunAttachmentContent(
+    public async getTestRunAttachmentContent(
         project: string,
         runId: number,
         attachmentId: number
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, Attachment: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Attachment);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId,
+                attachmentId: attachmentId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId,
-            attachmentId: attachmentId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "4f004af4-a507-489c-9b13-cb62060beb11",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "4f004af4-a507-489c-9b13-cb62060beb11", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
                 
-                this.httpClient.getStream(url, apiVersion, "application/octet-stream", onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -503,41 +488,41 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {string} project - Project ID or project name
     * @param {number} runId
     */
-    public getTestRunAttachments(
+    public async getTestRunAttachments(
         project: string,
         runId: number
         ): Promise<TestInterfaces.TestAttachment[]> {
-    
-        let deferred = Q.defer<TestInterfaces.TestAttachment[]>();
 
-        let onResult = (err: any, statusCode: number, Attachments: TestInterfaces.TestAttachment[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Attachments);
-            }
-        };
+        return new Promise<TestInterfaces.TestAttachment[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "4f004af4-a507-489c-9b13-cb62060beb11",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "4f004af4-a507-489c-9b13-cb62060beb11", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestAttachment, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestAttachment[]>;
+                res = await this.rest.get<TestInterfaces.TestAttachment[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestAttachment,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -547,43 +532,36 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} runId
     * @param {number} attachmentId
     */
-    public getTestRunAttachmentZip(
+    public async getTestRunAttachmentZip(
         project: string,
         runId: number,
         attachmentId: number
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, Attachment: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Attachment);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId,
+                attachmentId: attachmentId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId,
-            attachmentId: attachmentId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "4f004af4-a507-489c-9b13-cb62060beb11",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "4f004af4-a507-489c-9b13-cb62060beb11", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
                 
-                this.httpClient.getStream(url, apiVersion, "application/zip", onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/zip", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -591,43 +569,43 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} runId
     * @param {number} testCaseResultId
     */
-    public getBugsLinkedToTestResult(
+    public async getBugsLinkedToTestResult(
         project: string,
         runId: number,
         testCaseResultId: number
         ): Promise<TestInterfaces.WorkItemReference[]> {
-    
-        let deferred = Q.defer<TestInterfaces.WorkItemReference[]>();
 
-        let onResult = (err: any, statusCode: number, Bugs: TestInterfaces.WorkItemReference[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Bugs);
-            }
-        };
+        return new Promise<TestInterfaces.WorkItemReference[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId,
+                testCaseResultId: testCaseResultId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId,
-            testCaseResultId: testCaseResultId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "6de20ca2-67de-4faf-97fa-38c5d585eb00",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "6de20ca2-67de-4faf-97fa-38c5d585eb00", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.WorkItemReference[]>;
+                res = await this.rest.get<TestInterfaces.WorkItemReference[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -635,46 +613,47 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} cloneOperationId
     * @param {boolean} includeDetails
     */
-    public getCloneInformation(
+    public async getCloneInformation(
         project: string,
         cloneOperationId: number,
         includeDetails?: boolean
         ): Promise<TestInterfaces.CloneOperationInformation> {
-    
-        let deferred = Q.defer<TestInterfaces.CloneOperationInformation>();
 
-        let onResult = (err: any, statusCode: number, CloneOperation: TestInterfaces.CloneOperationInformation) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(CloneOperation);
-            }
-        };
+        return new Promise<TestInterfaces.CloneOperationInformation>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                cloneOperationId: cloneOperationId
+            };
 
-        let routeValues: any = {
-            project: project,
-            cloneOperationId: cloneOperationId
-        };
+            let queryValues: any = {
+                '$includeDetails': includeDetails,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "5b9d6320-abed-47a5-a151-cd6dc3798be6",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            '$includeDetails': includeDetails,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "5b9d6320-abed-47a5-a151-cd6dc3798be6", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.CloneOperationInformation, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.CloneOperationInformation>;
+                res = await this.rest.get<TestInterfaces.CloneOperationInformation>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.CloneOperationInformation,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -682,42 +661,42 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {string} project - Project ID or project name
     * @param {number} planId
     */
-    public cloneTestPlan(
+    public async cloneTestPlan(
         cloneRequestBody: TestInterfaces.TestPlanCloneRequest,
         project: string,
         planId: number
         ): Promise<TestInterfaces.CloneOperationInformation> {
-    
-        let deferred = Q.defer<TestInterfaces.CloneOperationInformation>();
 
-        let onResult = (err: any, statusCode: number, CloneOperation: TestInterfaces.CloneOperationInformation) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(CloneOperation);
-            }
-        };
+        return new Promise<TestInterfaces.CloneOperationInformation>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                planId: planId
+            };
 
-        let routeValues: any = {
-            project: project,
-            planId: planId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "edc3ef4b-8460-4e86-86fa-8e4f5e9be831",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "edc3ef4b-8460-4e86-86fa-8e4f5e9be831", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestPlanCloneRequest, responseTypeMetadata: TestInterfaces.TypeInfo.CloneOperationInformation, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.CloneOperationInformation>;
+                res = await this.rest.create<TestInterfaces.CloneOperationInformation>(url, cloneRequestBody, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.CloneOperationInformation,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, cloneRequestBody, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -726,44 +705,44 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} planId
     * @param {number} sourceSuiteId
     */
-    public cloneTestSuite(
+    public async cloneTestSuite(
         cloneRequestBody: TestInterfaces.TestSuiteCloneRequest,
         project: string,
         planId: number,
         sourceSuiteId: number
         ): Promise<TestInterfaces.CloneOperationInformation> {
-    
-        let deferred = Q.defer<TestInterfaces.CloneOperationInformation>();
 
-        let onResult = (err: any, statusCode: number, CloneOperation: TestInterfaces.CloneOperationInformation) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(CloneOperation);
-            }
-        };
+        return new Promise<TestInterfaces.CloneOperationInformation>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                planId: planId,
+                sourceSuiteId: sourceSuiteId
+            };
 
-        let routeValues: any = {
-            project: project,
-            planId: planId,
-            sourceSuiteId: sourceSuiteId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "751e4ab5-5bf6-4fb5-9d5d-19ef347662dd",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "751e4ab5-5bf6-4fb5-9d5d-19ef347662dd", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.CloneOperationInformation, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.CloneOperationInformation>;
+                res = await this.rest.create<TestInterfaces.CloneOperationInformation>(url, cloneRequestBody, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.CloneOperationInformation,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, cloneRequestBody, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -771,46 +750,47 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} buildId
     * @param {number} flags
     */
-    public getBuildCodeCoverage(
+    public async getBuildCodeCoverage(
         project: string,
         buildId: number,
         flags: number
         ): Promise<TestInterfaces.BuildCoverage[]> {
-    
-        let deferred = Q.defer<TestInterfaces.BuildCoverage[]>();
 
-        let onResult = (err: any, statusCode: number, CodeCoverage: TestInterfaces.BuildCoverage[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(CodeCoverage);
-            }
-        };
+        return new Promise<TestInterfaces.BuildCoverage[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                buildId: buildId,
+                flags: flags,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "77560e8a-4e8c-4d59-894e-a5f264c24444",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            buildId: buildId,
-            flags: flags,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "77560e8a-4e8c-4d59-894e-a5f264c24444", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.BuildCoverage[]>;
+                res = await this.rest.get<TestInterfaces.BuildCoverage[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -818,46 +798,47 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} buildId
     * @param {number} deltaBuildId
     */
-    public getCodeCoverageSummary(
+    public async getCodeCoverageSummary(
         project: string,
         buildId: number,
         deltaBuildId?: number
         ): Promise<TestInterfaces.CodeCoverageSummary> {
-    
-        let deferred = Q.defer<TestInterfaces.CodeCoverageSummary>();
 
-        let onResult = (err: any, statusCode: number, CodeCoverage: TestInterfaces.CodeCoverageSummary) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(CodeCoverage);
-            }
-        };
+        return new Promise<TestInterfaces.CodeCoverageSummary>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                buildId: buildId,
+                deltaBuildId: deltaBuildId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "77560e8a-4e8c-4d59-894e-a5f264c24444",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            buildId: buildId,
-            deltaBuildId: deltaBuildId,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "77560e8a-4e8c-4d59-894e-a5f264c24444", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.CodeCoverageSummary>;
+                res = await this.rest.get<TestInterfaces.CodeCoverageSummary>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -867,45 +848,46 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {string} project - Project ID or project name
     * @param {number} buildId
     */
-    public updateCodeCoverageSummary(
+    public async updateCodeCoverageSummary(
         coverageData: TestInterfaces.CodeCoverageData,
         project: string,
         buildId: number
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                buildId: buildId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "77560e8a-4e8c-4d59-894e-a5f264c24444",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            buildId: buildId,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "77560e8a-4e8c-4d59-894e-a5f264c24444", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.create<void>(url, coverageData, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, coverageData, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -913,218 +895,223 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} runId
     * @param {number} flags
     */
-    public getTestRunCodeCoverage(
+    public async getTestRunCodeCoverage(
         project: string,
         runId: number,
         flags: number
         ): Promise<TestInterfaces.TestRunCoverage[]> {
-    
-        let deferred = Q.defer<TestInterfaces.TestRunCoverage[]>();
 
-        let onResult = (err: any, statusCode: number, CodeCoverage: TestInterfaces.TestRunCoverage[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(CodeCoverage);
-            }
-        };
+        return new Promise<TestInterfaces.TestRunCoverage[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId
-        };
+            let queryValues: any = {
+                flags: flags,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "9629116f-3b89-4ed8-b358-d4694efda160",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            flags: flags,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "9629116f-3b89-4ed8-b358-d4694efda160", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestRunCoverage[]>;
+                res = await this.rest.get<TestInterfaces.TestRunCoverage[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TestInterfaces.TestConfiguration} testConfiguration
     * @param {string} project - Project ID or project name
     */
-    public createTestConfiguration(
+    public async createTestConfiguration(
         testConfiguration: TestInterfaces.TestConfiguration,
         project: string
         ): Promise<TestInterfaces.TestConfiguration> {
-    
-        let deferred = Q.defer<TestInterfaces.TestConfiguration>();
 
-        let onResult = (err: any, statusCode: number, Configuration: TestInterfaces.TestConfiguration) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Configuration);
-            }
-        };
+        return new Promise<TestInterfaces.TestConfiguration>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "d667591b-b9fd-4263-997a-9a084cca848f",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "d667591b-b9fd-4263-997a-9a084cca848f", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestConfiguration, responseTypeMetadata: TestInterfaces.TypeInfo.TestConfiguration, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestConfiguration>;
+                res = await this.rest.create<TestInterfaces.TestConfiguration>(url, testConfiguration, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestConfiguration,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, testConfiguration, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} testConfigurationId
     */
-    public deleteTestConfiguration(
+    public async deleteTestConfiguration(
         project: string,
         testConfigurationId: number
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                testConfigurationId: testConfigurationId
+            };
 
-        let routeValues: any = {
-            project: project,
-            testConfigurationId: testConfigurationId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "d667591b-b9fd-4263-997a-9a084cca848f",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "d667591b-b9fd-4263-997a-9a084cca848f", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} testConfigurationId
     */
-    public getTestConfigurationById(
+    public async getTestConfigurationById(
         project: string,
         testConfigurationId: number
         ): Promise<TestInterfaces.TestConfiguration> {
-    
-        let deferred = Q.defer<TestInterfaces.TestConfiguration>();
 
-        let onResult = (err: any, statusCode: number, Configuration: TestInterfaces.TestConfiguration) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Configuration);
-            }
-        };
+        return new Promise<TestInterfaces.TestConfiguration>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                testConfigurationId: testConfigurationId
+            };
 
-        let routeValues: any = {
-            project: project,
-            testConfigurationId: testConfigurationId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "d667591b-b9fd-4263-997a-9a084cca848f",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "d667591b-b9fd-4263-997a-9a084cca848f", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestConfiguration, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestConfiguration>;
+                res = await this.rest.get<TestInterfaces.TestConfiguration>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestConfiguration,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} skip
     * @param {number} top
+    * @param {string} continuationToken
     * @param {boolean} includeAllProperties
     */
-    public getTestConfigurations(
+    public async getTestConfigurations(
         project: string,
         skip?: number,
         top?: number,
+        continuationToken?: string,
         includeAllProperties?: boolean
         ): Promise<TestInterfaces.TestConfiguration[]> {
-    
-        let deferred = Q.defer<TestInterfaces.TestConfiguration[]>();
 
-        let onResult = (err: any, statusCode: number, Configurations: TestInterfaces.TestConfiguration[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Configurations);
-            }
-        };
+        return new Promise<TestInterfaces.TestConfiguration[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                '$skip': skip,
+                '$top': top,
+                continuationToken: continuationToken,
+                includeAllProperties: includeAllProperties,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "d667591b-b9fd-4263-997a-9a084cca848f",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            '$skip': skip,
-            '$top': top,
-            includeAllProperties: includeAllProperties,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "d667591b-b9fd-4263-997a-9a084cca848f", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestConfiguration, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestConfiguration[]>;
+                res = await this.rest.get<TestInterfaces.TestConfiguration[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestConfiguration,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1132,166 +1119,167 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {string} project - Project ID or project name
     * @param {number} testConfigurationId
     */
-    public updateTestConfiguration(
+    public async updateTestConfiguration(
         testConfiguration: TestInterfaces.TestConfiguration,
         project: string,
         testConfigurationId: number
         ): Promise<TestInterfaces.TestConfiguration> {
-    
-        let deferred = Q.defer<TestInterfaces.TestConfiguration>();
 
-        let onResult = (err: any, statusCode: number, Configuration: TestInterfaces.TestConfiguration) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Configuration);
-            }
-        };
+        return new Promise<TestInterfaces.TestConfiguration>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                testConfigurationId: testConfigurationId
+            };
 
-        let routeValues: any = {
-            project: project,
-            testConfigurationId: testConfigurationId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "d667591b-b9fd-4263-997a-9a084cca848f",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "d667591b-b9fd-4263-997a-9a084cca848f", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestConfiguration, responseTypeMetadata: TestInterfaces.TypeInfo.TestConfiguration, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestConfiguration>;
+                res = await this.rest.update<TestInterfaces.TestConfiguration>(url, testConfiguration, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestConfiguration,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.update(url, apiVersion, testConfiguration, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TestInterfaces.CustomTestFieldDefinition[]} newFields
     * @param {string} project - Project ID or project name
     */
-    public addCustomFields(
+    public async addCustomFields(
         newFields: TestInterfaces.CustomTestFieldDefinition[],
         project: string
         ): Promise<TestInterfaces.CustomTestFieldDefinition[]> {
-    
-        let deferred = Q.defer<TestInterfaces.CustomTestFieldDefinition[]>();
 
-        let onResult = (err: any, statusCode: number, ExtensionFields: TestInterfaces.CustomTestFieldDefinition[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ExtensionFields);
-            }
-        };
+        return new Promise<TestInterfaces.CustomTestFieldDefinition[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "8ce1923b-f4c7-4e22-b93b-f6284e525ec2",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "8ce1923b-f4c7-4e22-b93b-f6284e525ec2", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.CustomTestFieldDefinition, responseTypeMetadata: TestInterfaces.TypeInfo.CustomTestFieldDefinition, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.CustomTestFieldDefinition[]>;
+                res = await this.rest.create<TestInterfaces.CustomTestFieldDefinition[]>(url, newFields, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.CustomTestFieldDefinition,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, newFields, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {TestInterfaces.CustomTestFieldScope} scopeFilter
     */
-    public queryCustomFields(
+    public async queryCustomFields(
         project: string,
         scopeFilter: TestInterfaces.CustomTestFieldScope
         ): Promise<TestInterfaces.CustomTestFieldDefinition[]> {
-    
-        let deferred = Q.defer<TestInterfaces.CustomTestFieldDefinition[]>();
 
-        let onResult = (err: any, statusCode: number, ExtensionFields: TestInterfaces.CustomTestFieldDefinition[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ExtensionFields);
-            }
-        };
+        return new Promise<TestInterfaces.CustomTestFieldDefinition[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                scopeFilter: scopeFilter,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "8ce1923b-f4c7-4e22-b93b-f6284e525ec2",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            scopeFilter: scopeFilter,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "8ce1923b-f4c7-4e22-b93b-f6284e525ec2", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.CustomTestFieldDefinition, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.CustomTestFieldDefinition[]>;
+                res = await this.rest.get<TestInterfaces.CustomTestFieldDefinition[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.CustomTestFieldDefinition,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TestInterfaces.ResultsFilter} filter
     * @param {string} project - Project ID or project name
     */
-    public queryTestResultHistory(
+    public async queryTestResultHistory(
         filter: TestInterfaces.ResultsFilter,
         project: string
         ): Promise<TestInterfaces.TestResultHistory> {
-    
-        let deferred = Q.defer<TestInterfaces.TestResultHistory>();
 
-        let onResult = (err: any, statusCode: number, History: TestInterfaces.TestResultHistory) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(History);
-            }
-        };
+        return new Promise<TestInterfaces.TestResultHistory>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "234616f5-429c-4e7b-9192-affd76731dfd",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "234616f5-429c-4e7b-9192-affd76731dfd", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.ResultsFilter, responseTypeMetadata: TestInterfaces.TypeInfo.TestResultHistory, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestResultHistory>;
+                res = await this.rest.create<TestInterfaces.TestResultHistory>(url, filter, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestResultHistory,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, filter, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1301,50 +1289,51 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} iterationId
     * @param {boolean} includeActionResults
     */
-    public getTestIteration(
+    public async getTestIteration(
         project: string,
         runId: number,
         testCaseResultId: number,
         iterationId: number,
         includeActionResults?: boolean
         ): Promise<TestInterfaces.TestIterationDetailsModel> {
-    
-        let deferred = Q.defer<TestInterfaces.TestIterationDetailsModel>();
 
-        let onResult = (err: any, statusCode: number, Iteration: TestInterfaces.TestIterationDetailsModel) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Iteration);
-            }
-        };
+        return new Promise<TestInterfaces.TestIterationDetailsModel>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId,
+                testCaseResultId: testCaseResultId,
+                iterationId: iterationId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId,
-            testCaseResultId: testCaseResultId,
-            iterationId: iterationId
-        };
+            let queryValues: any = {
+                includeActionResults: includeActionResults,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.3",
+                    "Test",
+                    "73eb9074-3446-4c44-8296-2f811950ff8d",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            includeActionResults: includeActionResults,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.3", "Test", "73eb9074-3446-4c44-8296-2f811950ff8d", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestIterationDetailsModel, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestIterationDetailsModel>;
+                res = await this.rest.get<TestInterfaces.TestIterationDetailsModel>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestIterationDetailsModel,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1353,89 +1342,90 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} testCaseResultId
     * @param {boolean} includeActionResults
     */
-    public getTestIterations(
+    public async getTestIterations(
         project: string,
         runId: number,
         testCaseResultId: number,
         includeActionResults?: boolean
         ): Promise<TestInterfaces.TestIterationDetailsModel[]> {
-    
-        let deferred = Q.defer<TestInterfaces.TestIterationDetailsModel[]>();
 
-        let onResult = (err: any, statusCode: number, Iterations: TestInterfaces.TestIterationDetailsModel[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Iterations);
-            }
-        };
+        return new Promise<TestInterfaces.TestIterationDetailsModel[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId,
+                testCaseResultId: testCaseResultId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId,
-            testCaseResultId: testCaseResultId
-        };
+            let queryValues: any = {
+                includeActionResults: includeActionResults,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.3",
+                    "Test",
+                    "73eb9074-3446-4c44-8296-2f811950ff8d",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            includeActionResults: includeActionResults,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.3", "Test", "73eb9074-3446-4c44-8296-2f811950ff8d", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestIterationDetailsModel, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestIterationDetailsModel[]>;
+                res = await this.rest.get<TestInterfaces.TestIterationDetailsModel[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestIterationDetailsModel,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} runId
     */
-    public getTestRunLogs(
+    public async getTestRunLogs(
         project: string,
         runId: number
         ): Promise<TestInterfaces.TestMessageLogDetails[]> {
-    
-        let deferred = Q.defer<TestInterfaces.TestMessageLogDetails[]>();
 
-        let onResult = (err: any, statusCode: number, MessageLogs: TestInterfaces.TestMessageLogDetails[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(MessageLogs);
-            }
-        };
+        return new Promise<TestInterfaces.TestMessageLogDetails[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "a1e55200-637e-42e9-a7c0-7e5bfdedb1b3",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "a1e55200-637e-42e9-a7c0-7e5bfdedb1b3", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestMessageLogDetails, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestMessageLogDetails[]>;
+                res = await this.rest.get<TestInterfaces.TestMessageLogDetails[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestMessageLogDetails,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1445,172 +1435,173 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} iterationId
     * @param {string} paramName
     */
-    public getResultParameters(
+    public async getResultParameters(
         project: string,
         runId: number,
         testCaseResultId: number,
         iterationId: number,
         paramName?: string
         ): Promise<TestInterfaces.TestResultParameterModel[]> {
-    
-        let deferred = Q.defer<TestInterfaces.TestResultParameterModel[]>();
 
-        let onResult = (err: any, statusCode: number, ParameterResults: TestInterfaces.TestResultParameterModel[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ParameterResults);
-            }
-        };
+        return new Promise<TestInterfaces.TestResultParameterModel[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId,
+                testCaseResultId: testCaseResultId,
+                iterationId: iterationId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId,
-            testCaseResultId: testCaseResultId,
-            iterationId: iterationId
-        };
+            let queryValues: any = {
+                paramName: paramName,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.3",
+                    "Test",
+                    "7c69810d-3354-4af3-844a-180bd25db08a",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            paramName: paramName,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.3", "Test", "7c69810d-3354-4af3-844a-180bd25db08a", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestResultParameterModel[]>;
+                res = await this.rest.get<TestInterfaces.TestResultParameterModel[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TestInterfaces.PlanUpdateModel} testPlan
     * @param {string} project - Project ID or project name
     */
-    public createTestPlan(
+    public async createTestPlan(
         testPlan: TestInterfaces.PlanUpdateModel,
         project: string
         ): Promise<TestInterfaces.TestPlan> {
-    
-        let deferred = Q.defer<TestInterfaces.TestPlan>();
 
-        let onResult = (err: any, statusCode: number, Plan: TestInterfaces.TestPlan) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Plan);
-            }
-        };
+        return new Promise<TestInterfaces.TestPlan>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "51712106-7278-4208-8563-1c96f40cf5e4",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "51712106-7278-4208-8563-1c96f40cf5e4", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPlan, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestPlan>;
+                res = await this.rest.create<TestInterfaces.TestPlan>(url, testPlan, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestPlan,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, testPlan, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} planId
     */
-    public deleteTestPlan(
+    public async deleteTestPlan(
         project: string,
         planId: number
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                planId: planId
+            };
 
-        let routeValues: any = {
-            project: project,
-            planId: planId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "51712106-7278-4208-8563-1c96f40cf5e4",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "51712106-7278-4208-8563-1c96f40cf5e4", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} planId
     */
-    public getPlanById(
+    public async getPlanById(
         project: string,
         planId: number
         ): Promise<TestInterfaces.TestPlan> {
-    
-        let deferred = Q.defer<TestInterfaces.TestPlan>();
 
-        let onResult = (err: any, statusCode: number, Plan: TestInterfaces.TestPlan) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Plan);
-            }
-        };
+        return new Promise<TestInterfaces.TestPlan>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                planId: planId
+            };
 
-        let routeValues: any = {
-            project: project,
-            planId: planId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "51712106-7278-4208-8563-1c96f40cf5e4",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "51712106-7278-4208-8563-1c96f40cf5e4", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPlan, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestPlan>;
+                res = await this.rest.get<TestInterfaces.TestPlan>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestPlan,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1621,7 +1612,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {boolean} includePlanDetails
     * @param {boolean} filterActivePlans
     */
-    public getPlans(
+    public async getPlans(
         project: string,
         owner?: string,
         skip?: number,
@@ -1629,44 +1620,45 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         includePlanDetails?: boolean,
         filterActivePlans?: boolean
         ): Promise<TestInterfaces.TestPlan[]> {
-    
-        let deferred = Q.defer<TestInterfaces.TestPlan[]>();
 
-        let onResult = (err: any, statusCode: number, Plans: TestInterfaces.TestPlan[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Plans);
-            }
-        };
+        return new Promise<TestInterfaces.TestPlan[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                owner: owner,
+                '$skip': skip,
+                '$top': top,
+                includePlanDetails: includePlanDetails,
+                filterActivePlans: filterActivePlans,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "51712106-7278-4208-8563-1c96f40cf5e4",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            owner: owner,
-            '$skip': skip,
-            '$top': top,
-            includePlanDetails: includePlanDetails,
-            filterActivePlans: filterActivePlans,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "51712106-7278-4208-8563-1c96f40cf5e4", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPlan, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestPlan[]>;
+                res = await this.rest.get<TestInterfaces.TestPlan[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestPlan,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1674,42 +1666,42 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {string} project - Project ID or project name
     * @param {number} planId
     */
-    public updateTestPlan(
+    public async updateTestPlan(
         planUpdateModel: TestInterfaces.PlanUpdateModel,
         project: string,
         planId: number
         ): Promise<TestInterfaces.TestPlan> {
-    
-        let deferred = Q.defer<TestInterfaces.TestPlan>();
 
-        let onResult = (err: any, statusCode: number, Plan: TestInterfaces.TestPlan) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Plan);
-            }
-        };
+        return new Promise<TestInterfaces.TestPlan>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                planId: planId
+            };
 
-        let routeValues: any = {
-            project: project,
-            planId: planId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "51712106-7278-4208-8563-1c96f40cf5e4",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "51712106-7278-4208-8563-1c96f40cf5e4", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPlan, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestPlan>;
+                res = await this.rest.update<TestInterfaces.TestPlan>(url, planUpdateModel, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestPlan,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.update(url, apiVersion, planUpdateModel, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1719,50 +1711,51 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} pointIds
     * @param {string} witFields
     */
-    public getPoint(
+    public async getPoint(
         project: string,
         planId: number,
         suiteId: number,
         pointIds: number,
         witFields?: string
         ): Promise<TestInterfaces.TestPoint> {
-    
-        let deferred = Q.defer<TestInterfaces.TestPoint>();
 
-        let onResult = (err: any, statusCode: number, Point: TestInterfaces.TestPoint) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Point);
-            }
-        };
+        return new Promise<TestInterfaces.TestPoint>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                planId: planId,
+                suiteId: suiteId,
+                pointIds: pointIds
+            };
 
-        let routeValues: any = {
-            project: project,
-            planId: planId,
-            suiteId: suiteId,
-            pointIds: pointIds
-        };
+            let queryValues: any = {
+                witFields: witFields,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "3bcfd5c8-be62-488e-b1da-b8289ce9299c",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            witFields: witFields,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "3bcfd5c8-be62-488e-b1da-b8289ce9299c", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPoint, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestPoint>;
+                res = await this.rest.get<TestInterfaces.TestPoint>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestPoint,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1777,7 +1770,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} skip
     * @param {number} top
     */
-    public getPoints(
+    public async getPoints(
         project: string,
         planId: number,
         suiteId: number,
@@ -1789,48 +1782,49 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         skip?: number,
         top?: number
         ): Promise<TestInterfaces.TestPoint[]> {
-    
-        let deferred = Q.defer<TestInterfaces.TestPoint[]>();
 
-        let onResult = (err: any, statusCode: number, Points: TestInterfaces.TestPoint[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Points);
-            }
-        };
+        return new Promise<TestInterfaces.TestPoint[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                planId: planId,
+                suiteId: suiteId
+            };
 
-        let routeValues: any = {
-            project: project,
-            planId: planId,
-            suiteId: suiteId
-        };
+            let queryValues: any = {
+                witFields: witFields,
+                configurationId: configurationId,
+                testCaseId: testCaseId,
+                testPointIds: testPointIds,
+                includePointDetails: includePointDetails,
+                '$skip': skip,
+                '$top': top,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "3bcfd5c8-be62-488e-b1da-b8289ce9299c",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            witFields: witFields,
-            configurationId: configurationId,
-            testCaseId: testCaseId,
-            testPointIds: testPointIds,
-            includePointDetails: includePointDetails,
-            '$skip': skip,
-            '$top': top,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "3bcfd5c8-be62-488e-b1da-b8289ce9299c", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPoint, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestPoint[]>;
+                res = await this.rest.get<TestInterfaces.TestPoint[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestPoint,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1840,46 +1834,96 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} suiteId
     * @param {string} pointIds
     */
-    public updateTestPoints(
+    public async updateTestPoints(
         pointUpdateModel: TestInterfaces.PointUpdateModel,
         project: string,
         planId: number,
         suiteId: number,
         pointIds: string
         ): Promise<TestInterfaces.TestPoint[]> {
-    
-        let deferred = Q.defer<TestInterfaces.TestPoint[]>();
 
-        let onResult = (err: any, statusCode: number, Point: TestInterfaces.TestPoint[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Point);
-            }
-        };
+        return new Promise<TestInterfaces.TestPoint[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                planId: planId,
+                suiteId: suiteId,
+                pointIds: pointIds
+            };
 
-        let routeValues: any = {
-            project: project,
-            planId: planId,
-            suiteId: suiteId,
-            pointIds: pointIds
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "3bcfd5c8-be62-488e-b1da-b8289ce9299c",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "3bcfd5c8-be62-488e-b1da-b8289ce9299c", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestPoint, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestPoint[]>;
+                res = await this.rest.update<TestInterfaces.TestPoint[]>(url, pointUpdateModel, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestPoint,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.update(url, apiVersion, pointUpdateModel, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-        return deferred.promise;
+    /**
+    * @param {TestInterfaces.TestPointsQuery} query
+    * @param {string} project - Project ID or project name
+    * @param {number} skip
+    * @param {number} top
+    */
+    public async getPointsByQuery(
+        query: TestInterfaces.TestPointsQuery,
+        project: string,
+        skip?: number,
+        top?: number
+        ): Promise<TestInterfaces.TestPointsQuery> {
+
+        return new Promise<TestInterfaces.TestPointsQuery>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            let queryValues: any = {
+                '$skip': skip,
+                '$top': top,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "b4264fd0-a5d1-43e2-82a5-b9c46b7da9ce",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestPointsQuery>;
+                res = await this.rest.create<TestInterfaces.TestPointsQuery>(url, query, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestPointsQuery,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1890,7 +1934,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {string} filter
     * @param {string} orderby
     */
-    public getTestResultDetailsForBuild(
+    public async getTestResultDetailsForBuild(
         project: string,
         buildId: number,
         publishContext?: string,
@@ -1898,44 +1942,45 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         filter?: string,
         orderby?: string
         ): Promise<TestInterfaces.TestResultsDetails> {
-    
-        let deferred = Q.defer<TestInterfaces.TestResultsDetails>();
 
-        let onResult = (err: any, statusCode: number, ResultDetailsByBuild: TestInterfaces.TestResultsDetails) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ResultDetailsByBuild);
-            }
-        };
+        return new Promise<TestInterfaces.TestResultsDetails>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                buildId: buildId,
+                publishContext: publishContext,
+                groupBy: groupBy,
+                '$filter': filter,
+                '$orderby': orderby,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "efb387b0-10d5-42e7-be40-95e06ee9430f",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            buildId: buildId,
-            publishContext: publishContext,
-            groupBy: groupBy,
-            '$filter': filter,
-            '$orderby': orderby,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "efb387b0-10d5-42e7-be40-95e06ee9430f", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestResultsDetails, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestResultsDetails>;
+                res = await this.rest.get<TestInterfaces.TestResultsDetails>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestResultsDetails,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1947,7 +1992,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {string} filter
     * @param {string} orderby
     */
-    public getTestResultDetailsForRelease(
+    public async getTestResultDetailsForRelease(
         project: string,
         releaseId: number,
         releaseEnvId: number,
@@ -1956,123 +2001,167 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         filter?: string,
         orderby?: string
         ): Promise<TestInterfaces.TestResultsDetails> {
-    
-        let deferred = Q.defer<TestInterfaces.TestResultsDetails>();
 
-        let onResult = (err: any, statusCode: number, ResultDetailsByRelease: TestInterfaces.TestResultsDetails) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ResultDetailsByRelease);
-            }
-        };
+        return new Promise<TestInterfaces.TestResultsDetails>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                releaseId: releaseId,
+                releaseEnvId: releaseEnvId,
+                publishContext: publishContext,
+                groupBy: groupBy,
+                '$filter': filter,
+                '$orderby': orderby,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "b834ec7e-35bb-450f-a3c8-802e70ca40dd",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            releaseId: releaseId,
-            releaseEnvId: releaseEnvId,
-            publishContext: publishContext,
-            groupBy: groupBy,
-            '$filter': filter,
-            '$orderby': orderby,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "b834ec7e-35bb-450f-a3c8-802e70ca40dd", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestResultsDetails, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestResultsDetails>;
+                res = await this.rest.get<TestInterfaces.TestResultsDetails>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestResultsDetails,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-        return deferred.promise;
+    /**
+    * @param {TestInterfaces.TestResultDocument} document
+    * @param {string} project - Project ID or project name
+    * @param {number} runId
+    */
+    public async publishTestResultDocument(
+        document: TestInterfaces.TestResultDocument,
+        project: string,
+        runId: number
+        ): Promise<TestInterfaces.TestResultDocument> {
+
+        return new Promise<TestInterfaces.TestResultDocument>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "370ca04b-8eec-4ca8-8ba3-d24dca228791",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestResultDocument>;
+                res = await this.rest.create<TestInterfaces.TestResultDocument>(url, document, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     */
-    public getResultRetentionSettings(
+    public async getResultRetentionSettings(
         project: string
         ): Promise<TestInterfaces.ResultRetentionSettings> {
-    
-        let deferred = Q.defer<TestInterfaces.ResultRetentionSettings>();
 
-        let onResult = (err: any, statusCode: number, ResultRetentionSetting: TestInterfaces.ResultRetentionSettings) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ResultRetentionSetting);
-            }
-        };
+        return new Promise<TestInterfaces.ResultRetentionSettings>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "a3206d9e-fa8d-42d3-88cb-f75c51e69cde",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "a3206d9e-fa8d-42d3-88cb-f75c51e69cde", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.ResultRetentionSettings, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.ResultRetentionSettings>;
+                res = await this.rest.get<TestInterfaces.ResultRetentionSettings>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.ResultRetentionSettings,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TestInterfaces.ResultRetentionSettings} retentionSettings
     * @param {string} project - Project ID or project name
     */
-    public updateResultRetentionSettings(
+    public async updateResultRetentionSettings(
         retentionSettings: TestInterfaces.ResultRetentionSettings,
         project: string
         ): Promise<TestInterfaces.ResultRetentionSettings> {
-    
-        let deferred = Q.defer<TestInterfaces.ResultRetentionSettings>();
 
-        let onResult = (err: any, statusCode: number, ResultRetentionSetting: TestInterfaces.ResultRetentionSettings) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ResultRetentionSetting);
-            }
-        };
+        return new Promise<TestInterfaces.ResultRetentionSettings>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "a3206d9e-fa8d-42d3-88cb-f75c51e69cde",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "a3206d9e-fa8d-42d3-88cb-f75c51e69cde", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.ResultRetentionSettings, responseTypeMetadata: TestInterfaces.TypeInfo.ResultRetentionSettings, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.ResultRetentionSettings>;
+                res = await this.rest.update<TestInterfaces.ResultRetentionSettings>(url, retentionSettings, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.ResultRetentionSettings,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.update(url, apiVersion, retentionSettings, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2080,42 +2169,42 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {string} project - Project ID or project name
     * @param {number} runId
     */
-    public addTestResultsToTestRun(
+    public async addTestResultsToTestRun(
         results: TestInterfaces.TestCaseResult[],
         project: string,
         runId: number
         ): Promise<TestInterfaces.TestCaseResult[]> {
-    
-        let deferred = Q.defer<TestInterfaces.TestCaseResult[]>();
 
-        let onResult = (err: any, statusCode: number, Results: TestInterfaces.TestCaseResult[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Results);
-            }
-        };
+        return new Promise<TestInterfaces.TestCaseResult[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.4",
+                    "Test",
+                    "4637d869-3a76-4468-8057-0bb02aa385cf",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.4", "Test", "4637d869-3a76-4468-8057-0bb02aa385cf", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestCaseResult[]>;
+                res = await this.rest.create<TestInterfaces.TestCaseResult[]>(url, results, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestCaseResult,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, results, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2124,48 +2213,49 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} testCaseResultId
     * @param {TestInterfaces.ResultDetails} detailsToInclude
     */
-    public getTestResultById(
+    public async getTestResultById(
         project: string,
         runId: number,
         testCaseResultId: number,
         detailsToInclude?: TestInterfaces.ResultDetails
         ): Promise<TestInterfaces.TestCaseResult> {
-    
-        let deferred = Q.defer<TestInterfaces.TestCaseResult>();
 
-        let onResult = (err: any, statusCode: number, Result: TestInterfaces.TestCaseResult) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Result);
-            }
-        };
+        return new Promise<TestInterfaces.TestCaseResult>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId,
+                testCaseResultId: testCaseResultId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId,
-            testCaseResultId: testCaseResultId
-        };
+            let queryValues: any = {
+                detailsToInclude: detailsToInclude,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.4",
+                    "Test",
+                    "4637d869-3a76-4468-8057-0bb02aa385cf",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            detailsToInclude: detailsToInclude,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.4", "Test", "4637d869-3a76-4468-8057-0bb02aa385cf", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestCaseResult>;
+                res = await this.rest.get<TestInterfaces.TestCaseResult>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestCaseResult,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2175,50 +2265,51 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} skip
     * @param {number} top
     */
-    public getTestResults(
+    public async getTestResults(
         project: string,
         runId: number,
         detailsToInclude?: TestInterfaces.ResultDetails,
         skip?: number,
         top?: number
         ): Promise<TestInterfaces.TestCaseResult[]> {
-    
-        let deferred = Q.defer<TestInterfaces.TestCaseResult[]>();
 
-        let onResult = (err: any, statusCode: number, Results: TestInterfaces.TestCaseResult[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Results);
-            }
-        };
+        return new Promise<TestInterfaces.TestCaseResult[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId
-        };
+            let queryValues: any = {
+                detailsToInclude: detailsToInclude,
+                '$skip': skip,
+                '$top': top,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.4",
+                    "Test",
+                    "4637d869-3a76-4468-8057-0bb02aa385cf",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            detailsToInclude: detailsToInclude,
-            '$skip': skip,
-            '$top': top,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.4", "Test", "4637d869-3a76-4468-8057-0bb02aa385cf", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestCaseResult[]>;
+                res = await this.rest.get<TestInterfaces.TestCaseResult[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestCaseResult,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2226,82 +2317,82 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {string} project - Project ID or project name
     * @param {number} runId
     */
-    public updateTestResults(
+    public async updateTestResults(
         results: TestInterfaces.TestCaseResult[],
         project: string,
         runId: number
         ): Promise<TestInterfaces.TestCaseResult[]> {
-    
-        let deferred = Q.defer<TestInterfaces.TestCaseResult[]>();
 
-        let onResult = (err: any, statusCode: number, Results: TestInterfaces.TestCaseResult[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Results);
-            }
-        };
+        return new Promise<TestInterfaces.TestCaseResult[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.4",
+                    "Test",
+                    "4637d869-3a76-4468-8057-0bb02aa385cf",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.4", "Test", "4637d869-3a76-4468-8057-0bb02aa385cf", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseTypeMetadata: TestInterfaces.TypeInfo.TestCaseResult, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestCaseResult[]>;
+                res = await this.rest.update<TestInterfaces.TestCaseResult[]>(url, results, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestCaseResult,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.update(url, apiVersion, results, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TestInterfaces.TestResultsQuery} query
     * @param {string} project - Project ID or project name
     */
-    public getTestResultsByQuery(
+    public async getTestResultsByQuery(
         query: TestInterfaces.TestResultsQuery,
         project: string
         ): Promise<TestInterfaces.TestResultsQuery> {
-    
-        let deferred = Q.defer<TestInterfaces.TestResultsQuery>();
 
-        let onResult = (err: any, statusCode: number, Result: TestInterfaces.TestResultsQuery) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Result);
-            }
-        };
+        return new Promise<TestInterfaces.TestResultsQuery>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.4",
+                    "Test",
+                    "6711da49-8e6f-4d35-9f73-cef7a3c81a5b",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.4", "Test", "6711da49-8e6f-4d35-9f73-cef7a3c81a5b", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestResultsQuery, responseTypeMetadata: TestInterfaces.TypeInfo.TestResultsQuery, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestResultsQuery>;
+                res = await this.rest.create<TestInterfaces.TestResultsQuery>(url, query, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestResultsQuery,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, query, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2311,50 +2402,51 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {boolean} includeFailureDetails
     * @param {TestInterfaces.BuildReference} buildToCompare
     */
-    public queryTestResultsReportForBuild(
+    public async queryTestResultsReportForBuild(
         project: string,
         buildId: number,
         publishContext?: string,
         includeFailureDetails?: boolean,
         buildToCompare?: TestInterfaces.BuildReference
         ): Promise<TestInterfaces.TestResultSummary> {
-    
-        let deferred = Q.defer<TestInterfaces.TestResultSummary>();
 
-        let onResult = (err: any, statusCode: number, ResultSummaryByBuild: TestInterfaces.TestResultSummary) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ResultSummaryByBuild);
-            }
-        };
+        return new Promise<TestInterfaces.TestResultSummary>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                buildId: buildId,
+                publishContext: publishContext,
+                includeFailureDetails: includeFailureDetails,
+                buildToCompare: buildToCompare,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "000ef77b-fea2-498d-a10d-ad1a037f559f",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            buildId: buildId,
-            publishContext: publishContext,
-            includeFailureDetails: includeFailureDetails,
-            buildToCompare: buildToCompare,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "000ef77b-fea2-498d-a10d-ad1a037f559f", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestResultSummary, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestResultSummary>;
+                res = await this.rest.get<TestInterfaces.TestResultSummary>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestResultSummary,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2365,7 +2457,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {boolean} includeFailureDetails
     * @param {TestInterfaces.ReleaseReference} releaseToCompare
     */
-    public queryTestResultsReportForRelease(
+    public async queryTestResultsReportForRelease(
         project: string,
         releaseId: number,
         releaseEnvId: number,
@@ -2373,84 +2465,85 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         includeFailureDetails?: boolean,
         releaseToCompare?: TestInterfaces.ReleaseReference
         ): Promise<TestInterfaces.TestResultSummary> {
-    
-        let deferred = Q.defer<TestInterfaces.TestResultSummary>();
 
-        let onResult = (err: any, statusCode: number, ResultSummaryByRelease: TestInterfaces.TestResultSummary) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ResultSummaryByRelease);
-            }
-        };
+        return new Promise<TestInterfaces.TestResultSummary>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                releaseId: releaseId,
+                releaseEnvId: releaseEnvId,
+                publishContext: publishContext,
+                includeFailureDetails: includeFailureDetails,
+                releaseToCompare: releaseToCompare,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "85765790-ac68-494e-b268-af36c3929744",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            releaseId: releaseId,
-            releaseEnvId: releaseEnvId,
-            publishContext: publishContext,
-            includeFailureDetails: includeFailureDetails,
-            releaseToCompare: releaseToCompare,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "85765790-ac68-494e-b268-af36c3929744", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestResultSummary, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestResultSummary>;
+                res = await this.rest.get<TestInterfaces.TestResultSummary>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestResultSummary,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TestInterfaces.ReleaseReference[]} releases
     * @param {string} project - Project ID or project name
     */
-    public queryTestResultsSummaryForReleases(
+    public async queryTestResultsSummaryForReleases(
         releases: TestInterfaces.ReleaseReference[],
         project: string
         ): Promise<TestInterfaces.TestResultSummary[]> {
-    
-        let deferred = Q.defer<TestInterfaces.TestResultSummary[]>();
 
-        let onResult = (err: any, statusCode: number, ResultSummaryByRelease: TestInterfaces.TestResultSummary[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ResultSummaryByRelease);
-            }
-        };
+        return new Promise<TestInterfaces.TestResultSummary[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "85765790-ac68-494e-b268-af36c3929744",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "85765790-ac68-494e-b268-af36c3929744", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestResultSummary, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestResultSummary[]>;
+                res = await this.rest.create<TestInterfaces.TestResultSummary[]>(url, releases, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestResultSummary,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, releases, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2458,248 +2551,289 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {string} project - Project ID or project name
     * @param {number[]} workItemIds
     */
-    public queryTestSummaryByRequirement(
+    public async queryTestSummaryByRequirement(
         resultsContext: TestInterfaces.TestResultsContext,
         project: string,
         workItemIds?: number[]
         ): Promise<TestInterfaces.TestSummaryForWorkItem[]> {
-    
-        let deferred = Q.defer<TestInterfaces.TestSummaryForWorkItem[]>();
 
-        let onResult = (err: any, statusCode: number, ResultSummaryByRequirement: TestInterfaces.TestSummaryForWorkItem[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ResultSummaryByRequirement);
-            }
-        };
+        return new Promise<TestInterfaces.TestSummaryForWorkItem[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                workItemIds: workItemIds && workItemIds.join(","),
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "cd08294e-308d-4460-a46e-4cfdefba0b4b",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            workItemIds: workItemIds && workItemIds.join(","),
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "cd08294e-308d-4460-a46e-4cfdefba0b4b", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestResultsContext, responseTypeMetadata: TestInterfaces.TypeInfo.TestSummaryForWorkItem, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestSummaryForWorkItem[]>;
+                res = await this.rest.create<TestInterfaces.TestSummaryForWorkItem[]>(url, resultsContext, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestSummaryForWorkItem,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, resultsContext, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TestInterfaces.TestResultTrendFilter} filter
     * @param {string} project - Project ID or project name
     */
-    public queryResultTrendForBuild(
+    public async queryResultTrendForBuild(
         filter: TestInterfaces.TestResultTrendFilter,
         project: string
         ): Promise<TestInterfaces.AggregatedDataForResultTrend[]> {
-    
-        let deferred = Q.defer<TestInterfaces.AggregatedDataForResultTrend[]>();
 
-        let onResult = (err: any, statusCode: number, ResultTrendByBuild: TestInterfaces.AggregatedDataForResultTrend[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ResultTrendByBuild);
-            }
-        };
+        return new Promise<TestInterfaces.AggregatedDataForResultTrend[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "fbc82a85-0786-4442-88bb-eb0fda6b01b0",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "fbc82a85-0786-4442-88bb-eb0fda6b01b0", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestResultTrendFilter, responseTypeMetadata: TestInterfaces.TypeInfo.AggregatedDataForResultTrend, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.AggregatedDataForResultTrend[]>;
+                res = await this.rest.create<TestInterfaces.AggregatedDataForResultTrend[]>(url, filter, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.AggregatedDataForResultTrend,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, filter, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-        return deferred.promise;
+    /**
+    * @param {TestInterfaces.TestResultTrendFilter} filter
+    * @param {string} project - Project ID or project name
+    */
+    public async queryResultTrendForRelease(
+        filter: TestInterfaces.TestResultTrendFilter,
+        project: string
+        ): Promise<TestInterfaces.AggregatedDataForResultTrend[]> {
+
+        return new Promise<TestInterfaces.AggregatedDataForResultTrend[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "dd178e93-d8dd-4887-9635-d6b9560b7b6e",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.AggregatedDataForResultTrend[]>;
+                res = await this.rest.create<TestInterfaces.AggregatedDataForResultTrend[]>(url, filter, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.AggregatedDataForResultTrend,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} runId
     */
-    public getTestRunStatistics(
+    public async getTestRunStatistics(
         project: string,
         runId: number
         ): Promise<TestInterfaces.TestRunStatistic> {
-    
-        let deferred = Q.defer<TestInterfaces.TestRunStatistic>();
 
-        let onResult = (err: any, statusCode: number, Run: TestInterfaces.TestRunStatistic) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Run);
-            }
-        };
+        return new Promise<TestInterfaces.TestRunStatistic>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "0a42c424-d764-4a16-a2d5-5c85f87d0ae8",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "0a42c424-d764-4a16-a2d5-5c85f87d0ae8", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestRunStatistic>;
+                res = await this.rest.get<TestInterfaces.TestRunStatistic>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TestInterfaces.RunCreateModel} testRun
     * @param {string} project - Project ID or project name
     */
-    public createTestRun(
+    public async createTestRun(
         testRun: TestInterfaces.RunCreateModel,
         project: string
         ): Promise<TestInterfaces.TestRun> {
-    
-        let deferred = Q.defer<TestInterfaces.TestRun>();
 
-        let onResult = (err: any, statusCode: number, Run: TestInterfaces.TestRun) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Run);
-            }
-        };
+        return new Promise<TestInterfaces.TestRun>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "cadb3810-d47d-4a3c-a234-fe5f3be50138",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "cadb3810-d47d-4a3c-a234-fe5f3be50138", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestRun, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestRun>;
+                res = await this.rest.create<TestInterfaces.TestRun>(url, testRun, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestRun,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, testRun, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} runId
     */
-    public deleteTestRun(
+    public async deleteTestRun(
         project: string,
         runId: number
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "cadb3810-d47d-4a3c-a234-fe5f3be50138",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "cadb3810-d47d-4a3c-a234-fe5f3be50138", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} runId
     */
-    public getTestRunById(
+    public async getTestRunById(
         project: string,
         runId: number
         ): Promise<TestInterfaces.TestRun> {
-    
-        let deferred = Q.defer<TestInterfaces.TestRun>();
 
-        let onResult = (err: any, statusCode: number, Run: TestInterfaces.TestRun) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Run);
-            }
-        };
+        return new Promise<TestInterfaces.TestRun>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "cadb3810-d47d-4a3c-a234-fe5f3be50138",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "cadb3810-d47d-4a3c-a234-fe5f3be50138", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestRun, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestRun>;
+                res = await this.rest.get<TestInterfaces.TestRun>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestRun,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2713,7 +2847,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} skip
     * @param {number} top
     */
-    public getTestRuns(
+    public async getTestRuns(
         project: string,
         buildUri?: string,
         owner?: string,
@@ -2724,47 +2858,48 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         skip?: number,
         top?: number
         ): Promise<TestInterfaces.TestRun[]> {
-    
-        let deferred = Q.defer<TestInterfaces.TestRun[]>();
 
-        let onResult = (err: any, statusCode: number, Runs: TestInterfaces.TestRun[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Runs);
-            }
-        };
+        return new Promise<TestInterfaces.TestRun[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                buildUri: buildUri,
+                owner: owner,
+                tmiRunId: tmiRunId,
+                planId: planId,
+                includeRunDetails: includeRunDetails,
+                automated: automated,
+                '$skip': skip,
+                '$top': top,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "cadb3810-d47d-4a3c-a234-fe5f3be50138",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            buildUri: buildUri,
-            owner: owner,
-            tmiRunId: tmiRunId,
-            planId: planId,
-            includeRunDetails: includeRunDetails,
-            automated: automated,
-            '$skip': skip,
-            '$top': top,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "cadb3810-d47d-4a3c-a234-fe5f3be50138", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestRun, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestRun[]>;
+                res = await this.rest.get<TestInterfaces.TestRun[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestRun,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2772,86 +2907,86 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {string} project - Project ID or project name
     * @param {number} runId
     */
-    public updateTestRun(
+    public async updateTestRun(
         runUpdateModel: TestInterfaces.RunUpdateModel,
         project: string,
         runId: number
         ): Promise<TestInterfaces.TestRun> {
-    
-        let deferred = Q.defer<TestInterfaces.TestRun>();
 
-        let onResult = (err: any, statusCode: number, Run: TestInterfaces.TestRun) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Run);
-            }
-        };
+        return new Promise<TestInterfaces.TestRun>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId
+            };
 
-        let routeValues: any = {
-            project: project,
-            runId: runId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "cadb3810-d47d-4a3c-a234-fe5f3be50138",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "cadb3810-d47d-4a3c-a234-fe5f3be50138", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.RunUpdateModel, responseTypeMetadata: TestInterfaces.TypeInfo.TestRun, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestRun>;
+                res = await this.rest.update<TestInterfaces.TestRun>(url, runUpdateModel, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestRun,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.update(url, apiVersion, runUpdateModel, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TestInterfaces.TestSession} testSession
     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
     */
-    public createTestSession(
+    public async createTestSession(
         testSession: TestInterfaces.TestSession,
         teamContext: TfsCoreInterfaces.TeamContext
         ): Promise<TestInterfaces.TestSession> {
-    
-        let deferred = Q.defer<TestInterfaces.TestSession>();
 
-        let onResult = (err: any, statusCode: number, Session: TestInterfaces.TestSession) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Session);
-            }
-        };
+        return new Promise<TestInterfaces.TestSession>(async (resolve, reject) => {
+            let project = teamContext.projectId || teamContext.project;
+            let team = teamContext.teamId || teamContext.team;
 
-        let project = teamContext.projectId || teamContext.project;
-        let team = teamContext.teamId || teamContext.team;
+            let routeValues: any = {
+                project: project,
+                team: team
+            };
 
-        let routeValues: any = {
-            project: project,
-            team: team
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "1500b4b4-6c69-4ca6-9b18-35e9e97fe2ac",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "1500b4b4-6c69-4ca6-9b18-35e9e97fe2ac", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestSession, responseTypeMetadata: TestInterfaces.TypeInfo.TestSession, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestSession>;
+                res = await this.rest.create<TestInterfaces.TestSession>(url, testSession, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestSession,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, testSession, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2862,7 +2997,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {TestInterfaces.TestSessionSource} source
     * @param {boolean} includeOnlyCompletedSessions
     */
-    public getTestSessions(
+    public async getTestSessions(
         teamContext: TfsCoreInterfaces.TeamContext,
         period?: number,
         allSessions?: boolean,
@@ -2870,133 +3005,216 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         source?: TestInterfaces.TestSessionSource,
         includeOnlyCompletedSessions?: boolean
         ): Promise<TestInterfaces.TestSession[]> {
-    
-        let deferred = Q.defer<TestInterfaces.TestSession[]>();
 
-        let onResult = (err: any, statusCode: number, Session: TestInterfaces.TestSession[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Session);
-            }
-        };
+        return new Promise<TestInterfaces.TestSession[]>(async (resolve, reject) => {
+            let project = teamContext.projectId || teamContext.project;
+            let team = teamContext.teamId || teamContext.team;
 
-        let project = teamContext.projectId || teamContext.project;
-        let team = teamContext.teamId || teamContext.team;
+            let routeValues: any = {
+                project: project,
+                team: team
+            };
 
-        let routeValues: any = {
-            project: project,
-            team: team
-        };
+            let queryValues: any = {
+                period: period,
+                allSessions: allSessions,
+                includeAllProperties: includeAllProperties,
+                source: source,
+                includeOnlyCompletedSessions: includeOnlyCompletedSessions,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "1500b4b4-6c69-4ca6-9b18-35e9e97fe2ac",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            period: period,
-            allSessions: allSessions,
-            includeAllProperties: includeAllProperties,
-            source: source,
-            includeOnlyCompletedSessions: includeOnlyCompletedSessions,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "1500b4b4-6c69-4ca6-9b18-35e9e97fe2ac", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSession, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestSession[]>;
+                res = await this.rest.get<TestInterfaces.TestSession[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestSession,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TestInterfaces.TestSession} testSession
     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
     */
-    public updateTestSession(
+    public async updateTestSession(
         testSession: TestInterfaces.TestSession,
         teamContext: TfsCoreInterfaces.TeamContext
         ): Promise<TestInterfaces.TestSession> {
-    
-        let deferred = Q.defer<TestInterfaces.TestSession>();
 
-        let onResult = (err: any, statusCode: number, Session: TestInterfaces.TestSession) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Session);
-            }
-        };
+        return new Promise<TestInterfaces.TestSession>(async (resolve, reject) => {
+            let project = teamContext.projectId || teamContext.project;
+            let team = teamContext.teamId || teamContext.team;
 
-        let project = teamContext.projectId || teamContext.project;
-        let team = teamContext.teamId || teamContext.team;
+            let routeValues: any = {
+                project: project,
+                team: team
+            };
 
-        let routeValues: any = {
-            project: project,
-            team: team
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "1500b4b4-6c69-4ca6-9b18-35e9e97fe2ac",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "1500b4b4-6c69-4ca6-9b18-35e9e97fe2ac", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TestInterfaces.TypeInfo.TestSession, responseTypeMetadata: TestInterfaces.TypeInfo.TestSession, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestSession>;
+                res = await this.rest.update<TestInterfaces.TestSession>(url, testSession, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestSession,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.update(url, apiVersion, testSession, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-        return deferred.promise;
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} sharedParameterId
+    */
+    public async deleteSharedParameter(
+        project: string,
+        sharedParameterId: number
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                sharedParameterId: sharedParameterId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "8300eeca-0f8c-4eff-a089-d2dda409c41f",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} sharedStepId
+    */
+    public async deleteSharedStep(
+        project: string,
+        sharedStepId: number
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                sharedStepId: sharedStepId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "fabb3cc9-e3f8-40b7-8b62-24cc4b73fccf",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} suiteId
     */
-    public getSuiteEntries(
+    public async getSuiteEntries(
         project: string,
         suiteId: number
         ): Promise<TestInterfaces.SuiteEntry[]> {
-    
-        let deferred = Q.defer<TestInterfaces.SuiteEntry[]>();
 
-        let onResult = (err: any, statusCode: number, SuiteEntry: TestInterfaces.SuiteEntry[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(SuiteEntry);
-            }
-        };
+        return new Promise<TestInterfaces.SuiteEntry[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                suiteId: suiteId
+            };
 
-        let routeValues: any = {
-            project: project,
-            suiteId: suiteId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "bf8b7f78-0c1f-49cb-89e9-d1a17bcaaad3",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "bf8b7f78-0c1f-49cb-89e9-d1a17bcaaad3", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.SuiteEntry[]>;
+                res = await this.rest.get<TestInterfaces.SuiteEntry[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -3004,42 +3222,42 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {string} project - Project ID or project name
     * @param {number} suiteId
     */
-    public reorderSuiteEntries(
+    public async reorderSuiteEntries(
         suiteEntries: TestInterfaces.SuiteEntryUpdateModel[],
         project: string,
         suiteId: number
         ): Promise<TestInterfaces.SuiteEntry[]> {
-    
-        let deferred = Q.defer<TestInterfaces.SuiteEntry[]>();
 
-        let onResult = (err: any, statusCode: number, SuiteEntry: TestInterfaces.SuiteEntry[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(SuiteEntry);
-            }
-        };
+        return new Promise<TestInterfaces.SuiteEntry[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                suiteId: suiteId
+            };
 
-        let routeValues: any = {
-            project: project,
-            suiteId: suiteId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "bf8b7f78-0c1f-49cb-89e9-d1a17bcaaad3",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "bf8b7f78-0c1f-49cb-89e9-d1a17bcaaad3", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.SuiteEntry[]>;
+                res = await this.rest.update<TestInterfaces.SuiteEntry[]>(url, suiteEntries, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.update(url, apiVersion, suiteEntries, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -3048,45 +3266,45 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} suiteId
     * @param {string} testCaseIds
     */
-    public addTestCasesToSuite(
+    public async addTestCasesToSuite(
         project: string,
         planId: number,
         suiteId: number,
         testCaseIds: string
         ): Promise<TestInterfaces.SuiteTestCase[]> {
-    
-        let deferred = Q.defer<TestInterfaces.SuiteTestCase[]>();
 
-        let onResult = (err: any, statusCode: number, Suites: TestInterfaces.SuiteTestCase[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Suites);
-            }
-        };
+        return new Promise<TestInterfaces.SuiteTestCase[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                planId: planId,
+                suiteId: suiteId,
+                testCaseIds: testCaseIds
+            };
 
-        let routeValues: any = {
-            project: project,
-            planId: planId,
-            suiteId: suiteId,
-            testCaseIds: testCaseIds
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "a4a1ec1c-b03f-41ca-8857-704594ecf58e",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "a4a1ec1c-b03f-41ca-8857-704594ecf58e", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.SuiteTestCase[]>;
+                res = await this.rest.create<TestInterfaces.SuiteTestCase[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, null, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -3095,45 +3313,45 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} suiteId
     * @param {number} testCaseIds
     */
-    public getTestCaseById(
+    public async getTestCaseById(
         project: string,
         planId: number,
         suiteId: number,
         testCaseIds: number
         ): Promise<TestInterfaces.SuiteTestCase> {
-    
-        let deferred = Q.defer<TestInterfaces.SuiteTestCase>();
 
-        let onResult = (err: any, statusCode: number, Suite: TestInterfaces.SuiteTestCase) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Suite);
-            }
-        };
+        return new Promise<TestInterfaces.SuiteTestCase>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                planId: planId,
+                suiteId: suiteId,
+                testCaseIds: testCaseIds
+            };
 
-        let routeValues: any = {
-            project: project,
-            planId: planId,
-            suiteId: suiteId,
-            testCaseIds: testCaseIds
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "a4a1ec1c-b03f-41ca-8857-704594ecf58e",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "a4a1ec1c-b03f-41ca-8857-704594ecf58e", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.SuiteTestCase>;
+                res = await this.rest.get<TestInterfaces.SuiteTestCase>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -3141,43 +3359,43 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} planId
     * @param {number} suiteId
     */
-    public getTestCases(
+    public async getTestCases(
         project: string,
         planId: number,
         suiteId: number
         ): Promise<TestInterfaces.SuiteTestCase[]> {
-    
-        let deferred = Q.defer<TestInterfaces.SuiteTestCase[]>();
 
-        let onResult = (err: any, statusCode: number, Suites: TestInterfaces.SuiteTestCase[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Suites);
-            }
-        };
+        return new Promise<TestInterfaces.SuiteTestCase[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                planId: planId,
+                suiteId: suiteId
+            };
 
-        let routeValues: any = {
-            project: project,
-            planId: planId,
-            suiteId: suiteId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "a4a1ec1c-b03f-41ca-8857-704594ecf58e",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "a4a1ec1c-b03f-41ca-8857-704594ecf58e", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.SuiteTestCase[]>;
+                res = await this.rest.get<TestInterfaces.SuiteTestCase[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -3186,45 +3404,45 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} suiteId
     * @param {string} testCaseIds
     */
-    public removeTestCasesFromSuiteUrl(
+    public async removeTestCasesFromSuiteUrl(
         project: string,
         planId: number,
         suiteId: number,
         testCaseIds: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                planId: planId,
+                suiteId: suiteId,
+                testCaseIds: testCaseIds
+            };
 
-        let routeValues: any = {
-            project: project,
-            planId: planId,
-            suiteId: suiteId,
-            testCaseIds: testCaseIds
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "a4a1ec1c-b03f-41ca-8857-704594ecf58e",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "a4a1ec1c-b03f-41ca-8857-704594ecf58e", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -3233,44 +3451,44 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} planId
     * @param {number} suiteId
     */
-    public createTestSuite(
+    public async createTestSuite(
         testSuite: TestInterfaces.SuiteCreateModel,
         project: string,
         planId: number,
         suiteId: number
         ): Promise<TestInterfaces.TestSuite[]> {
-    
-        let deferred = Q.defer<TestInterfaces.TestSuite[]>();
 
-        let onResult = (err: any, statusCode: number, Suite: TestInterfaces.TestSuite[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Suite);
-            }
-        };
+        return new Promise<TestInterfaces.TestSuite[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                planId: planId,
+                suiteId: suiteId
+            };
 
-        let routeValues: any = {
-            project: project,
-            planId: planId,
-            suiteId: suiteId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "7b7619a0-cb54-4ab3-bf22-194056f45dd1",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7b7619a0-cb54-4ab3-bf22-194056f45dd1", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestSuite[]>;
+                res = await this.rest.create<TestInterfaces.TestSuite[]>(url, testSuite, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestSuite,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, testSuite, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -3278,43 +3496,43 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} planId
     * @param {number} suiteId
     */
-    public deleteTestSuite(
+    public async deleteTestSuite(
         project: string,
         planId: number,
         suiteId: number
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                planId: planId,
+                suiteId: suiteId
+            };
 
-        let routeValues: any = {
-            project: project,
-            planId: planId,
-            suiteId: suiteId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "7b7619a0-cb54-4ab3-bf22-194056f45dd1",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7b7619a0-cb54-4ab3-bf22-194056f45dd1", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -3323,48 +3541,49 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} suiteId
     * @param {boolean} includeChildSuites
     */
-    public getTestSuiteById(
+    public async getTestSuiteById(
         project: string,
         planId: number,
         suiteId: number,
         includeChildSuites?: boolean
         ): Promise<TestInterfaces.TestSuite> {
-    
-        let deferred = Q.defer<TestInterfaces.TestSuite>();
 
-        let onResult = (err: any, statusCode: number, Suite: TestInterfaces.TestSuite) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Suite);
-            }
-        };
+        return new Promise<TestInterfaces.TestSuite>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                planId: planId,
+                suiteId: suiteId
+            };
 
-        let routeValues: any = {
-            project: project,
-            planId: planId,
-            suiteId: suiteId
-        };
+            let queryValues: any = {
+                includeChildSuites: includeChildSuites,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "7b7619a0-cb54-4ab3-bf22-194056f45dd1",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            includeChildSuites: includeChildSuites,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7b7619a0-cb54-4ab3-bf22-194056f45dd1", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestSuite>;
+                res = await this.rest.get<TestInterfaces.TestSuite>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestSuite,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -3375,7 +3594,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} top
     * @param {boolean} asTreeView
     */
-    public getTestSuitesForPlan(
+    public async getTestSuitesForPlan(
         project: string,
         planId: number,
         includeSuites?: boolean,
@@ -3383,44 +3602,45 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         top?: number,
         asTreeView?: boolean
         ): Promise<TestInterfaces.TestSuite[]> {
-    
-        let deferred = Q.defer<TestInterfaces.TestSuite[]>();
 
-        let onResult = (err: any, statusCode: number, Suites: TestInterfaces.TestSuite[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Suites);
-            }
-        };
+        return new Promise<TestInterfaces.TestSuite[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                planId: planId
+            };
 
-        let routeValues: any = {
-            project: project,
-            planId: planId
-        };
+            let queryValues: any = {
+                includeSuites: includeSuites,
+                '$skip': skip,
+                '$top': top,
+                '$asTreeView': asTreeView,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "7b7619a0-cb54-4ab3-bf22-194056f45dd1",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            includeSuites: includeSuites,
-            '$skip': skip,
-            '$top': top,
-            '$asTreeView': asTreeView,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7b7619a0-cb54-4ab3-bf22-194056f45dd1", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestSuite[]>;
+                res = await this.rest.get<TestInterfaces.TestSuite[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestSuite,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -3429,329 +3649,371 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} planId
     * @param {number} suiteId
     */
-    public updateTestSuite(
+    public async updateTestSuite(
         suiteUpdateModel: TestInterfaces.SuiteUpdateModel,
         project: string,
         planId: number,
         suiteId: number
         ): Promise<TestInterfaces.TestSuite> {
-    
-        let deferred = Q.defer<TestInterfaces.TestSuite>();
 
-        let onResult = (err: any, statusCode: number, Suite: TestInterfaces.TestSuite) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Suite);
-            }
-        };
+        return new Promise<TestInterfaces.TestSuite>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                planId: planId,
+                suiteId: suiteId
+            };
 
-        let routeValues: any = {
-            project: project,
-            planId: planId,
-            suiteId: suiteId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "Test",
+                    "7b7619a0-cb54-4ab3-bf22-194056f45dd1",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "Test", "7b7619a0-cb54-4ab3-bf22-194056f45dd1", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestSuite>;
+                res = await this.rest.update<TestInterfaces.TestSuite>(url, suiteUpdateModel, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestSuite,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.update(url, apiVersion, suiteUpdateModel, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {number} testCaseId
     */
-    public getSuitesByTestCaseId(
+    public async getSuitesByTestCaseId(
         testCaseId: number
         ): Promise<TestInterfaces.TestSuite[]> {
-    
-        let deferred = Q.defer<TestInterfaces.TestSuite[]>();
 
-        let onResult = (err: any, statusCode: number, Suites: TestInterfaces.TestSuite[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Suites);
-            }
-        };
+        return new Promise<TestInterfaces.TestSuite[]>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            let queryValues: any = {
+                testCaseId: testCaseId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "09a6167b-e969-4775-9247-b94cf3819caf",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            testCaseId: testCaseId,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "09a6167b-e969-4775-9247-b94cf3819caf", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TestInterfaces.TypeInfo.TestSuite, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestSuite[]>;
+                res = await this.rest.get<TestInterfaces.TestSuite[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestInterfaces.TypeInfo.TestSuite,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-        return deferred.promise;
+    /**
+    * @param {string} project - Project ID or project name
+    * @param {number} testCaseId
+    */
+    public async deleteTestCase(
+        project: string,
+        testCaseId: number
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                testCaseId: testCaseId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "4d472e0f-e32c-4ef8-adf4-a4078772889c",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TestInterfaces.TestSettings} testSettings
     * @param {string} project - Project ID or project name
     */
-    public createTestSettings(
+    public async createTestSettings(
         testSettings: TestInterfaces.TestSettings,
         project: string
         ): Promise<number> {
-    
-        let deferred = Q.defer<number>();
 
-        let onResult = (err: any, statusCode: number, TestSetting: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(TestSetting);
-            }
-        };
+        return new Promise<number>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "8133ce14-962f-42af-a5f9-6aa9defcb9c8",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "8133ce14-962f-42af-a5f9-6aa9defcb9c8", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<number>;
+                res = await this.rest.create<number>(url, testSettings, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, testSettings, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} testSettingsId
     */
-    public deleteTestSettings(
+    public async deleteTestSettings(
         project: string,
         testSettingsId: number
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                testSettingsId: testSettingsId
+            };
 
-        let routeValues: any = {
-            project: project,
-            testSettingsId: testSettingsId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "8133ce14-962f-42af-a5f9-6aa9defcb9c8",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "8133ce14-962f-42af-a5f9-6aa9defcb9c8", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} testSettingsId
     */
-    public getTestSettingsById(
+    public async getTestSettingsById(
         project: string,
         testSettingsId: number
         ): Promise<TestInterfaces.TestSettings> {
-    
-        let deferred = Q.defer<TestInterfaces.TestSettings>();
 
-        let onResult = (err: any, statusCode: number, TestSetting: TestInterfaces.TestSettings) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(TestSetting);
-            }
-        };
+        return new Promise<TestInterfaces.TestSettings>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                testSettingsId: testSettingsId
+            };
 
-        let routeValues: any = {
-            project: project,
-            testSettingsId: testSettingsId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "8133ce14-962f-42af-a5f9-6aa9defcb9c8",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "8133ce14-962f-42af-a5f9-6aa9defcb9c8", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestSettings>;
+                res = await this.rest.get<TestInterfaces.TestSettings>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TestInterfaces.TestVariable} testVariable
     * @param {string} project - Project ID or project name
     */
-    public createTestVariable(
+    public async createTestVariable(
         testVariable: TestInterfaces.TestVariable,
         project: string
         ): Promise<TestInterfaces.TestVariable> {
-    
-        let deferred = Q.defer<TestInterfaces.TestVariable>();
 
-        let onResult = (err: any, statusCode: number, Variable: TestInterfaces.TestVariable) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Variable);
-            }
-        };
+        return new Promise<TestInterfaces.TestVariable>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "be3fcb2b-995b-47bf-90e5-ca3cf9980912",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "be3fcb2b-995b-47bf-90e5-ca3cf9980912", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestVariable>;
+                res = await this.rest.create<TestInterfaces.TestVariable>(url, testVariable, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, testVariable, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} testVariableId
     */
-    public deleteTestVariable(
+    public async deleteTestVariable(
         project: string,
         testVariableId: number
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                testVariableId: testVariableId
+            };
 
-        let routeValues: any = {
-            project: project,
-            testVariableId: testVariableId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "be3fcb2b-995b-47bf-90e5-ca3cf9980912",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "be3fcb2b-995b-47bf-90e5-ca3cf9980912", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {number} testVariableId
     */
-    public getTestVariableById(
+    public async getTestVariableById(
         project: string,
         testVariableId: number
         ): Promise<TestInterfaces.TestVariable> {
-    
-        let deferred = Q.defer<TestInterfaces.TestVariable>();
 
-        let onResult = (err: any, statusCode: number, Variable: TestInterfaces.TestVariable) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Variable);
-            }
-        };
+        return new Promise<TestInterfaces.TestVariable>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                testVariableId: testVariableId
+            };
 
-        let routeValues: any = {
-            project: project,
-            testVariableId: testVariableId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "be3fcb2b-995b-47bf-90e5-ca3cf9980912",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "be3fcb2b-995b-47bf-90e5-ca3cf9980912", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestVariable>;
+                res = await this.rest.get<TestInterfaces.TestVariable>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -3759,46 +4021,47 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} skip
     * @param {number} top
     */
-    public getTestVariables(
+    public async getTestVariables(
         project: string,
         skip?: number,
         top?: number
         ): Promise<TestInterfaces.TestVariable[]> {
-    
-        let deferred = Q.defer<TestInterfaces.TestVariable[]>();
 
-        let onResult = (err: any, statusCode: number, Variables: TestInterfaces.TestVariable[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Variables);
-            }
-        };
+        return new Promise<TestInterfaces.TestVariable[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                '$skip': skip,
+                '$top': top,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "be3fcb2b-995b-47bf-90e5-ca3cf9980912",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            '$skip': skip,
-            '$top': top,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "be3fcb2b-995b-47bf-90e5-ca3cf9980912", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestVariable[]>;
+                res = await this.rest.get<TestInterfaces.TestVariable[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -3806,82 +4069,82 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {string} project - Project ID or project name
     * @param {number} testVariableId
     */
-    public updateTestVariable(
+    public async updateTestVariable(
         testVariable: TestInterfaces.TestVariable,
         project: string,
         testVariableId: number
         ): Promise<TestInterfaces.TestVariable> {
-    
-        let deferred = Q.defer<TestInterfaces.TestVariable>();
 
-        let onResult = (err: any, statusCode: number, Variable: TestInterfaces.TestVariable) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Variable);
-            }
-        };
+        return new Promise<TestInterfaces.TestVariable>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                testVariableId: testVariableId
+            };
 
-        let routeValues: any = {
-            project: project,
-            testVariableId: testVariableId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "be3fcb2b-995b-47bf-90e5-ca3cf9980912",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "be3fcb2b-995b-47bf-90e5-ca3cf9980912", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestVariable>;
+                res = await this.rest.update<TestInterfaces.TestVariable>(url, testVariable, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.update(url, apiVersion, testVariable, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TestInterfaces.WorkItemToTestLinks} workItemToTestLinks
     * @param {string} project - Project ID or project name
     */
-    public addWorkItemToTestLinks(
+    public async addWorkItemToTestLinks(
         workItemToTestLinks: TestInterfaces.WorkItemToTestLinks,
         project: string
         ): Promise<TestInterfaces.WorkItemToTestLinks> {
-    
-        let deferred = Q.defer<TestInterfaces.WorkItemToTestLinks>();
 
-        let onResult = (err: any, statusCode: number, WorkItem: TestInterfaces.WorkItemToTestLinks) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(WorkItem);
-            }
-        };
+        return new Promise<TestInterfaces.WorkItemToTestLinks>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "371b1655-ce05-412e-a113-64cc77bb78d2",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "371b1655-ce05-412e-a113-64cc77bb78d2", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.WorkItemToTestLinks>;
+                res = await this.rest.create<TestInterfaces.WorkItemToTestLinks>(url, workItemToTestLinks, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, workItemToTestLinks, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -3889,90 +4152,92 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {string} testName
     * @param {number} workItemId
     */
-    public deleteTestMethodToWorkItemLink(
+    public async deleteTestMethodToWorkItemLink(
         project: string,
         testName: string,
         workItemId: number
         ): Promise<boolean> {
-    
-        let deferred = Q.defer<boolean>();
 
-        let onResult = (err: any, statusCode: number, WorkItem: boolean) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(WorkItem);
-            }
-        };
+        return new Promise<boolean>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                testName: testName,
+                workItemId: workItemId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "7b0bdee3-a354-47f9-a42c-89018d7808d5",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            testName: testName,
-            workItemId: workItemId,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "7b0bdee3-a354-47f9-a42c-89018d7808d5", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<boolean>;
+                res = await this.rest.del<boolean>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     * @param {string} testName
     */
-    public queryTestMethodLinkedWorkItems(
+    public async queryTestMethodLinkedWorkItems(
         project: string,
         testName: string
         ): Promise<TestInterfaces.TestToWorkItemLinks> {
-    
-        let deferred = Q.defer<TestInterfaces.TestToWorkItemLinks>();
 
-        let onResult = (err: any, statusCode: number, WorkItem: TestInterfaces.TestToWorkItemLinks) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(WorkItem);
-            }
-        };
+        return new Promise<TestInterfaces.TestToWorkItemLinks>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                testName: testName,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "7b0bdee3-a354-47f9-a42c-89018d7808d5",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            testName: testName,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "7b0bdee3-a354-47f9-a42c-89018d7808d5", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.TestToWorkItemLinks>;
+                res = await this.rest.create<TestInterfaces.TestToWorkItemLinks>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, null, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -3984,7 +4249,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     * @param {number} days
     * @param {number} workItemCount
     */
-    public queryTestResultWorkItems(
+    public async queryTestResultWorkItems(
         project: string,
         workItemCategory: string,
         automatedTestName?: string,
@@ -3993,45 +4258,46 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         days?: number,
         workItemCount?: number
         ): Promise<TestInterfaces.WorkItemReference[]> {
-    
-        let deferred = Q.defer<TestInterfaces.WorkItemReference[]>();
 
-        let onResult = (err: any, statusCode: number, WorkItems: TestInterfaces.WorkItemReference[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(WorkItems);
-            }
-        };
+        return new Promise<TestInterfaces.WorkItemReference[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                workItemCategory: workItemCategory,
+                automatedTestName: automatedTestName,
+                testCaseId: testCaseId,
+                maxCompleteDate: maxCompleteDate,
+                days: days,
+                '$workItemCount': workItemCount,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "926ff5dc-137f-45f0-bd51-9412fa9810ce",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            workItemCategory: workItemCategory,
-            automatedTestName: automatedTestName,
-            testCaseId: testCaseId,
-            maxCompleteDate: maxCompleteDate,
-            days: days,
-            '$workItemCount': workItemCount,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "Test", "926ff5dc-137f-45f0-bd51-9412fa9810ce", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TestInterfaces.WorkItemReference[]>;
+                res = await this.rest.get<TestInterfaces.WorkItemReference[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
 }

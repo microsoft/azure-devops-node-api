@@ -3,7 +3,6 @@ import ifm = require("./interfaces/common/VsoBaseInterfaces");
 import taskagentbasem = require('./TaskAgentApiBase');
 import url = require('url');
 import vsom = require('./VsoClient');
-import Q = require("q");
 import TaskAgentInterfaces = require("./interfaces/TaskAgentInterfaces");
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 
@@ -209,7 +208,7 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
         contentStream: NodeJS.ReadableStream,
         taskId: string,
         overwrite: boolean
-        ): Q.Promise<void> {
+        ): Promise<void> {
 
         let routeValues: any = {
             taskId: taskId
@@ -222,26 +221,24 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
         customHeaders = customHeaders || {};
         customHeaders["Content-Type"] = "application/octet-stream";
 
-        let deferred = Q.defer<void>();
+        return new Promise<void>((resolve, reject) => {
+            this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues, queryValues)
+                .then((versioningData: vsom.ClientVersioningData) => {
+                    var url: string = versioningData.requestUrl;
+                    var apiVersion: string = versioningData.apiVersion;
+                    var serializationData = {  responseIsCollection: false };
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                var url: string = versioningData.requestUrl;
-                var apiVersion: string = versioningData.apiVersion;
-                var serializationData = {  responseIsCollection: false };
-                
-                this.restClient.uploadStream('PUT', url, apiVersion, contentStream, customHeaders, serializationData, (err: any, statusCode: number, obj: any) => {
-                    if (err) {
-                        err.statusCode = statusCode;
-                        deferred.reject(err);
-                    }
-                    else {
-                        deferred.resolve(null);
-                    }
-                });
-            });
-            
-        return deferred.promise;
+                    this.restCallbackClient.uploadStream('PUT', url, apiVersion, contentStream, customHeaders, (err: any, statusCode: number, obj: any) => {
+                        if (err) {
+                            err.statusCode = statusCode;
+                            reject(err);
+                        }
+                        else {
+                            resolve(null);
+                        }
+                    }, serializationData);
+                }); 
+        });
     }
     
     private _getFallbackClient(baseUrl: string): TaskAgentApi {

@@ -17,13 +17,17 @@
  */
 export interface ContributedFeature {
     /**
+     * Named links describing the feature
+     */
+    _links: any;
+    /**
      * If true, the feature is enabled unless overridden at some scope
      */
     defaultState: boolean;
     /**
      * Rules for setting the default value if not specified by any setting/scope. Evaluated in order until a rule returns an Enabled or Disabled state (not Undefined)
      */
-    defaultValueRules: ContributedFeatureDefaultValueRule[];
+    defaultValueRules: ContributedFeatureValueRule[];
     /**
      * The description of the feature
      */
@@ -37,23 +41,13 @@ export interface ContributedFeature {
      */
     name: string;
     /**
+     * Rules for overriding a feature value. These rules are run before explicit user/host state values are checked. They are evaluated in order until a rule returns an Enabled or Disabled state (not Undefined)
+     */
+    overrideRules: ContributedFeatureValueRule[];
+    /**
      * The scopes/levels at which settings can set the enabled/disabled state of this feature
      */
     scopes: ContributedFeatureSettingScope[];
-}
-
-/**
- * A rules for setting the default value of a feature if not specified by any setting/scope
- */
-export interface ContributedFeatureDefaultValueRule {
-    /**
-     * Name of the IContributedFeatureValuePlugin to run
-     */
-    name: string;
-    /**
-     * Properties to feed to the IContributedFeatureValuePlugin
-     */
-    properties: { [key: string] : any; };
 }
 
 export enum ContributedFeatureEnabledValue {
@@ -103,11 +97,40 @@ export interface ContributedFeatureState {
     state: ContributedFeatureEnabledValue;
 }
 
+/**
+ * A query for the effective contributed feature states for a list of feature ids
+ */
+export interface ContributedFeatureStateQuery {
+    /**
+     * The list of feature ids to query
+     */
+    featureIds: string[];
+    /**
+     * The query result containing the current feature states for each of the queried feature ids
+     */
+    featureStates: { [key: string] : ContributedFeatureState; };
+    /**
+     * A dictionary of scope values (project name, etc.) to use in the query (if querying across scopes)
+     */
+    scopeValues: { [key: string] : string; };
+}
+
+/**
+ * A rule for dynamically getting the enabled/disabled state of a feature
+ */
+export interface ContributedFeatureValueRule {
+    /**
+     * Name of the IContributedFeatureValuePlugin to run
+     */
+    name: string;
+    /**
+     * Properties to feed to the IContributedFeatureValuePlugin
+     */
+    properties: { [key: string] : any; };
+}
+
 export var TypeInfo = {
     ContributedFeature: {
-        fields: <any>null
-    },
-    ContributedFeatureDefaultValueRule: {
         fields: <any>null
     },
     ContributedFeatureEnabledValue: {
@@ -123,20 +146,27 @@ export var TypeInfo = {
     ContributedFeatureState: {
         fields: <any>null
     },
+    ContributedFeatureStateQuery: {
+        fields: <any>null
+    },
+    ContributedFeatureValueRule: {
+        fields: <any>null
+    },
 };
 
 TypeInfo.ContributedFeature.fields = {
     defaultValueRules: {
         isArray: true,
-        typeInfo: TypeInfo.ContributedFeatureDefaultValueRule
+        typeInfo: TypeInfo.ContributedFeatureValueRule
+    },
+    overrideRules: {
+        isArray: true,
+        typeInfo: TypeInfo.ContributedFeatureValueRule
     },
     scopes: {
         isArray: true,
         typeInfo: TypeInfo.ContributedFeatureSettingScope
     },
-};
-
-TypeInfo.ContributedFeatureDefaultValueRule.fields = {
 };
 
 TypeInfo.ContributedFeatureSettingScope.fields = {
@@ -149,4 +179,12 @@ TypeInfo.ContributedFeatureState.fields = {
     state: {
         enumType: TypeInfo.ContributedFeatureEnabledValue
     },
+};
+
+TypeInfo.ContributedFeatureStateQuery.fields = {
+    featureStates: {
+    },
+};
+
+TypeInfo.ContributedFeatureValueRule.fields = {
 };

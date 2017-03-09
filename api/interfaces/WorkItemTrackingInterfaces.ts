@@ -13,6 +13,73 @@
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
+export interface AccountMyWorkResult {
+    /**
+     * True, when length of WorkItemDetails is same as the limit
+     */
+    querySizeLimitExceeded: boolean;
+    /**
+     * WorkItem Details
+     */
+    workItemDetails: AccountWorkWorkItemModel[];
+}
+
+/**
+ * Represents Work Item Recent Activity
+ */
+export interface AccountRecentActivityWorkItemModel {
+    /**
+     * Date of the last Activity by the user
+     */
+    activityDate: Date;
+    /**
+     * Type of the activity
+     */
+    activityType: WorkItemRecentActivityType;
+    /**
+     * Assigned To
+     */
+    assignedTo: string;
+    /**
+     * Last changed date of the work item
+     */
+    changedDate: Date;
+    /**
+     * Work Item Id
+     */
+    id: number;
+    /**
+     * TeamFoundationId of the user this activity belongs to
+     */
+    identityId: string;
+    /**
+     * State of the work item
+     */
+    state: string;
+    /**
+     * Team project the work item belongs to
+     */
+    teamProject: string;
+    /**
+     * Title of the work item
+     */
+    title: string;
+    /**
+     * Type of Work Item
+     */
+    workItemType: string;
+}
+
+export interface AccountWorkWorkItemModel {
+    assignedTo: string;
+    changedDate: Date;
+    id: number;
+    state: string;
+    teamProject: string;
+    title: string;
+    workItemType: string;
+}
+
 export interface AttachmentReference {
     id: string;
     url: string;
@@ -45,6 +112,10 @@ export enum FieldType {
     Double = 7,
     Guid = 8,
     Boolean = 9,
+    Identity = 10,
+    PicklistString = 11,
+    PicklistInteger = 12,
+    PicklistDouble = 13,
 }
 
 export enum GetFieldsExpand {
@@ -61,7 +132,6 @@ export interface IdentityReference {
 export interface Link {
     attributes: { [key: string] : any; };
     rel: string;
-    title: string;
     url: string;
 }
 
@@ -86,10 +156,18 @@ export enum LogicalOperation {
     OR = 2,
 }
 
-export interface ProjectReference {
-    id: string;
-    name: string;
-    url: string;
+/**
+ * Project work item type state colors
+ */
+export interface ProjectWorkItemStateColors {
+    /**
+     * Project name
+     */
+    projectName: string;
+    /**
+     * State colors for all work item type in a project
+     */
+    workItemTypeStateColors: WorkItemTypeStateColors[];
 }
 
 export enum ProvisioningActionType {
@@ -131,6 +209,12 @@ export interface QueryHierarchyItem extends WorkItemTrackingResource {
     sourceClauses: WorkItemQueryClause;
     targetClauses: WorkItemQueryClause;
     wiql: string;
+}
+
+export enum QueryOption {
+    Doing = 1,
+    Done = 2,
+    Followed = 3,
 }
 
 export enum QueryResultType {
@@ -220,19 +304,6 @@ export interface Wiql {
     query: string;
 }
 
-export interface WitBatchRequest {
-    body: string;
-    headers: { [key: string] : string; };
-    method: string;
-    uri: string;
-}
-
-export interface WitBatchResponse {
-    body: string;
-    code: number;
-    headers: { [key: string] : string; };
-}
-
 export interface WorkItem extends WorkItemTrackingResource {
     fields: { [key: string] : any; };
     id: number;
@@ -279,8 +350,18 @@ export interface WorkItemDeleteReference {
     url: string;
 }
 
+export interface WorkItemDeleteShallowReference {
+    id: number;
+    url: string;
+}
+
 export interface WorkItemDeleteUpdate {
     isDeleted: boolean;
+}
+
+export enum WorkItemErrorPolicy {
+    Fail = 1,
+    Omit = 2,
 }
 
 export enum WorkItemExpand {
@@ -292,6 +373,7 @@ export enum WorkItemExpand {
 }
 
 export interface WorkItemField extends WorkItemTrackingResource {
+    description: string;
     name: string;
     readOnly: boolean;
     referenceName: string;
@@ -353,6 +435,13 @@ export interface WorkItemQuerySortColumn {
     field: WorkItemFieldReference;
 }
 
+export enum WorkItemRecentActivityType {
+    Visited = 0,
+    Edited = 1,
+    Deleted = 2,
+    Restored = 3,
+}
+
 export interface WorkItemReference {
     id: number;
     url: string;
@@ -371,8 +460,18 @@ export interface WorkItemRelationUpdates {
     updated: WorkItemRelation[];
 }
 
-export interface WorkItemRevisionReference extends WorkItemReference {
-    rev: number;
+/**
+ * Work item type state name and color pair
+ */
+export interface WorkItemStateColor {
+    /**
+     * Color value
+     */
+    color: string;
+    /**
+     * Work item type state name
+     */
+    name: string;
 }
 
 export interface WorkItemStateTransition {
@@ -404,6 +503,7 @@ export interface WorkItemTrackingResourceReference {
 }
 
 export interface WorkItemType extends WorkItemTrackingResource {
+    color: string;
     description: string;
     fieldInstances: WorkItemTypeFieldInstance[];
     fields: WorkItemTypeFieldInstance[];
@@ -419,6 +519,12 @@ export interface WorkItemTypeCategory extends WorkItemTrackingResource {
     workItemTypes: WorkItemTypeReference[];
 }
 
+export interface WorkItemTypeColor {
+    primaryColor: string;
+    secondaryColor: string;
+    workItemTypeName: string;
+}
+
 export interface WorkItemTypeFieldInstance extends WorkItemFieldReference {
     alwaysRequired: boolean;
     field: WorkItemFieldReference;
@@ -427,6 +533,20 @@ export interface WorkItemTypeFieldInstance extends WorkItemFieldReference {
 
 export interface WorkItemTypeReference extends WorkItemTrackingResourceReference {
     name: string;
+}
+
+/**
+ * State colors for a work item type
+ */
+export interface WorkItemTypeStateColors {
+    /**
+     * Work item type state colors
+     */
+    stateColors: WorkItemStateColor[];
+    /**
+     * Work item type name
+     */
+    workItemTypeName: string;
 }
 
 export interface WorkItemTypeTemplate {
@@ -451,6 +571,15 @@ export interface WorkItemUpdate extends WorkItemTrackingResourceReference {
 }
 
 export var TypeInfo = {
+    AccountMyWorkResult: {
+        fields: <any>null
+    },
+    AccountRecentActivityWorkItemModel: {
+        fields: <any>null
+    },
+    AccountWorkWorkItemModel: {
+        fields: <any>null
+    },
     AttachmentReference: {
         fields: <any>null
     },
@@ -478,6 +607,10 @@ export var TypeInfo = {
             "double": 7,
             "guid": 8,
             "boolean": 9,
+            "identity": 10,
+            "picklistString": 11,
+            "picklistInteger": 12,
+            "picklistDouble": 13,
         }
     },
     GetFieldsExpand: {
@@ -516,7 +649,7 @@ export var TypeInfo = {
             "oR": 2,
         }
     },
-    ProjectReference: {
+    ProjectWorkItemStateColors: {
         fields: <any>null
     },
     ProvisioningActionType: {
@@ -538,6 +671,13 @@ export var TypeInfo = {
     },
     QueryHierarchyItem: {
         fields: <any>null
+    },
+    QueryOption: {
+        enumValues: {
+            "doing": 1,
+            "done": 2,
+            "followed": 3,
+        }
     },
     QueryResultType: {
         enumValues: {
@@ -594,12 +734,6 @@ export var TypeInfo = {
     Wiql: {
         fields: <any>null
     },
-    WitBatchRequest: {
-        fields: <any>null
-    },
-    WitBatchResponse: {
-        fields: <any>null
-    },
     WorkItem: {
         fields: <any>null
     },
@@ -618,8 +752,17 @@ export var TypeInfo = {
     WorkItemDeleteReference: {
         fields: <any>null
     },
+    WorkItemDeleteShallowReference: {
+        fields: <any>null
+    },
     WorkItemDeleteUpdate: {
         fields: <any>null
+    },
+    WorkItemErrorPolicy: {
+        enumValues: {
+            "fail": 1,
+            "omit": 2,
+        }
     },
     WorkItemExpand: {
         enumValues: {
@@ -657,6 +800,14 @@ export var TypeInfo = {
     WorkItemQuerySortColumn: {
         fields: <any>null
     },
+    WorkItemRecentActivityType: {
+        enumValues: {
+            "visited": 0,
+            "edited": 1,
+            "deleted": 2,
+            "restored": 3,
+        }
+    },
     WorkItemReference: {
         fields: <any>null
     },
@@ -669,7 +820,7 @@ export var TypeInfo = {
     WorkItemRelationUpdates: {
         fields: <any>null
     },
-    WorkItemRevisionReference: {
+    WorkItemStateColor: {
         fields: <any>null
     },
     WorkItemStateTransition: {
@@ -696,10 +847,16 @@ export var TypeInfo = {
     WorkItemTypeCategory: {
         fields: <any>null
     },
+    WorkItemTypeColor: {
+        fields: <any>null
+    },
     WorkItemTypeFieldInstance: {
         fields: <any>null
     },
     WorkItemTypeReference: {
+        fields: <any>null
+    },
+    WorkItemTypeStateColors: {
         fields: <any>null
     },
     WorkItemTypeTemplate: {
@@ -710,6 +867,31 @@ export var TypeInfo = {
     },
     WorkItemUpdate: {
         fields: <any>null
+    },
+};
+
+TypeInfo.AccountMyWorkResult.fields = {
+    workItemDetails: {
+        isArray: true,
+        typeInfo: TypeInfo.AccountWorkWorkItemModel
+    },
+};
+
+TypeInfo.AccountRecentActivityWorkItemModel.fields = {
+    activityDate: {
+        isDate: true,
+    },
+    activityType: {
+        enumType: TypeInfo.WorkItemRecentActivityType
+    },
+    changedDate: {
+        isDate: true,
+    },
+};
+
+TypeInfo.AccountWorkWorkItemModel.fields = {
+    changedDate: {
+        isDate: true,
     },
 };
 
@@ -732,7 +914,11 @@ TypeInfo.IdentityReference.fields = {
 TypeInfo.Link.fields = {
 };
 
-TypeInfo.ProjectReference.fields = {
+TypeInfo.ProjectWorkItemStateColors.fields = {
+    workItemTypeStateColors: {
+        isArray: true,
+        typeInfo: TypeInfo.WorkItemTypeStateColors
+    },
 };
 
 TypeInfo.ProvisioningResult.fields = {
@@ -810,12 +996,6 @@ TypeInfo.StreamedBatch.fields = {
 TypeInfo.Wiql.fields = {
 };
 
-TypeInfo.WitBatchRequest.fields = {
-};
-
-TypeInfo.WitBatchResponse.fields = {
-};
-
 TypeInfo.WorkItem.fields = {
     relations: {
         isArray: true,
@@ -856,6 +1036,9 @@ TypeInfo.WorkItemDelete.fields = {
 };
 
 TypeInfo.WorkItemDeleteReference.fields = {
+};
+
+TypeInfo.WorkItemDeleteShallowReference.fields = {
 };
 
 TypeInfo.WorkItemDeleteUpdate.fields = {
@@ -975,7 +1158,7 @@ TypeInfo.WorkItemRelationUpdates.fields = {
     },
 };
 
-TypeInfo.WorkItemRevisionReference.fields = {
+TypeInfo.WorkItemStateColor.fields = {
 };
 
 TypeInfo.WorkItemStateTransition.fields = {
@@ -1019,6 +1202,9 @@ TypeInfo.WorkItemTypeCategory.fields = {
     },
 };
 
+TypeInfo.WorkItemTypeColor.fields = {
+};
+
 TypeInfo.WorkItemTypeFieldInstance.fields = {
     field: {
         typeInfo: TypeInfo.WorkItemFieldReference
@@ -1026,6 +1212,13 @@ TypeInfo.WorkItemTypeFieldInstance.fields = {
 };
 
 TypeInfo.WorkItemTypeReference.fields = {
+};
+
+TypeInfo.WorkItemTypeStateColors.fields = {
+    stateColors: {
+        isArray: true,
+        typeInfo: TypeInfo.WorkItemStateColor
+    },
 };
 
 TypeInfo.WorkItemTypeTemplate.fields = {

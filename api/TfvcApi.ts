@@ -10,12 +10,11 @@
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
-
-import Q = require('q');
-import restm = require('./RestClient');
-import httpm = require('./HttpClient');
+import * as restm from 'typed-rest-client/RestClient';
+import * as httpm from 'typed-rest-client/HttpClient';
 import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
+import serm = require('./Serialization');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import TfvcInterfaces = require("./interfaces/TfvcInterfaces");
 
@@ -40,8 +39,8 @@ export interface ITfvcApi extends basem.ClientApiBase {
     getLabel(labelId: string, requestData: TfvcInterfaces.TfvcLabelRequestData, project?: string): Promise<TfvcInterfaces.TfvcLabel>;
     getLabels(requestData: TfvcInterfaces.TfvcLabelRequestData, project?: string, top?: number, skip?: number): Promise<TfvcInterfaces.TfvcLabelRef[]>;
     getShelvesetChanges(shelvesetId: string, top?: number, skip?: number): Promise<TfvcInterfaces.TfvcChange[]>;
-    getShelveset(shelvesetId: string, requestData: TfvcInterfaces.TfvcShelvesetRequestData): Promise<TfvcInterfaces.TfvcShelveset>;
-    getShelvesets(requestData: TfvcInterfaces.TfvcShelvesetRequestData, top?: number, skip?: number): Promise<TfvcInterfaces.TfvcShelvesetRef[]>;
+    getShelveset(shelvesetId: string, requestData?: TfvcInterfaces.TfvcShelvesetRequestData): Promise<TfvcInterfaces.TfvcShelveset>;
+    getShelvesets(requestData?: TfvcInterfaces.TfvcShelvesetRequestData, top?: number, skip?: number): Promise<TfvcInterfaces.TfvcShelvesetRef[]>;
     getShelvesetWorkItems(shelvesetId: string): Promise<TfvcInterfaces.AssociatedWorkItem[]>;
 }
 
@@ -58,48 +57,49 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     * @param {boolean} includeParent
     * @param {boolean} includeChildren
     */
-    public getBranch(
+    public async getBranch(
         path: string,
         project?: string,
         includeParent?: boolean,
         includeChildren?: boolean
         ): Promise<TfvcInterfaces.TfvcBranch> {
-    
-        let deferred = Q.defer<TfvcInterfaces.TfvcBranch>();
 
-        let onResult = (err: any, statusCode: number, Branche: TfvcInterfaces.TfvcBranch) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Branche);
-            }
-        };
+        return new Promise<TfvcInterfaces.TfvcBranch>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                path: path,
+                includeParent: includeParent,
+                includeChildren: includeChildren,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "tfvc",
+                    "bc1f417e-239d-42e7-85e1-76e80cb2d6eb",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            path: path,
-            includeParent: includeParent,
-            includeChildren: includeChildren,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "bc1f417e-239d-42e7-85e1-76e80cb2d6eb", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcBranch, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcBranch>;
+                res = await this.rest.get<TfvcInterfaces.TfvcBranch>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcBranch,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -111,50 +111,51 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     * @param {boolean} includeDeleted
     * @param {boolean} includeLinks
     */
-    public getBranches(
+    public async getBranches(
         project?: string,
         includeParent?: boolean,
         includeChildren?: boolean,
         includeDeleted?: boolean,
         includeLinks?: boolean
         ): Promise<TfvcInterfaces.TfvcBranch[]> {
-    
-        let deferred = Q.defer<TfvcInterfaces.TfvcBranch[]>();
 
-        let onResult = (err: any, statusCode: number, Branches: TfvcInterfaces.TfvcBranch[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Branches);
-            }
-        };
+        return new Promise<TfvcInterfaces.TfvcBranch[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                includeParent: includeParent,
+                includeChildren: includeChildren,
+                includeDeleted: includeDeleted,
+                includeLinks: includeLinks,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "tfvc",
+                    "bc1f417e-239d-42e7-85e1-76e80cb2d6eb",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            includeParent: includeParent,
-            includeChildren: includeChildren,
-            includeDeleted: includeDeleted,
-            includeLinks: includeLinks,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "bc1f417e-239d-42e7-85e1-76e80cb2d6eb", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcBranch, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcBranch[]>;
+                res = await this.rest.get<TfvcInterfaces.TfvcBranch[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcBranch,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -165,48 +166,49 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     * @param {boolean} includeDeleted
     * @param {boolean} includeLinks
     */
-    public getBranchRefs(
+    public async getBranchRefs(
         scopePath: string,
         project?: string,
         includeDeleted?: boolean,
         includeLinks?: boolean
         ): Promise<TfvcInterfaces.TfvcBranchRef[]> {
-    
-        let deferred = Q.defer<TfvcInterfaces.TfvcBranchRef[]>();
 
-        let onResult = (err: any, statusCode: number, Branches: TfvcInterfaces.TfvcBranchRef[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Branches);
-            }
-        };
+        return new Promise<TfvcInterfaces.TfvcBranchRef[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                scopePath: scopePath,
+                includeDeleted: includeDeleted,
+                includeLinks: includeLinks,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "tfvc",
+                    "bc1f417e-239d-42e7-85e1-76e80cb2d6eb",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            scopePath: scopePath,
-            includeDeleted: includeDeleted,
-            includeLinks: includeLinks,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "bc1f417e-239d-42e7-85e1-76e80cb2d6eb", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcBranchRef, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcBranchRef[]>;
+                res = await this.rest.get<TfvcInterfaces.TfvcBranchRef[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcBranchRef,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -216,86 +218,87 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     * @param {number} skip
     * @param {number} top
     */
-    public getChangesetChanges(
+    public async getChangesetChanges(
         id?: number,
         skip?: number,
         top?: number
         ): Promise<TfvcInterfaces.TfvcChange[]> {
-    
-        let deferred = Q.defer<TfvcInterfaces.TfvcChange[]>();
 
-        let onResult = (err: any, statusCode: number, ChangesetChanges: TfvcInterfaces.TfvcChange[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ChangesetChanges);
-            }
-        };
+        return new Promise<TfvcInterfaces.TfvcChange[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                id: id
+            };
 
-        let routeValues: any = {
-            id: id
-        };
+            let queryValues: any = {
+                '$skip': skip,
+                '$top': top,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "tfvc",
+                    "f32b86f2-15b9-4fe6-81b1-6f8938617ee5",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            '$skip': skip,
-            '$top': top,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "f32b86f2-15b9-4fe6-81b1-6f8938617ee5", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChange, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcChange[]>;
+                res = await this.rest.get<TfvcInterfaces.TfvcChange[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcChange,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TfvcInterfaces.TfvcChangeset} changeset
     * @param {string} project - Project ID or project name
     */
-    public createChangeset(
+    public async createChangeset(
         changeset: TfvcInterfaces.TfvcChangeset,
         project?: string
         ): Promise<TfvcInterfaces.TfvcChangesetRef> {
-    
-        let deferred = Q.defer<TfvcInterfaces.TfvcChangesetRef>();
 
-        let onResult = (err: any, statusCode: number, Changeset: TfvcInterfaces.TfvcChangesetRef) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Changeset);
-            }
-        };
+        return new Promise<TfvcInterfaces.TfvcChangesetRef>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.3",
+                    "tfvc",
+                    "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "tfvc", "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChangeset, responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChangesetRef, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcChangesetRef>;
+                res = await this.rest.create<TfvcInterfaces.TfvcChangesetRef>(url, changeset, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcChangesetRef,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, changeset, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -313,7 +316,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     * @param {string} orderby
     * @param {TfvcInterfaces.TfvcChangesetSearchCriteria} searchCriteria
     */
-    public getChangeset(
+    public async getChangeset(
         id: number,
         project?: string,
         maxChangeCount?: number,
@@ -326,53 +329,54 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         orderby?: string,
         searchCriteria?: TfvcInterfaces.TfvcChangesetSearchCriteria
         ): Promise<TfvcInterfaces.TfvcChangeset> {
-    
-        let deferred = Q.defer<TfvcInterfaces.TfvcChangeset>();
 
-        let onResult = (err: any, statusCode: number, Changeset: TfvcInterfaces.TfvcChangeset) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Changeset);
-            }
-        };
+        return new Promise<TfvcInterfaces.TfvcChangeset>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                id: id
+            };
 
-        let routeValues: any = {
-            project: project,
-            id: id
-        };
+            let queryValues: any = {
+                maxChangeCount: maxChangeCount,
+                includeDetails: includeDetails,
+                includeWorkItems: includeWorkItems,
+                maxCommentLength: maxCommentLength,
+                includeSourceRename: includeSourceRename,
+                '$skip': skip,
+                '$top': top,
+                '$orderby': orderby,
+                searchCriteria: searchCriteria,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.3",
+                    "tfvc",
+                    "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            maxChangeCount: maxChangeCount,
-            includeDetails: includeDetails,
-            includeWorkItems: includeWorkItems,
-            maxCommentLength: maxCommentLength,
-            includeSourceRename: includeSourceRename,
-            '$skip': skip,
-            '$top': top,
-            '$orderby': orderby,
-            searchCriteria: searchCriteria,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "tfvc", "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChangeset, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcChangeset>;
+                res = await this.rest.get<TfvcInterfaces.TfvcChangeset>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcChangeset,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
-    * Retrieve Tfvc changesets
+    * Retrieve Tfvc changesets Note: This is a new version of the GetChangesets API that doesn't expose the unneeded queryParams present in the 1.0 version of the API.
     * 
     * @param {string} project - Project ID or project name
     * @param {number} maxCommentLength
@@ -381,7 +385,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     * @param {string} orderby
     * @param {TfvcInterfaces.TfvcChangesetSearchCriteria} searchCriteria
     */
-    public getChangesets(
+    public async getChangesets(
         project?: string,
         maxCommentLength?: number,
         skip?: number,
@@ -389,119 +393,120 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         orderby?: string,
         searchCriteria?: TfvcInterfaces.TfvcChangesetSearchCriteria
         ): Promise<TfvcInterfaces.TfvcChangesetRef[]> {
-    
-        let deferred = Q.defer<TfvcInterfaces.TfvcChangesetRef[]>();
 
-        let onResult = (err: any, statusCode: number, Changesets: TfvcInterfaces.TfvcChangesetRef[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Changesets);
-            }
-        };
+        return new Promise<TfvcInterfaces.TfvcChangesetRef[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                maxCommentLength: maxCommentLength,
+                '$skip': skip,
+                '$top': top,
+                '$orderby': orderby,
+                searchCriteria: searchCriteria,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.3",
+                    "tfvc",
+                    "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            maxCommentLength: maxCommentLength,
-            '$skip': skip,
-            '$top': top,
-            '$orderby': orderby,
-            searchCriteria: searchCriteria,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "tfvc", "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChangesetRef, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcChangesetRef[]>;
+                res = await this.rest.get<TfvcInterfaces.TfvcChangesetRef[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcChangesetRef,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {TfvcInterfaces.TfvcChangesetsRequestData} changesetsRequestData
     */
-    public getBatchedChangesets(
+    public async getBatchedChangesets(
         changesetsRequestData: TfvcInterfaces.TfvcChangesetsRequestData
         ): Promise<TfvcInterfaces.TfvcChangesetRef[]> {
-    
-        let deferred = Q.defer<TfvcInterfaces.TfvcChangesetRef[]>();
 
-        let onResult = (err: any, statusCode: number, ChangesetsBatch: TfvcInterfaces.TfvcChangesetRef[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ChangesetsBatch);
-            }
-        };
+        return new Promise<TfvcInterfaces.TfvcChangesetRef[]>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "tfvc",
+                    "b7e7c173-803c-4fea-9ec8-31ee35c5502a",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "b7e7c173-803c-4fea-9ec8-31ee35c5502a", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChangesetRef, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcChangesetRef[]>;
+                res = await this.rest.create<TfvcInterfaces.TfvcChangesetRef[]>(url, changesetsRequestData, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcChangesetRef,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, changesetsRequestData, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {number} id
     */
-    public getChangesetWorkItems(
+    public async getChangesetWorkItems(
         id?: number
         ): Promise<TfvcInterfaces.AssociatedWorkItem[]> {
-    
-        let deferred = Q.defer<TfvcInterfaces.AssociatedWorkItem[]>();
 
-        let onResult = (err: any, statusCode: number, ChangesetWorkItems: TfvcInterfaces.AssociatedWorkItem[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ChangesetWorkItems);
-            }
-        };
+        return new Promise<TfvcInterfaces.AssociatedWorkItem[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                id: id
+            };
 
-        let routeValues: any = {
-            id: id
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "tfvc",
+                    "64ae0bea-1d71-47c9-a9e5-fe73f5ea0ff4",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "64ae0bea-1d71-47c9-a9e5-fe73f5ea0ff4", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.AssociatedWorkItem[]>;
+                res = await this.rest.get<TfvcInterfaces.AssociatedWorkItem[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -510,40 +515,40 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     * @param {TfvcInterfaces.TfvcItemRequestData} itemRequestData
     * @param {string} project - Project ID or project name
     */
-    public getItemsBatch(
+    public async getItemsBatch(
         itemRequestData: TfvcInterfaces.TfvcItemRequestData,
         project?: string
         ): Promise<TfvcInterfaces.TfvcItem[][]> {
-    
-        let deferred = Q.defer<TfvcInterfaces.TfvcItem[][]>();
 
-        let onResult = (err: any, statusCode: number, ItemBatch: TfvcInterfaces.TfvcItem[][]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ItemBatch);
-            }
-        };
+        return new Promise<TfvcInterfaces.TfvcItem[][]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "tfvc",
+                    "fe6f827b-5f64-480f-b8af-1eca3b80e833",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "fe6f827b-5f64-480f-b8af-1eca3b80e833", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TfvcInterfaces.TypeInfo.TfvcItemRequestData, responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcItem, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcItem[][]>;
+                res = await this.rest.create<TfvcInterfaces.TfvcItem[][]>(url, itemRequestData, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcItem,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, itemRequestData, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -552,44 +557,37 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     * @param {TfvcInterfaces.TfvcItemRequestData} itemRequestData
     * @param {string} project - Project ID or project name
     */
-    public getItemsBatchZip(
+    public async getItemsBatchZip(
         itemRequestData: TfvcInterfaces.TfvcItemRequestData,
         project?: string
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, ItemBatch: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ItemBatch);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "tfvc",
+                    "fe6f827b-5f64-480f-b8af-1eca3b80e833",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "fe6f827b-5f64-480f-b8af-1eca3b80e833", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: TfvcInterfaces.TypeInfo.TfvcItemRequestData, responseIsCollection: false };
+                let url: string = verData.requestUrl;
                 
-                this.httpClient.getStream(url, apiVersion, "application/zip", onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/zip", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
-    * Get Item Metadata and/or Content. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
+    * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
     * 
     * @param {string} path
     * @param {string} project - Project ID or project name
@@ -599,7 +597,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel
     * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
     */
-    public getItem(
+    public async getItem(
         path: string,
         project?: string,
         fileName?: string,
@@ -608,49 +606,50 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         recursionLevel?: TfvcInterfaces.VersionControlRecursionType,
         versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor
         ): Promise<TfvcInterfaces.TfvcItem> {
-    
-        let deferred = Q.defer<TfvcInterfaces.TfvcItem>();
 
-        let onResult = (err: any, statusCode: number, Item: TfvcInterfaces.TfvcItem) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Item);
-            }
-        };
+        return new Promise<TfvcInterfaces.TfvcItem>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                path: path,
+                fileName: fileName,
+                download: download,
+                scopePath: scopePath,
+                recursionLevel: recursionLevel,
+                versionDescriptor: versionDescriptor,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "tfvc",
+                    "ba9fc436-9a38-4578-89d6-e4f3241f5040",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            path: path,
-            fileName: fileName,
-            download: download,
-            scopePath: scopePath,
-            recursionLevel: recursionLevel,
-            versionDescriptor: versionDescriptor,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcItem, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcItem>;
+                res = await this.rest.get<TfvcInterfaces.TfvcItem>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcItem,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
-    * Get Item Metadata and/or Content. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
+    * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
     * 
     * @param {string} path
     * @param {string} project - Project ID or project name
@@ -660,7 +659,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel
     * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
     */
-    public getItemContent(
+    public async getItemContent(
         path: string,
         project?: string,
         fileName?: string,
@@ -669,45 +668,39 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         recursionLevel?: TfvcInterfaces.VersionControlRecursionType,
         versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, Item: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Item);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                path: path,
+                fileName: fileName,
+                download: download,
+                scopePath: scopePath,
+                recursionLevel: recursionLevel,
+                versionDescriptor: versionDescriptor,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "tfvc",
+                    "ba9fc436-9a38-4578-89d6-e4f3241f5040",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            path: path,
-            fileName: fileName,
-            download: download,
-            scopePath: scopePath,
-            recursionLevel: recursionLevel,
-            versionDescriptor: versionDescriptor,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
                 
-                this.httpClient.getStream(url, apiVersion, "application/octet-stream", onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -719,54 +712,55 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     * @param {boolean} includeLinks
     * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
     */
-    public getItems(
+    public async getItems(
         project?: string,
         scopePath?: string,
         recursionLevel?: TfvcInterfaces.VersionControlRecursionType,
         includeLinks?: boolean,
         versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor
         ): Promise<TfvcInterfaces.TfvcItem[]> {
-    
-        let deferred = Q.defer<TfvcInterfaces.TfvcItem[]>();
 
-        let onResult = (err: any, statusCode: number, Items: TfvcInterfaces.TfvcItem[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Items);
-            }
-        };
+        return new Promise<TfvcInterfaces.TfvcItem[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                scopePath: scopePath,
+                recursionLevel: recursionLevel,
+                includeLinks: includeLinks,
+                versionDescriptor: versionDescriptor,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "tfvc",
+                    "ba9fc436-9a38-4578-89d6-e4f3241f5040",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            scopePath: scopePath,
-            recursionLevel: recursionLevel,
-            includeLinks: includeLinks,
-            versionDescriptor: versionDescriptor,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcItem, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcItem[]>;
+                res = await this.rest.get<TfvcInterfaces.TfvcItem[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcItem,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
-    * Get Item Metadata and/or Content. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
+    * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
     * 
     * @param {string} path
     * @param {string} project - Project ID or project name
@@ -776,7 +770,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel
     * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
     */
-    public getItemText(
+    public async getItemText(
         path: string,
         project?: string,
         fileName?: string,
@@ -785,49 +779,43 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         recursionLevel?: TfvcInterfaces.VersionControlRecursionType,
         versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, Item: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Item);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                path: path,
+                fileName: fileName,
+                download: download,
+                scopePath: scopePath,
+                recursionLevel: recursionLevel,
+                versionDescriptor: versionDescriptor,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "tfvc",
+                    "ba9fc436-9a38-4578-89d6-e4f3241f5040",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            path: path,
-            fileName: fileName,
-            download: download,
-            scopePath: scopePath,
-            recursionLevel: recursionLevel,
-            versionDescriptor: versionDescriptor,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
                 
-                this.httpClient.getStream(url, apiVersion, "text/plain", onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("text/plain", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
-    * Get Item Metadata and/or Content. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
+    * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
     * 
     * @param {string} path
     * @param {string} project - Project ID or project name
@@ -837,7 +825,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel
     * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
     */
-    public getItemZip(
+    public async getItemZip(
         path: string,
         project?: string,
         fileName?: string,
@@ -846,45 +834,39 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         recursionLevel?: TfvcInterfaces.VersionControlRecursionType,
         versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, Item: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Item);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                path: path,
+                fileName: fileName,
+                download: download,
+                scopePath: scopePath,
+                recursionLevel: recursionLevel,
+                versionDescriptor: versionDescriptor,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "tfvc",
+                    "ba9fc436-9a38-4578-89d6-e4f3241f5040",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            path: path,
-            fileName: fileName,
-            download: download,
-            scopePath: scopePath,
-            recursionLevel: recursionLevel,
-            versionDescriptor: versionDescriptor,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "ba9fc436-9a38-4578-89d6-e4f3241f5040", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
                 
-                this.httpClient.getStream(url, apiVersion, "application/zip", onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/zip", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -894,46 +876,47 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     * @param {number} top - Max number of items to return
     * @param {number} skip - Number of items to skip
     */
-    public getLabelItems(
+    public async getLabelItems(
         labelId: string,
         top?: number,
         skip?: number
         ): Promise<TfvcInterfaces.TfvcItem[]> {
-    
-        let deferred = Q.defer<TfvcInterfaces.TfvcItem[]>();
 
-        let onResult = (err: any, statusCode: number, LabelItems: TfvcInterfaces.TfvcItem[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(LabelItems);
-            }
-        };
+        return new Promise<TfvcInterfaces.TfvcItem[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                labelId: labelId
+            };
 
-        let routeValues: any = {
-            labelId: labelId
-        };
+            let queryValues: any = {
+                '$top': top,
+                '$skip': skip,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "tfvc",
+                    "06166e34-de17-4b60-8cd1-23182a346fda",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            '$top': top,
-            '$skip': skip,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "06166e34-de17-4b60-8cd1-23182a346fda", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcItem, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcItem[]>;
+                res = await this.rest.get<TfvcInterfaces.TfvcItem[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcItem,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -943,46 +926,47 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     * @param {TfvcInterfaces.TfvcLabelRequestData} requestData - maxItemCount
     * @param {string} project - Project ID or project name
     */
-    public getLabel(
+    public async getLabel(
         labelId: string,
         requestData: TfvcInterfaces.TfvcLabelRequestData,
         project?: string
         ): Promise<TfvcInterfaces.TfvcLabel> {
-    
-        let deferred = Q.defer<TfvcInterfaces.TfvcLabel>();
 
-        let onResult = (err: any, statusCode: number, Label: TfvcInterfaces.TfvcLabel) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Label);
-            }
-        };
+        return new Promise<TfvcInterfaces.TfvcLabel>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                labelId: labelId
+            };
 
-        let routeValues: any = {
-            project: project,
-            labelId: labelId
-        };
+            let queryValues: any = {
+                requestData: requestData,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "tfvc",
+                    "a5d9bd7f-b661-4d0e-b9be-d9c16affae54",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            requestData: requestData,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "a5d9bd7f-b661-4d0e-b9be-d9c16affae54", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcLabel, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcLabel>;
+                res = await this.rest.get<TfvcInterfaces.TfvcLabel>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcLabel,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -993,48 +977,49 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     * @param {number} top - Max number of labels to return
     * @param {number} skip - Number of labels to skip
     */
-    public getLabels(
+    public async getLabels(
         requestData: TfvcInterfaces.TfvcLabelRequestData,
         project?: string,
         top?: number,
         skip?: number
         ): Promise<TfvcInterfaces.TfvcLabelRef[]> {
-    
-        let deferred = Q.defer<TfvcInterfaces.TfvcLabelRef[]>();
 
-        let onResult = (err: any, statusCode: number, Labels: TfvcInterfaces.TfvcLabelRef[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Labels);
-            }
-        };
+        return new Promise<TfvcInterfaces.TfvcLabelRef[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                requestData: requestData,
+                '$top': top,
+                '$skip': skip,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "tfvc",
+                    "a5d9bd7f-b661-4d0e-b9be-d9c16affae54",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            requestData: requestData,
-            '$top': top,
-            '$skip': skip,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "a5d9bd7f-b661-4d0e-b9be-d9c16affae54", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcLabelRef, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcLabelRef[]>;
+                res = await this.rest.get<TfvcInterfaces.TfvcLabelRef[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcLabelRef,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1044,46 +1029,47 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     * @param {number} top - Max number of changes to return
     * @param {number} skip - Number of changes to skip
     */
-    public getShelvesetChanges(
+    public async getShelvesetChanges(
         shelvesetId: string,
         top?: number,
         skip?: number
         ): Promise<TfvcInterfaces.TfvcChange[]> {
-    
-        let deferred = Q.defer<TfvcInterfaces.TfvcChange[]>();
 
-        let onResult = (err: any, statusCode: number, ShelvesetChanges: TfvcInterfaces.TfvcChange[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ShelvesetChanges);
-            }
-        };
+        return new Promise<TfvcInterfaces.TfvcChange[]>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            let queryValues: any = {
+                shelvesetId: shelvesetId,
+                '$top': top,
+                '$skip': skip,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "tfvc",
+                    "dbaf075b-0445-4c34-9e5b-82292f856522",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            shelvesetId: shelvesetId,
-            '$top': top,
-            '$skip': skip,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "dbaf075b-0445-4c34-9e5b-82292f856522", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcChange, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcChange[]>;
+                res = await this.rest.get<TfvcInterfaces.TfvcChange[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcChange,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1092,44 +1078,45 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     * @param {string} shelvesetId - Shelveset's unique ID
     * @param {TfvcInterfaces.TfvcShelvesetRequestData} requestData - includeDetails, includeWorkItems, maxChangeCount, and maxCommentLength
     */
-    public getShelveset(
+    public async getShelveset(
         shelvesetId: string,
-        requestData: TfvcInterfaces.TfvcShelvesetRequestData
+        requestData?: TfvcInterfaces.TfvcShelvesetRequestData
         ): Promise<TfvcInterfaces.TfvcShelveset> {
-    
-        let deferred = Q.defer<TfvcInterfaces.TfvcShelveset>();
 
-        let onResult = (err: any, statusCode: number, Shelveset: TfvcInterfaces.TfvcShelveset) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Shelveset);
-            }
-        };
+        return new Promise<TfvcInterfaces.TfvcShelveset>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            let queryValues: any = {
+                shelvesetId: shelvesetId,
+                requestData: requestData,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "tfvc",
+                    "e36d44fb-e907-4b0a-b194-f83f1ed32ad3",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            shelvesetId: shelvesetId,
-            requestData: requestData,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "e36d44fb-e907-4b0a-b194-f83f1ed32ad3", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcShelveset, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcShelveset>;
+                res = await this.rest.get<TfvcInterfaces.TfvcShelveset>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcShelveset,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1139,46 +1126,47 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     * @param {number} top - Max number of shelvesets to return
     * @param {number} skip - Number of shelvesets to skip
     */
-    public getShelvesets(
-        requestData: TfvcInterfaces.TfvcShelvesetRequestData,
+    public async getShelvesets(
+        requestData?: TfvcInterfaces.TfvcShelvesetRequestData,
         top?: number,
         skip?: number
         ): Promise<TfvcInterfaces.TfvcShelvesetRef[]> {
-    
-        let deferred = Q.defer<TfvcInterfaces.TfvcShelvesetRef[]>();
 
-        let onResult = (err: any, statusCode: number, Shelvesets: TfvcInterfaces.TfvcShelvesetRef[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Shelvesets);
-            }
-        };
+        return new Promise<TfvcInterfaces.TfvcShelvesetRef[]>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            let queryValues: any = {
+                requestData: requestData,
+                '$top': top,
+                '$skip': skip,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "tfvc",
+                    "e36d44fb-e907-4b0a-b194-f83f1ed32ad3",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            requestData: requestData,
-            '$top': top,
-            '$skip': skip,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "e36d44fb-e907-4b0a-b194-f83f1ed32ad3", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: TfvcInterfaces.TypeInfo.TfvcShelvesetRef, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcShelvesetRef[]>;
+                res = await this.rest.get<TfvcInterfaces.TfvcShelvesetRef[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TfvcInterfaces.TypeInfo.TfvcShelvesetRef,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1186,42 +1174,43 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     * 
     * @param {string} shelvesetId - Shelveset's unique ID
     */
-    public getShelvesetWorkItems(
+    public async getShelvesetWorkItems(
         shelvesetId: string
         ): Promise<TfvcInterfaces.AssociatedWorkItem[]> {
-    
-        let deferred = Q.defer<TfvcInterfaces.AssociatedWorkItem[]>();
 
-        let onResult = (err: any, statusCode: number, ShelvesetWorkItems: TfvcInterfaces.AssociatedWorkItem[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ShelvesetWorkItems);
-            }
-        };
+        return new Promise<TfvcInterfaces.AssociatedWorkItem[]>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            let queryValues: any = {
+                shelvesetId: shelvesetId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "tfvc",
+                    "a7a0c1c1-373e-425a-b031-a519474d743d",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            shelvesetId: shelvesetId,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "tfvc", "a7a0c1c1-373e-425a-b031-a519474d743d", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<TfvcInterfaces.AssociatedWorkItem[]>;
+                res = await this.rest.get<TfvcInterfaces.AssociatedWorkItem[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
 }

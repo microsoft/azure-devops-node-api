@@ -137,6 +137,10 @@ export interface FileContainerItem {
      */
     fileHash: number[];
     /**
+     * Id of the file content.
+     */
+    fileId: number;
+    /**
      * Length of the file. Zero if not of a file.
      */
     fileLength: number;

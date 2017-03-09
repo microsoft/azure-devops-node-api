@@ -21,10 +21,12 @@ export interface AggregatedDataForResultTrend {
     duration: any;
     resultsByOutcome: { [key: number] : AggregatedResultsByOutcome; };
     testResultsContext: TestResultsContext;
+    totalTests: number;
 }
 
 export interface AggregatedResultsAnalysis {
     duration: any;
+    notReportedResultsByOutcome: { [key: number] : AggregatedResultsByOutcome; };
     previousContext: TestResultsContext;
     resultsByOutcome: { [key: number] : AggregatedResultsByOutcome; };
     resultsDifference: AggregatedResultsDifference;
@@ -34,12 +36,15 @@ export interface AggregatedResultsAnalysis {
 export interface AggregatedResultsByOutcome {
     count: number;
     duration: any;
+    groupByField: string;
+    groupByValue: any;
     outcome: TestOutcome;
 }
 
 export interface AggregatedResultsDifference {
     increaseInDuration: any;
     increaseInFailures: number;
+    increaseInOtherTests: number;
     increaseInPassedTests: number;
     increaseInTotalTests: number;
 }
@@ -394,6 +399,12 @@ export interface PointAssignment {
     tester: VSSInterfaces.IdentityRef;
 }
 
+export interface PointsFilter {
+    configurationNames: string[];
+    testcaseIds: number[];
+    testers: VSSInterfaces.IdentityRef[];
+}
+
 export interface PointUpdateModel {
     outcome: string;
     resetToActive: boolean;
@@ -529,6 +540,9 @@ export interface RunStatistic {
 
 export interface RunUpdateModel {
     build: ShallowReference;
+    buildDropLocation: string;
+    buildFlavor: string;
+    buildPlatform: string;
     comment: string;
     completedDate: string;
     controller: string;
@@ -541,6 +555,9 @@ export interface RunUpdateModel {
     iteration: string;
     logEntries: TestMessageLogDetails[];
     name: string;
+    releaseEnvironmentUri: string;
+    releaseUri: string;
+    sourceWorkflow: string;
     startedDate: string;
     state: string;
     substate: TestRunSubstate;
@@ -624,6 +641,10 @@ export interface TestActionResultModel extends TestResultModelBase {
     actionPath: string;
     iterationId: number;
     sharedStepModel: SharedStepModel;
+    /**
+     * This is step Id of test case. For shared step, it is step Id of shared step in test case workitem; step Id in shared step. Example: TestCase workitem has two steps: 1) Normal step with Id = 1 2) Shared Step with Id = 2. Inside shared step: a) Normal Step with Id = 1 Value for StepIdentifier for First step: "1" Second step: "2;1"
+     */
+    stepIdentifier: string;
     url: string;
 }
 
@@ -799,7 +820,7 @@ export interface TestEnvironment {
 
 export interface TestFailureDetails {
     count: number;
-    testResults: ShallowReference[];
+    testResults: TestCaseResultIdentifier[];
 }
 
 export interface TestFailuresAnalysis {
@@ -844,6 +865,15 @@ export interface TestMessageLogDetails {
 export interface TestMethod {
     container: string;
     name: string;
+}
+
+/**
+ * Class representing a reference to an operation.
+ */
+export interface TestOperationReference {
+    id: string;
+    status: string;
+    url: string;
 }
 
 export enum TestOutcome {
@@ -903,7 +933,11 @@ export enum TestOutcome {
      * Test is currently executing. Added this for TCM charts
      */
     InProgress = 13,
-    MaxValue = 13,
+    /**
+     * Test is not impacted. Added fot TIA.
+     */
+    NotImpacted = 14,
+    MaxValue = 14,
 }
 
 export interface TestPlan {
@@ -975,6 +1009,13 @@ export interface TestPoint {
     workItemProperties: any[];
 }
 
+export interface TestPointsQuery {
+    orderBy: string;
+    points: TestPoint[];
+    pointsFilter: PointsFilter;
+    witFields: string[];
+}
+
 export interface TestResolutionState {
     id: number;
     name: string;
@@ -1010,6 +1051,11 @@ export interface TestResultCreateModel {
     testPoint: ShallowReference;
 }
 
+export interface TestResultDocument {
+    operationReference: TestOperationReference;
+    payload: TestResultPayload;
+}
+
 export interface TestResultHistory {
     groupByField: string;
     resultsForGroup: TestResultHistoryDetailsForGroup[];
@@ -1033,8 +1079,18 @@ export interface TestResultParameterModel {
     actionPath: string;
     iterationId: number;
     parameterName: string;
+    /**
+     * This is step Id of test case. For shared step, it is step Id of shared step in test case workitem; step Id in shared step. Example: TestCase workitem has two steps: 1) Normal step with Id = 1 2) Shared Step with Id = 2. Inside shared step: a) Normal Step with Id = 1 Value for StepIdentifier for First step: "1" Second step: "2;1"
+     */
+    stepIdentifier: string;
     url: string;
     value: string;
+}
+
+export interface TestResultPayload {
+    comment: string;
+    name: string;
+    stream: string;
 }
 
 export interface TestResultsContext {
@@ -1234,7 +1290,7 @@ export enum TestSessionSource {
     /**
      * Source of test session uncertain as it is stale
      */
-    Unkonown = 0,
+    Unknown = 0,
     /**
      * The session was created from Microsoft Test Manager exploratory desktop tool.
      */
@@ -1251,6 +1307,14 @@ export enum TestSessionSource {
      * The session was created from browser extension.
      */
     FeedbackWeb = 4,
+    /**
+     * The session was created from web access using Microsoft Test Manager exploratory desktop tool.
+     */
+    XTDesktop2 = 5,
+    /**
+     * To show sessions from all supported sources.
+     */
+    SessionInsightsForAll = 6,
 }
 
 export enum TestSessionState {
@@ -1537,6 +1601,9 @@ export var TypeInfo = {
     PointAssignment: {
         fields: <any>null
     },
+    PointsFilter: {
+        fields: <any>null
+    },
     PointUpdateModel: {
         fields: <any>null
     },
@@ -1664,6 +1731,9 @@ export var TypeInfo = {
     TestMethod: {
         fields: <any>null
     },
+    TestOperationReference: {
+        fields: <any>null
+    },
     TestOutcome: {
         enumValues: {
             "unspecified": 0,
@@ -1680,7 +1750,8 @@ export var TypeInfo = {
             "notApplicable": 11,
             "paused": 12,
             "inProgress": 13,
-            "maxValue": 13,
+            "notImpacted": 14,
+            "maxValue": 14,
         }
     },
     TestPlan: {
@@ -1698,10 +1769,16 @@ export var TypeInfo = {
     TestPoint: {
         fields: <any>null
     },
+    TestPointsQuery: {
+        fields: <any>null
+    },
     TestResolutionState: {
         fields: <any>null
     },
     TestResultCreateModel: {
+        fields: <any>null
+    },
+    TestResultDocument: {
         fields: <any>null
     },
     TestResultHistory: {
@@ -1714,6 +1791,9 @@ export var TypeInfo = {
         fields: <any>null
     },
     TestResultParameterModel: {
+        fields: <any>null
+    },
+    TestResultPayload: {
         fields: <any>null
     },
     TestResultsContext: {
@@ -1770,11 +1850,13 @@ export var TypeInfo = {
     },
     TestSessionSource: {
         enumValues: {
-            "unkonown": 0,
+            "unknown": 0,
             "xTDesktop": 1,
             "feedbackDesktop": 2,
             "xTWeb": 3,
             "feedbackWeb": 4,
+            "xTDesktop2": 5,
+            "sessionInsightsForAll": 6,
         }
     },
     TestSessionState: {
@@ -1825,6 +1907,8 @@ TypeInfo.AggregatedDataForResultTrend.fields = {
 };
 
 TypeInfo.AggregatedResultsAnalysis.fields = {
+    notReportedResultsByOutcome: {
+    },
     previousContext: {
         typeInfo: TypeInfo.TestResultsContext
     },
@@ -2022,6 +2106,13 @@ TypeInfo.PointAssignment.fields = {
         typeInfo: TypeInfo.ShallowReference
     },
     tester: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+};
+
+TypeInfo.PointsFilter.fields = {
+    testers: {
+        isArray: true,
         typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
 };
@@ -2335,7 +2426,7 @@ TypeInfo.TestEnvironment.fields = {
 TypeInfo.TestFailureDetails.fields = {
     testResults: {
         isArray: true,
-        typeInfo: TypeInfo.ShallowReference
+        typeInfo: TypeInfo.TestCaseResultIdentifier
     },
 };
 
@@ -2382,6 +2473,9 @@ TypeInfo.TestMessageLogDetails.fields = {
 };
 
 TypeInfo.TestMethod.fields = {
+};
+
+TypeInfo.TestOperationReference.fields = {
 };
 
 TypeInfo.TestPlan.fields = {
@@ -2492,6 +2586,16 @@ TypeInfo.TestPoint.fields = {
     },
 };
 
+TypeInfo.TestPointsQuery.fields = {
+    points: {
+        isArray: true,
+        typeInfo: TypeInfo.TestPoint
+    },
+    pointsFilter: {
+        typeInfo: TypeInfo.PointsFilter
+    },
+};
+
 TypeInfo.TestResolutionState.fields = {
     project: {
         typeInfo: TypeInfo.ShallowReference
@@ -2523,6 +2627,15 @@ TypeInfo.TestResultCreateModel.fields = {
     },
 };
 
+TypeInfo.TestResultDocument.fields = {
+    operationReference: {
+        typeInfo: TypeInfo.TestOperationReference
+    },
+    payload: {
+        typeInfo: TypeInfo.TestResultPayload
+    },
+};
+
 TypeInfo.TestResultHistory.fields = {
     resultsForGroup: {
         isArray: true,
@@ -2546,6 +2659,9 @@ TypeInfo.TestResultModelBase.fields = {
 };
 
 TypeInfo.TestResultParameterModel.fields = {
+};
+
+TypeInfo.TestResultPayload.fields = {
 };
 
 TypeInfo.TestResultsContext.fields = {

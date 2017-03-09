@@ -1,10 +1,10 @@
 {
     "compilerOptions": {
-        "target": "ES5",
+        "target": "es2015",
         "module": "commonjs",
         "moduleResolution": "node",
         "declaration": true,
-        "outDir": "_build"        
+        "outDir": "_build"
     },
     "files": ["api/index.ts"]
 }

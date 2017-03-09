@@ -10,12 +10,11 @@
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
-
-import Q = require('q');
-import restm = require('./RestClient');
-import httpm = require('./HttpClient');
+import * as restm from 'typed-rest-client/RestClient';
+import * as httpm from 'typed-rest-client/HttpClient';
 import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
+import serm = require('./Serialization');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import BuildInterfaces = require("./interfaces/BuildInterfaces");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
@@ -40,8 +39,8 @@ export interface IBuildApi extends basem.ClientApiBase {
     getBuildControllers(name?: string): Promise<BuildInterfaces.BuildController[]>;
     createDefinition(definition: BuildInterfaces.BuildDefinition, project?: string, definitionToCloneId?: number, definitionToCloneRevision?: number): Promise<BuildInterfaces.BuildDefinition>;
     deleteDefinition(definitionId: number, project?: string): Promise<void>;
-    getDefinition(definitionId: number, project?: string, revision?: number, propertyFilters?: string[]): Promise<BuildInterfaces.BuildDefinition>;
-    getDefinitions(project?: string, name?: string, repositoryId?: string, repositoryType?: string, queryOrder?: BuildInterfaces.DefinitionQueryOrder, top?: number, continuationToken?: string, minMetricsTime?: Date, definitionIds?: number[], path?: string, builtAfter?: Date, notBuiltAfter?: Date): Promise<BuildInterfaces.BuildDefinitionReference[]>;
+    getDefinition(definitionId: number, project?: string, revision?: number, minMetricsTime?: Date, propertyFilters?: string[], includeLatestBuilds?: boolean): Promise<BuildInterfaces.BuildDefinition>;
+    getDefinitions(project?: string, name?: string, repositoryId?: string, repositoryType?: string, queryOrder?: BuildInterfaces.DefinitionQueryOrder, top?: number, continuationToken?: string, minMetricsTime?: Date, definitionIds?: number[], path?: string, builtAfter?: Date, notBuiltAfter?: Date, includeAllProperties?: boolean, includeLatestBuilds?: boolean): Promise<BuildInterfaces.BuildDefinitionReference[]>;
     updateDefinition(definition: BuildInterfaces.BuildDefinition, definitionId: number, project?: string, secretsSourceDefinitionId?: number, secretsSourceDefinitionRevision?: number): Promise<BuildInterfaces.BuildDefinition>;
     createFolder(folder: BuildInterfaces.Folder, project: string, path: string): Promise<BuildInterfaces.Folder>;
     deleteFolder(project: string, path: string): Promise<void>;
@@ -51,6 +50,7 @@ export interface IBuildApi extends basem.ClientApiBase {
     getBuildLogLines(project: string, buildId: number, logId: number, startLine?: number, endLine?: number): Promise<string[]>;
     getBuildLogs(project: string, buildId: number): Promise<BuildInterfaces.BuildLog[]>;
     getBuildLogsZip(project: string, buildId: number): Promise<NodeJS.ReadableStream>;
+    getProjectMetrics(project: string, metricAggregationType?: string, minMetricsTime?: Date): Promise<BuildInterfaces.BuildMetric[]>;
     getDefinitionMetrics(project: string, definitionId: number, minMetricsTime?: Date): Promise<BuildInterfaces.BuildMetric[]>;
     getBuildOptionDefinitions(project?: string): Promise<BuildInterfaces.BuildOptionDefinition[]>;
     getBuildReport(project: string, buildId: number, type?: string): Promise<BuildInterfaces.BuildReportMetadata>;
@@ -63,6 +63,10 @@ export interface IBuildApi extends basem.ClientApiBase {
     addBuildTags(tags: string[], project: string, buildId: number): Promise<string[]>;
     deleteBuildTag(project: string, buildId: number, tag: string): Promise<string[]>;
     getBuildTags(project: string, buildId: number): Promise<string[]>;
+    addDefinitionTag(project: string, definitionId: number, tag: string): Promise<string[]>;
+    addDefinitionTags(tags: string[], project: string, definitionId: number): Promise<string[]>;
+    deleteDefinitionTag(project: string, definitionId: number, tag: string): Promise<string[]>;
+    getDefinitionTags(project: string, definitionId: number, revision?: number): Promise<string[]>;
     getTags(project: string): Promise<string[]>;
     deleteTemplate(project: string, templateId: string): Promise<void>;
     getTemplate(project: string, templateId: string): Promise<BuildInterfaces.BuildDefinitionTemplate>;
@@ -86,42 +90,42 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} buildId
     * @param {string} project - Project ID or project name
     */
-    public createArtifact(
+    public async createArtifact(
         artifact: BuildInterfaces.BuildArtifact,
         buildId: number,
         project?: string
         ): Promise<BuildInterfaces.BuildArtifact> {
-    
-        let deferred = Q.defer<BuildInterfaces.BuildArtifact>();
 
-        let onResult = (err: any, statusCode: number, artifact: BuildInterfaces.BuildArtifact) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(artifact);
-            }
-        };
+        return new Promise<BuildInterfaces.BuildArtifact>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId
+            };
 
-        let routeValues: any = {
-            project: project,
-            buildId: buildId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.3",
+                    "build",
+                    "1db06c96-014e-44e1-ac91-90b2d4b3e984",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.3", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.BuildArtifact>;
+                res = await this.rest.create<BuildInterfaces.BuildArtifact>(url, artifact, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, artifact, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -131,46 +135,47 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {string} artifactName
     * @param {string} project - Project ID or project name
     */
-    public getArtifact(
+    public async getArtifact(
         buildId: number,
         artifactName: string,
         project?: string
         ): Promise<BuildInterfaces.BuildArtifact> {
-    
-        let deferred = Q.defer<BuildInterfaces.BuildArtifact>();
 
-        let onResult = (err: any, statusCode: number, artifact: BuildInterfaces.BuildArtifact) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(artifact);
-            }
-        };
+        return new Promise<BuildInterfaces.BuildArtifact>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId
+            };
 
-        let routeValues: any = {
-            project: project,
-            buildId: buildId
-        };
+            let queryValues: any = {
+                artifactName: artifactName,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.3",
+                    "build",
+                    "1db06c96-014e-44e1-ac91-90b2d4b3e984",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            artifactName: artifactName,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.3", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.BuildArtifact>;
+                res = await this.rest.get<BuildInterfaces.BuildArtifact>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -180,46 +185,40 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {string} artifactName
     * @param {string} project - Project ID or project name
     */
-    public getArtifactContentZip(
+    public async getArtifactContentZip(
         buildId: number,
         artifactName: string,
         project?: string
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, artifact: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(artifact);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId
+            };
 
-        let routeValues: any = {
-            project: project,
-            buildId: buildId
-        };
+            let queryValues: any = {
+                artifactName: artifactName,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.3",
+                    "build",
+                    "1db06c96-014e-44e1-ac91-90b2d4b3e984",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            artifactName: artifactName,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.3", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
                 
-                this.httpClient.getStream(url, apiVersion, "application/zip", onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/zip", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -228,41 +227,41 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} buildId
     * @param {string} project - Project ID or project name
     */
-    public getArtifacts(
+    public async getArtifacts(
         buildId: number,
         project?: string
         ): Promise<BuildInterfaces.BuildArtifact[]> {
-    
-        let deferred = Q.defer<BuildInterfaces.BuildArtifact[]>();
 
-        let onResult = (err: any, statusCode: number, artifacts: BuildInterfaces.BuildArtifact[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(artifacts);
-            }
-        };
+        return new Promise<BuildInterfaces.BuildArtifact[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId
+            };
 
-        let routeValues: any = {
-            project: project,
-            buildId: buildId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.3",
+                    "build",
+                    "1db06c96-014e-44e1-ac91-90b2d4b3e984",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.3", "build", "1db06c96-014e-44e1-ac91-90b2d4b3e984", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.BuildArtifact[]>;
+                res = await this.rest.get<BuildInterfaces.BuildArtifact[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -270,46 +269,47 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} definitionId
     * @param {string} branchName
     */
-    public getBadge(
+    public async getBadge(
         project: string,
         definitionId: number,
         branchName?: string
         ): Promise<string> {
-    
-        let deferred = Q.defer<string>();
 
-        let onResult = (err: any, statusCode: number, badge: string) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(badge);
-            }
-        };
+        return new Promise<string>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId
+            };
 
-        let routeValues: any = {
-            project: project,
-            definitionId: definitionId
-        };
+            let queryValues: any = {
+                branchName: branchName,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "de6a4df8-22cd-44ee-af2d-39f6aa7a4261",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            branchName: branchName,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "de6a4df8-22cd-44ee-af2d-39f6aa7a4261", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<string>;
+                res = await this.rest.get<string>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -318,48 +318,49 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {string} repoId
     * @param {string} branchName
     */
-    public getBuildBadge(
+    public async getBuildBadge(
         project: string,
         repoType: string,
         repoId?: string,
         branchName?: string
         ): Promise<BuildInterfaces.BuildBadge> {
-    
-        let deferred = Q.defer<BuildInterfaces.BuildBadge>();
 
-        let onResult = (err: any, statusCode: number, buildbadge: BuildInterfaces.BuildBadge) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(buildbadge);
-            }
-        };
+        return new Promise<BuildInterfaces.BuildBadge>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                repoType: repoType
+            };
 
-        let routeValues: any = {
-            project: project,
-            repoType: repoType
-        };
+            let queryValues: any = {
+                repoId: repoId,
+                branchName: branchName,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "build",
+                    "21b3b9ce-fad5-4567-9ad0-80679794e003",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            repoId: repoId,
-            branchName: branchName,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "build", "21b3b9ce-fad5-4567-9ad0-80679794e003", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.BuildBadge>;
+                res = await this.rest.get<BuildInterfaces.BuildBadge>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -368,48 +369,49 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {string} repoId
     * @param {string} branchName
     */
-    public getBuildBadgeData(
+    public async getBuildBadgeData(
         project: string,
         repoType: string,
         repoId?: string,
         branchName?: string
         ): Promise<string> {
-    
-        let deferred = Q.defer<string>();
 
-        let onResult = (err: any, statusCode: number, buildbadge: string) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(buildbadge);
-            }
-        };
+        return new Promise<string>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                repoType: repoType
+            };
 
-        let routeValues: any = {
-            project: project,
-            repoType: repoType
-        };
+            let queryValues: any = {
+                repoId: repoId,
+                branchName: branchName,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "build",
+                    "21b3b9ce-fad5-4567-9ad0-80679794e003",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            repoId: repoId,
-            branchName: branchName,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "build", "21b3b9ce-fad5-4567-9ad0-80679794e003", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<string>;
+                res = await this.rest.get<string>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -418,41 +420,41 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} buildId
     * @param {string} project - Project ID or project name
     */
-    public deleteBuild(
+    public async deleteBuild(
         buildId: number,
         project?: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId
+            };
 
-        let routeValues: any = {
-            project: project,
-            buildId: buildId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.3",
+                    "build",
+                    "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.3", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -462,46 +464,47 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {string} project - Project ID or project name
     * @param {string} propertyFilters - A comma-delimited list of properties to include in the results
     */
-    public getBuild(
+    public async getBuild(
         buildId: number,
         project?: string,
         propertyFilters?: string
         ): Promise<BuildInterfaces.Build> {
-    
-        let deferred = Q.defer<BuildInterfaces.Build>();
 
-        let onResult = (err: any, statusCode: number, build: BuildInterfaces.Build) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(build);
-            }
-        };
+        return new Promise<BuildInterfaces.Build>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId
+            };
 
-        let routeValues: any = {
-            project: project,
-            buildId: buildId
-        };
+            let queryValues: any = {
+                propertyFilters: propertyFilters,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.3",
+                    "build",
+                    "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            propertyFilters: propertyFilters,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.3", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.Build>;
+                res = await this.rest.get<BuildInterfaces.Build>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.Build,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -529,7 +532,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {string} repositoryId
     * @param {string} repositoryType
     */
-    public getBuilds(
+    public async getBuilds(
         project?: string,
         definitions?: number[],
         queues?: number[],
@@ -552,59 +555,60 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         repositoryId?: string,
         repositoryType?: string
         ): Promise<BuildInterfaces.Build[]> {
-    
-        let deferred = Q.defer<BuildInterfaces.Build[]>();
 
-        let onResult = (err: any, statusCode: number, builds: BuildInterfaces.Build[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(builds);
-            }
-        };
+        return new Promise<BuildInterfaces.Build[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                definitions: definitions && definitions.join(","),
+                queues: queues && queues.join(","),
+                buildNumber: buildNumber,
+                minFinishTime: minFinishTime,
+                maxFinishTime: maxFinishTime,
+                requestedFor: requestedFor,
+                reasonFilter: reasonFilter,
+                statusFilter: statusFilter,
+                resultFilter: resultFilter,
+                tagFilters: tagFilters && tagFilters.join(","),
+                properties: properties && properties.join(","),
+                '$top': top,
+                continuationToken: continuationToken,
+                maxBuildsPerDefinition: maxBuildsPerDefinition,
+                deletedFilter: deletedFilter,
+                queryOrder: queryOrder,
+                branchName: branchName,
+                buildIds: buildIds && buildIds.join(","),
+                repositoryId: repositoryId,
+                repositoryType: repositoryType,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.3",
+                    "build",
+                    "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            definitions: definitions && definitions.join(","),
-            queues: queues && queues.join(","),
-            buildNumber: buildNumber,
-            minFinishTime: minFinishTime,
-            maxFinishTime: maxFinishTime,
-            requestedFor: requestedFor,
-            reasonFilter: reasonFilter,
-            statusFilter: statusFilter,
-            resultFilter: resultFilter,
-            tagFilters: tagFilters && tagFilters.join(","),
-            properties: properties && properties.join(","),
-            '$top': top,
-            continuationToken: continuationToken,
-            maxBuildsPerDefinition: maxBuildsPerDefinition,
-            deletedFilter: deletedFilter,
-            queryOrder: queryOrder,
-            branchName: branchName,
-            buildIds: buildIds && buildIds.join(","),
-            repositoryId: repositoryId,
-            repositoryType: repositoryType,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.3", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.Build[]>;
+                res = await this.rest.get<BuildInterfaces.Build[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.Build,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -615,47 +619,48 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {boolean} ignoreWarnings
     * @param {string} checkInTicket
     */
-    public queueBuild(
+    public async queueBuild(
         build: BuildInterfaces.Build,
         project?: string,
         ignoreWarnings?: boolean,
         checkInTicket?: string
         ): Promise<BuildInterfaces.Build> {
-    
-        let deferred = Q.defer<BuildInterfaces.Build>();
 
-        let onResult = (err: any, statusCode: number, build: BuildInterfaces.Build) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(build);
-            }
-        };
+        return new Promise<BuildInterfaces.Build>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                ignoreWarnings: ignoreWarnings,
+                checkInTicket: checkInTicket,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.3",
+                    "build",
+                    "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            ignoreWarnings: ignoreWarnings,
-            checkInTicket: checkInTicket,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.3", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.Build, responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.Build>;
+                res = await this.rest.create<BuildInterfaces.Build>(url, build, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.Build,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, build, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -665,42 +670,42 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} buildId
     * @param {string} project - Project ID or project name
     */
-    public updateBuild(
+    public async updateBuild(
         build: BuildInterfaces.Build,
         buildId: number,
         project?: string
         ): Promise<BuildInterfaces.Build> {
-    
-        let deferred = Q.defer<BuildInterfaces.Build>();
 
-        let onResult = (err: any, statusCode: number, build: BuildInterfaces.Build) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(build);
-            }
-        };
+        return new Promise<BuildInterfaces.Build>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId
+            };
 
-        let routeValues: any = {
-            project: project,
-            buildId: buildId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.3",
+                    "build",
+                    "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.3", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.Build, responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.Build>;
+                res = await this.rest.update<BuildInterfaces.Build>(url, build, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.Build,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.update(url, apiVersion, build, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -709,40 +714,40 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {BuildInterfaces.Build[]} builds
     * @param {string} project - Project ID or project name
     */
-    public updateBuilds(
+    public async updateBuilds(
         builds: BuildInterfaces.Build[],
         project?: string
         ): Promise<BuildInterfaces.Build[]> {
-    
-        let deferred = Q.defer<BuildInterfaces.Build[]>();
 
-        let onResult = (err: any, statusCode: number, builds: BuildInterfaces.Build[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(builds);
-            }
-        };
+        return new Promise<BuildInterfaces.Build[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.3",
+                    "build",
+                    "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.3", "build", "0cd358e1-9217-4d94-8269-1c1ee6f93dcf", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.Build, responseTypeMetadata: BuildInterfaces.TypeInfo.Build, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.Build[]>;
+                res = await this.rest.update<BuildInterfaces.Build[]>(url, builds, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.Build,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.update(url, apiVersion, builds, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -754,50 +759,51 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} top - The maximum number of changes to return
     * @param {boolean} includeSourceChange
     */
-    public getBuildChanges(
+    public async getBuildChanges(
         project: string,
         buildId: number,
         continuationToken?: string,
         top?: number,
         includeSourceChange?: boolean
         ): Promise<BuildInterfaces.Change[]> {
-    
-        let deferred = Q.defer<BuildInterfaces.Change[]>();
 
-        let onResult = (err: any, statusCode: number, changes: BuildInterfaces.Change[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(changes);
-            }
-        };
+        return new Promise<BuildInterfaces.Change[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId
+            };
 
-        let routeValues: any = {
-            project: project,
-            buildId: buildId
-        };
+            let queryValues: any = {
+                continuationToken: continuationToken,
+                '$top': top,
+                includeSourceChange: includeSourceChange,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "54572c7b-bbd3-45d4-80dc-28be08941620",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            continuationToken: continuationToken,
-            '$top': top,
-            includeSourceChange: includeSourceChange,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "54572c7b-bbd3-45d4-80dc-28be08941620", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Change, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.Change[]>;
+                res = await this.rest.get<BuildInterfaces.Change[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.Change,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -808,48 +814,49 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} toBuildId
     * @param {number} top - The maximum number of changes to return
     */
-    public getChangesBetweenBuilds(
+    public async getChangesBetweenBuilds(
         project: string,
         fromBuildId?: number,
         toBuildId?: number,
         top?: number
         ): Promise<BuildInterfaces.Change[]> {
-    
-        let deferred = Q.defer<BuildInterfaces.Change[]>();
 
-        let onResult = (err: any, statusCode: number, changes: BuildInterfaces.Change[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(changes);
-            }
-        };
+        return new Promise<BuildInterfaces.Change[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                fromBuildId: fromBuildId,
+                toBuildId: toBuildId,
+                '$top': top,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "f10f0ea5-18a1-43ec-a8fb-2042c7be9b43",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            fromBuildId: fromBuildId,
-            toBuildId: toBuildId,
-            '$top': top,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "f10f0ea5-18a1-43ec-a8fb-2042c7be9b43", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Change, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.Change[]>;
+                res = await this.rest.get<BuildInterfaces.Change[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.Change,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -857,39 +864,39 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * 
     * @param {number} controllerId
     */
-    public getBuildController(
+    public async getBuildController(
         controllerId: number
         ): Promise<BuildInterfaces.BuildController> {
-    
-        let deferred = Q.defer<BuildInterfaces.BuildController>();
 
-        let onResult = (err: any, statusCode: number, Controller: BuildInterfaces.BuildController) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Controller);
-            }
-        };
+        return new Promise<BuildInterfaces.BuildController>(async (resolve, reject) => {
+            let routeValues: any = {
+                controllerId: controllerId
+            };
 
-        let routeValues: any = {
-            controllerId: controllerId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "fcac1932-2ee1-437f-9b6f-7f696be858f6",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "fcac1932-2ee1-437f-9b6f-7f696be858f6", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildController, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.BuildController>;
+                res = await this.rest.get<BuildInterfaces.BuildController>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.BuildController,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -897,42 +904,43 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * 
     * @param {string} name
     */
-    public getBuildControllers(
+    public async getBuildControllers(
         name?: string
         ): Promise<BuildInterfaces.BuildController[]> {
-    
-        let deferred = Q.defer<BuildInterfaces.BuildController[]>();
 
-        let onResult = (err: any, statusCode: number, Controllers: BuildInterfaces.BuildController[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Controllers);
-            }
-        };
+        return new Promise<BuildInterfaces.BuildController[]>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            let queryValues: any = {
+                name: name,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "fcac1932-2ee1-437f-9b6f-7f696be858f6",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            name: name,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "fcac1932-2ee1-437f-9b6f-7f696be858f6", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildController, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.BuildController[]>;
+                res = await this.rest.get<BuildInterfaces.BuildController[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.BuildController,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -943,47 +951,48 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} definitionToCloneId
     * @param {number} definitionToCloneRevision
     */
-    public createDefinition(
+    public async createDefinition(
         definition: BuildInterfaces.BuildDefinition,
         project?: string,
         definitionToCloneId?: number,
         definitionToCloneRevision?: number
         ): Promise<BuildInterfaces.BuildDefinition> {
-    
-        let deferred = Q.defer<BuildInterfaces.BuildDefinition>();
 
-        let onResult = (err: any, statusCode: number, definition: BuildInterfaces.BuildDefinition) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(definition);
-            }
-        };
+        return new Promise<BuildInterfaces.BuildDefinition>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                definitionToCloneId: definitionToCloneId,
+                definitionToCloneRevision: definitionToCloneRevision,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.4",
+                    "build",
+                    "dbeaf647-6167-421a-bda9-c9327b25e2e6",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            definitionToCloneId: definitionToCloneId,
-            definitionToCloneRevision: definitionToCloneRevision,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.BuildDefinition>;
+                res = await this.rest.create<BuildInterfaces.BuildDefinition>(url, definition, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.BuildDefinition,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, definition, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -992,41 +1001,41 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} definitionId
     * @param {string} project - Project ID or project name
     */
-    public deleteDefinition(
+    public async deleteDefinition(
         definitionId: number,
         project?: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId
+            };
 
-        let routeValues: any = {
-            project: project,
-            definitionId: definitionId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.4",
+                    "build",
+                    "dbeaf647-6167-421a-bda9-c9327b25e2e6",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1035,50 +1044,57 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} definitionId
     * @param {string} project - Project ID or project name
     * @param {number} revision
+    * @param {Date} minMetricsTime
     * @param {string[]} propertyFilters
+    * @param {boolean} includeLatestBuilds
     */
-    public getDefinition(
+    public async getDefinition(
         definitionId: number,
         project?: string,
         revision?: number,
-        propertyFilters?: string[]
+        minMetricsTime?: Date,
+        propertyFilters?: string[],
+        includeLatestBuilds?: boolean
         ): Promise<BuildInterfaces.BuildDefinition> {
-    
-        let deferred = Q.defer<BuildInterfaces.BuildDefinition>();
 
-        let onResult = (err: any, statusCode: number, definition: BuildInterfaces.BuildDefinition) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(definition);
-            }
-        };
+        return new Promise<BuildInterfaces.BuildDefinition>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId
+            };
 
-        let routeValues: any = {
-            project: project,
-            definitionId: definitionId
-        };
+            let queryValues: any = {
+                revision: revision,
+                minMetricsTime: minMetricsTime,
+                propertyFilters: propertyFilters && propertyFilters.join(","),
+                includeLatestBuilds: includeLatestBuilds,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.4",
+                    "build",
+                    "dbeaf647-6167-421a-bda9-c9327b25e2e6",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            revision: revision,
-            propertyFilters: propertyFilters && propertyFilters.join(","),
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.BuildDefinition>;
+                res = await this.rest.get<BuildInterfaces.BuildDefinition>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.BuildDefinition,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1096,8 +1112,10 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {string} path
     * @param {Date} builtAfter
     * @param {Date} notBuiltAfter
+    * @param {boolean} includeAllProperties
+    * @param {boolean} includeLatestBuilds
     */
-    public getDefinitions(
+    public async getDefinitions(
         project?: string,
         name?: string,
         repositoryId?: string,
@@ -1109,52 +1127,57 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         definitionIds?: number[],
         path?: string,
         builtAfter?: Date,
-        notBuiltAfter?: Date
+        notBuiltAfter?: Date,
+        includeAllProperties?: boolean,
+        includeLatestBuilds?: boolean
         ): Promise<BuildInterfaces.BuildDefinitionReference[]> {
-    
-        let deferred = Q.defer<BuildInterfaces.BuildDefinitionReference[]>();
 
-        let onResult = (err: any, statusCode: number, definitions: BuildInterfaces.BuildDefinitionReference[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(definitions);
-            }
-        };
+        return new Promise<BuildInterfaces.BuildDefinitionReference[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                name: name,
+                repositoryId: repositoryId,
+                repositoryType: repositoryType,
+                queryOrder: queryOrder,
+                '$top': top,
+                continuationToken: continuationToken,
+                minMetricsTime: minMetricsTime,
+                definitionIds: definitionIds && definitionIds.join(","),
+                path: path,
+                builtAfter: builtAfter,
+                notBuiltAfter: notBuiltAfter,
+                includeAllProperties: includeAllProperties,
+                includeLatestBuilds: includeLatestBuilds,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.4",
+                    "build",
+                    "dbeaf647-6167-421a-bda9-c9327b25e2e6",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            name: name,
-            repositoryId: repositoryId,
-            repositoryType: repositoryType,
-            queryOrder: queryOrder,
-            '$top': top,
-            continuationToken: continuationToken,
-            minMetricsTime: minMetricsTime,
-            definitionIds: definitionIds && definitionIds.join(","),
-            path: path,
-            builtAfter: builtAfter,
-            notBuiltAfter: notBuiltAfter,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionReference, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionReference[]>;
+                res = await this.rest.get<BuildInterfaces.BuildDefinitionReference[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.BuildDefinitionReference,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1166,49 +1189,50 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} secretsSourceDefinitionId
     * @param {number} secretsSourceDefinitionRevision
     */
-    public updateDefinition(
+    public async updateDefinition(
         definition: BuildInterfaces.BuildDefinition,
         definitionId: number,
         project?: string,
         secretsSourceDefinitionId?: number,
         secretsSourceDefinitionRevision?: number
         ): Promise<BuildInterfaces.BuildDefinition> {
-    
-        let deferred = Q.defer<BuildInterfaces.BuildDefinition>();
 
-        let onResult = (err: any, statusCode: number, definition: BuildInterfaces.BuildDefinition) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(definition);
-            }
-        };
+        return new Promise<BuildInterfaces.BuildDefinition>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId
+            };
 
-        let routeValues: any = {
-            project: project,
-            definitionId: definitionId
-        };
+            let queryValues: any = {
+                secretsSourceDefinitionId: secretsSourceDefinitionId,
+                secretsSourceDefinitionRevision: secretsSourceDefinitionRevision,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.4",
+                    "build",
+                    "dbeaf647-6167-421a-bda9-c9327b25e2e6",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            secretsSourceDefinitionId: secretsSourceDefinitionId,
-            secretsSourceDefinitionRevision: secretsSourceDefinitionRevision,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "dbeaf647-6167-421a-bda9-c9327b25e2e6", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinition, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.BuildDefinition>;
+                res = await this.rest.replace<BuildInterfaces.BuildDefinition>(url, definition, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.BuildDefinition,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.replace(url, apiVersion, definition, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1218,42 +1242,42 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {string} project - Project ID or project name
     * @param {string} path
     */
-    public createFolder(
+    public async createFolder(
         folder: BuildInterfaces.Folder,
         project: string,
         path: string
         ): Promise<BuildInterfaces.Folder> {
-    
-        let deferred = Q.defer<BuildInterfaces.Folder>();
 
-        let onResult = (err: any, statusCode: number, folder: BuildInterfaces.Folder) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(folder);
-            }
-        };
+        return new Promise<BuildInterfaces.Folder>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                path: path
+            };
 
-        let routeValues: any = {
-            project: project,
-            path: path
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "build",
+                    "a906531b-d2da-4f55-bda7-f3e676cc50d9",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "build", "a906531b-d2da-4f55-bda7-f3e676cc50d9", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.Folder, responseTypeMetadata: BuildInterfaces.TypeInfo.Folder, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.Folder>;
+                res = await this.rest.replace<BuildInterfaces.Folder>(url, folder, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.Folder,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.replace(url, apiVersion, folder, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1262,41 +1286,41 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {string} project - Project ID or project name
     * @param {string} path
     */
-    public deleteFolder(
+    public async deleteFolder(
         project: string,
         path: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                path: path
+            };
 
-        let routeValues: any = {
-            project: project,
-            path: path
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "build",
+                    "a906531b-d2da-4f55-bda7-f3e676cc50d9",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "build", "a906531b-d2da-4f55-bda7-f3e676cc50d9", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1306,46 +1330,47 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {string} path
     * @param {BuildInterfaces.FolderQueryOrder} queryOrder
     */
-    public getFolders(
+    public async getFolders(
         project: string,
         path?: string,
         queryOrder?: BuildInterfaces.FolderQueryOrder
         ): Promise<BuildInterfaces.Folder[]> {
-    
-        let deferred = Q.defer<BuildInterfaces.Folder[]>();
 
-        let onResult = (err: any, statusCode: number, folders: BuildInterfaces.Folder[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(folders);
-            }
-        };
+        return new Promise<BuildInterfaces.Folder[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                path: path
+            };
 
-        let routeValues: any = {
-            project: project,
-            path: path
-        };
+            let queryValues: any = {
+                queryOrder: queryOrder,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "build",
+                    "a906531b-d2da-4f55-bda7-f3e676cc50d9",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            queryOrder: queryOrder,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "build", "a906531b-d2da-4f55-bda7-f3e676cc50d9", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Folder, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.Folder[]>;
+                res = await this.rest.get<BuildInterfaces.Folder[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.Folder,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1355,42 +1380,42 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {string} project - Project ID or project name
     * @param {string} path
     */
-    public updateFolder(
+    public async updateFolder(
         folder: BuildInterfaces.Folder,
         project: string,
         path: string
         ): Promise<BuildInterfaces.Folder> {
-    
-        let deferred = Q.defer<BuildInterfaces.Folder>();
 
-        let onResult = (err: any, statusCode: number, folder: BuildInterfaces.Folder) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(folder);
-            }
-        };
+        return new Promise<BuildInterfaces.Folder>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                path: path
+            };
 
-        let routeValues: any = {
-            project: project,
-            path: path
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "build",
+                    "a906531b-d2da-4f55-bda7-f3e676cc50d9",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "build", "a906531b-d2da-4f55-bda7-f3e676cc50d9", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.Folder, responseTypeMetadata: BuildInterfaces.TypeInfo.Folder, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.Folder>;
+                res = await this.rest.create<BuildInterfaces.Folder>(url, folder, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.Folder,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, folder, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1402,50 +1427,44 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} startLine
     * @param {number} endLine
     */
-    public getBuildLog(
+    public async getBuildLog(
         project: string,
         buildId: number,
         logId: number,
         startLine?: number,
         endLine?: number
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, log: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(log);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId,
+                logId: logId
+            };
 
-        let routeValues: any = {
-            project: project,
-            buildId: buildId,
-            logId: logId
-        };
+            let queryValues: any = {
+                startLine: startLine,
+                endLine: endLine,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "35a80daf-7f30-45fc-86e8-6b813d9c90df",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            startLine: startLine,
-            endLine: endLine,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
                 
-                this.httpClient.getStream(url, apiVersion, "text/plain", onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("text/plain", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1457,50 +1476,51 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} startLine
     * @param {number} endLine
     */
-    public getBuildLogLines(
+    public async getBuildLogLines(
         project: string,
         buildId: number,
         logId: number,
         startLine?: number,
         endLine?: number
         ): Promise<string[]> {
-    
-        let deferred = Q.defer<string[]>();
 
-        let onResult = (err: any, statusCode: number, logs: string[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(logs);
-            }
-        };
+        return new Promise<string[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId,
+                logId: logId
+            };
 
-        let routeValues: any = {
-            project: project,
-            buildId: buildId,
-            logId: logId
-        };
+            let queryValues: any = {
+                startLine: startLine,
+                endLine: endLine,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "35a80daf-7f30-45fc-86e8-6b813d9c90df",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            startLine: startLine,
-            endLine: endLine,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<string[]>;
+                res = await this.rest.get<string[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1509,41 +1529,41 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {string} project - Project ID or project name
     * @param {number} buildId
     */
-    public getBuildLogs(
+    public async getBuildLogs(
         project: string,
         buildId: number
         ): Promise<BuildInterfaces.BuildLog[]> {
-    
-        let deferred = Q.defer<BuildInterfaces.BuildLog[]>();
 
-        let onResult = (err: any, statusCode: number, logs: BuildInterfaces.BuildLog[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(logs);
-            }
-        };
+        return new Promise<BuildInterfaces.BuildLog[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId
+            };
 
-        let routeValues: any = {
-            project: project,
-            buildId: buildId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "35a80daf-7f30-45fc-86e8-6b813d9c90df",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildLog, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.BuildLog[]>;
+                res = await this.rest.get<BuildInterfaces.BuildLog[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.BuildLog,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1552,41 +1572,84 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {string} project - Project ID or project name
     * @param {number} buildId
     */
-    public getBuildLogsZip(
+    public async getBuildLogsZip(
         project: string,
         buildId: number
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, log: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(log);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId
+            };
 
-        let routeValues: any = {
-            project: project,
-            buildId: buildId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "35a80daf-7f30-45fc-86e8-6b813d9c90df",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "35a80daf-7f30-45fc-86e8-6b813d9c90df", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
                 
-                this.httpClient.getStream(url, apiVersion, "application/zip", onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/zip", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-        return deferred.promise;
+    /**
+    * Gets metrics of a project
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {string} metricAggregationType
+    * @param {Date} minMetricsTime
+    */
+    public async getProjectMetrics(
+        project: string,
+        metricAggregationType?: string,
+        minMetricsTime?: Date
+        ): Promise<BuildInterfaces.BuildMetric[]> {
+
+        return new Promise<BuildInterfaces.BuildMetric[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                metricAggregationType: metricAggregationType
+            };
+
+            let queryValues: any = {
+                minMetricsTime: minMetricsTime,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "build",
+                    "7433fae7-a6bc-41dc-a6e2-eef9005ce41a",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.BuildMetric[]>;
+                res = await this.rest.get<BuildInterfaces.BuildMetric[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.BuildMetric,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1596,84 +1659,85 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} definitionId
     * @param {Date} minMetricsTime
     */
-    public getDefinitionMetrics(
+    public async getDefinitionMetrics(
         project: string,
         definitionId: number,
         minMetricsTime?: Date
         ): Promise<BuildInterfaces.BuildMetric[]> {
-    
-        let deferred = Q.defer<BuildInterfaces.BuildMetric[]>();
 
-        let onResult = (err: any, statusCode: number, metrics: BuildInterfaces.BuildMetric[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(metrics);
-            }
-        };
+        return new Promise<BuildInterfaces.BuildMetric[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId
+            };
 
-        let routeValues: any = {
-            project: project,
-            definitionId: definitionId
-        };
+            let queryValues: any = {
+                minMetricsTime: minMetricsTime,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "build",
+                    "d973b939-0ce0-4fec-91d8-da3940fa1827",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            minMetricsTime: minMetricsTime,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "build", "d973b939-0ce0-4fec-91d8-da3940fa1827", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildMetric, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.BuildMetric[]>;
+                res = await this.rest.get<BuildInterfaces.BuildMetric[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.BuildMetric,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     */
-    public getBuildOptionDefinitions(
+    public async getBuildOptionDefinitions(
         project?: string
         ): Promise<BuildInterfaces.BuildOptionDefinition[]> {
-    
-        let deferred = Q.defer<BuildInterfaces.BuildOptionDefinition[]>();
 
-        let onResult = (err: any, statusCode: number, options: BuildInterfaces.BuildOptionDefinition[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(options);
-            }
-        };
+        return new Promise<BuildInterfaces.BuildOptionDefinition[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "591cb5a4-2d46-4f3a-a697-5cd42b6bd332",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "591cb5a4-2d46-4f3a-a697-5cd42b6bd332", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildOptionDefinition, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.BuildOptionDefinition[]>;
+                res = await this.rest.get<BuildInterfaces.BuildOptionDefinition[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.BuildOptionDefinition,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1683,46 +1747,47 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} buildId
     * @param {string} type
     */
-    public getBuildReport(
+    public async getBuildReport(
         project: string,
         buildId: number,
         type?: string
         ): Promise<BuildInterfaces.BuildReportMetadata> {
-    
-        let deferred = Q.defer<BuildInterfaces.BuildReportMetadata>();
 
-        let onResult = (err: any, statusCode: number, report: BuildInterfaces.BuildReportMetadata) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(report);
-            }
-        };
+        return new Promise<BuildInterfaces.BuildReportMetadata>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId
+            };
 
-        let routeValues: any = {
-            project: project,
-            buildId: buildId
-        };
+            let queryValues: any = {
+                type: type,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "45bcaa88-67e1-4042-a035-56d3b4a7d44c",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            type: type,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "45bcaa88-67e1-4042-a035-56d3b4a7d44c", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.BuildReportMetadata>;
+                res = await this.rest.get<BuildInterfaces.BuildReportMetadata>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1732,81 +1797,75 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} buildId
     * @param {string} type
     */
-    public getBuildReportHtmlContent(
+    public async getBuildReportHtmlContent(
         project: string,
         buildId: number,
         type?: string
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, report: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(report);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId
+            };
 
-        let routeValues: any = {
-            project: project,
-            buildId: buildId
-        };
+            let queryValues: any = {
+                type: type,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "45bcaa88-67e1-4042-a035-56d3b4a7d44c",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            type: type,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "45bcaa88-67e1-4042-a035-56d3b4a7d44c", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
                 
-                this.httpClient.getStream(url, apiVersion, "text/html", onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("text/html", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     */
-    public getResourceUsage(
+    public async getResourceUsage(
         ): Promise<BuildInterfaces.BuildResourceUsage> {
-    
-        let deferred = Q.defer<BuildInterfaces.BuildResourceUsage>();
 
-        let onResult = (err: any, statusCode: number, ResourceUsage: BuildInterfaces.BuildResourceUsage) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(ResourceUsage);
-            }
-        };
+        return new Promise<BuildInterfaces.BuildResourceUsage>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "3813d06c-9e36-4ea1-aac3-61a485d60e3d",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "3813d06c-9e36-4ea1-aac3-61a485d60e3d", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.BuildResourceUsage>;
+                res = await this.rest.get<BuildInterfaces.BuildResourceUsage>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1815,76 +1874,76 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {string} project - Project ID or project name
     * @param {number} definitionId
     */
-    public getDefinitionRevisions(
+    public async getDefinitionRevisions(
         project: string,
         definitionId: number
         ): Promise<BuildInterfaces.BuildDefinitionRevision[]> {
-    
-        let deferred = Q.defer<BuildInterfaces.BuildDefinitionRevision[]>();
 
-        let onResult = (err: any, statusCode: number, revisions: BuildInterfaces.BuildDefinitionRevision[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(revisions);
-            }
-        };
+        return new Promise<BuildInterfaces.BuildDefinitionRevision[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId
+            };
 
-        let routeValues: any = {
-            project: project,
-            definitionId: definitionId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "7c116775-52e5-453e-8c5d-914d9762d8c4",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "7c116775-52e5-453e-8c5d-914d9762d8c4", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionRevision, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionRevision[]>;
+                res = await this.rest.get<BuildInterfaces.BuildDefinitionRevision[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.BuildDefinitionRevision,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     */
-    public getBuildSettings(
+    public async getBuildSettings(
         ): Promise<BuildInterfaces.BuildSettings> {
-    
-        let deferred = Q.defer<BuildInterfaces.BuildSettings>();
 
-        let onResult = (err: any, statusCode: number, setting: BuildInterfaces.BuildSettings) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(setting);
-            }
-        };
+        return new Promise<BuildInterfaces.BuildSettings>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "build",
+                    "aa8c1c9c-ef8b-474a-b8c4-785c7b191d0d",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "build", "aa8c1c9c-ef8b-474a-b8c4-785c7b191d0d", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.BuildSettings>;
+                res = await this.rest.get<BuildInterfaces.BuildSettings>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1892,38 +1951,38 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * 
     * @param {BuildInterfaces.BuildSettings} settings
     */
-    public updateBuildSettings(
+    public async updateBuildSettings(
         settings: BuildInterfaces.BuildSettings
         ): Promise<BuildInterfaces.BuildSettings> {
-    
-        let deferred = Q.defer<BuildInterfaces.BuildSettings>();
 
-        let onResult = (err: any, statusCode: number, setting: BuildInterfaces.BuildSettings) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(setting);
-            }
-        };
+        return new Promise<BuildInterfaces.BuildSettings>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "build",
+                    "aa8c1c9c-ef8b-474a-b8c4-785c7b191d0d",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "build", "aa8c1c9c-ef8b-474a-b8c4-785c7b191d0d", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.BuildSettings>;
+                res = await this.rest.update<BuildInterfaces.BuildSettings>(url, settings, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.update(url, apiVersion, settings, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1933,43 +1992,43 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} buildId
     * @param {string} tag
     */
-    public addBuildTag(
+    public async addBuildTag(
         project: string,
         buildId: number,
         tag: string
         ): Promise<string[]> {
-    
-        let deferred = Q.defer<string[]>();
 
-        let onResult = (err: any, statusCode: number, tags: string[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(tags);
-            }
-        };
+        return new Promise<string[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId,
+                tag: tag
+            };
 
-        let routeValues: any = {
-            project: project,
-            buildId: buildId,
-            tag: tag
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "6e6114b2-8161-44c8-8f6c-c5505782427f",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<string[]>;
+                res = await this.rest.replace<string[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.replace(url, apiVersion, null, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1979,42 +2038,42 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {string} project - Project ID or project name
     * @param {number} buildId
     */
-    public addBuildTags(
+    public async addBuildTags(
         tags: string[],
         project: string,
         buildId: number
         ): Promise<string[]> {
-    
-        let deferred = Q.defer<string[]>();
 
-        let onResult = (err: any, statusCode: number, tags: string[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(tags);
-            }
-        };
+        return new Promise<string[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId
+            };
 
-        let routeValues: any = {
-            project: project,
-            buildId: buildId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "6e6114b2-8161-44c8-8f6c-c5505782427f",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<string[]>;
+                res = await this.rest.create<string[]>(url, tags, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, tags, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2024,43 +2083,43 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} buildId
     * @param {string} tag
     */
-    public deleteBuildTag(
+    public async deleteBuildTag(
         project: string,
         buildId: number,
         tag: string
         ): Promise<string[]> {
-    
-        let deferred = Q.defer<string[]>();
 
-        let onResult = (err: any, statusCode: number, tags: string[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(tags);
-            }
-        };
+        return new Promise<string[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId,
+                tag: tag
+            };
 
-        let routeValues: any = {
-            project: project,
-            buildId: buildId,
-            tag: tag
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "6e6114b2-8161-44c8-8f6c-c5505782427f",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<string[]>;
+                res = await this.rest.del<string[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2069,79 +2128,266 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {string} project - Project ID or project name
     * @param {number} buildId
     */
-    public getBuildTags(
+    public async getBuildTags(
         project: string,
         buildId: number
         ): Promise<string[]> {
-    
-        let deferred = Q.defer<string[]>();
 
-        let onResult = (err: any, statusCode: number, tags: string[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(tags);
-            }
-        };
+        return new Promise<string[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId
+            };
 
-        let routeValues: any = {
-            project: project,
-            buildId: buildId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "6e6114b2-8161-44c8-8f6c-c5505782427f",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "6e6114b2-8161-44c8-8f6c-c5505782427f", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<string[]>;
+                res = await this.rest.get<string[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-        return deferred.promise;
+    /**
+    * Adds a tag to a definition
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    * @param {string} tag
+    */
+    public async addDefinitionTag(
+        project: string,
+        definitionId: number,
+        tag: string
+        ): Promise<string[]> {
+
+        return new Promise<string[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId,
+                tag: tag
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "cb894432-134a-4d31-a839-83beceaace4b",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<string[]>;
+                res = await this.rest.replace<string[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * Adds multiple tags to a definition
+    * 
+    * @param {string[]} tags
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    */
+    public async addDefinitionTags(
+        tags: string[],
+        project: string,
+        definitionId: number
+        ): Promise<string[]> {
+
+        return new Promise<string[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "cb894432-134a-4d31-a839-83beceaace4b",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<string[]>;
+                res = await this.rest.create<string[]>(url, tags, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * Deletes a tag from a definition
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    * @param {string} tag
+    */
+    public async deleteDefinitionTag(
+        project: string,
+        definitionId: number,
+        tag: string
+        ): Promise<string[]> {
+
+        return new Promise<string[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId,
+                tag: tag
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "cb894432-134a-4d31-a839-83beceaace4b",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<string[]>;
+                res = await this.rest.del<string[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * Gets the tags for a definition
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    * @param {number} revision
+    */
+    public async getDefinitionTags(
+        project: string,
+        definitionId: number,
+        revision?: number
+        ): Promise<string[]> {
+
+        return new Promise<string[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId
+            };
+
+            let queryValues: any = {
+                revision: revision,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "cb894432-134a-4d31-a839-83beceaace4b",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<string[]>;
+                res = await this.rest.get<string[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     */
-    public getTags(
+    public async getTags(
         project: string
         ): Promise<string[]> {
-    
-        let deferred = Q.defer<string[]>();
 
-        let onResult = (err: any, statusCode: number, tags: string[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(tags);
-            }
-        };
+        return new Promise<string[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "d84ac5c6-edc7-43d5-adc9-1b34be5dea09",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "d84ac5c6-edc7-43d5-adc9-1b34be5dea09", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<string[]>;
+                res = await this.rest.get<string[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2150,122 +2396,122 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {string} project - Project ID or project name
     * @param {string} templateId
     */
-    public deleteTemplate(
+    public async deleteTemplate(
         project: string,
         templateId: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                templateId: templateId
+            };
 
-        let routeValues: any = {
-            project: project,
-            templateId: templateId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "e884571e-7f92-4d6a-9274-3f5649900835",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * Gets definition template filtered by id
     * 
     * @param {string} project - Project ID or project name
-    * @param {string} templateId
+    * @param {string} templateId - Id of the requested template.
     */
-    public getTemplate(
+    public async getTemplate(
         project: string,
         templateId: string
         ): Promise<BuildInterfaces.BuildDefinitionTemplate> {
-    
-        let deferred = Q.defer<BuildInterfaces.BuildDefinitionTemplate>();
 
-        let onResult = (err: any, statusCode: number, template: BuildInterfaces.BuildDefinitionTemplate) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(template);
-            }
-        };
+        return new Promise<BuildInterfaces.BuildDefinitionTemplate>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                templateId: templateId
+            };
 
-        let routeValues: any = {
-            project: project,
-            templateId: templateId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "e884571e-7f92-4d6a-9274-3f5649900835",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionTemplate, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionTemplate>;
+                res = await this.rest.get<BuildInterfaces.BuildDefinitionTemplate>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.BuildDefinitionTemplate,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} project - Project ID or project name
     */
-    public getTemplates(
+    public async getTemplates(
         project: string
         ): Promise<BuildInterfaces.BuildDefinitionTemplate[]> {
-    
-        let deferred = Q.defer<BuildInterfaces.BuildDefinitionTemplate[]>();
 
-        let onResult = (err: any, statusCode: number, templates: BuildInterfaces.BuildDefinitionTemplate[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(templates);
-            }
-        };
+        return new Promise<BuildInterfaces.BuildDefinitionTemplate[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "e884571e-7f92-4d6a-9274-3f5649900835",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionTemplate, responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionTemplate[]>;
+                res = await this.rest.get<BuildInterfaces.BuildDefinitionTemplate[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.BuildDefinitionTemplate,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2275,42 +2521,42 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {string} project - Project ID or project name
     * @param {string} templateId
     */
-    public saveTemplate(
+    public async saveTemplate(
         template: BuildInterfaces.BuildDefinitionTemplate,
         project: string,
         templateId: string
         ): Promise<BuildInterfaces.BuildDefinitionTemplate> {
-    
-        let deferred = Q.defer<BuildInterfaces.BuildDefinitionTemplate>();
 
-        let onResult = (err: any, statusCode: number, template: BuildInterfaces.BuildDefinitionTemplate) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(template);
-            }
-        };
+        return new Promise<BuildInterfaces.BuildDefinitionTemplate>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                templateId: templateId
+            };
 
-        let routeValues: any = {
-            project: project,
-            templateId: templateId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "e884571e-7f92-4d6a-9274-3f5649900835",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "build", "e884571e-7f92-4d6a-9274-3f5649900835", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionTemplate, responseTypeMetadata: BuildInterfaces.TypeInfo.BuildDefinitionTemplate, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionTemplate>;
+                res = await this.rest.replace<BuildInterfaces.BuildDefinitionTemplate>(url, template, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.BuildDefinitionTemplate,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.replace(url, apiVersion, template, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2322,50 +2568,51 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} changeId
     * @param {string} planId
     */
-    public getBuildTimeline(
+    public async getBuildTimeline(
         project: string,
         buildId: number,
         timelineId?: string,
         changeId?: number,
         planId?: string
         ): Promise<BuildInterfaces.Timeline> {
-    
-        let deferred = Q.defer<BuildInterfaces.Timeline>();
 
-        let onResult = (err: any, statusCode: number, Timeline: BuildInterfaces.Timeline) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Timeline);
-            }
-        };
+        return new Promise<BuildInterfaces.Timeline>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId,
+                timelineId: timelineId
+            };
 
-        let routeValues: any = {
-            project: project,
-            buildId: buildId,
-            timelineId: timelineId
-        };
+            let queryValues: any = {
+                changeId: changeId,
+                planId: planId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "8baac422-4c6e-4de5-8532-db96d92acffa",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            changeId: changeId,
-            planId: planId,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "8baac422-4c6e-4de5-8532-db96d92acffa", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: BuildInterfaces.TypeInfo.Timeline, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<BuildInterfaces.Timeline>;
+                res = await this.rest.get<BuildInterfaces.Timeline>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.Timeline,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2375,46 +2622,47 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} buildId
     * @param {number} top - The maximum number of workitems to return
     */
-    public getBuildWorkItemsRefs(
+    public async getBuildWorkItemsRefs(
         project: string,
         buildId: number,
         top?: number
         ): Promise<VSSInterfaces.ResourceRef[]> {
-    
-        let deferred = Q.defer<VSSInterfaces.ResourceRef[]>();
 
-        let onResult = (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(workitems);
-            }
-        };
+        return new Promise<VSSInterfaces.ResourceRef[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId
+            };
 
-        let routeValues: any = {
-            project: project,
-            buildId: buildId
-        };
+            let queryValues: any = {
+                '$top': top,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "5a21f5d2-5642-47e4-a0bd-1356e6731bee",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            '$top': top,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "5a21f5d2-5642-47e4-a0bd-1356e6731bee", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<VSSInterfaces.ResourceRef[]>;
+                res = await this.rest.get<VSSInterfaces.ResourceRef[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2425,47 +2673,48 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} buildId
     * @param {number} top - The maximum number of workitems to return, also number of commits to consider if commitids are not sent
     */
-    public getBuildWorkItemsRefsFromCommits(
+    public async getBuildWorkItemsRefsFromCommits(
         commitIds: string[],
         project: string,
         buildId: number,
         top?: number
         ): Promise<VSSInterfaces.ResourceRef[]> {
-    
-        let deferred = Q.defer<VSSInterfaces.ResourceRef[]>();
 
-        let onResult = (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(workitems);
-            }
-        };
+        return new Promise<VSSInterfaces.ResourceRef[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId
+            };
 
-        let routeValues: any = {
-            project: project,
-            buildId: buildId
-        };
+            let queryValues: any = {
+                '$top': top,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "5a21f5d2-5642-47e4-a0bd-1356e6731bee",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            '$top': top,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "5a21f5d2-5642-47e4-a0bd-1356e6731bee", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<VSSInterfaces.ResourceRef[]>;
+                res = await this.rest.create<VSSInterfaces.ResourceRef[]>(url, commitIds, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, commitIds, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -2476,48 +2725,49 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     * @param {number} toBuildId
     * @param {number} top - The maximum number of workitems to return
     */
-    public getWorkItemsBetweenBuilds(
+    public async getWorkItemsBetweenBuilds(
         project: string,
         fromBuildId: number,
         toBuildId: number,
         top?: number
         ): Promise<VSSInterfaces.ResourceRef[]> {
-    
-        let deferred = Q.defer<VSSInterfaces.ResourceRef[]>();
 
-        let onResult = (err: any, statusCode: number, workitems: VSSInterfaces.ResourceRef[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(workitems);
-            }
-        };
+        return new Promise<VSSInterfaces.ResourceRef[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
 
-        let routeValues: any = {
-            project: project
-        };
+            let queryValues: any = {
+                fromBuildId: fromBuildId,
+                toBuildId: toBuildId,
+                '$top': top,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "build",
+                    "52ba8915-5518-42e3-a4bb-b0182d159e2d",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            fromBuildId: fromBuildId,
-            toBuildId: toBuildId,
-            '$top': top,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.2", "build", "52ba8915-5518-42e3-a4bb-b0182d159e2d", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<VSSInterfaces.ResourceRef[]>;
+                res = await this.rest.get<VSSInterfaces.ResourceRef[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
 }

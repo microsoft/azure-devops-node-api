@@ -10,16 +10,16 @@
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
-
-import Q = require('q');
-import restm = require('./RestClient');
-import httpm = require('./HttpClient');
+import * as restm from 'typed-rest-client/RestClient';
+import * as httpm from 'typed-rest-client/HttpClient';
 import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
+import serm = require('./Serialization');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
+import compatBase = require("././GalleryCompatHttpClientBase");
 import GalleryInterfaces = require("./interfaces/GalleryInterfaces");
 
-export interface IGalleryApi extends basem.ClientApiBase {
+export interface IGalleryApi extends compatBase.GalleryCompatHttpClientBase {
     shareExtensionById(extensionId: string, accountName: string): Promise<void>;
     unshareExtensionById(extensionId: string, accountName: string): Promise<void>;
     shareExtension(publisherName: string, extensionName: string, accountName: string): Promise<void>;
@@ -32,16 +32,20 @@ export interface IGalleryApi extends basem.ClientApiBase {
     associateAzurePublisher(publisherName: string, azurePublisherId: string): Promise<GalleryInterfaces.AzurePublisher>;
     queryAssociatedAzurePublisher(publisherName: string): Promise<GalleryInterfaces.AzurePublisher>;
     getCategories(languages?: string): Promise<string[]>;
+    getCategoryDetails(categoryName: string, languages?: string, product?: string): Promise<GalleryInterfaces.CategoriesResult>;
     getCertificate(publisherName: string, extensionName: string, version?: string): Promise<NodeJS.ReadableStream>;
+    getExtensionEvents(publisherName: string, extensionName: string, count?: number, afterDate?: Date, include?: string): Promise<GalleryInterfaces.ExtensionEvents>;
+    publishExtensionEvents(extensionEvents: GalleryInterfaces.ExtensionEvents[]): Promise<void>;
     queryExtensions(extensionQuery: GalleryInterfaces.ExtensionQuery, accountToken?: string): Promise<GalleryInterfaces.ExtensionQueryResult>;
-    createExtension(extensionPackage: GalleryInterfaces.ExtensionPackage): Promise<GalleryInterfaces.PublishedExtension>;
+    createExtension(customHeaders: any, contentStream: NodeJS.ReadableStream): Promise<GalleryInterfaces.PublishedExtension>;
     deleteExtensionById(extensionId: string, version?: string): Promise<void>;
     getExtensionById(extensionId: string, version?: string, flags?: GalleryInterfaces.ExtensionQueryFlags): Promise<GalleryInterfaces.PublishedExtension>;
-    updateExtensionById(extensionPackage: GalleryInterfaces.ExtensionPackage, extensionId: string): Promise<GalleryInterfaces.PublishedExtension>;
-    createExtensionWithPublisher(extensionPackage: GalleryInterfaces.ExtensionPackage, publisherName: string): Promise<GalleryInterfaces.PublishedExtension>;
+    updateExtensionById(extensionId: string): Promise<GalleryInterfaces.PublishedExtension>;
+    createExtensionWithPublisher(customHeaders: any, contentStream: NodeJS.ReadableStream, publisherName: string): Promise<GalleryInterfaces.PublishedExtension>;
     deleteExtension(publisherName: string, extensionName: string, version?: string): Promise<void>;
     getExtension(publisherName: string, extensionName: string, version?: string, flags?: GalleryInterfaces.ExtensionQueryFlags, accountToken?: string): Promise<GalleryInterfaces.PublishedExtension>;
-    updateExtension(extensionPackage: GalleryInterfaces.ExtensionPackage, publisherName: string, extensionName: string): Promise<GalleryInterfaces.PublishedExtension>;
+    updateExtension(customHeaders: any, contentStream: NodeJS.ReadableStream, publisherName: string, extensionName: string): Promise<GalleryInterfaces.PublishedExtension>;
+    updateExtensionProperties(publisherName: string, extensionName: string, flags: GalleryInterfaces.PublishedExtensionFlags): Promise<GalleryInterfaces.PublishedExtension>;
     extensionValidator(azureRestApiRequestModel: GalleryInterfaces.AzureRestApiRequestModel): Promise<void>;
     getPackage(publisherName: string, extensionName: string, version: string, accountToken?: string, acceptDefault?: boolean): Promise<NodeJS.ReadableStream>;
     getAssetWithToken(publisherName: string, extensionName: string, version: string, assetType: string, assetToken?: string, accountToken?: string, acceptDefault?: boolean): Promise<NodeJS.ReadableStream>;
@@ -50,17 +54,27 @@ export interface IGalleryApi extends basem.ClientApiBase {
     deletePublisher(publisherName: string): Promise<void>;
     getPublisher(publisherName: string, flags?: number): Promise<GalleryInterfaces.Publisher>;
     updatePublisher(publisher: GalleryInterfaces.Publisher, publisherName: string): Promise<GalleryInterfaces.Publisher>;
+    getQuestions(publisherName: string, extensionName: string, count?: number, page?: number): Promise<GalleryInterfaces.QuestionsResult>;
+    createQuestion(question: GalleryInterfaces.Question, publisherName: string, extensionName: string): Promise<GalleryInterfaces.Question>;
+    updateQuestion(question: GalleryInterfaces.Question, publisherName: string, extensionName: string, questionId: number): Promise<GalleryInterfaces.Question>;
+    createResponse(response: GalleryInterfaces.Response, publisherName: string, extensionName: string, questionId: number): Promise<GalleryInterfaces.Response>;
+    updateResponse(response: GalleryInterfaces.Response, publisherName: string, extensionName: string, questionId: number, responseId: number): Promise<GalleryInterfaces.Response>;
+    getExtensionReports(publisherName: string, extensionName: string, days?: number): Promise<string>;
     getReviews(publisherName: string, extensionName: string, count?: number, filterOptions?: GalleryInterfaces.ReviewFilterOptions, beforeDate?: Date, afterDate?: Date): Promise<GalleryInterfaces.ReviewsResult>;
     createReview(review: GalleryInterfaces.Review, pubName: string, extName: string): Promise<GalleryInterfaces.Review>;
     deleteReview(pubName: string, extName: string, reviewId: number): Promise<void>;
     updateReview(reviewPatch: GalleryInterfaces.ReviewPatch, pubName: string, extName: string, reviewId: number): Promise<GalleryInterfaces.ReviewPatch>;
     createCategory(category: GalleryInterfaces.ExtensionCategory): Promise<GalleryInterfaces.ExtensionCategory>;
+    getGalleryUserSettings(userScope: string, key?: string): Promise<{ [key: string] : any; }>;
+    setGalleryUserSettings(entries: { [key: string] : any; }, userScope: string): Promise<void>;
     generateKey(keyType: string, expireCurrentSeconds?: number): Promise<void>;
     getSigningKey(keyType: string): Promise<string>;
     updateExtensionStatistics(extensionStatisticsUpdate: GalleryInterfaces.ExtensionStatisticUpdate, publisherName: string, extensionName: string): Promise<void>;
+    getExtensionDailyStats(publisherName: string, extensionName: string, days?: number): Promise<GalleryInterfaces.ExtensionDailyStats>;
+    incrementExtensionDailyStat(publisherName: string, extensionName: string, version: string, statType: string): Promise<void>;
 }
 
-export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
+export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implements IGalleryApi {
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
         super(baseUrl, handlers, 'node-Gallery-api');
     }
@@ -69,82 +83,82 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
     * @param {string} extensionId
     * @param {string} accountName
     */
-    public shareExtensionById(
+    public async shareExtensionById(
         extensionId: string,
         accountName: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                extensionId: extensionId,
+                accountName: accountName
+            };
 
-        let routeValues: any = {
-            extensionId: extensionId,
-            accountName: accountName
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "1f19631b-a0b4-4a03-89c2-d79785d24360",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "1f19631b-a0b4-4a03-89c2-d79785d24360", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.create<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, null, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} extensionId
     * @param {string} accountName
     */
-    public unshareExtensionById(
+    public async unshareExtensionById(
         extensionId: string,
         accountName: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                extensionId: extensionId,
+                accountName: accountName
+            };
 
-        let routeValues: any = {
-            extensionId: extensionId,
-            accountName: accountName
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "1f19631b-a0b4-4a03-89c2-d79785d24360",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "1f19631b-a0b4-4a03-89c2-d79785d24360", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -152,43 +166,43 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
     * @param {string} extensionName
     * @param {string} accountName
     */
-    public shareExtension(
+    public async shareExtension(
         publisherName: string,
         extensionName: string,
         accountName: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                accountName: accountName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName,
-            accountName: accountName
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "a1e66d8f-f5de-4d16-8309-91a4e015ee46",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "a1e66d8f-f5de-4d16-8309-91a4e015ee46", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.create<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, null, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -196,43 +210,43 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
     * @param {string} extensionName
     * @param {string} accountName
     */
-    public unshareExtension(
+    public async unshareExtension(
         publisherName: string,
         extensionName: string,
         accountName: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                accountName: accountName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName,
-            accountName: accountName
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "a1e66d8f-f5de-4d16-8309-91a4e015ee46",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "a1e66d8f-f5de-4d16-8309-91a4e015ee46", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -241,85 +255,86 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
     * @param {boolean} testCommerce
     * @param {boolean} isFreeOrTrialInstall
     */
-    public getAcquisitionOptions(
+    public async getAcquisitionOptions(
         itemId: string,
         installationTarget: string,
         testCommerce?: boolean,
         isFreeOrTrialInstall?: boolean
         ): Promise<GalleryInterfaces.AcquisitionOptions> {
-    
-        let deferred = Q.defer<GalleryInterfaces.AcquisitionOptions>();
 
-        let onResult = (err: any, statusCode: number, acquisitionoption: GalleryInterfaces.AcquisitionOptions) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(acquisitionoption);
-            }
-        };
+        return new Promise<GalleryInterfaces.AcquisitionOptions>(async (resolve, reject) => {
+            let routeValues: any = {
+                itemId: itemId
+            };
 
-        let routeValues: any = {
-            itemId: itemId
-        };
+            let queryValues: any = {
+                installationTarget: installationTarget,
+                testCommerce: testCommerce,
+                isFreeOrTrialInstall: isFreeOrTrialInstall,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "9d0a0105-075e-4760-aa15-8bcf54d1bd7d",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            installationTarget: installationTarget,
-            testCommerce: testCommerce,
-            isFreeOrTrialInstall: isFreeOrTrialInstall,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "9d0a0105-075e-4760-aa15-8bcf54d1bd7d", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: GalleryInterfaces.TypeInfo.AcquisitionOptions, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.AcquisitionOptions>;
+                res = await this.rest.get<GalleryInterfaces.AcquisitionOptions>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.AcquisitionOptions,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {GalleryInterfaces.ExtensionAcquisitionRequest} acquisitionRequest
     */
-    public requestAcquisition(
+    public async requestAcquisition(
         acquisitionRequest: GalleryInterfaces.ExtensionAcquisitionRequest
         ): Promise<GalleryInterfaces.ExtensionAcquisitionRequest> {
-    
-        let deferred = Q.defer<GalleryInterfaces.ExtensionAcquisitionRequest>();
 
-        let onResult = (err: any, statusCode: number, acquisitionrequest: GalleryInterfaces.ExtensionAcquisitionRequest) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(acquisitionrequest);
-            }
-        };
+        return new Promise<GalleryInterfaces.ExtensionAcquisitionRequest>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "3adb1f2d-e328-446e-be73-9f6d98071c45",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "3adb1f2d-e328-446e-be73-9f6d98071c45", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: GalleryInterfaces.TypeInfo.ExtensionAcquisitionRequest, responseTypeMetadata: GalleryInterfaces.TypeInfo.ExtensionAcquisitionRequest, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.ExtensionAcquisitionRequest>;
+                res = await this.rest.create<GalleryInterfaces.ExtensionAcquisitionRequest>(url, acquisitionRequest, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.ExtensionAcquisitionRequest,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, acquisitionRequest, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -330,7 +345,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
     * @param {string} accountToken
     * @param {boolean} acceptDefault
     */
-    public getAssetByName(
+    public async getAssetByName(
         publisherName: string,
         extensionName: string,
         version: string,
@@ -338,44 +353,38 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
         accountToken?: string,
         acceptDefault?: boolean
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, assetbyname: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(assetbyname);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                version: version,
+                assetType: assetType
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName,
-            version: version,
-            assetType: assetType
-        };
+            let queryValues: any = {
+                accountToken: accountToken,
+                acceptDefault: acceptDefault,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "7529171f-a002-4180-93ba-685f358a0482",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            accountToken: accountToken,
-            acceptDefault: acceptDefault,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "7529171f-a002-4180-93ba-685f358a0482", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
                 
-                this.httpClient.getStream(url, apiVersion, "application/octet-stream", onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -385,50 +394,44 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
     * @param {string} accountToken
     * @param {boolean} acceptDefault
     */
-    public getAsset(
+    public async getAsset(
         extensionId: string,
         version: string,
         assetType: string,
         accountToken?: string,
         acceptDefault?: boolean
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, asset: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(asset);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                extensionId: extensionId,
+                version: version,
+                assetType: assetType
+            };
 
-        let routeValues: any = {
-            extensionId: extensionId,
-            version: version,
-            assetType: assetType
-        };
+            let queryValues: any = {
+                accountToken: accountToken,
+                acceptDefault: acceptDefault,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "5d545f3d-ef47-488b-8be3-f5ee1517856c",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            accountToken: accountToken,
-            acceptDefault: acceptDefault,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "5d545f3d-ef47-488b-8be3-f5ee1517856c", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
                 
-                this.httpClient.getStream(url, apiVersion, "application/octet-stream", onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -438,173 +441,217 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
     * @param {string} assetType
     * @param {string} accountToken
     */
-    public getAssetAuthenticated(
+    public async getAssetAuthenticated(
         publisherName: string,
         extensionName: string,
         version: string,
         assetType: string,
         accountToken?: string
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, authenticatedasset: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(authenticatedasset);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                version: version,
+                assetType: assetType
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName,
-            version: version,
-            assetType: assetType
-        };
+            let queryValues: any = {
+                accountToken: accountToken,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "506aff36-2622-4f70-8063-77cce6366d20",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            accountToken: accountToken,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "506aff36-2622-4f70-8063-77cce6366d20", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
                 
-                this.httpClient.getStream(url, apiVersion, "application/octet-stream", onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} publisherName
     * @param {string} azurePublisherId
     */
-    public associateAzurePublisher(
+    public async associateAzurePublisher(
         publisherName: string,
         azurePublisherId: string
         ): Promise<GalleryInterfaces.AzurePublisher> {
-    
-        let deferred = Q.defer<GalleryInterfaces.AzurePublisher>();
 
-        let onResult = (err: any, statusCode: number, azurepublisher: GalleryInterfaces.AzurePublisher) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(azurepublisher);
-            }
-        };
+        return new Promise<GalleryInterfaces.AzurePublisher>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName
-        };
+            let queryValues: any = {
+                azurePublisherId: azurePublisherId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "efd202a6-9d87-4ebc-9229-d2b8ae2fdb6d",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            azurePublisherId: azurePublisherId,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "efd202a6-9d87-4ebc-9229-d2b8ae2fdb6d", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.AzurePublisher>;
+                res = await this.rest.replace<GalleryInterfaces.AzurePublisher>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.replace(url, apiVersion, null, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} publisherName
     */
-    public queryAssociatedAzurePublisher(
+    public async queryAssociatedAzurePublisher(
         publisherName: string
         ): Promise<GalleryInterfaces.AzurePublisher> {
-    
-        let deferred = Q.defer<GalleryInterfaces.AzurePublisher>();
 
-        let onResult = (err: any, statusCode: number, azurepublisher: GalleryInterfaces.AzurePublisher) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(azurepublisher);
-            }
-        };
+        return new Promise<GalleryInterfaces.AzurePublisher>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "efd202a6-9d87-4ebc-9229-d2b8ae2fdb6d",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "efd202a6-9d87-4ebc-9229-d2b8ae2fdb6d", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.AzurePublisher>;
+                res = await this.rest.get<GalleryInterfaces.AzurePublisher>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} languages
     */
-    public getCategories(
+    public async getCategories(
         languages?: string
         ): Promise<string[]> {
-    
-        let deferred = Q.defer<string[]>();
 
-        let onResult = (err: any, statusCode: number, categories: string[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(categories);
-            }
-        };
+        return new Promise<string[]>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            let queryValues: any = {
+                languages: languages,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "e0a5a71e-3ac3-43a0-ae7d-0bb5c3046a2a",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            languages: languages,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "e0a5a71e-3ac3-43a0-ae7d-0bb5c3046a2a", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<string[]>;
+                res = await this.rest.get<string[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-        return deferred.promise;
+    /**
+    * @param {string} categoryName
+    * @param {string} languages
+    * @param {string} product
+    */
+    public async getCategoryDetails(
+        categoryName: string,
+        languages?: string,
+        product?: string
+        ): Promise<GalleryInterfaces.CategoriesResult> {
+
+        return new Promise<GalleryInterfaces.CategoriesResult>(async (resolve, reject) => {
+            let routeValues: any = {
+                categoryName: categoryName
+            };
+
+            let queryValues: any = {
+                languages: languages,
+                product: product,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "75d3c04d-84d2-4973-acd2-22627587dabc",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.CategoriesResult>;
+                res = await this.rest.get<GalleryInterfaces.CategoriesResult>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -612,167 +659,262 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
     * @param {string} extensionName
     * @param {string} version
     */
-    public getCertificate(
+    public async getCertificate(
         publisherName: string,
         extensionName: string,
         version?: string
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, certificate: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(certificate);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                version: version
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName,
-            version: version
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "e905ad6a-3f1f-4d08-9f6d-7d357ff8b7d0",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "e905ad6a-3f1f-4d08-9f6d-7d357ff8b7d0", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
                 
-                this.httpClient.getStream(url, apiVersion, "application/octet-stream", onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-        return deferred.promise;
+    /**
+    * Get install/uninstall events of an extension.
+    * 
+    * @param {string} publisherName - Name of the publisher
+    * @param {string} extensionName - Name of the extension
+    * @param {number} count - Count of events to fetch, applies to each event type.
+    * @param {Date} afterDate - Fetch events that occured on or after this value
+    * @param {string} include - Filter options. Supported values: includeInstall, includeUninstall. Default is to fetch all types of events
+    */
+    public async getExtensionEvents(
+        publisherName: string,
+        extensionName: string,
+        count?: number,
+        afterDate?: Date,
+        include?: string
+        ): Promise<GalleryInterfaces.ExtensionEvents> {
+
+        return new Promise<GalleryInterfaces.ExtensionEvents>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName
+            };
+
+            let queryValues: any = {
+                count: count,
+                afterDate: afterDate,
+                include: include,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "3d13c499-2168-4d06-bef4-14aba185dcd5",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.ExtensionEvents>;
+                res = await this.rest.get<GalleryInterfaces.ExtensionEvents>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.ExtensionEvents,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * API endpoint to publish extension install/uninstall events. This is meant to be invoked by EMS only for sending us data related to install/uninstall of an extension.
+    * 
+    * @param {GalleryInterfaces.ExtensionEvents[]} extensionEvents
+    */
+    public async publishExtensionEvents(
+        extensionEvents: GalleryInterfaces.ExtensionEvents[]
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "0bf2bd3a-70e0-4d5d-8bf7-bd4a9c2ab6e7",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.create<void>(url, extensionEvents, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {GalleryInterfaces.ExtensionQuery} extensionQuery
     * @param {string} accountToken
     */
-    public queryExtensions(
+    public async queryExtensions(
         extensionQuery: GalleryInterfaces.ExtensionQuery,
         accountToken?: string
         ): Promise<GalleryInterfaces.ExtensionQueryResult> {
-    
-        let deferred = Q.defer<GalleryInterfaces.ExtensionQueryResult>();
 
-        let onResult = (err: any, statusCode: number, extensionquery: GalleryInterfaces.ExtensionQueryResult) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(extensionquery);
-            }
-        };
+        return new Promise<GalleryInterfaces.ExtensionQueryResult>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            let queryValues: any = {
+                accountToken: accountToken,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "eb9d5ee1-6d43-456b-b80e-8a96fbc014b6",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            accountToken: accountToken,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "eb9d5ee1-6d43-456b-b80e-8a96fbc014b6", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: GalleryInterfaces.TypeInfo.ExtensionQuery, responseTypeMetadata: GalleryInterfaces.TypeInfo.ExtensionQueryResult, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.ExtensionQueryResult>;
+                res = await this.rest.create<GalleryInterfaces.ExtensionQueryResult>(url, extensionQuery, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.ExtensionQueryResult,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, extensionQuery, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
-    * @param {GalleryInterfaces.ExtensionPackage} extensionPackage
+    * @param {NodeJS.ReadableStream} contentStream - Content to upload
     */
-    public createExtension(
-        extensionPackage: GalleryInterfaces.ExtensionPackage
+    public async createExtension(
+        customHeaders: any,
+        contentStream: NodeJS.ReadableStream
         ): Promise<GalleryInterfaces.PublishedExtension> {
-    
-        let deferred = Q.defer<GalleryInterfaces.PublishedExtension>();
 
-        let onResult = (err: any, statusCode: number, extension: GalleryInterfaces.PublishedExtension) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(extension);
-            }
-        };
+        return new Promise<GalleryInterfaces.PublishedExtension>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            customHeaders = customHeaders || {};
+            customHeaders["Content-Type"] = "application/octet-stream";
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "a41192c8-9525-4b58-bc86-179fa549d80d", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: GalleryInterfaces.TypeInfo.PublishedExtension, responseIsCollection: false };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "gallery",
+                    "a41192c8-9525-4b58-bc86-179fa549d80d",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
                 
-                this.restClient.create(url, apiVersion, extensionPackage, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                                                                                verData.apiVersion);
 
-        return deferred.promise;
+                let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
+                res = await this.rest.uploadStream<GalleryInterfaces.PublishedExtension>("POST", url, contentStream, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.PublishedExtension,
+                                              false);
+
+                resolve(ret);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} extensionId
     * @param {string} version
     */
-    public deleteExtensionById(
+    public async deleteExtensionById(
         extensionId: string,
         version?: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                extensionId: extensionId
+            };
 
-        let routeValues: any = {
-            extensionId: extensionId
-        };
+            let queryValues: any = {
+                version: version,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "gallery",
+                    "a41192c8-9525-4b58-bc86-179fa549d80d",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            version: version,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "a41192c8-9525-4b58-bc86-179fa549d80d", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -780,126 +922,130 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
     * @param {string} version
     * @param {GalleryInterfaces.ExtensionQueryFlags} flags
     */
-    public getExtensionById(
+    public async getExtensionById(
         extensionId: string,
         version?: string,
         flags?: GalleryInterfaces.ExtensionQueryFlags
         ): Promise<GalleryInterfaces.PublishedExtension> {
-    
-        let deferred = Q.defer<GalleryInterfaces.PublishedExtension>();
 
-        let onResult = (err: any, statusCode: number, extension: GalleryInterfaces.PublishedExtension) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(extension);
-            }
-        };
+        return new Promise<GalleryInterfaces.PublishedExtension>(async (resolve, reject) => {
+            let routeValues: any = {
+                extensionId: extensionId
+            };
 
-        let routeValues: any = {
-            extensionId: extensionId
-        };
+            let queryValues: any = {
+                version: version,
+                flags: flags,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "gallery",
+                    "a41192c8-9525-4b58-bc86-179fa549d80d",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            version: version,
-            flags: flags,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "a41192c8-9525-4b58-bc86-179fa549d80d", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: GalleryInterfaces.TypeInfo.PublishedExtension, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
+                res = await this.rest.get<GalleryInterfaces.PublishedExtension>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.PublishedExtension,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
-    * @param {GalleryInterfaces.ExtensionPackage} extensionPackage
     * @param {string} extensionId
     */
-    public updateExtensionById(
-        extensionPackage: GalleryInterfaces.ExtensionPackage,
+    public async updateExtensionById(
         extensionId: string
         ): Promise<GalleryInterfaces.PublishedExtension> {
-    
-        let deferred = Q.defer<GalleryInterfaces.PublishedExtension>();
 
-        let onResult = (err: any, statusCode: number, extension: GalleryInterfaces.PublishedExtension) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(extension);
-            }
-        };
+        return new Promise<GalleryInterfaces.PublishedExtension>(async (resolve, reject) => {
+            let routeValues: any = {
+                extensionId: extensionId
+            };
 
-        let routeValues: any = {
-            extensionId: extensionId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "gallery",
+                    "a41192c8-9525-4b58-bc86-179fa549d80d",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "a41192c8-9525-4b58-bc86-179fa549d80d", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: GalleryInterfaces.TypeInfo.PublishedExtension, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
+                res = await this.rest.replace<GalleryInterfaces.PublishedExtension>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.PublishedExtension,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.replace(url, apiVersion, extensionPackage, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
-    * @param {GalleryInterfaces.ExtensionPackage} extensionPackage
+    * @param {NodeJS.ReadableStream} contentStream - Content to upload
     * @param {string} publisherName
     */
-    public createExtensionWithPublisher(
-        extensionPackage: GalleryInterfaces.ExtensionPackage,
+    public async createExtensionWithPublisher(
+        customHeaders: any,
+        contentStream: NodeJS.ReadableStream,
         publisherName: string
         ): Promise<GalleryInterfaces.PublishedExtension> {
-    
-        let deferred = Q.defer<GalleryInterfaces.PublishedExtension>();
 
-        let onResult = (err: any, statusCode: number, extension: GalleryInterfaces.PublishedExtension) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(extension);
-            }
-        };
+        return new Promise<GalleryInterfaces.PublishedExtension>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName
-        };
+            customHeaders = customHeaders || {};
+            customHeaders["Content-Type"] = "application/octet-stream";
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "e11ea35a-16fe-4b80-ab11-c4cab88a0966", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: GalleryInterfaces.TypeInfo.PublishedExtension, responseIsCollection: false };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "gallery",
+                    "e11ea35a-16fe-4b80-ab11-c4cab88a0966",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
                 
-                this.restClient.create(url, apiVersion, extensionPackage, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                                                                                verData.apiVersion);
 
-        return deferred.promise;
+                let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
+                res = await this.rest.uploadStream<GalleryInterfaces.PublishedExtension>("POST", url, contentStream, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.PublishedExtension,
+                                              false);
+
+                resolve(ret);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -907,46 +1053,47 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
     * @param {string} extensionName
     * @param {string} version
     */
-    public deleteExtension(
+    public async deleteExtension(
         publisherName: string,
         extensionName: string,
         version?: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName
-        };
+            let queryValues: any = {
+                version: version,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "gallery",
+                    "e11ea35a-16fe-4b80-ab11-c4cab88a0966",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            version: version,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "e11ea35a-16fe-4b80-ab11-c4cab88a0966", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -956,130 +1103,184 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
     * @param {GalleryInterfaces.ExtensionQueryFlags} flags
     * @param {string} accountToken
     */
-    public getExtension(
+    public async getExtension(
         publisherName: string,
         extensionName: string,
         version?: string,
         flags?: GalleryInterfaces.ExtensionQueryFlags,
         accountToken?: string
         ): Promise<GalleryInterfaces.PublishedExtension> {
-    
-        let deferred = Q.defer<GalleryInterfaces.PublishedExtension>();
 
-        let onResult = (err: any, statusCode: number, extension: GalleryInterfaces.PublishedExtension) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(extension);
-            }
-        };
+        return new Promise<GalleryInterfaces.PublishedExtension>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName
-        };
+            let queryValues: any = {
+                version: version,
+                flags: flags,
+                accountToken: accountToken,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "gallery",
+                    "e11ea35a-16fe-4b80-ab11-c4cab88a0966",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            version: version,
-            flags: flags,
-            accountToken: accountToken,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "e11ea35a-16fe-4b80-ab11-c4cab88a0966", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: GalleryInterfaces.TypeInfo.PublishedExtension, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
+                res = await this.rest.get<GalleryInterfaces.PublishedExtension>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.PublishedExtension,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
-    * @param {GalleryInterfaces.ExtensionPackage} extensionPackage
+    * @param {NodeJS.ReadableStream} contentStream - Content to upload
     * @param {string} publisherName
     * @param {string} extensionName
     */
-    public updateExtension(
-        extensionPackage: GalleryInterfaces.ExtensionPackage,
+    public async updateExtension(
+        customHeaders: any,
+        contentStream: NodeJS.ReadableStream,
         publisherName: string,
         extensionName: string
         ): Promise<GalleryInterfaces.PublishedExtension> {
-    
-        let deferred = Q.defer<GalleryInterfaces.PublishedExtension>();
 
-        let onResult = (err: any, statusCode: number, extension: GalleryInterfaces.PublishedExtension) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(extension);
-            }
-        };
+        return new Promise<GalleryInterfaces.PublishedExtension>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName
-        };
+            customHeaders = customHeaders || {};
+            customHeaders["Content-Type"] = "application/octet-stream";
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "e11ea35a-16fe-4b80-ab11-c4cab88a0966", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: GalleryInterfaces.TypeInfo.PublishedExtension, responseIsCollection: false };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "gallery",
+                    "e11ea35a-16fe-4b80-ab11-c4cab88a0966",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
                 
-                this.restClient.replace(url, apiVersion, extensionPackage, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                                                                                verData.apiVersion);
 
-        return deferred.promise;
+                let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
+                res = await this.rest.uploadStream<GalleryInterfaces.PublishedExtension>("PUT", url, contentStream, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.PublishedExtension,
+                                              false);
+
+                resolve(ret);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {string} publisherName
+    * @param {string} extensionName
+    * @param {GalleryInterfaces.PublishedExtensionFlags} flags
+    */
+    public async updateExtensionProperties(
+        publisherName: string,
+        extensionName: string,
+        flags: GalleryInterfaces.PublishedExtensionFlags
+        ): Promise<GalleryInterfaces.PublishedExtension> {
+
+        return new Promise<GalleryInterfaces.PublishedExtension>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName
+            };
+
+            let queryValues: any = {
+                flags: flags,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "gallery",
+                    "e11ea35a-16fe-4b80-ab11-c4cab88a0966",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
+                res = await this.rest.update<GalleryInterfaces.PublishedExtension>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.PublishedExtension,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {GalleryInterfaces.AzureRestApiRequestModel} azureRestApiRequestModel
     */
-    public extensionValidator(
+    public async extensionValidator(
         azureRestApiRequestModel: GalleryInterfaces.AzureRestApiRequestModel
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "05e8a5e1-8c59-4c2c-8856-0ff087d1a844",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "05e8a5e1-8c59-4c2c-8856-0ff087d1a844", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.create<void>(url, azureRestApiRequestModel, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, azureRestApiRequestModel, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1089,50 +1290,44 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
     * @param {string} accountToken
     * @param {boolean} acceptDefault
     */
-    public getPackage(
+    public async getPackage(
         publisherName: string,
         extensionName: string,
         version: string,
         accountToken?: string,
         acceptDefault?: boolean
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, _package: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(_package);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                version: version
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName,
-            version: version
-        };
+            let queryValues: any = {
+                accountToken: accountToken,
+                acceptDefault: acceptDefault,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "7cb576f8-1cae-4c4b-b7b1-e4af5759e965",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            accountToken: accountToken,
-            acceptDefault: acceptDefault,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "7cb576f8-1cae-4c4b-b7b1-e4af5759e965", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
                 
-                this.httpClient.getStream(url, apiVersion, "application/octet-stream", onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1144,7 +1339,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
     * @param {string} accountToken
     * @param {boolean} acceptDefault
     */
-    public getAssetWithToken(
+    public async getAssetWithToken(
         publisherName: string,
         extensionName: string,
         version: string,
@@ -1153,241 +1348,531 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
         accountToken?: string,
         acceptDefault?: boolean
         ): Promise<NodeJS.ReadableStream> {
-    
-        let deferred = Q.defer<NodeJS.ReadableStream>();
 
-        let onResult = (err: any, statusCode: number, privateasset: NodeJS.ReadableStream) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(privateasset);
-            }
-        };
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                version: version,
+                assetType: assetType,
+                assetToken: assetToken
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName,
-            version: version,
-            assetType: assetType,
-            assetToken: assetToken
-        };
+            let queryValues: any = {
+                accountToken: accountToken,
+                acceptDefault: acceptDefault,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "364415a1-0077-4a41-a7a0-06edd4497492",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            accountToken: accountToken,
-            acceptDefault: acceptDefault,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "364415a1-0077-4a41-a7a0-06edd4497492", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
                 
-                this.httpClient.getStream(url, apiVersion, "application/octet-stream", onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {GalleryInterfaces.PublisherQuery} publisherQuery
     */
-    public queryPublishers(
+    public async queryPublishers(
         publisherQuery: GalleryInterfaces.PublisherQuery
         ): Promise<GalleryInterfaces.PublisherQueryResult> {
-    
-        let deferred = Q.defer<GalleryInterfaces.PublisherQueryResult>();
 
-        let onResult = (err: any, statusCode: number, publisherquery: GalleryInterfaces.PublisherQueryResult) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(publisherquery);
-            }
-        };
+        return new Promise<GalleryInterfaces.PublisherQueryResult>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "2ad6ee0a-b53f-4034-9d1d-d009fda1212e",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "2ad6ee0a-b53f-4034-9d1d-d009fda1212e", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: GalleryInterfaces.TypeInfo.PublisherQuery, responseTypeMetadata: GalleryInterfaces.TypeInfo.PublisherQueryResult, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.PublisherQueryResult>;
+                res = await this.rest.create<GalleryInterfaces.PublisherQueryResult>(url, publisherQuery, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.PublisherQueryResult,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, publisherQuery, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {GalleryInterfaces.Publisher} publisher
     */
-    public createPublisher(
+    public async createPublisher(
         publisher: GalleryInterfaces.Publisher
         ): Promise<GalleryInterfaces.Publisher> {
-    
-        let deferred = Q.defer<GalleryInterfaces.Publisher>();
 
-        let onResult = (err: any, statusCode: number, publisher: GalleryInterfaces.Publisher) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(publisher);
-            }
-        };
+        return new Promise<GalleryInterfaces.Publisher>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: GalleryInterfaces.TypeInfo.Publisher, responseTypeMetadata: GalleryInterfaces.TypeInfo.Publisher, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.Publisher>;
+                res = await this.rest.create<GalleryInterfaces.Publisher>(url, publisher, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.Publisher,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, publisher, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} publisherName
     */
-    public deletePublisher(
+    public async deletePublisher(
         publisherName: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} publisherName
     * @param {number} flags
     */
-    public getPublisher(
+    public async getPublisher(
         publisherName: string,
         flags?: number
         ): Promise<GalleryInterfaces.Publisher> {
-    
-        let deferred = Q.defer<GalleryInterfaces.Publisher>();
 
-        let onResult = (err: any, statusCode: number, publisher: GalleryInterfaces.Publisher) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(publisher);
-            }
-        };
+        return new Promise<GalleryInterfaces.Publisher>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName
-        };
+            let queryValues: any = {
+                flags: flags,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            flags: flags,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: GalleryInterfaces.TypeInfo.Publisher, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.Publisher>;
+                res = await this.rest.get<GalleryInterfaces.Publisher>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.Publisher,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {GalleryInterfaces.Publisher} publisher
     * @param {string} publisherName
     */
-    public updatePublisher(
+    public async updatePublisher(
         publisher: GalleryInterfaces.Publisher,
         publisherName: string
         ): Promise<GalleryInterfaces.Publisher> {
-    
-        let deferred = Q.defer<GalleryInterfaces.Publisher>();
 
-        let onResult = (err: any, statusCode: number, publisher: GalleryInterfaces.Publisher) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(publisher);
-            }
-        };
+        return new Promise<GalleryInterfaces.Publisher>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: GalleryInterfaces.TypeInfo.Publisher, responseTypeMetadata: GalleryInterfaces.TypeInfo.Publisher, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.Publisher>;
+                res = await this.rest.replace<GalleryInterfaces.Publisher>(url, publisher, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.Publisher,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.replace(url, apiVersion, publisher, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-        return deferred.promise;
+    /**
+    * Returns a list of questions with their responses associated with an extension.
+    * 
+    * @param {string} publisherName - Name of the publisher who published the extension.
+    * @param {string} extensionName - Name of the extension.
+    * @param {number} count - Number of questions to retrieve (defaults to 10).
+    * @param {number} page - Page number from which set of questions are to be retrieved.
+    */
+    public async getQuestions(
+        publisherName: string,
+        extensionName: string,
+        count?: number,
+        page?: number
+        ): Promise<GalleryInterfaces.QuestionsResult> {
+
+        return new Promise<GalleryInterfaces.QuestionsResult>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName
+            };
+
+            let queryValues: any = {
+                count: count,
+                page: page,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "c010d03d-812c-4ade-ae07-c1862475eda5",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.QuestionsResult>;
+                res = await this.rest.get<GalleryInterfaces.QuestionsResult>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.QuestionsResult,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * Creates a new question for an extension.
+    * 
+    * @param {GalleryInterfaces.Question} question - Question to be created for the extension.
+    * @param {string} publisherName - Name of the publisher who published the extension.
+    * @param {string} extensionName - Name of the extension.
+    */
+    public async createQuestion(
+        question: GalleryInterfaces.Question,
+        publisherName: string,
+        extensionName: string
+        ): Promise<GalleryInterfaces.Question> {
+
+        return new Promise<GalleryInterfaces.Question>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "6d1d9741-eca8-4701-a3a5-235afc82dfa4",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.Question>;
+                res = await this.rest.create<GalleryInterfaces.Question>(url, question, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.Question,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * Updates an existing question for an extension.
+    * 
+    * @param {GalleryInterfaces.Question} question - Updated question to be set for the extension.
+    * @param {string} publisherName - Name of the publisher who published the extension.
+    * @param {string} extensionName - Name of the extension.
+    * @param {number} questionId - Identifier of the question to be updated for the extension.
+    */
+    public async updateQuestion(
+        question: GalleryInterfaces.Question,
+        publisherName: string,
+        extensionName: string,
+        questionId: number
+        ): Promise<GalleryInterfaces.Question> {
+
+        return new Promise<GalleryInterfaces.Question>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                questionId: questionId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "6d1d9741-eca8-4701-a3a5-235afc82dfa4",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.Question>;
+                res = await this.rest.update<GalleryInterfaces.Question>(url, question, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.Question,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * Creates a new response for a given question for an extension.
+    * 
+    * @param {GalleryInterfaces.Response} response - Response to be created for the extension.
+    * @param {string} publisherName - Name of the publisher who published the extension.
+    * @param {string} extensionName - Name of the extension.
+    * @param {number} questionId - Identifier of the question for which response is to be created for the extension.
+    */
+    public async createResponse(
+        response: GalleryInterfaces.Response,
+        publisherName: string,
+        extensionName: string,
+        questionId: number
+        ): Promise<GalleryInterfaces.Response> {
+
+        return new Promise<GalleryInterfaces.Response>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                questionId: questionId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "7f8ae5e0-46b0-438f-b2e8-13e8513517bd",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.Response>;
+                res = await this.rest.create<GalleryInterfaces.Response>(url, response, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.Response,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * Updates an existing response for a given question for an extension.
+    * 
+    * @param {GalleryInterfaces.Response} response - Updated response to be set for the extension.
+    * @param {string} publisherName - Name of the publisher who published the extension.
+    * @param {string} extensionName - Name of the extension.
+    * @param {number} questionId - Identifier of the question for which response is to be updated for the extension.
+    * @param {number} responseId - Identifier of the response which has to be updated.
+    */
+    public async updateResponse(
+        response: GalleryInterfaces.Response,
+        publisherName: string,
+        extensionName: string,
+        questionId: number,
+        responseId: number
+        ): Promise<GalleryInterfaces.Response> {
+
+        return new Promise<GalleryInterfaces.Response>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                questionId: questionId,
+                responseId: responseId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "7f8ae5e0-46b0-438f-b2e8-13e8513517bd",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.Response>;
+                res = await this.rest.update<GalleryInterfaces.Response>(url, response, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.Response,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * Returns extension reports
+    * 
+    * @param {string} publisherName - Name of the publisher who published the extension
+    * @param {string} extensionName - Name of the extension
+    * @param {number} days - Last n days report
+    */
+    public async getExtensionReports(
+        publisherName: string,
+        extensionName: string,
+        days?: number
+        ): Promise<string> {
+
+        return new Promise<string>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName
+            };
+
+            let queryValues: any = {
+                days: days,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "79e0c74f-157f-437e-845f-74fbb4121d4c",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<string>;
+                res = await this.rest.get<string>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1400,7 +1885,7 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
     * @param {Date} beforeDate - Use if you want to fetch reviews older than the specified date, defaults to null
     * @param {Date} afterDate - Use if you want to fetch reviews newer than the specified date, defaults to null
     */
-    public getReviews(
+    public async getReviews(
         publisherName: string,
         extensionName: string,
         count?: number,
@@ -1408,44 +1893,45 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
         beforeDate?: Date,
         afterDate?: Date
         ): Promise<GalleryInterfaces.ReviewsResult> {
-    
-        let deferred = Q.defer<GalleryInterfaces.ReviewsResult>();
 
-        let onResult = (err: any, statusCode: number, review: GalleryInterfaces.ReviewsResult) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(review);
-            }
-        };
+        return new Promise<GalleryInterfaces.ReviewsResult>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName
-        };
+            let queryValues: any = {
+                count: count,
+                filterOptions: filterOptions,
+                beforeDate: beforeDate,
+                afterDate: afterDate,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "5b3f819f-f247-42ad-8c00-dd9ab9ab246d",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            count: count,
-            filterOptions: filterOptions,
-            beforeDate: beforeDate,
-            afterDate: afterDate,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "5b3f819f-f247-42ad-8c00-dd9ab9ab246d", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: GalleryInterfaces.TypeInfo.ReviewsResult, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.ReviewsResult>;
+                res = await this.rest.get<GalleryInterfaces.ReviewsResult>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.ReviewsResult,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1455,42 +1941,42 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
     * @param {string} pubName - Name of the publisher who published the extension
     * @param {string} extName - Name of the extension
     */
-    public createReview(
+    public async createReview(
         review: GalleryInterfaces.Review,
         pubName: string,
         extName: string
         ): Promise<GalleryInterfaces.Review> {
-    
-        let deferred = Q.defer<GalleryInterfaces.Review>();
 
-        let onResult = (err: any, statusCode: number, review: GalleryInterfaces.Review) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(review);
-            }
-        };
+        return new Promise<GalleryInterfaces.Review>(async (resolve, reject) => {
+            let routeValues: any = {
+                pubName: pubName,
+                extName: extName
+            };
 
-        let routeValues: any = {
-            pubName: pubName,
-            extName: extName
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "e6e85b9d-aa70-40e6-aa28-d0fbf40b91a3",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "e6e85b9d-aa70-40e6-aa28-d0fbf40b91a3", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: GalleryInterfaces.TypeInfo.Review, responseTypeMetadata: GalleryInterfaces.TypeInfo.Review, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.Review>;
+                res = await this.rest.create<GalleryInterfaces.Review>(url, review, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.Review,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, review, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1500,43 +1986,43 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
     * @param {string} extName - Name of the extension
     * @param {number} reviewId - Id of the review which needs to be updated
     */
-    public deleteReview(
+    public async deleteReview(
         pubName: string,
         extName: string,
         reviewId: number
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                pubName: pubName,
+                extName: extName,
+                reviewId: reviewId
+            };
 
-        let routeValues: any = {
-            pubName: pubName,
-            extName: extName,
-            reviewId: reviewId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "e6e85b9d-aa70-40e6-aa28-d0fbf40b91a3",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "e6e85b9d-aa70-40e6-aa28-d0fbf40b91a3", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.delete(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1547,163 +2033,249 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
     * @param {string} extName - Name of the extension
     * @param {number} reviewId - Id of the review which needs to be updated
     */
-    public updateReview(
+    public async updateReview(
         reviewPatch: GalleryInterfaces.ReviewPatch,
         pubName: string,
         extName: string,
         reviewId: number
         ): Promise<GalleryInterfaces.ReviewPatch> {
-    
-        let deferred = Q.defer<GalleryInterfaces.ReviewPatch>();
 
-        let onResult = (err: any, statusCode: number, review: GalleryInterfaces.ReviewPatch) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(review);
-            }
-        };
+        return new Promise<GalleryInterfaces.ReviewPatch>(async (resolve, reject) => {
+            let routeValues: any = {
+                pubName: pubName,
+                extName: extName,
+                reviewId: reviewId
+            };
 
-        let routeValues: any = {
-            pubName: pubName,
-            extName: extName,
-            reviewId: reviewId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "e6e85b9d-aa70-40e6-aa28-d0fbf40b91a3",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "e6e85b9d-aa70-40e6-aa28-d0fbf40b91a3", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: GalleryInterfaces.TypeInfo.ReviewPatch, responseTypeMetadata: GalleryInterfaces.TypeInfo.ReviewPatch, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.ReviewPatch>;
+                res = await this.rest.update<GalleryInterfaces.ReviewPatch>(url, reviewPatch, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.ReviewPatch,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.update(url, apiVersion, reviewPatch, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {GalleryInterfaces.ExtensionCategory} category
     */
-    public createCategory(
+    public async createCategory(
         category: GalleryInterfaces.ExtensionCategory
         ): Promise<GalleryInterfaces.ExtensionCategory> {
-    
-        let deferred = Q.defer<GalleryInterfaces.ExtensionCategory>();
 
-        let onResult = (err: any, statusCode: number, securedCategorie: GalleryInterfaces.ExtensionCategory) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(securedCategorie);
-            }
-        };
+        return new Promise<GalleryInterfaces.ExtensionCategory>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "476531a3-7024-4516-a76a-ed64d3008ad6",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "476531a3-7024-4516-a76a-ed64d3008ad6", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.ExtensionCategory>;
+                res = await this.rest.create<GalleryInterfaces.ExtensionCategory>(url, category, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, category, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-        return deferred.promise;
+    /**
+    * Get all setting entries for the given user/all-users scope
+    * 
+    * @param {string} userScope - User-Scope at which to get the value. Should be "me" for the current user or "host" for all users.
+    * @param {string} key - Optional key under which to filter all the entries
+    */
+    public async getGalleryUserSettings(
+        userScope: string,
+        key?: string
+        ): Promise<{ [key: string] : any; }> {
+
+        return new Promise<{ [key: string] : any; }>(async (resolve, reject) => {
+            let routeValues: any = {
+                userScope: userScope,
+                key: key
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "9b75ece3-7960-401c-848b-148ac01ca350",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<{ [key: string] : any; }>;
+                res = await this.rest.get<{ [key: string] : any; }>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * Set all setting entries for the given user/all-users scope
+    * 
+    * @param {{ [key: string] : any; }} entries - A key-value pair of all settings that need to be set
+    * @param {string} userScope - User-Scope at which to get the value. Should be "me" for the current user or "host" for all users.
+    */
+    public async setGalleryUserSettings(
+        entries: { [key: string] : any; },
+        userScope: string
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                userScope: userScope
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "9b75ece3-7960-401c-848b-148ac01ca350",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.update<void>(url, entries, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} keyType
     * @param {number} expireCurrentSeconds
     */
-    public generateKey(
+    public async generateKey(
         keyType: string,
         expireCurrentSeconds?: number
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                keyType: keyType
+            };
 
-        let routeValues: any = {
-            keyType: keyType
-        };
+            let queryValues: any = {
+                expireCurrentSeconds: expireCurrentSeconds,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "92ed5cf4-c38b-465a-9059-2f2fb7c624b5",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            expireCurrentSeconds: expireCurrentSeconds,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "92ed5cf4-c38b-465a-9059-2f2fb7c624b5", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.create<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.create(url, apiVersion, null, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
     * @param {string} keyType
     */
-    public getSigningKey(
+    public async getSigningKey(
         keyType: string
         ): Promise<string> {
-    
-        let deferred = Q.defer<string>();
 
-        let onResult = (err: any, statusCode: number, signingkey: string) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(signingkey);
-            }
-        };
+        return new Promise<string>(async (resolve, reject) => {
+            let routeValues: any = {
+                keyType: keyType
+            };
 
-        let routeValues: any = {
-            keyType: keyType
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "92ed5cf4-c38b-465a-9059-2f2fb7c624b5",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "92ed5cf4-c38b-465a-9059-2f2fb7c624b5", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<string>;
+                res = await this.rest.get<string>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -1711,42 +2283,141 @@ export class GalleryApi extends basem.ClientApiBase implements IGalleryApi {
     * @param {string} publisherName
     * @param {string} extensionName
     */
-    public updateExtensionStatistics(
+    public async updateExtensionStatistics(
         extensionStatisticsUpdate: GalleryInterfaces.ExtensionStatisticUpdate,
         publisherName: string,
         extensionName: string
         ): Promise<void> {
-    
-        let deferred = Q.defer<void>();
 
-        let onResult = (err: any, statusCode: number) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(null);
-            }
-        };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName
+            };
 
-        let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "a0ea3204-11e9-422d-a9ca-45851cc41400",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "gallery", "a0ea3204-11e9-422d-a9ca-45851cc41400", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: GalleryInterfaces.TypeInfo.ExtensionStatisticUpdate, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.update<void>(url, extensionStatisticsUpdate, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.update(url, apiVersion, extensionStatisticsUpdate, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode);
-            });
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-        return deferred.promise;
+    /**
+    * @param {string} publisherName
+    * @param {string} extensionName
+    * @param {number} days
+    */
+    public async getExtensionDailyStats(
+        publisherName: string,
+        extensionName: string,
+        days?: number
+        ): Promise<GalleryInterfaces.ExtensionDailyStats> {
+
+        return new Promise<GalleryInterfaces.ExtensionDailyStats>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName
+            };
+
+            let queryValues: any = {
+                days: days,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "ae06047e-51c5-4fb4-ab65-7be488544416",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.ExtensionDailyStats>;
+                res = await this.rest.get<GalleryInterfaces.ExtensionDailyStats>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.ExtensionDailyStats,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {string} publisherName
+    * @param {string} extensionName
+    * @param {string} version
+    * @param {string} statType
+    */
+    public async incrementExtensionDailyStat(
+        publisherName: string,
+        extensionName: string,
+        version: string,
+        statType: string
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                version: version
+            };
+
+            let queryValues: any = {
+                statType: statType,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "4fa7adb6-ca65-4075-a232-5f28323288ea",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.create<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
 }

@@ -10,22 +10,24 @@
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
-
-import Q = require('q');
-import restm = require('./RestClient');
-import httpm = require('./HttpClient');
+import * as restm from 'typed-rest-client/RestClient';
+import * as httpm from 'typed-rest-client/HttpClient';
 import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
+import serm = require('./Serialization');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import FeatureManagementInterfaces = require("./interfaces/FeatureManagementInterfaces");
 
 export interface IFeatureManagementApi extends basem.ClientApiBase {
     getFeature(featureId: string): Promise<FeatureManagementInterfaces.ContributedFeature>;
-    getFeatures(): Promise<FeatureManagementInterfaces.ContributedFeature[]>;
+    getFeatures(targetContributionId?: string): Promise<FeatureManagementInterfaces.ContributedFeature[]>;
     getFeatureState(featureId: string, userScope: string): Promise<FeatureManagementInterfaces.ContributedFeatureState>;
     setFeatureState(feature: FeatureManagementInterfaces.ContributedFeatureState, featureId: string, userScope: string, reason?: string, reasonCode?: string): Promise<FeatureManagementInterfaces.ContributedFeatureState>;
     getFeatureStateForScope(featureId: string, userScope: string, scopeName: string, scopeValue: string): Promise<FeatureManagementInterfaces.ContributedFeatureState>;
     setFeatureStateForScope(feature: FeatureManagementInterfaces.ContributedFeatureState, featureId: string, userScope: string, scopeName: string, scopeValue: string, reason?: string, reasonCode?: string): Promise<FeatureManagementInterfaces.ContributedFeatureState>;
+    queryFeatureStates(query: FeatureManagementInterfaces.ContributedFeatureStateQuery): Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery>;
+    queryFeatureStatesForDefaultScope(query: FeatureManagementInterfaces.ContributedFeatureStateQuery, userScope: string): Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery>;
+    queryFeatureStatesForNamedScope(query: FeatureManagementInterfaces.ContributedFeatureStateQuery, userScope: string, scopeName: string, scopeValue: string): Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery>;
 }
 
 export class FeatureManagementApi extends basem.ClientApiBase implements IFeatureManagementApi {
@@ -38,74 +40,83 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
     * 
     * @param {string} featureId - The contribution id of the feature
     */
-    public getFeature(
+    public async getFeature(
         featureId: string
         ): Promise<FeatureManagementInterfaces.ContributedFeature> {
-    
-        let deferred = Q.defer<FeatureManagementInterfaces.ContributedFeature>();
 
-        let onResult = (err: any, statusCode: number, Feature: FeatureManagementInterfaces.ContributedFeature) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Feature);
-            }
-        };
+        return new Promise<FeatureManagementInterfaces.ContributedFeature>(async (resolve, reject) => {
+            let routeValues: any = {
+                featureId: featureId
+            };
 
-        let routeValues: any = {
-            featureId: featureId
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "FeatureManagement",
+                    "c4209f25-7a27-41dd-9f04-06080c7b6afd",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "FeatureManagement", "c4209f25-7a27-41dd-9f04-06080c7b6afd", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeature>;
+                res = await this.rest.get<FeatureManagementInterfaces.ContributedFeature>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
+    * Get a list of all defined features
+    * 
+    * @param {string} targetContributionId - Optional target contribution. If null/empty, return all features. If specified include the features that target the specified contribution.
     */
-    public getFeatures(
+    public async getFeatures(
+        targetContributionId?: string
         ): Promise<FeatureManagementInterfaces.ContributedFeature[]> {
-    
-        let deferred = Q.defer<FeatureManagementInterfaces.ContributedFeature[]>();
 
-        let onResult = (err: any, statusCode: number, Features: FeatureManagementInterfaces.ContributedFeature[]) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(Features);
-            }
-        };
+        return new Promise<FeatureManagementInterfaces.ContributedFeature[]>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
 
-        let routeValues: any = {
-        };
+            let queryValues: any = {
+                targetContributionId: targetContributionId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "FeatureManagement",
+                    "c4209f25-7a27-41dd-9f04-06080c7b6afd",
+                    routeValues,
+                    queryValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "FeatureManagement", "c4209f25-7a27-41dd-9f04-06080c7b6afd", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseIsCollection: true };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeature[]>;
+                res = await this.rest.get<FeatureManagementInterfaces.ContributedFeature[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -114,41 +125,41 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
     * @param {string} featureId - Contribution id of the feature
     * @param {string} userScope - User-Scope at which to get the value. Should be "me" for the current user or "host" for all users.
     */
-    public getFeatureState(
+    public async getFeatureState(
         featureId: string,
         userScope: string
         ): Promise<FeatureManagementInterfaces.ContributedFeatureState> {
-    
-        let deferred = Q.defer<FeatureManagementInterfaces.ContributedFeatureState>();
 
-        let onResult = (err: any, statusCode: number, FeatureState: FeatureManagementInterfaces.ContributedFeatureState) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(FeatureState);
-            }
-        };
+        return new Promise<FeatureManagementInterfaces.ContributedFeatureState>(async (resolve, reject) => {
+            let routeValues: any = {
+                featureId: featureId,
+                userScope: userScope
+            };
 
-        let routeValues: any = {
-            featureId: featureId,
-            userScope: userScope
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "FeatureManagement",
+                    "98911314-3f9b-4eaf-80e8-83900d8e85d9",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "FeatureManagement", "98911314-3f9b-4eaf-80e8-83900d8e85d9", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureState, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
+                res = await this.rest.get<FeatureManagementInterfaces.ContributedFeatureState>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              FeatureManagementInterfaces.TypeInfo.ContributedFeatureState,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -160,49 +171,50 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
     * @param {string} reason - Reason for changing the state
     * @param {string} reasonCode - Short reason code
     */
-    public setFeatureState(
+    public async setFeatureState(
         feature: FeatureManagementInterfaces.ContributedFeatureState,
         featureId: string,
         userScope: string,
         reason?: string,
         reasonCode?: string
         ): Promise<FeatureManagementInterfaces.ContributedFeatureState> {
-    
-        let deferred = Q.defer<FeatureManagementInterfaces.ContributedFeatureState>();
 
-        let onResult = (err: any, statusCode: number, FeatureState: FeatureManagementInterfaces.ContributedFeatureState) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(FeatureState);
-            }
-        };
+        return new Promise<FeatureManagementInterfaces.ContributedFeatureState>(async (resolve, reject) => {
+            let routeValues: any = {
+                featureId: featureId,
+                userScope: userScope
+            };
 
-        let routeValues: any = {
-            featureId: featureId,
-            userScope: userScope
-        };
+            let queryValues: any = {
+                reason: reason,
+                reasonCode: reasonCode,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "FeatureManagement",
+                    "98911314-3f9b-4eaf-80e8-83900d8e85d9",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            reason: reason,
-            reasonCode: reasonCode,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "FeatureManagement", "98911314-3f9b-4eaf-80e8-83900d8e85d9", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureState, responseTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureState, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
+                res = await this.rest.update<FeatureManagementInterfaces.ContributedFeatureState>(url, feature, options);
+
+                let ret = this.formatResponse(res.result,
+                                              FeatureManagementInterfaces.TypeInfo.ContributedFeatureState,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.update(url, apiVersion, feature, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -213,45 +225,45 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
     * @param {string} scopeName - Scope at which to get the feature setting for (e.g. "project" or "team")
     * @param {string} scopeValue - Value of the scope (e.g. the project or team id)
     */
-    public getFeatureStateForScope(
+    public async getFeatureStateForScope(
         featureId: string,
         userScope: string,
         scopeName: string,
         scopeValue: string
         ): Promise<FeatureManagementInterfaces.ContributedFeatureState> {
-    
-        let deferred = Q.defer<FeatureManagementInterfaces.ContributedFeatureState>();
 
-        let onResult = (err: any, statusCode: number, FeatureState: FeatureManagementInterfaces.ContributedFeatureState) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(FeatureState);
-            }
-        };
+        return new Promise<FeatureManagementInterfaces.ContributedFeatureState>(async (resolve, reject) => {
+            let routeValues: any = {
+                featureId: featureId,
+                userScope: userScope,
+                scopeName: scopeName,
+                scopeValue: scopeValue
+            };
 
-        let routeValues: any = {
-            featureId: featureId,
-            userScope: userScope,
-            scopeName: scopeName,
-            scopeValue: scopeValue
-        };
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "FeatureManagement",
+                    "dd291e43-aa9f-4cee-8465-a93c78e414a4",
+                    routeValues);
 
-        this.vsoClient.getVersioningData("3.0-preview.1", "FeatureManagement", "dd291e43-aa9f-4cee-8465-a93c78e414a4", routeValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = {  responseTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureState, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
+                res = await this.rest.get<FeatureManagementInterfaces.ContributedFeatureState>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              FeatureManagementInterfaces.TypeInfo.ContributedFeatureState,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.getJson(url, apiVersion, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
-
-        return deferred.promise;
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
@@ -265,7 +277,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
     * @param {string} reason - Reason for changing the state
     * @param {string} reasonCode - Short reason code
     */
-    public setFeatureStateForScope(
+    public async setFeatureStateForScope(
         feature: FeatureManagementInterfaces.ContributedFeatureState,
         featureId: string,
         userScope: string,
@@ -274,44 +286,174 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
         reason?: string,
         reasonCode?: string
         ): Promise<FeatureManagementInterfaces.ContributedFeatureState> {
-    
-        let deferred = Q.defer<FeatureManagementInterfaces.ContributedFeatureState>();
 
-        let onResult = (err: any, statusCode: number, FeatureState: FeatureManagementInterfaces.ContributedFeatureState) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            }
-            else {
-                deferred.resolve(FeatureState);
-            }
-        };
+        return new Promise<FeatureManagementInterfaces.ContributedFeatureState>(async (resolve, reject) => {
+            let routeValues: any = {
+                featureId: featureId,
+                userScope: userScope,
+                scopeName: scopeName,
+                scopeValue: scopeValue
+            };
 
-        let routeValues: any = {
-            featureId: featureId,
-            userScope: userScope,
-            scopeName: scopeName,
-            scopeValue: scopeValue
-        };
+            let queryValues: any = {
+                reason: reason,
+                reasonCode: reasonCode,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "FeatureManagement",
+                    "dd291e43-aa9f-4cee-8465-a93c78e414a4",
+                    routeValues,
+                    queryValues);
 
-        let queryValues: any = {
-            reason: reason,
-            reasonCode: reasonCode,
-        };
-        
-        this.vsoClient.getVersioningData("3.0-preview.1", "FeatureManagement", "dd291e43-aa9f-4cee-8465-a93c78e414a4", routeValues, queryValues)
-            .then((versioningData: vsom.ClientVersioningData) => {
-                let url: string = versioningData.requestUrl;
-                let apiVersion: string = versioningData.apiVersion;
-                let serializationData = { requestTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureState, responseTypeMetadata: FeatureManagementInterfaces.TypeInfo.ContributedFeatureState, responseIsCollection: false };
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
+                res = await this.rest.update<FeatureManagementInterfaces.ContributedFeatureState>(url, feature, options);
+
+                let ret = this.formatResponse(res.result,
+                                              FeatureManagementInterfaces.TypeInfo.ContributedFeatureState,
+                                              false);
+
+                resolve(ret);
                 
-                this.restClient.update(url, apiVersion, feature, null, serializationData, onResult);
-            })
-            .fail((error) => {
-                onResult(error, error.statusCode, null);
-            });
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-        return deferred.promise;
+    /**
+    * Get the effective state for a list of feature ids
+    * 
+    * @param {FeatureManagementInterfaces.ContributedFeatureStateQuery} query - Features to query along with current scope values
+    */
+    public async queryFeatureStates(
+        query: FeatureManagementInterfaces.ContributedFeatureStateQuery
+        ): Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery> {
+
+        return new Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "FeatureManagement",
+                    "2b4486ad-122b-400c-ae65-17b6672c1f9d",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureStateQuery>;
+                res = await this.rest.create<FeatureManagementInterfaces.ContributedFeatureStateQuery>(url, query, options);
+
+                let ret = this.formatResponse(res.result,
+                                              FeatureManagementInterfaces.TypeInfo.ContributedFeatureStateQuery,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * Get the states of the specified features for the default scope
+    * 
+    * @param {FeatureManagementInterfaces.ContributedFeatureStateQuery} query - Query describing the features to query.
+    * @param {string} userScope
+    */
+    public async queryFeatureStatesForDefaultScope(
+        query: FeatureManagementInterfaces.ContributedFeatureStateQuery,
+        userScope: string
+        ): Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery> {
+
+        return new Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery>(async (resolve, reject) => {
+            let routeValues: any = {
+                userScope: userScope
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "FeatureManagement",
+                    "3f810f28-03e2-4239-b0bc-788add3005e5",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureStateQuery>;
+                res = await this.rest.create<FeatureManagementInterfaces.ContributedFeatureStateQuery>(url, query, options);
+
+                let ret = this.formatResponse(res.result,
+                                              FeatureManagementInterfaces.TypeInfo.ContributedFeatureStateQuery,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * Get the states of the specified features for the specific named scope
+    * 
+    * @param {FeatureManagementInterfaces.ContributedFeatureStateQuery} query - Query describing the features to query.
+    * @param {string} userScope
+    * @param {string} scopeName
+    * @param {string} scopeValue
+    */
+    public async queryFeatureStatesForNamedScope(
+        query: FeatureManagementInterfaces.ContributedFeatureStateQuery,
+        userScope: string,
+        scopeName: string,
+        scopeValue: string
+        ): Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery> {
+
+        return new Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery>(async (resolve, reject) => {
+            let routeValues: any = {
+                userScope: userScope,
+                scopeName: scopeName,
+                scopeValue: scopeValue
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "FeatureManagement",
+                    "f29e997b-c2da-4d15-8380-765788a1a74c",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureStateQuery>;
+                res = await this.rest.create<FeatureManagementInterfaces.ContributedFeatureStateQuery>(url, query, options);
+
+                let ret = this.formatResponse(res.result,
+                                              FeatureManagementInterfaces.TypeInfo.ContributedFeatureStateQuery,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
 }
