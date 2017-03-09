@@ -191,6 +191,17 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<WorkItemTrackingProcessTemplateInterfaces.ProcessImportResult>;
+                res = await this.rest.uploadStream<WorkItemTrackingProcessTemplateInterfaces.ProcessImportResult>("POST", url, contentStream, options);
+
+                let ret = this.formatResponse(res.result,
+                                              WorkItemTrackingProcessTemplateInterfaces.TypeInfo.ProcessImportResult,
+                                              false);
+
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
