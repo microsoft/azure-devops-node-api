@@ -1,6 +1,7 @@
 import * as Q from 'q';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as stream from 'stream';
 
 import * as cm from './common';
 import * as vm from 'vso-node-api';
@@ -17,6 +18,8 @@ export async function run() {
     try
     {
         cm.banner('Task Samples');
+        let project = cm.getProject();
+        console.log('project', project);
 
         // list tasks
         cm.heading('Task Definitions');
@@ -35,6 +38,37 @@ export async function run() {
             await promise;
             console.log(`Downloaded task ${taskDefinition.name}`);
         }
+
+        // upload a secure file
+        let s = new stream.Readable();
+        s._read = function noop() {};
+        s.push("test file contents");
+        s.push(null);
+        let name = `vstsnodeapitest${new Date().getTime()}`;
+        console.log('uploading file');
+        let uploadedFile = await vstsTask.uploadSecureFile(null, s, project, name);
+        console.log(`uploaded secure file ${uploadedFile.name}`);
+
+        // retrieve it
+        let secureFile = await vstsTask.getSecureFile(project, uploadedFile.id, true);
+        if (secureFile.ticket) {
+            // download and verify it
+            let downloadStream = await vstsTask.downloadSecureFile(project, secureFile.id, secureFile.ticket, true);
+            let contents: string = '';
+            let promise = Q.defer();
+                downloadStream.on('data', (data) => {
+                    contents += data.toString();
+                });
+                downloadStream.on('finish', () => {
+                    promise.resolve(contents);
+                });
+            await promise;
+            console.log(`contents of retrieved file: ${contents}`);
+        }
+
+        // delete it
+        await vstsTask.deleteSecureFile(project, secureFile.id);
+        console.log(`deleted secure file ${secureFile.name}`);
     }
     catch (err) {
         console.error('Error: ' + err.stack);

@@ -854,6 +854,17 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
+                res = await this.rest.uploadStream<GalleryInterfaces.PublishedExtension>("POST", url, contentStream, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.PublishedExtension,
+                                              false);
+
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -1019,6 +1030,17 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
+                res = await this.rest.uploadStream<GalleryInterfaces.PublishedExtension>("POST", url, contentStream, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.PublishedExtension,
+                                              false);
+
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -1158,6 +1180,17 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
+                res = await this.rest.uploadStream<GalleryInterfaces.PublishedExtension>("PUT", url, contentStream, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.PublishedExtension,
+                                              false);
+
+                resolve(ret);
             }
             catch (err) {
                 reject(err);

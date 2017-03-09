@@ -3366,6 +3366,17 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
                 let url: string = verData.requestUrl;
                 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile>;
+                res = await this.rest.uploadStream<TaskAgentInterfaces.SecureFile>("POST", url, contentStream, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TaskAgentInterfaces.TypeInfo.SecureFile,
+                                              false);
+
+                resolve(ret);
             }
             catch (err) {
                 reject(err);

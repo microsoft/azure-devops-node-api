@@ -1607,6 +1607,17 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<GitInterfaces.Attachment>;
+                res = await this.rest.uploadStream<GitInterfaces.Attachment>("POST", url, contentStream, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.Attachment,
+                                              false);
+
+                resolve(ret);
             }
             catch (err) {
                 reject(err);

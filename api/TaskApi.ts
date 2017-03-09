@@ -137,6 +137,17 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
                 let url: string = verData.requestUrl;
                 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<TaskAgentInterfaces.TaskAttachment>;
+                res = await this.rest.uploadStream<TaskAgentInterfaces.TaskAttachment>("PUT", url, contentStream, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TaskAgentInterfaces.TypeInfo.TaskAttachment,
+                                              false);
+
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
@@ -390,6 +401,17 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
                 let url: string = verData.requestUrl;
                 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<TaskAgentInterfaces.TaskLog>;
+                res = await this.rest.uploadStream<TaskAgentInterfaces.TaskLog>("POST", url, contentStream, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TaskAgentInterfaces.TypeInfo.TaskLog,
+                                              false);
+
+                resolve(ret);
             }
             catch (err) {
                 reject(err);
