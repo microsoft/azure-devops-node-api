@@ -46,25 +46,8 @@ export async function run() {
         s.push(null);
         let name = `vstsnodeapitest${new Date().getTime()}`;
         console.log('uploading file');
-        let uploadedFile = await vstsTask.uploadSecureFile(null, s, project, name);
-        console.log(`uploaded secure file ${uploadedFile.name}`);
-
-        // retrieve it
-        let secureFile = await vstsTask.getSecureFile(project, uploadedFile.id, true);
-        if (secureFile.ticket) {
-            // download and verify it
-            let downloadStream = await vstsTask.downloadSecureFile(project, secureFile.id, secureFile.ticket, true);
-            let contents: string = '';
-            let promise = Q.defer();
-                downloadStream.on('data', (data) => {
-                    contents += data.toString();
-                });
-                downloadStream.on('finish', () => {
-                    promise.resolve(contents);
-                });
-            await promise;
-            console.log(`contents of retrieved file: ${contents}`);
-        }
+        let secureFile = await vstsTask.uploadSecureFile(null, s, project, name);
+        console.log(`uploaded secure file ${secureFile.name}`);
 
         // delete it
         await vstsTask.deleteSecureFile(project, secureFile.id);
