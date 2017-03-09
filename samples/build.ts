@@ -29,7 +29,7 @@ export async function run() {
             lastDef = def;
             let rep: bi.BuildRepository = def.repository;
 
-            console.log(defRef.name + ' (' + defRef.id + ') ' + 'repo ' + rep.type);            
+            console.log(defRef.name + ' (' + defRef.id + ') ' + 'repo ' + rep.type);
         }
 
         // get top 10 successfully completed builds since 2016
@@ -90,6 +90,10 @@ export async function run() {
             console.log("creating");
             let createdDef: bi.BuildDefinition = await vstsBuild.createDefinition(newDef, project);
             console.log("created", createdDef.name);
+
+            console.log("reading history");
+            let history = await vstsBuild.getDefinitionRevisions(project, createdDef.id);
+            console.log(`last updated ${history[0].changedDate}`);
 
             // delete def
             console.log("deleting", createdDef.name);
