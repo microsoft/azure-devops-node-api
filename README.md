@@ -43,17 +43,31 @@ let vstsBuild: ba.IBuildApi = connection.getBuildApi();
 
 #### Available clients
 
+* Accounts
 * Build
+* Chat
+* CodeReview
+* Contributions
 * Core
+* Dashboard
+* Discussion
+* ExtensionManagement
+* Favorite
 * FileContainer
 * Gallery
 * Git
+* Graph
+* Locations
+* Organization
+* RM
 * Release
+* Reporting
+* ServiceHooks
 * TaskAgent
 * Task
+* Team
 * Test
 * Tfvc
-* Web
 * WorkItemTracking
 
 ### Use the client
