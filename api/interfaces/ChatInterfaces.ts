@@ -98,9 +98,6 @@ export interface Room {
     name: string;
 }
 
-export interface RoomCollection {
-}
-
 export interface RoomData {
     /**
      * Description of the room
@@ -135,9 +132,6 @@ export interface User {
     user: VSSInterfaces.IdentityRef;
 }
 
-export interface UserCollection {
-}
-
 export interface UserData {
     userId: string;
 }
@@ -160,16 +154,10 @@ export var TypeInfo = {
     Room: {
         fields: <any>null
     },
-    RoomCollection: {
-        fields: <any>null
-    },
     RoomData: {
         fields: <any>null
     },
     User: {
-        fields: <any>null
-    },
-    UserCollection: {
         fields: <any>null
     },
     UserData: {
@@ -204,9 +192,6 @@ TypeInfo.Room.fields = {
     },
 };
 
-TypeInfo.RoomCollection.fields = {
-};
-
 TypeInfo.RoomData.fields = {
 };
 
@@ -220,9 +205,6 @@ TypeInfo.User.fields = {
     user: {
         typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
-};
-
-TypeInfo.UserCollection.fields = {
 };
 
 TypeInfo.UserData.fields = {

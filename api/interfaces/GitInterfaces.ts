@@ -354,6 +354,28 @@ export interface FileContentMetadata {
     vsLink: string;
 }
 
+export interface GitAnnotatedTag {
+    /**
+     * Tagging Message
+     */
+    message: string;
+    name: string;
+    objectId: string;
+    /**
+     * User name, Email and date of tagging
+     */
+    taggedBy: GitUserDate;
+    /**
+     * Sha1Id of target object
+     */
+    taggedObjectId: string;
+    /**
+     * Type of object being tagged - commit, tag, blob...
+     */
+    taggedObjectType: GitObjectType;
+    url: string;
+}
+
 export enum GitAsyncOperationStatus {
     Queued = 1,
     InProgress = 2,
@@ -713,15 +735,6 @@ export interface GitFilePathsCollection {
     url: string;
 }
 
-export interface GitHistoryQueryResults extends HistoryQueryResults<GitItem> {
-    /**
-     * Seed commit used for querying history.  Used for skip feature.
-     */
-    startingCommitId: string;
-    unpopulatedCount: number;
-    unprocessedCount: number;
-}
-
 export interface GitImportFailedEvent {
     sourceRepositoryName: string;
     targetRepository: GitRepository;
@@ -731,6 +744,10 @@ export interface GitImportFailedEvent {
  * Parameter for creating a git import request when source is Git version control
  */
 export interface GitImportGitSource {
+    /**
+     * Tells if this is a sync request or not
+     */
+    overwrite: boolean;
     /**
      * Url for the source repo
      */
@@ -766,6 +783,10 @@ export interface GitImportRequestParameters {
      * Service Endpoint for connection to external endpoint
      */
     serviceEndpointId: string;
+    /**
+     * Source for importing tfvc repository
+     */
+    tfvcSource: GitImportTfvcSource;
 }
 
 export interface GitImportStatusDetail {
@@ -777,6 +798,24 @@ export interface GitImportStatusDetail {
 export interface GitImportSucceededEvent {
     sourceRepositoryName: string;
     targetRepository: GitRepository;
+}
+
+/**
+ * Parameter for creating a git import request when source is tfvc version control
+ */
+export interface GitImportTfvcSource {
+    /**
+     * Set true to import History, false otherwise
+     */
+    importHistory: boolean;
+    /**
+     * Get history for last n days (max allowed value is 180 days)
+     */
+    importHistoryDurationInDays: number;
+    /**
+     * Path which we want to import (this can be copied from Path Control in Explorer)
+     */
+    path: string;
 }
 
 export interface GitItem extends ItemModel {
@@ -857,6 +896,10 @@ export interface GitLastChangeItem {
 
 export interface GitLastChangeTreeItems {
     /**
+     * The list of commits referenced by Items, if they were requested.
+     */
+    commits: GitCommitRef[];
+    /**
      * The last change of items.
      */
     items: GitLastChangeItem[];
@@ -867,6 +910,7 @@ export interface GitLastChangeTreeItems {
 }
 
 export interface GitMergeOriginRef {
+    pullRequestId: number;
 }
 
 export enum GitObjectType {
@@ -964,6 +1008,7 @@ export interface GitPullRequestCommentThreadContext {
 }
 
 export interface GitPullRequestCompletionOptions {
+    bypassPolicy: boolean;
     deleteSourceBranch: boolean;
     mergeCommitMessage: string;
     squashMerge: boolean;
@@ -980,6 +1025,7 @@ export interface GitPullRequestIteration {
     hasMoreCommits: boolean;
     id: number;
     push: GitPushRef;
+    reason: IterationReason;
     sourceRefCommit: GitCommitRef;
     targetRefCommit: GitCommitRef;
     updatedDate: Date;
@@ -989,10 +1035,6 @@ export interface GitPullRequestIterationChanges {
     changeEntries: GitPullRequestChange[];
     nextSkip: number;
     nextTop: number;
-}
-
-export interface GitPullRequestMergeOriginRef extends GitMergeOriginRef {
-    pullRequestId: number;
 }
 
 /**
@@ -1180,6 +1222,7 @@ export interface GitQueryCommitsCriteria {
 
 export interface GitRef {
     _links: any;
+    isLocked: boolean;
     isLockedBy: VSSInterfaces.IdentityRef;
     name: string;
     objectId: string;
@@ -1204,6 +1247,7 @@ export interface GitRefLockRequest {
 }
 
 export interface GitRefUpdate {
+    isLocked: boolean;
     name: string;
     newObjectId: string;
     oldObjectId: string;
@@ -1226,6 +1270,10 @@ export interface GitRefUpdateResult {
      * Custom message for the result object For instance, Reason for failing.
      */
     customMessage: string;
+    /**
+     * Whether the ref is locked or not
+     */
+    isLocked: boolean;
     /**
      * Ref name
      */
@@ -1602,7 +1650,7 @@ export interface GitUserDate {
 
 export interface GitVersionDescriptor {
     /**
-     * Version string identifier (name of tag/branch/index, SHA1 of commit)
+     * Version string identifier (name of tag/branch, SHA1 of commit)
      */
     version: string;
     /**
@@ -1610,7 +1658,7 @@ export interface GitVersionDescriptor {
      */
     versionOptions: GitVersionOptions;
     /**
-     * Version type (branch, tag, commit, or index). Determines how Id is interpreted
+     * Version type (branch, tag, or commit). Determines how Id is interpreted
      */
     versionType: GitVersionType;
 }
@@ -1643,10 +1691,6 @@ export enum GitVersionType {
      * Interpret the version as a commit ID (SHA1)
      */
     Commit = 2,
-    /**
-     * Interpret the version as an index name
-     */
-    Index = 3,
 }
 
 export interface HistoryEntry<T> {
@@ -1664,22 +1708,18 @@ export interface HistoryEntry<T> {
     serverItem: string;
 }
 
-export interface HistoryQueryResults<T> {
-    /**
-     * True if there are more results available to fetch (we're returning the max # of items requested) A more RESTy solution would be to include a Link header
-     */
-    moreResultsAvailable: boolean;
-    /**
-     * The history entries (results) from this query
-     */
-    results: HistoryEntry<T>[];
-}
-
 export interface IdentityRefWithVote extends VSSInterfaces.IdentityRef {
     isRequired: boolean;
     reviewerUrl: string;
     vote: number;
     votedFor: IdentityRefWithVote[];
+}
+
+export interface ImportRepositoryValidation {
+    gitSource: GitImportGitSource;
+    password: string;
+    tfvcSource: GitImportTfvcSource;
+    username: string;
 }
 
 export interface IncludedGitCommit {
@@ -1722,6 +1762,14 @@ export interface ItemModel {
     url: string;
 }
 
+export enum IterationReason {
+    Push = 0,
+    ForcePush = 1,
+    Create = 2,
+    Rebase = 4,
+    Unknown = 8,
+}
+
 export enum PullRequestAsyncStatus {
     NotSet = 0,
     Queued = 1,
@@ -1751,12 +1799,6 @@ export enum RefFavoriteType {
     Invalid = 0,
     Folder = 1,
     Ref = 2,
-}
-
-export interface RemoteRepositoryValidation {
-    password: string;
-    url: string;
-    username: string;
 }
 
 /**
@@ -2240,6 +2282,9 @@ export var TypeInfo = {
     FileContentMetadata: {
         fields: <any>null
     },
+    GitAnnotatedTag: {
+        fields: <any>null
+    },
     GitAsyncOperationStatus: {
         enumValues: {
             "queued": 1,
@@ -2358,9 +2403,6 @@ export var TypeInfo = {
     GitFilePathsCollection: {
         fields: <any>null
     },
-    GitHistoryQueryResults: {
-        fields: <any>null
-    },
     GitImportFailedEvent: {
         fields: <any>null
     },
@@ -2377,6 +2419,9 @@ export var TypeInfo = {
         fields: <any>null
     },
     GitImportSucceededEvent: {
+        fields: <any>null
+    },
+    GitImportTfvcSource: {
         fields: <any>null
     },
     GitItem: {
@@ -2443,9 +2488,6 @@ export var TypeInfo = {
         fields: <any>null
     },
     GitPullRequestIterationChanges: {
-        fields: <any>null
-    },
-    GitPullRequestMergeOriginRef: {
         fields: <any>null
     },
     GitPullRequestQuery: {
@@ -2670,16 +2712,15 @@ export var TypeInfo = {
             "branch": 0,
             "tag": 1,
             "commit": 2,
-            "index": 3,
         }
     },
     HistoryEntry: {
         fields: <any>null
     },
-    HistoryQueryResults: {
+    IdentityRefWithVote: {
         fields: <any>null
     },
-    IdentityRefWithVote: {
+    ImportRepositoryValidation: {
         fields: <any>null
     },
     IncludedGitCommit: {
@@ -2699,6 +2740,15 @@ export var TypeInfo = {
     },
     ItemModel: {
         fields: <any>null
+    },
+    IterationReason: {
+        enumValues: {
+            "push": 0,
+            "forcePush": 1,
+            "create": 2,
+            "rebase": 4,
+            "unknown": 8,
+        }
     },
     PullRequestAsyncStatus: {
         enumValues: {
@@ -2728,9 +2778,6 @@ export var TypeInfo = {
             "folder": 1,
             "ref": 2,
         }
-    },
-    RemoteRepositoryValidation: {
-        fields: <any>null
     },
     ShareNotificationContext: {
         fields: <any>null
@@ -3008,6 +3055,15 @@ TypeInfo.CommentTrackingCriteria.fields = {
 };
 
 TypeInfo.FileContentMetadata.fields = {
+};
+
+TypeInfo.GitAnnotatedTag.fields = {
+    taggedBy: {
+        typeInfo: TypeInfo.GitUserDate
+    },
+    taggedObjectType: {
+        enumType: TypeInfo.GitObjectType
+    },
 };
 
 TypeInfo.GitAsyncRefOperation.fields = {
@@ -3748,9 +3804,6 @@ TypeInfo.GitDeletedRepository.fields = {
 TypeInfo.GitFilePathsCollection.fields = {
 };
 
-TypeInfo.GitHistoryQueryResults.fields = {
-};
-
 TypeInfo.GitImportFailedEvent.fields = {
     targetRepository: {
         typeInfo: TypeInfo.GitRepository
@@ -3779,6 +3832,9 @@ TypeInfo.GitImportRequestParameters.fields = {
     gitSource: {
         typeInfo: TypeInfo.GitImportGitSource
     },
+    tfvcSource: {
+        typeInfo: TypeInfo.GitImportTfvcSource
+    },
 };
 
 TypeInfo.GitImportStatusDetail.fields = {
@@ -3788,6 +3844,9 @@ TypeInfo.GitImportSucceededEvent.fields = {
     targetRepository: {
         typeInfo: TypeInfo.GitRepository
     },
+};
+
+TypeInfo.GitImportTfvcSource.fields = {
 };
 
 TypeInfo.GitItem.fields = {
@@ -3825,6 +3884,10 @@ TypeInfo.GitLastChangeItem.fields = {
 };
 
 TypeInfo.GitLastChangeTreeItems.fields = {
+    commits: {
+        isArray: true,
+        typeInfo: TypeInfo.GitCommitRef
+    },
     items: {
         isArray: true,
         typeInfo: TypeInfo.GitLastChangeItem
@@ -3972,6 +4035,9 @@ TypeInfo.GitPullRequestIteration.fields = {
     push: {
         typeInfo: TypeInfo.GitPushRef
     },
+    reason: {
+        enumType: TypeInfo.IterationReason
+    },
     sourceRefCommit: {
         typeInfo: TypeInfo.GitCommitRef
     },
@@ -3988,9 +4054,6 @@ TypeInfo.GitPullRequestIterationChanges.fields = {
         isArray: true,
         typeInfo: TypeInfo.GitPullRequestChange
     },
-};
-
-TypeInfo.GitPullRequestMergeOriginRef.fields = {
 };
 
 TypeInfo.GitPullRequestQuery.fields = {
@@ -4293,13 +4356,19 @@ TypeInfo.HistoryEntry.fields = {
     },
 };
 
-TypeInfo.HistoryQueryResults.fields = {
-};
-
 TypeInfo.IdentityRefWithVote.fields = {
     votedFor: {
         isArray: true,
         typeInfo: TypeInfo.IdentityRefWithVote
+    },
+};
+
+TypeInfo.ImportRepositoryValidation.fields = {
+    gitSource: {
+        typeInfo: TypeInfo.GitImportGitSource
+    },
+    tfvcSource: {
+        typeInfo: TypeInfo.GitImportTfvcSource
     },
 };
 
@@ -4328,9 +4397,6 @@ TypeInfo.ItemModel.fields = {
 };
 
 TypeInfo.PullRequestTabExtensionConfig.fields = {
-};
-
-TypeInfo.RemoteRepositoryValidation.fields = {
 };
 
 TypeInfo.ShareNotificationContext.fields = {

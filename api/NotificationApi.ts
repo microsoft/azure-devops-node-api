@@ -10,33 +10,30 @@
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
-
-import restm = require('./RestClient');
-import httpm = require('./HttpClient');
+import * as restm from 'typed-rest-client/RestClient';
+import * as httpm from 'typed-rest-client/HttpClient';
 import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
 import serm = require('./Serialization');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import NotificationInterfaces = require("./interfaces/NotificationInterfaces");
-import VSS_Common_Contracts = require("./VSS/WebApi/Contracts");
+import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
 export interface INotificationApi extends basem.ClientApiBase {
     performBatchNotificationOperations(operation: NotificationInterfaces.BatchNotificationOperation): Promise<void>;
-    publishEvent(notificationEvent: VSS_Common_Contracts.VssNotificationEvent): Promise<VSS_Common_Contracts.VssNotificationEvent>;
+    publishEvent(notificationEvent: VSSInterfaces.VssNotificationEvent): Promise<VSSInterfaces.VssNotificationEvent>;
     queryEventTypes(inputValuesQuery: NotificationInterfaces.FieldValuesQuery, eventType: string): Promise<NotificationInterfaces.NotificationEventField[]>;
     getEventType(eventType: string): Promise<NotificationInterfaces.NotificationEventType>;
-    getEventTypes(publisherId?: string): Promise<NotificationInterfaces.NotificationEventType[]>;
-    followArtifact(artifact: NotificationInterfaces.ArtifactSubscription): Promise<NotificationInterfaces.ArtifactSubscription>;
-    getArtifactSubscription(artifactType: string, artifactId: string): Promise<NotificationInterfaces.ArtifactSubscription>;
-    getArtifactSubscriptions(): Promise<NotificationInterfaces.ArtifactSubscription[]>;
-    unfollowArtifact(subscriptionId: number): Promise<void>;
-    statisticsQuery(statisticsQuery: NotificationInterfaces.NotificationStatisticsQuery): Promise<NotificationInterfaces.NotificationStatistic[]>;
-    subscriptionQuery(subscriptionQuery: NotificationInterfaces.SubscriptionQuery): Promise<NotificationInterfaces.NotificationSubscription[]>;
-    createSubscription(notificationSubscription: NotificationInterfaces.NotificationSubscription): Promise<NotificationInterfaces.NotificationSubscription>;
+    listEventTypes(publisherId?: string): Promise<NotificationInterfaces.NotificationEventType[]>;
+    queryStatistics(statisticsQuery: NotificationInterfaces.NotificationStatisticsQuery): Promise<NotificationInterfaces.NotificationStatistic[]>;
+    querySubscriptions(subscriptionQuery: NotificationInterfaces.SubscriptionQuery): Promise<NotificationInterfaces.NotificationSubscription[]>;
+    createSubscription(createParameters: NotificationInterfaces.NotificationSubscriptionCreateParameters): Promise<NotificationInterfaces.NotificationSubscription>;
     deleteSubscription(subscriptionId: string): Promise<void>;
-    getSubscription(subscriptionId: string): Promise<NotificationInterfaces.NotificationSubscription>;
-    updateSubscription(subscriptionPatch: NotificationInterfaces.NotificationSubscription, subscriptionId: string): Promise<NotificationInterfaces.NotificationSubscription>;
+    getSubscription(subscriptionId: string, queryFlags?: NotificationInterfaces.SubscriptionQueryFlags): Promise<NotificationInterfaces.NotificationSubscription>;
+    listSubscriptions(subscriber?: string, queryFlags?: NotificationInterfaces.SubscriptionQueryFlags): Promise<NotificationInterfaces.NotificationSubscription[]>;
+    updateSubscription(updateParameters: NotificationInterfaces.NotificationSubscriptionUpdateParameters, subscriptionId: string): Promise<NotificationInterfaces.NotificationSubscription>;
     getSubscriptionTemplates(): Promise<NotificationInterfaces.NotificationSubscriptionTemplate[]>;
+    updateSubscriptionUserSettings(userSettings: NotificationInterfaces.SubscriptionUserSettings, subscriptionId: string, userId: string): Promise<NotificationInterfaces.SubscriptionUserSettings>;
 }
 
 export class NotificationApi extends basem.ClientApiBase implements INotificationApi {
@@ -52,24 +49,27 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
         ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
-            
             let routeValues: any = {
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "notification",
                     "8f3c6ab2-5bae-4537-b16e-f84e0955599e",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, operation, null);
-                let serializationData = { requestTypeMetadata: NotificationInterfaces.TypeInfo.BatchNotificationOperation, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(null);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.create<void>(url, operation, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -79,31 +79,36 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
     }
 
     /**
-    * @param {VSS_Common_Contracts.VssNotificationEvent} notificationEvent
+    * Publish an event.
+    * 
+    * @param {VSSInterfaces.VssNotificationEvent} notificationEvent
     */
     public async publishEvent(
-        notificationEvent: VSS_Common_Contracts.VssNotificationEvent
-        ): Promise<VSS_Common_Contracts.VssNotificationEvent> {
+        notificationEvent: VSSInterfaces.VssNotificationEvent
+        ): Promise<VSSInterfaces.VssNotificationEvent> {
 
-        return new Promise<VSS_Common_Contracts.VssNotificationEvent>(async (resolve, reject) => {
-            
+        return new Promise<VSSInterfaces.VssNotificationEvent>(async (resolve, reject) => {
             let routeValues: any = {
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "notification",
                     "14c57b7a-c0e6-4555-9f51-e067188fdd8e",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, notificationEvent, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<VSSInterfaces.VssNotificationEvent>;
+                res = await this.rest.create<VSSInterfaces.VssNotificationEvent>(url, notificationEvent, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -122,25 +127,28 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
         ): Promise<NotificationInterfaces.NotificationEventField[]> {
 
         return new Promise<NotificationInterfaces.NotificationEventField[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 eventType: eventType
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "notification",
                     "b5bbdd21-c178-4398-b6db-0166d910028a",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, inputValuesQuery, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<NotificationInterfaces.NotificationEventField[]>;
+                res = await this.rest.create<NotificationInterfaces.NotificationEventField[]>(url, inputValuesQuery, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -150,6 +158,8 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
     }
 
     /**
+    * Get a specific event type.
+    * 
     * @param {string} eventType
     */
     public async getEventType(
@@ -157,25 +167,28 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
         ): Promise<NotificationInterfaces.NotificationEventType> {
 
         return new Promise<NotificationInterfaces.NotificationEventType>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 eventType: eventType
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "notification",
                     "cc84fb5f-6247-4c7a-aeae-e5a3c3fddb21",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<NotificationInterfaces.NotificationEventType>;
+                res = await this.rest.get<NotificationInterfaces.NotificationEventType>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -185,14 +198,15 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
     }
 
     /**
+    * List available event types for this service. Optionally filter by event types for the specified publisher.
+    * 
     * @param {string} publisherId
     */
-    public async getEventTypes(
+    public async listEventTypes(
         publisherId?: string
         ): Promise<NotificationInterfaces.NotificationEventType[]> {
 
         return new Promise<NotificationInterfaces.NotificationEventType[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
             };
 
@@ -202,166 +216,23 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "notification",
                     "cc84fb5f-6247-4c7a-aeae-e5a3c3fddb21",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<NotificationInterfaces.NotificationEventType[]>;
+                res = await this.rest.get<NotificationInterfaces.NotificationEventType[]>(url, options);
 
-    /**
-    * @param {NotificationInterfaces.ArtifactSubscription} artifact
-    */
-    public async followArtifact(
-        artifact: NotificationInterfaces.ArtifactSubscription
-        ): Promise<NotificationInterfaces.ArtifactSubscription> {
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
 
-        return new Promise<NotificationInterfaces.ArtifactSubscription>(async (resolve, reject) => {
-            
-            let routeValues: any = {
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
-                    "notification",
-                    "831e34f0-6d93-45a4-a222-c661f08dcea9",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, artifact, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-    * @param {string} artifactType
-    * @param {string} artifactId
-    */
-    public async getArtifactSubscription(
-        artifactType: string,
-        artifactId: string
-        ): Promise<NotificationInterfaces.ArtifactSubscription> {
-
-        return new Promise<NotificationInterfaces.ArtifactSubscription>(async (resolve, reject) => {
-            
-            let routeValues: any = {
-            };
-
-            let queryValues: any = {
-                artifactType: artifactType,
-                artifactId: artifactId,
-            };
-            
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
-                    "notification",
-                    "831e34f0-6d93-45a4-a222-c661f08dcea9",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-    */
-    public async getArtifactSubscriptions(
-        ): Promise<NotificationInterfaces.ArtifactSubscription[]> {
-
-        return new Promise<NotificationInterfaces.ArtifactSubscription[]>(async (resolve, reject) => {
-            
-            let routeValues: any = {
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
-                    "notification",
-                    "831e34f0-6d93-45a4-a222-c661f08dcea9",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-    * @param {number} subscriptionId
-    */
-    public async unfollowArtifact(
-        subscriptionId: number
-        ): Promise<void> {
-
-        return new Promise<void>(async (resolve, reject) => {
-            
-            let routeValues: any = {
-            };
-
-            let queryValues: any = {
-                subscriptionId: subscriptionId,
-            };
-            
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
-                    "notification",
-                    "831e34f0-6d93-45a4-a222-c661f08dcea9",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(null);
+                resolve(ret);
                 
             }
             catch (err) {
@@ -373,29 +244,32 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
     /**
     * @param {NotificationInterfaces.NotificationStatisticsQuery} statisticsQuery
     */
-    public async statisticsQuery(
+    public async queryStatistics(
         statisticsQuery: NotificationInterfaces.NotificationStatisticsQuery
         ): Promise<NotificationInterfaces.NotificationStatistic[]> {
 
         return new Promise<NotificationInterfaces.NotificationStatistic[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "notification",
                     "77878ce9-6391-49af-aa9d-768ac784461f",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, statisticsQuery, null);
-                let serializationData = { requestTypeMetadata: NotificationInterfaces.TypeInfo.NotificationStatisticsQuery, responseTypeMetadata: NotificationInterfaces.TypeInfo.NotificationStatistic, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<NotificationInterfaces.NotificationStatistic[]>;
+                res = await this.rest.create<NotificationInterfaces.NotificationStatistic[]>(url, statisticsQuery, options);
+
+                let ret = this.formatResponse(res.result,
+                                              NotificationInterfaces.TypeInfo.NotificationStatistic,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -405,31 +279,36 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
     }
 
     /**
+    * Query for notification subscriptions.
+    * 
     * @param {NotificationInterfaces.SubscriptionQuery} subscriptionQuery
     */
-    public async subscriptionQuery(
+    public async querySubscriptions(
         subscriptionQuery: NotificationInterfaces.SubscriptionQuery
         ): Promise<NotificationInterfaces.NotificationSubscription[]> {
 
         return new Promise<NotificationInterfaces.NotificationSubscription[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "notification",
                     "6864db85-08c0-4006-8e8e-cc1bebe31675",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, subscriptionQuery, null);
-                let serializationData = { requestTypeMetadata: NotificationInterfaces.TypeInfo.SubscriptionQuery, responseTypeMetadata: NotificationInterfaces.TypeInfo.NotificationSubscription, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<NotificationInterfaces.NotificationSubscription[]>;
+                res = await this.rest.create<NotificationInterfaces.NotificationSubscription[]>(url, subscriptionQuery, options);
+
+                let ret = this.formatResponse(res.result,
+                                              NotificationInterfaces.TypeInfo.NotificationSubscription,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -439,31 +318,36 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
     }
 
     /**
-    * @param {NotificationInterfaces.NotificationSubscription} notificationSubscription
+    * Create a notification subscription.
+    * 
+    * @param {NotificationInterfaces.NotificationSubscriptionCreateParameters} createParameters
     */
     public async createSubscription(
-        notificationSubscription: NotificationInterfaces.NotificationSubscription
+        createParameters: NotificationInterfaces.NotificationSubscriptionCreateParameters
         ): Promise<NotificationInterfaces.NotificationSubscription> {
 
         return new Promise<NotificationInterfaces.NotificationSubscription>(async (resolve, reject) => {
-            
             let routeValues: any = {
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "notification",
                     "70f911d6-abac-488c-85b3-a206bf57e165",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, notificationSubscription, null);
-                let serializationData = { requestTypeMetadata: NotificationInterfaces.TypeInfo.NotificationSubscription, responseTypeMetadata: NotificationInterfaces.TypeInfo.NotificationSubscription, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<NotificationInterfaces.NotificationSubscription>;
+                res = await this.rest.create<NotificationInterfaces.NotificationSubscription>(url, createParameters, options);
+
+                let ret = this.formatResponse(res.result,
+                                              NotificationInterfaces.TypeInfo.NotificationSubscription,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -473,6 +357,8 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
     }
 
     /**
+    * Delete a notification subscription.
+    * 
     * @param {string} subscriptionId
     */
     public async deleteSubscription(
@@ -480,25 +366,28 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
         ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 subscriptionId: subscriptionId
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "notification",
                     "70f911d6-abac-488c-85b3-a206bf57e165",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(null);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -508,32 +397,44 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
     }
 
     /**
+    * Get a notification subscription.
+    * 
     * @param {string} subscriptionId
+    * @param {NotificationInterfaces.SubscriptionQueryFlags} queryFlags
     */
     public async getSubscription(
-        subscriptionId: string
+        subscriptionId: string,
+        queryFlags?: NotificationInterfaces.SubscriptionQueryFlags
         ): Promise<NotificationInterfaces.NotificationSubscription> {
 
         return new Promise<NotificationInterfaces.NotificationSubscription>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 subscriptionId: subscriptionId
             };
 
+            let queryValues: any = {
+                queryFlags: queryFlags,
+            };
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "notification",
                     "70f911d6-abac-488c-85b3-a206bf57e165",
-                    routeValues);
+                    routeValues,
+                    queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: NotificationInterfaces.TypeInfo.NotificationSubscription, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<NotificationInterfaces.NotificationSubscription>;
+                res = await this.rest.get<NotificationInterfaces.NotificationSubscription>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              NotificationInterfaces.TypeInfo.NotificationSubscription,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -543,34 +444,86 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
     }
 
     /**
-    * @param {NotificationInterfaces.NotificationSubscription} subscriptionPatch
+    * Get a list of subscriptions for the specified subscriber. If no subscriber is specified, subscriptions for the calling user are returned.
+    * 
+    * @param {string} subscriber
+    * @param {NotificationInterfaces.SubscriptionQueryFlags} queryFlags
+    */
+    public async listSubscriptions(
+        subscriber?: string,
+        queryFlags?: NotificationInterfaces.SubscriptionQueryFlags
+        ): Promise<NotificationInterfaces.NotificationSubscription[]> {
+
+        return new Promise<NotificationInterfaces.NotificationSubscription[]>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
+
+            let queryValues: any = {
+                subscriber: subscriber,
+                queryFlags: queryFlags,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "notification",
+                    "70f911d6-abac-488c-85b3-a206bf57e165",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<NotificationInterfaces.NotificationSubscription[]>;
+                res = await this.rest.get<NotificationInterfaces.NotificationSubscription[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              NotificationInterfaces.TypeInfo.NotificationSubscription,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * Update an existing notification subscription.
+    * 
+    * @param {NotificationInterfaces.NotificationSubscriptionUpdateParameters} updateParameters
     * @param {string} subscriptionId
     */
     public async updateSubscription(
-        subscriptionPatch: NotificationInterfaces.NotificationSubscription,
+        updateParameters: NotificationInterfaces.NotificationSubscriptionUpdateParameters,
         subscriptionId: string
         ): Promise<NotificationInterfaces.NotificationSubscription> {
 
         return new Promise<NotificationInterfaces.NotificationSubscription>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 subscriptionId: subscriptionId
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "notification",
                     "70f911d6-abac-488c-85b3-a206bf57e165",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, subscriptionPatch, null);
-                let serializationData = { requestTypeMetadata: NotificationInterfaces.TypeInfo.NotificationSubscription, responseTypeMetadata: NotificationInterfaces.TypeInfo.NotificationSubscription, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<NotificationInterfaces.NotificationSubscription>;
+                res = await this.rest.update<NotificationInterfaces.NotificationSubscription>(url, updateParameters, options);
+
+                let ret = this.formatResponse(res.result,
+                                              NotificationInterfaces.TypeInfo.NotificationSubscription,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -585,24 +538,70 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
         ): Promise<NotificationInterfaces.NotificationSubscriptionTemplate[]> {
 
         return new Promise<NotificationInterfaces.NotificationSubscriptionTemplate[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "notification",
                     "fa5d24ba-7484-4f3d-888d-4ec6b1974082",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<NotificationInterfaces.NotificationSubscriptionTemplate[]>;
+                res = await this.rest.get<NotificationInterfaces.NotificationSubscriptionTemplate[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              NotificationInterfaces.TypeInfo.NotificationSubscriptionTemplate,
+                                              true);
+
+                resolve(ret);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: NotificationInterfaces.TypeInfo.NotificationSubscriptionTemplate, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {NotificationInterfaces.SubscriptionUserSettings} userSettings
+    * @param {string} subscriptionId
+    * @param {string} userId
+    */
+    public async updateSubscriptionUserSettings(
+        userSettings: NotificationInterfaces.SubscriptionUserSettings,
+        subscriptionId: string,
+        userId: string
+        ): Promise<NotificationInterfaces.SubscriptionUserSettings> {
+
+        return new Promise<NotificationInterfaces.SubscriptionUserSettings>(async (resolve, reject) => {
+            let routeValues: any = {
+                subscriptionId: subscriptionId,
+                userId: userId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "notification",
+                    "ed5a3dff-aeb5-41b1-b4f7-89e66e58b62e",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<NotificationInterfaces.SubscriptionUserSettings>;
+                res = await this.rest.replace<NotificationInterfaces.SubscriptionUserSettings>(url, userSettings, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {

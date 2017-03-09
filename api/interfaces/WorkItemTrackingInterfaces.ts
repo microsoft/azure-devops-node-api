@@ -112,6 +112,10 @@ export enum FieldType {
     Double = 7,
     Guid = 8,
     Boolean = 9,
+    Identity = 10,
+    PicklistString = 11,
+    PicklistInteger = 12,
+    PicklistDouble = 13,
 }
 
 export enum GetFieldsExpand {
@@ -346,6 +350,11 @@ export interface WorkItemDeleteReference {
     url: string;
 }
 
+export interface WorkItemDeleteShallowReference {
+    id: number;
+    url: string;
+}
+
 export interface WorkItemDeleteUpdate {
     isDeleted: boolean;
 }
@@ -364,6 +373,7 @@ export enum WorkItemExpand {
 }
 
 export interface WorkItemField extends WorkItemTrackingResource {
+    description: string;
     name: string;
     readOnly: boolean;
     referenceName: string;
@@ -597,6 +607,10 @@ export var TypeInfo = {
             "double": 7,
             "guid": 8,
             "boolean": 9,
+            "identity": 10,
+            "picklistString": 11,
+            "picklistInteger": 12,
+            "picklistDouble": 13,
         }
     },
     GetFieldsExpand: {
@@ -736,6 +750,9 @@ export var TypeInfo = {
         fields: <any>null
     },
     WorkItemDeleteReference: {
+        fields: <any>null
+    },
+    WorkItemDeleteShallowReference: {
         fields: <any>null
     },
     WorkItemDeleteUpdate: {
@@ -1019,6 +1036,9 @@ TypeInfo.WorkItemDelete.fields = {
 };
 
 TypeInfo.WorkItemDeleteReference.fields = {
+};
+
+TypeInfo.WorkItemDeleteShallowReference.fields = {
 };
 
 TypeInfo.WorkItemDeleteUpdate.fields = {

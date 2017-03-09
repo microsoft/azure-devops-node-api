@@ -212,6 +212,10 @@ export interface ContributionProviderDetails {
      * Properties associated with the provider
      */
     properties: { [key: string] : string; };
+    /**
+     * Version of contributions assoicated with this contribution provider.
+     */
+    version: string;
 }
 
 export enum ContributionQueryOptions {

@@ -10,9 +10,8 @@
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
-
-import restm = require('./RestClient');
-import httpm = require('./HttpClient');
+import * as restm from 'typed-rest-client/RestClient';
+import * as httpm from 'typed-rest-client/HttpClient';
 import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
 import serm = require('./Serialization');
@@ -21,6 +20,8 @@ import GitInterfaces = require("./interfaces/GitInterfaces");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
 export interface IGitApi extends basem.ClientApiBase {
+    createAnnotatedTag(tagObject: GitInterfaces.GitAnnotatedTag, project: string, repositoryId: string): Promise<GitInterfaces.GitAnnotatedTag>;
+    getAnnotatedTag(project: string, repositoryId: string, objectId: string): Promise<GitInterfaces.GitAnnotatedTag>;
     getBlob(repositoryId: string, sha1: string, project?: string, download?: boolean, fileName?: string): Promise<GitInterfaces.GitBlobRef>;
     getBlobContent(repositoryId: string, sha1: string, project?: string, download?: boolean, fileName?: string): Promise<NodeJS.ReadableStream>;
     getBlobsZip(blobIds: string[], repositoryId: string, project?: string, filename?: string): Promise<NodeJS.ReadableStream>;
@@ -37,7 +38,7 @@ export interface IGitApi extends basem.ClientApiBase {
     getPushCommits(repositoryId: string, pushId: number, project?: string, top?: number, skip?: number, includeLinks?: boolean): Promise<GitInterfaces.GitCommitRef[]>;
     getCommitsBatch(searchCriteria: GitInterfaces.GitQueryCommitsCriteria, repositoryId: string, project?: string, skip?: number, top?: number, includeStatuses?: boolean): Promise<GitInterfaces.GitCommitRef[]>;
     getDeletedRepositories(project: string): Promise<GitInterfaces.GitDeletedRepository[]>;
-    createImportRequest(importRequest: GitInterfaces.GitImportRequest, project: string, repositoryId: string, validateParameters?: boolean): Promise<GitInterfaces.GitImportRequest>;
+    createImportRequest(importRequest: GitInterfaces.GitImportRequest, project: string, repositoryId: string): Promise<GitInterfaces.GitImportRequest>;
     getImportRequest(project: string, repositoryId: string, importRequestId: number): Promise<GitInterfaces.GitImportRequest>;
     queryImportRequests(project: string, repositoryId: string, includeAbandoned?: boolean): Promise<GitInterfaces.GitImportRequest[]>;
     updateImportRequest(importRequestToUpdate: GitInterfaces.GitImportRequest, project: string, repositoryId: string, importRequestId: number): Promise<GitInterfaces.GitImportRequest>;
@@ -94,6 +95,7 @@ export interface IGitApi extends basem.ClientApiBase {
     getPushes(repositoryId: string, project?: string, skip?: number, top?: number, searchCriteria?: GitInterfaces.GitPushSearchCriteria): Promise<GitInterfaces.GitPush[]>;
     createRefLockRequest(refLockRequest: GitInterfaces.GitRefLockRequest, project: string, repositoryId: string): Promise<void>;
     getRefs(repositoryId: string, project?: string, filter?: string, includeLinks?: boolean, latestStatusesOnly?: boolean): Promise<GitInterfaces.GitRef[]>;
+    updateRef(newRefInfo: GitInterfaces.GitRefUpdate, repositoryId: string, filter: string, project?: string, projectId?: string): Promise<GitInterfaces.GitRef>;
     updateRefs(refUpdates: GitInterfaces.GitRefUpdate[], repositoryId: string, project?: string, projectId?: string): Promise<GitInterfaces.GitRefUpdateResult[]>;
     createFavorite(favorite: GitInterfaces.GitRefFavorite, project: string): Promise<GitInterfaces.GitRefFavorite>;
     deleteRefFavorite(project: string, favoriteId: number): Promise<void>;
@@ -120,6 +122,97 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
+    * Create an annotated tag
+    * 
+    * @param {GitInterfaces.GitAnnotatedTag} tagObject - Object containing details of tag to be created
+    * @param {string} project - Project ID or project name
+    * @param {string} repositoryId - Friendly name or guid of repository
+    */
+    public async createAnnotatedTag(
+        tagObject: GitInterfaces.GitAnnotatedTag,
+        project: string,
+        repositoryId: string
+        ): Promise<GitInterfaces.GitAnnotatedTag> {
+
+        return new Promise<GitInterfaces.GitAnnotatedTag>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                repositoryId: repositoryId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "git",
+                    "5e8a8081-3851-4626-b677-9891cc04102e",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitAnnotatedTag>;
+                res = await this.rest.create<GitInterfaces.GitAnnotatedTag>(url, tagObject, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitAnnotatedTag,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * Get an annotated tag
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {string} repositoryId
+    * @param {string} objectId - Sha1 of annotated tag to be returned
+    */
+    public async getAnnotatedTag(
+        project: string,
+        repositoryId: string,
+        objectId: string
+        ): Promise<GitInterfaces.GitAnnotatedTag> {
+
+        return new Promise<GitInterfaces.GitAnnotatedTag>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                repositoryId: repositoryId,
+                objectId: objectId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "git",
+                    "5e8a8081-3851-4626-b677-9891cc04102e",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitAnnotatedTag>;
+                res = await this.rest.get<GitInterfaces.GitAnnotatedTag>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitAnnotatedTag,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
     * Gets a single blob.
     * 
     * @param {string} repositoryId
@@ -137,7 +230,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitBlobRef> {
 
         return new Promise<GitInterfaces.GitBlobRef>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -151,19 +243,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "7b28e929-2c99-405d-9c5c-6167a06e6816",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitBlobRef>;
+                res = await this.rest.get<GitInterfaces.GitBlobRef>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -190,16 +286,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
-            let onResult = (err: any, statusCode: number, Blob: NodeJS.ReadableStream) => {
-                if (err) {
-                    err.statusCode = statusCode;
-                    reject(err);
-                }
-                else {
-                    resolve(Blob);
-                }
-            };
-
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -213,17 +299,17 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "7b28e929-2c99-405d-9c5c-6167a06e6816",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
                 
+                let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
-                this.httpClient.getStream(url, accept, onResult);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
             }
             catch (err) {
                 reject(err);
@@ -247,16 +333,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
-            let onResult = (err: any, statusCode: number, Blob: NodeJS.ReadableStream) => {
-                if (err) {
-                    err.statusCode = statusCode;
-                    reject(err);
-                }
-                else {
-                    resolve(Blob);
-                }
-            };
-
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -268,17 +344,17 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "7b28e929-2c99-405d-9c5c-6167a06e6816",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
                 
+                let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
-                this.httpClient.getStream(url, accept, onResult);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
             }
             catch (err) {
                 reject(err);
@@ -304,16 +380,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
-            let onResult = (err: any, statusCode: number, Blob: NodeJS.ReadableStream) => {
-                if (err) {
-                    err.statusCode = statusCode;
-                    reject(err);
-                }
-                else {
-                    resolve(Blob);
-                }
-            };
-
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -327,17 +393,17 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "7b28e929-2c99-405d-9c5c-6167a06e6816",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
                 
+                let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
-                this.httpClient.getStream(url, accept, onResult);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
             }
             catch (err) {
                 reject(err);
@@ -361,7 +427,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitBranchStats> {
 
         return new Promise<GitInterfaces.GitBranchStats>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -374,19 +439,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "d5b216de-d8d5-4d32-ae76-51df755b16d3",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitBranchStats, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitBranchStats>;
+                res = await this.rest.get<GitInterfaces.GitBranchStats>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitBranchStats,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -409,7 +478,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitBranchStats[]> {
 
         return new Promise<GitInterfaces.GitBranchStats[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -421,19 +489,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "d5b216de-d8d5-4d32-ae76-51df755b16d3",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitBranchStats, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitBranchStats[]>;
+                res = await this.rest.get<GitInterfaces.GitBranchStats[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitBranchStats,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -456,7 +528,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitBranchStats[]> {
 
         return new Promise<GitInterfaces.GitBranchStats[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -464,18 +535,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "d5b216de-d8d5-4d32-ae76-51df755b16d3",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, searchCriteria, null);
-                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitQueryBranchStatsCriteria, responseTypeMetadata: GitInterfaces.TypeInfo.GitBranchStats, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitBranchStats[]>;
+                res = await this.rest.create<GitInterfaces.GitBranchStats[]>(url, searchCriteria, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitBranchStats,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -502,7 +577,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitCommitChanges> {
 
         return new Promise<GitInterfaces.GitCommitChanges>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 commitId: commitId,
@@ -516,19 +590,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "5bf884f5-3e07-42e9-afb8-1b872267bf16",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitChanges, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitCommitChanges>;
+                res = await this.rest.get<GitInterfaces.GitCommitChanges>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitCommitChanges,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -549,7 +627,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitCherryPick> {
 
         return new Promise<GitInterfaces.GitCherryPick>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -557,18 +634,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "033bad68-9a14-43d1-90e0-59cb8856fef6",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, cherryPickToCreate, null);
-                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitAsyncRefOperationParameters, responseTypeMetadata: GitInterfaces.TypeInfo.GitCherryPick, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitCherryPick>;
+                res = await this.rest.create<GitInterfaces.GitCherryPick>(url, cherryPickToCreate, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitCherryPick,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -589,7 +670,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitCherryPick> {
 
         return new Promise<GitInterfaces.GitCherryPick>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 cherryPickId: cherryPickId,
@@ -598,18 +678,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "033bad68-9a14-43d1-90e0-59cb8856fef6",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCherryPick, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitCherryPick>;
+                res = await this.rest.get<GitInterfaces.GitCherryPick>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitCherryPick,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -630,7 +714,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitCherryPick> {
 
         return new Promise<GitInterfaces.GitCherryPick>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -642,19 +725,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "033bad68-9a14-43d1-90e0-59cb8856fef6",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCherryPick, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitCherryPick>;
+                res = await this.rest.get<GitInterfaces.GitCherryPick>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitCherryPick,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -679,7 +766,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitCommit> {
 
         return new Promise<GitInterfaces.GitCommit>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 commitId: commitId,
@@ -692,19 +778,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "c2570c3b-5b3f-41b8-98bf-5407bfde8d58",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommit, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitCommit>;
+                res = await this.rest.get<GitInterfaces.GitCommit>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitCommit,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -731,7 +821,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitCommitRef[]> {
 
         return new Promise<GitInterfaces.GitCommitRef[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -745,19 +834,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "c2570c3b-5b3f-41b8-98bf-5407bfde8d58",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitRef, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
+                res = await this.rest.get<GitInterfaces.GitCommitRef[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitCommitRef,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -786,7 +879,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitCommitRef[]> {
 
         return new Promise<GitInterfaces.GitCommitRef[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -801,19 +893,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "c2570c3b-5b3f-41b8-98bf-5407bfde8d58",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitRef, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
+                res = await this.rest.get<GitInterfaces.GitCommitRef[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitCommitRef,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -842,7 +938,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitCommitRef[]> {
 
         return new Promise<GitInterfaces.GitCommitRef[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -856,19 +951,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "6400dfb2-0bcb-462b-b992-5a57f8f1416c",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, searchCriteria, null);
-                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitQueryCommitsCriteria, responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitRef, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
+                res = await this.rest.create<GitInterfaces.GitCommitRef[]>(url, searchCriteria, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitCommitRef,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -887,25 +986,28 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitDeletedRepository[]> {
 
         return new Promise<GitInterfaces.GitDeletedRepository[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "2b6869c4-cb25-42b5-b7a3-0d3e6be0a11a",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitDeletedRepository, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitDeletedRepository[]>;
+                res = await this.rest.get<GitInterfaces.GitDeletedRepository[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitDeletedRepository,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -920,41 +1022,37 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     * @param {GitInterfaces.GitImportRequest} importRequest
     * @param {string} project - Project ID or project name
     * @param {string} repositoryId
-    * @param {boolean} validateParameters
     */
     public async createImportRequest(
         importRequest: GitInterfaces.GitImportRequest,
         project: string,
-        repositoryId: string,
-        validateParameters?: boolean
+        repositoryId: string
         ): Promise<GitInterfaces.GitImportRequest> {
 
         return new Promise<GitInterfaces.GitImportRequest>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
             };
 
-            let queryValues: any = {
-                validateParameters: validateParameters,
-            };
-            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "01828ddc-3600-4a41-8633-99b3a73a0eb3",
-                    routeValues,
-                    queryValues);
+                    routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, importRequest, null);
-                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitImportRequest, responseTypeMetadata: GitInterfaces.TypeInfo.GitImportRequest, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitImportRequest>;
+                res = await this.rest.create<GitInterfaces.GitImportRequest>(url, importRequest, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitImportRequest,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -977,7 +1075,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitImportRequest> {
 
         return new Promise<GitInterfaces.GitImportRequest>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -986,18 +1083,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "01828ddc-3600-4a41-8633-99b3a73a0eb3",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitImportRequest, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitImportRequest>;
+                res = await this.rest.get<GitInterfaces.GitImportRequest>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitImportRequest,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -1020,7 +1121,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitImportRequest[]> {
 
         return new Promise<GitInterfaces.GitImportRequest[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -1032,19 +1132,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "01828ddc-3600-4a41-8633-99b3a73a0eb3",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitImportRequest, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitImportRequest[]>;
+                res = await this.rest.get<GitInterfaces.GitImportRequest[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitImportRequest,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -1069,7 +1173,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitImportRequest> {
 
         return new Promise<GitInterfaces.GitImportRequest>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -1078,18 +1181,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "01828ddc-3600-4a41-8633-99b3a73a0eb3",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, importRequestToUpdate, null);
-                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitImportRequest, responseTypeMetadata: GitInterfaces.TypeInfo.GitImportRequest, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitImportRequest>;
+                res = await this.rest.update<GitInterfaces.GitImportRequest>(url, importRequestToUpdate, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitImportRequest,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -1124,7 +1231,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitItem> {
 
         return new Promise<GitInterfaces.GitItem>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -1142,19 +1248,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "fb93c0db-47ed-4a31-8c20-47552878fb44",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitItem, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitItem>;
+                res = await this.rest.get<GitInterfaces.GitItem>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitItem,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -1189,16 +1299,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
-            let onResult = (err: any, statusCode: number, Item: NodeJS.ReadableStream) => {
-                if (err) {
-                    err.statusCode = statusCode;
-                    reject(err);
-                }
-                else {
-                    resolve(Item);
-                }
-            };
-
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -1216,17 +1316,17 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "fb93c0db-47ed-4a31-8c20-47552878fb44",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
                 
+                let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
-                this.httpClient.getStream(url, accept, onResult);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
             }
             catch (err) {
                 reject(err);
@@ -1260,7 +1360,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitItem[]> {
 
         return new Promise<GitInterfaces.GitItem[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -1278,19 +1377,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "fb93c0db-47ed-4a31-8c20-47552878fb44",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitItem, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitItem[]>;
+                res = await this.rest.get<GitInterfaces.GitItem[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitItem,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -1325,16 +1428,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
-            let onResult = (err: any, statusCode: number, Item: NodeJS.ReadableStream) => {
-                if (err) {
-                    err.statusCode = statusCode;
-                    reject(err);
-                }
-                else {
-                    resolve(Item);
-                }
-            };
-
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -1352,17 +1445,17 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "fb93c0db-47ed-4a31-8c20-47552878fb44",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
                 
+                let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
-                this.httpClient.getStream(url, accept, onResult);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
             }
             catch (err) {
                 reject(err);
@@ -1396,16 +1489,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
-            let onResult = (err: any, statusCode: number, Item: NodeJS.ReadableStream) => {
-                if (err) {
-                    err.statusCode = statusCode;
-                    reject(err);
-                }
-                else {
-                    resolve(Item);
-                }
-            };
-
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -1423,17 +1506,17 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "fb93c0db-47ed-4a31-8c20-47552878fb44",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
                 
+                let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
-                this.httpClient.getStream(url, accept, onResult);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
             }
             catch (err) {
                 reject(err);
@@ -1455,7 +1538,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitItem[][]> {
 
         return new Promise<GitInterfaces.GitItem[][]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -1463,18 +1545,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "630fd2e4-fb88-4f85-ad21-13f3fd1fbca9",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, requestData, null);
-                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitItemRequestData, responseTypeMetadata: GitInterfaces.TypeInfo.GitItem, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitItem[][]>;
+                res = await this.rest.create<GitInterfaces.GitItem[][]>(url, requestData, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitItem,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -1502,7 +1588,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.Attachment> {
 
         return new Promise<GitInterfaces.Attachment>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 fileName: fileName,
@@ -1515,18 +1600,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "965d9361-878b-413b-a494-45d5b5fd8ab7",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.uploadStream('POST', url, apiVersion, contentStream, customHeaders);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.Attachment, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
                 
             }
             catch (err) {
@@ -1549,7 +1628,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 fileName: fileName,
@@ -1559,18 +1637,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "965d9361-878b-413b-a494-45d5b5fd8ab7",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(null);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -1593,16 +1675,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
-            let onResult = (err: any, statusCode: number, PullRequestAttachment: NodeJS.ReadableStream) => {
-                if (err) {
-                    err.statusCode = statusCode;
-                    reject(err);
-                }
-                else {
-                    resolve(PullRequestAttachment);
-                }
-            };
-
             let routeValues: any = {
                 project: project,
                 fileName: fileName,
@@ -1612,16 +1684,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "965d9361-878b-413b-a494-45d5b5fd8ab7",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
                 
+                let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
-                this.httpClient.getStream(url, accept, onResult);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
             }
             catch (err) {
                 reject(err);
@@ -1641,7 +1713,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.Attachment[]> {
 
         return new Promise<GitInterfaces.Attachment[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -1650,18 +1721,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "965d9361-878b-413b-a494-45d5b5fd8ab7",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.Attachment, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.Attachment[]>;
+                res = await this.rest.get<GitInterfaces.Attachment[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.Attachment,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -1684,16 +1759,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
-            let onResult = (err: any, statusCode: number, PullRequestAttachment: NodeJS.ReadableStream) => {
-                if (err) {
-                    err.statusCode = statusCode;
-                    reject(err);
-                }
-                else {
-                    resolve(PullRequestAttachment);
-                }
-            };
-
             let routeValues: any = {
                 project: project,
                 fileName: fileName,
@@ -1703,16 +1768,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "965d9361-878b-413b-a494-45d5b5fd8ab7",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
                 
+                let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
-                this.httpClient.getStream(url, accept, onResult);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
             }
             catch (err) {
                 reject(err);
@@ -1736,7 +1801,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitCommitRef[]> {
 
         return new Promise<GitInterfaces.GitCommitRef[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -1746,18 +1810,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "e7ea0883-095f-4926-b5fb-f24691c26fb9",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitRef, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
+                res = await this.rest.get<GitInterfaces.GitCommitRef[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitCommitRef,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -1780,7 +1848,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitCommitRef[]> {
 
         return new Promise<GitInterfaces.GitCommitRef[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -1789,18 +1856,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "52823034-34a8-4576-922c-8d8b77e9e4c4",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitCommitRef, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
+                res = await this.rest.get<GitInterfaces.GitCommitRef[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitCommitRef,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -1825,7 +1896,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitConflict> {
 
         return new Promise<GitInterfaces.GitConflict>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -1835,18 +1905,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "d840fb74-bbef-42d3-b250-564604c054a4",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitConflict, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitConflict>;
+                res = await this.rest.get<GitInterfaces.GitConflict>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitConflict,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -1875,7 +1949,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitConflict[]> {
 
         return new Promise<GitInterfaces.GitConflict[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -1890,19 +1963,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "d840fb74-bbef-42d3-b250-564604c054a4",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitConflict, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitConflict[]>;
+                res = await this.rest.get<GitInterfaces.GitConflict[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitConflict,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -1929,7 +2006,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitConflict> {
 
         return new Promise<GitInterfaces.GitConflict>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -1939,18 +2015,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "d840fb74-bbef-42d3-b250-564604c054a4",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, conflict, null);
-                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitConflict, responseTypeMetadata: GitInterfaces.TypeInfo.GitConflict, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitConflict>;
+                res = await this.rest.update<GitInterfaces.GitConflict>(url, conflict, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitConflict,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -1979,7 +2059,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPullRequestIterationChanges> {
 
         return new Promise<GitInterfaces.GitPullRequestIterationChanges>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -1995,19 +2074,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "4216bdcf-b6b1-4d59-8b82-c34cc183fc8b",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestIterationChanges, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPullRequestIterationChanges>;
+                res = await this.rest.get<GitInterfaces.GitPullRequestIterationChanges>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPullRequestIterationChanges,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -2030,7 +2113,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPullRequestIteration> {
 
         return new Promise<GitInterfaces.GitPullRequestIteration>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -2040,18 +2122,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "d43911ee-6958-46b0-a42b-8445b8a0d004",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestIteration, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPullRequestIteration>;
+                res = await this.rest.get<GitInterfaces.GitPullRequestIteration>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPullRequestIteration,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -2074,7 +2160,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPullRequestIteration[]> {
 
         return new Promise<GitInterfaces.GitPullRequestIteration[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -2087,19 +2172,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "d43911ee-6958-46b0-a42b-8445b8a0d004",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestIteration, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPullRequestIteration[]>;
+                res = await this.rest.get<GitInterfaces.GitPullRequestIteration[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPullRequestIteration,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -2122,7 +2211,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPullRequestQuery> {
 
         return new Promise<GitInterfaces.GitPullRequestQuery>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -2130,18 +2218,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "b3a6eebe-9cf0-49ea-b6cb-1a4c5f5007b0",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, queries, null);
-                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestQuery, responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestQuery, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPullRequestQuery>;
+                res = await this.rest.create<GitInterfaces.GitPullRequestQuery>(url, queries, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPullRequestQuery,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -2168,7 +2260,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.IdentityRefWithVote> {
 
         return new Promise<GitInterfaces.IdentityRefWithVote>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -2178,18 +2269,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.replace(url, apiVersion, reviewer, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote>;
+                res = await this.rest.replace<GitInterfaces.IdentityRefWithVote>(url, reviewer, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -2214,7 +2309,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.IdentityRefWithVote[]> {
 
         return new Promise<GitInterfaces.IdentityRefWithVote[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -2223,18 +2317,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, reviewers, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote[]>;
+                res = await this.rest.create<GitInterfaces.IdentityRefWithVote[]>(url, reviewers, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -2244,7 +2342,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-    * Adds reviewers to a git pull request
+    * Removes a reviewer from a git pull request
     * 
     * @param {string} repositoryId
     * @param {number} pullRequestId
@@ -2259,7 +2357,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -2269,18 +2366,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(null);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -2305,7 +2406,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.IdentityRefWithVote> {
 
         return new Promise<GitInterfaces.IdentityRefWithVote>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -2315,18 +2415,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote>;
+                res = await this.rest.get<GitInterfaces.IdentityRefWithVote>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -2349,7 +2453,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.IdentityRefWithVote[]> {
 
         return new Promise<GitInterfaces.IdentityRefWithVote[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -2358,18 +2461,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote[]>;
+                res = await this.rest.get<GitInterfaces.IdentityRefWithVote[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -2379,7 +2486,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-    * Get a pull request using it's ID
+    * Get a pull request using its ID
     * 
     * @param {number} pullRequestId - the Id of the pull request
     */
@@ -2388,25 +2495,28 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPullRequest> {
 
         return new Promise<GitInterfaces.GitPullRequest>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 pullRequestId: pullRequestId
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "01a46dea-7d46-4d40-bc84-319e7c260d99",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPullRequest>;
+                res = await this.rest.get<GitInterfaces.GitPullRequest>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPullRequest,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -2433,7 +2543,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPullRequest[]> {
 
         return new Promise<GitInterfaces.GitPullRequest[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project
             };
@@ -2447,19 +2556,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "a5d28130-9cd2-40fa-9f08-902e7daa9efb",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPullRequest[]>;
+                res = await this.rest.get<GitInterfaces.GitPullRequest[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPullRequest,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -2482,7 +2595,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPullRequest> {
 
         return new Promise<GitInterfaces.GitPullRequest>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -2490,18 +2602,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "9946fd70-0d40-406e-b686-b4744cbbcc37",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, gitPullRequestToCreate, null);
-                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPullRequest>;
+                res = await this.rest.create<GitInterfaces.GitPullRequest>(url, gitPullRequestToCreate, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPullRequest,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -2534,7 +2650,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPullRequest> {
 
         return new Promise<GitInterfaces.GitPullRequest>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -2551,19 +2666,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "9946fd70-0d40-406e-b686-b4744cbbcc37",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPullRequest>;
+                res = await this.rest.get<GitInterfaces.GitPullRequest>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPullRequest,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -2592,7 +2711,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPullRequest[]> {
 
         return new Promise<GitInterfaces.GitPullRequest[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -2607,19 +2725,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "9946fd70-0d40-406e-b686-b4744cbbcc37",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPullRequest[]>;
+                res = await this.rest.get<GitInterfaces.GitPullRequest[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPullRequest,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -2644,7 +2766,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPullRequest> {
 
         return new Promise<GitInterfaces.GitPullRequest>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -2653,18 +2774,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "9946fd70-0d40-406e-b686-b4744cbbcc37",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, gitPullRequestToUpdate, null);
-                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequest, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPullRequest>;
+                res = await this.rest.update<GitInterfaces.GitPullRequest>(url, gitPullRequestToUpdate, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPullRequest,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -2687,7 +2812,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -2696,18 +2820,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "696f3a82-47c9-487f-9117-b9d00972ca84",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, userMessage, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(null);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.create<void>(url, userMessage, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -2734,7 +2862,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPullRequestStatus> {
 
         return new Promise<GitInterfaces.GitPullRequestStatus>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -2744,18 +2871,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "75cf11c5-979f-4038-a76e-058a06adf2bf",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, status, null);
-                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestStatus, responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestStatus, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus>;
+                res = await this.rest.create<GitInterfaces.GitPullRequestStatus>(url, status, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPullRequestStatus,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -2782,7 +2913,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPullRequestStatus> {
 
         return new Promise<GitInterfaces.GitPullRequestStatus>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -2793,18 +2923,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "75cf11c5-979f-4038-a76e-058a06adf2bf",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestStatus, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus>;
+                res = await this.rest.get<GitInterfaces.GitPullRequestStatus>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPullRequestStatus,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -2829,7 +2963,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPullRequestStatus[]> {
 
         return new Promise<GitInterfaces.GitPullRequestStatus[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -2839,18 +2972,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "75cf11c5-979f-4038-a76e-058a06adf2bf",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestStatus, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus[]>;
+                res = await this.rest.get<GitInterfaces.GitPullRequestStatus[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPullRequestStatus,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -2875,7 +3012,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPullRequestStatus> {
 
         return new Promise<GitInterfaces.GitPullRequestStatus>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -2884,18 +3020,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, status, null);
-                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestStatus, responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestStatus, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus>;
+                res = await this.rest.create<GitInterfaces.GitPullRequestStatus>(url, status, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPullRequestStatus,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -2920,7 +3060,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPullRequestStatus> {
 
         return new Promise<GitInterfaces.GitPullRequestStatus>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -2930,18 +3069,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestStatus, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus>;
+                res = await this.rest.get<GitInterfaces.GitPullRequestStatus>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPullRequestStatus,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -2964,7 +3107,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPullRequestStatus[]> {
 
         return new Promise<GitInterfaces.GitPullRequestStatus[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -2973,18 +3115,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestStatus, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus[]>;
+                res = await this.rest.get<GitInterfaces.GitPullRequestStatus[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPullRequestStatus,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -3011,7 +3157,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.Comment> {
 
         return new Promise<GitInterfaces.Comment>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -3021,18 +3166,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, comment, null);
-                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.Comment, responseTypeMetadata: GitInterfaces.TypeInfo.Comment, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.Comment>;
+                res = await this.rest.create<GitInterfaces.Comment>(url, comment, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.Comment,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -3059,7 +3208,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -3070,18 +3218,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(null);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -3108,7 +3260,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.Comment> {
 
         return new Promise<GitInterfaces.Comment>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -3119,18 +3270,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.Comment, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.Comment>;
+                res = await this.rest.get<GitInterfaces.Comment>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.Comment,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -3155,7 +3310,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.Comment[]> {
 
         return new Promise<GitInterfaces.Comment[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -3165,18 +3319,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.Comment, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.Comment[]>;
+                res = await this.rest.get<GitInterfaces.Comment[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.Comment,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -3205,7 +3363,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.Comment> {
 
         return new Promise<GitInterfaces.Comment>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -3216,18 +3373,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, comment, null);
-                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.Comment, responseTypeMetadata: GitInterfaces.TypeInfo.Comment, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.Comment>;
+                res = await this.rest.update<GitInterfaces.Comment>(url, comment, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.Comment,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -3252,7 +3413,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPullRequestCommentThread> {
 
         return new Promise<GitInterfaces.GitPullRequestCommentThread>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -3261,18 +3421,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "ab6e2e5d-a0b7-4153-b64a-a4efe0d49449",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, commentThread, null);
-                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestCommentThread, responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestCommentThread, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPullRequestCommentThread>;
+                res = await this.rest.create<GitInterfaces.GitPullRequestCommentThread>(url, commentThread, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPullRequestCommentThread,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -3301,7 +3465,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPullRequestCommentThread> {
 
         return new Promise<GitInterfaces.GitPullRequestCommentThread>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -3316,19 +3479,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "ab6e2e5d-a0b7-4153-b64a-a4efe0d49449",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestCommentThread, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPullRequestCommentThread>;
+                res = await this.rest.get<GitInterfaces.GitPullRequestCommentThread>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPullRequestCommentThread,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -3355,7 +3522,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPullRequestCommentThread[]> {
 
         return new Promise<GitInterfaces.GitPullRequestCommentThread[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -3369,19 +3535,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "ab6e2e5d-a0b7-4153-b64a-a4efe0d49449",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestCommentThread, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPullRequestCommentThread[]>;
+                res = await this.rest.get<GitInterfaces.GitPullRequestCommentThread[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPullRequestCommentThread,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -3408,7 +3578,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPullRequestCommentThread> {
 
         return new Promise<GitInterfaces.GitPullRequestCommentThread>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -3418,18 +3587,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "ab6e2e5d-a0b7-4153-b64a-a4efe0d49449",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, commentThread, null);
-                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestCommentThread, responseTypeMetadata: GitInterfaces.TypeInfo.GitPullRequestCommentThread, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPullRequestCommentThread>;
+                res = await this.rest.update<GitInterfaces.GitPullRequestCommentThread>(url, commentThread, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPullRequestCommentThread,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -3452,7 +3625,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.AssociatedWorkItem[]> {
 
         return new Promise<GitInterfaces.AssociatedWorkItem[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -3461,18 +3633,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "0a637fcc-5370-4ce8-b0e8-98091f5f9482",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.AssociatedWorkItem[]>;
+                res = await this.rest.get<GitInterfaces.AssociatedWorkItem[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -3495,7 +3671,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPush> {
 
         return new Promise<GitInterfaces.GitPush>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -3503,18 +3678,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.2",
+                    "3.2-preview.2",
                     "git",
                     "ea98d07b-3c87-4971-8ede-a613694ffb55",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, push, null);
-                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitPush, responseTypeMetadata: GitInterfaces.TypeInfo.GitPush, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPush>;
+                res = await this.rest.create<GitInterfaces.GitPush>(url, push, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPush,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -3541,7 +3720,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPush> {
 
         return new Promise<GitInterfaces.GitPush>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -3555,19 +3733,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.2",
+                    "3.2-preview.2",
                     "git",
                     "ea98d07b-3c87-4971-8ede-a613694ffb55",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPush, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPush>;
+                res = await this.rest.get<GitInterfaces.GitPush>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPush,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -3594,7 +3776,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitPush[]> {
 
         return new Promise<GitInterfaces.GitPush[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -3608,19 +3789,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.2",
+                    "3.2-preview.2",
                     "git",
                     "ea98d07b-3c87-4971-8ede-a613694ffb55",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitPush, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitPush[]>;
+                res = await this.rest.get<GitInterfaces.GitPush[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitPush,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -3643,7 +3828,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -3651,18 +3835,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "32863ac0-6a8a-4d9f-8afe-ba293b93ec3c",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, refLockRequest, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(null);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.create<void>(url, refLockRequest, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -3689,7 +3877,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitRef[]> {
 
         return new Promise<GitInterfaces.GitRef[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -3703,19 +3890,76 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "2d874a60-a811-4f62-9c9f-963a6ea0a55b",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitRef[]>;
+                res = await this.rest.get<GitInterfaces.GitRef[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitRef,
+                                              true);
+
+                resolve(ret);
                 
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitRef, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {GitInterfaces.GitRefUpdate} newRefInfo
+    * @param {string} repositoryId
+    * @param {string} filter
+    * @param {string} project - Project ID or project name
+    * @param {string} projectId
+    */
+    public async updateRef(
+        newRefInfo: GitInterfaces.GitRefUpdate,
+        repositoryId: string,
+        filter: string,
+        project?: string,
+        projectId?: string
+        ): Promise<GitInterfaces.GitRef> {
+
+        return new Promise<GitInterfaces.GitRef>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                repositoryId: repositoryId
+            };
+
+            let queryValues: any = {
+                filter: filter,
+                projectId: projectId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "git",
+                    "2d874a60-a811-4f62-9c9f-963a6ea0a55b",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitRef>;
+                res = await this.rest.update<GitInterfaces.GitRef>(url, newRefInfo, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitRef,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -3740,7 +3984,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitRefUpdateResult[]> {
 
         return new Promise<GitInterfaces.GitRefUpdateResult[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -3752,19 +3995,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "2d874a60-a811-4f62-9c9f-963a6ea0a55b",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, refUpdates, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitRefUpdateResult, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitRefUpdateResult[]>;
+                res = await this.rest.create<GitInterfaces.GitRefUpdateResult[]>(url, refUpdates, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitRefUpdateResult,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -3785,25 +4032,28 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitRefFavorite> {
 
         return new Promise<GitInterfaces.GitRefFavorite>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "876f70af-5792-485a-a1c7-d0a7b2f42bbb",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, favorite, null);
-                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitRefFavorite, responseTypeMetadata: GitInterfaces.TypeInfo.GitRefFavorite, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitRefFavorite>;
+                res = await this.rest.create<GitInterfaces.GitRefFavorite>(url, favorite, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitRefFavorite,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -3822,7 +4072,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 favoriteId: favoriteId
@@ -3830,18 +4079,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "876f70af-5792-485a-a1c7-d0a7b2f42bbb",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(null);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -3860,7 +4113,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitRefFavorite> {
 
         return new Promise<GitInterfaces.GitRefFavorite>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 favoriteId: favoriteId
@@ -3868,18 +4120,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "876f70af-5792-485a-a1c7-d0a7b2f42bbb",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitRefFavorite, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitRefFavorite>;
+                res = await this.rest.get<GitInterfaces.GitRefFavorite>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitRefFavorite,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -3902,7 +4158,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitRefFavorite[]> {
 
         return new Promise<GitInterfaces.GitRefFavorite[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project
             };
@@ -3914,19 +4169,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "876f70af-5792-485a-a1c7-d0a7b2f42bbb",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitRefFavorite, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitRefFavorite[]>;
+                res = await this.rest.get<GitInterfaces.GitRefFavorite[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitRefFavorite,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -3947,25 +4206,28 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitRepository> {
 
         return new Promise<GitInterfaces.GitRepository>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, gitRepositoryToCreate, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitRepository>;
+                res = await this.rest.create<GitInterfaces.GitRepository>(url, gitRepositoryToCreate, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -3986,7 +4248,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -3994,18 +4255,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(null);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -4028,7 +4293,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitRepository[]> {
 
         return new Promise<GitInterfaces.GitRepository[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project
             };
@@ -4040,19 +4304,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitRepository[]>;
+                res = await this.rest.get<GitInterfaces.GitRepository[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -4071,7 +4339,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitRepository> {
 
         return new Promise<GitInterfaces.GitRepository>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -4079,18 +4346,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitRepository>;
+                res = await this.rest.get<GitInterfaces.GitRepository>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -4113,7 +4384,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitRepository> {
 
         return new Promise<GitInterfaces.GitRepository>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -4121,18 +4391,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.update(url, apiVersion, newRepositoryInfo, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitRepository>;
+                res = await this.rest.update<GitInterfaces.GitRepository>(url, newRepositoryInfo, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -4153,7 +4427,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitRevert> {
 
         return new Promise<GitInterfaces.GitRevert>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -4161,18 +4434,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "bc866058-5449-4715-9cf1-a510b6ff193c",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, revertToCreate, null);
-                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitAsyncRefOperationParameters, responseTypeMetadata: GitInterfaces.TypeInfo.GitRevert, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitRevert>;
+                res = await this.rest.create<GitInterfaces.GitRevert>(url, revertToCreate, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitRevert,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -4193,7 +4470,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitRevert> {
 
         return new Promise<GitInterfaces.GitRevert>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 revertId: revertId,
@@ -4202,18 +4478,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "bc866058-5449-4715-9cf1-a510b6ff193c",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitRevert, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitRevert>;
+                res = await this.rest.get<GitInterfaces.GitRevert>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitRevert,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -4234,7 +4514,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitRevert> {
 
         return new Promise<GitInterfaces.GitRevert>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -4246,19 +4525,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "bc866058-5449-4715-9cf1-a510b6ff193c",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitRevert, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitRevert>;
+                res = await this.rest.get<GitInterfaces.GitRevert>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitRevert,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -4281,7 +4564,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitStatus> {
 
         return new Promise<GitInterfaces.GitStatus>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 commitId: commitId,
@@ -4290,18 +4572,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "428dd4fb-fda5-4722-af02-9313b80305da",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, gitCommitStatusToCreate, null);
-                let serializationData = { requestTypeMetadata: GitInterfaces.TypeInfo.GitStatus, responseTypeMetadata: GitInterfaces.TypeInfo.GitStatus, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitStatus>;
+                res = await this.rest.create<GitInterfaces.GitStatus>(url, gitCommitStatusToCreate, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitStatus,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -4328,7 +4614,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitStatus[]> {
 
         return new Promise<GitInterfaces.GitStatus[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 commitId: commitId,
@@ -4343,19 +4628,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "428dd4fb-fda5-4722-af02-9313b80305da",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitStatus, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitStatus[]>;
+                res = await this.rest.get<GitInterfaces.GitStatus[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitStatus,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -4376,7 +4665,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitSuggestion[]> {
 
         return new Promise<GitInterfaces.GitSuggestion[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -4384,18 +4672,22 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "9393b4fb-4445-4919-972b-9ad16f442d83",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitSuggestion[]>;
+                res = await this.rest.get<GitInterfaces.GitSuggestion[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -4422,7 +4714,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<GitInterfaces.GitTreeRef> {
 
         return new Promise<GitInterfaces.GitTreeRef>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -4437,19 +4728,23 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "729f6437-6f92-44ec-8bee-273a7111063c",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: GitInterfaces.TypeInfo.GitTreeRef, responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GitInterfaces.GitTreeRef>;
+                res = await this.rest.get<GitInterfaces.GitTreeRef>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitTreeRef,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -4476,16 +4771,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
-            let onResult = (err: any, statusCode: number, Tree: NodeJS.ReadableStream) => {
-                if (err) {
-                    err.statusCode = statusCode;
-                    reject(err);
-                }
-                else {
-                    resolve(Tree);
-                }
-            };
-
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -4500,17 +4785,17 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.1",
+                    "3.2-preview.1",
                     "git",
                     "729f6437-6f92-44ec-8bee-273a7111063c",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
                 
+                let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
-                this.httpClient.getStream(url, accept, onResult);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
             }
             catch (err) {
                 reject(err);

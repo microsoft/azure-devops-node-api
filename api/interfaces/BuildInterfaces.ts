@@ -213,6 +213,10 @@ export interface Build {
     status: BuildStatus;
     tags: string[];
     /**
+     * Sourceprovider-specific information about what triggered the build
+     */
+    triggerInfo: { [key: string] : string; };
+    /**
      * Uri of the build
      */
     uri: string;
@@ -440,6 +444,7 @@ export interface BuildDefinitionSourceProvider {
 
 export interface BuildDefinitionStep {
     alwaysRun: boolean;
+    condition: string;
     continueOnError: boolean;
     displayName: string;
     enabled: boolean;
@@ -1051,9 +1056,13 @@ export enum DefinitionTriggerType {
      */
     BatchedGatedCheckIn = 32,
     /**
+     * A build should be triggered when a GitHub pull request is created or updated. Added in resource version 3
+     */
+    PullRequest = 64,
+    /**
      * All types.
      */
-    All = 63,
+    All = 127,
 }
 
 export enum DefinitionType {
@@ -1269,6 +1278,10 @@ export interface PropertyValue {
     value: any;
 }
 
+export interface PullRequestTrigger extends BuildTrigger {
+    branchFilters: string[];
+}
+
 export enum QueryDeletedOption {
     /**
      * Include only non-deleted builds.
@@ -1476,6 +1489,10 @@ export interface SyncBuildStartedEvent extends BuildUpdatedEvent {
 
 export interface TaskAgentPoolReference {
     id: number;
+    /**
+     * Gets or sets a value indicating whether or not this pool is managed by the service.
+     */
+    isHosted: boolean;
     name: string;
 }
 
@@ -1485,12 +1502,27 @@ export interface TaskDefinitionReference {
     versionSpec: string;
 }
 
+export interface TaskOrchestrationPlanGroupReference {
+    planGroup: string;
+    projectId: string;
+}
+
+export interface TaskOrchestrationPlanGroupsStartedEvent {
+    planGroups: TaskOrchestrationPlanGroupReference[];
+}
+
 export interface TaskOrchestrationPlanReference {
     /**
      * Orchestration Type for Build (build, cleanup etc.)
      */
     orchestrationType: number;
     planId: string;
+}
+
+export interface TaskReference {
+    id: string;
+    name: string;
+    version: string;
 }
 
 export enum TaskResult {
@@ -1527,6 +1559,7 @@ export interface TimelineRecord {
     resultCode: string;
     startTime: Date;
     state: TimelineRecordState;
+    task: TaskReference;
     type: string;
     url: string;
     warningCount: number;
@@ -1930,7 +1963,8 @@ export var TypeInfo = {
             "schedule": 8,
             "gatedCheckIn": 16,
             "batchedGatedCheckIn": 32,
-            "all": 63,
+            "pullRequest": 64,
+            "all": 127,
         }
     },
     DefinitionType: {
@@ -2005,6 +2039,9 @@ export var TypeInfo = {
         }
     },
     PropertyValue: {
+        fields: <any>null
+    },
+    PullRequestTrigger: {
         fields: <any>null
     },
     QueryDeletedOption: {
@@ -2092,7 +2129,16 @@ export var TypeInfo = {
     TaskDefinitionReference: {
         fields: <any>null
     },
+    TaskOrchestrationPlanGroupReference: {
+        fields: <any>null
+    },
+    TaskOrchestrationPlanGroupsStartedEvent: {
+        fields: <any>null
+    },
     TaskOrchestrationPlanReference: {
+        fields: <any>null
+    },
+    TaskReference: {
         fields: <any>null
     },
     TaskResult: {
@@ -2742,6 +2788,12 @@ TypeInfo.PropertyValue.fields = {
     },
 };
 
+TypeInfo.PullRequestTrigger.fields = {
+    triggerType: {
+        enumType: TypeInfo.DefinitionTriggerType
+    },
+};
+
 TypeInfo.RealtimeBuildEvent.fields = {
 };
 
@@ -2801,7 +2853,20 @@ TypeInfo.TaskAgentPoolReference.fields = {
 TypeInfo.TaskDefinitionReference.fields = {
 };
 
+TypeInfo.TaskOrchestrationPlanGroupReference.fields = {
+};
+
+TypeInfo.TaskOrchestrationPlanGroupsStartedEvent.fields = {
+    planGroups: {
+        isArray: true,
+        typeInfo: TypeInfo.TaskOrchestrationPlanGroupReference
+    },
+};
+
 TypeInfo.TaskOrchestrationPlanReference.fields = {
+};
+
+TypeInfo.TaskReference.fields = {
 };
 
 TypeInfo.Timeline.fields = {
@@ -2839,6 +2904,9 @@ TypeInfo.TimelineRecord.fields = {
     },
     state: {
         enumType: TypeInfo.TimelineRecordState
+    },
+    task: {
+        typeInfo: TypeInfo.TaskReference
     },
 };
 
