@@ -49,6 +49,9 @@ export interface AsyncRefOperationProgressNotification extends AsyncRefOperation
     progress: number;
 }
 
+export interface AsyncRefOperationTimeoutNotification extends AsyncGitOperationNotification {
+}
+
 /**
  * Meta data for a file attached to an artifact
  */
@@ -396,6 +399,7 @@ export interface GitAsyncRefOperationDetail {
     conflict: boolean;
     currentCommitId: string;
     progress: number;
+    timedout: boolean;
 }
 
 export interface GitAsyncRefOperationParameters {
@@ -1009,6 +1013,7 @@ export interface GitPullRequestCommentThreadContext {
 
 export interface GitPullRequestCompletionOptions {
     bypassPolicy: boolean;
+    bypassReason: string;
     deleteSourceBranch: boolean;
     mergeCommitMessage: string;
     squashMerge: boolean;
@@ -2224,6 +2229,9 @@ export var TypeInfo = {
     AsyncRefOperationProgressNotification: {
         fields: <any>null
     },
+    AsyncRefOperationTimeoutNotification: {
+        fields: <any>null
+    },
     Attachment: {
         fields: <any>null
     },
@@ -2948,6 +2956,9 @@ TypeInfo.AsyncRefOperationGeneralFailureNotification.fields = {
 };
 
 TypeInfo.AsyncRefOperationProgressNotification.fields = {
+};
+
+TypeInfo.AsyncRefOperationTimeoutNotification.fields = {
 };
 
 TypeInfo.Attachment.fields = {

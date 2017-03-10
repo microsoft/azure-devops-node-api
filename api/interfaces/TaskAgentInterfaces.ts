@@ -1097,6 +1097,8 @@ export interface TaskHubLicenseDetails {
     enterpriseUsersCount: number;
     freeLicenseCount: number;
     hasLicenseCountEverUpdated: boolean;
+    hostedAgentMinutesFreeCount: number;
+    hostedAgentMinutesUsedCount: number;
     msdnUsersCount: number;
     purchasedHostedLicenseCount: number;
     purchasedLicenseCount: number;

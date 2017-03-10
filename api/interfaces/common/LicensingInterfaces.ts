@@ -10,7 +10,7 @@
 
 "use strict";
 
-import VSS_Accounts_Contracts = require("../VSS/Accounts/Contracts");
+import AccountsInterfaces = require("../interfaces/AccountsInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
@@ -38,7 +38,7 @@ export interface AccountEntitlement {
     /**
      * The status of the user in the account
      */
-    status: VSS_Accounts_Contracts.AccountUserStatus;
+    status: AccountsInterfaces.AccountUserStatus;
     /**
      * Identity information of the user to which the license belongs
      */
@@ -62,6 +62,7 @@ export interface AccountEntitlementUpdateModel {
 export interface AccountLicenseExtensionUsage {
     extensionId: string;
     extensionName: string;
+    includedQuantity: number;
     provisionedCount: number;
     usedCount: number;
 }
@@ -114,6 +115,22 @@ export interface ExtensionAssignment {
     userIds: string[];
 }
 
+export interface ExtensionAssignmentDetails {
+    assignmentStatus: ExtensionAssignmentStatus;
+    sourceCollectionName: string;
+}
+
+export enum ExtensionAssignmentStatus {
+    NotEligible = 0,
+    NotAssigned = 1,
+    AccountAssignment = 2,
+    BundleAssignment = 3,
+    ImplicitAssignment = 4,
+    PendingValidation = 5,
+    TrialAssignment = 6,
+    RoamingAccountAssignment = 7,
+}
+
 export enum ExtensionFilterOptions {
     None = 1,
     Bundle = 2,
@@ -144,11 +161,25 @@ export interface ExtensionOperationResult {
     userId: string;
 }
 
-/**
- * Container for service licensing rights
- */
-export interface IServiceRight {
-    serviceLevel: VisualStudioOnlineServiceLevel;
+export enum ExtensionRightsReasonCode {
+    Normal = 0,
+    FeatureFlagSet = 1,
+    NullIdentity = 2,
+    ServiceIdentity = 3,
+    ErrorCallingService = 4,
+}
+
+export interface ExtensionRightsResult {
+    entitledExtensions: HashSet;
+    reason: string;
+    reasonCode: ExtensionRightsReasonCode;
+    resultCode: ExtensionRightsResultCode;
+}
+
+export enum ExtensionRightsResultCode {
+    Normal = 0,
+    AllFree = 1,
+    FreeExtensionsFree = 2,
 }
 
 /**
@@ -303,6 +334,21 @@ export var TypeInfo = {
     ExtensionAssignment: {
         fields: <any>null
     },
+    ExtensionAssignmentDetails: {
+        fields: <any>null
+    },
+    ExtensionAssignmentStatus: {
+        enumValues: {
+            "notEligible": 0,
+            "notAssigned": 1,
+            "accountAssignment": 2,
+            "bundleAssignment": 3,
+            "implicitAssignment": 4,
+            "pendingValidation": 5,
+            "trialAssignment": 6,
+            "roamingAccountAssignment": 7,
+        }
+    },
     ExtensionFilterOptions: {
         enumValues: {
             "none": 1,
@@ -324,8 +370,24 @@ export var TypeInfo = {
     ExtensionOperationResult: {
         fields: <any>null
     },
-    IServiceRight: {
+    ExtensionRightsReasonCode: {
+        enumValues: {
+            "normal": 0,
+            "featureFlagSet": 1,
+            "nullIdentity": 2,
+            "serviceIdentity": 3,
+            "errorCallingService": 4,
+        }
+    },
+    ExtensionRightsResult: {
         fields: <any>null
+    },
+    ExtensionRightsResultCode: {
+        enumValues: {
+            "normal": 0,
+            "allFree": 1,
+            "freeExtensionsFree": 2,
+        }
     },
     IUsageRight: {
         fields: <any>null
@@ -378,7 +440,7 @@ TypeInfo.AccountEntitlement.fields = {
         typeInfo: TypeInfo.AccountRights
     },
     status: {
-        enumType: VSS_Accounts_Contracts.TypeInfo.AccountUserStatus
+        enumType: AccountsInterfaces.TypeInfo.AccountUserStatus
     },
     user: {
         typeInfo: VSSInterfaces.TypeInfo.IdentityRef
@@ -421,6 +483,12 @@ TypeInfo.ExtensionAssignment.fields = {
     },
 };
 
+TypeInfo.ExtensionAssignmentDetails.fields = {
+    assignmentStatus: {
+        enumType: TypeInfo.ExtensionAssignmentStatus
+    },
+};
+
 TypeInfo.ExtensionLicenseData.fields = {
     createdDate: {
         isDate: true,
@@ -442,9 +510,12 @@ TypeInfo.ExtensionOperationResult.fields = {
     },
 };
 
-TypeInfo.IServiceRight.fields = {
-    serviceLevel: {
-        enumType: TypeInfo.VisualStudioOnlineServiceLevel
+TypeInfo.ExtensionRightsResult.fields = {
+    reasonCode: {
+        enumType: TypeInfo.ExtensionRightsReasonCode
+    },
+    resultCode: {
+        enumType: TypeInfo.ExtensionRightsResultCode
     },
 };
 

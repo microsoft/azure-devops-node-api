@@ -1084,6 +1084,17 @@ export interface QuestionsResult {
     questions: Question[];
 }
 
+export interface RatingCountPerRating {
+    /**
+     * Rating value
+     */
+    rating: number;
+    /**
+     * Count of total ratings
+     */
+    ratingCount: number;
+}
+
 /**
  * The structure of a response
  */
@@ -1281,6 +1292,21 @@ export interface ReviewsResult {
      * Count of total review items
      */
     totalReviewCount: number;
+}
+
+export interface ReviewSummary {
+    /**
+     * Average Rating
+     */
+    averageRating: number;
+    /**
+     * Count of total ratings
+     */
+    ratingCount: number;
+    /**
+     * Split of count accross rating
+     */
+    ratingSplit: RatingCountPerRating[];
 }
 
 export enum SortByType {
@@ -1707,6 +1733,9 @@ export var TypeInfo = {
     QuestionsResult: {
         fields: <any>null
     },
+    RatingCountPerRating: {
+        fields: <any>null
+    },
     Response: {
         fields: <any>null
     },
@@ -1746,6 +1775,9 @@ export var TypeInfo = {
         fields: <any>null
     },
     ReviewsResult: {
+        fields: <any>null
+    },
+    ReviewSummary: {
         fields: <any>null
     },
     SortByType: {
@@ -2113,6 +2145,9 @@ TypeInfo.QuestionsResult.fields = {
     },
 };
 
+TypeInfo.RatingCountPerRating.fields = {
+};
+
 TypeInfo.Response.fields = {
     createdDate: {
         isDate: true,
@@ -2168,6 +2203,13 @@ TypeInfo.ReviewsResult.fields = {
     reviews: {
         isArray: true,
         typeInfo: TypeInfo.Review
+    },
+};
+
+TypeInfo.ReviewSummary.fields = {
+    ratingSplit: {
+        isArray: true,
+        typeInfo: TypeInfo.RatingCountPerRating
     },
 };
 

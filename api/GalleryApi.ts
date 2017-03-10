@@ -71,6 +71,7 @@ export interface IGalleryApi extends compatBase.GalleryCompatHttpClientBase {
     getSigningKey(keyType: string): Promise<string>;
     updateExtensionStatistics(extensionStatisticsUpdate: GalleryInterfaces.ExtensionStatisticUpdate, publisherName: string, extensionName: string): Promise<void>;
     getExtensionDailyStats(publisherName: string, extensionName: string, days?: number): Promise<GalleryInterfaces.ExtensionDailyStats>;
+    getExtensionDailyStatsAnonymous(publisherName: string, extensionName: string, version: string): Promise<GalleryInterfaces.ExtensionDailyStats>;
     incrementExtensionDailyStat(publisherName: string, extensionName: string, version: string, statType: string): Promise<void>;
 }
 
@@ -2349,6 +2350,50 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "ae06047e-51c5-4fb4-ab65-7be488544416",
                     routeValues,
                     queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion); 
+                let res: restm.IRestResponse<GalleryInterfaces.ExtensionDailyStats>;
+                res = await this.rest.get<GalleryInterfaces.ExtensionDailyStats>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.ExtensionDailyStats,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+    * @param {string} publisherName
+    * @param {string} extensionName
+    * @param {string} version
+    */
+    public async getExtensionDailyStatsAnonymous(
+        publisherName: string,
+        extensionName: string,
+        version: string
+        ): Promise<GalleryInterfaces.ExtensionDailyStats> {
+
+        return new Promise<GalleryInterfaces.ExtensionDailyStats>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                version: version
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "gallery",
+                    "4fa7adb6-ca65-4075-a232-5f28323288ea",
+                    routeValues);
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
