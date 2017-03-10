@@ -534,10 +534,6 @@ export interface Plan {
      */
     name: string;
     /**
-     * OwnerId of the plan, typically same as the TFID of the team under which this plan has been created
-     */
-    ownerId: string;
-    /**
      * The PlanPropertyCollection instance associated with the plan. These are dependent on the type of the plan. For example, DeliveryTimelineView, it would be of type DeliveryViewPropertyCollection.
      */
     properties: any;

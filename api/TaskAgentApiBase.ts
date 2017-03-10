@@ -34,7 +34,7 @@ export interface ITaskAgentApiBase extends basem.ClientApiBase {
     getDeploymentGroups(project: string, name?: string, actionFilter?: TaskAgentInterfaces.DeploymentGroupActionFilter, expand?: TaskAgentInterfaces.DeploymentGroupExpands): Promise<TaskAgentInterfaces.DeploymentGroup[]>;
     updateDeploymentGroup(deploymentGroup: TaskAgentInterfaces.DeploymentGroup, project: string, deploymentGroupId: number): Promise<TaskAgentInterfaces.DeploymentGroup>;
     queryEndpoint(endpoint: TaskAgentInterfaces.TaskDefinitionEndpoint): Promise<string[]>;
-    getTaskHubLicenseDetails(hubName: string, includeEnterpriseUsersCount?: boolean): Promise<TaskAgentInterfaces.TaskHubLicenseDetails>;
+    getTaskHubLicenseDetails(hubName: string, includeEnterpriseUsersCount?: boolean, includeHostedAgentMinutesCount?: boolean): Promise<TaskAgentInterfaces.TaskHubLicenseDetails>;
     updateTaskHubLicenseDetails(taskHubLicenseDetails: TaskAgentInterfaces.TaskHubLicenseDetails, hubName: string): Promise<TaskAgentInterfaces.TaskHubLicenseDetails>;
     validateInputs(inputValidationRequest: TaskAgentInterfaces.InputValidationRequest): Promise<TaskAgentInterfaces.InputValidationRequest>;
     deleteAgentRequest(poolId: number, requestId: number, lockToken: string, result?: TaskAgentInterfaces.TaskResult): Promise<void>;
@@ -753,10 +753,12 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     /**
     * @param {string} hubName
     * @param {boolean} includeEnterpriseUsersCount
+    * @param {boolean} includeHostedAgentMinutesCount
     */
     public async getTaskHubLicenseDetails(
         hubName: string,
-        includeEnterpriseUsersCount?: boolean
+        includeEnterpriseUsersCount?: boolean,
+        includeHostedAgentMinutesCount?: boolean
         ): Promise<TaskAgentInterfaces.TaskHubLicenseDetails> {
 
         return new Promise<TaskAgentInterfaces.TaskHubLicenseDetails>(async (resolve, reject) => {
@@ -766,6 +768,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             let queryValues: any = {
                 includeEnterpriseUsersCount: includeEnterpriseUsersCount,
+                includeHostedAgentMinutesCount: includeHostedAgentMinutesCount,
             };
             
             try {

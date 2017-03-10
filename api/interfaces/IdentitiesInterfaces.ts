@@ -10,7 +10,6 @@
 
 "use strict";
 
-import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
 /**
