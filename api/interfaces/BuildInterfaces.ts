@@ -15,12 +15,24 @@ import TfsCoreInterfaces = require("../interfaces/CoreInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
-export interface AgentPoolQueue extends ShallowReference {
+export interface AgentPoolQueue {
     _links: any;
+    /**
+     * Id of the resource
+     */
+    id: number;
+    /**
+     * Name of the linked resource (definition name, controller name, etc.)
+     */
+    name: string;
     /**
      * The pool used by this queue.
      */
     pool: TaskAgentPoolReference;
+    /**
+     * Full http link to the resource
+     */
+    url: string;
 }
 
 export enum AgentStatus {
@@ -229,7 +241,7 @@ export interface Build {
 
 export interface BuildAgent {
     buildDirectory: string;
-    controller: ShallowReference;
+    controller: XamlBuildControllerReference;
     createdDate: Date;
     description: string;
     enabled: boolean;
@@ -237,11 +249,26 @@ export interface BuildAgent {
     messageQueueUrl: string;
     name: string;
     reservedForBuild: string;
-    server: ShallowReference;
+    server: XamlBuildServerReference;
     status: AgentStatus;
     statusMessage: string;
     updatedDate: Date;
     uri: string;
+    url: string;
+}
+
+export interface BuildAgentReference {
+    /**
+     * Id of the resource
+     */
+    id: number;
+    /**
+     * Name of the linked resource (definition name, controller name, etc.)
+     */
+    name: string;
+    /**
+     * Full http link to the resource
+     */
     url: string;
 }
 
@@ -296,7 +323,7 @@ export interface BuildChangesCalculatedEvent extends BuildUpdatedEvent {
 export interface BuildCompletedEvent extends BuildUpdatedEvent {
 }
 
-export interface BuildController extends ShallowReference {
+export interface BuildController extends XamlBuildControllerReference {
     _links: any;
     /**
      * The date the controller was created.
@@ -476,7 +503,7 @@ export interface BuildDeletedEvent extends RealtimeBuildEvent {
 
 export interface BuildDeployment {
     deployment: BuildSummary;
-    sourceBuild: ShallowReference;
+    sourceBuild: XamlBuildReference;
 }
 
 export interface BuildDestroyedEvent extends RealtimeBuildEvent {
@@ -783,8 +810,8 @@ export enum BuildResult {
 }
 
 export interface BuildServer {
-    agents: ShallowReference[];
-    controller: ShallowReference;
+    agents: BuildAgentReference[];
+    controller: XamlBuildControllerReference;
     id: number;
     isVirtual: boolean;
     messageQueueUrl: string;
@@ -838,7 +865,7 @@ export enum BuildStatus {
 }
 
 export interface BuildSummary {
-    build: ShallowReference;
+    build: XamlBuildReference;
     finishTime: Date;
     keepForever: boolean;
     quality: string;
@@ -912,7 +939,7 @@ export interface ContinuousDeploymentDefinition {
     /**
      * The definition associated with the continuous deployment
      */
-    definition: ShallowReference;
+    definition: XamlDefinitionReference;
     gitBranch: string;
     hostedServiceName: string;
     project: TfsCoreInterfaces.TeamProjectReference;
@@ -999,11 +1026,19 @@ export enum DefinitionQueueStatus {
 /**
  * A reference to a definition.
  */
-export interface DefinitionReference extends ShallowReference {
+export interface DefinitionReference {
     /**
      * The date the definition was created
      */
     createdDate: Date;
+    /**
+     * Id of the resource
+     */
+    id: number;
+    /**
+     * Name of the linked resource (definition name, controller name, etc.)
+     */
+    name: string;
     /**
      * The path this definitions belongs to
      */
@@ -1028,6 +1063,10 @@ export interface DefinitionReference extends ShallowReference {
      * The Uri of the definition
      */
     uri: string;
+    /**
+     * Full http link to the resource
+     */
+    url: string;
 }
 
 export enum DefinitionTriggerType {
@@ -1109,21 +1148,21 @@ export interface Deployment {
 }
 
 /**
- * Deployment iformation for type "Build"
+ * Deployment information for type "Build"
  */
 export interface DeploymentBuild extends Deployment {
     buildId: number;
 }
 
 /**
- * Deployment iformation for type "Deploy"
+ * Deployment information for type "Deploy"
  */
 export interface DeploymentDeploy extends Deployment {
     message: string;
 }
 
 /**
- * Deployment iformation for type "Test"
+ * Deployment information for type "Test"
  */
 export interface DeploymentTest extends Deployment {
     runId: number;
@@ -1259,25 +1298,6 @@ export enum ProcessTemplateType {
     Upgrade = 2,
 }
 
-export interface PropertyValue {
-    /**
-     * Guid of identity that changed this property value
-     */
-    changedBy: string;
-    /**
-     * The date this property value was changed
-     */
-    changedDate: Date;
-    /**
-     * Name in the name value mapping
-     */
-    propertyName: string;
-    /**
-     * Value in the name value mapping
-     */
-    value: any;
-}
-
 export interface PullRequestTrigger extends BuildTrigger {
     branchFilters: string[];
 }
@@ -1346,21 +1366,6 @@ export enum RepositoryCleanOptions {
      * Re-create $(agnet.buildDirectory) which contains $(build.sourcesDirectory), $(build.binariesDirectory) and any folders that left from previous build.
      */
     AllBuildDir = 3,
-}
-
-export interface RequestReference {
-    /**
-     * Id of the resource
-     */
-    id: number;
-    /**
-     * Name of the requestor
-     */
-    requestedFor: VSSInterfaces.IdentityRef;
-    /**
-     * Full http link to the resource
-     */
-    url: string;
 }
 
 export interface RetentionPolicy {
@@ -1449,24 +1454,6 @@ export enum ServiceHostStatus {
      * The service host is currently disconnected and not accepting commands.
      */
     Offline = 2,
-}
-
-/**
- * An abstracted reference to some other resource. This class is used to provide the build data contracts with a uniform way to reference other resources in a way that provides easy traversal through links.
- */
-export interface ShallowReference {
-    /**
-     * Id of the resource
-     */
-    id: number;
-    /**
-     * Name of the linked resource (definition name, controller name, etc.)
-     */
-    name: string;
-    /**
-     * Full http link to the resource
-     */
-    url: string;
 }
 
 export interface SvnMappingDetails {
@@ -1652,6 +1639,21 @@ export interface WorkspaceTemplate {
     workspaceId: number;
 }
 
+export interface XamlBuildControllerReference {
+    /**
+     * Id of the resource
+     */
+    id: number;
+    /**
+     * Name of the linked resource (definition name, controller name, etc.)
+     */
+    name: string;
+    /**
+     * Full http link to the resource
+     */
+    url: string;
+}
+
 export interface XamlBuildDefinition extends DefinitionReference {
     _links: any;
     /**
@@ -1682,7 +1684,7 @@ export interface XamlBuildDefinition extends DefinitionReference {
     /**
      * The last build on this definition
      */
-    lastBuild: ShallowReference;
+    lastBuild: XamlBuildReference;
     /**
      * The repository
      */
@@ -1695,6 +1697,51 @@ export interface XamlBuildDefinition extends DefinitionReference {
      * How builds are triggered from this definition
      */
     triggerType: DefinitionTriggerType;
+}
+
+export interface XamlBuildReference {
+    /**
+     * Id of the resource
+     */
+    id: number;
+    /**
+     * Name of the linked resource (definition name, controller name, etc.)
+     */
+    name: string;
+    /**
+     * Full http link to the resource
+     */
+    url: string;
+}
+
+export interface XamlBuildServerReference {
+    /**
+     * Id of the resource
+     */
+    id: number;
+    /**
+     * Name of the linked resource (definition name, controller name, etc.)
+     */
+    name: string;
+    /**
+     * Full http link to the resource
+     */
+    url: string;
+}
+
+export interface XamlDefinitionReference {
+    /**
+     * Id of the resource
+     */
+    id: number;
+    /**
+     * Name of the linked resource (definition name, controller name, etc.)
+     */
+    name: string;
+    /**
+     * Full http link to the resource
+     */
+    url: string;
 }
 
 export var TypeInfo = {
@@ -1722,6 +1769,9 @@ export var TypeInfo = {
         fields: <any>null
     },
     BuildAgent: {
+        fields: <any>null
+    },
+    BuildAgentReference: {
         fields: <any>null
     },
     BuildArtifact: {
@@ -2038,9 +2088,6 @@ export var TypeInfo = {
             "upgrade": 2,
         }
     },
-    PropertyValue: {
-        fields: <any>null
-    },
     PullRequestTrigger: {
         fields: <any>null
     },
@@ -2077,9 +2124,6 @@ export var TypeInfo = {
             "allBuildDir": 3,
         }
     },
-    RequestReference: {
-        fields: <any>null
-    },
     RetentionPolicy: {
         fields: <any>null
     },
@@ -2107,9 +2151,6 @@ export var TypeInfo = {
             "online": 1,
             "offline": 2,
         }
-    },
-    ShallowReference: {
-        fields: <any>null
     },
     SvnMappingDetails: {
         fields: <any>null
@@ -2189,7 +2230,19 @@ export var TypeInfo = {
     WorkspaceTemplate: {
         fields: <any>null
     },
+    XamlBuildControllerReference: {
+        fields: <any>null
+    },
     XamlBuildDefinition: {
+        fields: <any>null
+    },
+    XamlBuildReference: {
+        fields: <any>null
+    },
+    XamlBuildServerReference: {
+        fields: <any>null
+    },
+    XamlDefinitionReference: {
         fields: <any>null
     },
 };
@@ -2279,13 +2332,13 @@ TypeInfo.Build.fields = {
 
 TypeInfo.BuildAgent.fields = {
     controller: {
-        typeInfo: TypeInfo.ShallowReference
+        typeInfo: TypeInfo.XamlBuildControllerReference
     },
     createdDate: {
         isDate: true,
     },
     server: {
-        typeInfo: TypeInfo.ShallowReference
+        typeInfo: TypeInfo.XamlBuildServerReference
     },
     status: {
         enumType: TypeInfo.AgentStatus
@@ -2293,6 +2346,9 @@ TypeInfo.BuildAgent.fields = {
     updatedDate: {
         isDate: true,
     },
+};
+
+TypeInfo.BuildAgentReference.fields = {
 };
 
 TypeInfo.BuildArtifact.fields = {
@@ -2504,7 +2560,7 @@ TypeInfo.BuildDeployment.fields = {
         typeInfo: TypeInfo.BuildSummary
     },
     sourceBuild: {
-        typeInfo: TypeInfo.ShallowReference
+        typeInfo: TypeInfo.XamlBuildReference
     },
 };
 
@@ -2618,10 +2674,10 @@ TypeInfo.BuildResourceUsage.fields = {
 TypeInfo.BuildServer.fields = {
     agents: {
         isArray: true,
-        typeInfo: TypeInfo.ShallowReference
+        typeInfo: TypeInfo.BuildAgentReference
     },
     controller: {
-        typeInfo: TypeInfo.ShallowReference
+        typeInfo: TypeInfo.XamlBuildControllerReference
     },
     status: {
         enumType: TypeInfo.ServiceHostStatus
@@ -2648,7 +2704,7 @@ TypeInfo.BuildStartedEvent.fields = {
 
 TypeInfo.BuildSummary.fields = {
     build: {
-        typeInfo: TypeInfo.ShallowReference
+        typeInfo: TypeInfo.XamlBuildReference
     },
     finishTime: {
         isDate: true,
@@ -2703,7 +2759,7 @@ TypeInfo.ContinuousDeploymentDefinition.fields = {
         typeInfo: TfsCoreInterfaces.TypeInfo.WebApiConnectedServiceRef
     },
     definition: {
-        typeInfo: TypeInfo.ShallowReference
+        typeInfo: TypeInfo.XamlDefinitionReference
     },
     project: {
         typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
@@ -2782,12 +2838,6 @@ TypeInfo.Issue.fields = {
 TypeInfo.MappingDetails.fields = {
 };
 
-TypeInfo.PropertyValue.fields = {
-    changedDate: {
-        isDate: true,
-    },
-};
-
 TypeInfo.PullRequestTrigger.fields = {
     triggerType: {
         enumType: TypeInfo.DefinitionTriggerType
@@ -2795,12 +2845,6 @@ TypeInfo.PullRequestTrigger.fields = {
 };
 
 TypeInfo.RealtimeBuildEvent.fields = {
-};
-
-TypeInfo.RequestReference.fields = {
-    requestedFor: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
 };
 
 TypeInfo.RetentionPolicy.fields = {
@@ -2820,9 +2864,6 @@ TypeInfo.ScheduleTrigger.fields = {
     triggerType: {
         enumType: TypeInfo.DefinitionTriggerType
     },
-};
-
-TypeInfo.ShallowReference.fields = {
 };
 
 TypeInfo.SvnMappingDetails.fields = {
@@ -2936,6 +2977,9 @@ TypeInfo.WorkspaceTemplate.fields = {
     },
 };
 
+TypeInfo.XamlBuildControllerReference.fields = {
+};
+
 TypeInfo.XamlBuildDefinition.fields = {
     controller: {
         typeInfo: TypeInfo.BuildController
@@ -2947,7 +2991,7 @@ TypeInfo.XamlBuildDefinition.fields = {
         isDate: true,
     },
     lastBuild: {
-        typeInfo: TypeInfo.ShallowReference
+        typeInfo: TypeInfo.XamlBuildReference
     },
     project: {
         typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
@@ -2967,4 +3011,13 @@ TypeInfo.XamlBuildDefinition.fields = {
     type: {
         enumType: TypeInfo.DefinitionType
     },
+};
+
+TypeInfo.XamlBuildReference.fields = {
+};
+
+TypeInfo.XamlBuildServerReference.fields = {
+};
+
+TypeInfo.XamlDefinitionReference.fields = {
 };

@@ -67,7 +67,8 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<DashboardInterfaces.Dashboard>;
                 res = await this.rest.create<DashboardInterfaces.Dashboard>(url, dashboard, options);
 
@@ -112,7 +113,8 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -157,7 +159,8 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<DashboardInterfaces.Dashboard>;
                 res = await this.rest.get<DashboardInterfaces.Dashboard>(url, options);
 
@@ -199,7 +202,8 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<DashboardInterfaces.DashboardGroup>;
                 res = await this.rest.get<DashboardInterfaces.DashboardGroup>(url, options);
 
@@ -246,7 +250,8 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<DashboardInterfaces.Dashboard>;
                 res = await this.rest.replace<DashboardInterfaces.Dashboard>(url, dashboard, options);
 
@@ -290,7 +295,8 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<DashboardInterfaces.DashboardGroup>;
                 res = await this.rest.replace<DashboardInterfaces.DashboardGroup>(url, group, options);
 
@@ -337,7 +343,8 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<DashboardInterfaces.Widget>;
                 res = await this.rest.create<DashboardInterfaces.Widget>(url, widget, options);
 
@@ -385,7 +392,8 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<DashboardInterfaces.Dashboard>;
                 res = await this.rest.del<DashboardInterfaces.Dashboard>(url, options);
 
@@ -433,7 +441,8 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<DashboardInterfaces.Widget>;
                 res = await this.rest.get<DashboardInterfaces.Widget>(url, options);
 
@@ -483,7 +492,8 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<DashboardInterfaces.Widget>;
                 res = await this.rest.replace<DashboardInterfaces.Widget>(url, widget, options);
 
@@ -533,7 +543,8 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<DashboardInterfaces.Widget>;
                 res = await this.rest.update<DashboardInterfaces.Widget>(url, widget, options);
 
@@ -571,7 +582,8 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<DashboardInterfaces.WidgetMetadataResponse>;
                 res = await this.rest.get<DashboardInterfaces.WidgetMetadataResponse>(url, options);
 
@@ -615,7 +627,8 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<DashboardInterfaces.WidgetTypesResponse>;
                 res = await this.rest.get<DashboardInterfaces.WidgetTypesResponse>(url, options);
 

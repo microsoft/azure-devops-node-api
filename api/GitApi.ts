@@ -149,7 +149,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitAnnotatedTag>;
                 res = await this.rest.create<GitInterfaces.GitAnnotatedTag>(url, tagObject, options);
 
@@ -195,7 +196,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitAnnotatedTag>;
                 res = await this.rest.get<GitInterfaces.GitAnnotatedTag>(url, options);
 
@@ -251,7 +253,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitBlobRef>;
                 res = await this.rest.get<GitInterfaces.GitBlobRef>(url, options);
 
@@ -447,7 +450,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitBranchStats>;
                 res = await this.rest.get<GitInterfaces.GitBranchStats>(url, options);
 
@@ -497,7 +501,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitBranchStats[]>;
                 res = await this.rest.get<GitInterfaces.GitBranchStats[]>(url, options);
 
@@ -542,7 +547,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitBranchStats[]>;
                 res = await this.rest.create<GitInterfaces.GitBranchStats[]>(url, searchCriteria, options);
 
@@ -598,7 +604,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitCommitChanges>;
                 res = await this.rest.get<GitInterfaces.GitCommitChanges>(url, options);
 
@@ -641,7 +648,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitCherryPick>;
                 res = await this.rest.create<GitInterfaces.GitCherryPick>(url, cherryPickToCreate, options);
 
@@ -685,7 +693,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitCherryPick>;
                 res = await this.rest.get<GitInterfaces.GitCherryPick>(url, options);
 
@@ -733,7 +742,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitCherryPick>;
                 res = await this.rest.get<GitInterfaces.GitCherryPick>(url, options);
 
@@ -786,7 +796,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitCommit>;
                 res = await this.rest.get<GitInterfaces.GitCommit>(url, options);
 
@@ -842,7 +853,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
                 res = await this.rest.get<GitInterfaces.GitCommitRef[]>(url, options);
 
@@ -901,7 +913,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
                 res = await this.rest.get<GitInterfaces.GitCommitRef[]>(url, options);
 
@@ -959,7 +972,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
                 res = await this.rest.create<GitInterfaces.GitCommitRef[]>(url, searchCriteria, options);
 
@@ -999,7 +1013,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitDeletedRepository[]>;
                 res = await this.rest.get<GitInterfaces.GitDeletedRepository[]>(url, options);
 
@@ -1044,7 +1059,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitImportRequest>;
                 res = await this.rest.create<GitInterfaces.GitImportRequest>(url, importRequest, options);
 
@@ -1090,7 +1106,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitImportRequest>;
                 res = await this.rest.get<GitInterfaces.GitImportRequest>(url, options);
 
@@ -1140,7 +1157,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitImportRequest[]>;
                 res = await this.rest.get<GitInterfaces.GitImportRequest[]>(url, options);
 
@@ -1188,7 +1206,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitImportRequest>;
                 res = await this.rest.update<GitInterfaces.GitImportRequest>(url, importRequestToUpdate, options);
 
@@ -1256,7 +1275,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitItem>;
                 res = await this.rest.get<GitInterfaces.GitItem>(url, options);
 
@@ -1385,7 +1405,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitItem[]>;
                 res = await this.rest.get<GitInterfaces.GitItem[]>(url, options);
 
@@ -1552,7 +1573,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitItem[][]>;
                 res = await this.rest.create<GitInterfaces.GitItem[][]>(url, requestData, options);
 
@@ -1609,6 +1631,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
+                options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<GitInterfaces.Attachment>;
                 res = await this.rest.uploadStream<GitInterfaces.Attachment>("POST", url, contentStream, options);
@@ -1655,7 +1678,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -1739,7 +1763,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.Attachment[]>;
                 res = await this.rest.get<GitInterfaces.Attachment[]>(url, options);
 
@@ -1828,7 +1853,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
                 res = await this.rest.get<GitInterfaces.GitCommitRef[]>(url, options);
 
@@ -1874,7 +1900,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
                 res = await this.rest.get<GitInterfaces.GitCommitRef[]>(url, options);
 
@@ -1923,7 +1950,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitConflict>;
                 res = await this.rest.get<GitInterfaces.GitConflict>(url, options);
 
@@ -1982,7 +2010,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitConflict[]>;
                 res = await this.rest.get<GitInterfaces.GitConflict[]>(url, options);
 
@@ -2033,7 +2062,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitConflict>;
                 res = await this.rest.update<GitInterfaces.GitConflict>(url, conflict, options);
 
@@ -2093,7 +2123,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestIterationChanges>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestIterationChanges>(url, options);
 
@@ -2140,7 +2171,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestIteration>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestIteration>(url, options);
 
@@ -2191,7 +2223,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestIteration[]>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestIteration[]>(url, options);
 
@@ -2236,7 +2269,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestQuery>;
                 res = await this.rest.create<GitInterfaces.GitPullRequestQuery>(url, queries, options);
 
@@ -2287,7 +2321,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote>;
                 res = await this.rest.replace<GitInterfaces.IdentityRefWithVote>(url, reviewer, options);
 
@@ -2335,7 +2370,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote[]>;
                 res = await this.rest.create<GitInterfaces.IdentityRefWithVote[]>(url, reviewers, options);
 
@@ -2384,7 +2420,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -2433,7 +2470,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote>;
                 res = await this.rest.get<GitInterfaces.IdentityRefWithVote>(url, options);
 
@@ -2479,7 +2517,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote[]>;
                 res = await this.rest.get<GitInterfaces.IdentityRefWithVote[]>(url, options);
 
@@ -2519,7 +2558,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest>;
                 res = await this.rest.get<GitInterfaces.GitPullRequest>(url, options);
 
@@ -2575,7 +2615,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest[]>;
                 res = await this.rest.get<GitInterfaces.GitPullRequest[]>(url, options);
 
@@ -2620,7 +2661,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest>;
                 res = await this.rest.create<GitInterfaces.GitPullRequest>(url, gitPullRequestToCreate, options);
 
@@ -2685,7 +2727,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest>;
                 res = await this.rest.get<GitInterfaces.GitPullRequest>(url, options);
 
@@ -2744,7 +2787,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest[]>;
                 res = await this.rest.get<GitInterfaces.GitPullRequest[]>(url, options);
 
@@ -2792,7 +2836,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest>;
                 res = await this.rest.update<GitInterfaces.GitPullRequest>(url, gitPullRequestToUpdate, options);
 
@@ -2838,7 +2883,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, userMessage, options);
 
@@ -2889,7 +2935,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus>;
                 res = await this.rest.create<GitInterfaces.GitPullRequestStatus>(url, status, options);
 
@@ -2941,7 +2988,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestStatus>(url, options);
 
@@ -2990,7 +3038,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus[]>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestStatus[]>(url, options);
 
@@ -3038,7 +3087,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus>;
                 res = await this.rest.create<GitInterfaces.GitPullRequestStatus>(url, status, options);
 
@@ -3087,7 +3137,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestStatus>(url, options);
 
@@ -3133,7 +3184,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus[]>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestStatus[]>(url, options);
 
@@ -3184,7 +3236,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.Comment>;
                 res = await this.rest.create<GitInterfaces.Comment>(url, comment, options);
 
@@ -3236,7 +3289,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -3288,7 +3342,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.Comment>;
                 res = await this.rest.get<GitInterfaces.Comment>(url, options);
 
@@ -3337,7 +3392,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.Comment[]>;
                 res = await this.rest.get<GitInterfaces.Comment[]>(url, options);
 
@@ -3391,7 +3447,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.Comment>;
                 res = await this.rest.update<GitInterfaces.Comment>(url, comment, options);
 
@@ -3439,7 +3496,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestCommentThread>;
                 res = await this.rest.create<GitInterfaces.GitPullRequestCommentThread>(url, commentThread, options);
 
@@ -3498,7 +3556,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestCommentThread>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestCommentThread>(url, options);
 
@@ -3554,7 +3613,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestCommentThread[]>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestCommentThread[]>(url, options);
 
@@ -3605,7 +3665,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestCommentThread>;
                 res = await this.rest.update<GitInterfaces.GitPullRequestCommentThread>(url, commentThread, options);
 
@@ -3651,7 +3712,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.AssociatedWorkItem[]>;
                 res = await this.rest.get<GitInterfaces.AssociatedWorkItem[]>(url, options);
 
@@ -3696,7 +3758,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPush>;
                 res = await this.rest.create<GitInterfaces.GitPush>(url, push, options);
 
@@ -3752,7 +3815,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPush>;
                 res = await this.rest.get<GitInterfaces.GitPush>(url, options);
 
@@ -3808,7 +3872,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitPush[]>;
                 res = await this.rest.get<GitInterfaces.GitPush[]>(url, options);
 
@@ -3853,7 +3918,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, refLockRequest, options);
 
@@ -3909,7 +3975,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitRef[]>;
                 res = await this.rest.get<GitInterfaces.GitRef[]>(url, options);
 
@@ -3962,7 +4029,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitRef>;
                 res = await this.rest.update<GitInterfaces.GitRef>(url, newRefInfo, options);
 
@@ -4014,7 +4082,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitRefUpdateResult[]>;
                 res = await this.rest.create<GitInterfaces.GitRefUpdateResult[]>(url, refUpdates, options);
 
@@ -4056,7 +4125,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitRefFavorite>;
                 res = await this.rest.create<GitInterfaces.GitRefFavorite>(url, favorite, options);
 
@@ -4097,7 +4167,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -4138,7 +4209,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitRefFavorite>;
                 res = await this.rest.get<GitInterfaces.GitRefFavorite>(url, options);
 
@@ -4188,7 +4260,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitRefFavorite[]>;
                 res = await this.rest.get<GitInterfaces.GitRefFavorite[]>(url, options);
 
@@ -4230,7 +4303,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitRepository>;
                 res = await this.rest.create<GitInterfaces.GitRepository>(url, gitRepositoryToCreate, options);
 
@@ -4273,7 +4347,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -4323,7 +4398,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitRepository[]>;
                 res = await this.rest.get<GitInterfaces.GitRepository[]>(url, options);
 
@@ -4364,7 +4440,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitRepository>;
                 res = await this.rest.get<GitInterfaces.GitRepository>(url, options);
 
@@ -4409,7 +4486,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitRepository>;
                 res = await this.rest.update<GitInterfaces.GitRepository>(url, newRepositoryInfo, options);
 
@@ -4452,7 +4530,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitRevert>;
                 res = await this.rest.create<GitInterfaces.GitRevert>(url, revertToCreate, options);
 
@@ -4496,7 +4575,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitRevert>;
                 res = await this.rest.get<GitInterfaces.GitRevert>(url, options);
 
@@ -4544,7 +4624,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitRevert>;
                 res = await this.rest.get<GitInterfaces.GitRevert>(url, options);
 
@@ -4590,7 +4671,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitStatus>;
                 res = await this.rest.create<GitInterfaces.GitStatus>(url, gitCommitStatusToCreate, options);
 
@@ -4647,7 +4729,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitStatus[]>;
                 res = await this.rest.get<GitInterfaces.GitStatus[]>(url, options);
 
@@ -4690,7 +4773,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitSuggestion[]>;
                 res = await this.rest.get<GitInterfaces.GitSuggestion[]>(url, options);
 
@@ -4747,7 +4831,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GitInterfaces.GitTreeRef>;
                 res = await this.rest.get<GitInterfaces.GitTreeRef>(url, options);
 

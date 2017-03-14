@@ -85,7 +85,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcBranch>;
                 res = await this.rest.get<TfvcInterfaces.TfvcBranch>(url, options);
 
@@ -141,7 +142,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcBranch[]>;
                 res = await this.rest.get<TfvcInterfaces.TfvcBranch[]>(url, options);
 
@@ -194,7 +196,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcBranchRef[]>;
                 res = await this.rest.get<TfvcInterfaces.TfvcBranchRef[]>(url, options);
 
@@ -244,7 +247,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcChange[]>;
                 res = await this.rest.get<TfvcInterfaces.TfvcChange[]>(url, options);
 
@@ -284,7 +288,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcChangesetRef>;
                 res = await this.rest.create<TfvcInterfaces.TfvcChangesetRef>(url, changeset, options);
 
@@ -358,7 +363,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcChangeset>;
                 res = await this.rest.get<TfvcInterfaces.TfvcChangeset>(url, options);
 
@@ -417,7 +423,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcChangesetRef[]>;
                 res = await this.rest.get<TfvcInterfaces.TfvcChangesetRef[]>(url, options);
 
@@ -454,7 +461,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcChangesetRef[]>;
                 res = await this.rest.create<TfvcInterfaces.TfvcChangesetRef[]>(url, changesetsRequestData, options);
 
@@ -492,7 +500,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TfvcInterfaces.AssociatedWorkItem[]>;
                 res = await this.rest.get<TfvcInterfaces.AssociatedWorkItem[]>(url, options);
 
@@ -534,7 +543,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcItem[][]>;
                 res = await this.rest.create<TfvcInterfaces.TfvcItem[][]>(url, itemRequestData, options);
 
@@ -631,7 +641,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcItem>;
                 res = await this.rest.get<TfvcInterfaces.TfvcItem>(url, options);
 
@@ -742,7 +753,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcItem[]>;
                 res = await this.rest.get<TfvcInterfaces.TfvcItem[]>(url, options);
 
@@ -902,7 +914,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcItem[]>;
                 res = await this.rest.get<TfvcInterfaces.TfvcItem[]>(url, options);
 
@@ -952,7 +965,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcLabel>;
                 res = await this.rest.get<TfvcInterfaces.TfvcLabel>(url, options);
 
@@ -1005,7 +1019,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcLabelRef[]>;
                 res = await this.rest.get<TfvcInterfaces.TfvcLabelRef[]>(url, options);
 
@@ -1055,7 +1070,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcChange[]>;
                 res = await this.rest.get<TfvcInterfaces.TfvcChange[]>(url, options);
 
@@ -1102,7 +1118,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcShelveset>;
                 res = await this.rest.get<TfvcInterfaces.TfvcShelveset>(url, options);
 
@@ -1152,7 +1169,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcShelvesetRef[]>;
                 res = await this.rest.get<TfvcInterfaces.TfvcShelvesetRef[]>(url, options);
 
@@ -1196,7 +1214,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TfvcInterfaces.AssociatedWorkItem[]>;
                 res = await this.rest.get<TfvcInterfaces.AssociatedWorkItem[]>(url, options);
 

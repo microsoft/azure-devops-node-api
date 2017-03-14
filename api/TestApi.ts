@@ -151,7 +151,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestActionResultModel[]>;
                 res = await this.rest.get<TestInterfaces.TestActionResultModel[]>(url, options);
 
@@ -207,7 +208,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestAttachmentReference>;
                 res = await this.rest.create<TestInterfaces.TestAttachmentReference>(url, attachmentRequestModel, options);
 
@@ -253,7 +255,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestAttachmentReference>;
                 res = await this.rest.create<TestInterfaces.TestAttachmentReference>(url, attachmentRequestModel, options);
 
@@ -341,7 +344,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestAttachment[]>;
                 res = await this.rest.get<TestInterfaces.TestAttachment[]>(url, options);
 
@@ -426,7 +430,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestAttachmentReference>;
                 res = await this.rest.create<TestInterfaces.TestAttachmentReference>(url, attachmentRequestModel, options);
 
@@ -508,7 +513,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestAttachment[]>;
                 res = await this.rest.get<TestInterfaces.TestAttachment[]>(url, options);
 
@@ -591,7 +597,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.WorkItemReference[]>;
                 res = await this.rest.get<TestInterfaces.WorkItemReference[]>(url, options);
 
@@ -639,7 +646,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.CloneOperationInformation>;
                 res = await this.rest.get<TestInterfaces.CloneOperationInformation>(url, options);
 
@@ -682,7 +690,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.CloneOperationInformation>;
                 res = await this.rest.create<TestInterfaces.CloneOperationInformation>(url, cloneRequestBody, options);
 
@@ -728,7 +737,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.CloneOperationInformation>;
                 res = await this.rest.create<TestInterfaces.CloneOperationInformation>(url, cloneRequestBody, options);
 
@@ -776,7 +786,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.BuildCoverage[]>;
                 res = await this.rest.get<TestInterfaces.BuildCoverage[]>(url, options);
 
@@ -824,7 +835,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.CodeCoverageSummary>;
                 res = await this.rest.get<TestInterfaces.CodeCoverageSummary>(url, options);
 
@@ -873,7 +885,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, coverageData, options);
 
@@ -921,7 +934,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestRunCoverage[]>;
                 res = await this.rest.get<TestInterfaces.TestRunCoverage[]>(url, options);
 
@@ -961,7 +975,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestConfiguration>;
                 res = await this.rest.create<TestInterfaces.TestConfiguration>(url, testConfiguration, options);
 
@@ -1002,7 +1017,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -1043,7 +1059,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestConfiguration>;
                 res = await this.rest.get<TestInterfaces.TestConfiguration>(url, options);
 
@@ -1097,7 +1114,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestConfiguration[]>;
                 res = await this.rest.get<TestInterfaces.TestConfiguration[]>(url, options);
 
@@ -1140,7 +1158,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestConfiguration>;
                 res = await this.rest.update<TestInterfaces.TestConfiguration>(url, testConfiguration, options);
 
@@ -1180,7 +1199,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.CustomTestFieldDefinition[]>;
                 res = await this.rest.create<TestInterfaces.CustomTestFieldDefinition[]>(url, newFields, options);
 
@@ -1225,7 +1245,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.CustomTestFieldDefinition[]>;
                 res = await this.rest.get<TestInterfaces.CustomTestFieldDefinition[]>(url, options);
 
@@ -1265,7 +1286,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestResultHistory>;
                 res = await this.rest.create<TestInterfaces.TestResultHistory>(url, filter, options);
 
@@ -1319,7 +1341,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestIterationDetailsModel>;
                 res = await this.rest.get<TestInterfaces.TestIterationDetailsModel>(url, options);
 
@@ -1370,7 +1393,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestIterationDetailsModel[]>;
                 res = await this.rest.get<TestInterfaces.TestIterationDetailsModel[]>(url, options);
 
@@ -1411,7 +1435,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestMessageLogDetails[]>;
                 res = await this.rest.get<TestInterfaces.TestMessageLogDetails[]>(url, options);
 
@@ -1465,7 +1490,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestResultParameterModel[]>;
                 res = await this.rest.get<TestInterfaces.TestResultParameterModel[]>(url, options);
 
@@ -1505,7 +1531,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestPlan>;
                 res = await this.rest.create<TestInterfaces.TestPlan>(url, testPlan, options);
 
@@ -1546,7 +1573,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -1587,7 +1615,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestPlan>;
                 res = await this.rest.get<TestInterfaces.TestPlan>(url, options);
 
@@ -1644,7 +1673,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestPlan[]>;
                 res = await this.rest.get<TestInterfaces.TestPlan[]>(url, options);
 
@@ -1687,7 +1717,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestPlan>;
                 res = await this.rest.update<TestInterfaces.TestPlan>(url, planUpdateModel, options);
 
@@ -1741,7 +1772,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestPoint>;
                 res = await this.rest.get<TestInterfaces.TestPoint>(url, options);
 
@@ -1810,7 +1842,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestPoint[]>;
                 res = await this.rest.get<TestInterfaces.TestPoint[]>(url, options);
 
@@ -1859,7 +1892,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestPoint[]>;
                 res = await this.rest.update<TestInterfaces.TestPoint[]>(url, pointUpdateModel, options);
 
@@ -1909,7 +1943,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestPointsQuery>;
                 res = await this.rest.create<TestInterfaces.TestPointsQuery>(url, query, options);
 
@@ -1966,7 +2001,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestResultsDetails>;
                 res = await this.rest.get<TestInterfaces.TestResultsDetails>(url, options);
 
@@ -2026,7 +2062,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestResultsDetails>;
                 res = await this.rest.get<TestInterfaces.TestResultsDetails>(url, options);
 
@@ -2069,7 +2106,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestResultDocument>;
                 res = await this.rest.create<TestInterfaces.TestResultDocument>(url, document, options);
 
@@ -2107,7 +2145,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.ResultRetentionSettings>;
                 res = await this.rest.get<TestInterfaces.ResultRetentionSettings>(url, options);
 
@@ -2147,7 +2186,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.ResultRetentionSettings>;
                 res = await this.rest.update<TestInterfaces.ResultRetentionSettings>(url, retentionSettings, options);
 
@@ -2190,7 +2230,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestCaseResult[]>;
                 res = await this.rest.create<TestInterfaces.TestCaseResult[]>(url, results, options);
 
@@ -2241,7 +2282,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestCaseResult>;
                 res = await this.rest.get<TestInterfaces.TestCaseResult>(url, options);
 
@@ -2295,7 +2337,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestCaseResult[]>;
                 res = await this.rest.get<TestInterfaces.TestCaseResult[]>(url, options);
 
@@ -2338,7 +2381,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestCaseResult[]>;
                 res = await this.rest.update<TestInterfaces.TestCaseResult[]>(url, results, options);
 
@@ -2378,7 +2422,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestResultsQuery>;
                 res = await this.rest.create<TestInterfaces.TestResultsQuery>(url, query, options);
 
@@ -2432,7 +2477,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestResultSummary>;
                 res = await this.rest.get<TestInterfaces.TestResultSummary>(url, options);
 
@@ -2489,7 +2535,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestResultSummary>;
                 res = await this.rest.get<TestInterfaces.TestResultSummary>(url, options);
 
@@ -2529,7 +2576,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestResultSummary[]>;
                 res = await this.rest.create<TestInterfaces.TestResultSummary[]>(url, releases, options);
 
@@ -2576,7 +2624,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestSummaryForWorkItem[]>;
                 res = await this.rest.create<TestInterfaces.TestSummaryForWorkItem[]>(url, resultsContext, options);
 
@@ -2616,7 +2665,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.AggregatedDataForResultTrend[]>;
                 res = await this.rest.create<TestInterfaces.AggregatedDataForResultTrend[]>(url, filter, options);
 
@@ -2656,7 +2706,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.AggregatedDataForResultTrend[]>;
                 res = await this.rest.create<TestInterfaces.AggregatedDataForResultTrend[]>(url, filter, options);
 
@@ -2697,7 +2748,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestRunStatistic>;
                 res = await this.rest.get<TestInterfaces.TestRunStatistic>(url, options);
 
@@ -2737,7 +2789,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestRun>;
                 res = await this.rest.create<TestInterfaces.TestRun>(url, testRun, options);
 
@@ -2778,7 +2831,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -2819,7 +2873,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestRun>;
                 res = await this.rest.get<TestInterfaces.TestRun>(url, options);
 
@@ -2885,7 +2940,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestRun[]>;
                 res = await this.rest.get<TestInterfaces.TestRun[]>(url, options);
 
@@ -2928,7 +2984,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestRun>;
                 res = await this.rest.update<TestInterfaces.TestRun>(url, runUpdateModel, options);
 
@@ -2972,7 +3029,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestSession>;
                 res = await this.rest.create<TestInterfaces.TestSession>(url, testSession, options);
 
@@ -3033,7 +3091,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestSession[]>;
                 res = await this.rest.get<TestInterfaces.TestSession[]>(url, options);
 
@@ -3077,7 +3136,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestSession>;
                 res = await this.rest.update<TestInterfaces.TestSession>(url, testSession, options);
 
@@ -3118,7 +3178,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -3159,7 +3220,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -3200,7 +3262,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.SuiteEntry[]>;
                 res = await this.rest.get<TestInterfaces.SuiteEntry[]>(url, options);
 
@@ -3243,7 +3306,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.SuiteEntry[]>;
                 res = await this.rest.update<TestInterfaces.SuiteEntry[]>(url, suiteEntries, options);
 
@@ -3290,7 +3354,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.SuiteTestCase[]>;
                 res = await this.rest.create<TestInterfaces.SuiteTestCase[]>(url, options);
 
@@ -3337,7 +3402,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.SuiteTestCase>;
                 res = await this.rest.get<TestInterfaces.SuiteTestCase>(url, options);
 
@@ -3381,7 +3447,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.SuiteTestCase[]>;
                 res = await this.rest.get<TestInterfaces.SuiteTestCase[]>(url, options);
 
@@ -3428,7 +3495,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -3474,7 +3542,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestSuite[]>;
                 res = await this.rest.create<TestInterfaces.TestSuite[]>(url, testSuite, options);
 
@@ -3518,7 +3587,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -3569,7 +3639,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestSuite>;
                 res = await this.rest.get<TestInterfaces.TestSuite>(url, options);
 
@@ -3626,7 +3697,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestSuite[]>;
                 res = await this.rest.get<TestInterfaces.TestSuite[]>(url, options);
 
@@ -3672,7 +3744,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestSuite>;
                 res = await this.rest.update<TestInterfaces.TestSuite>(url, suiteUpdateModel, options);
 
@@ -3714,7 +3787,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestSuite[]>;
                 res = await this.rest.get<TestInterfaces.TestSuite[]>(url, options);
 
@@ -3755,7 +3829,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -3795,7 +3870,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<number>;
                 res = await this.rest.create<number>(url, testSettings, options);
 
@@ -3836,7 +3912,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -3877,7 +3954,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestSettings>;
                 res = await this.rest.get<TestInterfaces.TestSettings>(url, options);
 
@@ -3917,7 +3995,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestVariable>;
                 res = await this.rest.create<TestInterfaces.TestVariable>(url, testVariable, options);
 
@@ -3958,7 +4037,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -3999,7 +4079,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestVariable>;
                 res = await this.rest.get<TestInterfaces.TestVariable>(url, options);
 
@@ -4047,7 +4128,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestVariable[]>;
                 res = await this.rest.get<TestInterfaces.TestVariable[]>(url, options);
 
@@ -4090,7 +4172,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestVariable>;
                 res = await this.rest.update<TestInterfaces.TestVariable>(url, testVariable, options);
 
@@ -4130,7 +4213,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.WorkItemToTestLinks>;
                 res = await this.rest.create<TestInterfaces.WorkItemToTestLinks>(url, workItemToTestLinks, options);
 
@@ -4178,7 +4262,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<boolean>;
                 res = await this.rest.del<boolean>(url, options);
 
@@ -4223,7 +4308,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.TestToWorkItemLinks>;
                 res = await this.rest.create<TestInterfaces.TestToWorkItemLinks>(url, options);
 
@@ -4283,7 +4369,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TestInterfaces.WorkItemReference[]>;
                 res = await this.rest.get<TestInterfaces.WorkItemReference[]>(url, options);
 

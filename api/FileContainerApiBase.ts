@@ -10,9 +10,8 @@
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
-
-import restm = require('./RestClient');
-import httpm = require('./HttpClient');
+import * as restm from 'typed-rest-client/RestClient';
+import * as httpm from 'typed-rest-client/HttpClient';
 import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
 import serm = require('./Serialization');
@@ -46,7 +45,6 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
         ): Promise<FileContainerInterfaces.FileContainerItem[]> {
 
         return new Promise<FileContainerInterfaces.FileContainerItem[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 containerId: containerId
             };
@@ -57,19 +55,24 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.4",
+                    "3.2-preview.4",
                     "Container",
                     "e4f5c81e-e250-447b-9fef-bd48471bea5e",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.create(url, apiVersion, items, null);
-                let serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainerItem, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<FileContainerInterfaces.FileContainerItem[]>;
+                res = await this.rest.create<FileContainerInterfaces.FileContainerItem[]>(url, items, options);
+
+                let ret = this.formatResponse(res.result,
+                                              FileContainerInterfaces.TypeInfo.FileContainerItem,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -92,7 +95,6 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
         ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 containerId: containerId
             };
@@ -104,19 +106,24 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.4",
+                    "3.2-preview.4",
                     "Container",
                     "e4f5c81e-e250-447b-9fef-bd48471bea5e",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.del(url, apiVersion, null);
-                let serializationData = {  responseIsCollection: false };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(null);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -137,7 +144,6 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
         ): Promise<FileContainerInterfaces.FileContainer[]> {
 
         return new Promise<FileContainerInterfaces.FileContainer[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
             };
 
@@ -148,19 +154,24 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.4",
+                    "3.2-preview.4",
                     "Container",
                     "e4f5c81e-e250-447b-9fef-bd48471bea5e",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainer, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<FileContainerInterfaces.FileContainer[]>;
+                res = await this.rest.get<FileContainerInterfaces.FileContainer[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              FileContainerInterfaces.TypeInfo.FileContainer,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {
@@ -191,7 +202,6 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
         ): Promise<FileContainerInterfaces.FileContainerItem[]> {
 
         return new Promise<FileContainerInterfaces.FileContainerItem[]>(async (resolve, reject) => {
-            
             let routeValues: any = {
                 containerId: containerId
             };
@@ -208,19 +218,24 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.1-preview.4",
+                    "3.2-preview.4",
                     "Container",
                     "e4f5c81e-e250-447b-9fef-bd48471bea5e",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let apiVersion: string = verData.apiVersion;
-                
-                let res: restm.IRestClientResponse = await this.restClient.get(url, apiVersion, null);
-                let serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainerItem, responseIsCollection: true };
-                let deserializedResult = serm.ContractSerializer.serialize(res.result, serializationData, true);
-                resolve(deserializedResult);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<FileContainerInterfaces.FileContainerItem[]>;
+                res = await this.rest.get<FileContainerInterfaces.FileContainerItem[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              FileContainerInterfaces.TypeInfo.FileContainerItem,
+                                              true);
+
+                resolve(ret);
                 
             }
             catch (err) {

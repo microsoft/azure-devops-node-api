@@ -59,7 +59,8 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<AccountsInterfaces.Account>;
                 res = await this.rest.create<AccountsInterfaces.Account>(url, info, options);
 
@@ -104,7 +105,8 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<AccountsInterfaces.Account>;
                 res = await this.rest.get<AccountsInterfaces.Account>(url, options);
 
@@ -154,7 +156,8 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<AccountsInterfaces.Account[]>;
                 res = await this.rest.get<AccountsInterfaces.Account[]>(url, options);
 
@@ -192,7 +195,8 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<AccountsInterfaces.AccountNameAvailability>;
                 res = await this.rest.get<AccountsInterfaces.AccountNameAvailability>(url, options);
 
@@ -227,7 +231,8 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<AccountsInterfaces.AccountRegion[]>;
                 res = await this.rest.get<AccountsInterfaces.AccountRegion[]>(url, options);
 
@@ -262,7 +267,8 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<{ [key: string] : string; }>;
                 res = await this.rest.get<{ [key: string] : string; }>(url, options);
 

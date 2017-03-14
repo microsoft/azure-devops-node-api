@@ -66,7 +66,8 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -106,7 +107,8 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ChatInterfaces.Message[]>;
                 res = await this.rest.get<ChatInterfaces.Message[]>(url, options);
 
@@ -149,7 +151,8 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ChatInterfaces.Message>;
                 res = await this.rest.get<ChatInterfaces.Message>(url, options);
 
@@ -191,7 +194,8 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ChatInterfaces.Message>;
                 res = await this.rest.create<ChatInterfaces.Message>(url, messageUpdate, options);
 
@@ -236,7 +240,8 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ChatInterfaces.Message>;
                 res = await this.rest.update<ChatInterfaces.Message>(url, messageUpdate, options);
 
@@ -275,7 +280,8 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ChatInterfaces.Room>;
                 res = await this.rest.create<ChatInterfaces.Room>(url, roomUpdate, options);
 
@@ -315,7 +321,8 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -350,7 +357,8 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ChatInterfaces.Room[]>;
                 res = await this.rest.get<ChatInterfaces.Room[]>(url, options);
 
@@ -390,7 +398,8 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ChatInterfaces.Room>;
                 res = await this.rest.get<ChatInterfaces.Room>(url, options);
 
@@ -432,7 +441,8 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ChatInterfaces.Room>;
                 res = await this.rest.update<ChatInterfaces.Room>(url, roomUpdate, options);
 
@@ -472,7 +482,8 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ChatInterfaces.User[]>;
                 res = await this.rest.get<ChatInterfaces.User[]>(url, options);
 
@@ -515,7 +526,8 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ChatInterfaces.User>;
                 res = await this.rest.get<ChatInterfaces.User>(url, options);
 
@@ -560,7 +572,8 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.replace<void>(url, userUpdate, options);
 
@@ -603,7 +616,8 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 

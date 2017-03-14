@@ -1287,7 +1287,6 @@ export interface ReviewsResult {
      * List of reviews
      */
     reviews: Review[];
-    totalIgnoredReviewCount: number;
     /**
      * Count of total review items
      */

@@ -748,6 +748,29 @@ export interface ExtensionRequestEvent {
     updateType: ExtensionRequestUpdateType;
 }
 
+export interface ExtensionRequestsEvent {
+    /**
+     * The extension which has been requested
+     */
+    extension: GalleryInterfaces.PublishedExtension;
+    /**
+     * Information about the host for which this extension is requested
+     */
+    host: ExtensionHost;
+    /**
+     * Gallery host url
+     */
+    links: ExtensionRequestUrls;
+    /**
+     * The extension request object
+     */
+    requests: ExtensionRequest[];
+    /**
+     * The type of update that was made
+     */
+    updateType: ExtensionRequestUpdateType;
+}
+
 export enum ExtensionRequestState {
     /**
      * The request has been opened, but not yet responded to
@@ -1206,6 +1229,9 @@ export var TypeInfo = {
     ExtensionRequestEvent: {
         fields: <any>null
     },
+    ExtensionRequestsEvent: {
+        fields: <any>null
+    },
     ExtensionRequestState: {
         enumValues: {
             "open": 0,
@@ -1524,6 +1550,25 @@ TypeInfo.ExtensionRequestEvent.fields = {
         typeInfo: TypeInfo.ExtensionRequestUrls
     },
     request: {
+        typeInfo: TypeInfo.ExtensionRequest
+    },
+    updateType: {
+        enumType: TypeInfo.ExtensionRequestUpdateType
+    },
+};
+
+TypeInfo.ExtensionRequestsEvent.fields = {
+    extension: {
+        typeInfo: GalleryInterfaces.TypeInfo.PublishedExtension
+    },
+    host: {
+        typeInfo: TypeInfo.ExtensionHost
+    },
+    links: {
+        typeInfo: TypeInfo.ExtensionRequestUrls
+    },
+    requests: {
+        isArray: true,
         typeInfo: TypeInfo.ExtensionRequest
     },
     updateType: {
