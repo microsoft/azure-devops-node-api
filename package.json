@@ -1,7 +1,7 @@
 {
   "name": "vso-node-api",
   "description": "Node client for Visual Studio Online/TFS REST APIs",
-  "version": "6.1-preview",
+  "version": "6.1.0-preview",
   "main": "./WebApi.js",
   "typings": "./WebApi.d.ts",
   "scripts": {
