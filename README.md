@@ -43,31 +43,36 @@ let vstsBuild: ba.IBuildApi = connection.getBuildApi();
 
 #### Available clients
 
+These clients are available in the new 6.x preview API (`npm install vso-node-api@preview`)
+
 * Accounts
 * Build
 * Chat
-* CodeReview
 * Contributions
 * Core
 * Dashboard
-* Discussion
+* DelegatedAuthorization
 * ExtensionManagement
-* Favorite
+* FeatureManagement
 * FileContainer
 * Gallery
 * Git
-* Graph
+* Identities
+* Licensing
 * Locations
+* Notification
 * Organization
-* RM
+* Policy
+* Profile
 * Release
-* Reporting
+* SecurityRoles
 * ServiceHooks
 * TaskAgent
 * Task
-* Team
 * Test
 * Tfvc
+* Token
+* Work
 * WorkItemTracking
 
 ### Use the client
