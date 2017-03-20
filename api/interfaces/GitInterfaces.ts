@@ -1309,15 +1309,6 @@ export interface GitRefUpdateResult {
     updateStatus: GitRefUpdateStatus;
 }
 
-export interface GitRefUpdateResultSet {
-    countFailed: number;
-    countSucceeded: number;
-    pushCorrelationId: string;
-    pushIds: { [key: string] : number; };
-    pushTime: Date;
-    results: GitRefUpdateResult[];
-}
-
 export enum GitRefUpdateStatus {
     /**
      * Indicates that the ref update request was completed successfully.
@@ -2563,9 +2554,6 @@ export var TypeInfo = {
         }
     },
     GitRefUpdateResult: {
-        fields: <any>null
-    },
-    GitRefUpdateResultSet: {
         fields: <any>null
     },
     GitRefUpdateStatus: {
@@ -4199,16 +4187,6 @@ TypeInfo.GitRefUpdate.fields = {
 TypeInfo.GitRefUpdateResult.fields = {
     updateStatus: {
         enumType: TypeInfo.GitRefUpdateStatus
-    },
-};
-
-TypeInfo.GitRefUpdateResultSet.fields = {
-    pushTime: {
-        isDate: true,
-    },
-    results: {
-        isArray: true,
-        typeInfo: TypeInfo.GitRefUpdateResult
     },
 };
 

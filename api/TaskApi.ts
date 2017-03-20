@@ -75,7 +75,8 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAttachment[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAttachment[]>(url, options);
 
@@ -139,6 +140,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
+                options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAttachment>;
                 res = await this.rest.uploadStream<TaskAgentInterfaces.TaskAttachment>("PUT", url, contentStream, options);
@@ -194,7 +196,8 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAttachment>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAttachment>(url, options);
 
@@ -296,7 +299,8 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAttachment[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAttachment[]>(url, options);
 
@@ -348,7 +352,8 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, lines, options);
 
@@ -403,6 +408,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
+                options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskLog>;
                 res = await this.rest.uploadStream<TaskAgentInterfaces.TaskLog>("POST", url, contentStream, options);
@@ -448,7 +454,8 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskLog>;
                 res = await this.rest.create<TaskAgentInterfaces.TaskLog>(url, log, options);
 
@@ -505,7 +512,8 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
@@ -549,7 +557,8 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskLog[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskLog[]>(url, options);
 
@@ -600,7 +609,8 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskOrchestrationQueuedPlanGroup[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskOrchestrationQueuedPlanGroup[]>(url, options);
 
@@ -644,7 +654,8 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskOrchestrationPlan>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskOrchestrationPlan>(url, options);
 
@@ -698,7 +709,8 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TaskAgentInterfaces.TimelineRecord[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TimelineRecord[]>(url, options);
 
@@ -747,7 +759,8 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TaskAgentInterfaces.TimelineRecord[]>;
                 res = await this.rest.update<TaskAgentInterfaces.TimelineRecord[]>(url, records, options);
 
@@ -793,7 +806,8 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TaskAgentInterfaces.Timeline>;
                 res = await this.rest.create<TaskAgentInterfaces.Timeline>(url, timeline, options);
 
@@ -840,7 +854,8 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -897,7 +912,8 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TaskAgentInterfaces.Timeline>;
                 res = await this.rest.get<TaskAgentInterfaces.Timeline>(url, options);
 
@@ -941,7 +957,8 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<TaskAgentInterfaces.Timeline[]>;
                 res = await this.rest.get<TaskAgentInterfaces.Timeline[]>(url, options);
 

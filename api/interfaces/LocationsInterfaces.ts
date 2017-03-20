@@ -119,9 +119,9 @@ export enum RelativeToSetting {
 }
 
 export interface ResourceAreaInfo {
-    areaId: string;
-    areaName: string;
+    id: string;
     locationUrl: string;
+    name: string;
 }
 
 export interface ServiceDefinition {

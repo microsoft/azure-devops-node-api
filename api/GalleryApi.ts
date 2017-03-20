@@ -59,7 +59,7 @@ export interface IGalleryApi extends compatBase.GalleryCompatHttpClientBase {
     updateQuestion(question: GalleryInterfaces.Question, publisherName: string, extensionName: string, questionId: number): Promise<GalleryInterfaces.Question>;
     createResponse(response: GalleryInterfaces.Response, publisherName: string, extensionName: string, questionId: number): Promise<GalleryInterfaces.Response>;
     updateResponse(response: GalleryInterfaces.Response, publisherName: string, extensionName: string, questionId: number, responseId: number): Promise<GalleryInterfaces.Response>;
-    getExtensionReports(publisherName: string, extensionName: string, days?: number): Promise<string>;
+    getExtensionReports(publisherName: string, extensionName: string, days?: number, count?: number, afterDate?: Date): Promise<any>;
     getReviews(publisherName: string, extensionName: string, count?: number, filterOptions?: GalleryInterfaces.ReviewFilterOptions, beforeDate?: Date, afterDate?: Date): Promise<GalleryInterfaces.ReviewsResult>;
     createReview(review: GalleryInterfaces.Review, pubName: string, extName: string): Promise<GalleryInterfaces.Review>;
     deleteReview(pubName: string, extName: string, reviewId: number): Promise<void>;
@@ -104,7 +104,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, options);
 
@@ -145,7 +146,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -189,7 +191,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, options);
 
@@ -233,7 +236,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -284,7 +288,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.AcquisitionOptions>;
                 res = await this.rest.get<GalleryInterfaces.AcquisitionOptions>(url, options);
 
@@ -321,7 +326,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionAcquisitionRequest>;
                 res = await this.rest.create<GalleryInterfaces.ExtensionAcquisitionRequest>(url, acquisitionRequest, options);
 
@@ -510,7 +516,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.AzurePublisher>;
                 res = await this.rest.replace<GalleryInterfaces.AzurePublisher>(url, options);
 
@@ -548,7 +555,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.AzurePublisher>;
                 res = await this.rest.get<GalleryInterfaces.AzurePublisher>(url, options);
 
@@ -590,7 +598,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
@@ -638,7 +647,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.CategoriesResult>;
                 res = await this.rest.get<GalleryInterfaces.CategoriesResult>(url, options);
 
@@ -731,7 +741,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionEvents>;
                 res = await this.rest.get<GalleryInterfaces.ExtensionEvents>(url, options);
 
@@ -770,7 +781,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, extensionEvents, options);
 
@@ -814,7 +826,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionQueryResult>;
                 res = await this.rest.create<GalleryInterfaces.ExtensionQueryResult>(url, extensionQuery, options);
 
@@ -857,6 +870,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
+                options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.uploadStream<GalleryInterfaces.PublishedExtension>("POST", url, contentStream, options);
@@ -901,7 +915,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -949,7 +964,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.get<GalleryInterfaces.PublishedExtension>(url, options);
 
@@ -987,7 +1003,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.replace<GalleryInterfaces.PublishedExtension>(url, options);
 
@@ -1033,6 +1050,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
+                options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.uploadStream<GalleryInterfaces.PublishedExtension>("POST", url, contentStream, options);
@@ -1080,7 +1098,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -1134,7 +1153,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.get<GalleryInterfaces.PublishedExtension>(url, options);
 
@@ -1183,6 +1203,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
+                options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.uploadStream<GalleryInterfaces.PublishedExtension>("PUT", url, contentStream, options);
@@ -1230,7 +1251,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.update<GalleryInterfaces.PublishedExtension>(url, options);
 
@@ -1267,7 +1289,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, azureRestApiRequestModel, options);
 
@@ -1404,7 +1427,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.PublisherQueryResult>;
                 res = await this.rest.create<GalleryInterfaces.PublisherQueryResult>(url, publisherQuery, options);
 
@@ -1441,7 +1465,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.Publisher>;
                 res = await this.rest.create<GalleryInterfaces.Publisher>(url, publisher, options);
 
@@ -1479,7 +1504,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -1524,7 +1550,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.Publisher>;
                 res = await this.rest.get<GalleryInterfaces.Publisher>(url, options);
 
@@ -1564,7 +1591,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.Publisher>;
                 res = await this.rest.replace<GalleryInterfaces.Publisher>(url, publisher, options);
 
@@ -1617,7 +1645,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.QuestionsResult>;
                 res = await this.rest.get<GalleryInterfaces.QuestionsResult>(url, options);
 
@@ -1662,7 +1691,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.Question>;
                 res = await this.rest.create<GalleryInterfaces.Question>(url, question, options);
 
@@ -1710,7 +1740,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.Question>;
                 res = await this.rest.update<GalleryInterfaces.Question>(url, question, options);
 
@@ -1758,7 +1789,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.Response>;
                 res = await this.rest.create<GalleryInterfaces.Response>(url, response, options);
 
@@ -1809,7 +1841,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.Response>;
                 res = await this.rest.update<GalleryInterfaces.Response>(url, response, options);
 
@@ -1832,14 +1865,18 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     * @param {string} publisherName - Name of the publisher who published the extension
     * @param {string} extensionName - Name of the extension
     * @param {number} days - Last n days report
+    * @param {number} count - Number of events to be returned
+    * @param {Date} afterDate - Use if you want to fetch events newer than the specified date
     */
     public async getExtensionReports(
         publisherName: string,
         extensionName: string,
-        days?: number
-        ): Promise<string> {
+        days?: number,
+        count?: number,
+        afterDate?: Date
+        ): Promise<any> {
 
-        return new Promise<string>(async (resolve, reject) => {
+        return new Promise<any>(async (resolve, reject) => {
             let routeValues: any = {
                 publisherName: publisherName,
                 extensionName: extensionName
@@ -1847,6 +1884,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             let queryValues: any = {
                 days: days,
+                count: count,
+                afterDate: afterDate,
             };
             
             try {
@@ -1859,9 +1898,10 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
-                let res: restm.IRestResponse<string>;
-                res = await this.rest.get<string>(url, options);
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<any>;
+                res = await this.rest.get<any>(url, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
@@ -1918,7 +1958,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.ReviewsResult>;
                 res = await this.rest.get<GalleryInterfaces.ReviewsResult>(url, options);
 
@@ -1963,7 +2004,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.Review>;
                 res = await this.rest.create<GalleryInterfaces.Review>(url, review, options);
 
@@ -2009,7 +2051,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -2057,7 +2100,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.ReviewPatch>;
                 res = await this.rest.update<GalleryInterfaces.ReviewPatch>(url, reviewPatch, options);
 
@@ -2094,7 +2138,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionCategory>;
                 res = await this.rest.create<GalleryInterfaces.ExtensionCategory>(url, category, options);
 
@@ -2137,7 +2182,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<{ [key: string] : any; }>;
                 res = await this.rest.get<{ [key: string] : any; }>(url, options);
 
@@ -2179,7 +2225,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, entries, options);
 
@@ -2224,7 +2271,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, options);
 
@@ -2262,7 +2310,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.get<string>(url, options);
 
@@ -2305,7 +2354,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, extensionStatisticsUpdate, options);
 
@@ -2353,7 +2403,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionDailyStats>;
                 res = await this.rest.get<GalleryInterfaces.ExtensionDailyStats>(url, options);
 
@@ -2371,9 +2422,11 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} version
+    * This route/location id only supports HTTP POST anonymously, so that the page view daily stat can be incremented from Marketplace client. Trying to call GET on this route should result in an exception. Without this explicit implementation, calling GET on this public route invokes the above GET implementation GetExtensionDailyStats.
+    * 
+    * @param {string} publisherName - Name of the publisher
+    * @param {string} extensionName - Name of the extension
+    * @param {string} version - Version of the extension
     */
     public async getExtensionDailyStatsAnonymous(
         publisherName: string,
@@ -2397,7 +2450,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionDailyStats>;
                 res = await this.rest.get<GalleryInterfaces.ExtensionDailyStats>(url, options);
 
@@ -2448,7 +2502,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, options);
 

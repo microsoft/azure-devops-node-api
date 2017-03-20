@@ -82,7 +82,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.AcquisitionOptions>;
                 res = await this.rest.get<ExtensionManagementInterfaces.AcquisitionOptions>(url, options);
 
@@ -119,7 +120,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.ExtensionAcquisitionRequest>;
                 res = await this.rest.create<ExtensionManagementInterfaces.ExtensionAcquisitionRequest>(url, acquisitionRequest, options);
 
@@ -163,7 +165,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.ExtensionAuthorization>;
                 res = await this.rest.replace<ExtensionManagementInterfaces.ExtensionAuthorization>(url, options);
 
@@ -215,7 +218,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<any>;
                 res = await this.rest.create<any>(url, doc, options);
 
@@ -268,7 +272,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -321,7 +326,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<any>;
                 res = await this.rest.get<any>(url, options);
 
@@ -371,7 +377,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<any[]>;
                 res = await this.rest.get<any[]>(url, options);
 
@@ -423,7 +430,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<any>;
                 res = await this.rest.replace<any>(url, doc, options);
 
@@ -475,7 +483,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<any>;
                 res = await this.rest.update<any>(url, doc, options);
 
@@ -518,7 +527,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.ExtensionDataCollection[]>;
                 res = await this.rest.create<ExtensionManagementInterfaces.ExtensionDataCollection[]>(url, collectionQuery, options);
 
@@ -566,7 +576,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.ExtensionState[]>;
                 res = await this.rest.get<ExtensionManagementInterfaces.ExtensionState[]>(url, options);
 
@@ -603,7 +614,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.InstalledExtension[]>;
                 res = await this.rest.create<ExtensionManagementInterfaces.InstalledExtension[]>(url, query, options);
 
@@ -654,7 +666,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.InstalledExtension[]>;
                 res = await this.rest.get<ExtensionManagementInterfaces.InstalledExtension[]>(url, options);
 
@@ -691,7 +704,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.InstalledExtension>;
                 res = await this.rest.update<ExtensionManagementInterfaces.InstalledExtension>(url, extension, options);
 
@@ -739,7 +753,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.InstalledExtension>;
                 res = await this.rest.get<ExtensionManagementInterfaces.InstalledExtension>(url, options);
 
@@ -783,7 +798,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.InstalledExtension>;
                 res = await this.rest.create<ExtensionManagementInterfaces.InstalledExtension>(url, options);
 
@@ -834,7 +850,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -872,7 +889,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<GalleryInterfaces.UserExtensionPolicy>;
                 res = await this.rest.get<GalleryInterfaces.UserExtensionPolicy>(url, options);
 
@@ -925,7 +943,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<number>;
                 res = await this.rest.update<number>(url, rejectMessage, options);
 
@@ -960,7 +979,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.RequestedExtension[]>;
                 res = await this.rest.get<ExtensionManagementInterfaces.RequestedExtension[]>(url, options);
 
@@ -1010,7 +1030,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<number>;
                 res = await this.rest.update<number>(url, rejectMessage, options);
 
@@ -1051,7 +1072,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -1094,7 +1116,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.RequestedExtension>;
                 res = await this.rest.create<ExtensionManagementInterfaces.RequestedExtension>(url, requestMessage, options);
 
@@ -1129,7 +1152,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.get<string>(url, options);
 

@@ -66,7 +66,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ServiceHooksInterfaces.ConsumerAction>;
                 res = await this.rest.get<ServiceHooksInterfaces.ConsumerAction>(url, options);
 
@@ -104,7 +105,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ServiceHooksInterfaces.ConsumerAction[]>;
                 res = await this.rest.get<ServiceHooksInterfaces.ConsumerAction[]>(url, options);
 
@@ -142,7 +144,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ServiceHooksInterfaces.Consumer>;
                 res = await this.rest.get<ServiceHooksInterfaces.Consumer>(url, options);
 
@@ -177,7 +180,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ServiceHooksInterfaces.Consumer[]>;
                 res = await this.rest.get<ServiceHooksInterfaces.Consumer[]>(url, options);
 
@@ -214,7 +218,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, eventsRequestData, options);
 
@@ -251,7 +256,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ServiceHooksInterfaces.SubscriptionInputValuesQuery>;
                 res = await this.rest.create<ServiceHooksInterfaces.SubscriptionInputValuesQuery>(url, inputValuesQuery, options);
 
@@ -292,7 +298,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ServiceHooksInterfaces.Notification>;
                 res = await this.rest.get<ServiceHooksInterfaces.Notification>(url, options);
 
@@ -343,7 +350,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ServiceHooksInterfaces.Notification[]>;
                 res = await this.rest.get<ServiceHooksInterfaces.Notification[]>(url, options);
 
@@ -380,7 +388,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ServiceHooksInterfaces.NotificationsQuery>;
                 res = await this.rest.create<ServiceHooksInterfaces.NotificationsQuery>(url, query, options);
 
@@ -417,7 +426,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ServiceHooksInterfaces.Subscription>;
                 res = await this.rest.create<ServiceHooksInterfaces.Subscription>(url, subscription, options);
 
@@ -455,7 +465,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -493,7 +504,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ServiceHooksInterfaces.Subscription>;
                 res = await this.rest.get<ServiceHooksInterfaces.Subscription>(url, options);
 
@@ -544,7 +556,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ServiceHooksInterfaces.Subscription[]>;
                 res = await this.rest.get<ServiceHooksInterfaces.Subscription[]>(url, options);
 
@@ -581,7 +594,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ServiceHooksInterfaces.Subscription>;
                 res = await this.rest.replace<ServiceHooksInterfaces.Subscription>(url, subscription, options);
 
@@ -618,7 +632,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ServiceHooksInterfaces.SubscriptionsQuery>;
                 res = await this.rest.create<ServiceHooksInterfaces.SubscriptionsQuery>(url, query, options);
 
@@ -655,7 +670,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ServiceHooksInterfaces.Notification>;
                 res = await this.rest.create<ServiceHooksInterfaces.Notification>(url, testNotification, options);
 

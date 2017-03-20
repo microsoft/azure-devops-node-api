@@ -34,9 +34,6 @@ export enum AgentArtifactType {
     ExternalTfsBuild = 8,
     Custom = 9,
     Tfvc = 10,
-    Svn = 11,
-    ExternalGit = 12,
-    Pipeline = 13,
 }
 
 export interface AgentBasedDeployPhase extends DeployPhase {
@@ -1312,9 +1309,6 @@ export var TypeInfo = {
             "externalTfsBuild": 8,
             "custom": 9,
             "tfvc": 10,
-            "svn": 11,
-            "externalGit": 12,
-            "pipeline": 13,
         }
     },
     AgentBasedDeployPhase: {

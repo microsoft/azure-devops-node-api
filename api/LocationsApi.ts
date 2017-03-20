@@ -67,7 +67,8 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<LocationsInterfaces.ConnectionData>;
                 res = await this.rest.get<LocationsInterfaces.ConnectionData>(url, options);
 
@@ -105,7 +106,8 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<LocationsInterfaces.ResourceAreaInfo>;
                 res = await this.rest.get<LocationsInterfaces.ResourceAreaInfo>(url, options);
 
@@ -140,7 +142,8 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<LocationsInterfaces.ResourceAreaInfo[]>;
                 res = await this.rest.get<LocationsInterfaces.ResourceAreaInfo[]>(url, options);
 
@@ -181,7 +184,8 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -229,7 +233,8 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<LocationsInterfaces.ServiceDefinition>;
                 res = await this.rest.get<LocationsInterfaces.ServiceDefinition>(url, options);
 
@@ -267,7 +272,8 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<LocationsInterfaces.ServiceDefinition[]>;
                 res = await this.rest.get<LocationsInterfaces.ServiceDefinition[]>(url, options);
 
@@ -304,7 +310,8 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, serviceDefinitions, options);
 

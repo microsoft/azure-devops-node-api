@@ -710,6 +710,10 @@ export enum SubscriptionQueryFlags {
      */
     AlwaysReturnBasicInformation = 22,
     /**
+     * To include subscriptions from other services, this is only needed for contributed subscriptions
+     */
+    IncludeRemoteContributedSubscriptions = 50,
+    /**
      * Include all group, invalid, and subscriptions marked for deletion.
      */
     IncludeAllSubscriptions = 7,
@@ -742,6 +746,14 @@ export enum SubscriptionStatus {
      * Subscription is disabled and will be deleted.
      */
     PendingDeletion = -100,
+    /**
+     * Subscription is disabled because the identity is no longer active
+     */
+    DisabledInactiveIdentity = -8,
+    /**
+     * Subscription is disabled because message queue is not supported.
+     */
+    DisabledMessageQueueNotSupported = -7,
     /**
      * Subscription is disabled because its subscriber is unknown.
      */
@@ -983,6 +995,7 @@ export var TypeInfo = {
             "includeDeletedSubscriptions": 4,
             "includeFilterDetails": 8,
             "alwaysReturnBasicInformation": 22,
+            "includeRemoteContributedSubscriptions": 50,
             "includeAllSubscriptions": 7,
         }
     },
@@ -996,6 +1009,8 @@ export var TypeInfo = {
         enumValues: {
             "jailedByNotificationsVolume": -200,
             "pendingDeletion": -100,
+            "disabledInactiveIdentity": -8,
+            "disabledMessageQueueNotSupported": -7,
             "disabledMissingIdentity": -6,
             "disabledInvalidRoleExpression": -5,
             "disabledInvalidPathClause": -4,

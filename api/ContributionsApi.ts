@@ -52,7 +52,8 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ContributionsInterfaces.ContributionNodeQueryResult>;
                 res = await this.rest.create<ContributionsInterfaces.ContributionNodeQueryResult>(url, query, options);
 
@@ -89,7 +90,8 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ContributionsInterfaces.DataProviderResult>;
                 res = await this.rest.create<ContributionsInterfaces.DataProviderResult>(url, query, options);
 
@@ -137,7 +139,8 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ContributionsInterfaces.InstalledExtension[]>;
                 res = await this.rest.get<ContributionsInterfaces.InstalledExtension[]>(url, options);
 
@@ -185,7 +188,8 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ContributionsInterfaces.InstalledExtension>;
                 res = await this.rest.get<ContributionsInterfaces.InstalledExtension>(url, options);
 

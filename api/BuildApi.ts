@@ -111,7 +111,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.BuildArtifact>;
                 res = await this.rest.create<BuildInterfaces.BuildArtifact>(url, artifact, options);
 
@@ -161,7 +162,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.BuildArtifact>;
                 res = await this.rest.get<BuildInterfaces.BuildArtifact>(url, options);
 
@@ -247,7 +249,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.BuildArtifact[]>;
                 res = await this.rest.get<BuildInterfaces.BuildArtifact[]>(url, options);
 
@@ -295,7 +298,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.get<string>(url, options);
 
@@ -346,7 +350,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.BuildBadge>;
                 res = await this.rest.get<BuildInterfaces.BuildBadge>(url, options);
 
@@ -397,7 +402,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.get<string>(url, options);
 
@@ -440,7 +446,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -490,7 +497,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.Build>;
                 res = await this.rest.get<BuildInterfaces.Build>(url, options);
 
@@ -594,7 +602,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.Build[]>;
                 res = await this.rest.get<BuildInterfaces.Build[]>(url, options);
 
@@ -646,7 +655,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.Build>;
                 res = await this.rest.create<BuildInterfaces.Build>(url, build, options);
 
@@ -691,7 +701,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.Build>;
                 res = await this.rest.update<BuildInterfaces.Build>(url, build, options);
 
@@ -733,7 +744,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.Build[]>;
                 res = await this.rest.update<BuildInterfaces.Build[]>(url, builds, options);
 
@@ -789,7 +801,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.Change[]>;
                 res = await this.rest.get<BuildInterfaces.Change[]>(url, options);
 
@@ -842,7 +855,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.Change[]>;
                 res = await this.rest.get<BuildInterfaces.Change[]>(url, options);
 
@@ -882,7 +896,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.BuildController>;
                 res = await this.rest.get<BuildInterfaces.BuildController>(url, options);
 
@@ -926,7 +941,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.BuildController[]>;
                 res = await this.rest.get<BuildInterfaces.BuildController[]>(url, options);
 
@@ -978,7 +994,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinition>;
                 res = await this.rest.create<BuildInterfaces.BuildDefinition>(url, definition, options);
 
@@ -1021,7 +1038,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -1080,7 +1098,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinition>;
                 res = await this.rest.get<BuildInterfaces.BuildDefinition>(url, options);
 
@@ -1163,7 +1182,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionReference[]>;
                 res = await this.rest.get<BuildInterfaces.BuildDefinitionReference[]>(url, options);
 
@@ -1218,7 +1238,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinition>;
                 res = await this.rest.replace<BuildInterfaces.BuildDefinition>(url, definition, options);
 
@@ -1263,7 +1284,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.Folder>;
                 res = await this.rest.replace<BuildInterfaces.Folder>(url, folder, options);
 
@@ -1306,7 +1328,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -1356,7 +1379,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.Folder[]>;
                 res = await this.rest.get<BuildInterfaces.Folder[]>(url, options);
 
@@ -1401,7 +1425,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.Folder>;
                 res = await this.rest.create<BuildInterfaces.Folder>(url, folder, options);
 
@@ -1506,7 +1531,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
@@ -1549,7 +1575,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.BuildLog[]>;
                 res = await this.rest.get<BuildInterfaces.BuildLog[]>(url, options);
 
@@ -1635,7 +1662,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.BuildMetric[]>;
                 res = await this.rest.get<BuildInterfaces.BuildMetric[]>(url, options);
 
@@ -1685,7 +1713,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.BuildMetric[]>;
                 res = await this.rest.get<BuildInterfaces.BuildMetric[]>(url, options);
 
@@ -1723,7 +1752,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.BuildOptionDefinition[]>;
                 res = await this.rest.get<BuildInterfaces.BuildOptionDefinition[]>(url, options);
 
@@ -1773,7 +1803,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.BuildReportMetadata>;
                 res = await this.rest.get<BuildInterfaces.BuildReportMetadata>(url, options);
 
@@ -1851,7 +1882,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.BuildResourceUsage>;
                 res = await this.rest.get<BuildInterfaces.BuildResourceUsage>(url, options);
 
@@ -1894,7 +1926,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionRevision[]>;
                 res = await this.rest.get<BuildInterfaces.BuildDefinitionRevision[]>(url, options);
 
@@ -1929,7 +1962,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.BuildSettings>;
                 res = await this.rest.get<BuildInterfaces.BuildSettings>(url, options);
 
@@ -1968,7 +2002,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.BuildSettings>;
                 res = await this.rest.update<BuildInterfaces.BuildSettings>(url, settings, options);
 
@@ -2014,7 +2049,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.replace<string[]>(url, options);
 
@@ -2059,7 +2095,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.create<string[]>(url, tags, options);
 
@@ -2105,7 +2142,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.del<string[]>(url, options);
 
@@ -2148,7 +2186,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
@@ -2194,7 +2233,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.replace<string[]>(url, options);
 
@@ -2239,7 +2279,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.create<string[]>(url, tags, options);
 
@@ -2285,7 +2326,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.del<string[]>(url, options);
 
@@ -2335,7 +2377,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
@@ -2373,7 +2416,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
@@ -2416,7 +2460,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -2459,7 +2504,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionTemplate>;
                 res = await this.rest.get<BuildInterfaces.BuildDefinitionTemplate>(url, options);
 
@@ -2497,7 +2543,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionTemplate[]>;
                 res = await this.rest.get<BuildInterfaces.BuildDefinitionTemplate[]>(url, options);
 
@@ -2542,7 +2589,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionTemplate>;
                 res = await this.rest.replace<BuildInterfaces.BuildDefinitionTemplate>(url, template, options);
 
@@ -2598,7 +2646,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<BuildInterfaces.Timeline>;
                 res = await this.rest.get<BuildInterfaces.Timeline>(url, options);
 
@@ -2648,7 +2697,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<VSSInterfaces.ResourceRef[]>;
                 res = await this.rest.get<VSSInterfaces.ResourceRef[]>(url, options);
 
@@ -2700,7 +2750,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<VSSInterfaces.ResourceRef[]>;
                 res = await this.rest.create<VSSInterfaces.ResourceRef[]>(url, commitIds, options);
 
@@ -2753,7 +2804,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<VSSInterfaces.ResourceRef[]>;
                 res = await this.rest.get<VSSInterfaces.ResourceRef[]>(url, options);
 

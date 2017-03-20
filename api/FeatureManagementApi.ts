@@ -58,7 +58,8 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeature>;
                 res = await this.rest.get<FeatureManagementInterfaces.ContributedFeature>(url, options);
 
@@ -102,7 +103,8 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeature[]>;
                 res = await this.rest.get<FeatureManagementInterfaces.ContributedFeature[]>(url, options);
 
@@ -145,7 +147,8 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
                 res = await this.rest.get<FeatureManagementInterfaces.ContributedFeatureState>(url, options);
 
@@ -200,7 +203,8 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
                 res = await this.rest.update<FeatureManagementInterfaces.ContributedFeatureState>(url, feature, options);
 
@@ -249,7 +253,8 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
                 res = await this.rest.get<FeatureManagementInterfaces.ContributedFeatureState>(url, options);
 
@@ -310,7 +315,8 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
                 res = await this.rest.update<FeatureManagementInterfaces.ContributedFeatureState>(url, feature, options);
 
@@ -349,7 +355,8 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureStateQuery>;
                 res = await this.rest.create<FeatureManagementInterfaces.ContributedFeatureStateQuery>(url, query, options);
 
@@ -391,7 +398,8 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureStateQuery>;
                 res = await this.rest.create<FeatureManagementInterfaces.ContributedFeatureStateQuery>(url, query, options);
 
@@ -439,7 +447,8 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureStateQuery>;
                 res = await this.rest.create<FeatureManagementInterfaces.ContributedFeatureStateQuery>(url, query, options);
 

@@ -35,7 +35,7 @@ export interface IReleaseApi extends basem.ClientApiBase {
     getReleaseDefinitions(project: string, searchText?: string, expand?: ReleaseInterfaces.ReleaseDefinitionExpands, artifactType?: string, artifactSourceId?: string, top?: number, continuationToken?: string, queryOrder?: ReleaseInterfaces.ReleaseDefinitionQueryOrder, path?: string, isExactNameMatch?: boolean, tagFilter?: string[], propertyFilters?: string[]): Promise<ReleaseInterfaces.ReleaseDefinition[]>;
     getReleaseDefinitionsForArtifactSource(project: string, artifactType: string, artifactSourceId: string, expand?: ReleaseInterfaces.ReleaseDefinitionExpands): Promise<ReleaseInterfaces.ReleaseDefinition[]>;
     updateReleaseDefinition(releaseDefinition: ReleaseInterfaces.ReleaseDefinition, project: string): Promise<ReleaseInterfaces.ReleaseDefinition>;
-    getDeployments(project: string, definitionId?: number, definitionEnvironmentId?: number, createdBy?: string, minModifiedTime?: Date, maxModifiedTime?: Date, deploymentStatus?: ReleaseInterfaces.DeploymentStatus, operationStatus?: ReleaseInterfaces.DeploymentOperationStatus, latestAttemptsOnly?: boolean, queryOrder?: ReleaseInterfaces.ReleaseQueryOrder, top?: number, continuationToken?: number): Promise<ReleaseInterfaces.Deployment[]>;
+    getDeployments(project: string, definitionId?: number, definitionEnvironmentId?: number, createdBy?: string, minModifiedTime?: Date, maxModifiedTime?: Date, deploymentStatus?: ReleaseInterfaces.DeploymentStatus, operationStatus?: ReleaseInterfaces.DeploymentOperationStatus, latestAttemptsOnly?: boolean, queryOrder?: ReleaseInterfaces.ReleaseQueryOrder, top?: number, continuationToken?: number, createdFor?: string): Promise<ReleaseInterfaces.Deployment[]>;
     getDeploymentsForMultipleEnvironments(queryParameters: ReleaseInterfaces.DeploymentQueryParameters, project: string): Promise<ReleaseInterfaces.Deployment[]>;
     getReleaseEnvironment(project: string, releaseId: number, environmentId: number): Promise<ReleaseInterfaces.ReleaseEnvironment>;
     updateReleaseEnvironment(environmentUpdateData: ReleaseInterfaces.ReleaseEnvironmentUpdateMetadata, project: string, releaseId: number, environmentId: number): Promise<ReleaseInterfaces.ReleaseEnvironment>;
@@ -52,8 +52,6 @@ export interface IReleaseApi extends basem.ClientApiBase {
     updateFolder(folder: ReleaseInterfaces.Folder, project: string, path: string): Promise<ReleaseInterfaces.Folder>;
     getReleaseHistory(project: string, releaseId: number): Promise<ReleaseInterfaces.ReleaseRevision[]>;
     getInputValues(query: FormInputInterfaces.InputValuesQuery, project: string): Promise<FormInputInterfaces.InputValuesQuery>;
-    getIPAddress(): Promise<string>;
-    getSupportedIPDetectionMethods(ipDetectionMethods: string): Promise<string[]>;
     getLog(project: string, releaseId: number, environmentId: number, taskId: number, attemptId?: number): Promise<NodeJS.ReadableStream>;
     getLogs(project: string, releaseId: number): Promise<NodeJS.ReadableStream>;
     getTaskLog(project: string, releaseId: number, environmentId: number, releaseDeployPhaseId: number, taskId: number): Promise<NodeJS.ReadableStream>;
@@ -126,7 +124,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.AgentArtifactDefinition[]>;
                 res = await this.rest.get<ReleaseInterfaces.AgentArtifactDefinition[]>(url, options);
 
@@ -167,7 +166,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseApproval>(url, options);
 
@@ -215,7 +215,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseApproval>(url, options);
 
@@ -258,7 +259,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval>;
                 res = await this.rest.update<ReleaseInterfaces.ReleaseApproval>(url, approval, options);
 
@@ -324,7 +326,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseApproval[]>(url, options);
 
@@ -375,7 +378,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.Change[]>;
                 res = await this.rest.get<ReleaseInterfaces.Change[]>(url, options);
 
@@ -415,7 +419,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.create<string>(url, configData, options);
 
@@ -460,7 +465,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.DefinitionEnvironmentReference[]>;
                 res = await this.rest.get<ReleaseInterfaces.DefinitionEnvironmentReference[]>(url, options);
 
@@ -500,7 +506,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition>;
                 res = await this.rest.create<ReleaseInterfaces.ReleaseDefinition>(url, releaseDefinition, options);
 
@@ -541,7 +548,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -589,7 +597,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinition>(url, options);
 
@@ -705,7 +714,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinition[]>(url, options);
 
@@ -756,7 +766,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinition[]>(url, options);
 
@@ -796,7 +807,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition>;
                 res = await this.rest.replace<ReleaseInterfaces.ReleaseDefinition>(url, releaseDefinition, options);
 
@@ -826,6 +838,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     * @param {ReleaseInterfaces.ReleaseQueryOrder} queryOrder
     * @param {number} top
     * @param {number} continuationToken
+    * @param {string} createdFor
     */
     public async getDeployments(
         project: string,
@@ -839,7 +852,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         latestAttemptsOnly?: boolean,
         queryOrder?: ReleaseInterfaces.ReleaseQueryOrder,
         top?: number,
-        continuationToken?: number
+        continuationToken?: number,
+        createdFor?: string
         ): Promise<ReleaseInterfaces.Deployment[]> {
 
         return new Promise<ReleaseInterfaces.Deployment[]>(async (resolve, reject) => {
@@ -859,6 +873,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 queryOrder: queryOrder,
                 '$top': top,
                 continuationToken: continuationToken,
+                createdFor: createdFor,
             };
             
             try {
@@ -871,7 +886,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.Deployment[]>;
                 res = await this.rest.get<ReleaseInterfaces.Deployment[]>(url, options);
 
@@ -911,7 +927,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.Deployment[]>;
                 res = await this.rest.create<ReleaseInterfaces.Deployment[]>(url, queryParameters, options);
 
@@ -955,7 +972,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseEnvironment>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseEnvironment>(url, options);
 
@@ -1001,7 +1019,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseEnvironment>;
                 res = await this.rest.update<ReleaseInterfaces.ReleaseEnvironment>(url, environmentUpdateData, options);
 
@@ -1041,7 +1060,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>;
                 res = await this.rest.create<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>(url, template, options);
 
@@ -1086,7 +1106,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -1131,7 +1152,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>(url, options);
 
@@ -1169,7 +1191,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]>(url, options);
 
@@ -1219,7 +1242,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.FavoriteItem[]>;
                 res = await this.rest.create<ReleaseInterfaces.FavoriteItem[]>(url, favoriteItems, options);
 
@@ -1270,7 +1294,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -1318,7 +1343,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.FavoriteItem[]>;
                 res = await this.rest.get<ReleaseInterfaces.FavoriteItem[]>(url, options);
 
@@ -1363,7 +1389,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.Folder>;
                 res = await this.rest.create<ReleaseInterfaces.Folder>(url, folder, options);
 
@@ -1406,7 +1433,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -1456,7 +1484,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.Folder[]>;
                 res = await this.rest.get<ReleaseInterfaces.Folder[]>(url, options);
 
@@ -1501,7 +1530,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.Folder>;
                 res = await this.rest.update<ReleaseInterfaces.Folder>(url, folder, options);
 
@@ -1542,7 +1572,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseRevision[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseRevision[]>(url, options);
 
@@ -1582,88 +1613,14 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<FormInputInterfaces.InputValuesQuery>;
                 res = await this.rest.create<FormInputInterfaces.InputValuesQuery>(url, query, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
                                               false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-    */
-    public async getIPAddress(
-        ): Promise<string> {
-
-        return new Promise<string>(async (resolve, reject) => {
-            let routeValues: any = {
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
-                    "Release",
-                    "0208d263-120f-478c-91e8-fe0d27b1abf1",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
-                let res: restm.IRestResponse<string>;
-                res = await this.rest.get<string>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-    * Gets supported IP detection methods for request source
-    * 
-    * @param {string} ipDetectionMethods
-    */
-    public async getSupportedIPDetectionMethods(
-        ipDetectionMethods: string
-        ): Promise<string[]> {
-
-        return new Promise<string[]>(async (resolve, reject) => {
-            let routeValues: any = {
-                ipDetectionMethods: ipDetectionMethods
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
-                    "Release",
-                    "0208d263-120f-478c-91e8-fe0d27b1abf1",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
-                let res: restm.IRestResponse<string[]>;
-                res = await this.rest.get<string[]>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
 
                 resolve(ret);
                 
@@ -1825,7 +1782,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ManualIntervention>;
                 res = await this.rest.get<ReleaseInterfaces.ManualIntervention>(url, options);
 
@@ -1866,7 +1824,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ManualIntervention[]>;
                 res = await this.rest.get<ReleaseInterfaces.ManualIntervention[]>(url, options);
 
@@ -1912,7 +1871,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ManualIntervention>;
                 res = await this.rest.update<ReleaseInterfaces.ManualIntervention>(url, manualInterventionUpdateMetadata, options);
 
@@ -1957,7 +1917,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.Metric[]>;
                 res = await this.rest.get<ReleaseInterfaces.Metric[]>(url, options);
 
@@ -2002,7 +1963,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ProjectReference[]>;
                 res = await this.rest.get<ReleaseInterfaces.ProjectReference[]>(url, options);
 
@@ -2101,7 +2063,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.Release[]>;
                 res = await this.rest.get<ReleaseInterfaces.Release[]>(url, options);
 
@@ -2141,7 +2104,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.Release>;
                 res = await this.rest.create<ReleaseInterfaces.Release>(url, releaseStartMetadata, options);
 
@@ -2189,7 +2153,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -2240,7 +2205,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.Release>;
                 res = await this.rest.get<ReleaseInterfaces.Release>(url, options);
 
@@ -2294,7 +2260,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionSummary>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinitionSummary>(url, options);
 
@@ -2383,7 +2350,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.replace<void>(url, options);
 
@@ -2426,7 +2394,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.Release>;
                 res = await this.rest.replace<ReleaseInterfaces.Release>(url, release, options);
 
@@ -2469,7 +2438,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.Release>;
                 res = await this.rest.update<ReleaseInterfaces.Release>(url, releaseUpdateMetadata, options);
 
@@ -2507,7 +2477,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseSettings>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseSettings>(url, options);
 
@@ -2549,7 +2520,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseSettings>;
                 res = await this.rest.replace<ReleaseInterfaces.ReleaseSettings>(url, releaseSettings, options);
 
@@ -2627,7 +2599,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionRevision[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinitionRevision[]>(url, options);
 
@@ -2668,7 +2641,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.SummaryMailSection[]>;
                 res = await this.rest.get<ReleaseInterfaces.SummaryMailSection[]>(url, options);
 
@@ -2711,7 +2685,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, mailMessage, options);
 
@@ -2752,7 +2727,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
@@ -2798,7 +2774,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.update<string[]>(url, options);
 
@@ -2843,7 +2820,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.create<string[]>(url, tags, options);
 
@@ -2889,7 +2867,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.del<string[]>(url, options);
 
@@ -2932,7 +2911,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
@@ -2978,7 +2958,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.update<string[]>(url, options);
 
@@ -3023,7 +3004,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.create<string[]>(url, tags, options);
 
@@ -3069,7 +3051,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.del<string[]>(url, options);
 
@@ -3112,7 +3095,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
@@ -3150,7 +3134,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
@@ -3201,7 +3186,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseTask[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseTask[]>(url, options);
 
@@ -3248,7 +3234,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseTask[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseTask[]>(url, options);
 
@@ -3286,7 +3273,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ArtifactTypeDefinition[]>;
                 res = await this.rest.get<ReleaseInterfaces.ArtifactTypeDefinition[]>(url, options);
 
@@ -3331,7 +3319,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ArtifactVersionQueryResult>;
                 res = await this.rest.get<ReleaseInterfaces.ArtifactVersionQueryResult>(url, options);
 
@@ -3371,7 +3360,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ArtifactVersionQueryResult>;
                 res = await this.rest.create<ReleaseInterfaces.ArtifactVersionQueryResult>(url, artifacts, options);
 
@@ -3422,7 +3412,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseWorkItemRef[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseWorkItemRef[]>(url, options);
 

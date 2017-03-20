@@ -113,7 +113,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.AccountMyWorkResult>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.AccountMyWorkResult>(url, options);
 
@@ -148,7 +149,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.AccountRecentActivityWorkItemModel[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.AccountRecentActivityWorkItemModel[]>(url, options);
 
@@ -203,6 +205,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
+                options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.AttachmentReference>;
                 res = await this.rest.uploadStream<WorkItemTrackingInterfaces.AttachmentReference>("POST", url, contentStream, options);
@@ -327,7 +330,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemClassificationNode[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemClassificationNode[]>(url, options);
 
@@ -373,7 +377,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemClassificationNode>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.WorkItemClassificationNode>(url, postedNode, options);
 
@@ -424,7 +429,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -475,7 +481,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemClassificationNode>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemClassificationNode>(url, options);
 
@@ -521,7 +528,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemClassificationNode>;
                 res = await this.rest.update<WorkItemTrackingInterfaces.WorkItemClassificationNode>(url, postedNode, options);
 
@@ -564,7 +572,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemComment>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemComment>(url, options);
 
@@ -617,7 +626,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemComments>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemComments>(url, options);
 
@@ -658,7 +668,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -701,7 +712,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemField>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemField>(url, options);
 
@@ -748,7 +760,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemField[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemField[]>(url, options);
 
@@ -793,7 +806,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.QueryHierarchyItem>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.QueryHierarchyItem>(url, postedQuery, options);
 
@@ -834,7 +848,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -887,7 +902,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.QueryHierarchyItem[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.QueryHierarchyItem[]>(url, options);
 
@@ -943,7 +959,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.QueryHierarchyItem>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.QueryHierarchyItem>(url, options);
 
@@ -993,7 +1010,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.QueryHierarchyItem>;
                 res = await this.rest.update<WorkItemTrackingInterfaces.QueryHierarchyItem>(url, queryUpdate, options);
 
@@ -1034,7 +1052,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -1075,7 +1094,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemDelete>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemDelete>(url, options);
 
@@ -1113,7 +1133,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemDeleteShallowReference[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemDeleteShallowReference[]>(url, options);
 
@@ -1158,7 +1179,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemDeleteReference[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemDeleteReference[]>(url, options);
 
@@ -1201,7 +1223,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemDelete>;
                 res = await this.rest.update<WorkItemTrackingInterfaces.WorkItemDelete>(url, payload, options);
 
@@ -1251,7 +1274,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItem>(url, options);
 
@@ -1304,7 +1328,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItem[]>(url, options);
 
@@ -1343,7 +1368,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, ruleEngineInput, options);
 
@@ -1389,7 +1415,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTemplate>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.WorkItemTemplate>(url, template, options);
 
@@ -1440,7 +1467,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTemplateReference[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTemplateReference[]>(url, options);
 
@@ -1487,7 +1515,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -1534,7 +1563,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTemplate>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTemplate>(url, options);
 
@@ -1583,7 +1613,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTemplate>;
                 res = await this.rest.replace<WorkItemTrackingInterfaces.WorkItemTemplate>(url, templateContent, options);
 
@@ -1626,7 +1657,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemUpdate>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemUpdate>(url, options);
 
@@ -1676,7 +1708,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemUpdate[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemUpdate[]>(url, options);
 
@@ -1732,7 +1765,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemQueryResult>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.WorkItemQueryResult>(url, wiql, options);
 
@@ -1786,7 +1820,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemQueryResult>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemQueryResult>(url, options);
 
@@ -1839,7 +1874,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch>(url, options);
 
@@ -1879,7 +1915,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemRelationType>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemRelationType>(url, options);
 
@@ -1914,7 +1951,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemRelationType[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemRelationType[]>(url, options);
 
@@ -1988,7 +2026,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>(url, options);
 
@@ -2043,7 +2082,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>(url, filter, options);
 
@@ -2088,7 +2128,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemDelete>;
                 res = await this.rest.del<WorkItemTrackingInterfaces.WorkItemDelete>(url, options);
 
@@ -2141,7 +2182,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItem>(url, options);
 
@@ -2197,7 +2239,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItem[]>(url, options);
 
@@ -2251,7 +2294,9 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+                options.additionalHeaders = customHeaders;
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem>;
                 res = await this.rest.update<WorkItemTrackingInterfaces.WorkItem>(url, document, options);
 
@@ -2308,7 +2353,9 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+                options.additionalHeaders = customHeaders;
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.WorkItem>(url, document, options);
 
@@ -2364,7 +2411,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItem>(url, options);
 
@@ -2403,7 +2451,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.ProjectWorkItemStateColors[]>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.ProjectWorkItemStateColors[]>(url, projectNames, options);
 
@@ -2441,7 +2490,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTypeCategory[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTypeCategory[]>(url, options);
 
@@ -2484,7 +2534,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTypeCategory>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTypeCategory>(url, options);
 
@@ -2523,7 +2574,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<{ key: string; value: WorkItemTrackingInterfaces.WorkItemTypeColor[] }[]>;
                 res = await this.rest.create<{ key: string; value: WorkItemTrackingInterfaces.WorkItemTypeColor[] }[]>(url, projectNames, options);
 
@@ -2566,7 +2618,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemType>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemType>(url, options);
 
@@ -2604,7 +2657,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemType[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemType[]>(url, options);
 
@@ -2650,7 +2704,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.FieldDependentRule>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.FieldDependentRule>(url, options);
 
@@ -2693,7 +2748,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemStateColor[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemStateColor[]>(url, options);
 
@@ -2743,7 +2799,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTypeTemplate>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTypeTemplate>(url, options);
 
@@ -2785,7 +2842,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.ProvisioningResult>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.ProvisioningResult>(url, updateModel, options);
 
