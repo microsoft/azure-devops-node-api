@@ -43,7 +43,7 @@ let vstsBuild: ba.IBuildApi = connection.getBuildApi();
 
 #### Available clients
 
-These clients are available in the 6.x API:
+These clients are available in the new 6.x preview API (`npm install vso-node-api@preview`)
 
 * Accounts
 * Build
