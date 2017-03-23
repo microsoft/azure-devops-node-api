@@ -393,101 +393,47 @@ export enum VersionControlRecursionType {
 }
 
 export var TypeInfo = {
-    AssociatedWorkItem: {
-        fields: <any>null
+    Change: <any>{
     },
-    Change: {
-        fields: <any>null
-    },
-    CheckinNote: {
-        fields: <any>null
-    },
-    FileContentMetadata: {
-        fields: <any>null
-    },
-    ItemContent: {
-        fields: <any>null
+    ItemContent: <any>{
     },
     ItemContentType: {
         enumValues: {
             "rawText": 0,
-            "base64Encoded": 1,
+            "base64Encoded": 1
         }
     },
-    ItemModel: {
-        fields: <any>null
+    TfvcBranch: <any>{
     },
-    TfvcBranch: {
-        fields: <any>null
+    TfvcBranchRef: <any>{
     },
-    TfvcBranchMapping: {
-        fields: <any>null
+    TfvcChange: <any>{
     },
-    TfvcBranchRef: {
-        fields: <any>null
+    TfvcChangeset: <any>{
     },
-    TfvcChange: {
-        fields: <any>null
+    TfvcChangesetRef: <any>{
     },
-    TfvcChangeset: {
-        fields: <any>null
+    TfvcItem: <any>{
     },
-    TfvcChangesetRef: {
-        fields: <any>null
+    TfvcItemDescriptor: <any>{
     },
-    TfvcChangesetSearchCriteria: {
-        fields: <any>null
+    TfvcItemRequestData: <any>{
     },
-    TfvcChangesetsRequestData: {
-        fields: <any>null
+    TfvcLabel: <any>{
     },
-    TfvcItem: {
-        fields: <any>null
+    TfvcLabelRef: <any>{
     },
-    TfvcItemDescriptor: {
-        fields: <any>null
+    TfvcShelveset: <any>{
     },
-    TfvcItemRequestData: {
-        fields: <any>null
+    TfvcShelvesetRef: <any>{
     },
-    TfvcLabel: {
-        fields: <any>null
-    },
-    TfvcLabelRef: {
-        fields: <any>null
-    },
-    TfvcLabelRequestData: {
-        fields: <any>null
-    },
-    TfvcMergeSource: {
-        fields: <any>null
-    },
-    TfvcPolicyFailureInfo: {
-        fields: <any>null
-    },
-    TfvcPolicyOverrideInfo: {
-        fields: <any>null
-    },
-    TfvcShallowBranchRef: {
-        fields: <any>null
-    },
-    TfvcShelveset: {
-        fields: <any>null
-    },
-    TfvcShelvesetRef: {
-        fields: <any>null
-    },
-    TfvcShelvesetRequestData: {
-        fields: <any>null
-    },
-    TfvcVersionDescriptor: {
-        fields: <any>null
+    TfvcVersionDescriptor: <any>{
     },
     TfvcVersionOption: {
         enumValues: {
             "none": 0,
             "previous": 1,
-            "useRename": 2,
+            "useRename": 2
         }
     },
     TfvcVersionType: {
@@ -499,7 +445,7 @@ export var TypeInfo = {
             "date": 4,
             "latest": 5,
             "tip": 6,
-            "mergeSource": 7,
+            "mergeSource": 7
         }
     },
     VersionControlChangeType: {
@@ -518,23 +464,19 @@ export var TypeInfo = {
             "sourceRename": 1024,
             "targetRename": 2048,
             "property": 4096,
-            "all": 8191,
+            "all": 8191
         }
     },
-    VersionControlProjectInfo: {
-        fields: <any>null
+    VersionControlProjectInfo: <any>{
     },
     VersionControlRecursionType: {
         enumValues: {
             "none": 0,
             "oneLevel": 1,
             "oneLevelPlusNestedEmptyFolders": 4,
-            "full": 120,
+            "full": 120
         }
     },
-};
-
-TypeInfo.AssociatedWorkItem.fields = {
 };
 
 TypeInfo.Change.fields = {
@@ -546,21 +488,9 @@ TypeInfo.Change.fields = {
     },
 };
 
-TypeInfo.CheckinNote.fields = {
-};
-
-TypeInfo.FileContentMetadata.fields = {
-};
-
 TypeInfo.ItemContent.fields = {
     contentType: {
         enumType: TypeInfo.ItemContentType
-    },
-};
-
-TypeInfo.ItemModel.fields = {
-    contentMetadata: {
-        typeInfo: TypeInfo.FileContentMetadata
     },
 };
 
@@ -572,31 +502,11 @@ TypeInfo.TfvcBranch.fields = {
     createdDate: {
         isDate: true,
     },
-    mappings: {
-        isArray: true,
-        typeInfo: TypeInfo.TfvcBranchMapping
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    parent: {
-        typeInfo: TypeInfo.TfvcShallowBranchRef
-    },
-    relatedBranches: {
-        isArray: true,
-        typeInfo: TypeInfo.TfvcShallowBranchRef
-    },
-};
-
-TypeInfo.TfvcBranchMapping.fields = {
 };
 
 TypeInfo.TfvcBranchRef.fields = {
     createdDate: {
         isDate: true,
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
 };
 
@@ -604,69 +514,30 @@ TypeInfo.TfvcChange.fields = {
     changeType: {
         enumType: TypeInfo.VersionControlChangeType
     },
-    item: {
-        typeInfo: TypeInfo.TfvcItem
-    },
-    mergeSources: {
-        isArray: true,
-        typeInfo: TypeInfo.TfvcMergeSource
-    },
     newContent: {
         typeInfo: TypeInfo.ItemContent
     },
 };
 
 TypeInfo.TfvcChangeset.fields = {
-    author: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     changes: {
         isArray: true,
         typeInfo: TypeInfo.TfvcChange
     },
-    checkedInBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    checkinNotes: {
-        isArray: true,
-        typeInfo: TypeInfo.CheckinNote
-    },
     createdDate: {
         isDate: true,
-    },
-    policyOverride: {
-        typeInfo: TypeInfo.TfvcPolicyOverrideInfo
-    },
-    workItems: {
-        isArray: true,
-        typeInfo: TypeInfo.AssociatedWorkItem
     },
 };
 
 TypeInfo.TfvcChangesetRef.fields = {
-    author: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    checkedInBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     createdDate: {
         isDate: true,
     },
-};
-
-TypeInfo.TfvcChangesetSearchCriteria.fields = {
-};
-
-TypeInfo.TfvcChangesetsRequestData.fields = {
 };
 
 TypeInfo.TfvcItem.fields = {
     changeDate: {
         isDate: true,
-    },
-    contentMetadata: {
-        typeInfo: TypeInfo.FileContentMetadata
     },
 };
 
@@ -697,37 +568,12 @@ TypeInfo.TfvcLabel.fields = {
     modifiedDate: {
         isDate: true,
     },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
 };
 
 TypeInfo.TfvcLabelRef.fields = {
     modifiedDate: {
         isDate: true,
     },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
-TypeInfo.TfvcLabelRequestData.fields = {
-};
-
-TypeInfo.TfvcMergeSource.fields = {
-};
-
-TypeInfo.TfvcPolicyFailureInfo.fields = {
-};
-
-TypeInfo.TfvcPolicyOverrideInfo.fields = {
-    policyFailures: {
-        isArray: true,
-        typeInfo: TypeInfo.TfvcPolicyFailureInfo
-    },
-};
-
-TypeInfo.TfvcShallowBranchRef.fields = {
 };
 
 TypeInfo.TfvcShelveset.fields = {
@@ -738,32 +584,12 @@ TypeInfo.TfvcShelveset.fields = {
     createdDate: {
         isDate: true,
     },
-    notes: {
-        isArray: true,
-        typeInfo: TypeInfo.CheckinNote
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    policyOverride: {
-        typeInfo: TypeInfo.TfvcPolicyOverrideInfo
-    },
-    workItems: {
-        isArray: true,
-        typeInfo: TypeInfo.AssociatedWorkItem
-    },
 };
 
 TypeInfo.TfvcShelvesetRef.fields = {
     createdDate: {
         isDate: true,
     },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
-TypeInfo.TfvcShelvesetRequestData.fields = {
 };
 
 TypeInfo.TfvcVersionDescriptor.fields = {
@@ -778,8 +604,5 @@ TypeInfo.TfvcVersionDescriptor.fields = {
 TypeInfo.VersionControlProjectInfo.fields = {
     defaultSourceControlType: {
         enumType: TfsCoreInterfaces.TypeInfo.SourceControlTypes
-    },
-    project: {
-        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
     },
 };

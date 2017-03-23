@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
@@ -77,7 +77,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<CoreInterfaces.WebApiConnectedService>;
                 res = await this.rest.create<CoreInterfaces.WebApiConnectedService>(url, connectedServiceCreationData, options);
 
@@ -118,7 +119,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<CoreInterfaces.WebApiConnectedServiceDetails>;
                 res = await this.rest.get<CoreInterfaces.WebApiConnectedServiceDetails>(url, options);
 
@@ -163,7 +165,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<CoreInterfaces.WebApiConnectedService[]>;
                 res = await this.rest.get<CoreInterfaces.WebApiConnectedService[]>(url, options);
 
@@ -203,7 +206,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, mruData, options);
 
@@ -243,7 +247,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -281,7 +286,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<VSSInterfaces.IdentityRef[]>;
                 res = await this.rest.get<VSSInterfaces.IdentityRef[]>(url, options);
 
@@ -321,7 +327,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, mruData, options);
 
@@ -372,7 +379,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<VSSInterfaces.IdentityRef[]>;
                 res = await this.rest.get<VSSInterfaces.IdentityRef[]>(url, options);
 
@@ -412,7 +420,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<CoreInterfaces.Process>;
                 res = await this.rest.get<CoreInterfaces.Process>(url, options);
 
@@ -447,7 +456,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<CoreInterfaces.Process[]>;
                 res = await this.rest.get<CoreInterfaces.Process[]>(url, options);
 
@@ -487,7 +497,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<CoreInterfaces.TeamProjectCollection>;
                 res = await this.rest.get<CoreInterfaces.TeamProjectCollection>(url, options);
 
@@ -534,7 +545,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<CoreInterfaces.TeamProjectCollectionReference[]>;
                 res = await this.rest.get<CoreInterfaces.TeamProjectCollectionReference[]>(url, options);
 
@@ -576,7 +588,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<CoreInterfaces.TeamProjectReference[]>;
                 res = await this.rest.get<CoreInterfaces.TeamProjectReference[]>(url, options);
 
@@ -626,7 +639,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<CoreInterfaces.TeamProject>;
                 res = await this.rest.get<CoreInterfaces.TeamProject>(url, options);
 
@@ -676,7 +690,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<CoreInterfaces.TeamProjectReference[]>;
                 res = await this.rest.get<CoreInterfaces.TeamProjectReference[]>(url, options);
 
@@ -715,7 +730,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<OperationsInterfaces.OperationReference>;
                 res = await this.rest.create<OperationsInterfaces.OperationReference>(url, projectToCreate, options);
 
@@ -755,7 +771,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<OperationsInterfaces.OperationReference>;
                 res = await this.rest.del<OperationsInterfaces.OperationReference>(url, options);
 
@@ -797,7 +814,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<OperationsInterfaces.OperationReference>;
                 res = await this.rest.update<OperationsInterfaces.OperationReference>(url, projectUpdate, options);
 
@@ -834,7 +852,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<CoreInterfaces.Proxy>;
                 res = await this.rest.replace<CoreInterfaces.Proxy>(url, proxy, options);
 
@@ -879,7 +898,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -921,7 +941,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<CoreInterfaces.Proxy[]>;
                 res = await this.rest.get<CoreInterfaces.Proxy[]>(url, options);
 
@@ -963,7 +984,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<CoreInterfaces.WebApiTeam>;
                 res = await this.rest.create<CoreInterfaces.WebApiTeam>(url, team, options);
 
@@ -1006,7 +1028,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -1049,7 +1072,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<CoreInterfaces.WebApiTeam>;
                 res = await this.rest.get<CoreInterfaces.WebApiTeam>(url, options);
 
@@ -1097,7 +1121,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<CoreInterfaces.WebApiTeam[]>;
                 res = await this.rest.get<CoreInterfaces.WebApiTeam[]>(url, options);
 
@@ -1142,7 +1167,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<CoreInterfaces.WebApiTeam>;
                 res = await this.rest.update<CoreInterfaces.WebApiTeam>(url, teamData, options);
 

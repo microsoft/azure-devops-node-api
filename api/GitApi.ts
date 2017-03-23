@@ -122,12 +122,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Create an annotated tag
-     * 
-     * @param {GitInterfaces.GitAnnotatedTag} tagObject - Object containing details of tag to be created
-     * @param {string} project - Project ID or project name
-     * @param {string} repositoryId - Friendly name or guid of repository
-     */
+    * Create an annotated tag
+    * 
+    * @param {GitInterfaces.GitAnnotatedTag} tagObject - Object containing details of tag to be created
+    * @param {string} project - Project ID or project name
+    * @param {string} repositoryId - Friendly name or guid of repository
+    */
     public async createAnnotatedTag(
         tagObject: GitInterfaces.GitAnnotatedTag,
         project: string,
@@ -148,7 +148,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitAnnotatedTag>;
@@ -168,12 +168,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Get an annotated tag
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {string} repositoryId
-     * @param {string} objectId - Sha1 of annotated tag to be returned
-     */
+    * Get an annotated tag
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {string} repositoryId
+    * @param {string} objectId - Sha1 of annotated tag to be returned
+    */
     public async getAnnotatedTag(
         project: string,
         repositoryId: string,
@@ -195,7 +195,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitAnnotatedTag>;
@@ -215,14 +215,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Gets a single blob.
-     * 
-     * @param {string} repositoryId
-     * @param {string} sha1
-     * @param {string} project - Project ID or project name
-     * @param {boolean} download
-     * @param {string} fileName
-     */
+    * Gets a single blob.
+    * 
+    * @param {string} repositoryId
+    * @param {string} sha1
+    * @param {string} project - Project ID or project name
+    * @param {boolean} download
+    * @param {string} fileName
+    */
     public async getBlob(
         repositoryId: string,
         sha1: string,
@@ -252,7 +252,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitBlobRef>;
@@ -272,14 +272,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Gets a single blob.
-     * 
-     * @param {string} repositoryId
-     * @param {string} sha1
-     * @param {string} project - Project ID or project name
-     * @param {boolean} download
-     * @param {string} fileName
-     */
+    * Gets a single blob.
+    * 
+    * @param {string} repositoryId
+    * @param {string} sha1
+    * @param {string} project - Project ID or project name
+    * @param {boolean} download
+    * @param {string} fileName
+    */
     public async getBlobContent(
         repositoryId: string,
         sha1: string,
@@ -321,13 +321,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Gets one or more blobs in a zip file download.
-     * 
-     * @param {string[]} blobIds
-     * @param {string} repositoryId
-     * @param {string} project - Project ID or project name
-     * @param {string} filename
-     */
+    * Gets one or more blobs in a zip file download.
+    * 
+    * @param {string[]} blobIds
+    * @param {string} repositoryId
+    * @param {string} project - Project ID or project name
+    * @param {string} filename
+    */
     public async getBlobsZip(
         blobIds: string[],
         repositoryId: string,
@@ -366,14 +366,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Gets a single blob.
-     * 
-     * @param {string} repositoryId
-     * @param {string} sha1
-     * @param {string} project - Project ID or project name
-     * @param {boolean} download
-     * @param {string} fileName
-     */
+    * Gets a single blob.
+    * 
+    * @param {string} repositoryId
+    * @param {string} sha1
+    * @param {string} project - Project ID or project name
+    * @param {boolean} download
+    * @param {string} fileName
+    */
     public async getBlobZip(
         repositoryId: string,
         sha1: string,
@@ -415,13 +415,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieve statistics about a single branch.
-     * 
-     * @param {string} repositoryId - Friendly name or guid of repository
-     * @param {string} name - Name of the branch
-     * @param {string} project - Project ID or project name
-     * @param {GitInterfaces.GitVersionDescriptor} baseVersionDescriptor
-     */
+    * Retrieve statistics about a single branch.
+    * 
+    * @param {string} repositoryId - Friendly name or guid of repository
+    * @param {string} name - Name of the branch
+    * @param {string} project - Project ID or project name
+    * @param {GitInterfaces.GitVersionDescriptor} baseVersionDescriptor
+    */
     public async getBranch(
         repositoryId: string,
         name: string,
@@ -449,7 +449,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitBranchStats>;
@@ -469,12 +469,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieve statistics about all branches within a repository.
-     * 
-     * @param {string} repositoryId - Friendly name or guid of repository
-     * @param {string} project - Project ID or project name
-     * @param {GitInterfaces.GitVersionDescriptor} baseVersionDescriptor
-     */
+    * Retrieve statistics about all branches within a repository.
+    * 
+    * @param {string} repositoryId - Friendly name or guid of repository
+    * @param {string} project - Project ID or project name
+    * @param {GitInterfaces.GitVersionDescriptor} baseVersionDescriptor
+    */
     public async getBranches(
         repositoryId: string,
         project?: string,
@@ -500,7 +500,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitBranchStats[]>;
@@ -520,12 +520,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieve statistics for multiple commits
-     * 
-     * @param {GitInterfaces.GitQueryBranchStatsCriteria} searchCriteria
-     * @param {string} repositoryId - Friendly name or guid of repository
-     * @param {string} project - Project ID or project name
-     */
+    * Retrieve statistics for multiple commits
+    * 
+    * @param {GitInterfaces.GitQueryBranchStatsCriteria} searchCriteria
+    * @param {string} repositoryId - Friendly name or guid of repository
+    * @param {string} project - Project ID or project name
+    */
     public async getBranchStatsBatch(
         searchCriteria: GitInterfaces.GitQueryBranchStatsCriteria,
         repositoryId: string,
@@ -546,7 +546,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitBranchStats[]>;
@@ -566,14 +566,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieve changes for a particular commit.
-     * 
-     * @param {string} commitId - The id of the commit.
-     * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, projectId must also be specified.
-     * @param {string} project - Project ID or project name
-     * @param {number} top - The maximum number of changes to return.
-     * @param {number} skip - The number of changes to skip.
-     */
+    * Retrieve changes for a particular commit.
+    * 
+    * @param {string} commitId - The id of the commit.
+    * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, projectId must also be specified.
+    * @param {string} project - Project ID or project name
+    * @param {number} top - The maximum number of changes to return.
+    * @param {number} skip - The number of changes to skip.
+    */
     public async getChanges(
         commitId: string,
         repositoryId: string,
@@ -603,7 +603,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCommitChanges>;
@@ -623,10 +623,10 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {GitInterfaces.GitAsyncRefOperationParameters} cherryPickToCreate
-     * @param {string} project - Project ID or project name
-     * @param {string} repositoryId
-     */
+    * @param {GitInterfaces.GitAsyncRefOperationParameters} cherryPickToCreate
+    * @param {string} project - Project ID or project name
+    * @param {string} repositoryId
+    */
     public async createCherryPick(
         cherryPickToCreate: GitInterfaces.GitAsyncRefOperationParameters,
         project: string,
@@ -647,7 +647,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCherryPick>;
@@ -667,10 +667,10 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} cherryPickId
-     * @param {string} repositoryId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} cherryPickId
+    * @param {string} repositoryId
+    */
     public async getCherryPick(
         project: string,
         cherryPickId: number,
@@ -692,7 +692,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCherryPick>;
@@ -712,10 +712,10 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {string} repositoryId
-     * @param {string} refName
-     */
+    * @param {string} project - Project ID or project name
+    * @param {string} repositoryId
+    * @param {string} refName
+    */
     public async getCherryPickForRefName(
         project: string,
         repositoryId: string,
@@ -741,7 +741,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCherryPick>;
@@ -761,13 +761,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieve a particular commit.
-     * 
-     * @param {string} commitId - The id of the commit.
-     * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, projectId must also be specified.
-     * @param {string} project - Project ID or project name
-     * @param {number} changeCount - The number of changes to include in the result.
-     */
+    * Retrieve a particular commit.
+    * 
+    * @param {string} commitId - The id of the commit.
+    * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, projectId must also be specified.
+    * @param {string} project - Project ID or project name
+    * @param {number} changeCount - The number of changes to include in the result.
+    */
     public async getCommit(
         commitId: string,
         repositoryId: string,
@@ -795,7 +795,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCommit>;
@@ -815,14 +815,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieve git commits for a project
-     * 
-     * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, projectId must also be specified.
-     * @param {GitInterfaces.GitQueryCommitsCriteria} searchCriteria
-     * @param {string} project - Project ID or project name
-     * @param {number} skip
-     * @param {number} top
-     */
+    * Retrieve git commits for a project
+    * 
+    * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, projectId must also be specified.
+    * @param {GitInterfaces.GitQueryCommitsCriteria} searchCriteria
+    * @param {string} project - Project ID or project name
+    * @param {number} skip
+    * @param {number} top
+    */
     public async getCommits(
         repositoryId: string,
         searchCriteria: GitInterfaces.GitQueryCommitsCriteria,
@@ -852,7 +852,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
@@ -872,15 +872,15 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieve a list of commits associated with a particular push.
-     * 
-     * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, projectId must also be specified.
-     * @param {number} pushId - The id of the push.
-     * @param {string} project - Project ID or project name
-     * @param {number} top - The maximum number of commits to return ("get the top x commits").
-     * @param {number} skip - The number of commits to skip.
-     * @param {boolean} includeLinks
-     */
+    * Retrieve a list of commits associated with a particular push.
+    * 
+    * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, projectId must also be specified.
+    * @param {number} pushId - The id of the push.
+    * @param {string} project - Project ID or project name
+    * @param {number} top - The maximum number of commits to return ("get the top x commits").
+    * @param {number} skip - The number of commits to skip.
+    * @param {boolean} includeLinks
+    */
     public async getPushCommits(
         repositoryId: string,
         pushId: number,
@@ -912,7 +912,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
@@ -932,15 +932,15 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieve git commits for a project
-     * 
-     * @param {GitInterfaces.GitQueryCommitsCriteria} searchCriteria - Search options
-     * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, projectId must also be specified.
-     * @param {string} project - Project ID or project name
-     * @param {number} skip
-     * @param {number} top
-     * @param {boolean} includeStatuses
-     */
+    * Retrieve git commits for a project
+    * 
+    * @param {GitInterfaces.GitQueryCommitsCriteria} searchCriteria - Search options
+    * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, projectId must also be specified.
+    * @param {string} project - Project ID or project name
+    * @param {number} skip
+    * @param {number} top
+    * @param {boolean} includeStatuses
+    */
     public async getCommitsBatch(
         searchCriteria: GitInterfaces.GitQueryCommitsCriteria,
         repositoryId: string,
@@ -971,7 +971,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
@@ -991,10 +991,10 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieve deleted git repositories.
-     * 
-     * @param {string} project - Project ID or project name
-     */
+    * Retrieve deleted git repositories.
+    * 
+    * @param {string} project - Project ID or project name
+    */
     public async getDeletedRepositories(
         project: string
         ): Promise<GitInterfaces.GitDeletedRepository[]> {
@@ -1012,7 +1012,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitDeletedRepository[]>;
@@ -1032,12 +1032,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Create an import request
-     * 
-     * @param {GitInterfaces.GitImportRequest} importRequest
-     * @param {string} project - Project ID or project name
-     * @param {string} repositoryId
-     */
+    * Create an import request
+    * 
+    * @param {GitInterfaces.GitImportRequest} importRequest
+    * @param {string} project - Project ID or project name
+    * @param {string} repositoryId
+    */
     public async createImportRequest(
         importRequest: GitInterfaces.GitImportRequest,
         project: string,
@@ -1058,7 +1058,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitImportRequest>;
@@ -1078,12 +1078,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieve a particular import request
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {string} repositoryId
-     * @param {number} importRequestId
-     */
+    * Retrieve a particular import request
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {string} repositoryId
+    * @param {number} importRequestId
+    */
     public async getImportRequest(
         project: string,
         repositoryId: string,
@@ -1105,7 +1105,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitImportRequest>;
@@ -1125,12 +1125,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieve import requests for a repository
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {string} repositoryId
-     * @param {boolean} includeAbandoned
-     */
+    * Retrieve import requests for a repository
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {string} repositoryId
+    * @param {boolean} includeAbandoned
+    */
     public async queryImportRequests(
         project: string,
         repositoryId: string,
@@ -1156,7 +1156,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitImportRequest[]>;
@@ -1176,13 +1176,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Update an import request
-     * 
-     * @param {GitInterfaces.GitImportRequest} importRequestToUpdate
-     * @param {string} project - Project ID or project name
-     * @param {string} repositoryId
-     * @param {number} importRequestId
-     */
+    * Update an import request
+    * 
+    * @param {GitInterfaces.GitImportRequest} importRequestToUpdate
+    * @param {string} project - Project ID or project name
+    * @param {string} repositoryId
+    * @param {number} importRequestId
+    */
     public async updateImportRequest(
         importRequestToUpdate: GitInterfaces.GitImportRequest,
         project: string,
@@ -1205,7 +1205,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitImportRequest>;
@@ -1225,18 +1225,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
-     * 
-     * @param {string} repositoryId
-     * @param {string} path
-     * @param {string} project - Project ID or project name
-     * @param {string} scopePath
-     * @param {GitInterfaces.VersionControlRecursionType} recursionLevel
-     * @param {boolean} includeContentMetadata
-     * @param {boolean} latestProcessedChange
-     * @param {boolean} download
-     * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor
-     */
+    * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
+    * 
+    * @param {string} repositoryId
+    * @param {string} path
+    * @param {string} project - Project ID or project name
+    * @param {string} scopePath
+    * @param {GitInterfaces.VersionControlRecursionType} recursionLevel
+    * @param {boolean} includeContentMetadata
+    * @param {boolean} latestProcessedChange
+    * @param {boolean} download
+    * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor
+    */
     public async getItem(
         repositoryId: string,
         path: string,
@@ -1274,7 +1274,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitItem>;
@@ -1294,18 +1294,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
-     * 
-     * @param {string} repositoryId
-     * @param {string} path
-     * @param {string} project - Project ID or project name
-     * @param {string} scopePath
-     * @param {GitInterfaces.VersionControlRecursionType} recursionLevel
-     * @param {boolean} includeContentMetadata
-     * @param {boolean} latestProcessedChange
-     * @param {boolean} download
-     * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor
-     */
+    * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
+    * 
+    * @param {string} repositoryId
+    * @param {string} path
+    * @param {string} project - Project ID or project name
+    * @param {string} scopePath
+    * @param {GitInterfaces.VersionControlRecursionType} recursionLevel
+    * @param {boolean} includeContentMetadata
+    * @param {boolean} latestProcessedChange
+    * @param {boolean} download
+    * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor
+    */
     public async getItemContent(
         repositoryId: string,
         path: string,
@@ -1355,18 +1355,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Get Item Metadata and/or Content for a collection of items. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
-     * 
-     * @param {string} repositoryId
-     * @param {string} project - Project ID or project name
-     * @param {string} scopePath
-     * @param {GitInterfaces.VersionControlRecursionType} recursionLevel
-     * @param {boolean} includeContentMetadata
-     * @param {boolean} latestProcessedChange
-     * @param {boolean} download
-     * @param {boolean} includeLinks
-     * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor
-     */
+    * Get Item Metadata and/or Content for a collection of items. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
+    * 
+    * @param {string} repositoryId
+    * @param {string} project - Project ID or project name
+    * @param {string} scopePath
+    * @param {GitInterfaces.VersionControlRecursionType} recursionLevel
+    * @param {boolean} includeContentMetadata
+    * @param {boolean} latestProcessedChange
+    * @param {boolean} download
+    * @param {boolean} includeLinks
+    * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor
+    */
     public async getItems(
         repositoryId: string,
         project?: string,
@@ -1404,7 +1404,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitItem[]>;
@@ -1424,18 +1424,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
-     * 
-     * @param {string} repositoryId
-     * @param {string} path
-     * @param {string} project - Project ID or project name
-     * @param {string} scopePath
-     * @param {GitInterfaces.VersionControlRecursionType} recursionLevel
-     * @param {boolean} includeContentMetadata
-     * @param {boolean} latestProcessedChange
-     * @param {boolean} download
-     * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor
-     */
+    * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
+    * 
+    * @param {string} repositoryId
+    * @param {string} path
+    * @param {string} project - Project ID or project name
+    * @param {string} scopePath
+    * @param {GitInterfaces.VersionControlRecursionType} recursionLevel
+    * @param {boolean} includeContentMetadata
+    * @param {boolean} latestProcessedChange
+    * @param {boolean} download
+    * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor
+    */
     public async getItemText(
         repositoryId: string,
         path: string,
@@ -1485,18 +1485,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
-     * 
-     * @param {string} repositoryId
-     * @param {string} path
-     * @param {string} project - Project ID or project name
-     * @param {string} scopePath
-     * @param {GitInterfaces.VersionControlRecursionType} recursionLevel
-     * @param {boolean} includeContentMetadata
-     * @param {boolean} latestProcessedChange
-     * @param {boolean} download
-     * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor
-     */
+    * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
+    * 
+    * @param {string} repositoryId
+    * @param {string} path
+    * @param {string} project - Project ID or project name
+    * @param {string} scopePath
+    * @param {GitInterfaces.VersionControlRecursionType} recursionLevel
+    * @param {boolean} includeContentMetadata
+    * @param {boolean} latestProcessedChange
+    * @param {boolean} download
+    * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor
+    */
     public async getItemZip(
         repositoryId: string,
         path: string,
@@ -1546,12 +1546,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Post for retrieving a creating a batch out of a set of items in a repo / project given a list of paths or a long path
-     * 
-     * @param {GitInterfaces.GitItemRequestData} requestData
-     * @param {string} repositoryId
-     * @param {string} project - Project ID or project name
-     */
+    * Post for retrieving a creating a batch out of a set of items in a repo / project given a list of paths or a long path
+    * 
+    * @param {GitInterfaces.GitItemRequestData} requestData
+    * @param {string} repositoryId
+    * @param {string} project - Project ID or project name
+    */
     public async getItemsBatch(
         requestData: GitInterfaces.GitItemRequestData,
         repositoryId: string,
@@ -1572,7 +1572,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitItem[][]>;
@@ -1592,14 +1592,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Create a new attachment
-     * 
-     * @param {NodeJS.ReadableStream} contentStream - Content to upload
-     * @param {string} fileName
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {string} project - Project ID or project name
-     */
+    * Create a new attachment
+    * 
+    * @param {NodeJS.ReadableStream} contentStream - Content to upload
+    * @param {string} fileName
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {string} project - Project ID or project name
+    */
     public async createAttachment(
         customHeaders: any,
         contentStream: NodeJS.ReadableStream,
@@ -1630,7 +1630,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let url: string = verData.requestUrl;
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                                                                                verData.apiVersion);
                 options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<GitInterfaces.Attachment>;
@@ -1649,11 +1649,11 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {string} fileName
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {string} project - Project ID or project name
-     */
+    * @param {string} fileName
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {string} project - Project ID or project name
+    */
     public async deleteAttachment(
         fileName: string,
         repositoryId: string,
@@ -1677,7 +1677,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -1697,11 +1697,11 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {string} fileName
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {string} project - Project ID or project name
-     */
+    * @param {string} fileName
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {string} project - Project ID or project name
+    */
     public async getAttachmentContent(
         fileName: string,
         repositoryId: string,
@@ -1737,10 +1737,10 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {string} project - Project ID or project name
-     */
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {string} project - Project ID or project name
+    */
     public async getAttachments(
         repositoryId: string,
         pullRequestId: number,
@@ -1762,7 +1762,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.Attachment[]>;
@@ -1782,11 +1782,11 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {string} fileName
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {string} project - Project ID or project name
-     */
+    * @param {string} fileName
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {string} project - Project ID or project name
+    */
     public async getAttachmentZip(
         fileName: string,
         repositoryId: string,
@@ -1822,13 +1822,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Get the commits for an iteration.
-     * 
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {number} iterationId - Iteration to retrieve commits for
-     * @param {string} project - Project ID or project name
-     */
+    * Get the commits for an iteration.
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} iterationId - Iteration to retrieve commits for
+    * @param {string} project - Project ID or project name
+    */
     public async getPullRequestIterationCommits(
         repositoryId: string,
         pullRequestId: number,
@@ -1852,7 +1852,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
@@ -1872,12 +1872,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieve pull request's commits
-     * 
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {string} project - Project ID or project name
-     */
+    * Retrieve pull request's commits
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {string} project - Project ID or project name
+    */
     public async getPullRequestCommits(
         repositoryId: string,
         pullRequestId: number,
@@ -1899,7 +1899,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
@@ -1919,13 +1919,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieve one conflict for a pull request by ID
-     * 
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {number} conflictId
-     * @param {string} project - Project ID or project name
-     */
+    * Retrieve one conflict for a pull request by ID
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} conflictId
+    * @param {string} project - Project ID or project name
+    */
     public async getPullRequestConflict(
         repositoryId: string,
         pullRequestId: number,
@@ -1949,7 +1949,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitConflict>;
@@ -1969,15 +1969,15 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieve all conflicts for a pull request
-     * 
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {string} project - Project ID or project name
-     * @param {number} skip
-     * @param {number} top
-     * @param {boolean} includeObsolete
-     */
+    * Retrieve all conflicts for a pull request
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {string} project - Project ID or project name
+    * @param {number} skip
+    * @param {number} top
+    * @param {boolean} includeObsolete
+    */
     public async getPullRequestConflicts(
         repositoryId: string,
         pullRequestId: number,
@@ -2009,7 +2009,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitConflict[]>;
@@ -2029,14 +2029,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Update merge conflict resolution
-     * 
-     * @param {GitInterfaces.GitConflict} conflict
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {number} conflictId
-     * @param {string} project - Project ID or project name
-     */
+    * Update merge conflict resolution
+    * 
+    * @param {GitInterfaces.GitConflict} conflict
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} conflictId
+    * @param {string} project - Project ID or project name
+    */
     public async updatePullRequestConflict(
         conflict: GitInterfaces.GitConflict,
         repositoryId: string,
@@ -2061,7 +2061,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitConflict>;
@@ -2081,14 +2081,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {number} iterationId
-     * @param {string} project - Project ID or project name
-     * @param {number} top
-     * @param {number} skip
-     * @param {number} compareTo
-     */
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} iterationId
+    * @param {string} project - Project ID or project name
+    * @param {number} top
+    * @param {number} skip
+    * @param {number} compareTo
+    */
     public async getPullRequestIterationChanges(
         repositoryId: string,
         pullRequestId: number,
@@ -2122,7 +2122,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestIterationChanges>;
@@ -2142,11 +2142,11 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {number} iterationId
-     * @param {string} project - Project ID or project name
-     */
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} iterationId
+    * @param {string} project - Project ID or project name
+    */
     public async getPullRequestIteration(
         repositoryId: string,
         pullRequestId: number,
@@ -2170,7 +2170,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestIteration>;
@@ -2190,11 +2190,11 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {string} project - Project ID or project name
-     * @param {boolean} includeCommits
-     */
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {string} project - Project ID or project name
+    * @param {boolean} includeCommits
+    */
     public async getPullRequestIterations(
         repositoryId: string,
         pullRequestId: number,
@@ -2222,7 +2222,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestIteration[]>;
@@ -2242,12 +2242,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Query for pull requests
-     * 
-     * @param {GitInterfaces.GitPullRequestQuery} queries
-     * @param {string} repositoryId
-     * @param {string} project - Project ID or project name
-     */
+    * Query for pull requests
+    * 
+    * @param {GitInterfaces.GitPullRequestQuery} queries
+    * @param {string} repositoryId
+    * @param {string} project - Project ID or project name
+    */
     public async getPullRequestQuery(
         queries: GitInterfaces.GitPullRequestQuery,
         repositoryId: string,
@@ -2268,7 +2268,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestQuery>;
@@ -2288,14 +2288,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Adds a reviewer to a git pull request
-     * 
-     * @param {GitInterfaces.IdentityRefWithVote} reviewer
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {string} reviewerId
-     * @param {string} project - Project ID or project name
-     */
+    * Adds a reviewer to a git pull request
+    * 
+    * @param {GitInterfaces.IdentityRefWithVote} reviewer
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {string} reviewerId
+    * @param {string} project - Project ID or project name
+    */
     public async createPullRequestReviewer(
         reviewer: GitInterfaces.IdentityRefWithVote,
         repositoryId: string,
@@ -2320,7 +2320,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote>;
@@ -2340,13 +2340,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Adds reviewers to a git pull request
-     * 
-     * @param {VSSInterfaces.IdentityRef[]} reviewers
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {string} project - Project ID or project name
-     */
+    * Adds reviewers to a git pull request
+    * 
+    * @param {VSSInterfaces.IdentityRef[]} reviewers
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {string} project - Project ID or project name
+    */
     public async createPullRequestReviewers(
         reviewers: VSSInterfaces.IdentityRef[],
         repositoryId: string,
@@ -2369,7 +2369,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote[]>;
@@ -2389,13 +2389,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Removes a reviewer from a git pull request
-     * 
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {string} reviewerId
-     * @param {string} project - Project ID or project name
-     */
+    * Removes a reviewer from a git pull request
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {string} reviewerId
+    * @param {string} project - Project ID or project name
+    */
     public async deletePullRequestReviewer(
         repositoryId: string,
         pullRequestId: number,
@@ -2419,7 +2419,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -2439,13 +2439,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieve a reviewer from a pull request
-     * 
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {string} reviewerId
-     * @param {string} project - Project ID or project name
-     */
+    * Retrieve a reviewer from a pull request
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {string} reviewerId
+    * @param {string} project - Project ID or project name
+    */
     public async getPullRequestReviewer(
         repositoryId: string,
         pullRequestId: number,
@@ -2469,7 +2469,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote>;
@@ -2489,12 +2489,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieve a pull request reviewers
-     * 
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {string} project - Project ID or project name
-     */
+    * Retrieve a pull request reviewers
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {string} project - Project ID or project name
+    */
     public async getPullRequestReviewers(
         repositoryId: string,
         pullRequestId: number,
@@ -2516,7 +2516,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote[]>;
@@ -2536,10 +2536,10 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Get a pull request using its ID
-     * 
-     * @param {number} pullRequestId - the Id of the pull request
-     */
+    * Get a pull request using its ID
+    * 
+    * @param {number} pullRequestId - the Id of the pull request
+    */
     public async getPullRequestById(
         pullRequestId: number
         ): Promise<GitInterfaces.GitPullRequest> {
@@ -2557,7 +2557,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest>;
@@ -2577,14 +2577,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Query pull requests by project
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {GitInterfaces.GitPullRequestSearchCriteria} searchCriteria
-     * @param {number} maxCommentLength
-     * @param {number} skip
-     * @param {number} top
-     */
+    * Query pull requests by project
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {GitInterfaces.GitPullRequestSearchCriteria} searchCriteria
+    * @param {number} maxCommentLength
+    * @param {number} skip
+    * @param {number} top
+    */
     public async getPullRequestsByProject(
         project: string,
         searchCriteria: GitInterfaces.GitPullRequestSearchCriteria,
@@ -2614,7 +2614,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest[]>;
@@ -2634,12 +2634,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Create a git pull request
-     * 
-     * @param {GitInterfaces.GitPullRequest} gitPullRequestToCreate
-     * @param {string} repositoryId
-     * @param {string} project - Project ID or project name
-     */
+    * Create a git pull request
+    * 
+    * @param {GitInterfaces.GitPullRequest} gitPullRequestToCreate
+    * @param {string} repositoryId
+    * @param {string} project - Project ID or project name
+    */
     public async createPullRequest(
         gitPullRequestToCreate: GitInterfaces.GitPullRequest,
         repositoryId: string,
@@ -2660,7 +2660,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest>;
@@ -2680,17 +2680,17 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieve a pull request
-     * 
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {string} project - Project ID or project name
-     * @param {number} maxCommentLength
-     * @param {number} skip
-     * @param {number} top
-     * @param {boolean} includeCommits
-     * @param {boolean} includeWorkItemRefs
-     */
+    * Retrieve a pull request
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {string} project - Project ID or project name
+    * @param {number} maxCommentLength
+    * @param {number} skip
+    * @param {number} top
+    * @param {boolean} includeCommits
+    * @param {boolean} includeWorkItemRefs
+    */
     public async getPullRequest(
         repositoryId: string,
         pullRequestId: number,
@@ -2726,7 +2726,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest>;
@@ -2746,15 +2746,15 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Query for pull requests
-     * 
-     * @param {string} repositoryId
-     * @param {GitInterfaces.GitPullRequestSearchCriteria} searchCriteria
-     * @param {string} project - Project ID or project name
-     * @param {number} maxCommentLength
-     * @param {number} skip
-     * @param {number} top
-     */
+    * Query for pull requests
+    * 
+    * @param {string} repositoryId
+    * @param {GitInterfaces.GitPullRequestSearchCriteria} searchCriteria
+    * @param {string} project - Project ID or project name
+    * @param {number} maxCommentLength
+    * @param {number} skip
+    * @param {number} top
+    */
     public async getPullRequests(
         repositoryId: string,
         searchCriteria: GitInterfaces.GitPullRequestSearchCriteria,
@@ -2786,7 +2786,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest[]>;
@@ -2806,13 +2806,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Updates a pull request
-     * 
-     * @param {GitInterfaces.GitPullRequest} gitPullRequestToUpdate
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {string} project - Project ID or project name
-     */
+    * Updates a pull request
+    * 
+    * @param {GitInterfaces.GitPullRequest} gitPullRequestToUpdate
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {string} project - Project ID or project name
+    */
     public async updatePullRequest(
         gitPullRequestToUpdate: GitInterfaces.GitPullRequest,
         repositoryId: string,
@@ -2835,7 +2835,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest>;
@@ -2855,11 +2855,11 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {GitInterfaces.ShareNotificationContext} userMessage
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {string} project - Project ID or project name
-     */
+    * @param {GitInterfaces.ShareNotificationContext} userMessage
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {string} project - Project ID or project name
+    */
     public async sharePullRequest(
         userMessage: GitInterfaces.ShareNotificationContext,
         repositoryId: string,
@@ -2882,7 +2882,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -2902,14 +2902,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Create a pull request iteration status
-     * 
-     * @param {GitInterfaces.GitPullRequestStatus} status
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {number} iterationId
-     * @param {string} project - Project ID or project name
-     */
+    * Create a pull request iteration status
+    * 
+    * @param {GitInterfaces.GitPullRequestStatus} status
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} iterationId
+    * @param {string} project - Project ID or project name
+    */
     public async createPullRequestIterationStatus(
         status: GitInterfaces.GitPullRequestStatus,
         repositoryId: string,
@@ -2934,7 +2934,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus>;
@@ -2954,14 +2954,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Get the specific pull request iteration status.
-     * 
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {number} iterationId
-     * @param {number} statusId
-     * @param {string} project - Project ID or project name
-     */
+    * Get the specific pull request iteration status.
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} iterationId
+    * @param {number} statusId
+    * @param {string} project - Project ID or project name
+    */
     public async getPullRequestIterationStatus(
         repositoryId: string,
         pullRequestId: number,
@@ -2987,7 +2987,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus>;
@@ -3007,13 +3007,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Get all the statuses associated with a pull request iteration.
-     * 
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {number} iterationId
-     * @param {string} project - Project ID or project name
-     */
+    * Get all the statuses associated with a pull request iteration.
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} iterationId
+    * @param {string} project - Project ID or project name
+    */
     public async getPullRequestIterationStatuses(
         repositoryId: string,
         pullRequestId: number,
@@ -3037,7 +3037,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus[]>;
@@ -3057,13 +3057,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Create a pull request status
-     * 
-     * @param {GitInterfaces.GitPullRequestStatus} status
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {string} project - Project ID or project name
-     */
+    * Create a pull request status
+    * 
+    * @param {GitInterfaces.GitPullRequestStatus} status
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {string} project - Project ID or project name
+    */
     public async createPullRequestStatus(
         status: GitInterfaces.GitPullRequestStatus,
         repositoryId: string,
@@ -3086,7 +3086,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus>;
@@ -3106,13 +3106,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Get the specific pull request status.
-     * 
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {number} statusId
-     * @param {string} project - Project ID or project name
-     */
+    * Get the specific pull request status.
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} statusId
+    * @param {string} project - Project ID or project name
+    */
     public async getPullRequestStatus(
         repositoryId: string,
         pullRequestId: number,
@@ -3136,7 +3136,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus>;
@@ -3156,12 +3156,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Get all the statuses associated with a pull request.
-     * 
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {string} project - Project ID or project name
-     */
+    * Get all the statuses associated with a pull request.
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {string} project - Project ID or project name
+    */
     public async getPullRequestStatuses(
         repositoryId: string,
         pullRequestId: number,
@@ -3183,7 +3183,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus[]>;
@@ -3203,14 +3203,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Create a pull request review comment
-     * 
-     * @param {GitInterfaces.Comment} comment
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {number} threadId
-     * @param {string} project - Project ID or project name
-     */
+    * Create a pull request review comment
+    * 
+    * @param {GitInterfaces.Comment} comment
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} threadId
+    * @param {string} project - Project ID or project name
+    */
     public async createComment(
         comment: GitInterfaces.Comment,
         repositoryId: string,
@@ -3235,7 +3235,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.Comment>;
@@ -3255,14 +3255,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Delete a pull request comment by id for a pull request
-     * 
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {number} threadId
-     * @param {number} commentId
-     * @param {string} project - Project ID or project name
-     */
+    * Delete a pull request comment by id for a pull request
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} threadId
+    * @param {number} commentId
+    * @param {string} project - Project ID or project name
+    */
     public async deleteComment(
         repositoryId: string,
         pullRequestId: number,
@@ -3288,7 +3288,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -3308,14 +3308,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Get a pull request comment by id for a pull request
-     * 
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {number} threadId
-     * @param {number} commentId
-     * @param {string} project - Project ID or project name
-     */
+    * Get a pull request comment by id for a pull request
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} threadId
+    * @param {number} commentId
+    * @param {string} project - Project ID or project name
+    */
     public async getComment(
         repositoryId: string,
         pullRequestId: number,
@@ -3341,7 +3341,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.Comment>;
@@ -3361,13 +3361,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Get all pull request comments in a thread.
-     * 
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {number} threadId
-     * @param {string} project - Project ID or project name
-     */
+    * Get all pull request comments in a thread.
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} threadId
+    * @param {string} project - Project ID or project name
+    */
     public async getComments(
         repositoryId: string,
         pullRequestId: number,
@@ -3391,7 +3391,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.Comment[]>;
@@ -3411,15 +3411,15 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Update a pull request review comment thread
-     * 
-     * @param {GitInterfaces.Comment} comment
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {number} threadId
-     * @param {number} commentId
-     * @param {string} project - Project ID or project name
-     */
+    * Update a pull request review comment thread
+    * 
+    * @param {GitInterfaces.Comment} comment
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} threadId
+    * @param {number} commentId
+    * @param {string} project - Project ID or project name
+    */
     public async updateComment(
         comment: GitInterfaces.Comment,
         repositoryId: string,
@@ -3446,7 +3446,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.Comment>;
@@ -3466,13 +3466,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Create a pull request review comment thread
-     * 
-     * @param {GitInterfaces.GitPullRequestCommentThread} commentThread
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {string} project - Project ID or project name
-     */
+    * Create a pull request review comment thread
+    * 
+    * @param {GitInterfaces.GitPullRequestCommentThread} commentThread
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {string} project - Project ID or project name
+    */
     public async createThread(
         commentThread: GitInterfaces.GitPullRequestCommentThread,
         repositoryId: string,
@@ -3495,7 +3495,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestCommentThread>;
@@ -3515,15 +3515,15 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Get a pull request comment thread by id for a pull request
-     * 
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {number} threadId
-     * @param {string} project - Project ID or project name
-     * @param {number} iteration
-     * @param {number} baseIteration
-     */
+    * Get a pull request comment thread by id for a pull request
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} threadId
+    * @param {string} project - Project ID or project name
+    * @param {number} iteration
+    * @param {number} baseIteration
+    */
     public async getPullRequestThread(
         repositoryId: string,
         pullRequestId: number,
@@ -3555,7 +3555,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestCommentThread>;
@@ -3575,14 +3575,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Get all pull request comment threads.
-     * 
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {string} project - Project ID or project name
-     * @param {number} iteration
-     * @param {number} baseIteration
-     */
+    * Get all pull request comment threads.
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {string} project - Project ID or project name
+    * @param {number} iteration
+    * @param {number} baseIteration
+    */
     public async getThreads(
         repositoryId: string,
         pullRequestId: number,
@@ -3612,7 +3612,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestCommentThread[]>;
@@ -3632,14 +3632,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Update a pull request review comment thread
-     * 
-     * @param {GitInterfaces.GitPullRequestCommentThread} commentThread
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {number} threadId
-     * @param {string} project - Project ID or project name
-     */
+    * Update a pull request review comment thread
+    * 
+    * @param {GitInterfaces.GitPullRequestCommentThread} commentThread
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {number} threadId
+    * @param {string} project - Project ID or project name
+    */
     public async updateThread(
         commentThread: GitInterfaces.GitPullRequestCommentThread,
         repositoryId: string,
@@ -3664,7 +3664,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestCommentThread>;
@@ -3684,12 +3684,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieve a pull request work items
-     * 
-     * @param {string} repositoryId
-     * @param {number} pullRequestId
-     * @param {string} project - Project ID or project name
-     */
+    * Retrieve a pull request work items
+    * 
+    * @param {string} repositoryId
+    * @param {number} pullRequestId
+    * @param {string} project - Project ID or project name
+    */
     public async getPullRequestWorkItems(
         repositoryId: string,
         pullRequestId: number,
@@ -3711,7 +3711,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.AssociatedWorkItem[]>;
@@ -3731,12 +3731,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Push changes to the repository.
-     * 
-     * @param {GitInterfaces.GitPush} push
-     * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, a project-scoped route must be used.
-     * @param {string} project - Project ID or project name
-     */
+    * Push changes to the repository.
+    * 
+    * @param {GitInterfaces.GitPush} push
+    * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, a project-scoped route must be used.
+    * @param {string} project - Project ID or project name
+    */
     public async createPush(
         push: GitInterfaces.GitPush,
         repositoryId: string,
@@ -3757,7 +3757,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPush>;
@@ -3777,14 +3777,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieve a particular push.
-     * 
-     * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, projectId must also be specified.
-     * @param {number} pushId - The id of the push.
-     * @param {string} project - Project ID or project name
-     * @param {number} includeCommits - The number of commits to include in the result.
-     * @param {boolean} includeRefUpdates
-     */
+    * Retrieve a particular push.
+    * 
+    * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, projectId must also be specified.
+    * @param {number} pushId - The id of the push.
+    * @param {string} project - Project ID or project name
+    * @param {number} includeCommits - The number of commits to include in the result.
+    * @param {boolean} includeRefUpdates
+    */
     public async getPush(
         repositoryId: string,
         pushId: number,
@@ -3814,7 +3814,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPush>;
@@ -3834,14 +3834,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieves pushes associated with the specified repository.
-     * 
-     * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, projectId must also be specified.
-     * @param {string} project - Project ID or project name
-     * @param {number} skip
-     * @param {number} top
-     * @param {GitInterfaces.GitPushSearchCriteria} searchCriteria
-     */
+    * Retrieves pushes associated with the specified repository.
+    * 
+    * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, projectId must also be specified.
+    * @param {string} project - Project ID or project name
+    * @param {number} skip
+    * @param {number} top
+    * @param {GitInterfaces.GitPushSearchCriteria} searchCriteria
+    */
     public async getPushes(
         repositoryId: string,
         project?: string,
@@ -3871,7 +3871,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPush[]>;
@@ -3891,12 +3891,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Lock or unlock a ref.
-     * 
-     * @param {GitInterfaces.GitRefLockRequest} refLockRequest
-     * @param {string} project - Project ID or project name
-     * @param {string} repositoryId
-     */
+    * Lock or unlock a ref.
+    * 
+    * @param {GitInterfaces.GitRefLockRequest} refLockRequest
+    * @param {string} project - Project ID or project name
+    * @param {string} repositoryId
+    */
     public async createRefLockRequest(
         refLockRequest: GitInterfaces.GitRefLockRequest,
         project: string,
@@ -3917,7 +3917,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -3937,14 +3937,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Queries the provided repository for its refs and returns them.
-     * 
-     * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, projectId must also be specified.
-     * @param {string} project - Project ID or project name
-     * @param {string} filter - [optional] A filter to apply to the refs.
-     * @param {boolean} includeLinks - [optional] Specifies if referenceLinks should be included in the result. default is false.
-     * @param {boolean} latestStatusesOnly
-     */
+    * Queries the provided repository for its refs and returns them.
+    * 
+    * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, projectId must also be specified.
+    * @param {string} project - Project ID or project name
+    * @param {string} filter - [optional] A filter to apply to the refs.
+    * @param {boolean} includeLinks - [optional] Specifies if referenceLinks should be included in the result. default is false.
+    * @param {boolean} latestStatusesOnly
+    */
     public async getRefs(
         repositoryId: string,
         project?: string,
@@ -3974,7 +3974,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRef[]>;
@@ -3994,12 +3994,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {GitInterfaces.GitRefUpdate} newRefInfo
-     * @param {string} repositoryId
-     * @param {string} filter
-     * @param {string} project - Project ID or project name
-     * @param {string} projectId
-     */
+    * @param {GitInterfaces.GitRefUpdate} newRefInfo
+    * @param {string} repositoryId
+    * @param {string} filter
+    * @param {string} project - Project ID or project name
+    * @param {string} projectId
+    */
     public async updateRef(
         newRefInfo: GitInterfaces.GitRefUpdate,
         repositoryId: string,
@@ -4028,7 +4028,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRef>;
@@ -4048,13 +4048,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Creates or updates refs with the given information
-     * 
-     * @param {GitInterfaces.GitRefUpdate[]} refUpdates - List of ref updates to attempt to perform
-     * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, projectId must also be specified.
-     * @param {string} project - Project ID or project name
-     * @param {string} projectId - The id of the project.
-     */
+    * Creates or updates refs with the given information
+    * 
+    * @param {GitInterfaces.GitRefUpdate[]} refUpdates - List of ref updates to attempt to perform
+    * @param {string} repositoryId - The id or friendly name of the repository. To use the friendly name, projectId must also be specified.
+    * @param {string} project - Project ID or project name
+    * @param {string} projectId - The id of the project.
+    */
     public async updateRefs(
         refUpdates: GitInterfaces.GitRefUpdate[],
         repositoryId: string,
@@ -4081,7 +4081,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRefUpdateResult[]>;
@@ -4101,11 +4101,11 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Creates a ref favorite
-     * 
-     * @param {GitInterfaces.GitRefFavorite} favorite
-     * @param {string} project - Project ID or project name
-     */
+    * Creates a ref favorite
+    * 
+    * @param {GitInterfaces.GitRefFavorite} favorite
+    * @param {string} project - Project ID or project name
+    */
     public async createFavorite(
         favorite: GitInterfaces.GitRefFavorite,
         project: string
@@ -4124,7 +4124,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRefFavorite>;
@@ -4144,9 +4144,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} favoriteId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} favoriteId
+    */
     public async deleteRefFavorite(
         project: string,
         favoriteId: number
@@ -4166,7 +4166,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -4186,9 +4186,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} favoriteId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} favoriteId
+    */
     public async getRefFavorite(
         project: string,
         favoriteId: number
@@ -4208,7 +4208,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRefFavorite>;
@@ -4228,12 +4228,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Gets the refs favorites for a repo and an identity.
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {string} repositoryId - The id of the repository.
-     * @param {string} identityId - The id of the identity whose favorites are to be retrieved. If null, the requesting identity is used.
-     */
+    * Gets the refs favorites for a repo and an identity.
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {string} repositoryId - The id of the repository.
+    * @param {string} identityId - The id of the identity whose favorites are to be retrieved. If null, the requesting identity is used.
+    */
     public async getRefFavorites(
         project: string,
         repositoryId?: string,
@@ -4259,7 +4259,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRefFavorite[]>;
@@ -4279,11 +4279,11 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Create a git repository
-     * 
-     * @param {GitInterfaces.GitRepository} gitRepositoryToCreate
-     * @param {string} project - Project ID or project name
-     */
+    * Create a git repository
+    * 
+    * @param {GitInterfaces.GitRepository} gitRepositoryToCreate
+    * @param {string} project - Project ID or project name
+    */
     public async createRepository(
         gitRepositoryToCreate: GitInterfaces.GitRepository,
         project?: string
@@ -4302,7 +4302,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRepository>;
@@ -4322,11 +4322,11 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Delete a git repository
-     * 
-     * @param {string} repositoryId
-     * @param {string} project - Project ID or project name
-     */
+    * Delete a git repository
+    * 
+    * @param {string} repositoryId
+    * @param {string} project - Project ID or project name
+    */
     public async deleteRepository(
         repositoryId: string,
         project?: string
@@ -4346,7 +4346,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -4366,12 +4366,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieve git repositories.
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {boolean} includeLinks
-     * @param {boolean} includeAllUrls
-     */
+    * Retrieve git repositories.
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {boolean} includeLinks
+    * @param {boolean} includeAllUrls
+    */
     public async getRepositories(
         project?: string,
         includeLinks?: boolean,
@@ -4397,7 +4397,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRepository[]>;
@@ -4417,9 +4417,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {string} repositoryId
-     * @param {string} project - Project ID or project name
-     */
+    * @param {string} repositoryId
+    * @param {string} project - Project ID or project name
+    */
     public async getRepository(
         repositoryId: string,
         project?: string
@@ -4439,7 +4439,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRepository>;
@@ -4459,12 +4459,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Updates the Git repository with the single populated change in the specified repository information.
-     * 
-     * @param {GitInterfaces.GitRepository} newRepositoryInfo
-     * @param {string} repositoryId
-     * @param {string} project - Project ID or project name
-     */
+    * Updates the Git repository with the single populated change in the specified repository information.
+    * 
+    * @param {GitInterfaces.GitRepository} newRepositoryInfo
+    * @param {string} repositoryId
+    * @param {string} project - Project ID or project name
+    */
     public async updateRepository(
         newRepositoryInfo: GitInterfaces.GitRepository,
         repositoryId: string,
@@ -4485,7 +4485,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRepository>;
@@ -4505,10 +4505,10 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {GitInterfaces.GitAsyncRefOperationParameters} revertToCreate
-     * @param {string} project - Project ID or project name
-     * @param {string} repositoryId
-     */
+    * @param {GitInterfaces.GitAsyncRefOperationParameters} revertToCreate
+    * @param {string} project - Project ID or project name
+    * @param {string} repositoryId
+    */
     public async createRevert(
         revertToCreate: GitInterfaces.GitAsyncRefOperationParameters,
         project: string,
@@ -4529,7 +4529,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRevert>;
@@ -4549,10 +4549,10 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} revertId
-     * @param {string} repositoryId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} revertId
+    * @param {string} repositoryId
+    */
     public async getRevert(
         project: string,
         revertId: number,
@@ -4574,7 +4574,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRevert>;
@@ -4594,10 +4594,10 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {string} repositoryId
-     * @param {string} refName
-     */
+    * @param {string} project - Project ID or project name
+    * @param {string} repositoryId
+    * @param {string} refName
+    */
     public async getRevertForRefName(
         project: string,
         repositoryId: string,
@@ -4623,7 +4623,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRevert>;
@@ -4643,11 +4643,11 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {GitInterfaces.GitStatus} gitCommitStatusToCreate
-     * @param {string} commitId
-     * @param {string} repositoryId
-     * @param {string} project - Project ID or project name
-     */
+    * @param {GitInterfaces.GitStatus} gitCommitStatusToCreate
+    * @param {string} commitId
+    * @param {string} repositoryId
+    * @param {string} project - Project ID or project name
+    */
     public async createCommitStatus(
         gitCommitStatusToCreate: GitInterfaces.GitStatus,
         commitId: string,
@@ -4670,7 +4670,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitStatus>;
@@ -4690,13 +4690,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {string} commitId
-     * @param {string} repositoryId
-     * @param {string} project - Project ID or project name
-     * @param {number} top
-     * @param {number} skip
-     * @param {boolean} latestOnly
-     */
+    * @param {string} commitId
+    * @param {string} repositoryId
+    * @param {string} project - Project ID or project name
+    * @param {number} top
+    * @param {number} skip
+    * @param {boolean} latestOnly
+    */
     public async getStatuses(
         commitId: string,
         repositoryId: string,
@@ -4728,7 +4728,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitStatus[]>;
@@ -4748,11 +4748,11 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieve a set of suggestions (including a pull request suggestion).
-     * 
-     * @param {string} repositoryId
-     * @param {string} project - Project ID or project name
-     */
+    * Retrieve a set of suggestions (including a pull request suggestion).
+    * 
+    * @param {string} repositoryId
+    * @param {string} project - Project ID or project name
+    */
     public async getSuggestions(
         repositoryId: string,
         project?: string
@@ -4772,7 +4772,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitSuggestion[]>;
@@ -4792,13 +4792,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {string} repositoryId
-     * @param {string} sha1
-     * @param {string} project - Project ID or project name
-     * @param {string} projectId
-     * @param {boolean} recursive
-     * @param {string} fileName
-     */
+    * @param {string} repositoryId
+    * @param {string} sha1
+    * @param {string} project - Project ID or project name
+    * @param {string} projectId
+    * @param {boolean} recursive
+    * @param {string} fileName
+    */
     public async getTree(
         repositoryId: string,
         sha1: string,
@@ -4830,7 +4830,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitTreeRef>;
@@ -4850,13 +4850,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {string} repositoryId
-     * @param {string} sha1
-     * @param {string} project - Project ID or project name
-     * @param {string} projectId
-     * @param {boolean} recursive
-     * @param {string} fileName
-     */
+    * @param {string} repositoryId
+    * @param {string} sha1
+    * @param {string} project - Project ID or project name
+    * @param {string} projectId
+    * @param {boolean} recursive
+    * @param {string} fileName
+    */
     public async getTreeZip(
         repositoryId: string,
         sha1: string,

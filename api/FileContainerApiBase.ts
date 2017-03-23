@@ -32,12 +32,12 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
     }
 
     /**
-     * Creates the specified items in in the referenced container.
-     * 
-     * @param {VSSInterfaces.VssJsonCollectionWrapperV<FileContainerInterfaces.FileContainerItem[]>} items
-     * @param {number} containerId
-     * @param {string} scope - A guid representing the scope of the container. This is often the project id.
-     */
+    * Creates the specified items in in the referenced container.
+    * 
+    * @param {VSSInterfaces.VssJsonCollectionWrapperV<FileContainerInterfaces.FileContainerItem[]>} items
+    * @param {number} containerId
+    * @param {string} scope - A guid representing the scope of the container. This is often the project id.
+    */
     public async createItems(
         items: VSSInterfaces.VssJsonCollectionWrapperV<FileContainerInterfaces.FileContainerItem[]>,
         containerId: number,
@@ -62,7 +62,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<FileContainerInterfaces.FileContainerItem[]>;
@@ -82,12 +82,12 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
     }
 
     /**
-     * Deletes the specified items in a container.
-     * 
-     * @param {number} containerId - Container Id.
-     * @param {string} itemPath - Path to delete.
-     * @param {string} scope - A guid representing the scope of the container. This is often the project id.
-     */
+    * Deletes the specified items in a container.
+    * 
+    * @param {number} containerId - Container Id.
+    * @param {string} itemPath - Path to delete.
+    * @param {string} scope - A guid representing the scope of the container. This is often the project id.
+    */
     public async deleteItem(
         containerId: number,
         itemPath: string,
@@ -113,7 +113,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -133,11 +133,11 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
     }
 
     /**
-     * Gets containers filtered by a comma separated list of artifact uris within the same scope, if not specified returns all containers
-     * 
-     * @param {string} scope - A guid representing the scope of the container. This is often the project id.
-     * @param {string} artifactUris
-     */
+    * Gets containers filtered by a comma separated list of artifact uris within the same scope, if not specified returns all containers
+    * 
+    * @param {string} scope - A guid representing the scope of the container. This is often the project id.
+    * @param {string} artifactUris
+    */
     public async getContainers(
         scope?: string,
         artifactUris?: string
@@ -161,7 +161,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<FileContainerInterfaces.FileContainer[]>;
@@ -181,15 +181,15 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
     }
 
     /**
-     * @param {number} containerId
-     * @param {string} scope
-     * @param {string} itemPath
-     * @param {boolean} metadata
-     * @param {string} format
-     * @param {string} downloadFileName
-     * @param {boolean} includeDownloadTickets
-     * @param {boolean} isShallow
-     */
+    * @param {number} containerId
+    * @param {string} scope
+    * @param {string} itemPath
+    * @param {boolean} metadata
+    * @param {string} format
+    * @param {string} downloadFileName
+    * @param {boolean} includeDownloadTickets
+    * @param {boolean} isShallow
+    */
     public async getItems(
         containerId: number,
         scope?: string,
@@ -225,7 +225,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<FileContainerInterfaces.FileContainerItem[]>;

@@ -183,26 +183,24 @@ export var TypeInfo = {
     ContainerItemStatus: {
         enumValues: {
             "created": 1,
-            "pendingUpload": 2,
+            "pendingUpload": 2
         }
     },
     ContainerItemType: {
         enumValues: {
             "any": 0,
             "folder": 1,
-            "file": 2,
+            "file": 2
         }
     },
     ContainerOptions: {
         enumValues: {
-            "none": 0,
+            "none": 0
         }
     },
-    FileContainer: {
-        fields: <any>null
+    FileContainer: <any>{
     },
-    FileContainerItem: {
-        fields: <any>null
+    FileContainerItem: <any>{
     },
 };
 

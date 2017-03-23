@@ -571,29 +571,17 @@ export interface WorkItemUpdate extends WorkItemTrackingResourceReference {
 }
 
 export var TypeInfo = {
-    AccountMyWorkResult: {
-        fields: <any>null
+    AccountMyWorkResult: <any>{
     },
-    AccountRecentActivityWorkItemModel: {
-        fields: <any>null
+    AccountRecentActivityWorkItemModel: <any>{
     },
-    AccountWorkWorkItemModel: {
-        fields: <any>null
-    },
-    AttachmentReference: {
-        fields: <any>null
+    AccountWorkWorkItemModel: <any>{
     },
     CommentSortOrder: {
         enumValues: {
             "asc": 1,
-            "desc": 2,
+            "desc": 2
         }
-    },
-    FieldDependentRule: {
-        fields: <any>null
-    },
-    FieldsToEvaluate: {
-        fields: <any>null
     },
     FieldType: {
         enumValues: {
@@ -610,25 +598,19 @@ export var TypeInfo = {
             "identity": 10,
             "picklistString": 11,
             "picklistInteger": 12,
-            "picklistDouble": 13,
+            "picklistDouble": 13
         }
     },
     GetFieldsExpand: {
         enumValues: {
             "none": 0,
-            "extensionFields": 1,
+            "extensionFields": 1
         }
-    },
-    IdentityReference: {
-        fields: <any>null
-    },
-    Link: {
-        fields: <any>null
     },
     LinkChangeType: {
         enumValues: {
             "create": 0,
-            "remove": 1,
+            "remove": 1
         }
     },
     LinkQueryMode: {
@@ -639,129 +621,88 @@ export var TypeInfo = {
             "linksOneHopDoesNotContain": 3,
             "linksRecursiveMustContain": 4,
             "linksRecursiveMayContain": 5,
-            "linksRecursiveDoesNotContain": 6,
+            "linksRecursiveDoesNotContain": 6
         }
     },
     LogicalOperation: {
         enumValues: {
             "nONE": 0,
             "aND": 1,
-            "oR": 2,
+            "oR": 2
         }
-    },
-    ProjectWorkItemStateColors: {
-        fields: <any>null
     },
     ProvisioningActionType: {
         enumValues: {
             "import": 0,
-            "validate": 1,
+            "validate": 1
         }
-    },
-    ProvisioningResult: {
-        fields: <any>null
     },
     QueryExpand: {
         enumValues: {
             "none": 0,
             "wiql": 1,
             "clauses": 2,
-            "all": 3,
+            "all": 3
         }
     },
-    QueryHierarchyItem: {
-        fields: <any>null
+    QueryHierarchyItem: <any>{
     },
     QueryOption: {
         enumValues: {
             "doing": 1,
             "done": 2,
-            "followed": 3,
+            "followed": 3
         }
     },
     QueryResultType: {
         enumValues: {
             "workItem": 1,
-            "workItemLink": 2,
+            "workItemLink": 2
         }
     },
     QueryType: {
         enumValues: {
             "flat": 1,
             "tree": 2,
-            "oneHop": 3,
+            "oneHop": 3
         }
     },
     ReportingRevisionsExpand: {
         enumValues: {
             "none": 0,
-            "fields": 1,
+            "fields": 1
         }
     },
-    ReportingWorkItemLink: {
-        fields: <any>null
-    },
-    ReportingWorkItemLinksBatch: {
-        fields: <any>null
-    },
-    ReportingWorkItemRevisionsBatch: {
-        fields: <any>null
-    },
-    ReportingWorkItemRevisionsFilter: {
-        fields: <any>null
-    },
-    StreamedBatch: {
-        fields: <any>null
+    ReportingWorkItemLink: <any>{
     },
     TemplateType: {
         enumValues: {
             "workItemType": 0,
-            "globalWorkflow": 1,
+            "globalWorkflow": 1
         }
     },
     TreeNodeStructureType: {
         enumValues: {
             "area": 0,
-            "iteration": 1,
+            "iteration": 1
         }
     },
     TreeStructureGroup: {
         enumValues: {
             "areas": 0,
-            "iterations": 1,
+            "iterations": 1
         }
     },
-    Wiql: {
-        fields: <any>null
+    WorkItemClassificationNode: <any>{
     },
-    WorkItem: {
-        fields: <any>null
+    WorkItemComment: <any>{
     },
-    WorkItemClassificationNode: {
-        fields: <any>null
-    },
-    WorkItemComment: {
-        fields: <any>null
-    },
-    WorkItemComments: {
-        fields: <any>null
-    },
-    WorkItemDelete: {
-        fields: <any>null
-    },
-    WorkItemDeleteReference: {
-        fields: <any>null
-    },
-    WorkItemDeleteShallowReference: {
-        fields: <any>null
-    },
-    WorkItemDeleteUpdate: {
-        fields: <any>null
+    WorkItemComments: <any>{
     },
     WorkItemErrorPolicy: {
         enumValues: {
             "fail": 1,
-            "omit": 2,
+            "omit": 2
         }
     },
     WorkItemExpand: {
@@ -770,103 +711,28 @@ export var TypeInfo = {
             "relations": 1,
             "fields": 2,
             "links": 3,
-            "all": 4,
+            "all": 4
         }
     },
-    WorkItemField: {
-        fields: <any>null
+    WorkItemField: <any>{
     },
-    WorkItemFieldOperation: {
-        fields: <any>null
+    WorkItemHistory: <any>{
     },
-    WorkItemFieldReference: {
-        fields: <any>null
+    WorkItemQueryClause: <any>{
     },
-    WorkItemFieldUpdate: {
-        fields: <any>null
-    },
-    WorkItemHistory: {
-        fields: <any>null
-    },
-    WorkItemLink: {
-        fields: <any>null
-    },
-    WorkItemQueryClause: {
-        fields: <any>null
-    },
-    WorkItemQueryResult: {
-        fields: <any>null
-    },
-    WorkItemQuerySortColumn: {
-        fields: <any>null
+    WorkItemQueryResult: <any>{
     },
     WorkItemRecentActivityType: {
         enumValues: {
             "visited": 0,
             "edited": 1,
             "deleted": 2,
-            "restored": 3,
+            "restored": 3
         }
     },
-    WorkItemReference: {
-        fields: <any>null
+    WorkItemTypeTemplateUpdateModel: <any>{
     },
-    WorkItemRelation: {
-        fields: <any>null
-    },
-    WorkItemRelationType: {
-        fields: <any>null
-    },
-    WorkItemRelationUpdates: {
-        fields: <any>null
-    },
-    WorkItemStateColor: {
-        fields: <any>null
-    },
-    WorkItemStateTransition: {
-        fields: <any>null
-    },
-    WorkItemTemplate: {
-        fields: <any>null
-    },
-    WorkItemTemplateReference: {
-        fields: <any>null
-    },
-    WorkItemTrackingReference: {
-        fields: <any>null
-    },
-    WorkItemTrackingResource: {
-        fields: <any>null
-    },
-    WorkItemTrackingResourceReference: {
-        fields: <any>null
-    },
-    WorkItemType: {
-        fields: <any>null
-    },
-    WorkItemTypeCategory: {
-        fields: <any>null
-    },
-    WorkItemTypeColor: {
-        fields: <any>null
-    },
-    WorkItemTypeFieldInstance: {
-        fields: <any>null
-    },
-    WorkItemTypeReference: {
-        fields: <any>null
-    },
-    WorkItemTypeStateColors: {
-        fields: <any>null
-    },
-    WorkItemTypeTemplate: {
-        fields: <any>null
-    },
-    WorkItemTypeTemplateUpdateModel: {
-        fields: <any>null
-    },
-    WorkItemUpdate: {
-        fields: <any>null
+    WorkItemUpdate: <any>{
     },
 };
 
@@ -895,35 +761,6 @@ TypeInfo.AccountWorkWorkItemModel.fields = {
     },
 };
 
-TypeInfo.AttachmentReference.fields = {
-};
-
-TypeInfo.FieldDependentRule.fields = {
-    dependentFields: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkItemFieldReference
-    },
-};
-
-TypeInfo.FieldsToEvaluate.fields = {
-};
-
-TypeInfo.IdentityReference.fields = {
-};
-
-TypeInfo.Link.fields = {
-};
-
-TypeInfo.ProjectWorkItemStateColors.fields = {
-    workItemTypeStateColors: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkItemTypeStateColors
-    },
-};
-
-TypeInfo.ProvisioningResult.fields = {
-};
-
 TypeInfo.QueryHierarchyItem.fields = {
     children: {
         isArray: true,
@@ -932,21 +769,11 @@ TypeInfo.QueryHierarchyItem.fields = {
     clauses: {
         typeInfo: TypeInfo.WorkItemQueryClause
     },
-    columns: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkItemFieldReference
-    },
-    createdBy: {
-        typeInfo: TypeInfo.IdentityReference
-    },
     createdDate: {
         isDate: true,
     },
     filterOptions: {
         enumType: TypeInfo.LinkQueryMode
-    },
-    lastModifiedBy: {
-        typeInfo: TypeInfo.IdentityReference
     },
     lastModifiedDate: {
         isDate: true,
@@ -957,10 +784,6 @@ TypeInfo.QueryHierarchyItem.fields = {
     queryType: {
         enumType: TypeInfo.QueryType
     },
-    sortColumns: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkItemQuerySortColumn
-    },
     sourceClauses: {
         typeInfo: TypeInfo.WorkItemQueryClause
     },
@@ -970,36 +793,11 @@ TypeInfo.QueryHierarchyItem.fields = {
 };
 
 TypeInfo.ReportingWorkItemLink.fields = {
-    changedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     changedDate: {
         isDate: true,
     },
     changedOperation: {
         enumType: TypeInfo.LinkChangeType
-    },
-};
-
-TypeInfo.ReportingWorkItemLinksBatch.fields = {
-};
-
-TypeInfo.ReportingWorkItemRevisionsBatch.fields = {
-};
-
-TypeInfo.ReportingWorkItemRevisionsFilter.fields = {
-};
-
-TypeInfo.StreamedBatch.fields = {
-};
-
-TypeInfo.Wiql.fields = {
-};
-
-TypeInfo.WorkItem.fields = {
-    relations: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkItemRelation
     },
 };
 
@@ -1014,9 +812,6 @@ TypeInfo.WorkItemClassificationNode.fields = {
 };
 
 TypeInfo.WorkItemComment.fields = {
-    revisedBy: {
-        typeInfo: TypeInfo.IdentityReference
-    },
     revisedDate: {
         isDate: true,
     },
@@ -1029,55 +824,15 @@ TypeInfo.WorkItemComments.fields = {
     },
 };
 
-TypeInfo.WorkItemDelete.fields = {
-    resource: {
-        typeInfo: TypeInfo.WorkItem
-    },
-};
-
-TypeInfo.WorkItemDeleteReference.fields = {
-};
-
-TypeInfo.WorkItemDeleteShallowReference.fields = {
-};
-
-TypeInfo.WorkItemDeleteUpdate.fields = {
-};
-
 TypeInfo.WorkItemField.fields = {
-    supportedOperations: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkItemFieldOperation
-    },
     type: {
         enumType: TypeInfo.FieldType
     },
 };
 
-TypeInfo.WorkItemFieldOperation.fields = {
-};
-
-TypeInfo.WorkItemFieldReference.fields = {
-};
-
-TypeInfo.WorkItemFieldUpdate.fields = {
-};
-
 TypeInfo.WorkItemHistory.fields = {
-    revisedBy: {
-        typeInfo: TypeInfo.IdentityReference
-    },
     revisedDate: {
         isDate: true,
-    },
-};
-
-TypeInfo.WorkItemLink.fields = {
-    source: {
-        typeInfo: TypeInfo.WorkItemReference
-    },
-    target: {
-        typeInfo: TypeInfo.WorkItemReference
     },
 };
 
@@ -1086,17 +841,8 @@ TypeInfo.WorkItemQueryClause.fields = {
         isArray: true,
         typeInfo: TypeInfo.WorkItemQueryClause
     },
-    field: {
-        typeInfo: TypeInfo.WorkItemFieldReference
-    },
-    fieldValue: {
-        typeInfo: TypeInfo.WorkItemFieldReference
-    },
     logicalOperator: {
         enumType: TypeInfo.LogicalOperation
-    },
-    operator: {
-        typeInfo: TypeInfo.WorkItemFieldOperation
     },
 };
 
@@ -1104,124 +850,12 @@ TypeInfo.WorkItemQueryResult.fields = {
     asOf: {
         isDate: true,
     },
-    columns: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkItemFieldReference
-    },
     queryResultType: {
         enumType: TypeInfo.QueryResultType
     },
     queryType: {
         enumType: TypeInfo.QueryType
     },
-    sortColumns: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkItemQuerySortColumn
-    },
-    workItemRelations: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkItemLink
-    },
-    workItems: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkItemReference
-    },
-};
-
-TypeInfo.WorkItemQuerySortColumn.fields = {
-    field: {
-        typeInfo: TypeInfo.WorkItemFieldReference
-    },
-};
-
-TypeInfo.WorkItemReference.fields = {
-};
-
-TypeInfo.WorkItemRelation.fields = {
-};
-
-TypeInfo.WorkItemRelationType.fields = {
-};
-
-TypeInfo.WorkItemRelationUpdates.fields = {
-    added: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkItemRelation
-    },
-    removed: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkItemRelation
-    },
-    updated: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkItemRelation
-    },
-};
-
-TypeInfo.WorkItemStateColor.fields = {
-};
-
-TypeInfo.WorkItemStateTransition.fields = {
-};
-
-TypeInfo.WorkItemTemplate.fields = {
-};
-
-TypeInfo.WorkItemTemplateReference.fields = {
-};
-
-TypeInfo.WorkItemTrackingReference.fields = {
-};
-
-TypeInfo.WorkItemTrackingResource.fields = {
-};
-
-TypeInfo.WorkItemTrackingResourceReference.fields = {
-};
-
-TypeInfo.WorkItemType.fields = {
-    fieldInstances: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkItemTypeFieldInstance
-    },
-    fields: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkItemTypeFieldInstance
-    },
-    transitions: {
-    },
-};
-
-TypeInfo.WorkItemTypeCategory.fields = {
-    defaultWorkItemType: {
-        typeInfo: TypeInfo.WorkItemTypeReference
-    },
-    workItemTypes: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkItemTypeReference
-    },
-};
-
-TypeInfo.WorkItemTypeColor.fields = {
-};
-
-TypeInfo.WorkItemTypeFieldInstance.fields = {
-    field: {
-        typeInfo: TypeInfo.WorkItemFieldReference
-    },
-};
-
-TypeInfo.WorkItemTypeReference.fields = {
-};
-
-TypeInfo.WorkItemTypeStateColors.fields = {
-    stateColors: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkItemStateColor
-    },
-};
-
-TypeInfo.WorkItemTypeTemplate.fields = {
 };
 
 TypeInfo.WorkItemTypeTemplateUpdateModel.fields = {
@@ -1234,14 +868,6 @@ TypeInfo.WorkItemTypeTemplateUpdateModel.fields = {
 };
 
 TypeInfo.WorkItemUpdate.fields = {
-    fields: {
-    },
-    relations: {
-        typeInfo: TypeInfo.WorkItemRelationUpdates
-    },
-    revisedBy: {
-        typeInfo: TypeInfo.IdentityReference
-    },
     revisedDate: {
         isDate: true,
     },

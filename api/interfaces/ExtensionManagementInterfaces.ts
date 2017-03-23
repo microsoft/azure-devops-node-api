@@ -1078,20 +1078,16 @@ export var TypeInfo = {
         enumValues: {
             "none": 0,
             "me": 1,
-            "all": 2,
+            "all": 2
         }
     },
-    AcquisitionOperation: {
-        fields: <any>null
-    },
-    AcquisitionOperationDisallowReason: {
-        fields: <any>null
+    AcquisitionOperation: <any>{
     },
     AcquisitionOperationState: {
         enumValues: {
             "disallow": 0,
             "allow": 1,
-            "completed": 3,
+            "completed": 3
         }
     },
     AcquisitionOperationType: {
@@ -1101,36 +1097,21 @@ export var TypeInfo = {
             "buy": 2,
             "try": 3,
             "request": 4,
-            "none": 5,
+            "none": 5
         }
     },
-    AcquisitionOptions: {
-        fields: <any>null
-    },
-    Contribution: {
-        fields: <any>null
-    },
-    ContributionBase: {
-        fields: <any>null
-    },
-    ContributionConstraint: {
-        fields: <any>null
+    AcquisitionOptions: <any>{
     },
     ContributionLicensingBehaviorType: {
         enumValues: {
             "onlyIfLicensed": 0,
             "onlyIfUnlicensed": 1,
-            "alwaysInclude": 2,
+            "alwaysInclude": 2
         }
     },
-    ContributionNodeQuery: {
-        fields: <any>null
+    ContributionNodeQuery: <any>{
     },
-    ContributionNodeQueryResult: {
-        fields: <any>null
-    },
-    ContributionPropertyDescription: {
-        fields: <any>null
+    ContributionPropertyDescription: <any>{
     },
     ContributionPropertyType: {
         enumValues: {
@@ -1144,11 +1125,8 @@ export var TypeInfo = {
             "dateTime": 64,
             "dictionary": 128,
             "array": 256,
-            "object": 512,
+            "object": 512
         }
-    },
-    ContributionProviderDetails: {
-        fields: <any>null
     },
     ContributionQueryOptions: {
         enumValues: {
@@ -1157,86 +1135,40 @@ export var TypeInfo = {
             "includeChildren": 32,
             "includeSubTree": 96,
             "includeAll": 112,
-            "ignoreConstraints": 256,
+            "ignoreConstraints": 256
         }
     },
-    ContributionType: {
-        fields: <any>null
+    ContributionType: <any>{
     },
-    DataProviderContext: {
-        fields: <any>null
+    ExtensionAcquisitionRequest: <any>{
     },
-    DataProviderExceptionDetails: {
-        fields: <any>null
+    ExtensionAuditLog: <any>{
     },
-    DataProviderQuery: {
-        fields: <any>null
+    ExtensionAuditLogEntry: <any>{
     },
-    DataProviderResult: {
-        fields: <any>null
-    },
-    ExtensionAcquisitionRequest: {
-        fields: <any>null
-    },
-    ExtensionAuditAction: {
-        fields: <any>null
-    },
-    ExtensionAuditLog: {
-        fields: <any>null
-    },
-    ExtensionAuditLogEntry: {
-        fields: <any>null
-    },
-    ExtensionAuthorization: {
-        fields: <any>null
-    },
-    ExtensionDataCollection: {
-        fields: <any>null
-    },
-    ExtensionDataCollectionQuery: {
-        fields: <any>null
-    },
-    ExtensionEvent: {
-        fields: <any>null
-    },
-    ExtensionEventCallback: {
-        fields: <any>null
-    },
-    ExtensionEventCallbackCollection: {
-        fields: <any>null
-    },
-    ExtensionEventUrls: {
-        fields: <any>null
+    ExtensionEvent: <any>{
     },
     ExtensionFlags: {
         enumValues: {
             "builtIn": 1,
-            "trusted": 2,
+            "trusted": 2
         }
     },
-    ExtensionHost: {
-        fields: <any>null
+    ExtensionLicensing: <any>{
     },
-    ExtensionLicensing: {
-        fields: <any>null
+    ExtensionManifest: <any>{
     },
-    ExtensionManifest: {
-        fields: <any>null
+    ExtensionRequest: <any>{
     },
-    ExtensionRequest: {
-        fields: <any>null
+    ExtensionRequestEvent: <any>{
     },
-    ExtensionRequestEvent: {
-        fields: <any>null
-    },
-    ExtensionRequestsEvent: {
-        fields: <any>null
+    ExtensionRequestsEvent: <any>{
     },
     ExtensionRequestState: {
         enumValues: {
             "open": 0,
             "accepted": 1,
-            "rejected": 2,
+            "rejected": 2
         }
     },
     ExtensionRequestUpdateType: {
@@ -1244,14 +1176,10 @@ export var TypeInfo = {
             "created": 1,
             "approved": 2,
             "rejected": 3,
-            "deleted": 4,
+            "deleted": 4
         }
     },
-    ExtensionRequestUrls: {
-        fields: <any>null
-    },
-    ExtensionState: {
-        fields: <any>null
+    ExtensionState: <any>{
     },
     ExtensionStateFlags: {
         enumValues: {
@@ -1265,7 +1193,7 @@ export var TypeInfo = {
             "error": 64,
             "needsReauthorization": 128,
             "autoUpgradeError": 256,
-            "warning": 512,
+            "warning": 512
         }
     },
     ExtensionUpdateType: {
@@ -1276,47 +1204,24 @@ export var TypeInfo = {
             "disabled": 4,
             "versionUpdated": 5,
             "actionRequired": 6,
-            "actionResolved": 7,
+            "actionResolved": 7
         }
     },
-    ExtensionUrls: {
-        fields: <any>null
+    InstalledExtension: <any>{
     },
-    InstalledExtension: {
-        fields: <any>null
+    InstalledExtensionState: <any>{
     },
-    InstalledExtensionQuery: {
-        fields: <any>null
-    },
-    InstalledExtensionState: {
-        fields: <any>null
-    },
-    InstalledExtensionStateIssue: {
-        fields: <any>null
+    InstalledExtensionStateIssue: <any>{
     },
     InstalledExtensionStateIssueType: {
         enumValues: {
             "warning": 0,
-            "error": 1,
+            "error": 1
         }
     },
-    LicensingOverride: {
-        fields: <any>null
+    LicensingOverride: <any>{
     },
-    RequestedExtension: {
-        fields: <any>null
-    },
-    ResolvedDataProvider: {
-        fields: <any>null
-    },
-    Scope: {
-        fields: <any>null
-    },
-    SerializedContributionNode: {
-        fields: <any>null
-    },
-    SupportedExtension: {
-        fields: <any>null
+    RequestedExtension: <any>{
     },
 };
 
@@ -1327,13 +1232,6 @@ TypeInfo.AcquisitionOperation.fields = {
     operationType: {
         enumType: TypeInfo.AcquisitionOperationType
     },
-    reasons: {
-        isArray: true,
-        typeInfo: TypeInfo.AcquisitionOperationDisallowReason
-    },
-};
-
-TypeInfo.AcquisitionOperationDisallowReason.fields = {
 };
 
 TypeInfo.AcquisitionOptions.fields = {
@@ -1346,29 +1244,9 @@ TypeInfo.AcquisitionOptions.fields = {
     },
 };
 
-TypeInfo.Contribution.fields = {
-    constraints: {
-        isArray: true,
-        typeInfo: TypeInfo.ContributionConstraint
-    },
-};
-
-TypeInfo.ContributionBase.fields = {
-};
-
-TypeInfo.ContributionConstraint.fields = {
-};
-
 TypeInfo.ContributionNodeQuery.fields = {
     queryOptions: {
         enumType: TypeInfo.ContributionQueryOptions
-    },
-};
-
-TypeInfo.ContributionNodeQueryResult.fields = {
-    nodes: {
-    },
-    providerDetails: {
     },
 };
 
@@ -1378,30 +1256,10 @@ TypeInfo.ContributionPropertyDescription.fields = {
     },
 };
 
-TypeInfo.ContributionProviderDetails.fields = {
-};
-
 TypeInfo.ContributionType.fields = {
     properties: {
-    },
-};
-
-TypeInfo.DataProviderContext.fields = {
-};
-
-TypeInfo.DataProviderExceptionDetails.fields = {
-};
-
-TypeInfo.DataProviderQuery.fields = {
-    context: {
-        typeInfo: TypeInfo.DataProviderContext
-    },
-};
-
-TypeInfo.DataProviderResult.fields = {
-    resolvedProviders: {
-        isArray: true,
-        typeInfo: TypeInfo.ResolvedDataProvider
+        isDictionary: true,
+        dictionaryValueTypeInfo: TypeInfo.ContributionPropertyDescription
     },
 };
 
@@ -1412,9 +1270,6 @@ TypeInfo.ExtensionAcquisitionRequest.fields = {
     operationType: {
         enumType: TypeInfo.AcquisitionOperationType
     },
-};
-
-TypeInfo.ExtensionAuditAction.fields = {
 };
 
 TypeInfo.ExtensionAuditLog.fields = {
@@ -1428,73 +1283,15 @@ TypeInfo.ExtensionAuditLogEntry.fields = {
     auditDate: {
         isDate: true,
     },
-    updatedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
-TypeInfo.ExtensionAuthorization.fields = {
-};
-
-TypeInfo.ExtensionDataCollection.fields = {
-};
-
-TypeInfo.ExtensionDataCollectionQuery.fields = {
-    collections: {
-        isArray: true,
-        typeInfo: TypeInfo.ExtensionDataCollection
-    },
 };
 
 TypeInfo.ExtensionEvent.fields = {
     extension: {
         typeInfo: GalleryInterfaces.TypeInfo.PublishedExtension
     },
-    host: {
-        typeInfo: TypeInfo.ExtensionHost
-    },
-    links: {
-        typeInfo: TypeInfo.ExtensionEventUrls
-    },
-    modifiedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     updateType: {
         enumType: TypeInfo.ExtensionUpdateType
     },
-};
-
-TypeInfo.ExtensionEventCallback.fields = {
-};
-
-TypeInfo.ExtensionEventCallbackCollection.fields = {
-    postDisable: {
-        typeInfo: TypeInfo.ExtensionEventCallback
-    },
-    postEnable: {
-        typeInfo: TypeInfo.ExtensionEventCallback
-    },
-    postInstall: {
-        typeInfo: TypeInfo.ExtensionEventCallback
-    },
-    postUninstall: {
-        typeInfo: TypeInfo.ExtensionEventCallback
-    },
-    postUpdate: {
-        typeInfo: TypeInfo.ExtensionEventCallback
-    },
-    preInstall: {
-        typeInfo: TypeInfo.ExtensionEventCallback
-    },
-    versionCheck: {
-        typeInfo: TypeInfo.ExtensionEventCallback
-    },
-};
-
-TypeInfo.ExtensionEventUrls.fields = {
-};
-
-TypeInfo.ExtensionHost.fields = {
 };
 
 TypeInfo.ExtensionLicensing.fields = {
@@ -1505,16 +1302,9 @@ TypeInfo.ExtensionLicensing.fields = {
 };
 
 TypeInfo.ExtensionManifest.fields = {
-    contributions: {
-        isArray: true,
-        typeInfo: TypeInfo.Contribution
-    },
     contributionTypes: {
         isArray: true,
         typeInfo: TypeInfo.ContributionType
-    },
-    eventCallbacks: {
-        typeInfo: TypeInfo.ExtensionEventCallbackCollection
     },
     licensing: {
         typeInfo: TypeInfo.ExtensionLicensing
@@ -1525,29 +1315,17 @@ TypeInfo.ExtensionRequest.fields = {
     requestDate: {
         isDate: true,
     },
-    requestedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     requestState: {
         enumType: TypeInfo.ExtensionRequestState
     },
     resolveDate: {
         isDate: true,
     },
-    resolvedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
 };
 
 TypeInfo.ExtensionRequestEvent.fields = {
     extension: {
         typeInfo: GalleryInterfaces.TypeInfo.PublishedExtension
-    },
-    host: {
-        typeInfo: TypeInfo.ExtensionHost
-    },
-    links: {
-        typeInfo: TypeInfo.ExtensionRequestUrls
     },
     request: {
         typeInfo: TypeInfo.ExtensionRequest
@@ -1561,12 +1339,6 @@ TypeInfo.ExtensionRequestsEvent.fields = {
     extension: {
         typeInfo: GalleryInterfaces.TypeInfo.PublishedExtension
     },
-    host: {
-        typeInfo: TypeInfo.ExtensionHost
-    },
-    links: {
-        typeInfo: TypeInfo.ExtensionRequestUrls
-    },
     requests: {
         isArray: true,
         typeInfo: TypeInfo.ExtensionRequest
@@ -1574,9 +1346,6 @@ TypeInfo.ExtensionRequestsEvent.fields = {
     updateType: {
         enumType: TypeInfo.ExtensionRequestUpdateType
     },
-};
-
-TypeInfo.ExtensionRequestUrls.fields = {
 };
 
 TypeInfo.ExtensionState.fields = {
@@ -1595,24 +1364,10 @@ TypeInfo.ExtensionState.fields = {
     },
 };
 
-TypeInfo.ExtensionUrls.fields = {
-};
-
 TypeInfo.InstalledExtension.fields = {
-    contributions: {
-        isArray: true,
-        typeInfo: TypeInfo.Contribution
-    },
     contributionTypes: {
         isArray: true,
         typeInfo: TypeInfo.ContributionType
-    },
-    eventCallbacks: {
-        typeInfo: TypeInfo.ExtensionEventCallbackCollection
-    },
-    files: {
-        isArray: true,
-        typeInfo: GalleryInterfaces.TypeInfo.ExtensionFile
     },
     flags: {
         enumType: TypeInfo.ExtensionFlags
@@ -1625,13 +1380,6 @@ TypeInfo.InstalledExtension.fields = {
     },
     licensing: {
         typeInfo: TypeInfo.ExtensionLicensing
-    },
-};
-
-TypeInfo.InstalledExtensionQuery.fields = {
-    monikers: {
-        isArray: true,
-        typeInfo: GalleryInterfaces.TypeInfo.ExtensionIdentifier
     },
 };
 
@@ -1665,19 +1413,4 @@ TypeInfo.RequestedExtension.fields = {
         isArray: true,
         typeInfo: TypeInfo.ExtensionRequest
     },
-};
-
-TypeInfo.ResolvedDataProvider.fields = {
-};
-
-TypeInfo.Scope.fields = {
-};
-
-TypeInfo.SerializedContributionNode.fields = {
-    contribution: {
-        typeInfo: TypeInfo.Contribution
-    },
-};
-
-TypeInfo.SupportedExtension.fields = {
 };

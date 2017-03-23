@@ -1330,269 +1330,134 @@ export var TypeInfo = {
             "noOption": 0,
             "login": 1,
             "selectAccount": 2,
-            "freshLogin": 3,
+            "freshLogin": 3
         }
     },
-    AadOauthTokenRequest: {
-        fields: <any>null
+    AgentChangeEvent: <any>{
     },
-    AadOauthTokenResult: {
-        fields: <any>null
+    AgentJobRequestMessage: <any>{
     },
-    AgentChangeEvent: {
-        fields: <any>null
+    AgentPoolEvent: <any>{
     },
-    AgentJobRequestMessage: {
-        fields: <any>null
+    AgentQueueEvent: <any>{
     },
-    AgentMigrationMessage: {
-        fields: <any>null
+    AgentQueuesEvent: <any>{
     },
-    AgentPoolEvent: {
-        fields: <any>null
-    },
-    AgentQueueEvent: {
-        fields: <any>null
-    },
-    AgentQueuesEvent: {
-        fields: <any>null
-    },
-    AgentRefreshMessage: {
-        fields: <any>null
-    },
-    AgentRequestEvent: {
-        fields: <any>null
+    AgentRequestEvent: <any>{
     },
     AuditAction: {
         enumValues: {
             "add": 1,
             "update": 2,
-            "delete": 3,
+            "delete": 3
         }
     },
-    AuthorizationHeader: {
-        fields: <any>null
-    },
-    AzureSpnOperationStatus: {
-        fields: <any>null
-    },
-    AzureSubscription: {
-        fields: <any>null
-    },
-    AzureSubscriptionQueryResult: {
-        fields: <any>null
-    },
-    DataSource: {
-        fields: <any>null
-    },
-    DataSourceBinding: {
-        fields: <any>null
-    },
-    DataSourceDetails: {
-        fields: <any>null
-    },
-    DependencyBinding: {
-        fields: <any>null
-    },
-    DependencyData: {
-        fields: <any>null
-    },
-    DependsOn: {
-        fields: <any>null
-    },
-    DeploymentGroup: {
-        fields: <any>null
+    DeploymentGroup: <any>{
     },
     DeploymentGroupActionFilter: {
         enumValues: {
             "none": 0,
             "manage": 2,
-            "use": 16,
+            "use": 16
         }
     },
     DeploymentGroupExpands: {
         enumValues: {
             "none": 0,
-            "machines": 2,
+            "machines": 2
         }
     },
-    DeploymentGroupReference: {
-        fields: <any>null
+    DeploymentGroupReference: <any>{
     },
-    DeploymentMachine: {
-        fields: <any>null
+    DeploymentMachine: <any>{
     },
-    DeploymentMachineGroup: {
-        fields: <any>null
+    DeploymentMachineGroup: <any>{
     },
-    DeploymentMachineGroupReference: {
-        fields: <any>null
+    DeploymentMachineGroupReference: <any>{
     },
-    DeploymentMachinesChangeEvent: {
-        fields: <any>null
+    DeploymentMachinesChangeEvent: <any>{
     },
-    EndpointAuthorization: {
-        fields: <any>null
-    },
-    EndpointUrl: {
-        fields: <any>null
-    },
-    HelpLink: {
-        fields: <any>null
-    },
-    InputValidationItem: {
-        fields: <any>null
-    },
-    InputValidationRequest: {
-        fields: <any>null
-    },
-    Issue: {
-        fields: <any>null
+    Issue: <any>{
     },
     IssueType: {
         enumValues: {
             "error": 1,
-            "warning": 2,
+            "warning": 2
         }
     },
-    JobAssignedEvent: {
-        fields: <any>null
+    JobAssignedEvent: <any>{
     },
-    JobCancelMessage: {
-        fields: <any>null
+    JobCompletedEvent: <any>{
     },
-    JobCompletedEvent: {
-        fields: <any>null
+    JobEnvironment: <any>{
     },
-    JobEnvironment: {
-        fields: <any>null
-    },
-    JobEvent: {
-        fields: <any>null
-    },
-    JobEventConfig: {
-        fields: <any>null
-    },
-    JobEventsConfig: {
-        fields: <any>null
-    },
-    JobOption: {
-        fields: <any>null
-    },
-    JobRequestMessage: {
-        fields: <any>null
-    },
-    JobStartedEvent: {
-        fields: <any>null
+    JobRequestMessage: <any>{
     },
     MachineGroupActionFilter: {
         enumValues: {
             "none": 0,
             "manage": 2,
-            "use": 16,
+            "use": 16
         }
     },
-    MaskHint: {
-        fields: <any>null
+    MaskHint: <any>{
     },
     MaskType: {
         enumValues: {
             "variable": 1,
-            "regex": 2,
+            "regex": 2
         }
     },
-    PackageMetadata: {
-        fields: <any>null
+    PackageMetadata: <any>{
     },
-    PackageVersion: {
-        fields: <any>null
-    },
-    PlanEnvironment: {
-        fields: <any>null
+    PlanEnvironment: <any>{
     },
     PlanGroupStatusFilter: {
         enumValues: {
             "running": 1,
             "queued": 2,
-            "all": 3,
+            "all": 3
         }
     },
-    ProjectReference: {
-        fields: <any>null
-    },
-    ResultTransformationDetails: {
-        fields: <any>null
-    },
-    SecureFile: {
-        fields: <any>null
+    SecureFile: <any>{
     },
     SecureFileActionFilter: {
         enumValues: {
             "none": 0,
             "manage": 2,
-            "use": 16,
+            "use": 16
         }
     },
-    SendJobResponse: {
-        fields: <any>null
+    ServerJobRequestMessage: <any>{
     },
-    ServerExecutionDefinition: {
-        fields: <any>null
+    ServiceEndpointAuthenticationScheme: <any>{
     },
-    ServerJobRequestMessage: {
-        fields: <any>null
+    ServiceEndpointRequestResult: <any>{
     },
-    ServiceEndpoint: {
-        fields: <any>null
+    ServiceEndpointType: <any>{
     },
-    ServiceEndpointAuthenticationScheme: {
-        fields: <any>null
+    TaskAgent: <any>{
     },
-    ServiceEndpointDetails: {
-        fields: <any>null
+    TaskAgentJobRequest: <any>{
     },
-    ServiceEndpointRequest: {
-        fields: <any>null
-    },
-    ServiceEndpointRequestResult: {
-        fields: <any>null
-    },
-    ServiceEndpointType: {
-        fields: <any>null
-    },
-    TaskAgent: {
-        fields: <any>null
-    },
-    TaskAgentAuthorization: {
-        fields: <any>null
-    },
-    TaskAgentJobRequest: {
-        fields: <any>null
-    },
-    TaskAgentMessage: {
-        fields: <any>null
-    },
-    TaskAgentPool: {
-        fields: <any>null
+    TaskAgentPool: <any>{
     },
     TaskAgentPoolActionFilter: {
         enumValues: {
             "none": 0,
             "manage": 2,
-            "use": 16,
+            "use": 16
         }
     },
-    TaskAgentPoolMaintenanceDefinition: {
-        fields: <any>null
+    TaskAgentPoolMaintenanceDefinition: <any>{
     },
-    TaskAgentPoolMaintenanceJob: {
-        fields: <any>null
+    TaskAgentPoolMaintenanceJob: <any>{
     },
     TaskAgentPoolMaintenanceJobResult: {
         enumValues: {
             "succeeded": 1,
             "failed": 2,
-            "canceled": 4,
+            "canceled": 4
         }
     },
     TaskAgentPoolMaintenanceJobStatus: {
@@ -1600,17 +1465,10 @@ export var TypeInfo = {
             "inProgress": 1,
             "completed": 2,
             "cancelling": 4,
-            "queued": 8,
+            "queued": 8
         }
     },
-    TaskAgentPoolMaintenanceOptions: {
-        fields: <any>null
-    },
-    TaskAgentPoolMaintenanceRetentionPolicy: {
-        fields: <any>null
-    },
-    TaskAgentPoolMaintenanceSchedule: {
-        fields: <any>null
+    TaskAgentPoolMaintenanceSchedule: <any>{
     },
     TaskAgentPoolMaintenanceScheduleDays: {
         enumValues: {
@@ -1622,63 +1480,39 @@ export var TypeInfo = {
             "friday": 16,
             "saturday": 32,
             "sunday": 64,
-            "all": 127,
+            "all": 127
         }
     },
-    TaskAgentPoolReference: {
-        fields: <any>null
+    TaskAgentPoolReference: <any>{
     },
     TaskAgentPoolType: {
         enumValues: {
             "automation": 1,
-            "deployment": 2,
+            "deployment": 2
         }
     },
-    TaskAgentPublicKey: {
-        fields: <any>null
-    },
-    TaskAgentQueue: {
-        fields: <any>null
+    TaskAgentQueue: <any>{
     },
     TaskAgentQueueActionFilter: {
         enumValues: {
             "none": 0,
             "manage": 2,
-            "use": 16,
+            "use": 16
         }
     },
-    TaskAgentReference: {
-        fields: <any>null
+    TaskAgentReference: <any>{
     },
-    TaskAgentSession: {
-        fields: <any>null
-    },
-    TaskAgentSessionKey: {
-        fields: <any>null
+    TaskAgentSession: <any>{
     },
     TaskAgentStatus: {
         enumValues: {
             "offline": 1,
-            "online": 2,
+            "online": 2
         }
     },
-    TaskAgentUpdate: {
-        fields: <any>null
+    TaskAgentUpdate: <any>{
     },
-    TaskAttachment: {
-        fields: <any>null
-    },
-    TaskChangeEvent: {
-        fields: <any>null
-    },
-    TaskDefinition: {
-        fields: <any>null
-    },
-    TaskDefinitionEndpoint: {
-        fields: <any>null
-    },
-    TaskDefinitionReference: {
-        fields: <any>null
+    TaskAttachment: <any>{
     },
     TaskDefinitionStatus: {
         enumValues: {
@@ -1690,81 +1524,39 @@ export var TypeInfo = {
             "requestedUpdate": 6,
             "updated": 7,
             "alreadyUpToDate": 8,
-            "inlineUpdateReceived": 9,
+            "inlineUpdateReceived": 9
         }
     },
-    TaskExecution: {
-        fields: <any>null
+    TaskGroup: <any>{
     },
-    TaskGroup: {
-        fields: <any>null
+    TaskGroupRevision: <any>{
     },
-    TaskGroupDefinition: {
-        fields: <any>null
+    TaskLog: <any>{
     },
-    TaskGroupRevision: {
-        fields: <any>null
+    TaskOrchestrationContainer: <any>{
     },
-    TaskGroupStep: {
-        fields: <any>null
-    },
-    TaskHubLicenseDetails: {
-        fields: <any>null
-    },
-    TaskInputDefinition: {
-        fields: <any>null
-    },
-    TaskInstance: {
-        fields: <any>null
-    },
-    TaskLog: {
-        fields: <any>null
-    },
-    TaskLogReference: {
-        fields: <any>null
-    },
-    TaskOrchestrationContainer: {
-        fields: <any>null
-    },
-    TaskOrchestrationItem: {
-        fields: <any>null
+    TaskOrchestrationItem: <any>{
     },
     TaskOrchestrationItemType: {
         enumValues: {
             "container": 0,
-            "job": 1,
+            "job": 1
         }
     },
-    TaskOrchestrationJob: {
-        fields: <any>null
+    TaskOrchestrationJob: <any>{
     },
-    TaskOrchestrationOwner: {
-        fields: <any>null
-    },
-    TaskOrchestrationPlan: {
-        fields: <any>null
-    },
-    TaskOrchestrationPlanReference: {
-        fields: <any>null
+    TaskOrchestrationPlan: <any>{
     },
     TaskOrchestrationPlanState: {
         enumValues: {
             "inProgress": 1,
             "queued": 2,
-            "completed": 4,
+            "completed": 4
         }
     },
-    TaskOrchestrationQueuedPlan: {
-        fields: <any>null
+    TaskOrchestrationQueuedPlan: <any>{
     },
-    TaskOrchestrationQueuedPlanGroup: {
-        fields: <any>null
-    },
-    TaskPackageMetadata: {
-        fields: <any>null
-    },
-    TaskReference: {
-        fields: <any>null
+    TaskOrchestrationQueuedPlanGroup: <any>{
     },
     TaskResult: {
         enumValues: {
@@ -1773,50 +1565,29 @@ export var TypeInfo = {
             "failed": 2,
             "canceled": 3,
             "skipped": 4,
-            "abandoned": 5,
+            "abandoned": 5
         }
     },
-    TaskSourceDefinition: {
-        fields: <any>null
+    Timeline: <any>{
     },
-    TaskVersion: {
-        fields: <any>null
-    },
-    Timeline: {
-        fields: <any>null
-    },
-    TimelineRecord: {
-        fields: <any>null
+    TimelineRecord: <any>{
     },
     TimelineRecordState: {
         enumValues: {
             "pending": 0,
             "inProgress": 1,
-            "completed": 2,
+            "completed": 2
         }
     },
-    TimelineReference: {
-        fields: <any>null
-    },
-    VariableGroup: {
-        fields: <any>null
+    VariableGroup: <any>{
     },
     VariableGroupActionFilter: {
         enumValues: {
             "none": 0,
             "manage": 2,
-            "use": 16,
+            "use": 16
         }
     },
-    VariableValue: {
-        fields: <any>null
-    },
-};
-
-TypeInfo.AadOauthTokenRequest.fields = {
-};
-
-TypeInfo.AadOauthTokenResult.fields = {
 };
 
 TypeInfo.AgentChangeEvent.fields = {
@@ -1838,19 +1609,6 @@ TypeInfo.AgentJobRequestMessage.fields = {
     lockedUntil: {
         isDate: true,
     },
-    plan: {
-        typeInfo: TypeInfo.TaskOrchestrationPlanReference
-    },
-    tasks: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskInstance
-    },
-    timeline: {
-        typeInfo: TypeInfo.TimelineReference
-    },
-};
-
-TypeInfo.AgentMigrationMessage.fields = {
 };
 
 TypeInfo.AgentPoolEvent.fields = {
@@ -1872,53 +1630,12 @@ TypeInfo.AgentQueuesEvent.fields = {
     },
 };
 
-TypeInfo.AgentRefreshMessage.fields = {
-};
-
 TypeInfo.AgentRequestEvent.fields = {
     result: {
         enumType: TypeInfo.TaskResult
     },
     timeStamp: {
         isDate: true,
-    },
-};
-
-TypeInfo.AuthorizationHeader.fields = {
-};
-
-TypeInfo.AzureSpnOperationStatus.fields = {
-};
-
-TypeInfo.AzureSubscription.fields = {
-};
-
-TypeInfo.AzureSubscriptionQueryResult.fields = {
-    value: {
-        isArray: true,
-        typeInfo: TypeInfo.AzureSubscription
-    },
-};
-
-TypeInfo.DataSource.fields = {
-};
-
-TypeInfo.DataSourceBinding.fields = {
-};
-
-TypeInfo.DataSourceDetails.fields = {
-};
-
-TypeInfo.DependencyBinding.fields = {
-};
-
-TypeInfo.DependencyData.fields = {
-};
-
-TypeInfo.DependsOn.fields = {
-    map: {
-        isArray: true,
-        typeInfo: TypeInfo.DependencyBinding
     },
 };
 
@@ -1930,17 +1647,11 @@ TypeInfo.DeploymentGroup.fields = {
     pool: {
         typeInfo: TypeInfo.TaskAgentPoolReference
     },
-    project: {
-        typeInfo: TypeInfo.ProjectReference
-    },
 };
 
 TypeInfo.DeploymentGroupReference.fields = {
     pool: {
         typeInfo: TypeInfo.TaskAgentPoolReference
-    },
-    project: {
-        typeInfo: TypeInfo.ProjectReference
     },
 };
 
@@ -1958,17 +1669,11 @@ TypeInfo.DeploymentMachineGroup.fields = {
     pool: {
         typeInfo: TypeInfo.TaskAgentPoolReference
     },
-    project: {
-        typeInfo: TypeInfo.ProjectReference
-    },
 };
 
 TypeInfo.DeploymentMachineGroupReference.fields = {
     pool: {
         typeInfo: TypeInfo.TaskAgentPoolReference
-    },
-    project: {
-        typeInfo: TypeInfo.ProjectReference
     },
 };
 
@@ -1979,26 +1684,6 @@ TypeInfo.DeploymentMachinesChangeEvent.fields = {
     machines: {
         isArray: true,
         typeInfo: TypeInfo.DeploymentMachine
-    },
-};
-
-TypeInfo.EndpointAuthorization.fields = {
-};
-
-TypeInfo.EndpointUrl.fields = {
-    dependsOn: {
-        typeInfo: TypeInfo.DependsOn
-    },
-};
-
-TypeInfo.HelpLink.fields = {
-};
-
-TypeInfo.InputValidationItem.fields = {
-};
-
-TypeInfo.InputValidationRequest.fields = {
-    inputs: {
     },
 };
 
@@ -2014,71 +1699,27 @@ TypeInfo.JobAssignedEvent.fields = {
     },
 };
 
-TypeInfo.JobCancelMessage.fields = {
-};
-
 TypeInfo.JobCompletedEvent.fields = {
-    outputVariables: {
-    },
     result: {
         enumType: TypeInfo.TaskResult
     },
 };
 
 TypeInfo.JobEnvironment.fields = {
-    endpoints: {
-        isArray: true,
-        typeInfo: TypeInfo.ServiceEndpoint
-    },
     mask: {
         isArray: true,
         typeInfo: TypeInfo.MaskHint
-    },
-    options: {
     },
     secureFiles: {
         isArray: true,
         typeInfo: TypeInfo.SecureFile
     },
-    systemConnection: {
-        typeInfo: TypeInfo.ServiceEndpoint
-    },
-};
-
-TypeInfo.JobEvent.fields = {
-};
-
-TypeInfo.JobEventConfig.fields = {
-};
-
-TypeInfo.JobEventsConfig.fields = {
-    jobAssigned: {
-        typeInfo: TypeInfo.JobEventConfig
-    },
-    jobCompleted: {
-        typeInfo: TypeInfo.JobEventConfig
-    },
-    jobStarted: {
-        typeInfo: TypeInfo.JobEventConfig
-    },
-};
-
-TypeInfo.JobOption.fields = {
 };
 
 TypeInfo.JobRequestMessage.fields = {
     environment: {
         typeInfo: TypeInfo.JobEnvironment
     },
-    plan: {
-        typeInfo: TypeInfo.TaskOrchestrationPlanReference
-    },
-    timeline: {
-        typeInfo: TypeInfo.TimelineReference
-    },
-};
-
-TypeInfo.JobStartedEvent.fields = {
 };
 
 TypeInfo.MaskHint.fields = {
@@ -2091,12 +1732,6 @@ TypeInfo.PackageMetadata.fields = {
     createdOn: {
         isDate: true,
     },
-    version: {
-        typeInfo: TypeInfo.PackageVersion
-    },
-};
-
-TypeInfo.PackageVersion.fields = {
 };
 
 TypeInfo.PlanEnvironment.fields = {
@@ -2104,40 +1739,14 @@ TypeInfo.PlanEnvironment.fields = {
         isArray: true,
         typeInfo: TypeInfo.MaskHint
     },
-    options: {
-    },
-};
-
-TypeInfo.ProjectReference.fields = {
-};
-
-TypeInfo.ResultTransformationDetails.fields = {
 };
 
 TypeInfo.SecureFile.fields = {
-    createdBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     createdOn: {
         isDate: true,
     },
-    modifiedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     modifiedOn: {
         isDate: true,
-    },
-};
-
-TypeInfo.SendJobResponse.fields = {
-    events: {
-        typeInfo: TypeInfo.JobEventsConfig
-    },
-};
-
-TypeInfo.ServerExecutionDefinition.fields = {
-    events: {
-        typeInfo: TypeInfo.JobEventsConfig
     },
 };
 
@@ -2145,61 +1754,12 @@ TypeInfo.ServerJobRequestMessage.fields = {
     environment: {
         typeInfo: TypeInfo.JobEnvironment
     },
-    plan: {
-        typeInfo: TypeInfo.TaskOrchestrationPlanReference
-    },
-    taskDefinition: {
-        typeInfo: TypeInfo.TaskDefinition
-    },
-    taskInstance: {
-        typeInfo: TypeInfo.TaskInstance
-    },
-    timeline: {
-        typeInfo: TypeInfo.TimelineReference
-    },
-};
-
-TypeInfo.ServiceEndpoint.fields = {
-    administratorsGroup: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    authorization: {
-        typeInfo: TypeInfo.EndpointAuthorization
-    },
-    createdBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    readersGroup: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
 };
 
 TypeInfo.ServiceEndpointAuthenticationScheme.fields = {
-    authorizationHeaders: {
-        isArray: true,
-        typeInfo: TypeInfo.AuthorizationHeader
-    },
     inputDescriptors: {
         isArray: true,
         typeInfo: FormInputInterfaces.TypeInfo.InputDescriptor
-    },
-};
-
-TypeInfo.ServiceEndpointDetails.fields = {
-    authorization: {
-        typeInfo: TypeInfo.EndpointAuthorization
-    },
-};
-
-TypeInfo.ServiceEndpointRequest.fields = {
-    dataSourceDetails: {
-        typeInfo: TypeInfo.DataSourceDetails
-    },
-    resultTransformationDetails: {
-        typeInfo: TypeInfo.ResultTransformationDetails
-    },
-    serviceEndpointDetails: {
-        typeInfo: TypeInfo.ServiceEndpointDetails
     },
 };
 
@@ -2211,20 +1771,6 @@ TypeInfo.ServiceEndpointType.fields = {
         isArray: true,
         typeInfo: TypeInfo.ServiceEndpointAuthenticationScheme
     },
-    dataSources: {
-        isArray: true,
-        typeInfo: TypeInfo.DataSource
-    },
-    dependencyData: {
-        isArray: true,
-        typeInfo: TypeInfo.DependencyData
-    },
-    endpointUrl: {
-        typeInfo: TypeInfo.EndpointUrl
-    },
-    helpLink: {
-        typeInfo: TypeInfo.HelpLink
-    },
     inputDescriptors: {
         isArray: true,
         typeInfo: FormInputInterfaces.TypeInfo.InputDescriptor
@@ -2234,9 +1780,6 @@ TypeInfo.ServiceEndpointType.fields = {
 TypeInfo.TaskAgent.fields = {
     assignedRequest: {
         typeInfo: TypeInfo.TaskAgentJobRequest
-    },
-    authorization: {
-        typeInfo: TypeInfo.TaskAgentAuthorization
     },
     createdOn: {
         isDate: true,
@@ -2252,18 +1795,9 @@ TypeInfo.TaskAgent.fields = {
     },
 };
 
-TypeInfo.TaskAgentAuthorization.fields = {
-    publicKey: {
-        typeInfo: TypeInfo.TaskAgentPublicKey
-    },
-};
-
 TypeInfo.TaskAgentJobRequest.fields = {
     assignTime: {
         isDate: true,
-    },
-    definition: {
-        typeInfo: TypeInfo.TaskOrchestrationOwner
     },
     finishTime: {
         isDate: true,
@@ -2274,9 +1808,6 @@ TypeInfo.TaskAgentJobRequest.fields = {
     matchedAgents: {
         isArray: true,
         typeInfo: TypeInfo.TaskAgentReference
-    },
-    owner: {
-        typeInfo: TypeInfo.TaskOrchestrationOwner
     },
     queueTime: {
         isDate: true,
@@ -2292,36 +1823,18 @@ TypeInfo.TaskAgentJobRequest.fields = {
     },
 };
 
-TypeInfo.TaskAgentMessage.fields = {
-};
-
 TypeInfo.TaskAgentPool.fields = {
-    administratorsGroup: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    createdBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     createdOn: {
         isDate: true,
     },
     poolType: {
         enumType: TypeInfo.TaskAgentPoolType
     },
-    serviceAccountsGroup: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
 };
 
 TypeInfo.TaskAgentPoolMaintenanceDefinition.fields = {
-    options: {
-        typeInfo: TypeInfo.TaskAgentPoolMaintenanceOptions
-    },
     pool: {
         typeInfo: TypeInfo.TaskAgentPoolReference
-    },
-    retentionPolicy: {
-        typeInfo: TypeInfo.TaskAgentPoolMaintenanceRetentionPolicy
     },
     scheduleSetting: {
         typeInfo: TypeInfo.TaskAgentPoolMaintenanceSchedule
@@ -2338,9 +1851,6 @@ TypeInfo.TaskAgentPoolMaintenanceJob.fields = {
     queueTime: {
         isDate: true,
     },
-    requestedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     result: {
         enumType: TypeInfo.TaskAgentPoolMaintenanceJobResult
     },
@@ -2356,12 +1866,6 @@ TypeInfo.TaskAgentPoolMaintenanceJob.fields = {
     },
 };
 
-TypeInfo.TaskAgentPoolMaintenanceOptions.fields = {
-};
-
-TypeInfo.TaskAgentPoolMaintenanceRetentionPolicy.fields = {
-};
-
 TypeInfo.TaskAgentPoolMaintenanceSchedule.fields = {
     daysToBuild: {
         enumType: TypeInfo.TaskAgentPoolMaintenanceScheduleDays
@@ -2372,9 +1876,6 @@ TypeInfo.TaskAgentPoolReference.fields = {
     poolType: {
         enumType: TypeInfo.TaskAgentPoolType
     },
-};
-
-TypeInfo.TaskAgentPublicKey.fields = {
 };
 
 TypeInfo.TaskAgentQueue.fields = {
@@ -2393,26 +1894,11 @@ TypeInfo.TaskAgentSession.fields = {
     agent: {
         typeInfo: TypeInfo.TaskAgentReference
     },
-    encryptionKey: {
-        typeInfo: TypeInfo.TaskAgentSessionKey
-    },
-};
-
-TypeInfo.TaskAgentSessionKey.fields = {
 };
 
 TypeInfo.TaskAgentUpdate.fields = {
-    requestedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     requestTime: {
         isDate: true,
-    },
-    sourceVersion: {
-        typeInfo: TypeInfo.PackageVersion
-    },
-    targetVersion: {
-        typeInfo: TypeInfo.PackageVersion
     },
 };
 
@@ -2425,115 +1911,22 @@ TypeInfo.TaskAttachment.fields = {
     },
 };
 
-TypeInfo.TaskChangeEvent.fields = {
-};
-
-TypeInfo.TaskDefinition.fields = {
-    agentExecution: {
-        typeInfo: TypeInfo.TaskExecution
-    },
-    dataSourceBindings: {
-        isArray: true,
-        typeInfo: TypeInfo.DataSourceBinding
-    },
-    groups: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskGroupDefinition
-    },
-    inputs: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskInputDefinition
-    },
-    sourceDefinitions: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskSourceDefinition
-    },
-    version: {
-        typeInfo: TypeInfo.TaskVersion
-    },
-};
-
-TypeInfo.TaskDefinitionEndpoint.fields = {
-};
-
-TypeInfo.TaskDefinitionReference.fields = {
-};
-
-TypeInfo.TaskExecution.fields = {
-    execTask: {
-        typeInfo: TypeInfo.TaskReference
-    },
-};
-
 TypeInfo.TaskGroup.fields = {
-    agentExecution: {
-        typeInfo: TypeInfo.TaskExecution
-    },
-    createdBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     createdOn: {
         isDate: true,
-    },
-    dataSourceBindings: {
-        isArray: true,
-        typeInfo: TypeInfo.DataSourceBinding
-    },
-    groups: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskGroupDefinition
-    },
-    inputs: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskInputDefinition
-    },
-    modifiedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
     modifiedOn: {
         isDate: true,
     },
-    sourceDefinitions: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskSourceDefinition
-    },
-    tasks: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskGroupStep
-    },
-    version: {
-        typeInfo: TypeInfo.TaskVersion
-    },
-};
-
-TypeInfo.TaskGroupDefinition.fields = {
 };
 
 TypeInfo.TaskGroupRevision.fields = {
-    changedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     changedDate: {
         isDate: true,
     },
     changeType: {
         enumType: TypeInfo.AuditAction
     },
-};
-
-TypeInfo.TaskGroupStep.fields = {
-    task: {
-        typeInfo: TypeInfo.TaskDefinitionReference
-    },
-};
-
-TypeInfo.TaskHubLicenseDetails.fields = {
-};
-
-TypeInfo.TaskInputDefinition.fields = {
-};
-
-TypeInfo.TaskInstance.fields = {
 };
 
 TypeInfo.TaskLog.fields = {
@@ -2543,9 +1936,6 @@ TypeInfo.TaskLog.fields = {
     lastChangedOn: {
         isDate: true,
     },
-};
-
-TypeInfo.TaskLogReference.fields = {
 };
 
 TypeInfo.TaskOrchestrationContainer.fields = {
@@ -2568,25 +1958,12 @@ TypeInfo.TaskOrchestrationItem.fields = {
 };
 
 TypeInfo.TaskOrchestrationJob.fields = {
-    executeAs: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     itemType: {
         enumType: TypeInfo.TaskOrchestrationItemType
     },
-    tasks: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskInstance
-    },
-};
-
-TypeInfo.TaskOrchestrationOwner.fields = {
 };
 
 TypeInfo.TaskOrchestrationPlan.fields = {
-    definition: {
-        typeInfo: TypeInfo.TaskOrchestrationOwner
-    },
     environment: {
         typeInfo: TypeInfo.PlanEnvironment
     },
@@ -2595,9 +1972,6 @@ TypeInfo.TaskOrchestrationPlan.fields = {
     },
     implementation: {
         typeInfo: TypeInfo.TaskOrchestrationContainer
-    },
-    owner: {
-        typeInfo: TypeInfo.TaskOrchestrationOwner
     },
     result: {
         enumType: TypeInfo.TaskResult
@@ -2608,29 +1982,11 @@ TypeInfo.TaskOrchestrationPlan.fields = {
     state: {
         enumType: TypeInfo.TaskOrchestrationPlanState
     },
-    timeline: {
-        typeInfo: TypeInfo.TimelineReference
-    },
-};
-
-TypeInfo.TaskOrchestrationPlanReference.fields = {
-    definition: {
-        typeInfo: TypeInfo.TaskOrchestrationOwner
-    },
-    owner: {
-        typeInfo: TypeInfo.TaskOrchestrationOwner
-    },
 };
 
 TypeInfo.TaskOrchestrationQueuedPlan.fields = {
     assignTime: {
         isDate: true,
-    },
-    definition: {
-        typeInfo: TypeInfo.TaskOrchestrationOwner
-    },
-    owner: {
-        typeInfo: TypeInfo.TaskOrchestrationOwner
     },
     queueTime: {
         isDate: true,
@@ -2638,31 +1994,10 @@ TypeInfo.TaskOrchestrationQueuedPlan.fields = {
 };
 
 TypeInfo.TaskOrchestrationQueuedPlanGroup.fields = {
-    definition: {
-        typeInfo: TypeInfo.TaskOrchestrationOwner
-    },
-    owner: {
-        typeInfo: TypeInfo.TaskOrchestrationOwner
-    },
     plans: {
         isArray: true,
         typeInfo: TypeInfo.TaskOrchestrationQueuedPlan
     },
-    project: {
-        typeInfo: TypeInfo.ProjectReference
-    },
-};
-
-TypeInfo.TaskPackageMetadata.fields = {
-};
-
-TypeInfo.TaskReference.fields = {
-};
-
-TypeInfo.TaskSourceDefinition.fields = {
-};
-
-TypeInfo.TaskVersion.fields = {
 };
 
 TypeInfo.Timeline.fields = {
@@ -2676,9 +2011,6 @@ TypeInfo.Timeline.fields = {
 };
 
 TypeInfo.TimelineRecord.fields = {
-    details: {
-        typeInfo: TypeInfo.TimelineReference
-    },
     finishTime: {
         isDate: true,
     },
@@ -2689,9 +2021,6 @@ TypeInfo.TimelineRecord.fields = {
     lastModified: {
         isDate: true,
     },
-    log: {
-        typeInfo: TypeInfo.TaskLogReference
-    },
     result: {
         enumType: TypeInfo.TaskResult
     },
@@ -2701,30 +2030,13 @@ TypeInfo.TimelineRecord.fields = {
     state: {
         enumType: TypeInfo.TimelineRecordState
     },
-    task: {
-        typeInfo: TypeInfo.TaskReference
-    },
-};
-
-TypeInfo.TimelineReference.fields = {
 };
 
 TypeInfo.VariableGroup.fields = {
-    createdBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     createdOn: {
         isDate: true,
-    },
-    modifiedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
     modifiedOn: {
         isDate: true,
     },
-    variables: {
-    },
-};
-
-TypeInfo.VariableValue.fields = {
 };

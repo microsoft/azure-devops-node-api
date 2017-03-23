@@ -99,11 +99,11 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * Returns the artifact details that automation agent requires
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     */
+    * Returns the artifact details that automation agent requires
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    */
     public async getAgentArtifactDefinitions(
         project: string,
         releaseId: number
@@ -123,7 +123,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.AgentArtifactDefinition[]>;
@@ -143,9 +143,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} approvalStepId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} approvalStepId
+    */
     public async getApprovalHistory(
         project: string,
         approvalStepId: number
@@ -165,7 +165,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval>;
@@ -185,10 +185,10 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} approvalId
-     * @param {boolean} includeHistory
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} approvalId
+    * @param {boolean} includeHistory
+    */
     public async getApproval(
         project: string,
         approvalId: number,
@@ -214,7 +214,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval>;
@@ -234,10 +234,10 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {ReleaseInterfaces.ReleaseApproval} approval
-     * @param {string} project - Project ID or project name
-     * @param {number} approvalId
-     */
+    * @param {ReleaseInterfaces.ReleaseApproval} approval
+    * @param {string} project - Project ID or project name
+    * @param {number} approvalId
+    */
     public async updateReleaseApproval(
         approval: ReleaseInterfaces.ReleaseApproval,
         project: string,
@@ -258,7 +258,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval>;
@@ -278,16 +278,16 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {string} assignedToFilter
-     * @param {ReleaseInterfaces.ApprovalStatus} statusFilter
-     * @param {number[]} releaseIdsFilter
-     * @param {ReleaseInterfaces.ApprovalType} typeFilter
-     * @param {number} top
-     * @param {number} continuationToken
-     * @param {ReleaseInterfaces.ReleaseQueryOrder} queryOrder
-     * @param {boolean} includeMyGroupApprovals
-     */
+    * @param {string} project - Project ID or project name
+    * @param {string} assignedToFilter
+    * @param {ReleaseInterfaces.ApprovalStatus} statusFilter
+    * @param {number[]} releaseIdsFilter
+    * @param {ReleaseInterfaces.ApprovalType} typeFilter
+    * @param {number} top
+    * @param {number} continuationToken
+    * @param {ReleaseInterfaces.ReleaseQueryOrder} queryOrder
+    * @param {boolean} includeMyGroupApprovals
+    */
     public async getApprovals(
         project: string,
         assignedToFilter?: string,
@@ -325,7 +325,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval[]>;
@@ -345,11 +345,11 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {number} baseReleaseId
-     * @param {number} top
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {number} baseReleaseId
+    * @param {number} top
+    */
     public async getReleaseChanges(
         project: string,
         releaseId: number,
@@ -377,7 +377,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Change[]>;
@@ -397,9 +397,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {ReleaseInterfaces.ContinuousDeploymentSetupData} configData
-     * @param {string} project - Project ID or project name
-     */
+    * @param {ReleaseInterfaces.ContinuousDeploymentSetupData} configData
+    * @param {string} project - Project ID or project name
+    */
     public async setupContinuousDeployment(
         configData: ReleaseInterfaces.ContinuousDeploymentSetupData,
         project: string
@@ -418,7 +418,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string>;
@@ -438,9 +438,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {string} taskGroupId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {string} taskGroupId
+    */
     public async getDefinitionEnvironments(
         project: string,
         taskGroupId?: string
@@ -464,7 +464,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.DefinitionEnvironmentReference[]>;
@@ -484,9 +484,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {ReleaseInterfaces.ReleaseDefinition} releaseDefinition
-     * @param {string} project - Project ID or project name
-     */
+    * @param {ReleaseInterfaces.ReleaseDefinition} releaseDefinition
+    * @param {string} project - Project ID or project name
+    */
     public async createReleaseDefinition(
         releaseDefinition: ReleaseInterfaces.ReleaseDefinition,
         project: string
@@ -505,7 +505,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition>;
@@ -525,9 +525,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} definitionId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    */
     public async deleteReleaseDefinition(
         project: string,
         definitionId: number
@@ -547,7 +547,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -567,10 +567,10 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} definitionId
-     * @param {string[]} propertyFilters
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    * @param {string[]} propertyFilters
+    */
     public async getReleaseDefinition(
         project: string,
         definitionId: number,
@@ -596,7 +596,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition>;
@@ -616,10 +616,10 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} definitionId
-     * @param {number} revision
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    * @param {number} revision
+    */
     public async getReleaseDefinitionRevision(
         project: string,
         definitionId: number,
@@ -657,19 +657,19 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {string} searchText
-     * @param {ReleaseInterfaces.ReleaseDefinitionExpands} expand
-     * @param {string} artifactType
-     * @param {string} artifactSourceId
-     * @param {number} top
-     * @param {string} continuationToken
-     * @param {ReleaseInterfaces.ReleaseDefinitionQueryOrder} queryOrder
-     * @param {string} path
-     * @param {boolean} isExactNameMatch
-     * @param {string[]} tagFilter
-     * @param {string[]} propertyFilters
-     */
+    * @param {string} project - Project ID or project name
+    * @param {string} searchText
+    * @param {ReleaseInterfaces.ReleaseDefinitionExpands} expand
+    * @param {string} artifactType
+    * @param {string} artifactSourceId
+    * @param {number} top
+    * @param {string} continuationToken
+    * @param {ReleaseInterfaces.ReleaseDefinitionQueryOrder} queryOrder
+    * @param {string} path
+    * @param {boolean} isExactNameMatch
+    * @param {string[]} tagFilter
+    * @param {string[]} propertyFilters
+    */
     public async getReleaseDefinitions(
         project: string,
         searchText?: string,
@@ -713,7 +713,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition[]>;
@@ -733,11 +733,11 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {string} artifactType
-     * @param {string} artifactSourceId
-     * @param {ReleaseInterfaces.ReleaseDefinitionExpands} expand
-     */
+    * @param {string} project - Project ID or project name
+    * @param {string} artifactType
+    * @param {string} artifactSourceId
+    * @param {ReleaseInterfaces.ReleaseDefinitionExpands} expand
+    */
     public async getReleaseDefinitionsForArtifactSource(
         project: string,
         artifactType: string,
@@ -765,7 +765,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition[]>;
@@ -785,9 +785,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {ReleaseInterfaces.ReleaseDefinition} releaseDefinition
-     * @param {string} project - Project ID or project name
-     */
+    * @param {ReleaseInterfaces.ReleaseDefinition} releaseDefinition
+    * @param {string} project - Project ID or project name
+    */
     public async updateReleaseDefinition(
         releaseDefinition: ReleaseInterfaces.ReleaseDefinition,
         project: string
@@ -806,7 +806,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition>;
@@ -826,20 +826,20 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} definitionId
-     * @param {number} definitionEnvironmentId
-     * @param {string} createdBy
-     * @param {Date} minModifiedTime
-     * @param {Date} maxModifiedTime
-     * @param {ReleaseInterfaces.DeploymentStatus} deploymentStatus
-     * @param {ReleaseInterfaces.DeploymentOperationStatus} operationStatus
-     * @param {boolean} latestAttemptsOnly
-     * @param {ReleaseInterfaces.ReleaseQueryOrder} queryOrder
-     * @param {number} top
-     * @param {number} continuationToken
-     * @param {string} createdFor
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    * @param {number} definitionEnvironmentId
+    * @param {string} createdBy
+    * @param {Date} minModifiedTime
+    * @param {Date} maxModifiedTime
+    * @param {ReleaseInterfaces.DeploymentStatus} deploymentStatus
+    * @param {ReleaseInterfaces.DeploymentOperationStatus} operationStatus
+    * @param {boolean} latestAttemptsOnly
+    * @param {ReleaseInterfaces.ReleaseQueryOrder} queryOrder
+    * @param {number} top
+    * @param {number} continuationToken
+    * @param {string} createdFor
+    */
     public async getDeployments(
         project: string,
         definitionId?: number,
@@ -885,7 +885,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Deployment[]>;
@@ -905,9 +905,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {ReleaseInterfaces.DeploymentQueryParameters} queryParameters
-     * @param {string} project - Project ID or project name
-     */
+    * @param {ReleaseInterfaces.DeploymentQueryParameters} queryParameters
+    * @param {string} project - Project ID or project name
+    */
     public async getDeploymentsForMultipleEnvironments(
         queryParameters: ReleaseInterfaces.DeploymentQueryParameters,
         project: string
@@ -926,7 +926,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Deployment[]>;
@@ -946,10 +946,10 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {number} environmentId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {number} environmentId
+    */
     public async getReleaseEnvironment(
         project: string,
         releaseId: number,
@@ -971,7 +971,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseEnvironment>;
@@ -991,11 +991,11 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {ReleaseInterfaces.ReleaseEnvironmentUpdateMetadata} environmentUpdateData
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {number} environmentId
-     */
+    * @param {ReleaseInterfaces.ReleaseEnvironmentUpdateMetadata} environmentUpdateData
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {number} environmentId
+    */
     public async updateReleaseEnvironment(
         environmentUpdateData: ReleaseInterfaces.ReleaseEnvironmentUpdateMetadata,
         project: string,
@@ -1018,7 +1018,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseEnvironment>;
@@ -1038,9 +1038,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate} template
-     * @param {string} project - Project ID or project name
-     */
+    * @param {ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate} template
+    * @param {string} project - Project ID or project name
+    */
     public async createDefinitionEnvironmentTemplate(
         template: ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate,
         project: string
@@ -1059,7 +1059,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>;
@@ -1079,9 +1079,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {string} templateId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {string} templateId
+    */
     public async deleteDefinitionEnvironmentTemplate(
         project: string,
         templateId: string
@@ -1105,7 +1105,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -1125,9 +1125,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {string} templateId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {string} templateId
+    */
     public async getDefinitionEnvironmentTemplate(
         project: string,
         templateId: string
@@ -1151,7 +1151,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>;
@@ -1171,8 +1171,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     */
+    * @param {string} project - Project ID or project name
+    */
     public async listDefinitionEnvironmentTemplates(
         project: string
         ): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]> {
@@ -1190,7 +1190,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]>;
@@ -1210,11 +1210,11 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {ReleaseInterfaces.FavoriteItem[]} favoriteItems
-     * @param {string} project - Project ID or project name
-     * @param {string} scope
-     * @param {string} identityId
-     */
+    * @param {ReleaseInterfaces.FavoriteItem[]} favoriteItems
+    * @param {string} project - Project ID or project name
+    * @param {string} scope
+    * @param {string} identityId
+    */
     public async createFavorites(
         favoriteItems: ReleaseInterfaces.FavoriteItem[],
         project: string,
@@ -1241,7 +1241,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.FavoriteItem[]>;
@@ -1261,11 +1261,11 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {string} scope
-     * @param {string} identityId
-     * @param {string} favoriteItemIds
-     */
+    * @param {string} project - Project ID or project name
+    * @param {string} scope
+    * @param {string} identityId
+    * @param {string} favoriteItemIds
+    */
     public async deleteFavorites(
         project: string,
         scope: string,
@@ -1293,7 +1293,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -1313,10 +1313,10 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {string} scope
-     * @param {string} identityId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {string} scope
+    * @param {string} identityId
+    */
     public async getFavorites(
         project: string,
         scope: string,
@@ -1342,7 +1342,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.FavoriteItem[]>;
@@ -1362,12 +1362,12 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * Creates a new folder
-     * 
-     * @param {ReleaseInterfaces.Folder} folder
-     * @param {string} project - Project ID or project name
-     * @param {string} path
-     */
+    * Creates a new folder
+    * 
+    * @param {ReleaseInterfaces.Folder} folder
+    * @param {string} project - Project ID or project name
+    * @param {string} path
+    */
     public async createFolder(
         folder: ReleaseInterfaces.Folder,
         project: string,
@@ -1388,7 +1388,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Folder>;
@@ -1408,11 +1408,11 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * Deletes a definition folder for given folder name and path and all it's existing definitions
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {string} path
-     */
+    * Deletes a definition folder for given folder name and path and all it's existing definitions
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {string} path
+    */
     public async deleteFolder(
         project: string,
         path: string
@@ -1432,7 +1432,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -1452,12 +1452,12 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * Gets folders
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {string} path
-     * @param {ReleaseInterfaces.FolderPathQueryOrder} queryOrder
-     */
+    * Gets folders
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {string} path
+    * @param {ReleaseInterfaces.FolderPathQueryOrder} queryOrder
+    */
     public async getFolders(
         project: string,
         path?: string,
@@ -1483,7 +1483,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Folder[]>;
@@ -1503,12 +1503,12 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * Updates an existing folder at given  existing path
-     * 
-     * @param {ReleaseInterfaces.Folder} folder
-     * @param {string} project - Project ID or project name
-     * @param {string} path
-     */
+    * Updates an existing folder at given  existing path
+    * 
+    * @param {ReleaseInterfaces.Folder} folder
+    * @param {string} project - Project ID or project name
+    * @param {string} path
+    */
     public async updateFolder(
         folder: ReleaseInterfaces.Folder,
         project: string,
@@ -1529,7 +1529,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Folder>;
@@ -1549,9 +1549,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    */
     public async getReleaseHistory(
         project: string,
         releaseId: number
@@ -1571,7 +1571,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseRevision[]>;
@@ -1591,9 +1591,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {FormInputInterfaces.InputValuesQuery} query
-     * @param {string} project - Project ID or project name
-     */
+    * @param {FormInputInterfaces.InputValuesQuery} query
+    * @param {string} project - Project ID or project name
+    */
     public async getInputValues(
         query: FormInputInterfaces.InputValuesQuery,
         project: string
@@ -1612,7 +1612,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<FormInputInterfaces.InputValuesQuery>;
@@ -1632,12 +1632,12 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {number} environmentId
-     * @param {number} taskId
-     * @param {number} attemptId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {number} environmentId
+    * @param {number} taskId
+    * @param {number} attemptId
+    */
     public async getLog(
         project: string,
         releaseId: number,
@@ -1679,9 +1679,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    */
     public async getLogs(
         project: string,
         releaseId: number
@@ -1713,12 +1713,12 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {number} environmentId
-     * @param {number} releaseDeployPhaseId
-     * @param {number} taskId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {number} environmentId
+    * @param {number} releaseDeployPhaseId
+    * @param {number} taskId
+    */
     public async getTaskLog(
         project: string,
         releaseId: number,
@@ -1756,10 +1756,10 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {number} manualInterventionId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {number} manualInterventionId
+    */
     public async getManualIntervention(
         project: string,
         releaseId: number,
@@ -1781,7 +1781,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ManualIntervention>;
@@ -1801,9 +1801,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    */
     public async getManualInterventions(
         project: string,
         releaseId: number
@@ -1823,7 +1823,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ManualIntervention[]>;
@@ -1843,11 +1843,11 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {ReleaseInterfaces.ManualInterventionUpdateMetadata} manualInterventionUpdateMetadata
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {number} manualInterventionId
-     */
+    * @param {ReleaseInterfaces.ManualInterventionUpdateMetadata} manualInterventionUpdateMetadata
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {number} manualInterventionId
+    */
     public async updateManualIntervention(
         manualInterventionUpdateMetadata: ReleaseInterfaces.ManualInterventionUpdateMetadata,
         project: string,
@@ -1870,7 +1870,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ManualIntervention>;
@@ -1890,9 +1890,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {Date} minMetricsTime
-     */
+    * @param {string} project - Project ID or project name
+    * @param {Date} minMetricsTime
+    */
     public async getMetrics(
         project: string,
         minMetricsTime?: Date
@@ -1916,7 +1916,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Metric[]>;
@@ -1936,9 +1936,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} artifactType
-     * @param {string} artifactSourceId
-     */
+    * @param {string} artifactType
+    * @param {string} artifactSourceId
+    */
     public async getReleaseProjects(
         artifactType: string,
         artifactSourceId: string
@@ -1962,7 +1962,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ProjectReference[]>;
@@ -1982,27 +1982,27 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} definitionId
-     * @param {number} definitionEnvironmentId
-     * @param {string} searchText
-     * @param {string} createdBy
-     * @param {ReleaseInterfaces.ReleaseStatus} statusFilter
-     * @param {number} environmentStatusFilter
-     * @param {Date} minCreatedTime
-     * @param {Date} maxCreatedTime
-     * @param {ReleaseInterfaces.ReleaseQueryOrder} queryOrder
-     * @param {number} top
-     * @param {number} continuationToken
-     * @param {ReleaseInterfaces.ReleaseExpands} expand
-     * @param {string} artifactTypeId
-     * @param {string} sourceId
-     * @param {string} artifactVersionId
-     * @param {string} sourceBranchFilter
-     * @param {boolean} isDeleted
-     * @param {string[]} tagFilter
-     * @param {string[]} propertyFilters
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    * @param {number} definitionEnvironmentId
+    * @param {string} searchText
+    * @param {string} createdBy
+    * @param {ReleaseInterfaces.ReleaseStatus} statusFilter
+    * @param {number} environmentStatusFilter
+    * @param {Date} minCreatedTime
+    * @param {Date} maxCreatedTime
+    * @param {ReleaseInterfaces.ReleaseQueryOrder} queryOrder
+    * @param {number} top
+    * @param {number} continuationToken
+    * @param {ReleaseInterfaces.ReleaseExpands} expand
+    * @param {string} artifactTypeId
+    * @param {string} sourceId
+    * @param {string} artifactVersionId
+    * @param {string} sourceBranchFilter
+    * @param {boolean} isDeleted
+    * @param {string[]} tagFilter
+    * @param {string[]} propertyFilters
+    */
     public async getReleases(
         project?: string,
         definitionId?: number,
@@ -2062,7 +2062,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Release[]>;
@@ -2082,9 +2082,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {ReleaseInterfaces.ReleaseStartMetadata} releaseStartMetadata
-     * @param {string} project - Project ID or project name
-     */
+    * @param {ReleaseInterfaces.ReleaseStartMetadata} releaseStartMetadata
+    * @param {string} project - Project ID or project name
+    */
     public async createRelease(
         releaseStartMetadata: ReleaseInterfaces.ReleaseStartMetadata,
         project: string
@@ -2103,7 +2103,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Release>;
@@ -2123,10 +2123,10 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {string} comment
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {string} comment
+    */
     public async deleteRelease(
         project: string,
         releaseId: number,
@@ -2152,7 +2152,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -2172,11 +2172,11 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {boolean} includeAllApprovals
-     * @param {string[]} propertyFilters
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {boolean} includeAllApprovals
+    * @param {string[]} propertyFilters
+    */
     public async getRelease(
         project: string,
         releaseId: number,
@@ -2204,7 +2204,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Release>;
@@ -2224,12 +2224,12 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} definitionId
-     * @param {number} releaseCount
-     * @param {boolean} includeArtifact
-     * @param {number[]} definitionEnvironmentIdsFilter
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    * @param {number} releaseCount
+    * @param {boolean} includeArtifact
+    * @param {number[]} definitionEnvironmentIdsFilter
+    */
     public async getReleaseDefinitionSummary(
         project: string,
         definitionId: number,
@@ -2259,7 +2259,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionSummary>;
@@ -2279,10 +2279,10 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {number} definitionSnapshotRevision
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {number} definitionSnapshotRevision
+    */
     public async getReleaseRevision(
         project: string,
         releaseId: number,
@@ -2320,10 +2320,10 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {string} comment
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {string} comment
+    */
     public async undeleteRelease(
         project: string,
         releaseId: number,
@@ -2349,7 +2349,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -2369,10 +2369,10 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {ReleaseInterfaces.Release} release
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     */
+    * @param {ReleaseInterfaces.Release} release
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    */
     public async updateRelease(
         release: ReleaseInterfaces.Release,
         project: string,
@@ -2393,7 +2393,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Release>;
@@ -2413,10 +2413,10 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {ReleaseInterfaces.ReleaseUpdateMetadata} releaseUpdateMetadata
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     */
+    * @param {ReleaseInterfaces.ReleaseUpdateMetadata} releaseUpdateMetadata
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    */
     public async updateReleaseResource(
         releaseUpdateMetadata: ReleaseInterfaces.ReleaseUpdateMetadata,
         project: string,
@@ -2437,7 +2437,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Release>;
@@ -2457,8 +2457,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     */
+    * @param {string} project - Project ID or project name
+    */
     public async getReleaseSettings(
         project: string
         ): Promise<ReleaseInterfaces.ReleaseSettings> {
@@ -2476,7 +2476,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseSettings>;
@@ -2496,11 +2496,11 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * Updates the release settings
-     * 
-     * @param {ReleaseInterfaces.ReleaseSettings} releaseSettings
-     * @param {string} project - Project ID or project name
-     */
+    * Updates the release settings
+    * 
+    * @param {ReleaseInterfaces.ReleaseSettings} releaseSettings
+    * @param {string} project - Project ID or project name
+    */
     public async updateReleaseSettings(
         releaseSettings: ReleaseInterfaces.ReleaseSettings,
         project: string
@@ -2519,7 +2519,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseSettings>;
@@ -2539,10 +2539,10 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} definitionId
-     * @param {number} revision
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    * @param {number} revision
+    */
     public async getDefinitionRevision(
         project: string,
         definitionId: number,
@@ -2576,9 +2576,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} definitionId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    */
     public async getReleaseDefinitionHistory(
         project: string,
         definitionId: number
@@ -2598,7 +2598,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionRevision[]>;
@@ -2618,9 +2618,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    */
     public async getSummaryMailSections(
         project: string,
         releaseId: number
@@ -2640,7 +2640,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.SummaryMailSection[]>;
@@ -2660,10 +2660,10 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {ReleaseInterfaces.MailMessage} mailMessage
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     */
+    * @param {ReleaseInterfaces.MailMessage} mailMessage
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    */
     public async sendSummaryMail(
         mailMessage: ReleaseInterfaces.MailMessage,
         project: string,
@@ -2684,7 +2684,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -2704,9 +2704,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} definitionId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    */
     public async getSourceBranches(
         project: string,
         definitionId: number
@@ -2726,7 +2726,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -2746,12 +2746,12 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * Adds a tag to a definition
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseDefinitionId
-     * @param {string} tag
-     */
+    * Adds a tag to a definition
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseDefinitionId
+    * @param {string} tag
+    */
     public async addDefinitionTag(
         project: string,
         releaseDefinitionId: number,
@@ -2773,7 +2773,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -2793,12 +2793,12 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * Adds multiple tags to a definition
-     * 
-     * @param {string[]} tags
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseDefinitionId
-     */
+    * Adds multiple tags to a definition
+    * 
+    * @param {string[]} tags
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseDefinitionId
+    */
     public async addDefinitionTags(
         tags: string[],
         project: string,
@@ -2819,7 +2819,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -2839,12 +2839,12 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * Deletes a tag from a definition
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseDefinitionId
-     * @param {string} tag
-     */
+    * Deletes a tag from a definition
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseDefinitionId
+    * @param {string} tag
+    */
     public async deleteDefinitionTag(
         project: string,
         releaseDefinitionId: number,
@@ -2866,7 +2866,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -2886,11 +2886,11 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * Gets the tags for a definition
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseDefinitionId
-     */
+    * Gets the tags for a definition
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseDefinitionId
+    */
     public async getDefinitionTags(
         project: string,
         releaseDefinitionId: number
@@ -2910,7 +2910,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -2930,12 +2930,12 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * Adds a tag to a releaseId
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {string} tag
-     */
+    * Adds a tag to a releaseId
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {string} tag
+    */
     public async addReleaseTag(
         project: string,
         releaseId: number,
@@ -2957,7 +2957,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -2977,12 +2977,12 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * Adds tag to a release
-     * 
-     * @param {string[]} tags
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     */
+    * Adds tag to a release
+    * 
+    * @param {string[]} tags
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    */
     public async addReleaseTags(
         tags: string[],
         project: string,
@@ -3003,7 +3003,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -3023,12 +3023,12 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * Deletes a tag from a release
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {string} tag
-     */
+    * Deletes a tag from a release
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {string} tag
+    */
     public async deleteReleaseTag(
         project: string,
         releaseId: number,
@@ -3050,7 +3050,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -3070,11 +3070,11 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * Gets the tags for a release
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     */
+    * Gets the tags for a release
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    */
     public async getReleaseTags(
         project: string,
         releaseId: number
@@ -3094,7 +3094,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -3114,8 +3114,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     */
+    * @param {string} project - Project ID or project name
+    */
     public async getTags(
         project: string
         ): Promise<string[]> {
@@ -3133,7 +3133,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -3153,11 +3153,11 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {number} environmentId
-     * @param {number} attemptId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {number} environmentId
+    * @param {number} attemptId
+    */
     public async getTasks(
         project: string,
         releaseId: number,
@@ -3185,7 +3185,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseTask[]>;
@@ -3205,11 +3205,11 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {number} environmentId
-     * @param {number} releaseDeployPhaseId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {number} environmentId
+    * @param {number} releaseDeployPhaseId
+    */
     public async getTasksForTaskGroup(
         project: string,
         releaseId: number,
@@ -3233,7 +3233,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseTask[]>;
@@ -3253,8 +3253,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     */
+    * @param {string} project - Project ID or project name
+    */
     public async getArtifactTypeDefinitions(
         project: string
         ): Promise<ReleaseInterfaces.ArtifactTypeDefinition[]> {
@@ -3272,7 +3272,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ArtifactTypeDefinition[]>;
@@ -3292,9 +3292,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseDefinitionId
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseDefinitionId
+    */
     public async getArtifactVersions(
         project: string,
         releaseDefinitionId: number
@@ -3318,7 +3318,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ArtifactVersionQueryResult>;
@@ -3338,9 +3338,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {ReleaseInterfaces.Artifact[]} artifacts
-     * @param {string} project - Project ID or project name
-     */
+    * @param {ReleaseInterfaces.Artifact[]} artifacts
+    * @param {string} project - Project ID or project name
+    */
     public async getArtifactVersionsForSources(
         artifacts: ReleaseInterfaces.Artifact[],
         project: string
@@ -3359,7 +3359,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ArtifactVersionQueryResult>;
@@ -3379,11 +3379,11 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {number} baseReleaseId
-     * @param {number} top
-     */
+    * @param {string} project - Project ID or project name
+    * @param {number} releaseId
+    * @param {number} baseReleaseId
+    * @param {number} top
+    */
     public async getReleaseWorkItemsRefs(
         project: string,
         releaseId: number,
@@ -3411,7 +3411,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseWorkItemRef[]>;

@@ -1556,17 +1556,16 @@ export var TypeInfo = {
         enumValues: {
             "none": 0,
             "me": 1,
-            "all": 2,
+            "all": 2
         }
     },
-    AcquisitionOperation: {
-        fields: <any>null
+    AcquisitionOperation: <any>{
     },
     AcquisitionOperationState: {
         enumValues: {
             "disallow": 0,
             "allow": 1,
-            "completed": 3,
+            "completed": 3
         }
     },
     AcquisitionOperationType: {
@@ -1576,100 +1575,51 @@ export var TypeInfo = {
             "buy": 2,
             "try": 3,
             "request": 4,
-            "none": 5,
+            "none": 5
         }
     },
-    AcquisitionOptions: {
-        fields: <any>null
+    AcquisitionOptions: <any>{
     },
-    Answers: {
-        fields: <any>null
+    AzureRestApiResponseModel: <any>{
     },
-    AssetDetails: {
-        fields: <any>null
-    },
-    AzurePublisher: {
-        fields: <any>null
-    },
-    AzureRestApiRequestModel: {
-        fields: <any>null
-    },
-    AzureRestApiResponseModel: {
-        fields: <any>null
-    },
-    CategoriesResult: {
-        fields: <any>null
-    },
-    CategoryLanguageTitle: {
-        fields: <any>null
-    },
-    Concern: {
-        fields: <any>null
+    Concern: <any>{
     },
     ConcernCategory: {
         enumValues: {
             "general": 1,
             "abusive": 2,
-            "spam": 4,
+            "spam": 4
         }
     },
-    EventCounts: {
-        fields: <any>null
+    ExtensionAcquisitionRequest: <any>{
     },
-    ExtensionAcquisitionRequest: {
-        fields: <any>null
+    ExtensionDailyStat: <any>{
     },
-    ExtensionBadge: {
-        fields: <any>null
-    },
-    ExtensionCategory: {
-        fields: <any>null
-    },
-    ExtensionDailyStat: {
-        fields: <any>null
-    },
-    ExtensionDailyStats: {
-        fields: <any>null
+    ExtensionDailyStats: <any>{
     },
     ExtensionDeploymentTechnology: {
         enumValues: {
             "exe": 1,
             "msi": 2,
             "vsix": 3,
-            "referralLink": 4,
+            "referralLink": 4
         }
     },
-    ExtensionEvent: {
-        fields: <any>null
+    ExtensionEvent: <any>{
     },
-    ExtensionEvents: {
-        fields: <any>null
+    ExtensionEvents: <any>{
     },
-    ExtensionFile: {
-        fields: <any>null
-    },
-    ExtensionFilterResult: {
-        fields: <any>null
-    },
-    ExtensionFilterResultMetadata: {
-        fields: <any>null
-    },
-    ExtensionIdentifier: {
-        fields: <any>null
+    ExtensionFilterResult: <any>{
     },
     ExtensionLifecycleEventType: {
         enumValues: {
             "uninstall": 1,
             "install": 2,
             "review": 3,
-            "other": 999,
+            "other": 999
         }
     },
-    ExtensionPackage: {
-        fields: <any>null
-    },
-    ExtensionPolicy: {
-        fields: <any>null
+    ExtensionPolicy: <any>{
     },
     ExtensionPolicyFlags: {
         enumValues: {
@@ -1679,11 +1629,10 @@ export var TypeInfo = {
             "preview": 4,
             "released": 8,
             "firstParty": 16,
-            "all": 31,
+            "all": 31
         }
     },
-    ExtensionQuery: {
-        fields: <any>null
+    ExtensionQuery: <any>{
     },
     ExtensionQueryFilterType: {
         enumValues: {
@@ -1703,7 +1652,7 @@ export var TypeInfo = {
             "lcid": 14,
             "installationTargetVersion": 15,
             "installationTargetVersionRange": 16,
-            "vsixMetadata": 17,
+            "vsixMetadata": 17
         }
     },
     ExtensionQueryFlags: {
@@ -1722,17 +1671,10 @@ export var TypeInfo = {
             "useFallbackAssetUri": 1024,
             "includeMetadata": 2048,
             "includeMinimalPayloadForVsIde": 4096,
-            "allAttributes": 479,
+            "allAttributes": 479
         }
     },
-    ExtensionQueryResult: {
-        fields: <any>null
-    },
-    ExtensionShare: {
-        fields: <any>null
-    },
-    ExtensionStatistic: {
-        fields: <any>null
+    ExtensionQueryResult: <any>{
     },
     ExtensionStatisticOperation: {
         enumValues: {
@@ -1740,49 +1682,31 @@ export var TypeInfo = {
             "set": 1,
             "increment": 2,
             "decrement": 3,
-            "delete": 4,
+            "delete": 4
         }
     },
-    ExtensionStatisticUpdate: {
-        fields: <any>null
+    ExtensionStatisticUpdate: <any>{
     },
     ExtensionStatsAggregateType: {
         enumValues: {
-            "daily": 1,
+            "daily": 1
         }
     },
-    ExtensionVersion: {
-        fields: <any>null
+    ExtensionVersion: <any>{
     },
     ExtensionVersionFlags: {
         enumValues: {
             "none": 0,
-            "validated": 1,
+            "validated": 1
         }
-    },
-    FilterCriteria: {
-        fields: <any>null
-    },
-    InstallationTarget: {
-        fields: <any>null
-    },
-    MetadataItem: {
-        fields: <any>null
     },
     PagingDirection: {
         enumValues: {
             "backward": 1,
-            "forward": 2,
+            "forward": 2
         }
     },
-    ProductCategoriesResult: {
-        fields: <any>null
-    },
-    ProductCategory: {
-        fields: <any>null
-    },
-    PublishedExtension: {
-        fields: <any>null
+    PublishedExtension: <any>{
     },
     PublishedExtensionFlags: {
         enumValues: {
@@ -1797,17 +1721,14 @@ export var TypeInfo = {
             "system": 1024,
             "preview": 2048,
             "unpublished": 4096,
-            "trial": 8192,
+            "trial": 8192
         }
     },
-    Publisher: {
-        fields: <any>null
+    Publisher: <any>{
     },
-    PublisherFacts: {
-        fields: <any>null
+    PublisherFacts: <any>{
     },
-    PublisherFilterResult: {
-        fields: <any>null
+    PublisherFilterResult: <any>{
     },
     PublisherFlags: {
         enumValues: {
@@ -1815,7 +1736,7 @@ export var TypeInfo = {
             "none": 0,
             "disabled": 1,
             "verified": 2,
-            "serviceFlags": 3,
+            "serviceFlags": 3
         }
     },
     PublisherPermissions: {
@@ -1831,104 +1752,85 @@ export var TypeInfo = {
             "editSettings": 256,
             "viewPermissions": 512,
             "managePermissions": 1024,
-            "deletePublisher": 2048,
+            "deletePublisher": 2048
         }
     },
-    PublisherQuery: {
-        fields: <any>null
+    PublisherQuery: <any>{
     },
     PublisherQueryFlags: {
         enumValues: {
             "none": 0,
             "includeExtensions": 1,
-            "includeEmailAddress": 2,
+            "includeEmailAddress": 2
         }
     },
-    PublisherQueryResult: {
-        fields: <any>null
+    PublisherQueryResult: <any>{
     },
-    QnAItem: {
-        fields: <any>null
+    QnAItem: <any>{
     },
     QnAItemStatus: {
         enumValues: {
             "none": 0,
             "userEditable": 1,
-            "publisherCreated": 2,
+            "publisherCreated": 2
         }
     },
-    QueryFilter: {
-        fields: <any>null
+    QueryFilter: <any>{
     },
-    Question: {
-        fields: <any>null
+    Question: <any>{
     },
-    QuestionsResult: {
-        fields: <any>null
+    QuestionsResult: <any>{
     },
-    RatingCountPerRating: {
-        fields: <any>null
-    },
-    Response: {
-        fields: <any>null
+    Response: <any>{
     },
     RestApiResponseStatus: {
         enumValues: {
             "completed": 0,
             "failed": 1,
             "inprogress": 2,
-            "skipped": 3,
+            "skipped": 3
         }
     },
-    RestApiResponseStatusModel: {
-        fields: <any>null
+    RestApiResponseStatusModel: <any>{
     },
-    Review: {
-        fields: <any>null
+    Review: <any>{
     },
     ReviewEventOperation: {
         enumValues: {
             "create": 1,
             "update": 2,
-            "delete": 3,
+            "delete": 3
         }
     },
-    ReviewEventProperties: {
-        fields: <any>null
+    ReviewEventProperties: <any>{
     },
     ReviewFilterOptions: {
         enumValues: {
             "none": 0,
             "filterEmptyReviews": 1,
-            "filterEmptyUserNames": 2,
+            "filterEmptyUserNames": 2
         }
     },
-    ReviewPatch: {
-        fields: <any>null
+    ReviewPatch: <any>{
     },
     ReviewPatchOperation: {
         enumValues: {
             "flagReview": 1,
             "updateReview": 2,
             "replyToReview": 3,
-            "adminResponseForReview": 4,
+            "adminResponseForReview": 4
         }
     },
-    ReviewReply: {
-        fields: <any>null
+    ReviewReply: <any>{
     },
     ReviewResourceType: {
         enumValues: {
             "review": 1,
             "publisherReply": 2,
-            "adminReply": 3,
+            "adminReply": 3
         }
     },
-    ReviewsResult: {
-        fields: <any>null
-    },
-    ReviewSummary: {
-        fields: <any>null
+    ReviewsResult: <any>{
     },
     SortByType: {
         enumValues: {
@@ -1944,24 +1846,19 @@ export var TypeInfo = {
             "trendingMonthly": 9,
             "releaseDate": 10,
             "author": 11,
-            "weightedRating": 12,
+            "weightedRating": 12
         }
     },
     SortOrderType: {
         enumValues: {
             "default": 0,
             "ascending": 1,
-            "descending": 2,
+            "descending": 2
         }
     },
-    UserExtensionPolicy: {
-        fields: <any>null
+    UserExtensionPolicy: <any>{
     },
-    UserIdentityRef: {
-        fields: <any>null
-    },
-    UserReportedConcern: {
-        fields: <any>null
+    UserReportedConcern: <any>{
     },
 };
 
@@ -1984,41 +1881,10 @@ TypeInfo.AcquisitionOptions.fields = {
     },
 };
 
-TypeInfo.Answers.fields = {
-};
-
-TypeInfo.AssetDetails.fields = {
-    answers: {
-        typeInfo: TypeInfo.Answers
-    },
-};
-
-TypeInfo.AzurePublisher.fields = {
-};
-
-TypeInfo.AzureRestApiRequestModel.fields = {
-    assetDetails: {
-        typeInfo: TypeInfo.AssetDetails
-    },
-};
-
 TypeInfo.AzureRestApiResponseModel.fields = {
-    assetDetails: {
-        typeInfo: TypeInfo.AssetDetails
-    },
     operationStatus: {
         typeInfo: TypeInfo.RestApiResponseStatusModel
     },
-};
-
-TypeInfo.CategoriesResult.fields = {
-    categories: {
-        isArray: true,
-        typeInfo: TypeInfo.ExtensionCategory
-    },
-};
-
-TypeInfo.CategoryLanguageTitle.fields = {
 };
 
 TypeInfo.Concern.fields = {
@@ -2034,12 +1900,6 @@ TypeInfo.Concern.fields = {
     updatedDate: {
         isDate: true,
     },
-    user: {
-        typeInfo: TypeInfo.UserIdentityRef
-    },
-};
-
-TypeInfo.EventCounts.fields = {
 };
 
 TypeInfo.ExtensionAcquisitionRequest.fields = {
@@ -2051,20 +1911,7 @@ TypeInfo.ExtensionAcquisitionRequest.fields = {
     },
 };
 
-TypeInfo.ExtensionBadge.fields = {
-};
-
-TypeInfo.ExtensionCategory.fields = {
-    languageTitles: {
-        isArray: true,
-        typeInfo: TypeInfo.CategoryLanguageTitle
-    },
-};
-
 TypeInfo.ExtensionDailyStat.fields = {
-    counts: {
-        typeInfo: TypeInfo.EventCounts
-    },
     statisticDate: {
         isDate: true,
     },
@@ -2085,10 +1932,12 @@ TypeInfo.ExtensionEvent.fields = {
 
 TypeInfo.ExtensionEvents.fields = {
     events: {
+        isDictionary: true,
+        dictionaryValueFieldInfo: {
+            isArray: true,
+            typeInfo: TypeInfo.ExtensionEvent
+        }
     },
-};
-
-TypeInfo.ExtensionFile.fields = {
 };
 
 TypeInfo.ExtensionFilterResult.fields = {
@@ -2096,23 +1945,6 @@ TypeInfo.ExtensionFilterResult.fields = {
         isArray: true,
         typeInfo: TypeInfo.PublishedExtension
     },
-    resultMetadata: {
-        isArray: true,
-        typeInfo: TypeInfo.ExtensionFilterResultMetadata
-    },
-};
-
-TypeInfo.ExtensionFilterResultMetadata.fields = {
-    metadataItems: {
-        isArray: true,
-        typeInfo: TypeInfo.MetadataItem
-    },
-};
-
-TypeInfo.ExtensionIdentifier.fields = {
-};
-
-TypeInfo.ExtensionPackage.fields = {
 };
 
 TypeInfo.ExtensionPolicy.fields = {
@@ -2141,58 +1973,18 @@ TypeInfo.ExtensionQueryResult.fields = {
     },
 };
 
-TypeInfo.ExtensionShare.fields = {
-};
-
-TypeInfo.ExtensionStatistic.fields = {
-};
-
 TypeInfo.ExtensionStatisticUpdate.fields = {
     operation: {
         enumType: TypeInfo.ExtensionStatisticOperation
     },
-    statistic: {
-        typeInfo: TypeInfo.ExtensionStatistic
-    },
 };
 
 TypeInfo.ExtensionVersion.fields = {
-    badges: {
-        isArray: true,
-        typeInfo: TypeInfo.ExtensionBadge
-    },
-    files: {
-        isArray: true,
-        typeInfo: TypeInfo.ExtensionFile
-    },
     flags: {
         enumType: TypeInfo.ExtensionVersionFlags
     },
     lastUpdated: {
         isDate: true,
-    },
-};
-
-TypeInfo.FilterCriteria.fields = {
-};
-
-TypeInfo.InstallationTarget.fields = {
-};
-
-TypeInfo.MetadataItem.fields = {
-};
-
-TypeInfo.ProductCategoriesResult.fields = {
-    categories: {
-        isArray: true,
-        typeInfo: TypeInfo.ProductCategory
-    },
-};
-
-TypeInfo.ProductCategory.fields = {
-    children: {
-        isArray: true,
-        typeInfo: TypeInfo.ProductCategory
     },
 };
 
@@ -2202,10 +1994,6 @@ TypeInfo.PublishedExtension.fields = {
     },
     flags: {
         enumType: TypeInfo.PublishedExtensionFlags
-    },
-    installationTargets: {
-        isArray: true,
-        typeInfo: TypeInfo.InstallationTarget
     },
     lastUpdated: {
         isDate: true,
@@ -2218,14 +2006,6 @@ TypeInfo.PublishedExtension.fields = {
     },
     releaseDate: {
         isDate: true,
-    },
-    sharedWith: {
-        isArray: true,
-        typeInfo: TypeInfo.ExtensionShare
-    },
-    statistics: {
-        isArray: true,
-        typeInfo: TypeInfo.ExtensionStatistic
     },
     versions: {
         isArray: true,
@@ -2286,16 +2066,9 @@ TypeInfo.QnAItem.fields = {
     updatedDate: {
         isDate: true,
     },
-    user: {
-        typeInfo: TypeInfo.UserIdentityRef
-    },
 };
 
 TypeInfo.QueryFilter.fields = {
-    criteria: {
-        isArray: true,
-        typeInfo: TypeInfo.FilterCriteria
-    },
     direction: {
         enumType: TypeInfo.PagingDirection
     },
@@ -2315,9 +2088,6 @@ TypeInfo.Question.fields = {
     updatedDate: {
         isDate: true,
     },
-    user: {
-        typeInfo: TypeInfo.UserIdentityRef
-    },
 };
 
 TypeInfo.QuestionsResult.fields = {
@@ -2325,9 +2095,6 @@ TypeInfo.QuestionsResult.fields = {
         isArray: true,
         typeInfo: TypeInfo.Question
     },
-};
-
-TypeInfo.RatingCountPerRating.fields = {
 };
 
 TypeInfo.Response.fields = {
@@ -2339,9 +2106,6 @@ TypeInfo.Response.fields = {
     },
     updatedDate: {
         isDate: true,
-    },
-    user: {
-        typeInfo: TypeInfo.UserIdentityRef
     },
 };
 
@@ -2403,20 +2167,10 @@ TypeInfo.ReviewsResult.fields = {
     },
 };
 
-TypeInfo.ReviewSummary.fields = {
-    ratingSplit: {
-        isArray: true,
-        typeInfo: TypeInfo.RatingCountPerRating
-    },
-};
-
 TypeInfo.UserExtensionPolicy.fields = {
     permissions: {
         typeInfo: TypeInfo.ExtensionPolicy
     },
-};
-
-TypeInfo.UserIdentityRef.fields = {
 };
 
 TypeInfo.UserReportedConcern.fields = {

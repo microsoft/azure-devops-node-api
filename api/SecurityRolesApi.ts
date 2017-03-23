@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
@@ -56,7 +56,8 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<SecurityRolesInterfaces.RoleAssignment[]>;
                 res = await this.rest.get<SecurityRolesInterfaces.RoleAssignment[]>(url, options);
 
@@ -100,7 +101,8 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -143,7 +145,8 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, identityIds, options);
 
@@ -189,7 +192,8 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<SecurityRolesInterfaces.RoleAssignment>;
                 res = await this.rest.replace<SecurityRolesInterfaces.RoleAssignment>(url, roleAssignment, options);
 
@@ -232,7 +236,8 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<SecurityRolesInterfaces.RoleAssignment[]>;
                 res = await this.rest.replace<SecurityRolesInterfaces.RoleAssignment[]>(url, roleAssignments, options);
 
@@ -270,7 +275,8 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<SecurityRolesInterfaces.SecurityRole[]>;
                 res = await this.rest.get<SecurityRolesInterfaces.SecurityRole[]>(url, options);
 

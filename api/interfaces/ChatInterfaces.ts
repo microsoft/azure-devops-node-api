@@ -137,31 +137,19 @@ export interface UserData {
 }
 
 export var TypeInfo = {
-    Message: {
-        fields: <any>null
-    },
-    MessageData: {
-        fields: <any>null
+    Message: <any>{
     },
     MessageType: {
         enumValues: {
             "normal": 0,
             "system": 1,
             "notification": 2,
-            "error": 3,
+            "error": 3
         }
     },
-    Room: {
-        fields: <any>null
+    Room: <any>{
     },
-    RoomData: {
-        fields: <any>null
-    },
-    User: {
-        fields: <any>null
-    },
-    UserData: {
-        fields: <any>null
+    User: <any>{
     },
 };
 
@@ -169,30 +157,18 @@ TypeInfo.Message.fields = {
     messageType: {
         enumType: TypeInfo.MessageType
     },
-    postedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     postedTime: {
         isDate: true,
     },
 };
 
-TypeInfo.MessageData.fields = {
-};
-
 TypeInfo.Room.fields = {
-    createdBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     createdDate: {
         isDate: true,
     },
     lastActivity: {
         isDate: true,
     },
-};
-
-TypeInfo.RoomData.fields = {
 };
 
 TypeInfo.User.fields = {
@@ -202,10 +178,4 @@ TypeInfo.User.fields = {
     lastActivity: {
         isDate: true,
     },
-    user: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
-TypeInfo.UserData.fields = {
 };

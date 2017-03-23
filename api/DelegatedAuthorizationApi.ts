@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
@@ -75,7 +75,8 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<DelegatedAuthorizationInterfaces.AuthorizationDecision>;
                 res = await this.rest.create<DelegatedAuthorizationInterfaces.AuthorizationDecision>(url, redirectUri, options);
 
@@ -113,7 +114,8 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<DelegatedAuthorizationInterfaces.AuthorizationDetails[]>;
                 res = await this.rest.get<DelegatedAuthorizationInterfaces.AuthorizationDetails[]>(url, options);
 
@@ -166,7 +168,8 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<DelegatedAuthorizationInterfaces.AuthorizationDescription>;
                 res = await this.rest.get<DelegatedAuthorizationInterfaces.AuthorizationDescription>(url, options);
 
@@ -211,7 +214,8 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, options);
 
@@ -253,7 +257,8 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, options);
 
@@ -298,7 +303,8 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -342,7 +348,8 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<DelegatedAuthorizationInterfaces.Registration>;
                 res = await this.rest.replace<DelegatedAuthorizationInterfaces.Registration>(url, registration, options);
 
@@ -380,7 +387,8 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -425,7 +433,8 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<DelegatedAuthorizationInterfaces.Registration>;
                 res = await this.rest.get<DelegatedAuthorizationInterfaces.Registration>(url, options);
 
@@ -460,7 +469,8 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<DelegatedAuthorizationInterfaces.Registration[]>;
                 res = await this.rest.get<DelegatedAuthorizationInterfaces.Registration[]>(url, options);
 
@@ -504,7 +514,8 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<DelegatedAuthorizationInterfaces.Registration>;
                 res = await this.rest.create<DelegatedAuthorizationInterfaces.Registration>(url, registration, options);
 
@@ -542,7 +553,8 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<VSSInterfaces.JsonWebToken>;
                 res = await this.rest.get<VSSInterfaces.JsonWebToken>(url, options);
 

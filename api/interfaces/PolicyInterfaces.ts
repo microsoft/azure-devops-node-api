@@ -65,14 +65,9 @@ export interface VersionedPolicyConfigurationRef extends PolicyConfigurationRef 
 }
 
 export var TypeInfo = {
-    PolicyConfiguration: {
-        fields: <any>null
+    PolicyConfiguration: <any>{
     },
-    PolicyConfigurationRef: {
-        fields: <any>null
-    },
-    PolicyEvaluationRecord: {
-        fields: <any>null
+    PolicyEvaluationRecord: <any>{
     },
     PolicyEvaluationStatus: {
         enumValues: {
@@ -81,35 +76,14 @@ export var TypeInfo = {
             "approved": 2,
             "rejected": 3,
             "notApplicable": 4,
-            "broken": 5,
+            "broken": 5
         }
-    },
-    PolicyType: {
-        fields: <any>null
-    },
-    PolicyTypeRef: {
-        fields: <any>null
-    },
-    VersionedPolicyConfigurationRef: {
-        fields: <any>null
     },
 };
 
 TypeInfo.PolicyConfiguration.fields = {
-    createdBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     createdDate: {
         isDate: true,
-    },
-    type: {
-        typeInfo: TypeInfo.PolicyTypeRef
-    },
-};
-
-TypeInfo.PolicyConfigurationRef.fields = {
-    type: {
-        typeInfo: TypeInfo.PolicyTypeRef
     },
 };
 
@@ -125,17 +99,5 @@ TypeInfo.PolicyEvaluationRecord.fields = {
     },
     status: {
         enumType: TypeInfo.PolicyEvaluationStatus
-    },
-};
-
-TypeInfo.PolicyType.fields = {
-};
-
-TypeInfo.PolicyTypeRef.fields = {
-};
-
-TypeInfo.VersionedPolicyConfigurationRef.fields = {
-    type: {
-        typeInfo: TypeInfo.PolicyTypeRef
     },
 };

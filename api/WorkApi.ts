@@ -71,8 +71,8 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     */
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    */
     public async getBacklogConfigurations(
         teamContext: TfsCoreInterfaces.TeamContext
         ): Promise<WorkInterfaces.BacklogConfiguration> {
@@ -94,7 +94,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.BacklogConfiguration>;
@@ -114,8 +114,8 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     */
+    * @param {string} project - Project ID or project name
+    */
     public async getColumnSuggestedValues(
         project?: string
         ): Promise<WorkInterfaces.BoardSuggestedValue[]> {
@@ -133,7 +133,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.BoardSuggestedValue[]>;
@@ -153,11 +153,11 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * Returns the board filter settings for the given board id or board by name
-     * 
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} board
-     */
+    * Returns the board filter settings for the given board id or board by name
+    * 
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} board
+    */
     public async getBoardFilterSettings(
         teamContext: TfsCoreInterfaces.TeamContext,
         board: string
@@ -181,7 +181,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.BoardFilterSettings>;
@@ -201,12 +201,12 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * Update board filter settings for the board id or board by name
-     * 
-     * @param {WorkInterfaces.BoardFilterSettings} filterSettings
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} board
-     */
+    * Update board filter settings for the board id or board by name
+    * 
+    * @param {WorkInterfaces.BoardFilterSettings} filterSettings
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} board
+    */
     public async updateBoardFilterSettings(
         filterSettings: WorkInterfaces.BoardFilterSettings,
         teamContext: TfsCoreInterfaces.TeamContext,
@@ -231,7 +231,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.BoardFilterSettings>;
@@ -251,12 +251,12 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * Returns the list of parent field filter model for the given list of workitem ids
-     * 
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} childBacklogContextCategoryRefName
-     * @param {number[]} workitemIds
-     */
+    * Returns the list of parent field filter model for the given list of workitem ids
+    * 
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} childBacklogContextCategoryRefName
+    * @param {number[]} workitemIds
+    */
     public async getBoardMappingParentItems(
         teamContext: TfsCoreInterfaces.TeamContext,
         childBacklogContextCategoryRefName: string,
@@ -286,7 +286,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.ParentChildWIMap[]>;
@@ -306,8 +306,8 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     */
+    * @param {string} project - Project ID or project name
+    */
     public async getRowSuggestedValues(
         project?: string
         ): Promise<WorkInterfaces.BoardSuggestedValue[]> {
@@ -325,7 +325,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.BoardSuggestedValue[]>;
@@ -345,11 +345,11 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * Get board
-     * 
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} id - identifier for board, either board's backlog level name (Eg:"Stories") or Id
-     */
+    * Get board
+    * 
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} id - identifier for board, either board's backlog level name (Eg:"Stories") or Id
+    */
     public async getBoard(
         teamContext: TfsCoreInterfaces.TeamContext,
         id: string
@@ -373,7 +373,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.Board>;
@@ -393,8 +393,8 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     */
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    */
     public async getBoards(
         teamContext: TfsCoreInterfaces.TeamContext
         ): Promise<WorkInterfaces.BoardReference[]> {
@@ -416,7 +416,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.BoardReference[]>;
@@ -436,12 +436,12 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * Update board options
-     * 
-     * @param {{ [key: string] : string; }} options - options to updated
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} id - identifier for board, either category plural name (Eg:"Stories") or guid
-     */
+    * Update board options
+    * 
+    * @param {{ [key: string] : string; }} options - options to updated
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} id - identifier for board, either category plural name (Eg:"Stories") or guid
+    */
     public async setBoardOptions(
         options: { [key: string] : string; },
         teamContext: TfsCoreInterfaces.TeamContext,
@@ -466,7 +466,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<{ [key: string] : string; }>;
@@ -486,9 +486,9 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} board
-     */
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} board
+    */
     public async getBoardUserSettings(
         teamContext: TfsCoreInterfaces.TeamContext,
         board: string
@@ -512,7 +512,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.BoardUserSettings>;
@@ -532,12 +532,12 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * Update board user settings for the board id
-     * 
-     * @param {{ [key: string] : string; }} boardUserSettings
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} board
-     */
+    * Update board user settings for the board id
+    * 
+    * @param {{ [key: string] : string; }} boardUserSettings
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} board
+    */
     public async updateBoardUserSettings(
         boardUserSettings: { [key: string] : string; },
         teamContext: TfsCoreInterfaces.TeamContext,
@@ -562,7 +562,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.BoardUserSettings>;
@@ -582,9 +582,9 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} iterationId
-     */
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} iterationId
+    */
     public async getCapacities(
         teamContext: TfsCoreInterfaces.TeamContext,
         iterationId: string
@@ -608,7 +608,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.TeamMemberCapacity[]>;
@@ -628,10 +628,10 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} iterationId
-     * @param {string} teamMemberId
-     */
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} iterationId
+    * @param {string} teamMemberId
+    */
     public async getCapacity(
         teamContext: TfsCoreInterfaces.TeamContext,
         iterationId: string,
@@ -657,7 +657,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.TeamMemberCapacity>;
@@ -677,10 +677,10 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {WorkInterfaces.TeamMemberCapacity[]} capacities
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} iterationId
-     */
+    * @param {WorkInterfaces.TeamMemberCapacity[]} capacities
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} iterationId
+    */
     public async replaceCapacities(
         capacities: WorkInterfaces.TeamMemberCapacity[],
         teamContext: TfsCoreInterfaces.TeamContext,
@@ -705,7 +705,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.TeamMemberCapacity[]>;
@@ -725,11 +725,11 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {WorkInterfaces.CapacityPatch} patch
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} iterationId
-     * @param {string} teamMemberId
-     */
+    * @param {WorkInterfaces.CapacityPatch} patch
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} iterationId
+    * @param {string} teamMemberId
+    */
     public async updateCapacity(
         patch: WorkInterfaces.CapacityPatch,
         teamContext: TfsCoreInterfaces.TeamContext,
@@ -756,7 +756,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.TeamMemberCapacity>;
@@ -776,11 +776,11 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * Get board card Rule settings for the board id or board by name
-     * 
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} board
-     */
+    * Get board card Rule settings for the board id or board by name
+    * 
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} board
+    */
     public async getBoardCardRuleSettings(
         teamContext: TfsCoreInterfaces.TeamContext,
         board: string
@@ -804,7 +804,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.BoardCardRuleSettings>;
@@ -824,12 +824,12 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * Update board card Rule settings for the board id or board by name
-     * 
-     * @param {WorkInterfaces.BoardCardRuleSettings} boardCardRuleSettings
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} board
-     */
+    * Update board card Rule settings for the board id or board by name
+    * 
+    * @param {WorkInterfaces.BoardCardRuleSettings} boardCardRuleSettings
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} board
+    */
     public async updateBoardCardRuleSettings(
         boardCardRuleSettings: WorkInterfaces.BoardCardRuleSettings,
         teamContext: TfsCoreInterfaces.TeamContext,
@@ -854,7 +854,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.BoardCardRuleSettings>;
@@ -874,11 +874,11 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * Get board card settings for the board id or board by name
-     * 
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} board
-     */
+    * Get board card settings for the board id or board by name
+    * 
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} board
+    */
     public async getBoardCardSettings(
         teamContext: TfsCoreInterfaces.TeamContext,
         board: string
@@ -902,7 +902,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.BoardCardSettings>;
@@ -922,12 +922,12 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * Update board card settings for the board id or board by name
-     * 
-     * @param {WorkInterfaces.BoardCardSettings} boardCardSettingsToSave
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} board
-     */
+    * Update board card settings for the board id or board by name
+    * 
+    * @param {WorkInterfaces.BoardCardSettings} boardCardSettingsToSave
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} board
+    */
     public async updateBoardCardSettings(
         boardCardSettingsToSave: WorkInterfaces.BoardCardSettings,
         teamContext: TfsCoreInterfaces.TeamContext,
@@ -952,7 +952,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.BoardCardSettings>;
@@ -972,12 +972,12 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * Get a board chart
-     * 
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} board - Identifier for board, either board's backlog level name (Eg:"Stories") or Id
-     * @param {string} name - The chart name
-     */
+    * Get a board chart
+    * 
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} board - Identifier for board, either board's backlog level name (Eg:"Stories") or Id
+    * @param {string} name - The chart name
+    */
     public async getBoardChart(
         teamContext: TfsCoreInterfaces.TeamContext,
         board: string,
@@ -1003,7 +1003,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.BoardChart>;
@@ -1023,11 +1023,11 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * Get board charts
-     * 
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} board - Identifier for board, either board's backlog level name (Eg:"Stories") or Id
-     */
+    * Get board charts
+    * 
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} board - Identifier for board, either board's backlog level name (Eg:"Stories") or Id
+    */
     public async getBoardCharts(
         teamContext: TfsCoreInterfaces.TeamContext,
         board: string
@@ -1051,7 +1051,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.BoardChartReference[]>;
@@ -1071,13 +1071,13 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * Update a board chart
-     * 
-     * @param {WorkInterfaces.BoardChart} chart
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} board - Identifier for board, either board's backlog level name (Eg:"Stories") or Id
-     * @param {string} name - The chart name
-     */
+    * Update a board chart
+    * 
+    * @param {WorkInterfaces.BoardChart} chart
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} board - Identifier for board, either board's backlog level name (Eg:"Stories") or Id
+    * @param {string} name - The chart name
+    */
     public async updateBoardChart(
         chart: WorkInterfaces.BoardChart,
         teamContext: TfsCoreInterfaces.TeamContext,
@@ -1104,7 +1104,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.BoardChart>;
@@ -1124,9 +1124,9 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} board
-     */
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} board
+    */
     public async getBoardColumns(
         teamContext: TfsCoreInterfaces.TeamContext,
         board: string
@@ -1150,7 +1150,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.BoardColumn[]>;
@@ -1170,10 +1170,10 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {WorkInterfaces.BoardColumn[]} boardColumns
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} board
-     */
+    * @param {WorkInterfaces.BoardColumn[]} boardColumns
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} board
+    */
     public async updateBoardColumns(
         boardColumns: WorkInterfaces.BoardColumn[],
         teamContext: TfsCoreInterfaces.TeamContext,
@@ -1198,7 +1198,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.BoardColumn[]>;
@@ -1218,14 +1218,14 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * Get Delivery View Data
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {string} id - Identifier for delivery view
-     * @param {number} revision - Revision of the plan for which you want data. If the current plan is a different revision you will get an ViewRevisionMismatchException exception. If you do not supply a revision you will get data for the latest revision.
-     * @param {Date} startDate - The start date of timeline
-     * @param {Date} endDate - The end date of timeline
-     */
+    * Get Delivery View Data
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {string} id - Identifier for delivery view
+    * @param {number} revision - Revision of the plan for which you want data. If the current plan is a different revision you will get an ViewRevisionMismatchException exception. If you do not supply a revision you will get data for the latest revision.
+    * @param {Date} startDate - The start date of timeline
+    * @param {Date} endDate - The end date of timeline
+    */
     public async getDeliveryTimelineData(
         project: string,
         id: string,
@@ -1255,7 +1255,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.DeliveryViewData>;
@@ -1275,9 +1275,9 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} id
-     */
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} id
+    */
     public async deleteTeamIteration(
         teamContext: TfsCoreInterfaces.TeamContext,
         id: string
@@ -1301,7 +1301,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -1321,9 +1321,9 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} id
-     */
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} id
+    */
     public async getTeamIteration(
         teamContext: TfsCoreInterfaces.TeamContext,
         id: string
@@ -1347,7 +1347,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.TeamSettingsIteration>;
@@ -1367,9 +1367,9 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} timeframe
-     */
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} timeframe
+    */
     public async getTeamIterations(
         teamContext: TfsCoreInterfaces.TeamContext,
         timeframe?: string
@@ -1397,7 +1397,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.TeamSettingsIteration[]>;
@@ -1417,9 +1417,9 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {WorkInterfaces.TeamSettingsIteration} iteration
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     */
+    * @param {WorkInterfaces.TeamSettingsIteration} iteration
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    */
     public async postTeamIteration(
         iteration: WorkInterfaces.TeamSettingsIteration,
         teamContext: TfsCoreInterfaces.TeamContext
@@ -1442,7 +1442,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.TeamSettingsIteration>;
@@ -1462,11 +1462,11 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * Add a new plan for the team
-     * 
-     * @param {WorkInterfaces.CreatePlan} postedPlan - Plan definition
-     * @param {string} project - Project ID or project name
-     */
+    * Add a new plan for the team
+    * 
+    * @param {WorkInterfaces.CreatePlan} postedPlan - Plan definition
+    * @param {string} project - Project ID or project name
+    */
     public async createPlan(
         postedPlan: WorkInterfaces.CreatePlan,
         project: string
@@ -1485,7 +1485,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.Plan>;
@@ -1505,11 +1505,11 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * Delete the specified plan
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {string} id - Identifier of the plan
-     */
+    * Delete the specified plan
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {string} id - Identifier of the plan
+    */
     public async deletePlan(
         project: string,
         id: string
@@ -1529,7 +1529,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -1549,11 +1549,11 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * Get the information for the specified plan
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {string} id - Identifier of the plan
-     */
+    * Get the information for the specified plan
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {string} id - Identifier of the plan
+    */
     public async getPlan(
         project: string,
         id: string
@@ -1573,7 +1573,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.Plan>;
@@ -1593,8 +1593,8 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     */
+    * @param {string} project - Project ID or project name
+    */
     public async getPlans(
         project: string
         ): Promise<WorkInterfaces.Plan[]> {
@@ -1612,7 +1612,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.Plan[]>;
@@ -1632,12 +1632,12 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * Update the information for the specified plan
-     * 
-     * @param {WorkInterfaces.UpdatePlan} updatedPlan - Plan definition to be updated
-     * @param {string} project - Project ID or project name
-     * @param {string} id - Identifier of the plan
-     */
+    * Update the information for the specified plan
+    * 
+    * @param {WorkInterfaces.UpdatePlan} updatedPlan - Plan definition to be updated
+    * @param {string} project - Project ID or project name
+    * @param {string} id - Identifier of the plan
+    */
     public async updatePlan(
         updatedPlan: WorkInterfaces.UpdatePlan,
         project: string,
@@ -1658,7 +1658,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.Plan>;
@@ -1678,8 +1678,8 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     */
+    * @param {string} project - Project ID or project name
+    */
     public async getProcessConfiguration(
         project: string
         ): Promise<WorkInterfaces.ProcessConfiguration> {
@@ -1697,7 +1697,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.ProcessConfiguration>;
@@ -1717,9 +1717,9 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} board
-     */
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} board
+    */
     public async getBoardRows(
         teamContext: TfsCoreInterfaces.TeamContext,
         board: string
@@ -1743,7 +1743,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.BoardRow[]>;
@@ -1763,10 +1763,10 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {WorkInterfaces.BoardRow[]} boardRows
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} board
-     */
+    * @param {WorkInterfaces.BoardRow[]} boardRows
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} board
+    */
     public async updateBoardRows(
         boardRows: WorkInterfaces.BoardRow[],
         teamContext: TfsCoreInterfaces.TeamContext,
@@ -1791,7 +1791,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.BoardRow[]>;
@@ -1811,9 +1811,9 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} iterationId
-     */
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} iterationId
+    */
     public async getTeamDaysOff(
         teamContext: TfsCoreInterfaces.TeamContext,
         iterationId: string
@@ -1837,7 +1837,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.TeamSettingsDaysOff>;
@@ -1857,10 +1857,10 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {WorkInterfaces.TeamSettingsDaysOffPatch} daysOffPatch
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {string} iterationId
-     */
+    * @param {WorkInterfaces.TeamSettingsDaysOffPatch} daysOffPatch
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    * @param {string} iterationId
+    */
     public async updateTeamDaysOff(
         daysOffPatch: WorkInterfaces.TeamSettingsDaysOffPatch,
         teamContext: TfsCoreInterfaces.TeamContext,
@@ -1885,7 +1885,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.TeamSettingsDaysOff>;
@@ -1905,8 +1905,8 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     */
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    */
     public async getTeamFieldValues(
         teamContext: TfsCoreInterfaces.TeamContext
         ): Promise<WorkInterfaces.TeamFieldValues> {
@@ -1928,7 +1928,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.TeamFieldValues>;
@@ -1948,9 +1948,9 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {WorkInterfaces.TeamFieldValuesPatch} patch
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     */
+    * @param {WorkInterfaces.TeamFieldValuesPatch} patch
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    */
     public async updateTeamFieldValues(
         patch: WorkInterfaces.TeamFieldValuesPatch,
         teamContext: TfsCoreInterfaces.TeamContext
@@ -1973,7 +1973,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.TeamFieldValues>;
@@ -1993,8 +1993,8 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     */
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    */
     public async getTeamSettings(
         teamContext: TfsCoreInterfaces.TeamContext
         ): Promise<WorkInterfaces.TeamSetting> {
@@ -2016,7 +2016,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.TeamSetting>;
@@ -2036,9 +2036,9 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
     }
 
     /**
-     * @param {WorkInterfaces.TeamSettingsPatch} teamSettingsPatch
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     */
+    * @param {WorkInterfaces.TeamSettingsPatch} teamSettingsPatch
+    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+    */
     public async updateTeamSettings(
         teamSettingsPatch: WorkInterfaces.TeamSettingsPatch,
         teamContext: TfsCoreInterfaces.TeamContext
@@ -2061,7 +2061,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkInterfaces.TeamSetting>;

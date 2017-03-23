@@ -46,11 +46,11 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
-     * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
-     * @param {string} planId
-     * @param {string} type
-     */
+    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+    * @param {string} planId
+    * @param {string} type
+    */
     public async getPlanAttachments(
         scopeIdentifier: string,
         hubName: string,
@@ -74,7 +74,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAttachment[]>;
@@ -94,15 +94,15 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
-     * @param {NodeJS.ReadableStream} contentStream - Content to upload
-     * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
-     * @param {string} planId
-     * @param {string} timelineId
-     * @param {string} recordId
-     * @param {string} type
-     * @param {string} name
-     */
+    * @param {NodeJS.ReadableStream} contentStream - Content to upload
+    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+    * @param {string} planId
+    * @param {string} timelineId
+    * @param {string} recordId
+    * @param {string} type
+    * @param {string} name
+    */
     public async createAttachment(
         customHeaders: any,
         contentStream: NodeJS.ReadableStream,
@@ -139,7 +139,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let url: string = verData.requestUrl;
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                                                                                verData.apiVersion);
                 options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAttachment>;
@@ -158,14 +158,14 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
-     * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
-     * @param {string} planId
-     * @param {string} timelineId
-     * @param {string} recordId
-     * @param {string} type
-     * @param {string} name
-     */
+    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+    * @param {string} planId
+    * @param {string} timelineId
+    * @param {string} recordId
+    * @param {string} type
+    * @param {string} name
+    */
     public async getAttachment(
         scopeIdentifier: string,
         hubName: string,
@@ -195,7 +195,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAttachment>;
@@ -215,14 +215,14 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
-     * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
-     * @param {string} planId
-     * @param {string} timelineId
-     * @param {string} recordId
-     * @param {string} type
-     * @param {string} name
-     */
+    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+    * @param {string} planId
+    * @param {string} timelineId
+    * @param {string} recordId
+    * @param {string} type
+    * @param {string} name
+    */
     public async getAttachmentContent(
         scopeIdentifier: string,
         hubName: string,
@@ -264,13 +264,13 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
-     * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
-     * @param {string} planId
-     * @param {string} timelineId
-     * @param {string} recordId
-     * @param {string} type
-     */
+    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+    * @param {string} planId
+    * @param {string} timelineId
+    * @param {string} recordId
+    * @param {string} type
+    */
     public async getAttachments(
         scopeIdentifier: string,
         hubName: string,
@@ -298,7 +298,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAttachment[]>;
@@ -318,13 +318,13 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
-     * @param {VSSInterfaces.VssJsonCollectionWrapperV<string[]>} lines
-     * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
-     * @param {string} planId
-     * @param {string} timelineId
-     * @param {string} recordId
-     */
+    * @param {VSSInterfaces.VssJsonCollectionWrapperV<string[]>} lines
+    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+    * @param {string} planId
+    * @param {string} timelineId
+    * @param {string} recordId
+    */
     public async appendTimelineRecordFeed(
         lines: VSSInterfaces.VssJsonCollectionWrapperV<string[]>,
         scopeIdentifier: string,
@@ -351,7 +351,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -371,12 +371,12 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
-     * @param {NodeJS.ReadableStream} contentStream - Content to upload
-     * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
-     * @param {string} planId
-     * @param {number} logId
-     */
+    * @param {NodeJS.ReadableStream} contentStream - Content to upload
+    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+    * @param {string} planId
+    * @param {number} logId
+    */
     public async appendLogContent(
         customHeaders: any,
         contentStream: NodeJS.ReadableStream,
@@ -407,7 +407,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let url: string = verData.requestUrl;
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                                                                                verData.apiVersion);
                 options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskLog>;
@@ -426,11 +426,11 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
-     * @param {TaskAgentInterfaces.TaskLog} log
-     * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
-     * @param {string} planId
-     */
+    * @param {TaskAgentInterfaces.TaskLog} log
+    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+    * @param {string} planId
+    */
     public async createLog(
         log: TaskAgentInterfaces.TaskLog,
         scopeIdentifier: string,
@@ -453,7 +453,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskLog>;
@@ -473,13 +473,13 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
-     * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
-     * @param {string} planId
-     * @param {number} logId
-     * @param {number} startLine
-     * @param {number} endLine
-     */
+    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+    * @param {string} planId
+    * @param {number} logId
+    * @param {number} startLine
+    * @param {number} endLine
+    */
     public async getLog(
         scopeIdentifier: string,
         hubName: string,
@@ -511,7 +511,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -531,10 +531,10 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
-     * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
-     * @param {string} planId
-     */
+    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+    * @param {string} planId
+    */
     public async getLogs(
         scopeIdentifier: string,
         hubName: string,
@@ -556,7 +556,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskLog[]>;
@@ -576,11 +576,11 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
-     * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
-     * @param {TaskAgentInterfaces.PlanGroupStatusFilter} statusFilter
-     * @param {number} count
-     */
+    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+    * @param {TaskAgentInterfaces.PlanGroupStatusFilter} statusFilter
+    * @param {number} count
+    */
     public async getQueuedPlanGroups(
         scopeIdentifier: string,
         hubName: string,
@@ -608,7 +608,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskOrchestrationQueuedPlanGroup[]>;
@@ -628,10 +628,10 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
-     * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
-     * @param {string} planId
-     */
+    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+    * @param {string} planId
+    */
     public async getPlan(
         scopeIdentifier: string,
         hubName: string,
@@ -653,7 +653,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskOrchestrationPlan>;
@@ -673,12 +673,12 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
-     * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
-     * @param {string} planId
-     * @param {string} timelineId
-     * @param {number} changeId
-     */
+    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+    * @param {string} planId
+    * @param {string} timelineId
+    * @param {number} changeId
+    */
     public async getRecords(
         scopeIdentifier: string,
         hubName: string,
@@ -708,7 +708,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TimelineRecord[]>;
@@ -728,12 +728,12 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
-     * @param {VSSInterfaces.VssJsonCollectionWrapperV<TaskAgentInterfaces.TimelineRecord[]>} records
-     * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
-     * @param {string} planId
-     * @param {string} timelineId
-     */
+    * @param {VSSInterfaces.VssJsonCollectionWrapperV<TaskAgentInterfaces.TimelineRecord[]>} records
+    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+    * @param {string} planId
+    * @param {string} timelineId
+    */
     public async updateRecords(
         records: VSSInterfaces.VssJsonCollectionWrapperV<TaskAgentInterfaces.TimelineRecord[]>,
         scopeIdentifier: string,
@@ -758,7 +758,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TimelineRecord[]>;
@@ -778,11 +778,11 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
-     * @param {TaskAgentInterfaces.Timeline} timeline
-     * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
-     * @param {string} planId
-     */
+    * @param {TaskAgentInterfaces.Timeline} timeline
+    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+    * @param {string} planId
+    */
     public async createTimeline(
         timeline: TaskAgentInterfaces.Timeline,
         scopeIdentifier: string,
@@ -805,7 +805,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.Timeline>;
@@ -825,11 +825,11 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
-     * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
-     * @param {string} planId
-     * @param {string} timelineId
-     */
+    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+    * @param {string} planId
+    * @param {string} timelineId
+    */
     public async deleteTimeline(
         scopeIdentifier: string,
         hubName: string,
@@ -853,7 +853,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -873,13 +873,13 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
-     * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
-     * @param {string} planId
-     * @param {string} timelineId
-     * @param {number} changeId
-     * @param {boolean} includeRecords
-     */
+    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+    * @param {string} planId
+    * @param {string} timelineId
+    * @param {number} changeId
+    * @param {boolean} includeRecords
+    */
     public async getTimeline(
         scopeIdentifier: string,
         hubName: string,
@@ -911,7 +911,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.Timeline>;
@@ -931,10 +931,10 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
-     * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
-     * @param {string} planId
-     */
+    * @param {string} scopeIdentifier - The project GUID to scope the request
+    * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+    * @param {string} planId
+    */
     public async getTimelines(
         scopeIdentifier: string,
         hubName: string,
@@ -956,7 +956,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.Timeline[]>;

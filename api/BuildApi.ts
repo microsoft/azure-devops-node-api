@@ -84,12 +84,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Associates an artifact with a build
-     * 
-     * @param {BuildInterfaces.BuildArtifact} artifact
-     * @param {number} buildId
-     * @param {string} project - Project ID or project name
-     */
+    * Associates an artifact with a build
+    * 
+    * @param {BuildInterfaces.BuildArtifact} artifact
+    * @param {number} buildId
+    * @param {string} project - Project ID or project name
+    */
     public async createArtifact(
         artifact: BuildInterfaces.BuildArtifact,
         buildId: number,
@@ -110,7 +110,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.BuildArtifact>;
@@ -130,12 +130,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets a specific artifact for a build
-     * 
-     * @param {number} buildId
-     * @param {string} artifactName
-     * @param {string} project - Project ID or project name
-     */
+    * Gets a specific artifact for a build
+    * 
+    * @param {number} buildId
+    * @param {string} artifactName
+    * @param {string} project - Project ID or project name
+    */
     public async getArtifact(
         buildId: number,
         artifactName: string,
@@ -161,7 +161,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.BuildArtifact>;
@@ -181,12 +181,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets a specific artifact for a build
-     * 
-     * @param {number} buildId
-     * @param {string} artifactName
-     * @param {string} project - Project ID or project name
-     */
+    * Gets a specific artifact for a build
+    * 
+    * @param {number} buildId
+    * @param {string} artifactName
+    * @param {string} project - Project ID or project name
+    */
     public async getArtifactContentZip(
         buildId: number,
         artifactName: string,
@@ -224,11 +224,11 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets all artifacts for a build
-     * 
-     * @param {number} buildId
-     * @param {string} project - Project ID or project name
-     */
+    * Gets all artifacts for a build
+    * 
+    * @param {number} buildId
+    * @param {string} project - Project ID or project name
+    */
     public async getArtifacts(
         buildId: number,
         project?: string
@@ -248,7 +248,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.BuildArtifact[]>;
@@ -268,10 +268,10 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * @param {string} project
-     * @param {number} definitionId
-     * @param {string} branchName
-     */
+    * @param {string} project
+    * @param {number} definitionId
+    * @param {string} branchName
+    */
     public async getBadge(
         project: string,
         definitionId: number,
@@ -297,7 +297,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string>;
@@ -317,11 +317,11 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {string} repoType
-     * @param {string} repoId
-     * @param {string} branchName
-     */
+    * @param {string} project - Project ID or project name
+    * @param {string} repoType
+    * @param {string} repoId
+    * @param {string} branchName
+    */
     public async getBuildBadge(
         project: string,
         repoType: string,
@@ -349,7 +349,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.BuildBadge>;
@@ -369,11 +369,11 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     * @param {string} repoType
-     * @param {string} repoId
-     * @param {string} branchName
-     */
+    * @param {string} project - Project ID or project name
+    * @param {string} repoType
+    * @param {string} repoId
+    * @param {string} branchName
+    */
     public async getBuildBadgeData(
         project: string,
         repoType: string,
@@ -401,7 +401,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string>;
@@ -421,11 +421,11 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Deletes a build
-     * 
-     * @param {number} buildId
-     * @param {string} project - Project ID or project name
-     */
+    * Deletes a build
+    * 
+    * @param {number} buildId
+    * @param {string} project - Project ID or project name
+    */
     public async deleteBuild(
         buildId: number,
         project?: string
@@ -445,7 +445,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -465,12 +465,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets a build
-     * 
-     * @param {number} buildId
-     * @param {string} project - Project ID or project name
-     * @param {string} propertyFilters - A comma-delimited list of properties to include in the results
-     */
+    * Gets a build
+    * 
+    * @param {number} buildId
+    * @param {string} project - Project ID or project name
+    * @param {string} propertyFilters - A comma-delimited list of properties to include in the results
+    */
     public async getBuild(
         buildId: number,
         project?: string,
@@ -496,7 +496,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.Build>;
@@ -516,30 +516,30 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets builds
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number[]} definitions - A comma-delimited list of definition ids
-     * @param {number[]} queues - A comma-delimited list of queue ids
-     * @param {string} buildNumber
-     * @param {Date} minFinishTime
-     * @param {Date} maxFinishTime
-     * @param {string} requestedFor
-     * @param {BuildInterfaces.BuildReason} reasonFilter
-     * @param {BuildInterfaces.BuildStatus} statusFilter
-     * @param {BuildInterfaces.BuildResult} resultFilter
-     * @param {string[]} tagFilters - A comma-delimited list of tags
-     * @param {string[]} properties - A comma-delimited list of properties to include in the results
-     * @param {number} top - The maximum number of builds to retrieve
-     * @param {string} continuationToken
-     * @param {number} maxBuildsPerDefinition
-     * @param {BuildInterfaces.QueryDeletedOption} deletedFilter
-     * @param {BuildInterfaces.BuildQueryOrder} queryOrder
-     * @param {string} branchName
-     * @param {number[]} buildIds
-     * @param {string} repositoryId
-     * @param {string} repositoryType
-     */
+    * Gets builds
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number[]} definitions - A comma-delimited list of definition ids
+    * @param {number[]} queues - A comma-delimited list of queue ids
+    * @param {string} buildNumber
+    * @param {Date} minFinishTime
+    * @param {Date} maxFinishTime
+    * @param {string} requestedFor
+    * @param {BuildInterfaces.BuildReason} reasonFilter
+    * @param {BuildInterfaces.BuildStatus} statusFilter
+    * @param {BuildInterfaces.BuildResult} resultFilter
+    * @param {string[]} tagFilters - A comma-delimited list of tags
+    * @param {string[]} properties - A comma-delimited list of properties to include in the results
+    * @param {number} top - The maximum number of builds to retrieve
+    * @param {string} continuationToken
+    * @param {number} maxBuildsPerDefinition
+    * @param {BuildInterfaces.QueryDeletedOption} deletedFilter
+    * @param {BuildInterfaces.BuildQueryOrder} queryOrder
+    * @param {string} branchName
+    * @param {number[]} buildIds
+    * @param {string} repositoryId
+    * @param {string} repositoryType
+    */
     public async getBuilds(
         project?: string,
         definitions?: number[],
@@ -601,7 +601,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.Build[]>;
@@ -621,13 +621,13 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Queues a build
-     * 
-     * @param {BuildInterfaces.Build} build
-     * @param {string} project - Project ID or project name
-     * @param {boolean} ignoreWarnings
-     * @param {string} checkInTicket
-     */
+    * Queues a build
+    * 
+    * @param {BuildInterfaces.Build} build
+    * @param {string} project - Project ID or project name
+    * @param {boolean} ignoreWarnings
+    * @param {string} checkInTicket
+    */
     public async queueBuild(
         build: BuildInterfaces.Build,
         project?: string,
@@ -654,7 +654,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.Build>;
@@ -674,12 +674,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Updates a build
-     * 
-     * @param {BuildInterfaces.Build} build
-     * @param {number} buildId
-     * @param {string} project - Project ID or project name
-     */
+    * Updates a build
+    * 
+    * @param {BuildInterfaces.Build} build
+    * @param {number} buildId
+    * @param {string} project - Project ID or project name
+    */
     public async updateBuild(
         build: BuildInterfaces.Build,
         buildId: number,
@@ -700,7 +700,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.Build>;
@@ -720,11 +720,11 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Update a batch of builds
-     * 
-     * @param {BuildInterfaces.Build[]} builds
-     * @param {string} project - Project ID or project name
-     */
+    * Update a batch of builds
+    * 
+    * @param {BuildInterfaces.Build[]} builds
+    * @param {string} project - Project ID or project name
+    */
     public async updateBuilds(
         builds: BuildInterfaces.Build[],
         project?: string
@@ -743,7 +743,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.Build[]>;
@@ -763,14 +763,14 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets the changes associated with a build
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} buildId
-     * @param {string} continuationToken
-     * @param {number} top - The maximum number of changes to return
-     * @param {boolean} includeSourceChange
-     */
+    * Gets the changes associated with a build
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} buildId
+    * @param {string} continuationToken
+    * @param {number} top - The maximum number of changes to return
+    * @param {boolean} includeSourceChange
+    */
     public async getBuildChanges(
         project: string,
         buildId: number,
@@ -800,7 +800,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.Change[]>;
@@ -820,13 +820,13 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets the changes associated between given builds
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} fromBuildId
-     * @param {number} toBuildId
-     * @param {number} top - The maximum number of changes to return
-     */
+    * Gets the changes associated between given builds
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} fromBuildId
+    * @param {number} toBuildId
+    * @param {number} top - The maximum number of changes to return
+    */
     public async getChangesBetweenBuilds(
         project: string,
         fromBuildId?: number,
@@ -854,7 +854,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.Change[]>;
@@ -874,10 +874,10 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets a controller
-     * 
-     * @param {number} controllerId
-     */
+    * Gets a controller
+    * 
+    * @param {number} controllerId
+    */
     public async getBuildController(
         controllerId: number
         ): Promise<BuildInterfaces.BuildController> {
@@ -895,7 +895,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.BuildController>;
@@ -915,10 +915,10 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets controller, optionally filtered by name
-     * 
-     * @param {string} name
-     */
+    * Gets controller, optionally filtered by name
+    * 
+    * @param {string} name
+    */
     public async getBuildControllers(
         name?: string
         ): Promise<BuildInterfaces.BuildController[]> {
@@ -940,7 +940,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.BuildController[]>;
@@ -960,13 +960,13 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Creates a new definition
-     * 
-     * @param {BuildInterfaces.BuildDefinition} definition
-     * @param {string} project - Project ID or project name
-     * @param {number} definitionToCloneId
-     * @param {number} definitionToCloneRevision
-     */
+    * Creates a new definition
+    * 
+    * @param {BuildInterfaces.BuildDefinition} definition
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionToCloneId
+    * @param {number} definitionToCloneRevision
+    */
     public async createDefinition(
         definition: BuildInterfaces.BuildDefinition,
         project?: string,
@@ -993,7 +993,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinition>;
@@ -1013,11 +1013,11 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Deletes a definition and all associated builds
-     * 
-     * @param {number} definitionId
-     * @param {string} project - Project ID or project name
-     */
+    * Deletes a definition and all associated builds
+    * 
+    * @param {number} definitionId
+    * @param {string} project - Project ID or project name
+    */
     public async deleteDefinition(
         definitionId: number,
         project?: string
@@ -1037,7 +1037,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -1057,15 +1057,15 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets a definition, optionally at a specific revision
-     * 
-     * @param {number} definitionId
-     * @param {string} project - Project ID or project name
-     * @param {number} revision
-     * @param {Date} minMetricsTime
-     * @param {string[]} propertyFilters
-     * @param {boolean} includeLatestBuilds
-     */
+    * Gets a definition, optionally at a specific revision
+    * 
+    * @param {number} definitionId
+    * @param {string} project - Project ID or project name
+    * @param {number} revision
+    * @param {Date} minMetricsTime
+    * @param {string[]} propertyFilters
+    * @param {boolean} includeLatestBuilds
+    */
     public async getDefinition(
         definitionId: number,
         project?: string,
@@ -1097,7 +1097,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinition>;
@@ -1117,23 +1117,23 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets definitions, optionally filtered by name
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {string} name
-     * @param {string} repositoryId
-     * @param {string} repositoryType
-     * @param {BuildInterfaces.DefinitionQueryOrder} queryOrder
-     * @param {number} top
-     * @param {string} continuationToken
-     * @param {Date} minMetricsTime
-     * @param {number[]} definitionIds
-     * @param {string} path
-     * @param {Date} builtAfter
-     * @param {Date} notBuiltAfter
-     * @param {boolean} includeAllProperties
-     * @param {boolean} includeLatestBuilds
-     */
+    * Gets definitions, optionally filtered by name
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {string} name
+    * @param {string} repositoryId
+    * @param {string} repositoryType
+    * @param {BuildInterfaces.DefinitionQueryOrder} queryOrder
+    * @param {number} top
+    * @param {string} continuationToken
+    * @param {Date} minMetricsTime
+    * @param {number[]} definitionIds
+    * @param {string} path
+    * @param {Date} builtAfter
+    * @param {Date} notBuiltAfter
+    * @param {boolean} includeAllProperties
+    * @param {boolean} includeLatestBuilds
+    */
     public async getDefinitions(
         project?: string,
         name?: string,
@@ -1181,7 +1181,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionReference[]>;
@@ -1201,14 +1201,14 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Updates an existing definition
-     * 
-     * @param {BuildInterfaces.BuildDefinition} definition
-     * @param {number} definitionId
-     * @param {string} project - Project ID or project name
-     * @param {number} secretsSourceDefinitionId
-     * @param {number} secretsSourceDefinitionRevision
-     */
+    * Updates an existing definition
+    * 
+    * @param {BuildInterfaces.BuildDefinition} definition
+    * @param {number} definitionId
+    * @param {string} project - Project ID or project name
+    * @param {number} secretsSourceDefinitionId
+    * @param {number} secretsSourceDefinitionRevision
+    */
     public async updateDefinition(
         definition: BuildInterfaces.BuildDefinition,
         definitionId: number,
@@ -1237,7 +1237,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinition>;
@@ -1257,12 +1257,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Creates a new folder
-     * 
-     * @param {BuildInterfaces.Folder} folder
-     * @param {string} project - Project ID or project name
-     * @param {string} path
-     */
+    * Creates a new folder
+    * 
+    * @param {BuildInterfaces.Folder} folder
+    * @param {string} project - Project ID or project name
+    * @param {string} path
+    */
     public async createFolder(
         folder: BuildInterfaces.Folder,
         project: string,
@@ -1283,7 +1283,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.Folder>;
@@ -1303,11 +1303,11 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Deletes a definition folder for given folder name and path and all it's existing definitions and it's corresponding builds
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {string} path
-     */
+    * Deletes a definition folder for given folder name and path and all it's existing definitions and it's corresponding builds
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {string} path
+    */
     public async deleteFolder(
         project: string,
         path: string
@@ -1327,7 +1327,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -1347,12 +1347,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets folders
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {string} path
-     * @param {BuildInterfaces.FolderQueryOrder} queryOrder
-     */
+    * Gets folders
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {string} path
+    * @param {BuildInterfaces.FolderQueryOrder} queryOrder
+    */
     public async getFolders(
         project: string,
         path?: string,
@@ -1378,7 +1378,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.Folder[]>;
@@ -1398,12 +1398,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Updates an existing folder at given  existing path
-     * 
-     * @param {BuildInterfaces.Folder} folder
-     * @param {string} project - Project ID or project name
-     * @param {string} path
-     */
+    * Updates an existing folder at given  existing path
+    * 
+    * @param {BuildInterfaces.Folder} folder
+    * @param {string} project - Project ID or project name
+    * @param {string} path
+    */
     public async updateFolder(
         folder: BuildInterfaces.Folder,
         project: string,
@@ -1424,7 +1424,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.Folder>;
@@ -1444,14 +1444,14 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets a log
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} buildId
-     * @param {number} logId
-     * @param {number} startLine
-     * @param {number} endLine
-     */
+    * Gets a log
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} buildId
+    * @param {number} logId
+    * @param {number} startLine
+    * @param {number} endLine
+    */
     public async getBuildLog(
         project: string,
         buildId: number,
@@ -1493,14 +1493,14 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets a log
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} buildId
-     * @param {number} logId
-     * @param {number} startLine
-     * @param {number} endLine
-     */
+    * Gets a log
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} buildId
+    * @param {number} logId
+    * @param {number} startLine
+    * @param {number} endLine
+    */
     public async getBuildLogLines(
         project: string,
         buildId: number,
@@ -1530,7 +1530,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -1550,11 +1550,11 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets logs for a build
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} buildId
-     */
+    * Gets logs for a build
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} buildId
+    */
     public async getBuildLogs(
         project: string,
         buildId: number
@@ -1574,7 +1574,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.BuildLog[]>;
@@ -1594,11 +1594,11 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets logs for a build
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} buildId
-     */
+    * Gets logs for a build
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} buildId
+    */
     public async getBuildLogsZip(
         project: string,
         buildId: number
@@ -1630,12 +1630,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets metrics of a project
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {string} metricAggregationType
-     * @param {Date} minMetricsTime
-     */
+    * Gets metrics of a project
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {string} metricAggregationType
+    * @param {Date} minMetricsTime
+    */
     public async getProjectMetrics(
         project: string,
         metricAggregationType?: string,
@@ -1661,7 +1661,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.BuildMetric[]>;
@@ -1681,12 +1681,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets metrics of a definition
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} definitionId
-     * @param {Date} minMetricsTime
-     */
+    * Gets metrics of a definition
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    * @param {Date} minMetricsTime
+    */
     public async getDefinitionMetrics(
         project: string,
         definitionId: number,
@@ -1712,7 +1712,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.BuildMetric[]>;
@@ -1732,8 +1732,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     */
+    * @param {string} project - Project ID or project name
+    */
     public async getBuildOptionDefinitions(
         project?: string
         ): Promise<BuildInterfaces.BuildOptionDefinition[]> {
@@ -1751,7 +1751,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.BuildOptionDefinition[]>;
@@ -1771,12 +1771,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets report for a build
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} buildId
-     * @param {string} type
-     */
+    * Gets report for a build
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} buildId
+    * @param {string} type
+    */
     public async getBuildReport(
         project: string,
         buildId: number,
@@ -1802,7 +1802,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.BuildReportMetadata>;
@@ -1822,12 +1822,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets report for a build
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} buildId
-     * @param {string} type
-     */
+    * Gets report for a build
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} buildId
+    * @param {string} type
+    */
     public async getBuildReportHtmlContent(
         project: string,
         buildId: number,
@@ -1865,7 +1865,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     */
+    */
     public async getResourceUsage(
         ): Promise<BuildInterfaces.BuildResourceUsage> {
 
@@ -1881,7 +1881,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.BuildResourceUsage>;
@@ -1901,11 +1901,11 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets revisions of a definition
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} definitionId
-     */
+    * Gets revisions of a definition
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    */
     public async getDefinitionRevisions(
         project: string,
         definitionId: number
@@ -1925,7 +1925,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionRevision[]>;
@@ -1945,7 +1945,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     */
+    */
     public async getBuildSettings(
         ): Promise<BuildInterfaces.BuildSettings> {
 
@@ -1961,7 +1961,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.BuildSettings>;
@@ -1981,10 +1981,10 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Updates the build settings
-     * 
-     * @param {BuildInterfaces.BuildSettings} settings
-     */
+    * Updates the build settings
+    * 
+    * @param {BuildInterfaces.BuildSettings} settings
+    */
     public async updateBuildSettings(
         settings: BuildInterfaces.BuildSettings
         ): Promise<BuildInterfaces.BuildSettings> {
@@ -2001,7 +2001,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.BuildSettings>;
@@ -2021,12 +2021,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Adds a tag to a build
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} buildId
-     * @param {string} tag
-     */
+    * Adds a tag to a build
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} buildId
+    * @param {string} tag
+    */
     public async addBuildTag(
         project: string,
         buildId: number,
@@ -2048,7 +2048,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -2068,12 +2068,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Adds tag to a build
-     * 
-     * @param {string[]} tags
-     * @param {string} project - Project ID or project name
-     * @param {number} buildId
-     */
+    * Adds tag to a build
+    * 
+    * @param {string[]} tags
+    * @param {string} project - Project ID or project name
+    * @param {number} buildId
+    */
     public async addBuildTags(
         tags: string[],
         project: string,
@@ -2094,7 +2094,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -2114,12 +2114,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Deletes a tag from a build
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} buildId
-     * @param {string} tag
-     */
+    * Deletes a tag from a build
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} buildId
+    * @param {string} tag
+    */
     public async deleteBuildTag(
         project: string,
         buildId: number,
@@ -2141,7 +2141,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -2161,11 +2161,11 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets the tags for a build
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} buildId
-     */
+    * Gets the tags for a build
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} buildId
+    */
     public async getBuildTags(
         project: string,
         buildId: number
@@ -2185,7 +2185,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -2205,12 +2205,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Adds a tag to a definition
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} definitionId
-     * @param {string} tag
-     */
+    * Adds a tag to a definition
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    * @param {string} tag
+    */
     public async addDefinitionTag(
         project: string,
         definitionId: number,
@@ -2232,7 +2232,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -2252,12 +2252,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Adds multiple tags to a definition
-     * 
-     * @param {string[]} tags
-     * @param {string} project - Project ID or project name
-     * @param {number} definitionId
-     */
+    * Adds multiple tags to a definition
+    * 
+    * @param {string[]} tags
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    */
     public async addDefinitionTags(
         tags: string[],
         project: string,
@@ -2278,7 +2278,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -2298,12 +2298,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Deletes a tag from a definition
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} definitionId
-     * @param {string} tag
-     */
+    * Deletes a tag from a definition
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    * @param {string} tag
+    */
     public async deleteDefinitionTag(
         project: string,
         definitionId: number,
@@ -2325,7 +2325,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -2345,12 +2345,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets the tags for a definition
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} definitionId
-     * @param {number} revision
-     */
+    * Gets the tags for a definition
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} definitionId
+    * @param {number} revision
+    */
     public async getDefinitionTags(
         project: string,
         definitionId: number,
@@ -2376,7 +2376,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -2396,8 +2396,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     */
+    * @param {string} project - Project ID or project name
+    */
     public async getTags(
         project: string
         ): Promise<string[]> {
@@ -2415,7 +2415,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -2435,11 +2435,11 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Deletes a definition template
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {string} templateId
-     */
+    * Deletes a definition template
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {string} templateId
+    */
     public async deleteTemplate(
         project: string,
         templateId: string
@@ -2459,7 +2459,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -2479,11 +2479,11 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets definition template filtered by id
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {string} templateId - Id of the requested template.
-     */
+    * Gets definition template filtered by id
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {string} templateId - Id of the requested template.
+    */
     public async getTemplate(
         project: string,
         templateId: string
@@ -2503,7 +2503,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionTemplate>;
@@ -2523,8 +2523,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * @param {string} project - Project ID or project name
-     */
+    * @param {string} project - Project ID or project name
+    */
     public async getTemplates(
         project: string
         ): Promise<BuildInterfaces.BuildDefinitionTemplate[]> {
@@ -2542,7 +2542,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionTemplate[]>;
@@ -2562,12 +2562,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Saves a definition template
-     * 
-     * @param {BuildInterfaces.BuildDefinitionTemplate} template
-     * @param {string} project - Project ID or project name
-     * @param {string} templateId
-     */
+    * Saves a definition template
+    * 
+    * @param {BuildInterfaces.BuildDefinitionTemplate} template
+    * @param {string} project - Project ID or project name
+    * @param {string} templateId
+    */
     public async saveTemplate(
         template: BuildInterfaces.BuildDefinitionTemplate,
         project: string,
@@ -2588,7 +2588,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionTemplate>;
@@ -2608,14 +2608,14 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets details for a build
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} buildId
-     * @param {string} timelineId
-     * @param {number} changeId
-     * @param {string} planId
-     */
+    * Gets details for a build
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} buildId
+    * @param {string} timelineId
+    * @param {number} changeId
+    * @param {string} planId
+    */
     public async getBuildTimeline(
         project: string,
         buildId: number,
@@ -2645,7 +2645,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<BuildInterfaces.Timeline>;
@@ -2665,12 +2665,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets the work item ids associated with a build
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} buildId
-     * @param {number} top - The maximum number of workitems to return
-     */
+    * Gets the work item ids associated with a build
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} buildId
+    * @param {number} top - The maximum number of workitems to return
+    */
     public async getBuildWorkItemsRefs(
         project: string,
         buildId: number,
@@ -2696,7 +2696,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<VSSInterfaces.ResourceRef[]>;
@@ -2716,13 +2716,13 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets the work item ids associated with build commits
-     * 
-     * @param {string[]} commitIds
-     * @param {string} project - Project ID or project name
-     * @param {number} buildId
-     * @param {number} top - The maximum number of workitems to return, also number of commits to consider if commitids are not sent
-     */
+    * Gets the work item ids associated with build commits
+    * 
+    * @param {string[]} commitIds
+    * @param {string} project - Project ID or project name
+    * @param {number} buildId
+    * @param {number} top - The maximum number of workitems to return, also number of commits to consider if commitids are not sent
+    */
     public async getBuildWorkItemsRefsFromCommits(
         commitIds: string[],
         project: string,
@@ -2749,7 +2749,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<VSSInterfaces.ResourceRef[]>;
@@ -2769,13 +2769,13 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets all the work item ids inbetween fromBuildId to toBuildId
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} fromBuildId
-     * @param {number} toBuildId
-     * @param {number} top - The maximum number of workitems to return
-     */
+    * Gets all the work item ids inbetween fromBuildId to toBuildId
+    * 
+    * @param {string} project - Project ID or project name
+    * @param {number} fromBuildId
+    * @param {number} toBuildId
+    * @param {number} top - The maximum number of workitems to return
+    */
     public async getWorkItemsBetweenBuilds(
         project: string,
         fromBuildId: number,
@@ -2803,7 +2803,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<VSSInterfaces.ResourceRef[]>;

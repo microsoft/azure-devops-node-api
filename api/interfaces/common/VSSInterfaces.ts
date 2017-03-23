@@ -291,44 +291,22 @@ export interface WrappedException {
 }
 
 export var TypeInfo = {
-    ApiResourceLocation: {
-        fields: <any>null
-    },
-    ApiResourceVersion: {
-        fields: <any>null
-    },
     ConnectOptions: {
         enumValues: {
             "none": 0,
             "includeServices": 1,
             "includeLastUserAccess": 2,
             "includeInheritedDefinitionsOnly": 4,
-            "includeNonInheritedDefinitionsOnly": 8,
+            "includeNonInheritedDefinitionsOnly": 8
         }
     },
-    EventActor: {
-        fields: <any>null
-    },
-    EventScope: {
-        fields: <any>null
-    },
-    IdentityRef: {
-        fields: <any>null
-    },
-    JsonPatchDocument: {
-        fields: <any>null
-    },
-    JsonPatchOperation: {
-        fields: <any>null
-    },
-    JsonWebToken: {
-        fields: <any>null
+    JsonPatchOperation: <any>{
     },
     JWTAlgorithm: {
         enumValues: {
             "none": 0,
             "hS256": 1,
-            "rS256": 2,
+            "rS256": 2
         }
     },
     Operation: {
@@ -338,108 +316,13 @@ export var TypeInfo = {
             "replace": 2,
             "move": 3,
             "copy": 4,
-            "test": 5,
+            "test": 5
         }
     },
-    PublicKey: {
-        fields: <any>null
-    },
-    Publisher: {
-        fields: <any>null
-    },
-    ReferenceLink: {
-        fields: <any>null
-    },
-    ResourceRef: {
-        fields: <any>null
-    },
-    ServiceEvent: {
-        fields: <any>null
-    },
-    VssJsonCollectionWrapper: {
-        fields: <any>null
-    },
-    VssJsonCollectionWrapperV: {
-        fields: <any>null
-    },
-    VssJsonCollectionWrapperBase: {
-        fields: <any>null
-    },
-    VssNotificationEvent: {
-        fields: <any>null
-    },
-    WrappedException: {
-        fields: <any>null
-    },
-};
-
-TypeInfo.ApiResourceLocation.fields = {
-};
-
-TypeInfo.ApiResourceVersion.fields = {
-};
-
-TypeInfo.EventActor.fields = {
-};
-
-TypeInfo.EventScope.fields = {
-};
-
-TypeInfo.IdentityRef.fields = {
-};
-
-TypeInfo.JsonPatchDocument.fields = {
 };
 
 TypeInfo.JsonPatchOperation.fields = {
     op: {
         enumType: TypeInfo.Operation
-    },
-};
-
-TypeInfo.JsonWebToken.fields = {
-};
-
-TypeInfo.PublicKey.fields = {
-};
-
-TypeInfo.Publisher.fields = {
-};
-
-TypeInfo.ReferenceLink.fields = {
-};
-
-TypeInfo.ResourceRef.fields = {
-};
-
-TypeInfo.ServiceEvent.fields = {
-    publisher: {
-        typeInfo: TypeInfo.Publisher
-    },
-};
-
-TypeInfo.VssJsonCollectionWrapper.fields = {
-};
-
-TypeInfo.VssJsonCollectionWrapperV.fields = {
-};
-
-TypeInfo.VssJsonCollectionWrapperBase.fields = {
-};
-
-TypeInfo.VssNotificationEvent.fields = {
-    actors: {
-        isArray: true,
-        typeInfo: TypeInfo.EventActor
-    },
-    scopes: {
-        isArray: true,
-        typeInfo: TypeInfo.EventScope
-    },
-};
-
-TypeInfo.WrappedException.fields = {
-    innerException: {
-        typeInfo: TypeInfo.WrappedException
     },
 };

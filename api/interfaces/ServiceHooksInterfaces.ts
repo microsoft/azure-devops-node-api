@@ -680,17 +680,14 @@ export var TypeInfo = {
         enumValues: {
             "none": 0,
             "oAuth": 10,
-            "external": 30,
+            "external": 30
         }
     },
-    Consumer: {
-        fields: <any>null
+    Consumer: <any>{
     },
-    ConsumerAction: {
-        fields: <any>null
+    ConsumerAction: <any>{
     },
-    Event: {
-        fields: <any>null
+    Event: <any>{
     },
     EventScope: {
         enumValues: {
@@ -699,82 +696,59 @@ export var TypeInfo = {
             "team": 2,
             "collection": 3,
             "account": 4,
-            "deployment": 5,
+            "deployment": 5
         }
     },
-    ExternalConfigurationDescriptor: {
-        fields: <any>null
+    Notification: <any>{
     },
-    FormattedEventMessage: {
-        fields: <any>null
-    },
-    Notification: {
-        fields: <any>null
-    },
-    NotificationDetails: {
-        fields: <any>null
+    NotificationDetails: <any>{
     },
     NotificationResult: {
         enumValues: {
             "pending": 0,
             "succeeded": 10,
-            "failed": 20,
+            "failed": 20
         }
     },
-    NotificationResultsSummaryDetail: {
-        fields: <any>null
+    NotificationResultsSummaryDetail: <any>{
     },
-    NotificationsQuery: {
-        fields: <any>null
+    NotificationsQuery: <any>{
     },
     NotificationStatus: {
         enumValues: {
             "queued": 10,
             "processing": 20,
             "requestInProgress": 30,
-            "completed": 100,
+            "completed": 100
         }
     },
-    NotificationSummary: {
-        fields: <any>null
+    NotificationSummary: <any>{
     },
-    PublisherEvent: {
-        fields: <any>null
+    PublisherEvent: <any>{
     },
-    PublishEventsRequestData: {
-        fields: <any>null
+    PublishEventsRequestData: <any>{
     },
-    ResourceContainer: {
-        fields: <any>null
+    SessionToken: <any>{
     },
-    SessionToken: {
-        fields: <any>null
-    },
-    Subscription: {
-        fields: <any>null
+    Subscription: <any>{
     },
     SubscriptionInputScope: {
         enumValues: {
             "publisher": 10,
-            "consumer": 20,
+            "consumer": 20
         }
     },
-    SubscriptionInputValuesQuery: {
-        fields: <any>null
+    SubscriptionInputValuesQuery: <any>{
     },
-    SubscriptionsQuery: {
-        fields: <any>null
+    SubscriptionsQuery: <any>{
     },
     SubscriptionStatus: {
         enumValues: {
             "enabled": 0,
             "onProbation": 10,
             "disabledByUser": 20,
-            "disabledBySystem": 30,
+            "disabledBySystem": 30
         }
-    },
-    VersionedResource: {
-        fields: <any>null
     },
 };
 
@@ -785,9 +759,6 @@ TypeInfo.Consumer.fields = {
     },
     authenticationType: {
         enumType: TypeInfo.AuthenticationType
-    },
-    externalConfiguration: {
-        typeInfo: TypeInfo.ExternalConfigurationDescriptor
     },
     inputDescriptors: {
         isArray: true,
@@ -806,26 +777,12 @@ TypeInfo.Event.fields = {
     createdDate: {
         isDate: true,
     },
-    detailedMessage: {
-        typeInfo: TypeInfo.FormattedEventMessage
-    },
-    message: {
-        typeInfo: TypeInfo.FormattedEventMessage
-    },
-    resourceContainers: {
-    },
     scope: {
         enumType: TypeInfo.EventScope
     },
     sessionToken: {
         typeInfo: TypeInfo.SessionToken
     },
-};
-
-TypeInfo.ExternalConfigurationDescriptor.fields = {
-};
-
-TypeInfo.FormattedEventMessage.fields = {
 };
 
 TypeInfo.Notification.fields = {
@@ -908,10 +865,6 @@ TypeInfo.PublisherEvent.fields = {
     event: {
         typeInfo: TypeInfo.Event
     },
-    otherResourceVersions: {
-        isArray: true,
-        typeInfo: TypeInfo.VersionedResource
-    },
     publisherInputFilters: {
         isArray: true,
         typeInfo: FormInputInterfaces.TypeInfo.InputFilter
@@ -925,9 +878,6 @@ TypeInfo.PublishEventsRequestData.fields = {
     },
 };
 
-TypeInfo.ResourceContainer.fields = {
-};
-
 TypeInfo.SessionToken.fields = {
     validTo: {
         isDate: true,
@@ -935,14 +885,8 @@ TypeInfo.SessionToken.fields = {
 };
 
 TypeInfo.Subscription.fields = {
-    createdBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     createdDate: {
         isDate: true,
-    },
-    modifiedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
     modifiedDate: {
         isDate: true,
@@ -953,16 +897,9 @@ TypeInfo.Subscription.fields = {
     status: {
         enumType: TypeInfo.SubscriptionStatus
     },
-    subscriber: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
 };
 
 TypeInfo.SubscriptionInputValuesQuery.fields = {
-    inputValues: {
-        isArray: true,
-        typeInfo: FormInputInterfaces.TypeInfo.InputValues
-    },
     scope: {
         enumType: TypeInfo.SubscriptionInputScope
     },
@@ -987,7 +924,4 @@ TypeInfo.SubscriptionsQuery.fields = {
     scope: {
         enumType: TypeInfo.EventScope
     },
-};
-
-TypeInfo.VersionedResource.fields = {
 };

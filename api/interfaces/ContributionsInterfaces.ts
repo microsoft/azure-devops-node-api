@@ -598,30 +598,16 @@ export interface SerializedContributionNode {
 }
 
 export var TypeInfo = {
-    Contribution: {
-        fields: <any>null
-    },
-    ContributionBase: {
-        fields: <any>null
-    },
-    ContributionConstraint: {
-        fields: <any>null
-    },
     ContributionLicensingBehaviorType: {
         enumValues: {
             "onlyIfLicensed": 0,
             "onlyIfUnlicensed": 1,
-            "alwaysInclude": 2,
+            "alwaysInclude": 2
         }
     },
-    ContributionNodeQuery: {
-        fields: <any>null
+    ContributionNodeQuery: <any>{
     },
-    ContributionNodeQueryResult: {
-        fields: <any>null
-    },
-    ContributionPropertyDescription: {
-        fields: <any>null
+    ContributionPropertyDescription: <any>{
     },
     ContributionPropertyType: {
         enumValues: {
@@ -635,11 +621,8 @@ export var TypeInfo = {
             "dateTime": 64,
             "dictionary": 128,
             "array": 256,
-            "object": 512,
+            "object": 512
         }
-    },
-    ContributionProviderDetails: {
-        fields: <any>null
     },
     ContributionQueryOptions: {
         enumValues: {
@@ -648,38 +631,20 @@ export var TypeInfo = {
             "includeChildren": 32,
             "includeSubTree": 96,
             "includeAll": 112,
-            "ignoreConstraints": 256,
+            "ignoreConstraints": 256
         }
     },
-    ContributionType: {
-        fields: <any>null
-    },
-    DataProviderContext: {
-        fields: <any>null
-    },
-    DataProviderQuery: {
-        fields: <any>null
-    },
-    DataProviderResult: {
-        fields: <any>null
-    },
-    ExtensionEventCallback: {
-        fields: <any>null
-    },
-    ExtensionEventCallbackCollection: {
-        fields: <any>null
+    ContributionType: <any>{
     },
     ExtensionFlags: {
         enumValues: {
             "builtIn": 1,
-            "trusted": 2,
+            "trusted": 2
         }
     },
-    ExtensionLicensing: {
-        fields: <any>null
+    ExtensionLicensing: <any>{
     },
-    ExtensionManifest: {
-        fields: <any>null
+    ExtensionManifest: <any>{
     },
     ExtensionStateFlags: {
         enumValues: {
@@ -693,58 +658,28 @@ export var TypeInfo = {
             "error": 64,
             "needsReauthorization": 128,
             "autoUpgradeError": 256,
-            "warning": 512,
+            "warning": 512
         }
     },
-    InstalledExtension: {
-        fields: <any>null
+    InstalledExtension: <any>{
     },
-    InstalledExtensionState: {
-        fields: <any>null
+    InstalledExtensionState: <any>{
     },
-    InstalledExtensionStateIssue: {
-        fields: <any>null
+    InstalledExtensionStateIssue: <any>{
     },
     InstalledExtensionStateIssueType: {
         enumValues: {
             "warning": 0,
-            "error": 1,
+            "error": 1
         }
     },
-    LicensingOverride: {
-        fields: <any>null
+    LicensingOverride: <any>{
     },
-    ResolvedDataProvider: {
-        fields: <any>null
-    },
-    SerializedContributionNode: {
-        fields: <any>null
-    },
-};
-
-TypeInfo.Contribution.fields = {
-    constraints: {
-        isArray: true,
-        typeInfo: TypeInfo.ContributionConstraint
-    },
-};
-
-TypeInfo.ContributionBase.fields = {
-};
-
-TypeInfo.ContributionConstraint.fields = {
 };
 
 TypeInfo.ContributionNodeQuery.fields = {
     queryOptions: {
         enumType: TypeInfo.ContributionQueryOptions
-    },
-};
-
-TypeInfo.ContributionNodeQueryResult.fields = {
-    nodes: {
-    },
-    providerDetails: {
     },
 };
 
@@ -754,54 +689,10 @@ TypeInfo.ContributionPropertyDescription.fields = {
     },
 };
 
-TypeInfo.ContributionProviderDetails.fields = {
-};
-
 TypeInfo.ContributionType.fields = {
     properties: {
-    },
-};
-
-TypeInfo.DataProviderContext.fields = {
-};
-
-TypeInfo.DataProviderQuery.fields = {
-    context: {
-        typeInfo: TypeInfo.DataProviderContext
-    },
-};
-
-TypeInfo.DataProviderResult.fields = {
-    resolvedProviders: {
-        isArray: true,
-        typeInfo: TypeInfo.ResolvedDataProvider
-    },
-};
-
-TypeInfo.ExtensionEventCallback.fields = {
-};
-
-TypeInfo.ExtensionEventCallbackCollection.fields = {
-    postDisable: {
-        typeInfo: TypeInfo.ExtensionEventCallback
-    },
-    postEnable: {
-        typeInfo: TypeInfo.ExtensionEventCallback
-    },
-    postInstall: {
-        typeInfo: TypeInfo.ExtensionEventCallback
-    },
-    postUninstall: {
-        typeInfo: TypeInfo.ExtensionEventCallback
-    },
-    postUpdate: {
-        typeInfo: TypeInfo.ExtensionEventCallback
-    },
-    preInstall: {
-        typeInfo: TypeInfo.ExtensionEventCallback
-    },
-    versionCheck: {
-        typeInfo: TypeInfo.ExtensionEventCallback
+        isDictionary: true,
+        dictionaryValueTypeInfo: TypeInfo.ContributionPropertyDescription
     },
 };
 
@@ -813,16 +704,9 @@ TypeInfo.ExtensionLicensing.fields = {
 };
 
 TypeInfo.ExtensionManifest.fields = {
-    contributions: {
-        isArray: true,
-        typeInfo: TypeInfo.Contribution
-    },
     contributionTypes: {
         isArray: true,
         typeInfo: TypeInfo.ContributionType
-    },
-    eventCallbacks: {
-        typeInfo: TypeInfo.ExtensionEventCallbackCollection
     },
     licensing: {
         typeInfo: TypeInfo.ExtensionLicensing
@@ -830,20 +714,9 @@ TypeInfo.ExtensionManifest.fields = {
 };
 
 TypeInfo.InstalledExtension.fields = {
-    contributions: {
-        isArray: true,
-        typeInfo: TypeInfo.Contribution
-    },
     contributionTypes: {
         isArray: true,
         typeInfo: TypeInfo.ContributionType
-    },
-    eventCallbacks: {
-        typeInfo: TypeInfo.ExtensionEventCallbackCollection
-    },
-    files: {
-        isArray: true,
-        typeInfo: GalleryInterfaces.TypeInfo.ExtensionFile
     },
     flags: {
         enumType: TypeInfo.ExtensionFlags
@@ -881,14 +754,5 @@ TypeInfo.InstalledExtensionStateIssue.fields = {
 TypeInfo.LicensingOverride.fields = {
     behavior: {
         enumType: TypeInfo.ContributionLicensingBehaviorType
-    },
-};
-
-TypeInfo.ResolvedDataProvider.fields = {
-};
-
-TypeInfo.SerializedContributionNode.fields = {
-    contribution: {
-        typeInfo: TypeInfo.Contribution
     },
 };
