@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 "use strict";
 
@@ -317,8 +317,8 @@ export interface Deployment {
     queuedOn: Date;
     reason: DeploymentReason;
     release: ReleaseReference;
-    releaseDefinition: ReleaseDefinitionReference;
-    releaseEnvironment: ReleaseEnvironmentReference;
+    releaseDefinition: ReleaseDefinitionShallowReference;
+    releaseEnvironment: ReleaseEnvironmentShallowReference;
     requestedBy: VSSInterfaces.IdentityRef;
     requestedFor: VSSInterfaces.IdentityRef;
     scheduledDeploymentTime: Date;
@@ -633,9 +633,9 @@ export interface ManualIntervention {
     instructions: string;
     modifiedOn: Date;
     name: string;
-    release: ReleaseReference;
-    releaseDefinition: ReleaseDefinitionReference;
-    releaseEnvironment: ReleaseEnvironmentReference;
+    release: ReleaseShallowReference;
+    releaseDefinition: ReleaseDefinitionShallowReference;
+    releaseEnvironment: ReleaseEnvironmentShallowReference;
     status: ManualInterventionStatus;
     taskInstanceId: string;
     url: string;
@@ -726,7 +726,7 @@ export interface Release {
     projectReference: ProjectReference;
     properties: any;
     reason: ReleaseReason;
-    releaseDefinition: ReleaseDefinitionReference;
+    releaseDefinition: ReleaseDefinitionShallowReference;
     releaseNameFormat: string;
     status: ReleaseStatus;
     tags: string[];
@@ -753,9 +753,9 @@ export interface ReleaseApproval {
     isNotificationOn: boolean;
     modifiedOn: Date;
     rank: number;
-    release: ReleaseReference;
-    releaseDefinition: ReleaseDefinitionReference;
-    releaseEnvironment: ReleaseEnvironmentReference;
+    release: ReleaseShallowReference;
+    releaseDefinition: ReleaseDefinitionShallowReference;
+    releaseEnvironment: ReleaseEnvironmentShallowReference;
     revision: number;
     status: ApprovalStatus;
     trialNumber: number;
@@ -874,7 +874,7 @@ export interface ReleaseDefinitionEnvironmentStep {
 
 export interface ReleaseDefinitionEnvironmentSummary {
     id: number;
-    lastReleases: ReleaseReference[];
+    lastReleases: ReleaseShallowReference[];
     name: string;
 }
 
@@ -884,6 +884,7 @@ export interface ReleaseDefinitionEnvironmentTemplate {
     description: string;
     environment: ReleaseDefinitionEnvironment;
     iconTaskId: string;
+    iconUri: string;
     id: string;
     name: string;
 }
@@ -904,13 +905,6 @@ export enum ReleaseDefinitionQueryOrder {
     NameDescending = 3,
 }
 
-export interface ReleaseDefinitionReference {
-    _links: any;
-    id: number;
-    name: string;
-    url: string;
-}
-
 export interface ReleaseDefinitionRevision {
     changedBy: VSSInterfaces.IdentityRef;
     changedDate: Date;
@@ -919,6 +913,13 @@ export interface ReleaseDefinitionRevision {
     definitionId: number;
     definitionUrl: string;
     revision: number;
+}
+
+export interface ReleaseDefinitionShallowReference {
+    _links: any;
+    id: number;
+    name: string;
+    url: string;
 }
 
 export enum ReleaseDefinitionSource {
@@ -931,7 +932,7 @@ export enum ReleaseDefinitionSource {
 
 export interface ReleaseDefinitionSummary {
     environments: ReleaseDefinitionEnvironmentSummary[];
-    releaseDefinition: ReleaseDefinitionReference;
+    releaseDefinition: ReleaseDefinitionShallowReference;
     releases: Release[];
 }
 
@@ -965,9 +966,9 @@ export interface ReleaseEnvironment {
     preDeployApprovals: ReleaseApproval[];
     queueId: number;
     rank: number;
-    release: ReleaseReference;
+    release: ReleaseShallowReference;
     releaseCreatedBy: VSSInterfaces.IdentityRef;
-    releaseDefinition: ReleaseDefinitionReference;
+    releaseDefinition: ReleaseDefinitionShallowReference;
     releaseDescription: string;
     releaseId: number;
     scheduledDeploymentTime: Date;
@@ -996,7 +997,7 @@ export interface ReleaseEnvironmentCompletedEvent {
     webAccessUri: string;
 }
 
-export interface ReleaseEnvironmentReference {
+export interface ReleaseEnvironmentShallowReference {
     _links: any;
     id: number;
     name: string;
@@ -1043,7 +1044,7 @@ export interface ReleaseReference {
     modifiedBy: VSSInterfaces.IdentityRef;
     name: string;
     reason: ReleaseReason;
-    releaseDefinition: ReleaseDefinitionReference;
+    releaseDefinition: ReleaseDefinitionShallowReference;
     url: string;
     webAccessUri: string;
 }
@@ -1083,6 +1084,13 @@ export interface ReleaseSchedule {
 
 export interface ReleaseSettings {
     retentionSettings: RetentionSettings;
+}
+
+export interface ReleaseShallowReference {
+    _links: any;
+    id: number;
+    name: string;
+    url: string;
 }
 
 export interface ReleaseStartMetadata {
@@ -1731,10 +1739,10 @@ export var TypeInfo = {
             "nameDescending": 3,
         }
     },
-    ReleaseDefinitionReference: {
+    ReleaseDefinitionRevision: {
         fields: <any>null
     },
-    ReleaseDefinitionRevision: {
+    ReleaseDefinitionShallowReference: {
         fields: <any>null
     },
     ReleaseDefinitionSource: {
@@ -1758,7 +1766,7 @@ export var TypeInfo = {
     ReleaseEnvironmentCompletedEvent: {
         fields: <any>null
     },
-    ReleaseEnvironmentReference: {
+    ReleaseEnvironmentShallowReference: {
         fields: <any>null
     },
     ReleaseEnvironmentUpdateMetadata: {
@@ -1801,6 +1809,9 @@ export var TypeInfo = {
         fields: <any>null
     },
     ReleaseSettings: {
+        fields: <any>null
+    },
+    ReleaseShallowReference: {
         fields: <any>null
     },
     ReleaseStartMetadata: {
@@ -2150,10 +2161,10 @@ TypeInfo.Deployment.fields = {
         typeInfo: TypeInfo.ReleaseReference
     },
     releaseDefinition: {
-        typeInfo: TypeInfo.ReleaseDefinitionReference
+        typeInfo: TypeInfo.ReleaseDefinitionShallowReference
     },
     releaseEnvironment: {
-        typeInfo: TypeInfo.ReleaseEnvironmentReference
+        typeInfo: TypeInfo.ReleaseEnvironmentShallowReference
     },
     requestedBy: {
         typeInfo: VSSInterfaces.TypeInfo.IdentityRef
@@ -2426,13 +2437,13 @@ TypeInfo.ManualIntervention.fields = {
         isDate: true,
     },
     release: {
-        typeInfo: TypeInfo.ReleaseReference
+        typeInfo: TypeInfo.ReleaseShallowReference
     },
     releaseDefinition: {
-        typeInfo: TypeInfo.ReleaseDefinitionReference
+        typeInfo: TypeInfo.ReleaseDefinitionShallowReference
     },
     releaseEnvironment: {
-        typeInfo: TypeInfo.ReleaseEnvironmentReference
+        typeInfo: TypeInfo.ReleaseEnvironmentShallowReference
     },
     status: {
         enumType: TypeInfo.ManualInterventionStatus
@@ -2512,7 +2523,7 @@ TypeInfo.Release.fields = {
         enumType: TypeInfo.ReleaseReason
     },
     releaseDefinition: {
-        typeInfo: TypeInfo.ReleaseDefinitionReference
+        typeInfo: TypeInfo.ReleaseDefinitionShallowReference
     },
     status: {
         enumType: TypeInfo.ReleaseStatus
@@ -2555,13 +2566,13 @@ TypeInfo.ReleaseApproval.fields = {
         isDate: true,
     },
     release: {
-        typeInfo: TypeInfo.ReleaseReference
+        typeInfo: TypeInfo.ReleaseShallowReference
     },
     releaseDefinition: {
-        typeInfo: TypeInfo.ReleaseDefinitionReference
+        typeInfo: TypeInfo.ReleaseDefinitionShallowReference
     },
     releaseEnvironment: {
-        typeInfo: TypeInfo.ReleaseEnvironmentReference
+        typeInfo: TypeInfo.ReleaseEnvironmentShallowReference
     },
     status: {
         enumType: TypeInfo.ApprovalStatus
@@ -2727,7 +2738,7 @@ TypeInfo.ReleaseDefinitionEnvironmentStep.fields = {
 TypeInfo.ReleaseDefinitionEnvironmentSummary.fields = {
     lastReleases: {
         isArray: true,
-        typeInfo: TypeInfo.ReleaseReference
+        typeInfo: TypeInfo.ReleaseShallowReference
     },
 };
 
@@ -2735,9 +2746,6 @@ TypeInfo.ReleaseDefinitionEnvironmentTemplate.fields = {
     environment: {
         typeInfo: TypeInfo.ReleaseDefinitionEnvironment
     },
-};
-
-TypeInfo.ReleaseDefinitionReference.fields = {
 };
 
 TypeInfo.ReleaseDefinitionRevision.fields = {
@@ -2752,13 +2760,16 @@ TypeInfo.ReleaseDefinitionRevision.fields = {
     },
 };
 
+TypeInfo.ReleaseDefinitionShallowReference.fields = {
+};
+
 TypeInfo.ReleaseDefinitionSummary.fields = {
     environments: {
         isArray: true,
         typeInfo: TypeInfo.ReleaseDefinitionEnvironmentSummary
     },
     releaseDefinition: {
-        typeInfo: TypeInfo.ReleaseDefinitionReference
+        typeInfo: TypeInfo.ReleaseDefinitionShallowReference
     },
     releases: {
         isArray: true,
@@ -2826,13 +2837,13 @@ TypeInfo.ReleaseEnvironment.fields = {
         typeInfo: TypeInfo.ReleaseApproval
     },
     release: {
-        typeInfo: TypeInfo.ReleaseReference
+        typeInfo: TypeInfo.ReleaseShallowReference
     },
     releaseCreatedBy: {
         typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
     releaseDefinition: {
-        typeInfo: TypeInfo.ReleaseDefinitionReference
+        typeInfo: TypeInfo.ReleaseDefinitionShallowReference
     },
     scheduledDeploymentTime: {
         isDate: true,
@@ -2868,7 +2879,7 @@ TypeInfo.ReleaseEnvironmentCompletedEvent.fields = {
     },
 };
 
-TypeInfo.ReleaseEnvironmentReference.fields = {
+TypeInfo.ReleaseEnvironmentShallowReference.fields = {
 };
 
 TypeInfo.ReleaseEnvironmentUpdateMetadata.fields = {
@@ -2898,7 +2909,7 @@ TypeInfo.ReleaseReference.fields = {
         enumType: TypeInfo.ReleaseReason
     },
     releaseDefinition: {
-        typeInfo: TypeInfo.ReleaseDefinitionReference
+        typeInfo: TypeInfo.ReleaseDefinitionShallowReference
     },
 };
 
@@ -2921,6 +2932,9 @@ TypeInfo.ReleaseSettings.fields = {
     retentionSettings: {
         typeInfo: TypeInfo.RetentionSettings
     },
+};
+
+TypeInfo.ReleaseShallowReference.fields = {
 };
 
 TypeInfo.ReleaseStartMetadata.fields = {

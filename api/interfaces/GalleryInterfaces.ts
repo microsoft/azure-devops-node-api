@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 "use strict";
 
@@ -199,6 +199,16 @@ export interface CategoryLanguageTitle {
      * Actual title to be shown on the UI
      */
     title: string;
+}
+
+/**
+ * The structure of a Concern Rather than defining a separate data structure having same fields as QnAItem, we are inheriting from the QnAItem.
+ */
+export interface Concern extends QnAItem {
+    /**
+     * Category of the concern
+     */
+    category: ConcernCategory;
 }
 
 export enum ConcernCategory {
@@ -599,6 +609,10 @@ export enum ExtensionQueryFilterType {
      * Filter type for specifying a range of installation target version. The filter will be used along with InstallationTarget filter. The value should be a pair of well formed version values separated by hyphen(-). Currently supported only if search text is provided.
      */
     InstallationTargetVersionRange = 16,
+    /**
+     * Filter type for specifying metadata key and value to be used for filtering.
+     */
+    VsixMetadata = 17,
 }
 
 export enum ExtensionQueryFlags {
@@ -655,6 +669,10 @@ export enum ExtensionQueryFlags {
      */
     IncludeMetadata = 2048,
     /**
+     * This flag is used to indicate to return very small data for extension reruired by VS IDE. This flag is only compatible when querying is done by VS IDE
+     */
+    IncludeMinimalPayloadForVsIde = 4096,
+    /**
      * AllAttributes is designed to be a mask that defines all sub-elements of the extension should be returned.  NOTE: This is not actually All flags. This is now locked to the set defined since changing this enum would be a breaking change and would change the behavior of anyone using it. Try not to use this value when making calls to the service, instead be explicit about the options required.
      */
     AllAttributes = 479,
@@ -694,6 +712,10 @@ export interface ExtensionStatisticUpdate {
     operation: ExtensionStatisticOperation;
     publisherName: string;
     statistic: ExtensionStatistic;
+}
+
+export enum ExtensionStatsAggregateType {
+    Daily = 1,
 }
 
 export interface ExtensionVersion {
@@ -763,6 +785,32 @@ export enum PagingDirection {
      * Forward will return results from later in the resultset.
      */
     Forward = 2,
+}
+
+/**
+ * This is the set of categories in response to the get category query
+ */
+export interface ProductCategoriesResult {
+    categories: ProductCategory[];
+}
+
+/**
+ * This is the interface object to be used by Root Categories and Category Tree APIs for Visual Studio Ide.
+ */
+export interface ProductCategory {
+    children: ProductCategory[];
+    /**
+     * Indicator whether this is a leaf or there are children under this category
+     */
+    hasChildren: boolean;
+    /**
+     * Individual Guid of the Category
+     */
+    id: string;
+    /**
+     * Category Title in the requested language
+     */
+    title: string;
 }
 
 export interface PublishedExtension {
@@ -1194,6 +1242,70 @@ export interface Review {
     userId: string;
 }
 
+export enum ReviewEventOperation {
+    Create = 1,
+    Update = 2,
+    Delete = 3,
+}
+
+/**
+ * Properties associated with Review event
+ */
+export interface ReviewEventProperties {
+    /**
+     * Operation performed on Event - Create\Update
+     */
+    eventOperation: ReviewEventOperation;
+    /**
+     * Flag to see if reply is admin reply
+     */
+    isAdminReply: boolean;
+    /**
+     * Flag to record if the reviwe is ignored
+     */
+    isIgnored: boolean;
+    /**
+     * Rating at the time of event
+     */
+    rating: number;
+    /**
+     * Reply update date
+     */
+    replyDate: Date;
+    /**
+     * Publisher reply text or admin reply text
+     */
+    replyText: string;
+    /**
+     * User who responded to the review
+     */
+    replyUserId: string;
+    /**
+     * Review Event Type - Review
+     */
+    resourceType: ReviewResourceType;
+    /**
+     * Review update date
+     */
+    reviewDate: Date;
+    /**
+     * ReviewId of the review  on which the operation is performed
+     */
+    reviewId: number;
+    /**
+     * Text in Review Text
+     */
+    reviewText: string;
+    /**
+     * User display name at the time of review
+     */
+    userDisplayName: string;
+    /**
+     * User who gave review
+     */
+    userId: string;
+}
+
 export enum ReviewFilterOptions {
     /**
      * No filtering, all reviews are returned (default option)
@@ -1276,6 +1388,12 @@ export interface ReviewReply {
      * Id of the user who left the reply
      */
     userId: string;
+}
+
+export enum ReviewResourceType {
+    Review = 1,
+    PublisherReply = 2,
+    AdminReply = 3,
 }
 
 export interface ReviewsResult {
@@ -1485,6 +1603,9 @@ export var TypeInfo = {
     CategoryLanguageTitle: {
         fields: <any>null
     },
+    Concern: {
+        fields: <any>null
+    },
     ConcernCategory: {
         enumValues: {
             "general": 1,
@@ -1582,6 +1703,7 @@ export var TypeInfo = {
             "lcid": 14,
             "installationTargetVersion": 15,
             "installationTargetVersionRange": 16,
+            "vsixMetadata": 17,
         }
     },
     ExtensionQueryFlags: {
@@ -1599,6 +1721,7 @@ export var TypeInfo = {
             "includeLatestVersionOnly": 512,
             "useFallbackAssetUri": 1024,
             "includeMetadata": 2048,
+            "includeMinimalPayloadForVsIde": 4096,
             "allAttributes": 479,
         }
     },
@@ -1623,6 +1746,11 @@ export var TypeInfo = {
     ExtensionStatisticUpdate: {
         fields: <any>null
     },
+    ExtensionStatsAggregateType: {
+        enumValues: {
+            "daily": 1,
+        }
+    },
     ExtensionVersion: {
         fields: <any>null
     },
@@ -1646,6 +1774,12 @@ export var TypeInfo = {
             "backward": 1,
             "forward": 2,
         }
+    },
+    ProductCategoriesResult: {
+        fields: <any>null
+    },
+    ProductCategory: {
+        fields: <any>null
     },
     PublishedExtension: {
         fields: <any>null
@@ -1752,6 +1886,16 @@ export var TypeInfo = {
     Review: {
         fields: <any>null
     },
+    ReviewEventOperation: {
+        enumValues: {
+            "create": 1,
+            "update": 2,
+            "delete": 3,
+        }
+    },
+    ReviewEventProperties: {
+        fields: <any>null
+    },
     ReviewFilterOptions: {
         enumValues: {
             "none": 0,
@@ -1772,6 +1916,13 @@ export var TypeInfo = {
     },
     ReviewReply: {
         fields: <any>null
+    },
+    ReviewResourceType: {
+        enumValues: {
+            "review": 1,
+            "publisherReply": 2,
+            "adminReply": 3,
+        }
     },
     ReviewsResult: {
         fields: <any>null
@@ -1868,6 +2019,24 @@ TypeInfo.CategoriesResult.fields = {
 };
 
 TypeInfo.CategoryLanguageTitle.fields = {
+};
+
+TypeInfo.Concern.fields = {
+    category: {
+        enumType: TypeInfo.ConcernCategory
+    },
+    createdDate: {
+        isDate: true,
+    },
+    status: {
+        enumType: TypeInfo.QnAItemStatus
+    },
+    updatedDate: {
+        isDate: true,
+    },
+    user: {
+        typeInfo: TypeInfo.UserIdentityRef
+    },
 };
 
 TypeInfo.EventCounts.fields = {
@@ -2011,6 +2180,20 @@ TypeInfo.InstallationTarget.fields = {
 };
 
 TypeInfo.MetadataItem.fields = {
+};
+
+TypeInfo.ProductCategoriesResult.fields = {
+    categories: {
+        isArray: true,
+        typeInfo: TypeInfo.ProductCategory
+    },
+};
+
+TypeInfo.ProductCategory.fields = {
+    children: {
+        isArray: true,
+        typeInfo: TypeInfo.ProductCategory
+    },
 };
 
 TypeInfo.PublishedExtension.fields = {
@@ -2176,6 +2359,21 @@ TypeInfo.Review.fields = {
         typeInfo: TypeInfo.ReviewReply
     },
     updatedDate: {
+        isDate: true,
+    },
+};
+
+TypeInfo.ReviewEventProperties.fields = {
+    eventOperation: {
+        enumType: TypeInfo.ReviewEventOperation
+    },
+    replyDate: {
+        isDate: true,
+    },
+    resourceType: {
+        enumType: TypeInfo.ReviewResourceType
+    },
+    reviewDate: {
         isDate: true,
     },
 };

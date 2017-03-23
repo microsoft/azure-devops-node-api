@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 "use strict";
 
@@ -361,6 +361,25 @@ export interface LastResultDetails {
     runBy: VSSInterfaces.IdentityRef;
 }
 
+export interface LinkedWorkItemsQuery {
+    automatedTestNames: string[];
+    planId: number;
+    pointIds: number[];
+    suiteIds: number[];
+    testCaseIds: number[];
+    workItemCategory: string;
+    workItemCount: number;
+}
+
+export interface LinkedWorkItemsQueryResult {
+    automatedTestName: string;
+    planId: number;
+    pointId: number;
+    suiteId: number;
+    testCaseId: number;
+    workItems: WorkItemReference[];
+}
+
 export interface ModuleCoverage {
     blockCount: number;
     blockData: number[];
@@ -709,6 +728,7 @@ export interface TestCaseResult {
     startedDate: Date;
     state: string;
     testCase: ShallowReference;
+    testCaseReferenceId: number;
     testCaseTitle: string;
     testPlan: ShallowReference;
     testPoint: ShallowReference;
@@ -1589,6 +1609,12 @@ export var TypeInfo = {
     LastResultDetails: {
         fields: <any>null
     },
+    LinkedWorkItemsQuery: {
+        fields: <any>null
+    },
+    LinkedWorkItemsQueryResult: {
+        fields: <any>null
+    },
     ModuleCoverage: {
         fields: <any>null
     },
@@ -2061,6 +2087,16 @@ TypeInfo.LastResultDetails.fields = {
     },
     runBy: {
         typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
+};
+
+TypeInfo.LinkedWorkItemsQuery.fields = {
+};
+
+TypeInfo.LinkedWorkItemsQueryResult.fields = {
+    workItems: {
+        isArray: true,
+        typeInfo: TypeInfo.WorkItemReference
     },
 };
 

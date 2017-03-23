@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 "use strict";
 
@@ -378,6 +378,10 @@ export interface BuildDefinition extends BuildDefinitionReference {
      * Gets or sets the job authorization scope for builds which are queued against this definition
      */
     jobAuthorizationScope: BuildAuthorizationScope;
+    /**
+     * Gets or sets the job cancel timeout in minutes for builds which are cancelled by user for this definition
+     */
+    jobCancelTimeoutInMinutes: number;
     /**
      * Gets or sets the job execution timeout in minutes for builds which are queued against this definition
      */

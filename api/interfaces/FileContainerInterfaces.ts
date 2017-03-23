@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 "use strict";
 
@@ -77,6 +77,10 @@ export interface FileContainer {
      * Location of the item resource.
      */
     itemLocation: string;
+    /**
+     * ItemStore Locator for this container.
+     */
+    locatorPath: string;
     /**
      * Name.
      */

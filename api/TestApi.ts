@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
@@ -48,6 +48,7 @@ export interface ITestApi extends basem.ClientApiBase {
     queryTestResultHistory(filter: TestInterfaces.ResultsFilter, project: string): Promise<TestInterfaces.TestResultHistory>;
     getTestIteration(project: string, runId: number, testCaseResultId: number, iterationId: number, includeActionResults?: boolean): Promise<TestInterfaces.TestIterationDetailsModel>;
     getTestIterations(project: string, runId: number, testCaseResultId: number, includeActionResults?: boolean): Promise<TestInterfaces.TestIterationDetailsModel[]>;
+    getLinkedWorkItemsByQuery(workItemQuery: TestInterfaces.LinkedWorkItemsQuery, project: string): Promise<TestInterfaces.LinkedWorkItemsQueryResult[]>;
     getTestRunLogs(project: string, runId: number): Promise<TestInterfaces.TestMessageLogDetails[]>;
     getResultParameters(project: string, runId: number, testCaseResultId: number, iterationId: number, paramName?: string): Promise<TestInterfaces.TestResultParameterModel[]>;
     createTestPlan(testPlan: TestInterfaces.PlanUpdateModel, project: string): Promise<TestInterfaces.TestPlan>;
@@ -119,12 +120,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    * @param {number} testCaseResultId
-    * @param {number} iterationId
-    * @param {string} actionPath
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     * @param {number} testCaseResultId
+     * @param {number} iterationId
+     * @param {string} actionPath
+     */
     public async getActionResults(
         project: string,
         runId: number,
@@ -150,7 +151,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestActionResultModel[]>;
@@ -170,13 +171,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.TestAttachmentRequestModel} attachmentRequestModel
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    * @param {number} testCaseResultId
-    * @param {number} iterationId
-    * @param {string} actionPath
-    */
+     * @param {TestInterfaces.TestAttachmentRequestModel} attachmentRequestModel
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     * @param {number} testCaseResultId
+     * @param {number} iterationId
+     * @param {string} actionPath
+     */
     public async createTestIterationResultAttachment(
         attachmentRequestModel: TestInterfaces.TestAttachmentRequestModel,
         project: string,
@@ -207,7 +208,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestAttachmentReference>;
@@ -227,11 +228,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.TestAttachmentRequestModel} attachmentRequestModel
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    * @param {number} testCaseResultId
-    */
+     * @param {TestInterfaces.TestAttachmentRequestModel} attachmentRequestModel
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     * @param {number} testCaseResultId
+     */
     public async createTestResultAttachment(
         attachmentRequestModel: TestInterfaces.TestAttachmentRequestModel,
         project: string,
@@ -254,7 +255,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestAttachmentReference>;
@@ -274,13 +275,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * Returns a test result attachment
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    * @param {number} testCaseResultId
-    * @param {number} attachmentId
-    */
+     * Returns a test result attachment
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     * @param {number} testCaseResultId
+     * @param {number} attachmentId
+     */
     public async getTestResultAttachmentContent(
         project: string,
         runId: number,
@@ -316,12 +317,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * Returns attachment references for test result.
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    * @param {number} testCaseResultId
-    */
+     * Returns attachment references for test result.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     * @param {number} testCaseResultId
+     */
     public async getTestResultAttachments(
         project: string,
         runId: number,
@@ -343,7 +344,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestAttachment[]>;
@@ -363,13 +364,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * Returns a test result attachment
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    * @param {number} testCaseResultId
-    * @param {number} attachmentId
-    */
+     * Returns a test result attachment
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     * @param {number} testCaseResultId
+     * @param {number} attachmentId
+     */
     public async getTestResultAttachmentZip(
         project: string,
         runId: number,
@@ -405,10 +406,10 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.TestAttachmentRequestModel} attachmentRequestModel
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    */
+     * @param {TestInterfaces.TestAttachmentRequestModel} attachmentRequestModel
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     */
     public async createTestRunAttachment(
         attachmentRequestModel: TestInterfaces.TestAttachmentRequestModel,
         project: string,
@@ -429,7 +430,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestAttachmentReference>;
@@ -449,12 +450,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * Returns a test run attachment
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    * @param {number} attachmentId
-    */
+     * Returns a test run attachment
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     * @param {number} attachmentId
+     */
     public async getTestRunAttachmentContent(
         project: string,
         runId: number,
@@ -488,11 +489,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * Returns attachment references for test run.
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    */
+     * Returns attachment references for test run.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     */
     public async getTestRunAttachments(
         project: string,
         runId: number
@@ -512,7 +513,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestAttachment[]>;
@@ -532,12 +533,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * Returns a test run attachment
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    * @param {number} attachmentId
-    */
+     * Returns a test run attachment
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     * @param {number} attachmentId
+     */
     public async getTestRunAttachmentZip(
         project: string,
         runId: number,
@@ -571,10 +572,10 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    * @param {number} testCaseResultId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     * @param {number} testCaseResultId
+     */
     public async getBugsLinkedToTestResult(
         project: string,
         runId: number,
@@ -596,7 +597,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.WorkItemReference[]>;
@@ -616,10 +617,10 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} cloneOperationId
-    * @param {boolean} includeDetails
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} cloneOperationId
+     * @param {boolean} includeDetails
+     */
     public async getCloneInformation(
         project: string,
         cloneOperationId: number,
@@ -645,7 +646,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.CloneOperationInformation>;
@@ -665,10 +666,10 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.TestPlanCloneRequest} cloneRequestBody
-    * @param {string} project - Project ID or project name
-    * @param {number} planId
-    */
+     * @param {TestInterfaces.TestPlanCloneRequest} cloneRequestBody
+     * @param {string} project - Project ID or project name
+     * @param {number} planId
+     */
     public async cloneTestPlan(
         cloneRequestBody: TestInterfaces.TestPlanCloneRequest,
         project: string,
@@ -689,7 +690,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.CloneOperationInformation>;
@@ -709,11 +710,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.TestSuiteCloneRequest} cloneRequestBody
-    * @param {string} project - Project ID or project name
-    * @param {number} planId
-    * @param {number} sourceSuiteId
-    */
+     * @param {TestInterfaces.TestSuiteCloneRequest} cloneRequestBody
+     * @param {string} project - Project ID or project name
+     * @param {number} planId
+     * @param {number} sourceSuiteId
+     */
     public async cloneTestSuite(
         cloneRequestBody: TestInterfaces.TestSuiteCloneRequest,
         project: string,
@@ -736,7 +737,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.CloneOperationInformation>;
@@ -756,10 +757,10 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} buildId
-    * @param {number} flags
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} buildId
+     * @param {number} flags
+     */
     public async getBuildCodeCoverage(
         project: string,
         buildId: number,
@@ -785,7 +786,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.BuildCoverage[]>;
@@ -805,10 +806,10 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} buildId
-    * @param {number} deltaBuildId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} buildId
+     * @param {number} deltaBuildId
+     */
     public async getCodeCoverageSummary(
         project: string,
         buildId: number,
@@ -834,7 +835,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.CodeCoverageSummary>;
@@ -854,12 +855,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * http://(tfsserver):8080/tfs/DefaultCollection/_apis/test/CodeCoverage?buildId=10 Request: Json of code coverage summary
-    * 
-    * @param {TestInterfaces.CodeCoverageData} coverageData
-    * @param {string} project - Project ID or project name
-    * @param {number} buildId
-    */
+     * http://(tfsserver):8080/tfs/DefaultCollection/_apis/test/CodeCoverage?buildId=10 Request: Json of code coverage summary
+     * 
+     * @param {TestInterfaces.CodeCoverageData} coverageData
+     * @param {string} project - Project ID or project name
+     * @param {number} buildId
+     */
     public async updateCodeCoverageSummary(
         coverageData: TestInterfaces.CodeCoverageData,
         project: string,
@@ -884,7 +885,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -904,10 +905,10 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    * @param {number} flags
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     * @param {number} flags
+     */
     public async getTestRunCodeCoverage(
         project: string,
         runId: number,
@@ -933,7 +934,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestRunCoverage[]>;
@@ -953,9 +954,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.TestConfiguration} testConfiguration
-    * @param {string} project - Project ID or project name
-    */
+     * @param {TestInterfaces.TestConfiguration} testConfiguration
+     * @param {string} project - Project ID or project name
+     */
     public async createTestConfiguration(
         testConfiguration: TestInterfaces.TestConfiguration,
         project: string
@@ -974,7 +975,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestConfiguration>;
@@ -994,9 +995,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} testConfigurationId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} testConfigurationId
+     */
     public async deleteTestConfiguration(
         project: string,
         testConfigurationId: number
@@ -1016,7 +1017,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -1036,9 +1037,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} testConfigurationId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} testConfigurationId
+     */
     public async getTestConfigurationById(
         project: string,
         testConfigurationId: number
@@ -1058,7 +1059,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestConfiguration>;
@@ -1078,12 +1079,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} skip
-    * @param {number} top
-    * @param {string} continuationToken
-    * @param {boolean} includeAllProperties
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} skip
+     * @param {number} top
+     * @param {string} continuationToken
+     * @param {boolean} includeAllProperties
+     */
     public async getTestConfigurations(
         project: string,
         skip?: number,
@@ -1113,7 +1114,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestConfiguration[]>;
@@ -1133,10 +1134,10 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.TestConfiguration} testConfiguration
-    * @param {string} project - Project ID or project name
-    * @param {number} testConfigurationId
-    */
+     * @param {TestInterfaces.TestConfiguration} testConfiguration
+     * @param {string} project - Project ID or project name
+     * @param {number} testConfigurationId
+     */
     public async updateTestConfiguration(
         testConfiguration: TestInterfaces.TestConfiguration,
         project: string,
@@ -1157,7 +1158,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestConfiguration>;
@@ -1177,9 +1178,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.CustomTestFieldDefinition[]} newFields
-    * @param {string} project - Project ID or project name
-    */
+     * @param {TestInterfaces.CustomTestFieldDefinition[]} newFields
+     * @param {string} project - Project ID or project name
+     */
     public async addCustomFields(
         newFields: TestInterfaces.CustomTestFieldDefinition[],
         project: string
@@ -1198,7 +1199,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.CustomTestFieldDefinition[]>;
@@ -1218,9 +1219,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {TestInterfaces.CustomTestFieldScope} scopeFilter
-    */
+     * @param {string} project - Project ID or project name
+     * @param {TestInterfaces.CustomTestFieldScope} scopeFilter
+     */
     public async queryCustomFields(
         project: string,
         scopeFilter: TestInterfaces.CustomTestFieldScope
@@ -1244,7 +1245,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.CustomTestFieldDefinition[]>;
@@ -1264,9 +1265,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.ResultsFilter} filter
-    * @param {string} project - Project ID or project name
-    */
+     * @param {TestInterfaces.ResultsFilter} filter
+     * @param {string} project - Project ID or project name
+     */
     public async queryTestResultHistory(
         filter: TestInterfaces.ResultsFilter,
         project: string
@@ -1285,7 +1286,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestResultHistory>;
@@ -1305,12 +1306,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    * @param {number} testCaseResultId
-    * @param {number} iterationId
-    * @param {boolean} includeActionResults
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     * @param {number} testCaseResultId
+     * @param {number} iterationId
+     * @param {boolean} includeActionResults
+     */
     public async getTestIteration(
         project: string,
         runId: number,
@@ -1340,7 +1341,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestIterationDetailsModel>;
@@ -1360,11 +1361,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    * @param {number} testCaseResultId
-    * @param {boolean} includeActionResults
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     * @param {number} testCaseResultId
+     * @param {boolean} includeActionResults
+     */
     public async getTestIterations(
         project: string,
         runId: number,
@@ -1392,7 +1393,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestIterationDetailsModel[]>;
@@ -1412,9 +1413,50 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    */
+     * @param {TestInterfaces.LinkedWorkItemsQuery} workItemQuery
+     * @param {string} project - Project ID or project name
+     */
+    public async getLinkedWorkItemsByQuery(
+        workItemQuery: TestInterfaces.LinkedWorkItemsQuery,
+        project: string
+        ): Promise<TestInterfaces.LinkedWorkItemsQueryResult[]> {
+
+        return new Promise<TestInterfaces.LinkedWorkItemsQueryResult[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "Test",
+                    "a4dcb25b-9878-49ea-abfd-e440bd9b1dcd",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<TestInterfaces.LinkedWorkItemsQueryResult[]>;
+                res = await this.rest.create<TestInterfaces.LinkedWorkItemsQueryResult[]>(url, workItemQuery, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     */
     public async getTestRunLogs(
         project: string,
         runId: number
@@ -1434,7 +1476,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestMessageLogDetails[]>;
@@ -1454,12 +1496,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    * @param {number} testCaseResultId
-    * @param {number} iterationId
-    * @param {string} paramName
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     * @param {number} testCaseResultId
+     * @param {number} iterationId
+     * @param {string} paramName
+     */
     public async getResultParameters(
         project: string,
         runId: number,
@@ -1489,7 +1531,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestResultParameterModel[]>;
@@ -1509,9 +1551,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.PlanUpdateModel} testPlan
-    * @param {string} project - Project ID or project name
-    */
+     * @param {TestInterfaces.PlanUpdateModel} testPlan
+     * @param {string} project - Project ID or project name
+     */
     public async createTestPlan(
         testPlan: TestInterfaces.PlanUpdateModel,
         project: string
@@ -1530,7 +1572,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestPlan>;
@@ -1550,9 +1592,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} planId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} planId
+     */
     public async deleteTestPlan(
         project: string,
         planId: number
@@ -1572,7 +1614,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -1592,9 +1634,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} planId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} planId
+     */
     public async getPlanById(
         project: string,
         planId: number
@@ -1614,7 +1656,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestPlan>;
@@ -1634,13 +1676,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {string} owner
-    * @param {number} skip
-    * @param {number} top
-    * @param {boolean} includePlanDetails
-    * @param {boolean} filterActivePlans
-    */
+     * @param {string} project - Project ID or project name
+     * @param {string} owner
+     * @param {number} skip
+     * @param {number} top
+     * @param {boolean} includePlanDetails
+     * @param {boolean} filterActivePlans
+     */
     public async getPlans(
         project: string,
         owner?: string,
@@ -1672,7 +1714,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestPlan[]>;
@@ -1692,10 +1734,10 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.PlanUpdateModel} planUpdateModel
-    * @param {string} project - Project ID or project name
-    * @param {number} planId
-    */
+     * @param {TestInterfaces.PlanUpdateModel} planUpdateModel
+     * @param {string} project - Project ID or project name
+     * @param {number} planId
+     */
     public async updateTestPlan(
         planUpdateModel: TestInterfaces.PlanUpdateModel,
         project: string,
@@ -1716,7 +1758,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestPlan>;
@@ -1736,12 +1778,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} planId
-    * @param {number} suiteId
-    * @param {number} pointIds
-    * @param {string} witFields
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} planId
+     * @param {number} suiteId
+     * @param {number} pointIds
+     * @param {string} witFields
+     */
     public async getPoint(
         project: string,
         planId: number,
@@ -1771,7 +1813,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestPoint>;
@@ -1791,17 +1833,17 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} planId
-    * @param {number} suiteId
-    * @param {string} witFields
-    * @param {string} configurationId
-    * @param {string} testCaseId
-    * @param {string} testPointIds
-    * @param {boolean} includePointDetails
-    * @param {number} skip
-    * @param {number} top
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} planId
+     * @param {number} suiteId
+     * @param {string} witFields
+     * @param {string} configurationId
+     * @param {string} testCaseId
+     * @param {string} testPointIds
+     * @param {boolean} includePointDetails
+     * @param {number} skip
+     * @param {number} top
+     */
     public async getPoints(
         project: string,
         planId: number,
@@ -1841,7 +1883,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestPoint[]>;
@@ -1861,12 +1903,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.PointUpdateModel} pointUpdateModel
-    * @param {string} project - Project ID or project name
-    * @param {number} planId
-    * @param {number} suiteId
-    * @param {string} pointIds
-    */
+     * @param {TestInterfaces.PointUpdateModel} pointUpdateModel
+     * @param {string} project - Project ID or project name
+     * @param {number} planId
+     * @param {number} suiteId
+     * @param {string} pointIds
+     */
     public async updateTestPoints(
         pointUpdateModel: TestInterfaces.PointUpdateModel,
         project: string,
@@ -1891,7 +1933,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestPoint[]>;
@@ -1911,11 +1953,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.TestPointsQuery} query
-    * @param {string} project - Project ID or project name
-    * @param {number} skip
-    * @param {number} top
-    */
+     * @param {TestInterfaces.TestPointsQuery} query
+     * @param {string} project - Project ID or project name
+     * @param {number} skip
+     * @param {number} top
+     */
     public async getPointsByQuery(
         query: TestInterfaces.TestPointsQuery,
         project: string,
@@ -1942,7 +1984,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestPointsQuery>;
@@ -1962,13 +2004,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} buildId
-    * @param {string} publishContext
-    * @param {string} groupBy
-    * @param {string} filter
-    * @param {string} orderby
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} buildId
+     * @param {string} publishContext
+     * @param {string} groupBy
+     * @param {string} filter
+     * @param {string} orderby
+     */
     public async getTestResultDetailsForBuild(
         project: string,
         buildId: number,
@@ -2000,7 +2042,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestResultsDetails>;
@@ -2020,14 +2062,14 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} releaseId
-    * @param {number} releaseEnvId
-    * @param {string} publishContext
-    * @param {string} groupBy
-    * @param {string} filter
-    * @param {string} orderby
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} releaseId
+     * @param {number} releaseEnvId
+     * @param {string} publishContext
+     * @param {string} groupBy
+     * @param {string} filter
+     * @param {string} orderby
+     */
     public async getTestResultDetailsForRelease(
         project: string,
         releaseId: number,
@@ -2061,7 +2103,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestResultsDetails>;
@@ -2081,10 +2123,10 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.TestResultDocument} document
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    */
+     * @param {TestInterfaces.TestResultDocument} document
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     */
     public async publishTestResultDocument(
         document: TestInterfaces.TestResultDocument,
         project: string,
@@ -2105,7 +2147,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestResultDocument>;
@@ -2125,8 +2167,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    */
+     * @param {string} project - Project ID or project name
+     */
     public async getResultRetentionSettings(
         project: string
         ): Promise<TestInterfaces.ResultRetentionSettings> {
@@ -2144,7 +2186,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.ResultRetentionSettings>;
@@ -2164,9 +2206,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.ResultRetentionSettings} retentionSettings
-    * @param {string} project - Project ID or project name
-    */
+     * @param {TestInterfaces.ResultRetentionSettings} retentionSettings
+     * @param {string} project - Project ID or project name
+     */
     public async updateResultRetentionSettings(
         retentionSettings: TestInterfaces.ResultRetentionSettings,
         project: string
@@ -2185,7 +2227,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.ResultRetentionSettings>;
@@ -2205,10 +2247,10 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.TestCaseResult[]} results
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    */
+     * @param {TestInterfaces.TestCaseResult[]} results
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     */
     public async addTestResultsToTestRun(
         results: TestInterfaces.TestCaseResult[],
         project: string,
@@ -2229,7 +2271,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestCaseResult[]>;
@@ -2249,11 +2291,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    * @param {number} testCaseResultId
-    * @param {TestInterfaces.ResultDetails} detailsToInclude
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     * @param {number} testCaseResultId
+     * @param {TestInterfaces.ResultDetails} detailsToInclude
+     */
     public async getTestResultById(
         project: string,
         runId: number,
@@ -2281,7 +2323,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestCaseResult>;
@@ -2301,12 +2343,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    * @param {TestInterfaces.ResultDetails} detailsToInclude
-    * @param {number} skip
-    * @param {number} top
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     * @param {TestInterfaces.ResultDetails} detailsToInclude
+     * @param {number} skip
+     * @param {number} top
+     */
     public async getTestResults(
         project: string,
         runId: number,
@@ -2336,7 +2378,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestCaseResult[]>;
@@ -2356,10 +2398,10 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.TestCaseResult[]} results
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    */
+     * @param {TestInterfaces.TestCaseResult[]} results
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     */
     public async updateTestResults(
         results: TestInterfaces.TestCaseResult[],
         project: string,
@@ -2380,7 +2422,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestCaseResult[]>;
@@ -2400,9 +2442,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.TestResultsQuery} query
-    * @param {string} project - Project ID or project name
-    */
+     * @param {TestInterfaces.TestResultsQuery} query
+     * @param {string} project - Project ID or project name
+     */
     public async getTestResultsByQuery(
         query: TestInterfaces.TestResultsQuery,
         project: string
@@ -2421,7 +2463,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestResultsQuery>;
@@ -2441,12 +2483,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} buildId
-    * @param {string} publishContext
-    * @param {boolean} includeFailureDetails
-    * @param {TestInterfaces.BuildReference} buildToCompare
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} buildId
+     * @param {string} publishContext
+     * @param {boolean} includeFailureDetails
+     * @param {TestInterfaces.BuildReference} buildToCompare
+     */
     public async queryTestResultsReportForBuild(
         project: string,
         buildId: number,
@@ -2476,7 +2518,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestResultSummary>;
@@ -2496,13 +2538,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} releaseId
-    * @param {number} releaseEnvId
-    * @param {string} publishContext
-    * @param {boolean} includeFailureDetails
-    * @param {TestInterfaces.ReleaseReference} releaseToCompare
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} releaseId
+     * @param {number} releaseEnvId
+     * @param {string} publishContext
+     * @param {boolean} includeFailureDetails
+     * @param {TestInterfaces.ReleaseReference} releaseToCompare
+     */
     public async queryTestResultsReportForRelease(
         project: string,
         releaseId: number,
@@ -2534,7 +2576,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestResultSummary>;
@@ -2554,9 +2596,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.ReleaseReference[]} releases
-    * @param {string} project - Project ID or project name
-    */
+     * @param {TestInterfaces.ReleaseReference[]} releases
+     * @param {string} project - Project ID or project name
+     */
     public async queryTestResultsSummaryForReleases(
         releases: TestInterfaces.ReleaseReference[],
         project: string
@@ -2575,7 +2617,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestResultSummary[]>;
@@ -2595,10 +2637,10 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.TestResultsContext} resultsContext
-    * @param {string} project - Project ID or project name
-    * @param {number[]} workItemIds
-    */
+     * @param {TestInterfaces.TestResultsContext} resultsContext
+     * @param {string} project - Project ID or project name
+     * @param {number[]} workItemIds
+     */
     public async queryTestSummaryByRequirement(
         resultsContext: TestInterfaces.TestResultsContext,
         project: string,
@@ -2623,7 +2665,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestSummaryForWorkItem[]>;
@@ -2643,9 +2685,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.TestResultTrendFilter} filter
-    * @param {string} project - Project ID or project name
-    */
+     * @param {TestInterfaces.TestResultTrendFilter} filter
+     * @param {string} project - Project ID or project name
+     */
     public async queryResultTrendForBuild(
         filter: TestInterfaces.TestResultTrendFilter,
         project: string
@@ -2664,7 +2706,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.AggregatedDataForResultTrend[]>;
@@ -2684,9 +2726,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.TestResultTrendFilter} filter
-    * @param {string} project - Project ID or project name
-    */
+     * @param {TestInterfaces.TestResultTrendFilter} filter
+     * @param {string} project - Project ID or project name
+     */
     public async queryResultTrendForRelease(
         filter: TestInterfaces.TestResultTrendFilter,
         project: string
@@ -2705,7 +2747,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.AggregatedDataForResultTrend[]>;
@@ -2725,9 +2767,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     */
     public async getTestRunStatistics(
         project: string,
         runId: number
@@ -2747,7 +2789,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestRunStatistic>;
@@ -2767,9 +2809,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.RunCreateModel} testRun
-    * @param {string} project - Project ID or project name
-    */
+     * @param {TestInterfaces.RunCreateModel} testRun
+     * @param {string} project - Project ID or project name
+     */
     public async createTestRun(
         testRun: TestInterfaces.RunCreateModel,
         project: string
@@ -2788,7 +2830,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestRun>;
@@ -2808,9 +2850,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     */
     public async deleteTestRun(
         project: string,
         runId: number
@@ -2830,7 +2872,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -2850,9 +2892,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     */
     public async getTestRunById(
         project: string,
         runId: number
@@ -2872,7 +2914,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestRun>;
@@ -2892,16 +2934,16 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {string} buildUri
-    * @param {string} owner
-    * @param {string} tmiRunId
-    * @param {number} planId
-    * @param {boolean} includeRunDetails
-    * @param {boolean} automated
-    * @param {number} skip
-    * @param {number} top
-    */
+     * @param {string} project - Project ID or project name
+     * @param {string} buildUri
+     * @param {string} owner
+     * @param {string} tmiRunId
+     * @param {number} planId
+     * @param {boolean} includeRunDetails
+     * @param {boolean} automated
+     * @param {number} skip
+     * @param {number} top
+     */
     public async getTestRuns(
         project: string,
         buildUri?: string,
@@ -2939,7 +2981,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestRun[]>;
@@ -2959,10 +3001,10 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.RunUpdateModel} runUpdateModel
-    * @param {string} project - Project ID or project name
-    * @param {number} runId
-    */
+     * @param {TestInterfaces.RunUpdateModel} runUpdateModel
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     */
     public async updateTestRun(
         runUpdateModel: TestInterfaces.RunUpdateModel,
         project: string,
@@ -2983,7 +3025,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestRun>;
@@ -3003,9 +3045,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.TestSession} testSession
-    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-    */
+     * @param {TestInterfaces.TestSession} testSession
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     */
     public async createTestSession(
         testSession: TestInterfaces.TestSession,
         teamContext: TfsCoreInterfaces.TeamContext
@@ -3028,7 +3070,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestSession>;
@@ -3048,13 +3090,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-    * @param {number} period
-    * @param {boolean} allSessions
-    * @param {boolean} includeAllProperties
-    * @param {TestInterfaces.TestSessionSource} source
-    * @param {boolean} includeOnlyCompletedSessions
-    */
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     * @param {number} period
+     * @param {boolean} allSessions
+     * @param {boolean} includeAllProperties
+     * @param {TestInterfaces.TestSessionSource} source
+     * @param {boolean} includeOnlyCompletedSessions
+     */
     public async getTestSessions(
         teamContext: TfsCoreInterfaces.TeamContext,
         period?: number,
@@ -3090,7 +3132,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestSession[]>;
@@ -3110,9 +3152,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.TestSession} testSession
-    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-    */
+     * @param {TestInterfaces.TestSession} testSession
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     */
     public async updateTestSession(
         testSession: TestInterfaces.TestSession,
         teamContext: TfsCoreInterfaces.TeamContext
@@ -3135,7 +3177,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestSession>;
@@ -3155,9 +3197,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} sharedParameterId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} sharedParameterId
+     */
     public async deleteSharedParameter(
         project: string,
         sharedParameterId: number
@@ -3177,7 +3219,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -3197,9 +3239,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} sharedStepId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} sharedStepId
+     */
     public async deleteSharedStep(
         project: string,
         sharedStepId: number
@@ -3219,7 +3261,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -3239,9 +3281,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} suiteId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} suiteId
+     */
     public async getSuiteEntries(
         project: string,
         suiteId: number
@@ -3261,7 +3303,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.SuiteEntry[]>;
@@ -3281,10 +3323,10 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.SuiteEntryUpdateModel[]} suiteEntries
-    * @param {string} project - Project ID or project name
-    * @param {number} suiteId
-    */
+     * @param {TestInterfaces.SuiteEntryUpdateModel[]} suiteEntries
+     * @param {string} project - Project ID or project name
+     * @param {number} suiteId
+     */
     public async reorderSuiteEntries(
         suiteEntries: TestInterfaces.SuiteEntryUpdateModel[],
         project: string,
@@ -3305,7 +3347,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.SuiteEntry[]>;
@@ -3325,11 +3367,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} planId
-    * @param {number} suiteId
-    * @param {string} testCaseIds
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} planId
+     * @param {number} suiteId
+     * @param {string} testCaseIds
+     */
     public async addTestCasesToSuite(
         project: string,
         planId: number,
@@ -3353,7 +3395,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.SuiteTestCase[]>;
@@ -3373,11 +3415,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} planId
-    * @param {number} suiteId
-    * @param {number} testCaseIds
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} planId
+     * @param {number} suiteId
+     * @param {number} testCaseIds
+     */
     public async getTestCaseById(
         project: string,
         planId: number,
@@ -3401,7 +3443,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.SuiteTestCase>;
@@ -3421,10 +3463,10 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} planId
-    * @param {number} suiteId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} planId
+     * @param {number} suiteId
+     */
     public async getTestCases(
         project: string,
         planId: number,
@@ -3446,7 +3488,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.SuiteTestCase[]>;
@@ -3466,11 +3508,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} planId
-    * @param {number} suiteId
-    * @param {string} testCaseIds
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} planId
+     * @param {number} suiteId
+     * @param {string} testCaseIds
+     */
     public async removeTestCasesFromSuiteUrl(
         project: string,
         planId: number,
@@ -3494,7 +3536,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -3514,11 +3556,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.SuiteCreateModel} testSuite
-    * @param {string} project - Project ID or project name
-    * @param {number} planId
-    * @param {number} suiteId
-    */
+     * @param {TestInterfaces.SuiteCreateModel} testSuite
+     * @param {string} project - Project ID or project name
+     * @param {number} planId
+     * @param {number} suiteId
+     */
     public async createTestSuite(
         testSuite: TestInterfaces.SuiteCreateModel,
         project: string,
@@ -3541,7 +3583,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestSuite[]>;
@@ -3561,10 +3603,10 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} planId
-    * @param {number} suiteId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} planId
+     * @param {number} suiteId
+     */
     public async deleteTestSuite(
         project: string,
         planId: number,
@@ -3586,7 +3628,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -3606,11 +3648,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} planId
-    * @param {number} suiteId
-    * @param {boolean} includeChildSuites
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} planId
+     * @param {number} suiteId
+     * @param {boolean} includeChildSuites
+     */
     public async getTestSuiteById(
         project: string,
         planId: number,
@@ -3638,7 +3680,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestSuite>;
@@ -3658,13 +3700,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} planId
-    * @param {boolean} includeSuites
-    * @param {number} skip
-    * @param {number} top
-    * @param {boolean} asTreeView
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} planId
+     * @param {boolean} includeSuites
+     * @param {number} skip
+     * @param {number} top
+     * @param {boolean} asTreeView
+     */
     public async getTestSuitesForPlan(
         project: string,
         planId: number,
@@ -3696,7 +3738,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestSuite[]>;
@@ -3716,11 +3758,11 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.SuiteUpdateModel} suiteUpdateModel
-    * @param {string} project - Project ID or project name
-    * @param {number} planId
-    * @param {number} suiteId
-    */
+     * @param {TestInterfaces.SuiteUpdateModel} suiteUpdateModel
+     * @param {string} project - Project ID or project name
+     * @param {number} planId
+     * @param {number} suiteId
+     */
     public async updateTestSuite(
         suiteUpdateModel: TestInterfaces.SuiteUpdateModel,
         project: string,
@@ -3743,7 +3785,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestSuite>;
@@ -3763,8 +3805,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {number} testCaseId
-    */
+     * @param {number} testCaseId
+     */
     public async getSuitesByTestCaseId(
         testCaseId: number
         ): Promise<TestInterfaces.TestSuite[]> {
@@ -3786,7 +3828,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestSuite[]>;
@@ -3806,9 +3848,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} testCaseId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} testCaseId
+     */
     public async deleteTestCase(
         project: string,
         testCaseId: number
@@ -3828,7 +3870,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -3848,9 +3890,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.TestSettings} testSettings
-    * @param {string} project - Project ID or project name
-    */
+     * @param {TestInterfaces.TestSettings} testSettings
+     * @param {string} project - Project ID or project name
+     */
     public async createTestSettings(
         testSettings: TestInterfaces.TestSettings,
         project: string
@@ -3869,7 +3911,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<number>;
@@ -3889,9 +3931,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} testSettingsId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} testSettingsId
+     */
     public async deleteTestSettings(
         project: string,
         testSettingsId: number
@@ -3911,7 +3953,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -3931,9 +3973,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} testSettingsId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} testSettingsId
+     */
     public async getTestSettingsById(
         project: string,
         testSettingsId: number
@@ -3953,7 +3995,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestSettings>;
@@ -3973,9 +4015,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.TestVariable} testVariable
-    * @param {string} project - Project ID or project name
-    */
+     * @param {TestInterfaces.TestVariable} testVariable
+     * @param {string} project - Project ID or project name
+     */
     public async createTestVariable(
         testVariable: TestInterfaces.TestVariable,
         project: string
@@ -3994,7 +4036,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestVariable>;
@@ -4014,9 +4056,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} testVariableId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} testVariableId
+     */
     public async deleteTestVariable(
         project: string,
         testVariableId: number
@@ -4036,7 +4078,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -4056,9 +4098,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} testVariableId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} testVariableId
+     */
     public async getTestVariableById(
         project: string,
         testVariableId: number
@@ -4078,7 +4120,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestVariable>;
@@ -4098,10 +4140,10 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} skip
-    * @param {number} top
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} skip
+     * @param {number} top
+     */
     public async getTestVariables(
         project: string,
         skip?: number,
@@ -4127,7 +4169,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestVariable[]>;
@@ -4147,10 +4189,10 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.TestVariable} testVariable
-    * @param {string} project - Project ID or project name
-    * @param {number} testVariableId
-    */
+     * @param {TestInterfaces.TestVariable} testVariable
+     * @param {string} project - Project ID or project name
+     * @param {number} testVariableId
+     */
     public async updateTestVariable(
         testVariable: TestInterfaces.TestVariable,
         project: string,
@@ -4171,7 +4213,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestVariable>;
@@ -4191,9 +4233,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {TestInterfaces.WorkItemToTestLinks} workItemToTestLinks
-    * @param {string} project - Project ID or project name
-    */
+     * @param {TestInterfaces.WorkItemToTestLinks} workItemToTestLinks
+     * @param {string} project - Project ID or project name
+     */
     public async addWorkItemToTestLinks(
         workItemToTestLinks: TestInterfaces.WorkItemToTestLinks,
         project: string
@@ -4212,7 +4254,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.WorkItemToTestLinks>;
@@ -4232,10 +4274,10 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {string} testName
-    * @param {number} workItemId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {string} testName
+     * @param {number} workItemId
+     */
     public async deleteTestMethodToWorkItemLink(
         project: string,
         testName: string,
@@ -4261,7 +4303,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<boolean>;
@@ -4281,9 +4323,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {string} testName
-    */
+     * @param {string} project - Project ID or project name
+     * @param {string} testName
+     */
     public async queryTestMethodLinkedWorkItems(
         project: string,
         testName: string
@@ -4307,7 +4349,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestToWorkItemLinks>;
@@ -4327,14 +4369,14 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {string} workItemCategory
-    * @param {string} automatedTestName
-    * @param {number} testCaseId
-    * @param {Date} maxCompleteDate
-    * @param {number} days
-    * @param {number} workItemCount
-    */
+     * @param {string} project - Project ID or project name
+     * @param {string} workItemCategory
+     * @param {string} automatedTestName
+     * @param {number} testCaseId
+     * @param {Date} maxCompleteDate
+     * @param {number} days
+     * @param {number} workItemCount
+     */
     public async queryTestResultWorkItems(
         project: string,
         workItemCategory: string,
@@ -4368,7 +4410,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.WorkItemReference[]>;

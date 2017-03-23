@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
@@ -36,10 +36,10 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
     }
 
     /**
-    * Get a specific feature by its id
-    * 
-    * @param {string} featureId - The contribution id of the feature
-    */
+     * Get a specific feature by its id
+     * 
+     * @param {string} featureId - The contribution id of the feature
+     */
     public async getFeature(
         featureId: string
         ): Promise<FeatureManagementInterfaces.ContributedFeature> {
@@ -57,7 +57,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeature>;
@@ -77,10 +77,10 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
     }
 
     /**
-    * Get a list of all defined features
-    * 
-    * @param {string} targetContributionId - Optional target contribution. If null/empty, return all features. If specified include the features that target the specified contribution.
-    */
+     * Get a list of all defined features
+     * 
+     * @param {string} targetContributionId - Optional target contribution. If null/empty, return all features. If specified include the features that target the specified contribution.
+     */
     public async getFeatures(
         targetContributionId?: string
         ): Promise<FeatureManagementInterfaces.ContributedFeature[]> {
@@ -102,7 +102,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeature[]>;
@@ -122,11 +122,11 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
     }
 
     /**
-    * Get the state of the specified feature for the given user/all-users scope
-    * 
-    * @param {string} featureId - Contribution id of the feature
-    * @param {string} userScope - User-Scope at which to get the value. Should be "me" for the current user or "host" for all users.
-    */
+     * Get the state of the specified feature for the given user/all-users scope
+     * 
+     * @param {string} featureId - Contribution id of the feature
+     * @param {string} userScope - User-Scope at which to get the value. Should be "me" for the current user or "host" for all users.
+     */
     public async getFeatureState(
         featureId: string,
         userScope: string
@@ -146,7 +146,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
@@ -166,14 +166,14 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
     }
 
     /**
-    * Set the state of a feature
-    * 
-    * @param {FeatureManagementInterfaces.ContributedFeatureState} feature - Posted feature state object. Should specify the effective value.
-    * @param {string} featureId - Contribution id of the feature
-    * @param {string} userScope - User-Scope at which to set the value. Should be "me" for the current user or "host" for all users.
-    * @param {string} reason - Reason for changing the state
-    * @param {string} reasonCode - Short reason code
-    */
+     * Set the state of a feature
+     * 
+     * @param {FeatureManagementInterfaces.ContributedFeatureState} feature - Posted feature state object. Should specify the effective value.
+     * @param {string} featureId - Contribution id of the feature
+     * @param {string} userScope - User-Scope at which to set the value. Should be "me" for the current user or "host" for all users.
+     * @param {string} reason - Reason for changing the state
+     * @param {string} reasonCode - Short reason code
+     */
     public async setFeatureState(
         feature: FeatureManagementInterfaces.ContributedFeatureState,
         featureId: string,
@@ -202,7 +202,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
@@ -222,13 +222,13 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
     }
 
     /**
-    * Get the state of the specified feature for the given named scope
-    * 
-    * @param {string} featureId - Contribution id of the feature
-    * @param {string} userScope - User-Scope at which to get the value. Should be "me" for the current user or "host" for all users.
-    * @param {string} scopeName - Scope at which to get the feature setting for (e.g. "project" or "team")
-    * @param {string} scopeValue - Value of the scope (e.g. the project or team id)
-    */
+     * Get the state of the specified feature for the given named scope
+     * 
+     * @param {string} featureId - Contribution id of the feature
+     * @param {string} userScope - User-Scope at which to get the value. Should be "me" for the current user or "host" for all users.
+     * @param {string} scopeName - Scope at which to get the feature setting for (e.g. "project" or "team")
+     * @param {string} scopeValue - Value of the scope (e.g. the project or team id)
+     */
     public async getFeatureStateForScope(
         featureId: string,
         userScope: string,
@@ -252,7 +252,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
@@ -272,16 +272,16 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
     }
 
     /**
-    * Set the state of a feature at a specific scope
-    * 
-    * @param {FeatureManagementInterfaces.ContributedFeatureState} feature - Posted feature state object. Should specify the effective value.
-    * @param {string} featureId - Contribution id of the feature
-    * @param {string} userScope - User-Scope at which to set the value. Should be "me" for the current user or "host" for all users.
-    * @param {string} scopeName - Scope at which to get the feature setting for (e.g. "project" or "team")
-    * @param {string} scopeValue - Value of the scope (e.g. the project or team id)
-    * @param {string} reason - Reason for changing the state
-    * @param {string} reasonCode - Short reason code
-    */
+     * Set the state of a feature at a specific scope
+     * 
+     * @param {FeatureManagementInterfaces.ContributedFeatureState} feature - Posted feature state object. Should specify the effective value.
+     * @param {string} featureId - Contribution id of the feature
+     * @param {string} userScope - User-Scope at which to set the value. Should be "me" for the current user or "host" for all users.
+     * @param {string} scopeName - Scope at which to get the feature setting for (e.g. "project" or "team")
+     * @param {string} scopeValue - Value of the scope (e.g. the project or team id)
+     * @param {string} reason - Reason for changing the state
+     * @param {string} reasonCode - Short reason code
+     */
     public async setFeatureStateForScope(
         feature: FeatureManagementInterfaces.ContributedFeatureState,
         featureId: string,
@@ -314,7 +314,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
@@ -334,10 +334,10 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
     }
 
     /**
-    * Get the effective state for a list of feature ids
-    * 
-    * @param {FeatureManagementInterfaces.ContributedFeatureStateQuery} query - Features to query along with current scope values
-    */
+     * Get the effective state for a list of feature ids
+     * 
+     * @param {FeatureManagementInterfaces.ContributedFeatureStateQuery} query - Features to query along with current scope values
+     */
     public async queryFeatureStates(
         query: FeatureManagementInterfaces.ContributedFeatureStateQuery
         ): Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery> {
@@ -354,7 +354,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureStateQuery>;
@@ -374,11 +374,11 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
     }
 
     /**
-    * Get the states of the specified features for the default scope
-    * 
-    * @param {FeatureManagementInterfaces.ContributedFeatureStateQuery} query - Query describing the features to query.
-    * @param {string} userScope
-    */
+     * Get the states of the specified features for the default scope
+     * 
+     * @param {FeatureManagementInterfaces.ContributedFeatureStateQuery} query - Query describing the features to query.
+     * @param {string} userScope
+     */
     public async queryFeatureStatesForDefaultScope(
         query: FeatureManagementInterfaces.ContributedFeatureStateQuery,
         userScope: string
@@ -397,7 +397,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureStateQuery>;
@@ -417,13 +417,13 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
     }
 
     /**
-    * Get the states of the specified features for the specific named scope
-    * 
-    * @param {FeatureManagementInterfaces.ContributedFeatureStateQuery} query - Query describing the features to query.
-    * @param {string} userScope
-    * @param {string} scopeName
-    * @param {string} scopeValue
-    */
+     * Get the states of the specified features for the specific named scope
+     * 
+     * @param {FeatureManagementInterfaces.ContributedFeatureStateQuery} query - Query describing the features to query.
+     * @param {string} userScope
+     * @param {string} scopeName
+     * @param {string} scopeValue
+     */
     public async queryFeatureStatesForNamedScope(
         query: FeatureManagementInterfaces.ContributedFeatureStateQuery,
         userScope: string,
@@ -446,7 +446,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureStateQuery>;

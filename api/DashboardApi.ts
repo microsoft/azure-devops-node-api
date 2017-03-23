@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
@@ -41,9 +41,9 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
     }
 
     /**
-    * @param {DashboardInterfaces.Dashboard} dashboard
-    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-    */
+     * @param {DashboardInterfaces.Dashboard} dashboard
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     */
     public async createDashboard(
         dashboard: DashboardInterfaces.Dashboard,
         teamContext: TfsCoreInterfaces.TeamContext
@@ -66,7 +66,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.Dashboard>;
@@ -86,9 +86,9 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
     }
 
     /**
-    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-    * @param {string} dashboardId
-    */
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     * @param {string} dashboardId
+     */
     public async deleteDashboard(
         teamContext: TfsCoreInterfaces.TeamContext,
         dashboardId: string
@@ -112,7 +112,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -132,9 +132,9 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
     }
 
     /**
-    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-    * @param {string} dashboardId
-    */
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     * @param {string} dashboardId
+     */
     public async getDashboard(
         teamContext: TfsCoreInterfaces.TeamContext,
         dashboardId: string
@@ -158,7 +158,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.Dashboard>;
@@ -178,8 +178,8 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
     }
 
     /**
-    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-    */
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     */
     public async getDashboards(
         teamContext: TfsCoreInterfaces.TeamContext
         ): Promise<DashboardInterfaces.DashboardGroup> {
@@ -201,7 +201,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.DashboardGroup>;
@@ -221,10 +221,10 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
     }
 
     /**
-    * @param {DashboardInterfaces.Dashboard} dashboard
-    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-    * @param {string} dashboardId
-    */
+     * @param {DashboardInterfaces.Dashboard} dashboard
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     * @param {string} dashboardId
+     */
     public async replaceDashboard(
         dashboard: DashboardInterfaces.Dashboard,
         teamContext: TfsCoreInterfaces.TeamContext,
@@ -249,7 +249,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.Dashboard>;
@@ -269,9 +269,9 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
     }
 
     /**
-    * @param {DashboardInterfaces.DashboardGroup} group
-    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-    */
+     * @param {DashboardInterfaces.DashboardGroup} group
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     */
     public async replaceDashboards(
         group: DashboardInterfaces.DashboardGroup,
         teamContext: TfsCoreInterfaces.TeamContext
@@ -294,7 +294,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.DashboardGroup>;
@@ -314,10 +314,10 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
     }
 
     /**
-    * @param {DashboardInterfaces.Widget} widget
-    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-    * @param {string} dashboardId
-    */
+     * @param {DashboardInterfaces.Widget} widget
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     * @param {string} dashboardId
+     */
     public async createWidget(
         widget: DashboardInterfaces.Widget,
         teamContext: TfsCoreInterfaces.TeamContext,
@@ -342,7 +342,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.Widget>;
@@ -362,10 +362,10 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
     }
 
     /**
-    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-    * @param {string} dashboardId
-    * @param {string} widgetId
-    */
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     * @param {string} dashboardId
+     * @param {string} widgetId
+     */
     public async deleteWidget(
         teamContext: TfsCoreInterfaces.TeamContext,
         dashboardId: string,
@@ -391,7 +391,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.Dashboard>;
@@ -411,10 +411,10 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
     }
 
     /**
-    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-    * @param {string} dashboardId
-    * @param {string} widgetId
-    */
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     * @param {string} dashboardId
+     * @param {string} widgetId
+     */
     public async getWidget(
         teamContext: TfsCoreInterfaces.TeamContext,
         dashboardId: string,
@@ -440,7 +440,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.Widget>;
@@ -460,11 +460,11 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
     }
 
     /**
-    * @param {DashboardInterfaces.Widget} widget
-    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-    * @param {string} dashboardId
-    * @param {string} widgetId
-    */
+     * @param {DashboardInterfaces.Widget} widget
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     * @param {string} dashboardId
+     * @param {string} widgetId
+     */
     public async replaceWidget(
         widget: DashboardInterfaces.Widget,
         teamContext: TfsCoreInterfaces.TeamContext,
@@ -491,7 +491,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.Widget>;
@@ -511,11 +511,11 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
     }
 
     /**
-    * @param {DashboardInterfaces.Widget} widget
-    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-    * @param {string} dashboardId
-    * @param {string} widgetId
-    */
+     * @param {DashboardInterfaces.Widget} widget
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     * @param {string} dashboardId
+     * @param {string} widgetId
+     */
     public async updateWidget(
         widget: DashboardInterfaces.Widget,
         teamContext: TfsCoreInterfaces.TeamContext,
@@ -542,7 +542,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.Widget>;
@@ -562,8 +562,8 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
     }
 
     /**
-    * @param {string} contributionId
-    */
+     * @param {string} contributionId
+     */
     public async getWidgetMetadata(
         contributionId: string
         ): Promise<DashboardInterfaces.WidgetMetadataResponse> {
@@ -581,7 +581,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.WidgetMetadataResponse>;
@@ -601,10 +601,10 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
     }
 
     /**
-    * Returns available widgets in alphabetical order.
-    * 
-    * @param {DashboardInterfaces.WidgetScope} scope
-    */
+     * Returns available widgets in alphabetical order.
+     * 
+     * @param {DashboardInterfaces.WidgetScope} scope
+     */
     public async getWidgetTypes(
         scope: DashboardInterfaces.WidgetScope
         ): Promise<DashboardInterfaces.WidgetTypesResponse> {
@@ -626,7 +626,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.WidgetTypesResponse>;

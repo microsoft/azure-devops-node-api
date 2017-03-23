@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
@@ -52,10 +52,10 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    * @param {string} itemId
-    * @param {boolean} testCommerce
-    * @param {boolean} isFreeOrTrialInstall
-    */
+     * @param {string} itemId
+     * @param {boolean} testCommerce
+     * @param {boolean} isFreeOrTrialInstall
+     */
     public async getAcquisitionOptions(
         itemId: string,
         testCommerce?: boolean,
@@ -81,7 +81,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.AcquisitionOptions>;
@@ -101,8 +101,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    * @param {ExtensionManagementInterfaces.ExtensionAcquisitionRequest} acquisitionRequest
-    */
+     * @param {ExtensionManagementInterfaces.ExtensionAcquisitionRequest} acquisitionRequest
+     */
     public async requestAcquisition(
         acquisitionRequest: ExtensionManagementInterfaces.ExtensionAcquisitionRequest
         ): Promise<ExtensionManagementInterfaces.ExtensionAcquisitionRequest> {
@@ -119,7 +119,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.ExtensionAcquisitionRequest>;
@@ -139,10 +139,10 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} registrationId
-    */
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} registrationId
+     */
     public async registerAuthorization(
         publisherName: string,
         extensionName: string,
@@ -164,7 +164,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.ExtensionAuthorization>;
@@ -184,13 +184,13 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    * @param {any} doc
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} scopeType
-    * @param {string} scopeValue
-    * @param {string} collectionName
-    */
+     * @param {any} doc
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} scopeType
+     * @param {string} scopeValue
+     * @param {string} collectionName
+     */
     public async createDocumentByName(
         doc: any,
         publisherName: string,
@@ -217,7 +217,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<any>;
@@ -237,13 +237,13 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} scopeType
-    * @param {string} scopeValue
-    * @param {string} collectionName
-    * @param {string} documentId
-    */
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} scopeType
+     * @param {string} scopeValue
+     * @param {string} collectionName
+     * @param {string} documentId
+     */
     public async deleteDocumentByName(
         publisherName: string,
         extensionName: string,
@@ -271,7 +271,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -291,13 +291,13 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} scopeType
-    * @param {string} scopeValue
-    * @param {string} collectionName
-    * @param {string} documentId
-    */
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} scopeType
+     * @param {string} scopeValue
+     * @param {string} collectionName
+     * @param {string} documentId
+     */
     public async getDocumentByName(
         publisherName: string,
         extensionName: string,
@@ -325,7 +325,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<any>;
@@ -345,12 +345,12 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} scopeType
-    * @param {string} scopeValue
-    * @param {string} collectionName
-    */
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} scopeType
+     * @param {string} scopeValue
+     * @param {string} collectionName
+     */
     public async getDocumentsByName(
         publisherName: string,
         extensionName: string,
@@ -376,7 +376,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<any[]>;
@@ -396,13 +396,13 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    * @param {any} doc
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} scopeType
-    * @param {string} scopeValue
-    * @param {string} collectionName
-    */
+     * @param {any} doc
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} scopeType
+     * @param {string} scopeValue
+     * @param {string} collectionName
+     */
     public async setDocumentByName(
         doc: any,
         publisherName: string,
@@ -429,7 +429,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<any>;
@@ -449,13 +449,13 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    * @param {any} doc
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} scopeType
-    * @param {string} scopeValue
-    * @param {string} collectionName
-    */
+     * @param {any} doc
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} scopeType
+     * @param {string} scopeValue
+     * @param {string} collectionName
+     */
     public async updateDocumentByName(
         doc: any,
         publisherName: string,
@@ -482,7 +482,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<any>;
@@ -502,10 +502,10 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    * @param {ExtensionManagementInterfaces.ExtensionDataCollectionQuery} collectionQuery
-    * @param {string} publisherName
-    * @param {string} extensionName
-    */
+     * @param {ExtensionManagementInterfaces.ExtensionDataCollectionQuery} collectionQuery
+     * @param {string} publisherName
+     * @param {string} extensionName
+     */
     public async queryCollectionsByName(
         collectionQuery: ExtensionManagementInterfaces.ExtensionDataCollectionQuery,
         publisherName: string,
@@ -526,7 +526,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.ExtensionDataCollection[]>;
@@ -546,10 +546,10 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    * @param {boolean} includeDisabled
-    * @param {boolean} includeErrors
-    * @param {boolean} includeInstallationIssues
-    */
+     * @param {boolean} includeDisabled
+     * @param {boolean} includeErrors
+     * @param {boolean} includeInstallationIssues
+     */
     public async getStates(
         includeDisabled?: boolean,
         includeErrors?: boolean,
@@ -575,7 +575,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.ExtensionState[]>;
@@ -595,8 +595,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    * @param {ExtensionManagementInterfaces.InstalledExtensionQuery} query
-    */
+     * @param {ExtensionManagementInterfaces.InstalledExtensionQuery} query
+     */
     public async queryExtensions(
         query: ExtensionManagementInterfaces.InstalledExtensionQuery
         ): Promise<ExtensionManagementInterfaces.InstalledExtension[]> {
@@ -613,7 +613,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.InstalledExtension[]>;
@@ -633,11 +633,11 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    * @param {boolean} includeDisabledExtensions
-    * @param {boolean} includeErrors
-    * @param {string[]} assetTypes
-    * @param {boolean} includeInstallationIssues
-    */
+     * @param {boolean} includeDisabledExtensions
+     * @param {boolean} includeErrors
+     * @param {string[]} assetTypes
+     * @param {boolean} includeInstallationIssues
+     */
     public async getInstalledExtensions(
         includeDisabledExtensions?: boolean,
         includeErrors?: boolean,
@@ -665,7 +665,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.InstalledExtension[]>;
@@ -685,8 +685,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    * @param {ExtensionManagementInterfaces.InstalledExtension} extension
-    */
+     * @param {ExtensionManagementInterfaces.InstalledExtension} extension
+     */
     public async updateInstalledExtension(
         extension: ExtensionManagementInterfaces.InstalledExtension
         ): Promise<ExtensionManagementInterfaces.InstalledExtension> {
@@ -703,7 +703,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.InstalledExtension>;
@@ -723,10 +723,10 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string[]} assetTypes
-    */
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string[]} assetTypes
+     */
     public async getInstalledExtensionByName(
         publisherName: string,
         extensionName: string,
@@ -752,7 +752,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.InstalledExtension>;
@@ -772,10 +772,10 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} version
-    */
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} version
+     */
     public async installExtensionByName(
         publisherName: string,
         extensionName: string,
@@ -797,7 +797,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.InstalledExtension>;
@@ -817,11 +817,11 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} reason
-    * @param {string} reasonCode
-    */
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} reason
+     * @param {string} reasonCode
+     */
     public async uninstallExtensionByName(
         publisherName: string,
         extensionName: string,
@@ -849,7 +849,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -869,8 +869,8 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    * @param {string} userId
-    */
+     * @param {string} userId
+     */
     public async getPolicies(
         userId: string
         ): Promise<GalleryInterfaces.UserExtensionPolicy> {
@@ -888,7 +888,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.UserExtensionPolicy>;
@@ -908,12 +908,12 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    * @param {string} rejectMessage
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} requesterId
-    * @param {ExtensionManagementInterfaces.ExtensionRequestState} state
-    */
+     * @param {string} rejectMessage
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} requesterId
+     * @param {ExtensionManagementInterfaces.ExtensionRequestState} state
+     */
     public async resolveRequest(
         rejectMessage: string,
         publisherName: string,
@@ -942,7 +942,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<number>;
@@ -962,7 +962,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    */
+     */
     public async getRequests(
         ): Promise<ExtensionManagementInterfaces.RequestedExtension[]> {
 
@@ -978,7 +978,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.RequestedExtension[]>;
@@ -998,11 +998,11 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    * @param {string} rejectMessage
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {ExtensionManagementInterfaces.ExtensionRequestState} state
-    */
+     * @param {string} rejectMessage
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {ExtensionManagementInterfaces.ExtensionRequestState} state
+     */
     public async resolveAllRequests(
         rejectMessage: string,
         publisherName: string,
@@ -1029,7 +1029,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<number>;
@@ -1049,9 +1049,9 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    */
+     * @param {string} publisherName
+     * @param {string} extensionName
+     */
     public async deleteRequest(
         publisherName: string,
         extensionName: string
@@ -1071,7 +1071,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -1091,10 +1091,10 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} requestMessage
-    */
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} requestMessage
+     */
     public async requestExtension(
         publisherName: string,
         extensionName: string,
@@ -1115,7 +1115,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<ExtensionManagementInterfaces.RequestedExtension>;
@@ -1135,7 +1135,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     }
 
     /**
-    */
+     */
     public async getToken(
         ): Promise<string> {
 
@@ -1151,7 +1151,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string>;

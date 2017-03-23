@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 "use strict";
 
@@ -146,6 +146,38 @@ export interface ISubscriptionChannel {
 export interface ISubscriptionFilter {
     eventType: string;
     type: string;
+}
+
+export interface NotificationCommonViewData {
+    /**
+     * The Url to the admin page
+     */
+    adminPageUrl: string;
+    /**
+     * Default service instance type, currently it is Tfs, it used if there is no publisher passed
+     */
+    defaultServiceInstanceType: string;
+    eventsPublishers: NotificationEventPublisher[];
+    /**
+     * Indicates whether the current user generally has permissions to manage (create, delete, etc) subscriptions in the view
+     */
+    hasManagePermission: boolean;
+    /**
+     * Is the subscription view being presented for the purpose of administration (not for managing personal subscriptions)
+     */
+    isAdminMode: boolean;
+    /**
+     * Indicates whether the user's preferred email address is pending confirmation.
+     */
+    isSubscriberEmailPending: boolean;
+    /**
+     * Subscriber to use when creating new subscriptions in the view
+     */
+    subscriber: VSSInterfaces.IdentityRef;
+    /**
+     * Email address that notifications for this user will be sent to by default.
+     */
+    subscriberEmail: string;
 }
 
 /**
@@ -421,47 +453,14 @@ export interface NotificationSubscriptionCreateParameters {
 
 export interface NotificationSubscriptionsViewData {
     /**
-     * The Url to the admin page
-     */
-    adminPageUrl: string;
-    /**
-     * Default service instance type, currently it is Tfs, it used if there is no publisher passed
-     */
-    defaultServiceInstanceType: string;
-    eventsPublishers: NotificationEventPublisher[];
-    /**
      * Supported  event types info, with their fields and field types
      */
     eventTypes: { [key: string] : NotificationEventType; };
-    /**
-     * Indicates whether the current user generally has permissions to manage (create, delete, etc) subscriptions in the view
-     */
-    hasManagePermission: boolean;
-    /**
-     * Indicates whether the current user generally has permissions to see subscriptions in the view
-     */
-    hasViewPermission: boolean;
-    /**
-     * Is the subscription view being presented for the purpose of administration (not for managing personal subscriptions)
-     */
-    isAdminMode: boolean;
-    /**
-     * Indicates whether the user's preferred email address is pending confirmation.
-     */
-    isSubscriberEmailPending: boolean;
     mapCategoryIdToCategoryName: { [key: string] : string; };
     mapCategoryIdToSubscriptionTemplates: { [key: string] : NotificationSubscriptionTemplate[]; };
     mapEventTypeToPublisherId: { [key: string] : string; };
     publishers: { [key: string] : NotificationEventPublisher; };
     scopes: { [key: string] : SubscriptionScope; };
-    /**
-     * Subscriber to use when creating new subscriptions in the view
-     */
-    subscriber: VSSInterfaces.IdentityRef;
-    /**
-     * Email address that notifications for this user will be sent to by default.
-     */
-    subscriberEmail: string;
     subscriptions: NotificationSubscription[];
     /**
      * The subscription evaluation operation settings needed for the UI
@@ -710,10 +709,6 @@ export enum SubscriptionQueryFlags {
      */
     AlwaysReturnBasicInformation = 22,
     /**
-     * To include subscriptions from other services, this is only needed for contributed subscriptions
-     */
-    IncludeRemoteContributedSubscriptions = 50,
-    /**
      * Include all group, invalid, and subscriptions marked for deletion.
      */
     IncludeAllSubscriptions = 7,
@@ -874,6 +869,9 @@ export var TypeInfo = {
     ISubscriptionFilter: {
         fields: <any>null
     },
+    NotificationCommonViewData: {
+        fields: <any>null
+    },
     NotificationEventField: {
         fields: <any>null
     },
@@ -995,7 +993,6 @@ export var TypeInfo = {
             "includeDeletedSubscriptions": 4,
             "includeFilterDetails": 8,
             "alwaysReturnBasicInformation": 22,
-            "includeRemoteContributedSubscriptions": 50,
             "includeAllSubscriptions": 7,
         }
     },
@@ -1104,6 +1101,16 @@ TypeInfo.ISubscriptionChannel.fields = {
 };
 
 TypeInfo.ISubscriptionFilter.fields = {
+};
+
+TypeInfo.NotificationCommonViewData.fields = {
+    eventsPublishers: {
+        isArray: true,
+        typeInfo: TypeInfo.NotificationEventPublisher
+    },
+    subscriber: {
+        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    },
 };
 
 TypeInfo.NotificationEventField.fields = {
@@ -1238,10 +1245,6 @@ TypeInfo.NotificationSubscriptionCreateParameters.fields = {
 };
 
 TypeInfo.NotificationSubscriptionsViewData.fields = {
-    eventsPublishers: {
-        isArray: true,
-        typeInfo: TypeInfo.NotificationEventPublisher
-    },
     eventTypes: {
     },
     mapCategoryIdToSubscriptionTemplates: {
@@ -1249,9 +1252,6 @@ TypeInfo.NotificationSubscriptionsViewData.fields = {
     publishers: {
     },
     scopes: {
-    },
-    subscriber: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
     subscriptions: {
         isArray: true,

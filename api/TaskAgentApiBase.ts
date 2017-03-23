@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
@@ -133,9 +133,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.TaskAgent} agent
-    * @param {number} poolId
-    */
+     * @param {TaskAgentInterfaces.TaskAgent} agent
+     * @param {number} poolId
+     */
     public async addAgent(
         agent: TaskAgentInterfaces.TaskAgent,
         poolId: number
@@ -154,7 +154,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgent>;
@@ -174,9 +174,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    * @param {number} agentId
-    */
+     * @param {number} poolId
+     * @param {number} agentId
+     */
     public async deleteAgent(
         poolId: number,
         agentId: number
@@ -196,7 +196,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -216,12 +216,12 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    * @param {number} agentId
-    * @param {boolean} includeCapabilities
-    * @param {boolean} includeAssignedRequest
-    * @param {string[]} propertyFilters
-    */
+     * @param {number} poolId
+     * @param {number} agentId
+     * @param {boolean} includeCapabilities
+     * @param {boolean} includeAssignedRequest
+     * @param {string[]} propertyFilters
+     */
     public async getAgent(
         poolId: number,
         agentId: number,
@@ -251,7 +251,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgent>;
@@ -271,13 +271,13 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    * @param {string} agentName
-    * @param {boolean} includeCapabilities
-    * @param {boolean} includeAssignedRequest
-    * @param {string[]} propertyFilters
-    * @param {string[]} demands
-    */
+     * @param {number} poolId
+     * @param {string} agentName
+     * @param {boolean} includeCapabilities
+     * @param {boolean} includeAssignedRequest
+     * @param {string[]} propertyFilters
+     * @param {string[]} demands
+     */
     public async getAgents(
         poolId: number,
         agentName?: string,
@@ -309,7 +309,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgent[]>;
@@ -329,10 +329,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.TaskAgent} agent
-    * @param {number} poolId
-    * @param {number} agentId
-    */
+     * @param {TaskAgentInterfaces.TaskAgent} agent
+     * @param {number} poolId
+     * @param {number} agentId
+     */
     public async replaceAgent(
         agent: TaskAgentInterfaces.TaskAgent,
         poolId: number,
@@ -353,7 +353,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgent>;
@@ -373,10 +373,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.TaskAgent} agent
-    * @param {number} poolId
-    * @param {number} agentId
-    */
+     * @param {TaskAgentInterfaces.TaskAgent} agent
+     * @param {number} poolId
+     * @param {number} agentId
+     */
     public async updateAgent(
         agent: TaskAgentInterfaces.TaskAgent,
         poolId: number,
@@ -397,7 +397,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgent>;
@@ -417,7 +417,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    */
+     */
     public async getAzureSubscriptions(
         ): Promise<TaskAgentInterfaces.AzureSubscriptionQueryResult> {
 
@@ -433,7 +433,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.AzureSubscriptionQueryResult>;
@@ -453,9 +453,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} deploymentGroupId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} deploymentGroupId
+     */
     public async generateDeploymentGroupAccessToken(
         project: string,
         deploymentGroupId: number
@@ -475,7 +475,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string>;
@@ -495,9 +495,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.DeploymentGroup} deploymentGroup
-    * @param {string} project - Project ID or project name
-    */
+     * @param {TaskAgentInterfaces.DeploymentGroup} deploymentGroup
+     * @param {string} project - Project ID or project name
+     */
     public async addDeploymentGroup(
         deploymentGroup: TaskAgentInterfaces.DeploymentGroup,
         project: string
@@ -516,7 +516,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentGroup>;
@@ -536,9 +536,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} deploymentGroupId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} deploymentGroupId
+     */
     public async deleteDeploymentGroup(
         project: string,
         deploymentGroupId: number
@@ -558,7 +558,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -578,11 +578,11 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} deploymentGroupId
-    * @param {TaskAgentInterfaces.DeploymentGroupActionFilter} actionFilter
-    * @param {TaskAgentInterfaces.DeploymentGroupExpands} expand
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} deploymentGroupId
+     * @param {TaskAgentInterfaces.DeploymentGroupActionFilter} actionFilter
+     * @param {TaskAgentInterfaces.DeploymentGroupExpands} expand
+     */
     public async getDeploymentGroup(
         project: string,
         deploymentGroupId: number,
@@ -610,7 +610,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentGroup>;
@@ -630,11 +630,11 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {string} name
-    * @param {TaskAgentInterfaces.DeploymentGroupActionFilter} actionFilter
-    * @param {TaskAgentInterfaces.DeploymentGroupExpands} expand
-    */
+     * @param {string} project - Project ID or project name
+     * @param {string} name
+     * @param {TaskAgentInterfaces.DeploymentGroupActionFilter} actionFilter
+     * @param {TaskAgentInterfaces.DeploymentGroupExpands} expand
+     */
     public async getDeploymentGroups(
         project: string,
         name?: string,
@@ -662,7 +662,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentGroup[]>;
@@ -682,10 +682,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.DeploymentGroup} deploymentGroup
-    * @param {string} project - Project ID or project name
-    * @param {number} deploymentGroupId
-    */
+     * @param {TaskAgentInterfaces.DeploymentGroup} deploymentGroup
+     * @param {string} project - Project ID or project name
+     * @param {number} deploymentGroupId
+     */
     public async updateDeploymentGroup(
         deploymentGroup: TaskAgentInterfaces.DeploymentGroup,
         project: string,
@@ -706,7 +706,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentGroup>;
@@ -726,10 +726,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * Proxy for a GET request defined by an 'endpoint'. The request is authorized using a service connection. The response is filtered using an XPath/Json based selector.
-    * 
-    * @param {TaskAgentInterfaces.TaskDefinitionEndpoint} endpoint - Describes the URL to fetch.
-    */
+     * Proxy for a GET request defined by an 'endpoint'. The request is authorized using a service connection. The response is filtered using an XPath/Json based selector.
+     * 
+     * @param {TaskAgentInterfaces.TaskDefinitionEndpoint} endpoint - Describes the URL to fetch.
+     */
     public async queryEndpoint(
         endpoint: TaskAgentInterfaces.TaskDefinitionEndpoint
         ): Promise<string[]> {
@@ -746,7 +746,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -766,10 +766,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} hubName
-    * @param {boolean} includeEnterpriseUsersCount
-    * @param {boolean} includeHostedAgentMinutesCount
-    */
+     * @param {string} hubName
+     * @param {boolean} includeEnterpriseUsersCount
+     * @param {boolean} includeHostedAgentMinutesCount
+     */
     public async getTaskHubLicenseDetails(
         hubName: string,
         includeEnterpriseUsersCount?: boolean,
@@ -795,7 +795,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskHubLicenseDetails>;
@@ -815,9 +815,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.TaskHubLicenseDetails} taskHubLicenseDetails
-    * @param {string} hubName
-    */
+     * @param {TaskAgentInterfaces.TaskHubLicenseDetails} taskHubLicenseDetails
+     * @param {string} hubName
+     */
     public async updateTaskHubLicenseDetails(
         taskHubLicenseDetails: TaskAgentInterfaces.TaskHubLicenseDetails,
         hubName: string
@@ -836,7 +836,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskHubLicenseDetails>;
@@ -856,8 +856,8 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.InputValidationRequest} inputValidationRequest
-    */
+     * @param {TaskAgentInterfaces.InputValidationRequest} inputValidationRequest
+     */
     public async validateInputs(
         inputValidationRequest: TaskAgentInterfaces.InputValidationRequest
         ): Promise<TaskAgentInterfaces.InputValidationRequest> {
@@ -874,7 +874,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.InputValidationRequest>;
@@ -894,11 +894,11 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    * @param {number} requestId
-    * @param {string} lockToken
-    * @param {TaskAgentInterfaces.TaskResult} result
-    */
+     * @param {number} poolId
+     * @param {number} requestId
+     * @param {string} lockToken
+     * @param {TaskAgentInterfaces.TaskResult} result
+     */
     public async deleteAgentRequest(
         poolId: number,
         requestId: number,
@@ -926,7 +926,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -946,9 +946,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    * @param {number} requestId
-    */
+     * @param {number} poolId
+     * @param {number} requestId
+     */
     public async getAgentRequest(
         poolId: number,
         requestId: number
@@ -968,7 +968,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest>;
@@ -988,10 +988,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    * @param {number} agentId
-    * @param {number} completedRequestCount
-    */
+     * @param {number} poolId
+     * @param {number} agentId
+     * @param {number} completedRequestCount
+     */
     public async getAgentRequestsForAgent(
         poolId: number,
         agentId: number,
@@ -1017,7 +1017,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest[]>;
@@ -1037,10 +1037,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    * @param {number[]} agentIds
-    * @param {number} completedRequestCount
-    */
+     * @param {number} poolId
+     * @param {number[]} agentIds
+     * @param {number} completedRequestCount
+     */
     public async getAgentRequestsForAgents(
         poolId: number,
         agentIds?: number[],
@@ -1066,7 +1066,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest[]>;
@@ -1086,10 +1086,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    * @param {string} planId
-    * @param {string} jobId
-    */
+     * @param {number} poolId
+     * @param {string} planId
+     * @param {string} jobId
+     */
     public async getAgentRequestsForPlan(
         poolId: number,
         planId: string,
@@ -1115,7 +1115,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest[]>;
@@ -1135,9 +1135,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.TaskAgentJobRequest} request
-    * @param {number} poolId
-    */
+     * @param {TaskAgentInterfaces.TaskAgentJobRequest} request
+     * @param {number} poolId
+     */
     public async queueAgentRequest(
         request: TaskAgentInterfaces.TaskAgentJobRequest,
         poolId: number
@@ -1156,7 +1156,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest>;
@@ -1176,11 +1176,11 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.TaskAgentJobRequest} request
-    * @param {number} poolId
-    * @param {number} requestId
-    * @param {string} lockToken
-    */
+     * @param {TaskAgentInterfaces.TaskAgentJobRequest} request
+     * @param {number} poolId
+     * @param {number} requestId
+     * @param {string} lockToken
+     */
     public async updateAgentRequest(
         request: TaskAgentInterfaces.TaskAgentJobRequest,
         poolId: number,
@@ -1207,7 +1207,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest>;
@@ -1227,9 +1227,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} machineGroupId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} machineGroupId
+     */
     public async generateDeploymentMachineGroupAccessToken(
         project: string,
         machineGroupId: number
@@ -1249,7 +1249,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string>;
@@ -1269,9 +1269,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.DeploymentMachineGroup} machineGroup
-    * @param {string} project - Project ID or project name
-    */
+     * @param {TaskAgentInterfaces.DeploymentMachineGroup} machineGroup
+     * @param {string} project - Project ID or project name
+     */
     public async addDeploymentMachineGroup(
         machineGroup: TaskAgentInterfaces.DeploymentMachineGroup,
         project: string
@@ -1290,7 +1290,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachineGroup>;
@@ -1310,9 +1310,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} machineGroupId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} machineGroupId
+     */
     public async deleteDeploymentMachineGroup(
         project: string,
         machineGroupId: number
@@ -1332,7 +1332,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -1352,10 +1352,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} machineGroupId
-    * @param {TaskAgentInterfaces.MachineGroupActionFilter} actionFilter
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} machineGroupId
+     * @param {TaskAgentInterfaces.MachineGroupActionFilter} actionFilter
+     */
     public async getDeploymentMachineGroup(
         project: string,
         machineGroupId: number,
@@ -1381,7 +1381,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachineGroup>;
@@ -1401,10 +1401,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {string} machineGroupName
-    * @param {TaskAgentInterfaces.MachineGroupActionFilter} actionFilter
-    */
+     * @param {string} project - Project ID or project name
+     * @param {string} machineGroupName
+     * @param {TaskAgentInterfaces.MachineGroupActionFilter} actionFilter
+     */
     public async getDeploymentMachineGroups(
         project: string,
         machineGroupName?: string,
@@ -1430,7 +1430,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachineGroup[]>;
@@ -1450,10 +1450,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.DeploymentMachineGroup} machineGroup
-    * @param {string} project - Project ID or project name
-    * @param {number} machineGroupId
-    */
+     * @param {TaskAgentInterfaces.DeploymentMachineGroup} machineGroup
+     * @param {string} project - Project ID or project name
+     * @param {number} machineGroupId
+     */
     public async updateDeploymentMachineGroup(
         machineGroup: TaskAgentInterfaces.DeploymentMachineGroup,
         project: string,
@@ -1474,7 +1474,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachineGroup>;
@@ -1494,10 +1494,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} machineGroupId
-    * @param {string[]} tagFilters
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} machineGroupId
+     * @param {string[]} tagFilters
+     */
     public async getDeploymentMachineGroupMachines(
         project: string,
         machineGroupId: number,
@@ -1523,7 +1523,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine[]>;
@@ -1543,10 +1543,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.DeploymentMachine[]} deploymentMachines
-    * @param {string} project - Project ID or project name
-    * @param {number} machineGroupId
-    */
+     * @param {TaskAgentInterfaces.DeploymentMachine[]} deploymentMachines
+     * @param {string} project - Project ID or project name
+     * @param {number} machineGroupId
+     */
     public async updateDeploymentMachineGroupMachines(
         deploymentMachines: TaskAgentInterfaces.DeploymentMachine[],
         project: string,
@@ -1567,7 +1567,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine[]>;
@@ -1587,10 +1587,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} deploymentGroupId
-    * @param {string[]} tags
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} deploymentGroupId
+     * @param {string[]} tags
+     */
     public async getDeploymentMachines(
         project: string,
         deploymentGroupId: number,
@@ -1616,7 +1616,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine[]>;
@@ -1636,10 +1636,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.DeploymentMachine[]} deploymentMachines
-    * @param {string} project - Project ID or project name
-    * @param {number} deploymentGroupId
-    */
+     * @param {TaskAgentInterfaces.DeploymentMachine[]} deploymentMachines
+     * @param {string} project - Project ID or project name
+     * @param {number} deploymentGroupId
+     */
     public async updateDeploymentMachines(
         deploymentMachines: TaskAgentInterfaces.DeploymentMachine[],
         project: string,
@@ -1660,7 +1660,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine[]>;
@@ -1680,9 +1680,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition} definition
-    * @param {number} poolId
-    */
+     * @param {TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition} definition
+     * @param {number} poolId
+     */
     public async createAgentPoolMaintenanceDefinition(
         definition: TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition,
         poolId: number
@@ -1701,7 +1701,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition>;
@@ -1721,9 +1721,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    * @param {number} definitionId
-    */
+     * @param {number} poolId
+     * @param {number} definitionId
+     */
     public async deleteAgentPoolMaintenanceDefinition(
         poolId: number,
         definitionId: number
@@ -1743,7 +1743,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -1763,9 +1763,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    * @param {number} definitionId
-    */
+     * @param {number} poolId
+     * @param {number} definitionId
+     */
     public async getAgentPoolMaintenanceDefinition(
         poolId: number,
         definitionId: number
@@ -1785,7 +1785,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition>;
@@ -1805,8 +1805,8 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    */
+     * @param {number} poolId
+     */
     public async getAgentPoolMaintenanceDefinitions(
         poolId: number
         ): Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition[]> {
@@ -1824,7 +1824,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition[]>;
@@ -1844,10 +1844,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition} definition
-    * @param {number} poolId
-    * @param {number} definitionId
-    */
+     * @param {TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition} definition
+     * @param {number} poolId
+     * @param {number} definitionId
+     */
     public async updateAgentPoolMaintenanceDefinition(
         definition: TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition,
         poolId: number,
@@ -1868,7 +1868,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition>;
@@ -1888,9 +1888,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    * @param {number} jobId
-    */
+     * @param {number} poolId
+     * @param {number} jobId
+     */
     public async deleteAgentPoolMaintenanceJob(
         poolId: number,
         jobId: number
@@ -1910,7 +1910,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -1930,9 +1930,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    * @param {number} jobId
-    */
+     * @param {number} poolId
+     * @param {number} jobId
+     */
     public async getAgentPoolMaintenanceJob(
         poolId: number,
         jobId: number
@@ -1952,7 +1952,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob>;
@@ -1972,9 +1972,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    * @param {number} jobId
-    */
+     * @param {number} poolId
+     * @param {number} jobId
+     */
     public async getAgentPoolMaintenanceJobLogs(
         poolId: number,
         jobId: number
@@ -2006,9 +2006,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    * @param {number} definitionId
-    */
+     * @param {number} poolId
+     * @param {number} definitionId
+     */
     public async getAgentPoolMaintenanceJobs(
         poolId: number,
         definitionId?: number
@@ -2032,7 +2032,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob[]>;
@@ -2052,9 +2052,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.TaskAgentPoolMaintenanceJob} job
-    * @param {number} poolId
-    */
+     * @param {TaskAgentInterfaces.TaskAgentPoolMaintenanceJob} job
+     * @param {number} poolId
+     */
     public async queueAgentPoolMaintenanceJob(
         job: TaskAgentInterfaces.TaskAgentPoolMaintenanceJob,
         poolId: number
@@ -2073,7 +2073,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob>;
@@ -2093,10 +2093,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.TaskAgentPoolMaintenanceJob} job
-    * @param {number} poolId
-    * @param {number} jobId
-    */
+     * @param {TaskAgentInterfaces.TaskAgentPoolMaintenanceJob} job
+     * @param {number} poolId
+     * @param {number} jobId
+     */
     public async updateAgentPoolMaintenanceJob(
         job: TaskAgentInterfaces.TaskAgentPoolMaintenanceJob,
         poolId: number,
@@ -2117,7 +2117,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob>;
@@ -2137,10 +2137,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    * @param {number} messageId
-    * @param {string} sessionId
-    */
+     * @param {number} poolId
+     * @param {number} messageId
+     * @param {string} sessionId
+     */
     public async deleteMessage(
         poolId: number,
         messageId: number,
@@ -2166,7 +2166,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -2186,10 +2186,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    * @param {string} sessionId
-    * @param {number} lastMessageId
-    */
+     * @param {number} poolId
+     * @param {string} sessionId
+     * @param {number} lastMessageId
+     */
     public async getMessage(
         poolId: number,
         sessionId: string,
@@ -2215,7 +2215,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentMessage>;
@@ -2235,9 +2235,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    * @param {number} agentId
-    */
+     * @param {number} poolId
+     * @param {number} agentId
+     */
     public async refreshAgent(
         poolId: number,
         agentId: number
@@ -2261,7 +2261,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -2281,8 +2281,8 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    */
+     * @param {number} poolId
+     */
     public async refreshAgents(
         poolId: number
         ): Promise<void> {
@@ -2300,7 +2300,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -2320,10 +2320,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.TaskAgentMessage} message
-    * @param {number} poolId
-    * @param {number} requestId
-    */
+     * @param {TaskAgentInterfaces.TaskAgentMessage} message
+     * @param {number} poolId
+     * @param {number} requestId
+     */
     public async sendMessage(
         message: TaskAgentInterfaces.TaskAgentMessage,
         poolId: number,
@@ -2348,7 +2348,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -2368,10 +2368,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} packageType
-    * @param {string} platform
-    * @param {string} version
-    */
+     * @param {string} packageType
+     * @param {string} platform
+     * @param {string} version
+     */
     public async getPackage(
         packageType: string,
         platform: string,
@@ -2393,7 +2393,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.PackageMetadata>;
@@ -2413,10 +2413,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} packageType
-    * @param {string} platform
-    * @param {number} top
-    */
+     * @param {string} packageType
+     * @param {string} platform
+     * @param {number} top
+     */
     public async getPackages(
         packageType?: string,
         platform?: string,
@@ -2442,7 +2442,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.PackageMetadata[]>;
@@ -2462,8 +2462,8 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    */
+     * @param {number} poolId
+     */
     public async getAgentPoolRoles(
         poolId?: number
         ): Promise<VSSInterfaces.IdentityRef[]> {
@@ -2481,7 +2481,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<VSSInterfaces.IdentityRef[]>;
@@ -2501,8 +2501,8 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.TaskAgentPool} pool
-    */
+     * @param {TaskAgentInterfaces.TaskAgentPool} pool
+     */
     public async addAgentPool(
         pool: TaskAgentInterfaces.TaskAgentPool
         ): Promise<TaskAgentInterfaces.TaskAgentPool> {
@@ -2519,7 +2519,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPool>;
@@ -2539,8 +2539,8 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    */
+     * @param {number} poolId
+     */
     public async deleteAgentPool(
         poolId: number
         ): Promise<void> {
@@ -2558,7 +2558,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -2578,10 +2578,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    * @param {string[]} properties
-    * @param {TaskAgentInterfaces.TaskAgentPoolActionFilter} actionFilter
-    */
+     * @param {number} poolId
+     * @param {string[]} properties
+     * @param {TaskAgentInterfaces.TaskAgentPoolActionFilter} actionFilter
+     */
     public async getAgentPool(
         poolId: number,
         properties?: string[],
@@ -2607,7 +2607,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPool>;
@@ -2627,11 +2627,11 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} poolName
-    * @param {string[]} properties
-    * @param {TaskAgentInterfaces.TaskAgentPoolType} poolType
-    * @param {TaskAgentInterfaces.TaskAgentPoolActionFilter} actionFilter
-    */
+     * @param {string} poolName
+     * @param {string[]} properties
+     * @param {TaskAgentInterfaces.TaskAgentPoolType} poolType
+     * @param {TaskAgentInterfaces.TaskAgentPoolActionFilter} actionFilter
+     */
     public async getAgentPools(
         poolName?: string,
         properties?: string[],
@@ -2659,7 +2659,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPool[]>;
@@ -2679,9 +2679,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.TaskAgentPool} pool
-    * @param {number} poolId
-    */
+     * @param {TaskAgentInterfaces.TaskAgentPool} pool
+     * @param {number} poolId
+     */
     public async updateAgentPool(
         pool: TaskAgentInterfaces.TaskAgentPool,
         poolId: number
@@ -2700,7 +2700,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPool>;
@@ -2720,8 +2720,8 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} queueId
-    */
+     * @param {number} queueId
+     */
     public async getAgentQueueRoles(
         queueId?: number
         ): Promise<VSSInterfaces.IdentityRef[]> {
@@ -2739,7 +2739,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<VSSInterfaces.IdentityRef[]>;
@@ -2759,9 +2759,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.TaskAgentQueue} queue
-    * @param {string} project - Project ID or project name
-    */
+     * @param {TaskAgentInterfaces.TaskAgentQueue} queue
+     * @param {string} project - Project ID or project name
+     */
     public async addAgentQueue(
         queue: TaskAgentInterfaces.TaskAgentQueue,
         project?: string
@@ -2780,7 +2780,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentQueue>;
@@ -2800,8 +2800,8 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    */
+     * @param {string} project - Project ID or project name
+     */
     public async createTeamProject(
         project?: string
         ): Promise<void> {
@@ -2819,7 +2819,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -2839,9 +2839,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} queueId
-    * @param {string} project - Project ID or project name
-    */
+     * @param {number} queueId
+     * @param {string} project - Project ID or project name
+     */
     public async deleteAgentQueue(
         queueId: number,
         project?: string
@@ -2861,7 +2861,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -2881,10 +2881,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} queueId
-    * @param {string} project - Project ID or project name
-    * @param {TaskAgentInterfaces.TaskAgentQueueActionFilter} actionFilter
-    */
+     * @param {number} queueId
+     * @param {string} project - Project ID or project name
+     * @param {TaskAgentInterfaces.TaskAgentQueueActionFilter} actionFilter
+     */
     public async getAgentQueue(
         queueId: number,
         project?: string,
@@ -2910,7 +2910,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentQueue>;
@@ -2930,10 +2930,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {string} queueName
-    * @param {TaskAgentInterfaces.TaskAgentQueueActionFilter} actionFilter
-    */
+     * @param {string} project - Project ID or project name
+     * @param {string} queueName
+     * @param {TaskAgentInterfaces.TaskAgentQueueActionFilter} actionFilter
+     */
     public async getAgentQueues(
         project?: string,
         queueName?: string,
@@ -2959,7 +2959,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentQueue[]>;
@@ -2979,9 +2979,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {string} taskGroupId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {string} taskGroupId
+     */
     public async getTaskGroupHistory(
         project: string,
         taskGroupId: string
@@ -3001,7 +3001,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskGroupRevision[]>;
@@ -3021,11 +3021,11 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * Delete a secure file
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {number} secureFileId - The unique secure file Id
-    */
+     * Delete a secure file
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} secureFileId - The unique secure file Id
+     */
     public async deleteSecureFile(
         project: string,
         secureFileId: number
@@ -3045,7 +3045,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -3065,13 +3065,13 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * Download a secure file by Id
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {number} secureFileId - The unique secure file Id
-    * @param {string} ticket - A valid download ticket
-    * @param {boolean} download - If download is true, the file is sent as attachement in the response body. If download is false, the response body contains the file stream.
-    */
+     * Download a secure file by Id
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} secureFileId - The unique secure file Id
+     * @param {string} ticket - A valid download ticket
+     * @param {boolean} download - If download is true, the file is sent as attachement in the response body. If download is false, the response body contains the file stream.
+     */
     public async downloadSecureFile(
         project: string,
         secureFileId: number,
@@ -3111,12 +3111,12 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * Get a secure file
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {number} secureFileId - The unique secure file Id
-    * @param {boolean} includeDownloadTicket - If includeDownloadTicket is true and the caller has permissions, a download ticket is included in the response.
-    */
+     * Get a secure file
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} secureFileId - The unique secure file Id
+     * @param {boolean} includeDownloadTicket - If includeDownloadTicket is true and the caller has permissions, a download ticket is included in the response.
+     */
     public async getSecureFile(
         project: string,
         secureFileId: number,
@@ -3142,7 +3142,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile>;
@@ -3162,13 +3162,13 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * Get secure files
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {string} namePattern - Name of the secure file to match. Can include wildcards to match multiple files.
-    * @param {boolean} includeDownloadTickets - If includeDownloadTickets is true and the caller has permissions, a download ticket for each secure file is included in the response.
-    * @param {TaskAgentInterfaces.SecureFileActionFilter} actionFilter - Filter by secure file permissions for View, Manage or Use action. Defaults to View.
-    */
+     * Get secure files
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} namePattern - Name of the secure file to match. Can include wildcards to match multiple files.
+     * @param {boolean} includeDownloadTickets - If includeDownloadTickets is true and the caller has permissions, a download ticket for each secure file is included in the response.
+     * @param {TaskAgentInterfaces.SecureFileActionFilter} actionFilter - Filter by secure file permissions for View, Manage or Use action. Defaults to View.
+     */
     public async getSecureFiles(
         project: string,
         namePattern?: string,
@@ -3196,7 +3196,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile[]>;
@@ -3216,12 +3216,12 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * Get secure files
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {number[]} secureFileIds - A list of secure file Ids
-    * @param {boolean} includeDownloadTickets - If includeDownloadTickets is true and the caller has permissions, a download ticket for each secure file is included in the response.
-    */
+     * Get secure files
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number[]} secureFileIds - A list of secure file Ids
+     * @param {boolean} includeDownloadTickets - If includeDownloadTickets is true and the caller has permissions, a download ticket for each secure file is included in the response.
+     */
     public async getSecureFilesByIds(
         project: string,
         secureFileIds: number[],
@@ -3247,7 +3247,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile[]>;
@@ -3267,12 +3267,12 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * Query secure files using a name pattern and a condition on file properties.
-    * 
-    * @param {string} condition - The main condition syntax is described [here](https://go.microsoft.com/fwlink/?linkid=842996). Use the *property('property-name')* function to access the value of the specified property of a secure file. It returns null if the property is not set. E.g. ``` and( eq( property('devices'), '2' ), in( property('provisioning profile type'), 'ad hoc', 'development' ) ) ```
-    * @param {string} project - Project ID or project name
-    * @param {string} namePattern - Name of the secure file to match. Can include wildcards to match multiple files.
-    */
+     * Query secure files using a name pattern and a condition on file properties.
+     * 
+     * @param {string} condition - The main condition syntax is described [here](https://go.microsoft.com/fwlink/?linkid=842996). Use the *property('property-name')* function to access the value of the specified property of a secure file. It returns null if the property is not set. E.g. ``` and( eq( property('devices'), '2' ), in( property('provisioning profile type'), 'ad hoc', 'development' ) ) ```
+     * @param {string} project - Project ID or project name
+     * @param {string} namePattern - Name of the secure file to match. Can include wildcards to match multiple files.
+     */
     public async querySecureFilesByProperties(
         condition: string,
         project: string,
@@ -3297,7 +3297,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile[]>;
@@ -3317,12 +3317,12 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * Update the name or properties of an existing secure file
-    * 
-    * @param {TaskAgentInterfaces.SecureFile} secureFile - The secure file with updated name and/or properties
-    * @param {string} project - Project ID or project name
-    * @param {number} secureFileId - The unique secure file Id
-    */
+     * Update the name or properties of an existing secure file
+     * 
+     * @param {TaskAgentInterfaces.SecureFile} secureFile - The secure file with updated name and/or properties
+     * @param {string} project - Project ID or project name
+     * @param {number} secureFileId - The unique secure file Id
+     */
     public async updateSecureFile(
         secureFile: TaskAgentInterfaces.SecureFile,
         project: string,
@@ -3343,7 +3343,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile>;
@@ -3363,11 +3363,11 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * Update properties and/or names of a set of secure files. Files are identified by their IDs. Properties provided override the existing one entirely, i.e. do not merge.
-    * 
-    * @param {TaskAgentInterfaces.SecureFile[]} secureFiles - A list of secure file objects. Only three field must be populated Id, Name, and Properties. The rest of fields in the object are ignored.
-    * @param {string} project - Project ID or project name
-    */
+     * Update properties and/or names of a set of secure files. Files are identified by their IDs. Properties provided override the existing one entirely, i.e. do not merge.
+     * 
+     * @param {TaskAgentInterfaces.SecureFile[]} secureFiles - A list of secure file objects. Only three field must be populated Id, Name, and Properties. The rest of fields in the object are ignored.
+     * @param {string} project - Project ID or project name
+     */
     public async updateSecureFiles(
         secureFiles: TaskAgentInterfaces.SecureFile[],
         project: string
@@ -3386,7 +3386,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile[]>;
@@ -3406,12 +3406,12 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * Upload a secure file, include the file stream in the request body
-    * 
-    * @param {NodeJS.ReadableStream} contentStream - Content to upload
-    * @param {string} project - Project ID or project name
-    * @param {string} name - Name of the file to upload
-    */
+     * Upload a secure file, include the file stream in the request body
+     * 
+     * @param {NodeJS.ReadableStream} contentStream - Content to upload
+     * @param {string} project - Project ID or project name
+     * @param {string} name - Name of the file to upload
+     */
     public async uploadSecureFile(
         customHeaders: any,
         contentStream: NodeJS.ReadableStream,
@@ -3443,7 +3443,6 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
-                options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile>;
                 res = await this.rest.uploadStream<TaskAgentInterfaces.SecureFile>("POST", url, contentStream, options);
@@ -3461,10 +3460,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.ServiceEndpointRequest} serviceEndpointRequest
-    * @param {string} project - Project ID or project name
-    * @param {string} endpointId
-    */
+     * @param {TaskAgentInterfaces.ServiceEndpointRequest} serviceEndpointRequest
+     * @param {string} project - Project ID or project name
+     * @param {string} endpointId
+     */
     public async executeServiceEndpointRequest(
         serviceEndpointRequest: TaskAgentInterfaces.ServiceEndpointRequest,
         project: string,
@@ -3489,7 +3488,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.ServiceEndpointRequestResult>;
@@ -3509,11 +3508,11 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * Proxy for a GET request defined by an service endpoint. The request is authorized using a data source in service endpoint. The response is filtered using an XPath/Json based selector.
-    * 
-    * @param {TaskAgentInterfaces.DataSourceBinding} binding - Describes the data source to fetch.
-    * @param {string} project - Project ID or project name
-    */
+     * Proxy for a GET request defined by an service endpoint. The request is authorized using a data source in service endpoint. The response is filtered using an XPath/Json based selector.
+     * 
+     * @param {TaskAgentInterfaces.DataSourceBinding} binding - Describes the data source to fetch.
+     * @param {string} project - Project ID or project name
+     */
     public async queryServiceEndpoint(
         binding: TaskAgentInterfaces.DataSourceBinding,
         project: string
@@ -3532,7 +3531,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
@@ -3552,9 +3551,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.ServiceEndpoint} endpoint
-    * @param {string} project - Project ID or project name
-    */
+     * @param {TaskAgentInterfaces.ServiceEndpoint} endpoint
+     * @param {string} project - Project ID or project name
+     */
     public async createServiceEndpoint(
         endpoint: TaskAgentInterfaces.ServiceEndpoint,
         project: string
@@ -3573,7 +3572,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.ServiceEndpoint>;
@@ -3593,9 +3592,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {string} endpointId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {string} endpointId
+     */
     public async deleteServiceEndpoint(
         project: string,
         endpointId: string
@@ -3615,7 +3614,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -3635,9 +3634,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {string} endpointId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {string} endpointId
+     */
     public async getServiceEndpointDetails(
         project: string,
         endpointId: string
@@ -3657,7 +3656,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.ServiceEndpoint>;
@@ -3677,12 +3676,12 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {string} type
-    * @param {string[]} authSchemes
-    * @param {string[]} endpointIds
-    * @param {boolean} includeFailed
-    */
+     * @param {string} project - Project ID or project name
+     * @param {string} type
+     * @param {string[]} authSchemes
+     * @param {string[]} endpointIds
+     * @param {boolean} includeFailed
+     */
     public async getServiceEndpoints(
         project: string,
         type?: string,
@@ -3712,7 +3711,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.ServiceEndpoint[]>;
@@ -3732,10 +3731,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.ServiceEndpoint} endpoint
-    * @param {string} project - Project ID or project name
-    * @param {string} endpointId
-    */
+     * @param {TaskAgentInterfaces.ServiceEndpoint} endpoint
+     * @param {string} project - Project ID or project name
+     * @param {string} endpointId
+     */
     public async updateServiceEndpoint(
         endpoint: TaskAgentInterfaces.ServiceEndpoint,
         project: string,
@@ -3756,7 +3755,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.ServiceEndpoint>;
@@ -3776,9 +3775,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.ServiceEndpoint[]} endpoints
-    * @param {string} project - Project ID or project name
-    */
+     * @param {TaskAgentInterfaces.ServiceEndpoint[]} endpoints
+     * @param {string} project - Project ID or project name
+     */
     public async updateServiceEndpoints(
         endpoints: TaskAgentInterfaces.ServiceEndpoint[],
         project: string
@@ -3797,7 +3796,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.ServiceEndpoint[]>;
@@ -3817,9 +3816,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} type
-    * @param {string} scheme
-    */
+     * @param {string} type
+     * @param {string} scheme
+     */
     public async getServiceEndpointTypes(
         type?: string,
         scheme?: string
@@ -3843,7 +3842,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.ServiceEndpointType[]>;
@@ -3863,9 +3862,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.TaskAgentSession} session
-    * @param {number} poolId
-    */
+     * @param {TaskAgentInterfaces.TaskAgentSession} session
+     * @param {number} poolId
+     */
     public async createAgentSession(
         session: TaskAgentInterfaces.TaskAgentSession,
         poolId: number
@@ -3884,7 +3883,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentSession>;
@@ -3904,9 +3903,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    * @param {string} sessionId
-    */
+     * @param {number} poolId
+     * @param {string} sessionId
+     */
     public async deleteAgentSession(
         poolId: number,
         sessionId: string
@@ -3926,7 +3925,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -3946,9 +3945,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.TaskGroup} taskGroup
-    * @param {string} project - Project ID or project name
-    */
+     * @param {TaskAgentInterfaces.TaskGroup} taskGroup
+     * @param {string} project - Project ID or project name
+     */
     public async addTaskGroup(
         taskGroup: TaskAgentInterfaces.TaskGroup,
         project: string
@@ -3967,7 +3966,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskGroup>;
@@ -3987,9 +3986,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {string} taskGroupId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {string} taskGroupId
+     */
     public async deleteTaskGroup(
         project: string,
         taskGroupId: string
@@ -4009,7 +4008,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -4029,10 +4028,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {string} taskGroupId
-    * @param {number} revision
-    */
+     * @param {string} project - Project ID or project name
+     * @param {string} taskGroupId
+     * @param {number} revision
+     */
     public async getTaskGroupRevision(
         project: string,
         taskGroupId: string,
@@ -4070,10 +4069,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {string} taskGroupId
-    * @param {boolean} expanded
-    */
+     * @param {string} project - Project ID or project name
+     * @param {string} taskGroupId
+     * @param {boolean} expanded
+     */
     public async getTaskGroups(
         project: string,
         taskGroupId?: string,
@@ -4099,7 +4098,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskGroup[]>;
@@ -4119,9 +4118,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.TaskGroup} taskGroup
-    * @param {string} project - Project ID or project name
-    */
+     * @param {TaskAgentInterfaces.TaskGroup} taskGroup
+     * @param {string} project - Project ID or project name
+     */
     public async updateTaskGroup(
         taskGroup: TaskAgentInterfaces.TaskGroup,
         project: string
@@ -4140,7 +4139,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskGroup>;
@@ -4160,8 +4159,8 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} taskId
-    */
+     * @param {string} taskId
+     */
     public async deleteTaskDefinition(
         taskId: string
         ): Promise<void> {
@@ -4179,7 +4178,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -4199,11 +4198,11 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} taskId
-    * @param {string} versionString
-    * @param {string[]} visibility
-    * @param {boolean} scopeLocal
-    */
+     * @param {string} taskId
+     * @param {string} versionString
+     * @param {string[]} visibility
+     * @param {boolean} scopeLocal
+     */
     public async getTaskContentZip(
         taskId: string,
         versionString: string,
@@ -4243,11 +4242,11 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} taskId
-    * @param {string} versionString
-    * @param {string[]} visibility
-    * @param {boolean} scopeLocal
-    */
+     * @param {string} taskId
+     * @param {string} versionString
+     * @param {string[]} visibility
+     * @param {boolean} scopeLocal
+     */
     public async getTaskDefinition(
         taskId: string,
         versionString: string,
@@ -4275,7 +4274,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskDefinition>;
@@ -4295,10 +4294,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} taskId
-    * @param {string[]} visibility
-    * @param {boolean} scopeLocal
-    */
+     * @param {string} taskId
+     * @param {string[]} visibility
+     * @param {boolean} scopeLocal
+     */
     public async getTaskDefinitions(
         taskId?: string,
         visibility?: string[],
@@ -4324,7 +4323,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskDefinition[]>;
@@ -4344,10 +4343,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {number} poolId
-    * @param {number} agentId
-    * @param {string} currentState
-    */
+     * @param {number} poolId
+     * @param {number} agentId
+     * @param {string} currentState
+     */
     public async updateAgentUpdateState(
         poolId: number,
         agentId: number,
@@ -4373,7 +4372,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgent>;
@@ -4393,10 +4392,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {{ [key: string] : string; }} userCapabilities
-    * @param {number} poolId
-    * @param {number} agentId
-    */
+     * @param {{ [key: string] : string; }} userCapabilities
+     * @param {number} poolId
+     * @param {number} agentId
+     */
     public async updateAgentUserCapabilities(
         userCapabilities: { [key: string] : string; },
         poolId: number,
@@ -4417,7 +4416,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgent>;
@@ -4437,9 +4436,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.VariableGroup} group
-    * @param {string} project - Project ID or project name
-    */
+     * @param {TaskAgentInterfaces.VariableGroup} group
+     * @param {string} project - Project ID or project name
+     */
     public async addVariableGroup(
         group: TaskAgentInterfaces.VariableGroup,
         project: string
@@ -4458,7 +4457,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.VariableGroup>;
@@ -4478,9 +4477,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} groupId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} groupId
+     */
     public async deleteVariableGroup(
         project: string,
         groupId: number
@@ -4500,7 +4499,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
@@ -4520,9 +4519,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} groupId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} groupId
+     */
     public async getVariableGroup(
         project: string,
         groupId: number
@@ -4542,7 +4541,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.VariableGroup>;
@@ -4562,10 +4561,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {string} groupName
-    * @param {TaskAgentInterfaces.VariableGroupActionFilter} actionFilter
-    */
+     * @param {string} project - Project ID or project name
+     * @param {string} groupName
+     * @param {TaskAgentInterfaces.VariableGroupActionFilter} actionFilter
+     */
     public async getVariableGroups(
         project: string,
         groupName?: string,
@@ -4591,7 +4590,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.VariableGroup[]>;
@@ -4611,9 +4610,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number[]} groupIds
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number[]} groupIds
+     */
     public async getVariableGroupsById(
         project: string,
         groupIds: number[]
@@ -4637,7 +4636,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.VariableGroup[]>;
@@ -4657,10 +4656,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.VariableGroup} group
-    * @param {string} project - Project ID or project name
-    * @param {number} groupId
-    */
+     * @param {TaskAgentInterfaces.VariableGroup} group
+     * @param {string} project - Project ID or project name
+     * @param {number} groupId
+     */
     public async updateVariableGroup(
         group: TaskAgentInterfaces.VariableGroup,
         project: string,
@@ -4681,7 +4680,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.VariableGroup>;
@@ -4701,8 +4700,8 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {TaskAgentInterfaces.AadOauthTokenRequest} authenticationRequest
-    */
+     * @param {TaskAgentInterfaces.AadOauthTokenRequest} authenticationRequest
+     */
     public async acquireAccessToken(
         authenticationRequest: TaskAgentInterfaces.AadOauthTokenRequest
         ): Promise<TaskAgentInterfaces.AadOauthTokenResult> {
@@ -4719,7 +4718,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.AadOauthTokenResult>;
@@ -4739,10 +4738,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    * @param {string} tenantId
-    * @param {string} redirectUri
-    * @param {TaskAgentInterfaces.AadLoginPromptOption} promptOption
-    */
+     * @param {string} tenantId
+     * @param {string} redirectUri
+     * @param {TaskAgentInterfaces.AadLoginPromptOption} promptOption
+     */
     public async createAadOAuthRequest(
         tenantId: string,
         redirectUri: string,
@@ -4768,7 +4767,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string>;
@@ -4788,7 +4787,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-    */
+     */
     public async getVstsAadTenantId(
         ): Promise<string> {
 
@@ -4804,7 +4803,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string>;
