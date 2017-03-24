@@ -43,9 +43,9 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
     }
 
     /**
-    * @param {string} consumerId
-    * @param {string} consumerActionId
-    */
+     * @param {string} consumerId
+     * @param {string} consumerActionId
+     */
     public async getConsumerAction(
         consumerId: string,
         consumerActionId: string
@@ -85,8 +85,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
     }
 
     /**
-    * @param {string} consumerId
-    */
+     * @param {string} consumerId
+     */
     public async getConsumerActions(
         consumerId: string
         ): Promise<ServiceHooksInterfaces.ConsumerAction[]> {
@@ -124,8 +124,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
     }
 
     /**
-    * @param {string} consumerId
-    */
+     * @param {string} consumerId
+     */
     public async getConsumer(
         consumerId: string
         ): Promise<ServiceHooksInterfaces.Consumer> {
@@ -163,7 +163,7 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
     }
 
     /**
-    */
+     */
     public async getConsumers(
         ): Promise<ServiceHooksInterfaces.Consumer[]> {
 
@@ -199,8 +199,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
     }
 
     /**
-    * @param {ServiceHooksInterfaces.PublishEventsRequestData} eventsRequestData
-    */
+     * @param {ServiceHooksInterfaces.PublishEventsRequestData} eventsRequestData
+     */
     public async createEvents(
         eventsRequestData: ServiceHooksInterfaces.PublishEventsRequestData
         ): Promise<void> {
@@ -237,8 +237,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
     }
 
     /**
-    * @param {ServiceHooksInterfaces.SubscriptionInputValuesQuery} inputValuesQuery
-    */
+     * @param {ServiceHooksInterfaces.SubscriptionInputValuesQuery} inputValuesQuery
+     */
     public async queryInputValues(
         inputValuesQuery: ServiceHooksInterfaces.SubscriptionInputValuesQuery
         ): Promise<ServiceHooksInterfaces.SubscriptionInputValuesQuery> {
@@ -275,9 +275,9 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
     }
 
     /**
-    * @param {string} subscriptionId
-    * @param {number} notificationId
-    */
+     * @param {string} subscriptionId
+     * @param {number} notificationId
+     */
     public async getNotification(
         subscriptionId: string,
         notificationId: number
@@ -317,11 +317,11 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
     }
 
     /**
-    * @param {string} subscriptionId
-    * @param {number} maxResults
-    * @param {ServiceHooksInterfaces.NotificationStatus} status
-    * @param {ServiceHooksInterfaces.NotificationResult} result
-    */
+     * @param {string} subscriptionId
+     * @param {number} maxResults
+     * @param {ServiceHooksInterfaces.NotificationStatus} status
+     * @param {ServiceHooksInterfaces.NotificationResult} result
+     */
     public async getNotifications(
         subscriptionId: string,
         maxResults?: number,
@@ -369,8 +369,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
     }
 
     /**
-    * @param {ServiceHooksInterfaces.NotificationsQuery} query
-    */
+     * @param {ServiceHooksInterfaces.NotificationsQuery} query
+     */
     public async queryNotifications(
         query: ServiceHooksInterfaces.NotificationsQuery
         ): Promise<ServiceHooksInterfaces.NotificationsQuery> {
@@ -407,8 +407,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
     }
 
     /**
-    * @param {ServiceHooksInterfaces.Subscription} subscription
-    */
+     * @param {ServiceHooksInterfaces.Subscription} subscription
+     */
     public async createSubscription(
         subscription: ServiceHooksInterfaces.Subscription
         ): Promise<ServiceHooksInterfaces.Subscription> {
@@ -445,8 +445,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
     }
 
     /**
-    * @param {string} subscriptionId
-    */
+     * @param {string} subscriptionId
+     */
     public async deleteSubscription(
         subscriptionId: string
         ): Promise<void> {
@@ -484,8 +484,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
     }
 
     /**
-    * @param {string} subscriptionId
-    */
+     * @param {string} subscriptionId
+     */
     public async getSubscription(
         subscriptionId: string
         ): Promise<ServiceHooksInterfaces.Subscription> {
@@ -523,11 +523,11 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
     }
 
     /**
-    * @param {string} publisherId
-    * @param {string} eventType
-    * @param {string} consumerId
-    * @param {string} consumerActionId
-    */
+     * @param {string} publisherId
+     * @param {string} eventType
+     * @param {string} consumerId
+     * @param {string} consumerActionId
+     */
     public async listSubscriptions(
         publisherId?: string,
         eventType?: string,
@@ -575,8 +575,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
     }
 
     /**
-    * @param {ServiceHooksInterfaces.Subscription} subscription
-    */
+     * @param {ServiceHooksInterfaces.Subscription} subscription
+     */
     public async replaceSubscription(
         subscription: ServiceHooksInterfaces.Subscription
         ): Promise<ServiceHooksInterfaces.Subscription> {
@@ -613,8 +613,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
     }
 
     /**
-    * @param {ServiceHooksInterfaces.SubscriptionsQuery} query
-    */
+     * @param {ServiceHooksInterfaces.SubscriptionsQuery} query
+     */
     public async querySubscriptions(
         query: ServiceHooksInterfaces.SubscriptionsQuery
         ): Promise<ServiceHooksInterfaces.SubscriptionsQuery> {
@@ -651,8 +651,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
     }
 
     /**
-    * @param {ServiceHooksInterfaces.Notification} testNotification
-    */
+     * @param {ServiceHooksInterfaces.Notification} testNotification
+     */
     public async createTestNotification(
         testNotification: ServiceHooksInterfaces.Notification
         ): Promise<ServiceHooksInterfaces.Notification> {

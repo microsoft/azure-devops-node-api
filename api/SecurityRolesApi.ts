@@ -33,9 +33,9 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
     }
 
     /**
-    * @param {string} scopeId
-    * @param {string} resourceId
-    */
+     * @param {string} scopeId
+     * @param {string} resourceId
+     */
     public async getRoleAssignments(
         scopeId: string,
         resourceId: string
@@ -75,10 +75,10 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
     }
 
     /**
-    * @param {string} scopeId
-    * @param {string} resourceId
-    * @param {string} identityId
-    */
+     * @param {string} scopeId
+     * @param {string} resourceId
+     * @param {string} identityId
+     */
     public async removeRoleAssignment(
         scopeId: string,
         resourceId: string,
@@ -120,10 +120,10 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
     }
 
     /**
-    * @param {string[]} identityIds
-    * @param {string} scopeId
-    * @param {string} resourceId
-    */
+     * @param {string[]} identityIds
+     * @param {string} scopeId
+     * @param {string} resourceId
+     */
     public async removeRoleAssignments(
         identityIds: string[],
         scopeId: string,
@@ -164,11 +164,11 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
     }
 
     /**
-    * @param {SecurityRolesInterfaces.UserRoleAssignmentRef} roleAssignment
-    * @param {string} scopeId
-    * @param {string} resourceId
-    * @param {string} identityId
-    */
+     * @param {SecurityRolesInterfaces.UserRoleAssignmentRef} roleAssignment
+     * @param {string} scopeId
+     * @param {string} resourceId
+     * @param {string} identityId
+     */
     public async setRoleAssignment(
         roleAssignment: SecurityRolesInterfaces.UserRoleAssignmentRef,
         scopeId: string,
@@ -211,10 +211,10 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
     }
 
     /**
-    * @param {SecurityRolesInterfaces.UserRoleAssignmentRef[]} roleAssignments
-    * @param {string} scopeId
-    * @param {string} resourceId
-    */
+     * @param {SecurityRolesInterfaces.UserRoleAssignmentRef[]} roleAssignments
+     * @param {string} scopeId
+     * @param {string} resourceId
+     */
     public async setRoleAssignments(
         roleAssignments: SecurityRolesInterfaces.UserRoleAssignmentRef[],
         scopeId: string,
@@ -255,8 +255,8 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
     }
 
     /**
-    * @param {string} scopeId
-    */
+     * @param {string} scopeId
+     */
     public async getRoleDefinitions(
         scopeId: string
         ): Promise<SecurityRolesInterfaces.SecurityRole[]> {

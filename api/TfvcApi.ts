@@ -50,13 +50,13 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Get a single branch hierarchy at the given path with parents or children (if specified)
-    * 
-    * @param {string} path
-    * @param {string} project - Project ID or project name
-    * @param {boolean} includeParent
-    * @param {boolean} includeChildren
-    */
+     * Get a single branch hierarchy at the given path with parents or children (if specified)
+     * 
+     * @param {string} path
+     * @param {string} project - Project ID or project name
+     * @param {boolean} includeParent
+     * @param {boolean} includeChildren
+     */
     public async getBranch(
         path: string,
         project?: string,
@@ -104,14 +104,14 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Get a collection of branch roots -- first-level children, branches with no parents
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {boolean} includeParent
-    * @param {boolean} includeChildren
-    * @param {boolean} includeDeleted
-    * @param {boolean} includeLinks
-    */
+     * Get a collection of branch roots -- first-level children, branches with no parents
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {boolean} includeParent
+     * @param {boolean} includeChildren
+     * @param {boolean} includeDeleted
+     * @param {boolean} includeLinks
+     */
     public async getBranches(
         project?: string,
         includeParent?: boolean,
@@ -161,13 +161,13 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Get branch hierarchies below the specified scopePath
-    * 
-    * @param {string} scopePath
-    * @param {string} project - Project ID or project name
-    * @param {boolean} includeDeleted
-    * @param {boolean} includeLinks
-    */
+     * Get branch hierarchies below the specified scopePath
+     * 
+     * @param {string} scopePath
+     * @param {string} project - Project ID or project name
+     * @param {boolean} includeDeleted
+     * @param {boolean} includeLinks
+     */
     public async getBranchRefs(
         scopePath: string,
         project?: string,
@@ -215,12 +215,12 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Retrieve Tfvc changes for a given changeset
-    * 
-    * @param {number} id
-    * @param {number} skip
-    * @param {number} top
-    */
+     * Retrieve Tfvc changes for a given changeset
+     * 
+     * @param {number} id
+     * @param {number} skip
+     * @param {number} top
+     */
     public async getChangesetChanges(
         id?: number,
         skip?: number,
@@ -266,9 +266,9 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * @param {TfvcInterfaces.TfvcChangeset} changeset
-    * @param {string} project - Project ID or project name
-    */
+     * @param {TfvcInterfaces.TfvcChangeset} changeset
+     * @param {string} project - Project ID or project name
+     */
     public async createChangeset(
         changeset: TfvcInterfaces.TfvcChangeset,
         project?: string
@@ -307,20 +307,20 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Retrieve a Tfvc Changeset
-    * 
-    * @param {number} id
-    * @param {string} project - Project ID or project name
-    * @param {number} maxChangeCount
-    * @param {boolean} includeDetails
-    * @param {boolean} includeWorkItems
-    * @param {number} maxCommentLength
-    * @param {boolean} includeSourceRename
-    * @param {number} skip
-    * @param {number} top
-    * @param {string} orderby
-    * @param {TfvcInterfaces.TfvcChangesetSearchCriteria} searchCriteria
-    */
+     * Retrieve a Tfvc Changeset
+     * 
+     * @param {number} id
+     * @param {string} project - Project ID or project name
+     * @param {number} maxChangeCount
+     * @param {boolean} includeDetails
+     * @param {boolean} includeWorkItems
+     * @param {number} maxCommentLength
+     * @param {boolean} includeSourceRename
+     * @param {number} skip
+     * @param {number} top
+     * @param {string} orderby
+     * @param {TfvcInterfaces.TfvcChangesetSearchCriteria} searchCriteria
+     */
     public async getChangeset(
         id: number,
         project?: string,
@@ -382,15 +382,15 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Retrieve Tfvc changesets Note: This is a new version of the GetChangesets API that doesn't expose the unneeded queryParams present in the 1.0 version of the API.
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {number} maxCommentLength
-    * @param {number} skip
-    * @param {number} top
-    * @param {string} orderby
-    * @param {TfvcInterfaces.TfvcChangesetSearchCriteria} searchCriteria
-    */
+     * Retrieve Tfvc changesets Note: This is a new version of the GetChangesets API that doesn't expose the unneeded queryParams present in the 1.0 version of the API.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} maxCommentLength
+     * @param {number} skip
+     * @param {number} top
+     * @param {string} orderby
+     * @param {TfvcInterfaces.TfvcChangesetSearchCriteria} searchCriteria
+     */
     public async getChangesets(
         project?: string,
         maxCommentLength?: number,
@@ -442,8 +442,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * @param {TfvcInterfaces.TfvcChangesetsRequestData} changesetsRequestData
-    */
+     * @param {TfvcInterfaces.TfvcChangesetsRequestData} changesetsRequestData
+     */
     public async getBatchedChangesets(
         changesetsRequestData: TfvcInterfaces.TfvcChangesetsRequestData
         ): Promise<TfvcInterfaces.TfvcChangesetRef[]> {
@@ -480,8 +480,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * @param {number} id
-    */
+     * @param {number} id
+     */
     public async getChangesetWorkItems(
         id?: number
         ): Promise<TfvcInterfaces.AssociatedWorkItem[]> {
@@ -519,11 +519,11 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Post for retrieving a set of items given a list of paths or a long path. Allows for specifying the recursionLevel and version descriptors for each path.
-    * 
-    * @param {TfvcInterfaces.TfvcItemRequestData} itemRequestData
-    * @param {string} project - Project ID or project name
-    */
+     * Post for retrieving a set of items given a list of paths or a long path. Allows for specifying the recursionLevel and version descriptors for each path.
+     * 
+     * @param {TfvcInterfaces.TfvcItemRequestData} itemRequestData
+     * @param {string} project - Project ID or project name
+     */
     public async getItemsBatch(
         itemRequestData: TfvcInterfaces.TfvcItemRequestData,
         project?: string
@@ -562,11 +562,11 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Post for retrieving a set of items given a list of paths or a long path. Allows for specifying the recursionLevel and version descriptors for each path.
-    * 
-    * @param {TfvcInterfaces.TfvcItemRequestData} itemRequestData
-    * @param {string} project - Project ID or project name
-    */
+     * Post for retrieving a set of items given a list of paths or a long path. Allows for specifying the recursionLevel and version descriptors for each path.
+     * 
+     * @param {TfvcInterfaces.TfvcItemRequestData} itemRequestData
+     * @param {string} project - Project ID or project name
+     */
     public async getItemsBatchZip(
         itemRequestData: TfvcInterfaces.TfvcItemRequestData,
         project?: string
@@ -597,16 +597,16 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
-    * 
-    * @param {string} path
-    * @param {string} project - Project ID or project name
-    * @param {string} fileName
-    * @param {boolean} download
-    * @param {string} scopePath
-    * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel
-    * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
-    */
+     * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
+     * 
+     * @param {string} path
+     * @param {string} project - Project ID or project name
+     * @param {string} fileName
+     * @param {boolean} download
+     * @param {string} scopePath
+     * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel
+     * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
+     */
     public async getItem(
         path: string,
         project?: string,
@@ -660,16 +660,16 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
-    * 
-    * @param {string} path
-    * @param {string} project - Project ID or project name
-    * @param {string} fileName
-    * @param {boolean} download
-    * @param {string} scopePath
-    * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel
-    * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
-    */
+     * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
+     * 
+     * @param {string} path
+     * @param {string} project - Project ID or project name
+     * @param {string} fileName
+     * @param {boolean} download
+     * @param {string} scopePath
+     * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel
+     * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
+     */
     public async getItemContent(
         path: string,
         project?: string,
@@ -715,14 +715,14 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Get a list of Tfvc items
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {string} scopePath
-    * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel
-    * @param {boolean} includeLinks
-    * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
-    */
+     * Get a list of Tfvc items
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} scopePath
+     * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel
+     * @param {boolean} includeLinks
+     * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
+     */
     public async getItems(
         project?: string,
         scopePath?: string,
@@ -772,16 +772,16 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
-    * 
-    * @param {string} path
-    * @param {string} project - Project ID or project name
-    * @param {string} fileName
-    * @param {boolean} download
-    * @param {string} scopePath
-    * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel
-    * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
-    */
+     * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
+     * 
+     * @param {string} path
+     * @param {string} project - Project ID or project name
+     * @param {string} fileName
+     * @param {boolean} download
+     * @param {string} scopePath
+     * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel
+     * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
+     */
     public async getItemText(
         path: string,
         project?: string,
@@ -827,16 +827,16 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
-    * 
-    * @param {string} path
-    * @param {string} project - Project ID or project name
-    * @param {string} fileName
-    * @param {boolean} download
-    * @param {string} scopePath
-    * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel
-    * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
-    */
+     * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
+     * 
+     * @param {string} path
+     * @param {string} project - Project ID or project name
+     * @param {string} fileName
+     * @param {boolean} download
+     * @param {string} scopePath
+     * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel
+     * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
+     */
     public async getItemZip(
         path: string,
         project?: string,
@@ -882,12 +882,12 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Get items under a label.
-    * 
-    * @param {string} labelId - Unique identifier of label
-    * @param {number} top - Max number of items to return
-    * @param {number} skip - Number of items to skip
-    */
+     * Get items under a label.
+     * 
+     * @param {string} labelId - Unique identifier of label
+     * @param {number} top - Max number of items to return
+     * @param {number} skip - Number of items to skip
+     */
     public async getLabelItems(
         labelId: string,
         top?: number,
@@ -933,12 +933,12 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Get a single deep label.
-    * 
-    * @param {string} labelId - Unique identifier of label
-    * @param {TfvcInterfaces.TfvcLabelRequestData} requestData - maxItemCount
-    * @param {string} project - Project ID or project name
-    */
+     * Get a single deep label.
+     * 
+     * @param {string} labelId - Unique identifier of label
+     * @param {TfvcInterfaces.TfvcLabelRequestData} requestData - maxItemCount
+     * @param {string} project - Project ID or project name
+     */
     public async getLabel(
         labelId: string,
         requestData: TfvcInterfaces.TfvcLabelRequestData,
@@ -984,13 +984,13 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Get a collection of shallow label references.
-    * 
-    * @param {TfvcInterfaces.TfvcLabelRequestData} requestData - labelScope, name, owner, and itemLabelFilter
-    * @param {string} project - Project ID or project name
-    * @param {number} top - Max number of labels to return
-    * @param {number} skip - Number of labels to skip
-    */
+     * Get a collection of shallow label references.
+     * 
+     * @param {TfvcInterfaces.TfvcLabelRequestData} requestData - labelScope, name, owner, and itemLabelFilter
+     * @param {string} project - Project ID or project name
+     * @param {number} top - Max number of labels to return
+     * @param {number} skip - Number of labels to skip
+     */
     public async getLabels(
         requestData: TfvcInterfaces.TfvcLabelRequestData,
         project?: string,
@@ -1038,12 +1038,12 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Get changes included in a shelveset.
-    * 
-    * @param {string} shelvesetId - Shelveset's unique ID
-    * @param {number} top - Max number of changes to return
-    * @param {number} skip - Number of changes to skip
-    */
+     * Get changes included in a shelveset.
+     * 
+     * @param {string} shelvesetId - Shelveset's unique ID
+     * @param {number} top - Max number of changes to return
+     * @param {number} skip - Number of changes to skip
+     */
     public async getShelvesetChanges(
         shelvesetId: string,
         top?: number,
@@ -1089,11 +1089,11 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Get a single deep shelveset.
-    * 
-    * @param {string} shelvesetId - Shelveset's unique ID
-    * @param {TfvcInterfaces.TfvcShelvesetRequestData} requestData - includeDetails, includeWorkItems, maxChangeCount, and maxCommentLength
-    */
+     * Get a single deep shelveset.
+     * 
+     * @param {string} shelvesetId - Shelveset's unique ID
+     * @param {TfvcInterfaces.TfvcShelvesetRequestData} requestData - includeDetails, includeWorkItems, maxChangeCount, and maxCommentLength
+     */
     public async getShelveset(
         shelvesetId: string,
         requestData?: TfvcInterfaces.TfvcShelvesetRequestData
@@ -1137,12 +1137,12 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Return a collection of shallow shelveset references.
-    * 
-    * @param {TfvcInterfaces.TfvcShelvesetRequestData} requestData - name, owner, and maxCommentLength
-    * @param {number} top - Max number of shelvesets to return
-    * @param {number} skip - Number of shelvesets to skip
-    */
+     * Return a collection of shallow shelveset references.
+     * 
+     * @param {TfvcInterfaces.TfvcShelvesetRequestData} requestData - name, owner, and maxCommentLength
+     * @param {number} top - Max number of shelvesets to return
+     * @param {number} skip - Number of shelvesets to skip
+     */
     public async getShelvesets(
         requestData?: TfvcInterfaces.TfvcShelvesetRequestData,
         top?: number,
@@ -1188,10 +1188,10 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     }
 
     /**
-    * Get work items associated with a shelveset.
-    * 
-    * @param {string} shelvesetId - Shelveset's unique ID
-    */
+     * Get work items associated with a shelveset.
+     * 
+     * @param {string} shelvesetId - Shelveset's unique ID
+     */
     public async getShelvesetWorkItems(
         shelvesetId: string
         ): Promise<TfvcInterfaces.AssociatedWorkItem[]> {

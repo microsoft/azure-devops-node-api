@@ -87,9 +87,9 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} extensionId
-    * @param {string} accountName
-    */
+     * @param {string} extensionId
+     * @param {string} accountName
+     */
     public async shareExtensionById(
         extensionId: string,
         accountName: string
@@ -129,9 +129,9 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} extensionId
-    * @param {string} accountName
-    */
+     * @param {string} extensionId
+     * @param {string} accountName
+     */
     public async unshareExtensionById(
         extensionId: string,
         accountName: string
@@ -171,10 +171,10 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} accountName
-    */
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} accountName
+     */
     public async shareExtension(
         publisherName: string,
         extensionName: string,
@@ -216,10 +216,10 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} accountName
-    */
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} accountName
+     */
     public async unshareExtension(
         publisherName: string,
         extensionName: string,
@@ -261,11 +261,11 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} itemId
-    * @param {string} installationTarget
-    * @param {boolean} testCommerce
-    * @param {boolean} isFreeOrTrialInstall
-    */
+     * @param {string} itemId
+     * @param {string} installationTarget
+     * @param {boolean} testCommerce
+     * @param {boolean} isFreeOrTrialInstall
+     */
     public async getAcquisitionOptions(
         itemId: string,
         installationTarget: string,
@@ -313,8 +313,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {GalleryInterfaces.ExtensionAcquisitionRequest} acquisitionRequest
-    */
+     * @param {GalleryInterfaces.ExtensionAcquisitionRequest} acquisitionRequest
+     */
     public async requestAcquisition(
         acquisitionRequest: GalleryInterfaces.ExtensionAcquisitionRequest
         ): Promise<GalleryInterfaces.ExtensionAcquisitionRequest> {
@@ -351,13 +351,13 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} version
-    * @param {string} assetType
-    * @param {string} accountToken
-    * @param {boolean} acceptDefault
-    */
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} version
+     * @param {string} assetType
+     * @param {string} accountToken
+     * @param {boolean} acceptDefault
+     */
     public async getAssetByName(
         publisherName: string,
         extensionName: string,
@@ -401,12 +401,12 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} extensionId
-    * @param {string} version
-    * @param {string} assetType
-    * @param {string} accountToken
-    * @param {boolean} acceptDefault
-    */
+     * @param {string} extensionId
+     * @param {string} version
+     * @param {string} assetType
+     * @param {string} accountToken
+     * @param {boolean} acceptDefault
+     */
     public async getAsset(
         extensionId: string,
         version: string,
@@ -448,12 +448,12 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} version
-    * @param {string} assetType
-    * @param {string} accountToken
-    */
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} version
+     * @param {string} assetType
+     * @param {string} accountToken
+     */
     public async getAssetAuthenticated(
         publisherName: string,
         extensionName: string,
@@ -495,9 +495,9 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} azurePublisherId
-    */
+     * @param {string} publisherName
+     * @param {string} azurePublisherId
+     */
     public async associateAzurePublisher(
         publisherName: string,
         azurePublisherId: string
@@ -541,8 +541,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} publisherName
-    */
+     * @param {string} publisherName
+     */
     public async queryAssociatedAzurePublisher(
         publisherName: string
         ): Promise<GalleryInterfaces.AzurePublisher> {
@@ -580,8 +580,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} languages
-    */
+     * @param {string} languages
+     */
     public async getCategories(
         languages?: string
         ): Promise<string[]> {
@@ -623,10 +623,10 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} categoryName
-    * @param {string} languages
-    * @param {string} product
-    */
+     * @param {string} categoryName
+     * @param {string} languages
+     * @param {string} product
+     */
     public async getCategoryDetails(
         categoryName: string,
         languages?: string,
@@ -672,14 +672,14 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} product
-    * @param {string} categoryId
-    * @param {number} lcid
-    * @param {string} source
-    * @param {string} productVersion
-    * @param {string} skus
-    * @param {string} subSkus
-    */
+     * @param {string} product
+     * @param {string} categoryId
+     * @param {number} lcid
+     * @param {string} source
+     * @param {string} productVersion
+     * @param {string} skus
+     * @param {string} subSkus
+     */
     public async getCategoryTree(
         product: string,
         categoryId: string,
@@ -733,13 +733,13 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} product
-    * @param {number} lcid
-    * @param {string} source
-    * @param {string} productVersion
-    * @param {string} skus
-    * @param {string} subSkus
-    */
+     * @param {string} product
+     * @param {number} lcid
+     * @param {string} source
+     * @param {string} productVersion
+     * @param {string} skus
+     * @param {string} subSkus
+     */
     public async getRootCategories(
         product: string,
         lcid?: number,
@@ -791,10 +791,10 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} version
-    */
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} version
+     */
     public async getCertificate(
         publisherName: string,
         extensionName: string,
@@ -828,14 +828,14 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * Get install/uninstall events of an extension.
-    * 
-    * @param {string} publisherName - Name of the publisher
-    * @param {string} extensionName - Name of the extension
-    * @param {number} count - Count of events to fetch, applies to each event type.
-    * @param {Date} afterDate - Fetch events that occured on or after this value
-    * @param {string} include - Filter options. Supported values: includeInstall, includeUninstall. Default is to fetch all types of events
-    */
+     * Get install/uninstall events of an extension.
+     * 
+     * @param {string} publisherName - Name of the publisher
+     * @param {string} extensionName - Name of the extension
+     * @param {number} count - Count of events to fetch, applies to each event type.
+     * @param {Date} afterDate - Fetch events that occured on or after this value
+     * @param {string} include - Filter options. Supported values: includeInstall, includeUninstall. Default is to fetch all types of events
+     */
     public async getExtensionEvents(
         publisherName: string,
         extensionName: string,
@@ -885,10 +885,10 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * API endpoint to publish extension install/uninstall events. This is meant to be invoked by EMS only for sending us data related to install/uninstall of an extension.
-    * 
-    * @param {GalleryInterfaces.ExtensionEvents[]} extensionEvents
-    */
+     * API endpoint to publish extension install/uninstall events. This is meant to be invoked by EMS only for sending us data related to install/uninstall of an extension.
+     * 
+     * @param {GalleryInterfaces.ExtensionEvents[]} extensionEvents
+     */
     public async publishExtensionEvents(
         extensionEvents: GalleryInterfaces.ExtensionEvents[]
         ): Promise<void> {
@@ -925,9 +925,9 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {GalleryInterfaces.ExtensionQuery} extensionQuery
-    * @param {string} accountToken
-    */
+     * @param {GalleryInterfaces.ExtensionQuery} extensionQuery
+     * @param {string} accountToken
+     */
     public async queryExtensions(
         extensionQuery: GalleryInterfaces.ExtensionQuery,
         accountToken?: string
@@ -970,8 +970,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {NodeJS.ReadableStream} contentStream - Content to upload
-    */
+     * @param {NodeJS.ReadableStream} contentStream - Content to upload
+     */
     public async createExtension(
         customHeaders: any,
         contentStream: NodeJS.ReadableStream
@@ -1013,9 +1013,9 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} extensionId
-    * @param {string} version
-    */
+     * @param {string} extensionId
+     * @param {string} version
+     */
     public async deleteExtensionById(
         extensionId: string,
         version?: string
@@ -1059,10 +1059,10 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} extensionId
-    * @param {string} version
-    * @param {GalleryInterfaces.ExtensionQueryFlags} flags
-    */
+     * @param {string} extensionId
+     * @param {string} version
+     * @param {GalleryInterfaces.ExtensionQueryFlags} flags
+     */
     public async getExtensionById(
         extensionId: string,
         version?: string,
@@ -1108,8 +1108,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} extensionId
-    */
+     * @param {string} extensionId
+     */
     public async updateExtensionById(
         extensionId: string
         ): Promise<GalleryInterfaces.PublishedExtension> {
@@ -1147,9 +1147,9 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {NodeJS.ReadableStream} contentStream - Content to upload
-    * @param {string} publisherName
-    */
+     * @param {NodeJS.ReadableStream} contentStream - Content to upload
+     * @param {string} publisherName
+     */
     public async createExtensionWithPublisher(
         customHeaders: any,
         contentStream: NodeJS.ReadableStream,
@@ -1193,10 +1193,10 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} version
-    */
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} version
+     */
     public async deleteExtension(
         publisherName: string,
         extensionName: string,
@@ -1242,12 +1242,12 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} version
-    * @param {GalleryInterfaces.ExtensionQueryFlags} flags
-    * @param {string} accountToken
-    */
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} version
+     * @param {GalleryInterfaces.ExtensionQueryFlags} flags
+     * @param {string} accountToken
+     */
     public async getExtension(
         publisherName: string,
         extensionName: string,
@@ -1297,10 +1297,10 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {NodeJS.ReadableStream} contentStream - Content to upload
-    * @param {string} publisherName
-    * @param {string} extensionName
-    */
+     * @param {NodeJS.ReadableStream} contentStream - Content to upload
+     * @param {string} publisherName
+     * @param {string} extensionName
+     */
     public async updateExtension(
         customHeaders: any,
         contentStream: NodeJS.ReadableStream,
@@ -1346,10 +1346,10 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {GalleryInterfaces.PublishedExtensionFlags} flags
-    */
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {GalleryInterfaces.PublishedExtensionFlags} flags
+     */
     public async updateExtensionProperties(
         publisherName: string,
         extensionName: string,
@@ -1395,8 +1395,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {GalleryInterfaces.AzureRestApiRequestModel} azureRestApiRequestModel
-    */
+     * @param {GalleryInterfaces.AzureRestApiRequestModel} azureRestApiRequestModel
+     */
     public async extensionValidator(
         azureRestApiRequestModel: GalleryInterfaces.AzureRestApiRequestModel
         ): Promise<void> {
@@ -1433,12 +1433,12 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} version
-    * @param {string} accountToken
-    * @param {boolean} acceptDefault
-    */
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} version
+     * @param {string} accountToken
+     * @param {boolean} acceptDefault
+     */
     public async getPackage(
         publisherName: string,
         extensionName: string,
@@ -1480,14 +1480,14 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} version
-    * @param {string} assetType
-    * @param {string} assetToken
-    * @param {string} accountToken
-    * @param {boolean} acceptDefault
-    */
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} version
+     * @param {string} assetType
+     * @param {string} assetToken
+     * @param {string} accountToken
+     * @param {boolean} acceptDefault
+     */
     public async getAssetWithToken(
         publisherName: string,
         extensionName: string,
@@ -1533,8 +1533,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {GalleryInterfaces.PublisherQuery} publisherQuery
-    */
+     * @param {GalleryInterfaces.PublisherQuery} publisherQuery
+     */
     public async queryPublishers(
         publisherQuery: GalleryInterfaces.PublisherQuery
         ): Promise<GalleryInterfaces.PublisherQueryResult> {
@@ -1571,8 +1571,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {GalleryInterfaces.Publisher} publisher
-    */
+     * @param {GalleryInterfaces.Publisher} publisher
+     */
     public async createPublisher(
         publisher: GalleryInterfaces.Publisher
         ): Promise<GalleryInterfaces.Publisher> {
@@ -1609,8 +1609,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} publisherName
-    */
+     * @param {string} publisherName
+     */
     public async deletePublisher(
         publisherName: string
         ): Promise<void> {
@@ -1648,9 +1648,9 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} publisherName
-    * @param {number} flags
-    */
+     * @param {string} publisherName
+     * @param {number} flags
+     */
     public async getPublisher(
         publisherName: string,
         flags?: number
@@ -1694,9 +1694,9 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {GalleryInterfaces.Publisher} publisher
-    * @param {string} publisherName
-    */
+     * @param {GalleryInterfaces.Publisher} publisher
+     * @param {string} publisherName
+     */
     public async updatePublisher(
         publisher: GalleryInterfaces.Publisher,
         publisherName: string
@@ -1735,13 +1735,13 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * Returns a list of questions with their responses associated with an extension.
-    * 
-    * @param {string} publisherName - Name of the publisher who published the extension.
-    * @param {string} extensionName - Name of the extension.
-    * @param {number} count - Number of questions to retrieve (defaults to 10).
-    * @param {number} page - Page number from which set of questions are to be retrieved.
-    */
+     * Returns a list of questions with their responses associated with an extension.
+     * 
+     * @param {string} publisherName - Name of the publisher who published the extension.
+     * @param {string} extensionName - Name of the extension.
+     * @param {number} count - Number of questions to retrieve (defaults to 10).
+     * @param {number} page - Page number from which set of questions are to be retrieved.
+     */
     public async getQuestions(
         publisherName: string,
         extensionName: string,
@@ -1789,13 +1789,13 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * Flags a concern with an existing question for an extension.
-    * 
-    * @param {GalleryInterfaces.Concern} concern - User reported concern with a question for the extension.
-    * @param {string} pubName - Name of the publisher who published the extension.
-    * @param {string} extName - Name of the extension.
-    * @param {number} questionId - Identifier of the question to be updated for the extension.
-    */
+     * Flags a concern with an existing question for an extension.
+     * 
+     * @param {GalleryInterfaces.Concern} concern - User reported concern with a question for the extension.
+     * @param {string} pubName - Name of the publisher who published the extension.
+     * @param {string} extName - Name of the extension.
+     * @param {number} questionId - Identifier of the question to be updated for the extension.
+     */
     public async reportQuestion(
         concern: GalleryInterfaces.Concern,
         pubName: string,
@@ -1838,12 +1838,12 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * Creates a new question for an extension.
-    * 
-    * @param {GalleryInterfaces.Question} question - Question to be created for the extension.
-    * @param {string} publisherName - Name of the publisher who published the extension.
-    * @param {string} extensionName - Name of the extension.
-    */
+     * Creates a new question for an extension.
+     * 
+     * @param {GalleryInterfaces.Question} question - Question to be created for the extension.
+     * @param {string} publisherName - Name of the publisher who published the extension.
+     * @param {string} extensionName - Name of the extension.
+     */
     public async createQuestion(
         question: GalleryInterfaces.Question,
         publisherName: string,
@@ -1884,12 +1884,12 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * Deletes an existing question and all its associated responses for an extension. (soft delete)
-    * 
-    * @param {string} publisherName - Name of the publisher who published the extension.
-    * @param {string} extensionName - Name of the extension.
-    * @param {number} questionId - Identifier of the question to be deleted for the extension.
-    */
+     * Deletes an existing question and all its associated responses for an extension. (soft delete)
+     * 
+     * @param {string} publisherName - Name of the publisher who published the extension.
+     * @param {string} extensionName - Name of the extension.
+     * @param {number} questionId - Identifier of the question to be deleted for the extension.
+     */
     public async deleteQuestion(
         publisherName: string,
         extensionName: string,
@@ -1931,13 +1931,13 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * Updates an existing question for an extension.
-    * 
-    * @param {GalleryInterfaces.Question} question - Updated question to be set for the extension.
-    * @param {string} publisherName - Name of the publisher who published the extension.
-    * @param {string} extensionName - Name of the extension.
-    * @param {number} questionId - Identifier of the question to be updated for the extension.
-    */
+     * Updates an existing question for an extension.
+     * 
+     * @param {GalleryInterfaces.Question} question - Updated question to be set for the extension.
+     * @param {string} publisherName - Name of the publisher who published the extension.
+     * @param {string} extensionName - Name of the extension.
+     * @param {number} questionId - Identifier of the question to be updated for the extension.
+     */
     public async updateQuestion(
         question: GalleryInterfaces.Question,
         publisherName: string,
@@ -1980,13 +1980,13 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * Creates a new response for a given question for an extension.
-    * 
-    * @param {GalleryInterfaces.Response} response - Response to be created for the extension.
-    * @param {string} publisherName - Name of the publisher who published the extension.
-    * @param {string} extensionName - Name of the extension.
-    * @param {number} questionId - Identifier of the question for which response is to be created for the extension.
-    */
+     * Creates a new response for a given question for an extension.
+     * 
+     * @param {GalleryInterfaces.Response} response - Response to be created for the extension.
+     * @param {string} publisherName - Name of the publisher who published the extension.
+     * @param {string} extensionName - Name of the extension.
+     * @param {number} questionId - Identifier of the question for which response is to be created for the extension.
+     */
     public async createResponse(
         response: GalleryInterfaces.Response,
         publisherName: string,
@@ -2029,13 +2029,13 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * Deletes a response for an extension. (soft delete)
-    * 
-    * @param {string} publisherName - Name of the publisher who published the extension.
-    * @param {string} extensionName - Name of the extension.
-    * @param {number} questionId - Identifies the question whose response is to be deleted.
-    * @param {number} responseId - Identifies the response to be deleted.
-    */
+     * Deletes a response for an extension. (soft delete)
+     * 
+     * @param {string} publisherName - Name of the publisher who published the extension.
+     * @param {string} extensionName - Name of the extension.
+     * @param {number} questionId - Identifies the question whose response is to be deleted.
+     * @param {number} responseId - Identifies the response to be deleted.
+     */
     public async deleteResponse(
         publisherName: string,
         extensionName: string,
@@ -2079,14 +2079,14 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * Updates an existing response for a given question for an extension.
-    * 
-    * @param {GalleryInterfaces.Response} response - Updated response to be set for the extension.
-    * @param {string} publisherName - Name of the publisher who published the extension.
-    * @param {string} extensionName - Name of the extension.
-    * @param {number} questionId - Identifier of the question for which response is to be updated for the extension.
-    * @param {number} responseId - Identifier of the response which has to be updated.
-    */
+     * Updates an existing response for a given question for an extension.
+     * 
+     * @param {GalleryInterfaces.Response} response - Updated response to be set for the extension.
+     * @param {string} publisherName - Name of the publisher who published the extension.
+     * @param {string} extensionName - Name of the extension.
+     * @param {number} questionId - Identifier of the question for which response is to be updated for the extension.
+     * @param {number} responseId - Identifier of the response which has to be updated.
+     */
     public async updateResponse(
         response: GalleryInterfaces.Response,
         publisherName: string,
@@ -2131,14 +2131,14 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * Returns extension reports
-    * 
-    * @param {string} publisherName - Name of the publisher who published the extension
-    * @param {string} extensionName - Name of the extension
-    * @param {number} days - Last n days report
-    * @param {number} count - Number of events to be returned
-    * @param {Date} afterDate - Use if you want to fetch events newer than the specified date
-    */
+     * Returns extension reports
+     * 
+     * @param {string} publisherName - Name of the publisher who published the extension
+     * @param {string} extensionName - Name of the extension
+     * @param {number} days - Last n days report
+     * @param {number} count - Number of events to be returned
+     * @param {Date} afterDate - Use if you want to fetch events newer than the specified date
+     */
     public async getExtensionReports(
         publisherName: string,
         extensionName: string,
@@ -2188,15 +2188,15 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * Returns a list of reviews associated with an extension
-    * 
-    * @param {string} publisherName - Name of the publisher who published the extension
-    * @param {string} extensionName - Name of the extension
-    * @param {number} count - Number of reviews to retrieve (defaults to 5)
-    * @param {GalleryInterfaces.ReviewFilterOptions} filterOptions - FilterOptions to filter out empty reviews etcetera, defaults to none
-    * @param {Date} beforeDate - Use if you want to fetch reviews older than the specified date, defaults to null
-    * @param {Date} afterDate - Use if you want to fetch reviews newer than the specified date, defaults to null
-    */
+     * Returns a list of reviews associated with an extension
+     * 
+     * @param {string} publisherName - Name of the publisher who published the extension
+     * @param {string} extensionName - Name of the extension
+     * @param {number} count - Number of reviews to retrieve (defaults to 5)
+     * @param {GalleryInterfaces.ReviewFilterOptions} filterOptions - FilterOptions to filter out empty reviews etcetera, defaults to none
+     * @param {Date} beforeDate - Use if you want to fetch reviews older than the specified date, defaults to null
+     * @param {Date} afterDate - Use if you want to fetch reviews newer than the specified date, defaults to null
+     */
     public async getReviews(
         publisherName: string,
         extensionName: string,
@@ -2248,13 +2248,13 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * Returns a summary of the reviews
-    * 
-    * @param {string} pubName - Name of the publisher who published the extension
-    * @param {string} extName - Name of the extension
-    * @param {Date} beforeDate - Use if you want to fetch summary of reviews older than the specified date, defaults to null
-    * @param {Date} afterDate - Use if you want to fetch summary of reviews newer than the specified date, defaults to null
-    */
+     * Returns a summary of the reviews
+     * 
+     * @param {string} pubName - Name of the publisher who published the extension
+     * @param {string} extName - Name of the extension
+     * @param {Date} beforeDate - Use if you want to fetch summary of reviews older than the specified date, defaults to null
+     * @param {Date} afterDate - Use if you want to fetch summary of reviews newer than the specified date, defaults to null
+     */
     public async getReviewsSummary(
         pubName: string,
         extName: string,
@@ -2302,12 +2302,12 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * Creates a new review for an extension
-    * 
-    * @param {GalleryInterfaces.Review} review - Review to be created for the extension
-    * @param {string} pubName - Name of the publisher who published the extension
-    * @param {string} extName - Name of the extension
-    */
+     * Creates a new review for an extension
+     * 
+     * @param {GalleryInterfaces.Review} review - Review to be created for the extension
+     * @param {string} pubName - Name of the publisher who published the extension
+     * @param {string} extName - Name of the extension
+     */
     public async createReview(
         review: GalleryInterfaces.Review,
         pubName: string,
@@ -2348,12 +2348,12 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * Deletes a review
-    * 
-    * @param {string} pubName - Name of the pubilsher who published the extension
-    * @param {string} extName - Name of the extension
-    * @param {number} reviewId - Id of the review which needs to be updated
-    */
+     * Deletes a review
+     * 
+     * @param {string} pubName - Name of the pubilsher who published the extension
+     * @param {string} extName - Name of the extension
+     * @param {number} reviewId - Id of the review which needs to be updated
+     */
     public async deleteReview(
         pubName: string,
         extName: string,
@@ -2395,13 +2395,13 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * Updates or Flags a review
-    * 
-    * @param {GalleryInterfaces.ReviewPatch} reviewPatch - ReviewPatch object which contains the changes to be applied to the review
-    * @param {string} pubName - Name of the pubilsher who published the extension
-    * @param {string} extName - Name of the extension
-    * @param {number} reviewId - Id of the review which needs to be updated
-    */
+     * Updates or Flags a review
+     * 
+     * @param {GalleryInterfaces.ReviewPatch} reviewPatch - ReviewPatch object which contains the changes to be applied to the review
+     * @param {string} pubName - Name of the pubilsher who published the extension
+     * @param {string} extName - Name of the extension
+     * @param {number} reviewId - Id of the review which needs to be updated
+     */
     public async updateReview(
         reviewPatch: GalleryInterfaces.ReviewPatch,
         pubName: string,
@@ -2444,8 +2444,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {GalleryInterfaces.ExtensionCategory} category
-    */
+     * @param {GalleryInterfaces.ExtensionCategory} category
+     */
     public async createCategory(
         category: GalleryInterfaces.ExtensionCategory
         ): Promise<GalleryInterfaces.ExtensionCategory> {
@@ -2482,11 +2482,11 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * Get all setting entries for the given user/all-users scope
-    * 
-    * @param {string} userScope - User-Scope at which to get the value. Should be "me" for the current user or "host" for all users.
-    * @param {string} key - Optional key under which to filter all the entries
-    */
+     * Get all setting entries for the given user/all-users scope
+     * 
+     * @param {string} userScope - User-Scope at which to get the value. Should be "me" for the current user or "host" for all users.
+     * @param {string} key - Optional key under which to filter all the entries
+     */
     public async getGalleryUserSettings(
         userScope: string,
         key?: string
@@ -2526,11 +2526,11 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * Set all setting entries for the given user/all-users scope
-    * 
-    * @param {{ [key: string] : any; }} entries - A key-value pair of all settings that need to be set
-    * @param {string} userScope - User-Scope at which to get the value. Should be "me" for the current user or "host" for all users.
-    */
+     * Set all setting entries for the given user/all-users scope
+     * 
+     * @param {{ [key: string] : any; }} entries - A key-value pair of all settings that need to be set
+     * @param {string} userScope - User-Scope at which to get the value. Should be "me" for the current user or "host" for all users.
+     */
     public async setGalleryUserSettings(
         entries: { [key: string] : any; },
         userScope: string
@@ -2569,9 +2569,9 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} keyType
-    * @param {number} expireCurrentSeconds
-    */
+     * @param {string} keyType
+     * @param {number} expireCurrentSeconds
+     */
     public async generateKey(
         keyType: string,
         expireCurrentSeconds?: number
@@ -2615,8 +2615,8 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} keyType
-    */
+     * @param {string} keyType
+     */
     public async getSigningKey(
         keyType: string
         ): Promise<string> {
@@ -2654,10 +2654,10 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {GalleryInterfaces.ExtensionStatisticUpdate} extensionStatisticsUpdate
-    * @param {string} publisherName
-    * @param {string} extensionName
-    */
+     * @param {GalleryInterfaces.ExtensionStatisticUpdate} extensionStatisticsUpdate
+     * @param {string} publisherName
+     * @param {string} extensionName
+     */
     public async updateExtensionStatistics(
         extensionStatisticsUpdate: GalleryInterfaces.ExtensionStatisticUpdate,
         publisherName: string,
@@ -2698,11 +2698,11 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {number} days
-    * @param {GalleryInterfaces.ExtensionStatsAggregateType} aggregate
-    */
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {number} days
+     * @param {GalleryInterfaces.ExtensionStatsAggregateType} aggregate
+     */
     public async getExtensionDailyStats(
         publisherName: string,
         extensionName: string,
@@ -2750,12 +2750,12 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * This route/location id only supports HTTP POST anonymously, so that the page view daily stat can be incremented from Marketplace client. Trying to call GET on this route should result in an exception. Without this explicit implementation, calling GET on this public route invokes the above GET implementation GetExtensionDailyStats.
-    * 
-    * @param {string} publisherName - Name of the publisher
-    * @param {string} extensionName - Name of the extension
-    * @param {string} version - Version of the extension
-    */
+     * This route/location id only supports HTTP POST anonymously, so that the page view daily stat can be incremented from Marketplace client. Trying to call GET on this route should result in an exception. Without this explicit implementation, calling GET on this public route invokes the above GET implementation GetExtensionDailyStats.
+     * 
+     * @param {string} publisherName - Name of the publisher
+     * @param {string} extensionName - Name of the extension
+     * @param {string} version - Version of the extension
+     */
     public async getExtensionDailyStatsAnonymous(
         publisherName: string,
         extensionName: string,
@@ -2797,11 +2797,11 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string} version
-    * @param {string} statType
-    */
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} version
+     * @param {string} statType
+     */
     public async incrementExtensionDailyStat(
         publisherName: string,
         extensionName: string,

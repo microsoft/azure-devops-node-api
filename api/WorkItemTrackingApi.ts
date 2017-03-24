@@ -87,10 +87,10 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * INTERNAL ONLY: USED BY ACCOUNT MY WORK PAGE. This returns Doing, Done, Follows and activity work items details.
-    * 
-    * @param {WorkItemTrackingInterfaces.QueryOption} queryOption
-    */
+     * INTERNAL ONLY: USED BY ACCOUNT MY WORK PAGE. This returns Doing, Done, Follows and activity work items details.
+     * 
+     * @param {WorkItemTrackingInterfaces.QueryOption} queryOption
+     */
     public async getAccountMyWorkData(
         queryOption?: WorkItemTrackingInterfaces.QueryOption
         ): Promise<WorkItemTrackingInterfaces.AccountMyWorkResult> {
@@ -132,7 +132,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    */
+     */
     public async getRecentActivityData(
         ): Promise<WorkItemTrackingInterfaces.AccountRecentActivityWorkItemModel[]> {
 
@@ -168,12 +168,12 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Creates an attachment.
-    * 
-    * @param {NodeJS.ReadableStream} contentStream - Content to upload
-    * @param {string} fileName
-    * @param {string} uploadType
-    */
+     * Creates an attachment.
+     * 
+     * @param {NodeJS.ReadableStream} contentStream - Content to upload
+     * @param {string} fileName
+     * @param {string} uploadType
+     */
     public async createAttachment(
         customHeaders: any,
         contentStream: NodeJS.ReadableStream,
@@ -223,11 +223,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Returns an attachment
-    * 
-    * @param {string} id
-    * @param {string} fileName
-    */
+     * Returns an attachment
+     * 
+     * @param {string} id
+     * @param {string} fileName
+     */
     public async getAttachmentContent(
         id: string,
         fileName?: string
@@ -263,11 +263,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Returns an attachment
-    * 
-    * @param {string} id
-    * @param {string} fileName
-    */
+     * Returns an attachment
+     * 
+     * @param {string} id
+     * @param {string} fileName
+     */
     public async getAttachmentZip(
         id: string,
         fileName?: string
@@ -303,9 +303,9 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} depth
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} depth
+     */
     public async getRootNodes(
         project: string,
         depth?: number
@@ -349,11 +349,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * @param {WorkItemTrackingInterfaces.WorkItemClassificationNode} postedNode
-    * @param {string} project - Project ID or project name
-    * @param {WorkItemTrackingInterfaces.TreeStructureGroup} structureGroup
-    * @param {string} path
-    */
+     * @param {WorkItemTrackingInterfaces.WorkItemClassificationNode} postedNode
+     * @param {string} project - Project ID or project name
+     * @param {WorkItemTrackingInterfaces.TreeStructureGroup} structureGroup
+     * @param {string} path
+     */
     public async createOrUpdateClassificationNode(
         postedNode: WorkItemTrackingInterfaces.WorkItemClassificationNode,
         project: string,
@@ -396,11 +396,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {WorkItemTrackingInterfaces.TreeStructureGroup} structureGroup
-    * @param {string} path
-    * @param {number} reclassifyId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {WorkItemTrackingInterfaces.TreeStructureGroup} structureGroup
+     * @param {string} path
+     * @param {number} reclassifyId
+     */
     public async deleteClassificationNode(
         project: string,
         structureGroup: WorkItemTrackingInterfaces.TreeStructureGroup,
@@ -448,11 +448,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {WorkItemTrackingInterfaces.TreeStructureGroup} structureGroup
-    * @param {string} path
-    * @param {number} depth
-    */
+     * @param {string} project - Project ID or project name
+     * @param {WorkItemTrackingInterfaces.TreeStructureGroup} structureGroup
+     * @param {string} path
+     * @param {number} depth
+     */
     public async getClassificationNode(
         project: string,
         structureGroup: WorkItemTrackingInterfaces.TreeStructureGroup,
@@ -500,11 +500,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * @param {WorkItemTrackingInterfaces.WorkItemClassificationNode} postedNode
-    * @param {string} project - Project ID or project name
-    * @param {WorkItemTrackingInterfaces.TreeStructureGroup} structureGroup
-    * @param {string} path
-    */
+     * @param {WorkItemTrackingInterfaces.WorkItemClassificationNode} postedNode
+     * @param {string} project - Project ID or project name
+     * @param {WorkItemTrackingInterfaces.TreeStructureGroup} structureGroup
+     * @param {string} path
+     */
     public async updateClassificationNode(
         postedNode: WorkItemTrackingInterfaces.WorkItemClassificationNode,
         project: string,
@@ -547,11 +547,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Returns comment for a work item at the specified revision
-    * 
-    * @param {number} id
-    * @param {number} revision
-    */
+     * Returns comment for a work item at the specified revision
+     * 
+     * @param {number} id
+     * @param {number} revision
+     */
     public async getComment(
         id: number,
         revision: number
@@ -591,13 +591,13 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Returns specified number of comments for a work item from the specified revision
-    * 
-    * @param {number} id - Work item id
-    * @param {number} fromRevision - Revision from which comments are to be fetched
-    * @param {number} top - The number of comments to return
-    * @param {WorkItemTrackingInterfaces.CommentSortOrder} order - Ascending or descending by revision id
-    */
+     * Returns specified number of comments for a work item from the specified revision
+     * 
+     * @param {number} id - Work item id
+     * @param {number} fromRevision - Revision from which comments are to be fetched
+     * @param {number} top - The number of comments to return
+     * @param {WorkItemTrackingInterfaces.CommentSortOrder} order - Ascending or descending by revision id
+     */
     public async getComments(
         id: number,
         fromRevision?: number,
@@ -645,9 +645,9 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * @param {string} fieldNameOrRefName
-    * @param {string} project - Project ID or project name
-    */
+     * @param {string} fieldNameOrRefName
+     * @param {string} project - Project ID or project name
+     */
     public async deleteField(
         fieldNameOrRefName: string,
         project?: string
@@ -687,11 +687,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Gets information on a specific field.
-    * 
-    * @param {string} fieldNameOrRefName - Field simple name or reference name
-    * @param {string} project - Project ID or project name
-    */
+     * Gets information on a specific field.
+     * 
+     * @param {string} fieldNameOrRefName - Field simple name or reference name
+     * @param {string} project - Project ID or project name
+     */
     public async getField(
         fieldNameOrRefName: string,
         project?: string
@@ -731,11 +731,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Returns information for all fields.
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {WorkItemTrackingInterfaces.GetFieldsExpand} expand - Use ExtensionFields to include extension fields, otherwise exclude them. Unless the feature flag for this parameter is enabled, extension fields are always included.
-    */
+     * Returns information for all fields.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {WorkItemTrackingInterfaces.GetFieldsExpand} expand - Use ExtensionFields to include extension fields, otherwise exclude them. Unless the feature flag for this parameter is enabled, extension fields are always included.
+     */
     public async getFields(
         project?: string,
         expand?: WorkItemTrackingInterfaces.GetFieldsExpand
@@ -779,12 +779,12 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Creates a query, or moves a query.
-    * 
-    * @param {WorkItemTrackingInterfaces.QueryHierarchyItem} postedQuery - The query to create.
-    * @param {string} project - Project ID or project name
-    * @param {string} query - The parent path for the query to create.
-    */
+     * Creates a query, or moves a query.
+     * 
+     * @param {WorkItemTrackingInterfaces.QueryHierarchyItem} postedQuery - The query to create.
+     * @param {string} project - Project ID or project name
+     * @param {string} query - The parent path for the query to create.
+     */
     public async createQuery(
         postedQuery: WorkItemTrackingInterfaces.QueryHierarchyItem,
         project: string,
@@ -825,9 +825,9 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {string} query
-    */
+     * @param {string} project - Project ID or project name
+     * @param {string} query
+     */
     public async deleteQuery(
         project: string,
         query: string
@@ -867,13 +867,13 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Retrieves all queries the user has access to in the current project
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {WorkItemTrackingInterfaces.QueryExpand} expand
-    * @param {number} depth
-    * @param {boolean} includeDeleted
-    */
+     * Retrieves all queries the user has access to in the current project
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {WorkItemTrackingInterfaces.QueryExpand} expand
+     * @param {number} depth
+     * @param {boolean} includeDeleted
+     */
     public async getQueries(
         project: string,
         expand?: WorkItemTrackingInterfaces.QueryExpand,
@@ -921,14 +921,14 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Retrieves a single query by project and either id or path
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {string} query
-    * @param {WorkItemTrackingInterfaces.QueryExpand} expand
-    * @param {number} depth
-    * @param {boolean} includeDeleted
-    */
+     * Retrieves a single query by project and either id or path
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} query
+     * @param {WorkItemTrackingInterfaces.QueryExpand} expand
+     * @param {number} depth
+     * @param {boolean} includeDeleted
+     */
     public async getQuery(
         project: string,
         query: string,
@@ -978,11 +978,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * @param {WorkItemTrackingInterfaces.QueryHierarchyItem} queryUpdate
-    * @param {string} project - Project ID or project name
-    * @param {string} query
-    * @param {boolean} undeleteDescendants
-    */
+     * @param {WorkItemTrackingInterfaces.QueryHierarchyItem} queryUpdate
+     * @param {string} project - Project ID or project name
+     * @param {string} query
+     * @param {boolean} undeleteDescendants
+     */
     public async updateQuery(
         queryUpdate: WorkItemTrackingInterfaces.QueryHierarchyItem,
         project: string,
@@ -1029,9 +1029,9 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * @param {number} id
-    * @param {string} project - Project ID or project name
-    */
+     * @param {number} id
+     * @param {string} project - Project ID or project name
+     */
     public async destroyWorkItem(
         id: number,
         project?: string
@@ -1071,9 +1071,9 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * @param {number} id
-    * @param {string} project - Project ID or project name
-    */
+     * @param {number} id
+     * @param {string} project - Project ID or project name
+     */
     public async getDeletedWorkItem(
         id: number,
         project?: string
@@ -1113,8 +1113,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    */
+     * @param {string} project - Project ID or project name
+     */
     public async getDeletedWorkItemReferences(
         project?: string
         ): Promise<WorkItemTrackingInterfaces.WorkItemDeleteShallowReference[]> {
@@ -1152,9 +1152,9 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * @param {number[]} ids
-    * @param {string} project - Project ID or project name
-    */
+     * @param {number[]} ids
+     * @param {string} project - Project ID or project name
+     */
     public async getDeletedWorkItems(
         ids: number[],
         project?: string
@@ -1198,10 +1198,10 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * @param {WorkItemTrackingInterfaces.WorkItemDeleteUpdate} payload
-    * @param {number} id
-    * @param {string} project - Project ID or project name
-    */
+     * @param {WorkItemTrackingInterfaces.WorkItemDeleteUpdate} payload
+     * @param {number} id
+     * @param {string} project - Project ID or project name
+     */
     public async restoreWorkItem(
         payload: WorkItemTrackingInterfaces.WorkItemDeleteUpdate,
         id: number,
@@ -1242,12 +1242,12 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Returns a fully hydrated work item for the requested revision
-    * 
-    * @param {number} id
-    * @param {number} revisionNumber
-    * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand
-    */
+     * Returns a fully hydrated work item for the requested revision
+     * 
+     * @param {number} id
+     * @param {number} revisionNumber
+     * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand
+     */
     public async getRevision(
         id: number,
         revisionNumber: number,
@@ -1293,13 +1293,13 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Returns the list of fully hydrated work item revisions, paged.
-    * 
-    * @param {number} id
-    * @param {number} top
-    * @param {number} skip
-    * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand
-    */
+     * Returns the list of fully hydrated work item revisions, paged.
+     * 
+     * @param {number} id
+     * @param {number} top
+     * @param {number} skip
+     * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand
+     */
     public async getRevisions(
         id: number,
         top?: number,
@@ -1347,10 +1347,10 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Validates the fields values.
-    * 
-    * @param {WorkItemTrackingInterfaces.FieldsToEvaluate} ruleEngineInput
-    */
+     * Validates the fields values.
+     * 
+     * @param {WorkItemTrackingInterfaces.FieldsToEvaluate} ruleEngineInput
+     */
     public async evaluateRulesOnField(
         ruleEngineInput: WorkItemTrackingInterfaces.FieldsToEvaluate
         ): Promise<void> {
@@ -1387,11 +1387,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Creates a template
-    * 
-    * @param {WorkItemTrackingInterfaces.WorkItemTemplate} template - Template contents
-    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-    */
+     * Creates a template
+     * 
+     * @param {WorkItemTrackingInterfaces.WorkItemTemplate} template - Template contents
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     */
     public async createTemplate(
         template: WorkItemTrackingInterfaces.WorkItemTemplate,
         teamContext: TfsCoreInterfaces.TeamContext
@@ -1434,11 +1434,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Gets template
-    * 
-    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-    * @param {string} workitemtypename - Optional, When specified returns templates for given Work item type.
-    */
+     * Gets template
+     * 
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     * @param {string} workitemtypename - Optional, When specified returns templates for given Work item type.
+     */
     public async getTemplates(
         teamContext: TfsCoreInterfaces.TeamContext,
         workitemtypename?: string
@@ -1486,11 +1486,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Deletes the template with given id
-    * 
-    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-    * @param {string} templateId - Template id
-    */
+     * Deletes the template with given id
+     * 
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     * @param {string} templateId - Template id
+     */
     public async deleteTemplate(
         teamContext: TfsCoreInterfaces.TeamContext,
         templateId: string
@@ -1534,11 +1534,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Gets the template with specified id
-    * 
-    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-    * @param {string} templateId - Template Id
-    */
+     * Gets the template with specified id
+     * 
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     * @param {string} templateId - Template Id
+     */
     public async getTemplate(
         teamContext: TfsCoreInterfaces.TeamContext,
         templateId: string
@@ -1582,12 +1582,12 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Replace template contents
-    * 
-    * @param {WorkItemTrackingInterfaces.WorkItemTemplate} templateContent - Template contents to replace with
-    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-    * @param {string} templateId - Template id
-    */
+     * Replace template contents
+     * 
+     * @param {WorkItemTrackingInterfaces.WorkItemTemplate} templateContent - Template contents to replace with
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     * @param {string} templateId - Template id
+     */
     public async replaceTemplate(
         templateContent: WorkItemTrackingInterfaces.WorkItemTemplate,
         teamContext: TfsCoreInterfaces.TeamContext,
@@ -1632,11 +1632,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Returns a single update for a work item
-    * 
-    * @param {number} id
-    * @param {number} updateNumber
-    */
+     * Returns a single update for a work item
+     * 
+     * @param {number} id
+     * @param {number} updateNumber
+     */
     public async getUpdate(
         id: number,
         updateNumber: number
@@ -1676,12 +1676,12 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Returns a the deltas between work item revisions
-    * 
-    * @param {number} id
-    * @param {number} top
-    * @param {number} skip
-    */
+     * Returns a the deltas between work item revisions
+     * 
+     * @param {number} id
+     * @param {number} top
+     * @param {number} skip
+     */
     public async getUpdates(
         id: number,
         top?: number,
@@ -1727,13 +1727,13 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Gets the results of the query.
-    * 
-    * @param {WorkItemTrackingInterfaces.Wiql} wiql - The query containing the wiql.
-    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-    * @param {boolean} timePrecision
-    * @param {number} top
-    */
+     * Gets the results of the query.
+     * 
+     * @param {WorkItemTrackingInterfaces.Wiql} wiql - The query containing the wiql.
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     * @param {boolean} timePrecision
+     * @param {number} top
+     */
     public async queryByWiql(
         wiql: WorkItemTrackingInterfaces.Wiql,
         teamContext?: TfsCoreInterfaces.TeamContext,
@@ -1784,12 +1784,12 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Gets the results of the query by id.
-    * 
-    * @param {string} id - The query id.
-    * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-    * @param {boolean} timePrecision
-    */
+     * Gets the results of the query by id.
+     * 
+     * @param {string} id - The query id.
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     * @param {boolean} timePrecision
+     */
     public async queryById(
         id: string,
         teamContext?: TfsCoreInterfaces.TeamContext,
@@ -1839,13 +1839,13 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Get a batch of work item links
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {string[]} types - A list of types to filter the results to specific work item types. Omit this parameter to get work item links of all work item types.
-    * @param {string} continuationToken - Specifies the continuationToken to start the batch from. Omit this parameter to get the first batch of links.
-    * @param {Date} startDateTime - Date/time to use as a starting point for link changes. Only link changes that occurred after that date/time will be returned. Cannot be used in conjunction with 'watermark' parameter.
-    */
+     * Get a batch of work item links
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string[]} types - A list of types to filter the results to specific work item types. Omit this parameter to get work item links of all work item types.
+     * @param {string} continuationToken - Specifies the continuationToken to start the batch from. Omit this parameter to get the first batch of links.
+     * @param {Date} startDateTime - Date/time to use as a starting point for link changes. Only link changes that occurred after that date/time will be returned. Cannot be used in conjunction with 'watermark' parameter.
+     */
     public async getReportingLinks(
         project?: string,
         types?: string[],
@@ -1893,10 +1893,10 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Gets the work item relation types.
-    * 
-    * @param {string} relation
-    */
+     * Gets the work item relation types.
+     * 
+     * @param {string} relation
+     */
     public async getRelationType(
         relation: string
         ): Promise<WorkItemTrackingInterfaces.WorkItemRelationType> {
@@ -1934,7 +1934,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    */
+     */
     public async getRelationTypes(
         ): Promise<WorkItemTrackingInterfaces.WorkItemRelationType[]> {
 
@@ -1970,20 +1970,20 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Get a batch of work item revisions with the option of including deleted items
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {string[]} fields - A list of fields to return in work item revisions. Omit this parameter to get all reportable fields.
-    * @param {string[]} types - A list of types to filter the results to specific work item types. Omit this parameter to get work item revisions of all work item types.
-    * @param {string} continuationToken - Specifies the watermark to start the batch from. Omit this parameter to get the first batch of revisions.
-    * @param {Date} startDateTime - Date/time to use as a starting point for revisions, all revisions will occur after this date/time. Cannot be used in conjunction with 'watermark' parameter.
-    * @param {boolean} includeIdentityRef - Return an identity reference instead of a string value for identity fields.
-    * @param {boolean} includeDeleted - Specify if the deleted item should be returned.
-    * @param {boolean} includeTagRef - Specify if the tag objects should be returned for System.Tags field.
-    * @param {boolean} includeLatestOnly - Return only the latest revisions of work items, skipping all historical revisions
-    * @param {WorkItemTrackingInterfaces.ReportingRevisionsExpand} expand - Return all the fields in work item revisions, including long text fields which are not returned by default
-    * @param {boolean} includeDiscussionChangesOnly - Return only the those revisions of work items, where only history field was changed
-    */
+     * Get a batch of work item revisions with the option of including deleted items
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string[]} fields - A list of fields to return in work item revisions. Omit this parameter to get all reportable fields.
+     * @param {string[]} types - A list of types to filter the results to specific work item types. Omit this parameter to get work item revisions of all work item types.
+     * @param {string} continuationToken - Specifies the watermark to start the batch from. Omit this parameter to get the first batch of revisions.
+     * @param {Date} startDateTime - Date/time to use as a starting point for revisions, all revisions will occur after this date/time. Cannot be used in conjunction with 'watermark' parameter.
+     * @param {boolean} includeIdentityRef - Return an identity reference instead of a string value for identity fields.
+     * @param {boolean} includeDeleted - Specify if the deleted item should be returned.
+     * @param {boolean} includeTagRef - Specify if the tag objects should be returned for System.Tags field.
+     * @param {boolean} includeLatestOnly - Return only the latest revisions of work items, skipping all historical revisions
+     * @param {WorkItemTrackingInterfaces.ReportingRevisionsExpand} expand - Return all the fields in work item revisions, including long text fields which are not returned by default
+     * @param {boolean} includeDiscussionChangesOnly - Return only the those revisions of work items, where only history field was changed
+     */
     public async readReportingRevisionsGet(
         project?: string,
         fields?: string[],
@@ -2045,14 +2045,14 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Get a batch of work item revisions
-    * 
-    * @param {WorkItemTrackingInterfaces.ReportingWorkItemRevisionsFilter} filter - An object that contains request settings: field filter, type filter, identity format
-    * @param {string} project - Project ID or project name
-    * @param {string} continuationToken - Specifies the watermark to start the batch from. Omit this parameter to get the first batch of revisions.
-    * @param {Date} startDateTime - Date/time to use as a starting point for revisions, all revisions will occur after this date/time. Cannot be used in conjunction with 'watermark' parameter.
-    * @param {WorkItemTrackingInterfaces.ReportingRevisionsExpand} expand
-    */
+     * Get a batch of work item revisions
+     * 
+     * @param {WorkItemTrackingInterfaces.ReportingWorkItemRevisionsFilter} filter - An object that contains request settings: field filter, type filter, identity format
+     * @param {string} project - Project ID or project name
+     * @param {string} continuationToken - Specifies the watermark to start the batch from. Omit this parameter to get the first batch of revisions.
+     * @param {Date} startDateTime - Date/time to use as a starting point for revisions, all revisions will occur after this date/time. Cannot be used in conjunction with 'watermark' parameter.
+     * @param {WorkItemTrackingInterfaces.ReportingRevisionsExpand} expand
+     */
     public async readReportingRevisionsPost(
         filter: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsFilter,
         project?: string,
@@ -2101,9 +2101,9 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * @param {number} id
-    * @param {boolean} destroy
-    */
+     * @param {number} id
+     * @param {boolean} destroy
+     */
     public async deleteWorkItem(
         id: number,
         destroy?: boolean
@@ -2147,13 +2147,13 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Returns a single work item
-    * 
-    * @param {number} id
-    * @param {string[]} fields
-    * @param {Date} asOf
-    * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand
-    */
+     * Returns a single work item
+     * 
+     * @param {number} id
+     * @param {string[]} fields
+     * @param {Date} asOf
+     * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand
+     */
     public async getWorkItem(
         id: number,
         fields?: string[],
@@ -2201,14 +2201,14 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Returns a list of work items
-    * 
-    * @param {number[]} ids
-    * @param {string[]} fields
-    * @param {Date} asOf
-    * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand
-    * @param {WorkItemTrackingInterfaces.WorkItemErrorPolicy} errorPolicy
-    */
+     * Returns a list of work items
+     * 
+     * @param {number[]} ids
+     * @param {string[]} fields
+     * @param {Date} asOf
+     * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand
+     * @param {WorkItemTrackingInterfaces.WorkItemErrorPolicy} errorPolicy
+     */
     public async getWorkItems(
         ids: number[],
         fields?: string[],
@@ -2258,11 +2258,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * @param {VSSInterfaces.JsonPatchDocument} document
-    * @param {number} id
-    * @param {boolean} validateOnly
-    * @param {boolean} bypassRules
-    */
+     * @param {VSSInterfaces.JsonPatchDocument} document
+     * @param {number} id
+     * @param {boolean} validateOnly
+     * @param {boolean} bypassRules
+     */
     public async updateWorkItem(
         customHeaders: any,
         document: VSSInterfaces.JsonPatchDocument,
@@ -2314,12 +2314,12 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * @param {VSSInterfaces.JsonPatchDocument} document
-    * @param {string} project - Project ID or project name
-    * @param {string} type
-    * @param {boolean} validateOnly
-    * @param {boolean} bypassRules
-    */
+     * @param {VSSInterfaces.JsonPatchDocument} document
+     * @param {string} project - Project ID or project name
+     * @param {string} type
+     * @param {boolean} validateOnly
+     * @param {boolean} bypassRules
+     */
     public async createWorkItem(
         customHeaders: any,
         document: VSSInterfaces.JsonPatchDocument,
@@ -2373,14 +2373,14 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Returns a single work item from a template
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {string} type
-    * @param {string} fields
-    * @param {Date} asOf
-    * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand
-    */
+     * Returns a single work item from a template
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} type
+     * @param {string} fields
+     * @param {Date} asOf
+     * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand
+     */
     public async getWorkItemTemplate(
         project: string,
         type: string,
@@ -2430,10 +2430,10 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * INTERNAL ONLY: It will be used for My account work experience. Get the work item type state color for multiple projects
-    * 
-    * @param {string[]} projectNames
-    */
+     * INTERNAL ONLY: It will be used for My account work experience. Get the work item type state color for multiple projects
+     * 
+     * @param {string[]} projectNames
+     */
     public async getWorkItemStateColors(
         projectNames: string[]
         ): Promise<WorkItemTrackingInterfaces.ProjectWorkItemStateColors[]> {
@@ -2470,8 +2470,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    */
+     * @param {string} project - Project ID or project name
+     */
     public async getWorkItemTypeCategories(
         project: string
         ): Promise<WorkItemTrackingInterfaces.WorkItemTypeCategory[]> {
@@ -2509,11 +2509,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Returns a the deltas between work item revisions
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {string} category
-    */
+     * Returns a the deltas between work item revisions
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} category
+     */
     public async getWorkItemTypeCategory(
         project: string,
         category: string
@@ -2553,10 +2553,10 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * INTERNAL ONLY: It will be used for My account work experience. Get the wit type color for multiple projects
-    * 
-    * @param {string[]} projectNames
-    */
+     * INTERNAL ONLY: It will be used for My account work experience. Get the wit type color for multiple projects
+     * 
+     * @param {string[]} projectNames
+     */
     public async getWorkItemTypeColors(
         projectNames: string[]
         ): Promise<{ key: string; value: WorkItemTrackingInterfaces.WorkItemTypeColor[] }[]> {
@@ -2593,11 +2593,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Returns a the deltas between work item revisions
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {string} type
-    */
+     * Returns a the deltas between work item revisions
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} type
+     */
     public async getWorkItemType(
         project: string,
         type: string
@@ -2637,8 +2637,8 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    */
+     * @param {string} project - Project ID or project name
+     */
     public async getWorkItemTypes(
         project: string
         ): Promise<WorkItemTrackingInterfaces.WorkItemType[]> {
@@ -2676,12 +2676,12 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Returns the dependent fields for the corresponding workitem type and fieldname
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {string} type
-    * @param {string} field
-    */
+     * Returns the dependent fields for the corresponding workitem type and fieldname
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} type
+     * @param {string} field
+     */
     public async getDependentFields(
         project: string,
         type: string,
@@ -2723,11 +2723,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Returns the state names and colors for a work item type
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {string} type
-    */
+     * Returns the state names and colors for a work item type
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} type
+     */
     public async getWorkItemTypeStates(
         project: string,
         type: string
@@ -2767,12 +2767,12 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Export work item type
-    * 
-    * @param {string} project - Project ID or project name
-    * @param {string} type
-    * @param {boolean} exportGlobalLists
-    */
+     * Export work item type
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} type
+     * @param {boolean} exportGlobalLists
+     */
     public async exportWorkItemTypeDefinition(
         project?: string,
         type?: string,
@@ -2818,11 +2818,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-    * Add/updates a work item type
-    * 
-    * @param {WorkItemTrackingInterfaces.WorkItemTypeTemplateUpdateModel} updateModel
-    * @param {string} project - Project ID or project name
-    */
+     * Add/updates a work item type
+     * 
+     * @param {WorkItemTrackingInterfaces.WorkItemTypeTemplateUpdateModel} updateModel
+     * @param {string} project - Project ID or project name
+     */
     public async updateWorkItemTypeDefinition(
         updateModel: WorkItemTrackingInterfaces.WorkItemTypeTemplateUpdateModel,
         project?: string

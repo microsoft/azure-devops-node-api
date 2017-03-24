@@ -31,10 +31,10 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
     }
 
     /**
-    * Query for contribution nodes and provider details according the parameters in the passed in query object.
-    * 
-    * @param {ContributionsInterfaces.ContributionNodeQuery} query
-    */
+     * Query for contribution nodes and provider details according the parameters in the passed in query object.
+     * 
+     * @param {ContributionsInterfaces.ContributionNodeQuery} query
+     */
     public async queryContributionNodes(
         query: ContributionsInterfaces.ContributionNodeQuery
         ): Promise<ContributionsInterfaces.ContributionNodeQueryResult> {
@@ -71,8 +71,8 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
     }
 
     /**
-    * @param {ContributionsInterfaces.DataProviderQuery} query
-    */
+     * @param {ContributionsInterfaces.DataProviderQuery} query
+     */
     public async queryDataProviders(
         query: ContributionsInterfaces.DataProviderQuery
         ): Promise<ContributionsInterfaces.DataProviderResult> {
@@ -109,10 +109,10 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
     }
 
     /**
-    * @param {string[]} contributionIds
-    * @param {boolean} includeDisabledApps
-    * @param {string[]} assetTypes
-    */
+     * @param {string[]} contributionIds
+     * @param {boolean} includeDisabledApps
+     * @param {string[]} assetTypes
+     */
     public async getInstalledExtensions(
         contributionIds?: string[],
         includeDisabledApps?: boolean,
@@ -158,10 +158,10 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
     }
 
     /**
-    * @param {string} publisherName
-    * @param {string} extensionName
-    * @param {string[]} assetTypes
-    */
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string[]} assetTypes
+     */
     public async getInstalledExtensionByName(
         publisherName: string,
         extensionName: string,

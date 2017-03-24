@@ -620,6 +620,10 @@ export enum SubscriptionFlags {
      * A user that is member of the subscription's subscriber group can opt in/out of the subscription.
      */
     CanOptOut = 4,
+    /**
+     * If the subscriber is a group, is it a team.
+     */
+    TeamSubscription = 8,
 }
 
 /**
@@ -883,7 +887,8 @@ export var TypeInfo = {
             "none": 0,
             "groupSubscription": 1,
             "contributedSubscription": 2,
-            "canOptOut": 4
+            "canOptOut": 4,
+            "teamSubscription": 8
         }
     },
     SubscriptionPermissions: {

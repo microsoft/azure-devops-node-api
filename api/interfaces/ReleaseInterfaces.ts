@@ -166,6 +166,13 @@ export enum AuthorizationHeaderFor {
     OnBehalfOf = 1,
 }
 
+export interface AutoTriggerIssue extends ReleaseIssue {
+    buildId: number;
+    issueMessage: string;
+    issueSource: IssueSource;
+    releaseDefinitionReference: ReleaseDefinitionShallowReference;
+}
+
 export interface BaseDeploymentInput {
     shareOutputVariables: boolean;
 }
@@ -591,6 +598,12 @@ export enum FolderPathQueryOrder {
 export interface Issue {
     issueType: string;
     message: string;
+}
+
+export enum IssueSource {
+    None = 0,
+    User = 1,
+    System = 2,
 }
 
 export interface MachineGroupBasedDeployPhase extends DeployPhase {
@@ -1020,6 +1033,16 @@ export enum ReleaseExpands {
     Tags = 64,
 }
 
+export interface ReleaseIssue {
+    issue: Issue;
+    issueType: ReleaseIssueType;
+}
+
+export enum ReleaseIssueType {
+    None = 0,
+    AutoTrigger = 1,
+}
+
 export enum ReleaseQueryOrder {
     Descending = 0,
     Ascending = 1,
@@ -1360,6 +1383,8 @@ export var TypeInfo = {
             "onBehalfOf": 1
         }
     },
+    AutoTriggerIssue: <any>{
+    },
     Change: <any>{
     },
     Condition: <any>{
@@ -1495,6 +1520,13 @@ export var TypeInfo = {
             "descending": 2
         }
     },
+    IssueSource: {
+        enumValues: {
+            "none": 0,
+            "user": 1,
+            "system": 2
+        }
+    },
     MachineGroupBasedDeployPhase: <any>{
     },
     MailMessage: <any>{
@@ -1609,6 +1641,14 @@ export var TypeInfo = {
             "manualInterventions": 16,
             "variables": 32,
             "tags": 64
+        }
+    },
+    ReleaseIssue: <any>{
+    },
+    ReleaseIssueType: {
+        enumValues: {
+            "none": 0,
+            "autoTrigger": 1
         }
     },
     ReleaseQueryOrder: {
@@ -1757,6 +1797,15 @@ TypeInfo.ArtifactTypeDefinition.fields = {
     inputDescriptors: {
         isArray: true,
         typeInfo: FormInputInterfaces.TypeInfo.InputDescriptor
+    },
+};
+
+TypeInfo.AutoTriggerIssue.fields = {
+    issueSource: {
+        enumType: TypeInfo.IssueSource
+    },
+    issueType: {
+        enumType: TypeInfo.ReleaseIssueType
     },
 };
 
@@ -2252,6 +2301,12 @@ TypeInfo.ReleaseEnvironmentUpdateMetadata.fields = {
     },
     status: {
         enumType: TypeInfo.EnvironmentStatus
+    },
+};
+
+TypeInfo.ReleaseIssue.fields = {
+    issueType: {
+        enumType: TypeInfo.ReleaseIssueType
     },
 };
 
