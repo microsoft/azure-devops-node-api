@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 "use strict";
 
@@ -263,25 +263,12 @@ export interface WidgetTypesResponse {
 }
 
 export var TypeInfo = {
-    Dashboard: {
-        fields: <any>null
-    },
-    DashboardGroup: {
-        fields: <any>null
-    },
-    DashboardGroupEntry: {
-        fields: <any>null
-    },
-    DashboardGroupEntryResponse: {
-        fields: <any>null
-    },
-    DashboardResponse: {
-        fields: <any>null
+    DashboardGroup: <any>{
     },
     DashboardScope: {
         enumValues: {
             "collection_User": 0,
-            "project_Team": 1,
+            "project_Team": 1
         }
     },
     GroupMemberPermission: {
@@ -289,121 +276,30 @@ export var TypeInfo = {
             "none": 0,
             "edit": 1,
             "manage": 2,
-            "managePermissions": 3,
+            "managePermissions": 3
         }
     },
-    LightboxOptions: {
-        fields: <any>null
+    WidgetMetadata: <any>{
     },
-    SemanticVersion: {
-        fields: <any>null
-    },
-    Widget: {
-        fields: <any>null
-    },
-    WidgetMetadata: {
-        fields: <any>null
-    },
-    WidgetMetadataResponse: {
-        fields: <any>null
-    },
-    WidgetPosition: {
-        fields: <any>null
-    },
-    WidgetResponse: {
-        fields: <any>null
+    WidgetMetadataResponse: <any>{
     },
     WidgetScope: {
         enumValues: {
             "collection_User": 0,
-            "project_Team": 1,
+            "project_Team": 1
         }
     },
-    WidgetSize: {
-        fields: <any>null
-    },
-    WidgetsVersionedList: {
-        fields: <any>null
-    },
-    WidgetTypesResponse: {
-        fields: <any>null
-    },
-};
-
-TypeInfo.Dashboard.fields = {
-    widgets: {
-        isArray: true,
-        typeInfo: TypeInfo.Widget
+    WidgetTypesResponse: <any>{
     },
 };
 
 TypeInfo.DashboardGroup.fields = {
-    dashboardEntries: {
-        isArray: true,
-        typeInfo: TypeInfo.DashboardGroupEntry
-    },
     permission: {
         enumType: TypeInfo.GroupMemberPermission
     },
 };
 
-TypeInfo.DashboardGroupEntry.fields = {
-    widgets: {
-        isArray: true,
-        typeInfo: TypeInfo.Widget
-    },
-};
-
-TypeInfo.DashboardGroupEntryResponse.fields = {
-    widgets: {
-        isArray: true,
-        typeInfo: TypeInfo.Widget
-    },
-};
-
-TypeInfo.DashboardResponse.fields = {
-    widgets: {
-        isArray: true,
-        typeInfo: TypeInfo.Widget
-    },
-};
-
-TypeInfo.LightboxOptions.fields = {
-};
-
-TypeInfo.SemanticVersion.fields = {
-};
-
-TypeInfo.Widget.fields = {
-    allowedSizes: {
-        isArray: true,
-        typeInfo: TypeInfo.WidgetSize
-    },
-    dashboard: {
-        typeInfo: TypeInfo.Dashboard
-    },
-    lightboxOptions: {
-        typeInfo: TypeInfo.LightboxOptions
-    },
-    position: {
-        typeInfo: TypeInfo.WidgetPosition
-    },
-    settingsVersion: {
-        typeInfo: TypeInfo.SemanticVersion
-    },
-    size: {
-        typeInfo: TypeInfo.WidgetSize
-    },
-};
-
 TypeInfo.WidgetMetadata.fields = {
-    allowedSizes: {
-        isArray: true,
-        typeInfo: TypeInfo.WidgetSize
-    },
-    lightboxOptions: {
-        typeInfo: TypeInfo.LightboxOptions
-    },
     supportedScopes: {
         isArray: true,
         enumType: TypeInfo.WidgetScope
@@ -413,41 +309,6 @@ TypeInfo.WidgetMetadata.fields = {
 TypeInfo.WidgetMetadataResponse.fields = {
     widgetMetadata: {
         typeInfo: TypeInfo.WidgetMetadata
-    },
-};
-
-TypeInfo.WidgetPosition.fields = {
-};
-
-TypeInfo.WidgetResponse.fields = {
-    allowedSizes: {
-        isArray: true,
-        typeInfo: TypeInfo.WidgetSize
-    },
-    dashboard: {
-        typeInfo: TypeInfo.Dashboard
-    },
-    lightboxOptions: {
-        typeInfo: TypeInfo.LightboxOptions
-    },
-    position: {
-        typeInfo: TypeInfo.WidgetPosition
-    },
-    settingsVersion: {
-        typeInfo: TypeInfo.SemanticVersion
-    },
-    size: {
-        typeInfo: TypeInfo.WidgetSize
-    },
-};
-
-TypeInfo.WidgetSize.fields = {
-};
-
-TypeInfo.WidgetsVersionedList.fields = {
-    widgets: {
-        isArray: true,
-        typeInfo: TypeInfo.Widget
     },
 };
 

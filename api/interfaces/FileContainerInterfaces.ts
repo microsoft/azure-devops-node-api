@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 "use strict";
 
@@ -77,6 +77,10 @@ export interface FileContainer {
      * Location of the item resource.
      */
     itemLocation: string;
+    /**
+     * ItemStore Locator for this container.
+     */
+    locatorPath: string;
     /**
      * Name.
      */
@@ -179,26 +183,24 @@ export var TypeInfo = {
     ContainerItemStatus: {
         enumValues: {
             "created": 1,
-            "pendingUpload": 2,
+            "pendingUpload": 2
         }
     },
     ContainerItemType: {
         enumValues: {
             "any": 0,
             "folder": 1,
-            "file": 2,
+            "file": 2
         }
     },
     ContainerOptions: {
         enumValues: {
-            "none": 0,
+            "none": 0
         }
     },
-    FileContainer: {
-        fields: <any>null
+    FileContainer: <any>{
     },
-    FileContainerItem: {
-        fields: <any>null
+    FileContainerItem: <any>{
     },
 };
 

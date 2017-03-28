@@ -322,9 +322,6 @@ export var TypeInfo = {
 };
 
 TypeInfo.AccessTokenResult.fields = {
-    accessToken: {
-        typeInfo: VSSInterfaces.TypeInfo.JsonWebToken
-    },
     accessTokenError: {
         enumType: TypeInfo.TokenError
     },
@@ -401,10 +398,7 @@ TypeInfo.HostAuthorization.fields = {
 TypeInfo.RefreshTokenGrant.fields = {
     grantType: {
         enumType: TypeInfo.GrantType
-    },
-    jwt: {
-        typeInfo: VSSInterfaces.TypeInfo.JsonWebToken
-    },
+    }
 };
 
 TypeInfo.Registration.fields = {

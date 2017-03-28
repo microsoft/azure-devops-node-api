@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 "use strict";
 
@@ -130,52 +130,20 @@ export interface ContributedFeatureValueRule {
 }
 
 export var TypeInfo = {
-    ContributedFeature: {
-        fields: <any>null
-    },
     ContributedFeatureEnabledValue: {
         enumValues: {
             "undefined": -1,
             "disabled": 0,
-            "enabled": 1,
+            "enabled": 1
         }
     },
-    ContributedFeatureSettingScope: {
-        fields: <any>null
+    ContributedFeatureState: <any>{
     },
-    ContributedFeatureState: {
-        fields: <any>null
+    ContributedFeatureStateQuery: <any>{
     },
-    ContributedFeatureStateQuery: {
-        fields: <any>null
-    },
-    ContributedFeatureValueRule: {
-        fields: <any>null
-    },
-};
-
-TypeInfo.ContributedFeature.fields = {
-    defaultValueRules: {
-        isArray: true,
-        typeInfo: TypeInfo.ContributedFeatureValueRule
-    },
-    overrideRules: {
-        isArray: true,
-        typeInfo: TypeInfo.ContributedFeatureValueRule
-    },
-    scopes: {
-        isArray: true,
-        typeInfo: TypeInfo.ContributedFeatureSettingScope
-    },
-};
-
-TypeInfo.ContributedFeatureSettingScope.fields = {
 };
 
 TypeInfo.ContributedFeatureState.fields = {
-    scope: {
-        typeInfo: TypeInfo.ContributedFeatureSettingScope
-    },
     state: {
         enumType: TypeInfo.ContributedFeatureEnabledValue
     },
@@ -183,8 +151,7 @@ TypeInfo.ContributedFeatureState.fields = {
 
 TypeInfo.ContributedFeatureStateQuery.fields = {
     featureStates: {
+        isDictionary: true,
+        dictionaryValueTypeInfo: TypeInfo.ContributedFeatureState
     },
-};
-
-TypeInfo.ContributedFeatureValueRule.fields = {
 };

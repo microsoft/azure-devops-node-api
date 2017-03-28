@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 "use strict";
 
@@ -168,20 +168,7 @@ export enum AccountUserStatus {
 }
 
 export var TypeInfo = {
-    Account: {
-        fields: <any>null
-    },
-    AccountCreateInfoInternal: {
-        fields: <any>null
-    },
-    AccountNameAvailability: {
-        fields: <any>null
-    },
-    AccountPreferencesInternal: {
-        fields: <any>null
-    },
-    AccountRegion: {
-        fields: <any>null
+    Account: <any>{
     },
     AccountStatus: {
         enumValues: {
@@ -189,13 +176,13 @@ export var TypeInfo = {
             "enabled": 1,
             "disabled": 2,
             "deleted": 3,
-            "moved": 4,
+            "moved": 4
         }
     },
     AccountType: {
         enumValues: {
             "personal": 0,
-            "organization": 1,
+            "organization": 1
         }
     },
     AccountUserStatus: {
@@ -206,7 +193,7 @@ export var TypeInfo = {
             "deleted": 3,
             "pending": 4,
             "expired": 5,
-            "pendingDisabled": 6,
+            "pendingDisabled": 6
         }
     },
 };
@@ -224,19 +211,4 @@ TypeInfo.Account.fields = {
     lastUpdatedDate: {
         isDate: true,
     },
-};
-
-TypeInfo.AccountCreateInfoInternal.fields = {
-    preferences: {
-        typeInfo: TypeInfo.AccountPreferencesInternal
-    },
-};
-
-TypeInfo.AccountNameAvailability.fields = {
-};
-
-TypeInfo.AccountPreferencesInternal.fields = {
-};
-
-TypeInfo.AccountRegion.fields = {
 };

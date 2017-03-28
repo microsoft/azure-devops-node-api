@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 "use strict";
 
@@ -2199,62 +2199,15 @@ export enum VersionControlRecursionType {
 }
 
 export var TypeInfo = {
-    AssociatedWorkItem: {
-        fields: <any>null
+    Attachment: <any>{
     },
-    AsyncGitOperationNotification: {
-        fields: <any>null
+    Change: <any>{
     },
-    AsyncRefOperationCommitLevelEventNotification: {
-        fields: <any>null
+    ChangeList: <any>{
     },
-    AsyncRefOperationCompletedNotification: {
-        fields: <any>null
+    Comment: <any>{
     },
-    AsyncRefOperationConflictNotification: {
-        fields: <any>null
-    },
-    AsyncRefOperationGeneralFailureNotification: {
-        fields: <any>null
-    },
-    AsyncRefOperationProgressNotification: {
-        fields: <any>null
-    },
-    AsyncRefOperationTimeoutNotification: {
-        fields: <any>null
-    },
-    Attachment: {
-        fields: <any>null
-    },
-    Change: {
-        fields: <any>null
-    },
-    ChangeCountDictionary: {
-        fields: <any>null
-    },
-    ChangeList: {
-        fields: <any>null
-    },
-    ChangeListSearchCriteria: {
-        fields: <any>null
-    },
-    CheckinNote: {
-        fields: <any>null
-    },
-    Comment: {
-        fields: <any>null
-    },
-    CommentIterationContext: {
-        fields: <any>null
-    },
-    CommentPosition: {
-        fields: <any>null
-    },
-    CommentThread: {
-        fields: <any>null
-    },
-    CommentThreadContext: {
-        fields: <any>null
+    CommentThread: <any>{
     },
     CommentThreadStatus: {
         enumValues: {
@@ -2264,25 +2217,18 @@ export var TypeInfo = {
             "wontFix": 3,
             "closed": 4,
             "byDesign": 5,
-            "pending": 6,
+            "pending": 6
         }
-    },
-    CommentTrackingCriteria: {
-        fields: <any>null
     },
     CommentType: {
         enumValues: {
             "unknown": 0,
             "text": 1,
             "codeChange": 2,
-            "system": 3,
+            "system": 3
         }
     },
-    FileContentMetadata: {
-        fields: <any>null
-    },
-    GitAnnotatedTag: {
-        fields: <any>null
+    GitAnnotatedTag: <any>{
     },
     GitAsyncOperationStatus: {
         enumValues: {
@@ -2290,92 +2236,60 @@ export var TypeInfo = {
             "inProgress": 2,
             "completed": 3,
             "failed": 4,
-            "abandoned": 5,
+            "abandoned": 5
         }
     },
-    GitAsyncRefOperation: {
-        fields: <any>null
+    GitAsyncRefOperation: <any>{
     },
-    GitAsyncRefOperationDetail: {
-        fields: <any>null
+    GitAsyncRefOperationParameters: <any>{
     },
-    GitAsyncRefOperationParameters: {
-        fields: <any>null
+    GitAsyncRefOperationSource: <any>{
     },
-    GitAsyncRefOperationSource: {
-        fields: <any>null
+    GitBaseVersionDescriptor: <any>{
     },
-    GitBaseVersionDescriptor: {
-        fields: <any>null
+    GitBranchStats: <any>{
     },
-    GitBlobRef: {
-        fields: <any>null
+    GitChange: <any>{
     },
-    GitBranchStats: {
-        fields: <any>null
+    GitCherryPick: <any>{
     },
-    GitChange: {
-        fields: <any>null
+    GitCommit: <any>{
     },
-    GitCherryPick: {
-        fields: <any>null
+    GitCommitChanges: <any>{
     },
-    GitCommit: {
-        fields: <any>null
+    GitCommitDiffs: <any>{
     },
-    GitCommitChanges: {
-        fields: <any>null
+    GitCommitRef: <any>{
     },
-    GitCommitDiffs: {
-        fields: <any>null
+    GitCommitToCreate: <any>{
     },
-    GitCommitRef: {
-        fields: <any>null
+    GitConflict: <any>{
     },
-    GitCommitToCreate: {
-        fields: <any>null
+    GitConflictAddAdd: <any>{
     },
-    GitConflict: {
-        fields: <any>null
+    GitConflictAddRename: <any>{
     },
-    GitConflictAddAdd: {
-        fields: <any>null
+    GitConflictDeleteEdit: <any>{
     },
-    GitConflictAddRename: {
-        fields: <any>null
+    GitConflictDeleteRename: <any>{
     },
-    GitConflictDeleteEdit: {
-        fields: <any>null
+    GitConflictDirectoryFile: <any>{
     },
-    GitConflictDeleteRename: {
-        fields: <any>null
+    GitConflictEditDelete: <any>{
     },
-    GitConflictDirectoryFile: {
-        fields: <any>null
+    GitConflictEditEdit: <any>{
     },
-    GitConflictEditDelete: {
-        fields: <any>null
+    GitConflictFileDirectory: <any>{
     },
-    GitConflictEditEdit: {
-        fields: <any>null
+    GitConflictRename1to2: <any>{
     },
-    GitConflictFileDirectory: {
-        fields: <any>null
+    GitConflictRename2to1: <any>{
     },
-    GitConflictRename1to2: {
-        fields: <any>null
+    GitConflictRenameAdd: <any>{
     },
-    GitConflictRename2to1: {
-        fields: <any>null
+    GitConflictRenameDelete: <any>{
     },
-    GitConflictRenameAdd: {
-        fields: <any>null
-    },
-    GitConflictRenameDelete: {
-        fields: <any>null
-    },
-    GitConflictRenameRename: {
-        fields: <any>null
+    GitConflictRenameRename: <any>{
     },
     GitConflictType: {
         enumValues: {
@@ -2393,53 +2307,20 @@ export var TypeInfo = {
             "rename2to1": 11,
             "renameAdd": 12,
             "renameDelete": 13,
-            "renameRename": 14,
+            "renameRename": 14
         }
     },
-    GitDeletedRepository: {
-        fields: <any>null
+    GitDeletedRepository: <any>{
     },
-    GitFilePathsCollection: {
-        fields: <any>null
+    GitImportRequest: <any>{
     },
-    GitImportFailedEvent: {
-        fields: <any>null
+    GitItem: <any>{
     },
-    GitImportGitSource: {
-        fields: <any>null
+    GitItemDescriptor: <any>{
     },
-    GitImportRequest: {
-        fields: <any>null
+    GitItemRequestData: <any>{
     },
-    GitImportRequestParameters: {
-        fields: <any>null
-    },
-    GitImportStatusDetail: {
-        fields: <any>null
-    },
-    GitImportSucceededEvent: {
-        fields: <any>null
-    },
-    GitImportTfvcSource: {
-        fields: <any>null
-    },
-    GitItem: {
-        fields: <any>null
-    },
-    GitItemDescriptor: {
-        fields: <any>null
-    },
-    GitItemRequestData: {
-        fields: <any>null
-    },
-    GitLastChangeItem: {
-        fields: <any>null
-    },
-    GitLastChangeTreeItems: {
-        fields: <any>null
-    },
-    GitMergeOriginRef: {
-        fields: <any>null
+    GitLastChangeTreeItems: <any>{
     },
     GitObjectType: {
         enumValues: {
@@ -2450,11 +2331,10 @@ export var TypeInfo = {
             "tag": 4,
             "ext2": 5,
             "ofsDelta": 6,
-            "refDelta": 7,
+            "refDelta": 7
         }
     },
-    GitPathAction: {
-        fields: <any>null
+    GitPathAction: <any>{
     },
     GitPathActions: {
         enumValues: {
@@ -2462,99 +2342,65 @@ export var TypeInfo = {
             "edit": 1,
             "delete": 2,
             "add": 3,
-            "rename": 4,
+            "rename": 4
         }
     },
-    GitPathToItemsCollection: {
-        fields: <any>null
+    GitPathToItemsCollection: <any>{
     },
-    GitPullRequest: {
-        fields: <any>null
+    GitPullRequest: <any>{
     },
-    GitPullRequestChange: {
-        fields: <any>null
+    GitPullRequestChange: <any>{
     },
-    GitPullRequestCommentThread: {
-        fields: <any>null
+    GitPullRequestCommentThread: <any>{
     },
-    GitPullRequestCommentThreadContext: {
-        fields: <any>null
+    GitPullRequestIteration: <any>{
     },
-    GitPullRequestCompletionOptions: {
-        fields: <any>null
+    GitPullRequestIterationChanges: <any>{
     },
-    GitPullRequestIteration: {
-        fields: <any>null
+    GitPullRequestQuery: <any>{
     },
-    GitPullRequestIterationChanges: {
-        fields: <any>null
-    },
-    GitPullRequestQuery: {
-        fields: <any>null
-    },
-    GitPullRequestQueryInput: {
-        fields: <any>null
+    GitPullRequestQueryInput: <any>{
     },
     GitPullRequestQueryType: {
         enumValues: {
             "notSet": 0,
             "lastMergeCommit": 1,
-            "commit": 2,
+            "commit": 2
         }
-    },
-    GitPullRequestReviewFileContentInfo: {
-        fields: <any>null
     },
     GitPullRequestReviewFileType: {
         enumValues: {
             "changeEntry": 0,
-            "attachment": 1,
+            "attachment": 1
         }
     },
-    GitPullRequestSearchCriteria: {
-        fields: <any>null
+    GitPullRequestSearchCriteria: <any>{
     },
-    GitPullRequestStatus: {
-        fields: <any>null
+    GitPullRequestStatus: <any>{
     },
-    GitPush: {
-        fields: <any>null
+    GitPush: <any>{
     },
-    GitPushEventData: {
-        fields: <any>null
+    GitPushEventData: <any>{
     },
-    GitPushRef: {
-        fields: <any>null
+    GitPushRef: <any>{
     },
-    GitPushSearchCriteria: {
-        fields: <any>null
+    GitPushSearchCriteria: <any>{
     },
-    GitQueryBranchStatsCriteria: {
-        fields: <any>null
+    GitQueryBranchStatsCriteria: <any>{
     },
-    GitQueryCommitsCriteria: {
-        fields: <any>null
+    GitQueryCommitsCriteria: <any>{
     },
-    GitRef: {
-        fields: <any>null
+    GitRef: <any>{
     },
-    GitRefFavorite: {
-        fields: <any>null
-    },
-    GitRefLockRequest: {
-        fields: <any>null
-    },
-    GitRefUpdate: {
-        fields: <any>null
+    GitRefFavorite: <any>{
     },
     GitRefUpdateMode: {
         enumValues: {
             "bestEffort": 0,
-            "allOrNone": 1,
+            "allOrNone": 1
         }
     },
-    GitRefUpdateResult: {
-        fields: <any>null
+    GitRefUpdateResult: <any>{
     },
     GitRefUpdateStatus: {
         enumValues: {
@@ -2573,17 +2419,8 @@ export var TypeInfo = {
             "refNameConflict": 12,
             "rejectedByPolicy": 13,
             "succeededNonExistentRef": 14,
-            "succeededCorruptRef": 15,
+            "succeededCorruptRef": 15
         }
-    },
-    GitRepository: {
-        fields: <any>null
-    },
-    GitRepositoryStats: {
-        fields: <any>null
-    },
-    GitResolution: {
-        fields: <any>null
     },
     GitResolutionError: {
         enumValues: {
@@ -2593,11 +2430,10 @@ export var TypeInfo = {
             "invalidPath": 3,
             "unknownAction": 4,
             "unknownMergeType": 5,
-            "otherError": 255,
+            "otherError": 255
         }
     },
-    GitResolutionMergeContent: {
-        fields: <any>null
+    GitResolutionMergeContent: <any>{
     },
     GitResolutionMergeType: {
         enumValues: {
@@ -2605,11 +2441,10 @@ export var TypeInfo = {
             "takeSourceContent": 1,
             "takeTargetContent": 2,
             "autoMerged": 3,
-            "userMerged": 4,
+            "userMerged": 4
         }
     },
-    GitResolutionPathConflict: {
-        fields: <any>null
+    GitResolutionPathConflict: <any>{
     },
     GitResolutionPathConflictAction: {
         enumValues: {
@@ -2617,45 +2452,38 @@ export var TypeInfo = {
             "keepSourceRenameTarget": 1,
             "keepSourceDeleteTarget": 2,
             "keepTargetRenameSource": 3,
-            "keepTargetDeleteSource": 4,
+            "keepTargetDeleteSource": 4
         }
     },
-    GitResolutionPickOneAction: {
-        fields: <any>null
+    GitResolutionPickOneAction: <any>{
     },
-    GitResolutionRename1to2: {
-        fields: <any>null
+    GitResolutionRename1to2: <any>{
     },
     GitResolutionRename1to2Action: {
         enumValues: {
             "undecided": 0,
             "keepSourcePath": 1,
             "keepTargetPath": 2,
-            "keepBothFiles": 3,
+            "keepBothFiles": 3
         }
     },
     GitResolutionStatus: {
         enumValues: {
             "unresolved": 0,
             "partiallyResolved": 1,
-            "resolved": 2,
+            "resolved": 2
         }
     },
     GitResolutionWhichAction: {
         enumValues: {
             "undecided": 0,
             "pickSourceAction": 1,
-            "pickTargetAction": 2,
+            "pickTargetAction": 2
         }
     },
-    GitRevert: {
-        fields: <any>null
+    GitRevert: <any>{
     },
-    GitStatus: {
-        fields: <any>null
-    },
-    GitStatusContext: {
-        fields: <any>null
+    GitStatus: <any>{
     },
     GitStatusState: {
         enumValues: {
@@ -2663,79 +2491,52 @@ export var TypeInfo = {
             "pending": 1,
             "succeeded": 2,
             "failed": 3,
-            "error": 4,
+            "error": 4
         }
     },
-    GitSuggestion: {
-        fields: <any>null
+    GitTargetVersionDescriptor: <any>{
     },
-    GitTargetVersionDescriptor: {
-        fields: <any>null
+    GitTreeDiff: <any>{
     },
-    GitTemplate: {
-        fields: <any>null
+    GitTreeDiffEntry: <any>{
     },
-    GitTreeDiff: {
-        fields: <any>null
+    GitTreeDiffResponse: <any>{
     },
-    GitTreeDiffEntry: {
-        fields: <any>null
+    GitTreeEntryRef: <any>{
     },
-    GitTreeDiffResponse: {
-        fields: <any>null
+    GitTreeRef: <any>{
     },
-    GitTreeEntryRef: {
-        fields: <any>null
+    GitUserDate: <any>{
     },
-    GitTreeRef: {
-        fields: <any>null
-    },
-    GitUserDate: {
-        fields: <any>null
-    },
-    GitVersionDescriptor: {
-        fields: <any>null
+    GitVersionDescriptor: <any>{
     },
     GitVersionOptions: {
         enumValues: {
             "none": 0,
             "previousChange": 1,
-            "firstParent": 2,
+            "firstParent": 2
         }
     },
     GitVersionType: {
         enumValues: {
             "branch": 0,
             "tag": 1,
-            "commit": 2,
+            "commit": 2
         }
     },
-    HistoryEntry: {
-        fields: <any>null
+    HistoryEntry: <any>{
     },
-    IdentityRefWithVote: {
-        fields: <any>null
+    IncludedGitCommit: <any>{
     },
-    ImportRepositoryValidation: {
-        fields: <any>null
-    },
-    IncludedGitCommit: {
-        fields: <any>null
-    },
-    ItemContent: {
-        fields: <any>null
+    ItemContent: <any>{
     },
     ItemContentType: {
         enumValues: {
             "rawText": 0,
-            "base64Encoded": 1,
+            "base64Encoded": 1
         }
     },
-    ItemDetailsOptions: {
-        fields: <any>null
-    },
-    ItemModel: {
-        fields: <any>null
+    ItemDetailsOptions: <any>{
     },
     IterationReason: {
         enumValues: {
@@ -2743,7 +2544,7 @@ export var TypeInfo = {
             "forcePush": 1,
             "create": 2,
             "rebase": 4,
-            "unknown": 8,
+            "unknown": 8
         }
     },
     PullRequestAsyncStatus: {
@@ -2753,7 +2554,7 @@ export var TypeInfo = {
             "conflicts": 2,
             "succeeded": 3,
             "rejectedByPolicy": 4,
-            "failure": 5,
+            "failure": 5
         }
     },
     PullRequestStatus: {
@@ -2762,24 +2563,17 @@ export var TypeInfo = {
             "active": 1,
             "abandoned": 2,
             "completed": 3,
-            "all": 4,
+            "all": 4
         }
-    },
-    PullRequestTabExtensionConfig: {
-        fields: <any>null
     },
     RefFavoriteType: {
         enumValues: {
             "invalid": 0,
             "folder": 1,
-            "ref": 2,
+            "ref": 2
         }
     },
-    ShareNotificationContext: {
-        fields: <any>null
-    },
-    SupportedIde: {
-        fields: <any>null
+    SupportedIde: <any>{
     },
     SupportedIdeType: {
         enumValues: {
@@ -2796,86 +2590,44 @@ export var TypeInfo = {
             "rubyMine": 9,
             "tower": 10,
             "visualStudio": 11,
-            "webStorm": 12,
+            "webStorm": 12
         }
     },
-    TfvcBranch: {
-        fields: <any>null
+    TfvcBranch: <any>{
     },
-    TfvcBranchMapping: {
-        fields: <any>null
+    TfvcBranchRef: <any>{
     },
-    TfvcBranchRef: {
-        fields: <any>null
+    TfvcChange: <any>{
     },
-    TfvcChange: {
-        fields: <any>null
+    TfvcChangeset: <any>{
     },
-    TfvcChangeset: {
-        fields: <any>null
+    TfvcChangesetRef: <any>{
     },
-    TfvcChangesetRef: {
-        fields: <any>null
+    TfvcCheckinEventData: <any>{
     },
-    TfvcChangesetSearchCriteria: {
-        fields: <any>null
+    TfvcHistoryEntry: <any>{
     },
-    TfvcChangesetsRequestData: {
-        fields: <any>null
+    TfvcItem: <any>{
     },
-    TfvcCheckinEventData: {
-        fields: <any>null
+    TfvcItemDescriptor: <any>{
     },
-    TfvcHistoryEntry: {
-        fields: <any>null
+    TfvcItemRequestData: <any>{
     },
-    TfvcItem: {
-        fields: <any>null
+    TfvcLabel: <any>{
     },
-    TfvcItemDescriptor: {
-        fields: <any>null
+    TfvcLabelRef: <any>{
     },
-    TfvcItemRequestData: {
-        fields: <any>null
+    TfvcShelveset: <any>{
     },
-    TfvcLabel: {
-        fields: <any>null
+    TfvcShelvesetRef: <any>{
     },
-    TfvcLabelRef: {
-        fields: <any>null
-    },
-    TfvcLabelRequestData: {
-        fields: <any>null
-    },
-    TfvcMergeSource: {
-        fields: <any>null
-    },
-    TfvcPolicyFailureInfo: {
-        fields: <any>null
-    },
-    TfvcPolicyOverrideInfo: {
-        fields: <any>null
-    },
-    TfvcShallowBranchRef: {
-        fields: <any>null
-    },
-    TfvcShelveset: {
-        fields: <any>null
-    },
-    TfvcShelvesetRef: {
-        fields: <any>null
-    },
-    TfvcShelvesetRequestData: {
-        fields: <any>null
-    },
-    TfvcVersionDescriptor: {
-        fields: <any>null
+    TfvcVersionDescriptor: <any>{
     },
     TfvcVersionOption: {
         enumValues: {
             "none": 0,
             "previous": 1,
-            "useRename": 2,
+            "useRename": 2
         }
     },
     TfvcVersionType: {
@@ -2887,11 +2639,10 @@ export var TypeInfo = {
             "date": 4,
             "latest": 5,
             "tip": 6,
-            "mergeSource": 7,
+            "mergeSource": 7
         }
     },
-    UpdateRefsRequest: {
-        fields: <any>null
+    UpdateRefsRequest: <any>{
     },
     VersionControlChangeType: {
         enumValues: {
@@ -2909,50 +2660,22 @@ export var TypeInfo = {
             "sourceRename": 1024,
             "targetRename": 2048,
             "property": 4096,
-            "all": 8191,
+            "all": 8191
         }
     },
-    VersionControlProjectInfo: {
-        fields: <any>null
+    VersionControlProjectInfo: <any>{
     },
     VersionControlRecursionType: {
         enumValues: {
             "none": 0,
             "oneLevel": 1,
             "oneLevelPlusNestedEmptyFolders": 4,
-            "full": 120,
+            "full": 120
         }
     },
 };
 
-TypeInfo.AssociatedWorkItem.fields = {
-};
-
-TypeInfo.AsyncGitOperationNotification.fields = {
-};
-
-TypeInfo.AsyncRefOperationCommitLevelEventNotification.fields = {
-};
-
-TypeInfo.AsyncRefOperationCompletedNotification.fields = {
-};
-
-TypeInfo.AsyncRefOperationConflictNotification.fields = {
-};
-
-TypeInfo.AsyncRefOperationGeneralFailureNotification.fields = {
-};
-
-TypeInfo.AsyncRefOperationProgressNotification.fields = {
-};
-
-TypeInfo.AsyncRefOperationTimeoutNotification.fields = {
-};
-
 TypeInfo.Attachment.fields = {
-    author: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     createdDate: {
         isDate: true,
     },
@@ -2967,34 +2690,20 @@ TypeInfo.Change.fields = {
     },
 };
 
-TypeInfo.ChangeCountDictionary.fields = {
-};
-
 TypeInfo.ChangeList.fields = {
     changeCounts: {
+        isDictionary: true,
+        dictionaryKeyEnumType: TypeInfo.VersionControlChangeType,
     },
     creationDate: {
         isDate: true,
-    },
-    notes: {
-        isArray: true,
-        typeInfo: TypeInfo.CheckinNote
     },
     sortDate: {
         isDate: true,
     },
 };
 
-TypeInfo.ChangeListSearchCriteria.fields = {
-};
-
-TypeInfo.CheckinNote.fields = {
-};
-
 TypeInfo.Comment.fields = {
-    author: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     commentType: {
         enumType: TypeInfo.CommentType
     },
@@ -3004,16 +2713,6 @@ TypeInfo.Comment.fields = {
     publishedDate: {
         isDate: true,
     },
-    usersLiked: {
-        isArray: true,
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
-TypeInfo.CommentIterationContext.fields = {
-};
-
-TypeInfo.CommentPosition.fields = {
 };
 
 TypeInfo.CommentThread.fields = {
@@ -3030,30 +2729,6 @@ TypeInfo.CommentThread.fields = {
     status: {
         enumType: TypeInfo.CommentThreadStatus
     },
-    threadContext: {
-        typeInfo: TypeInfo.CommentThreadContext
-    },
-};
-
-TypeInfo.CommentThreadContext.fields = {
-    leftFileEnd: {
-        typeInfo: TypeInfo.CommentPosition
-    },
-    leftFileStart: {
-        typeInfo: TypeInfo.CommentPosition
-    },
-    rightFileEnd: {
-        typeInfo: TypeInfo.CommentPosition
-    },
-    rightFileStart: {
-        typeInfo: TypeInfo.CommentPosition
-    },
-};
-
-TypeInfo.CommentTrackingCriteria.fields = {
-};
-
-TypeInfo.FileContentMetadata.fields = {
 };
 
 TypeInfo.GitAnnotatedTag.fields = {
@@ -3066,9 +2741,6 @@ TypeInfo.GitAnnotatedTag.fields = {
 };
 
 TypeInfo.GitAsyncRefOperation.fields = {
-    detailedStatus: {
-        typeInfo: TypeInfo.GitAsyncRefOperationDetail
-    },
     parameters: {
         typeInfo: TypeInfo.GitAsyncRefOperationParameters
     },
@@ -3077,13 +2749,7 @@ TypeInfo.GitAsyncRefOperation.fields = {
     },
 };
 
-TypeInfo.GitAsyncRefOperationDetail.fields = {
-};
-
 TypeInfo.GitAsyncRefOperationParameters.fields = {
-    repository: {
-        typeInfo: TypeInfo.GitRepository
-    },
     source: {
         typeInfo: TypeInfo.GitAsyncRefOperationSource
     },
@@ -3111,9 +2777,6 @@ TypeInfo.GitBaseVersionDescriptor.fields = {
     },
 };
 
-TypeInfo.GitBlobRef.fields = {
-};
-
 TypeInfo.GitBranchStats.fields = {
     commit: {
         typeInfo: TypeInfo.GitCommitRef
@@ -3124,21 +2787,12 @@ TypeInfo.GitChange.fields = {
     changeType: {
         enumType: TypeInfo.VersionControlChangeType
     },
-    item: {
-        typeInfo: TypeInfo.GitItem
-    },
     newContent: {
         typeInfo: TypeInfo.ItemContent
-    },
-    newContentTemplate: {
-        typeInfo: TypeInfo.GitTemplate
     },
 };
 
 TypeInfo.GitCherryPick.fields = {
-    detailedStatus: {
-        typeInfo: TypeInfo.GitAsyncRefOperationDetail
-    },
     parameters: {
         typeInfo: TypeInfo.GitAsyncRefOperationParameters
     },
@@ -3150,9 +2804,6 @@ TypeInfo.GitCherryPick.fields = {
 TypeInfo.GitCommit.fields = {
     author: {
         typeInfo: TypeInfo.GitUserDate
-    },
-    changeCounts: {
-        typeInfo: TypeInfo.ChangeCountDictionary
     },
     changes: {
         isArray: true,
@@ -3168,16 +2819,9 @@ TypeInfo.GitCommit.fields = {
         isArray: true,
         typeInfo: TypeInfo.GitStatus
     },
-    workItems: {
-        isArray: true,
-        typeInfo: VSSInterfaces.TypeInfo.ResourceRef
-    },
 };
 
 TypeInfo.GitCommitChanges.fields = {
-    changeCounts: {
-        typeInfo: TypeInfo.ChangeCountDictionary
-    },
     changes: {
         isArray: true,
         typeInfo: TypeInfo.GitChange
@@ -3186,6 +2830,8 @@ TypeInfo.GitCommitChanges.fields = {
 
 TypeInfo.GitCommitDiffs.fields = {
     changeCounts: {
+        isDictionary: true,
+        dictionaryKeyEnumType: TypeInfo.VersionControlChangeType,
     },
     changes: {
         isArray: true,
@@ -3197,9 +2843,6 @@ TypeInfo.GitCommitRef.fields = {
     author: {
         typeInfo: TypeInfo.GitUserDate
     },
-    changeCounts: {
-        typeInfo: TypeInfo.ChangeCountDictionary
-    },
     changes: {
         isArray: true,
         typeInfo: TypeInfo.GitChange
@@ -3210,10 +2853,6 @@ TypeInfo.GitCommitRef.fields = {
     statuses: {
         isArray: true,
         typeInfo: TypeInfo.GitStatus
-    },
-    workItems: {
-        isArray: true,
-        typeInfo: VSSInterfaces.TypeInfo.ResourceRef
     },
 };
 
@@ -3234,9 +2873,6 @@ TypeInfo.GitConflict.fields = {
     mergeBaseCommit: {
         typeInfo: TypeInfo.GitCommitRef
     },
-    mergeOrigin: {
-        typeInfo: TypeInfo.GitMergeOriginRef
-    },
     mergeSourceCommit: {
         typeInfo: TypeInfo.GitCommitRef
     },
@@ -3248,9 +2884,6 @@ TypeInfo.GitConflict.fields = {
     },
     resolutionStatus: {
         enumType: TypeInfo.GitResolutionStatus
-    },
-    resolvedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
     resolvedDate: {
         isDate: true,
@@ -3264,9 +2897,6 @@ TypeInfo.GitConflictAddAdd.fields = {
     mergeBaseCommit: {
         typeInfo: TypeInfo.GitCommitRef
     },
-    mergeOrigin: {
-        typeInfo: TypeInfo.GitMergeOriginRef
-    },
     mergeSourceCommit: {
         typeInfo: TypeInfo.GitCommitRef
     },
@@ -3282,32 +2912,17 @@ TypeInfo.GitConflictAddAdd.fields = {
     resolutionStatus: {
         enumType: TypeInfo.GitResolutionStatus
     },
-    resolvedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     resolvedDate: {
         isDate: true,
-    },
-    sourceBlob: {
-        typeInfo: TypeInfo.GitBlobRef
-    },
-    targetBlob: {
-        typeInfo: TypeInfo.GitBlobRef
     },
 };
 
 TypeInfo.GitConflictAddRename.fields = {
-    baseBlob: {
-        typeInfo: TypeInfo.GitBlobRef
-    },
     conflictType: {
         enumType: TypeInfo.GitConflictType
     },
     mergeBaseCommit: {
         typeInfo: TypeInfo.GitCommitRef
-    },
-    mergeOrigin: {
-        typeInfo: TypeInfo.GitMergeOriginRef
     },
     mergeSourceCommit: {
         typeInfo: TypeInfo.GitCommitRef
@@ -3324,32 +2939,17 @@ TypeInfo.GitConflictAddRename.fields = {
     resolutionStatus: {
         enumType: TypeInfo.GitResolutionStatus
     },
-    resolvedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     resolvedDate: {
         isDate: true,
-    },
-    sourceBlob: {
-        typeInfo: TypeInfo.GitBlobRef
-    },
-    targetBlob: {
-        typeInfo: TypeInfo.GitBlobRef
     },
 };
 
 TypeInfo.GitConflictDeleteEdit.fields = {
-    baseBlob: {
-        typeInfo: TypeInfo.GitBlobRef
-    },
     conflictType: {
         enumType: TypeInfo.GitConflictType
     },
     mergeBaseCommit: {
         typeInfo: TypeInfo.GitCommitRef
-    },
-    mergeOrigin: {
-        typeInfo: TypeInfo.GitMergeOriginRef
     },
     mergeSourceCommit: {
         typeInfo: TypeInfo.GitCommitRef
@@ -3366,29 +2966,17 @@ TypeInfo.GitConflictDeleteEdit.fields = {
     resolutionStatus: {
         enumType: TypeInfo.GitResolutionStatus
     },
-    resolvedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     resolvedDate: {
         isDate: true,
-    },
-    targetBlob: {
-        typeInfo: TypeInfo.GitBlobRef
     },
 };
 
 TypeInfo.GitConflictDeleteRename.fields = {
-    baseBlob: {
-        typeInfo: TypeInfo.GitBlobRef
-    },
     conflictType: {
         enumType: TypeInfo.GitConflictType
     },
     mergeBaseCommit: {
         typeInfo: TypeInfo.GitCommitRef
-    },
-    mergeOrigin: {
-        typeInfo: TypeInfo.GitMergeOriginRef
     },
     mergeSourceCommit: {
         typeInfo: TypeInfo.GitCommitRef
@@ -3405,14 +2993,8 @@ TypeInfo.GitConflictDeleteRename.fields = {
     resolutionStatus: {
         enumType: TypeInfo.GitResolutionStatus
     },
-    resolvedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     resolvedDate: {
         isDate: true,
-    },
-    targetBlob: {
-        typeInfo: TypeInfo.GitBlobRef
     },
 };
 
@@ -3423,9 +3005,6 @@ TypeInfo.GitConflictDirectoryFile.fields = {
     mergeBaseCommit: {
         typeInfo: TypeInfo.GitCommitRef
     },
-    mergeOrigin: {
-        typeInfo: TypeInfo.GitMergeOriginRef
-    },
     mergeSourceCommit: {
         typeInfo: TypeInfo.GitCommitRef
     },
@@ -3441,32 +3020,20 @@ TypeInfo.GitConflictDirectoryFile.fields = {
     resolutionStatus: {
         enumType: TypeInfo.GitResolutionStatus
     },
-    resolvedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     resolvedDate: {
         isDate: true,
     },
     sourceTree: {
         typeInfo: TypeInfo.GitTreeRef
     },
-    targetBlob: {
-        typeInfo: TypeInfo.GitBlobRef
-    },
 };
 
 TypeInfo.GitConflictEditDelete.fields = {
-    baseBlob: {
-        typeInfo: TypeInfo.GitBlobRef
-    },
     conflictType: {
         enumType: TypeInfo.GitConflictType
     },
     mergeBaseCommit: {
         typeInfo: TypeInfo.GitCommitRef
-    },
-    mergeOrigin: {
-        typeInfo: TypeInfo.GitMergeOriginRef
     },
     mergeSourceCommit: {
         typeInfo: TypeInfo.GitCommitRef
@@ -3483,29 +3050,17 @@ TypeInfo.GitConflictEditDelete.fields = {
     resolutionStatus: {
         enumType: TypeInfo.GitResolutionStatus
     },
-    resolvedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     resolvedDate: {
         isDate: true,
-    },
-    sourceBlob: {
-        typeInfo: TypeInfo.GitBlobRef
     },
 };
 
 TypeInfo.GitConflictEditEdit.fields = {
-    baseBlob: {
-        typeInfo: TypeInfo.GitBlobRef
-    },
     conflictType: {
         enumType: TypeInfo.GitConflictType
     },
     mergeBaseCommit: {
         typeInfo: TypeInfo.GitCommitRef
-    },
-    mergeOrigin: {
-        typeInfo: TypeInfo.GitMergeOriginRef
     },
     mergeSourceCommit: {
         typeInfo: TypeInfo.GitCommitRef
@@ -3522,17 +3077,8 @@ TypeInfo.GitConflictEditEdit.fields = {
     resolutionStatus: {
         enumType: TypeInfo.GitResolutionStatus
     },
-    resolvedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     resolvedDate: {
         isDate: true,
-    },
-    sourceBlob: {
-        typeInfo: TypeInfo.GitBlobRef
-    },
-    targetBlob: {
-        typeInfo: TypeInfo.GitBlobRef
     },
 };
 
@@ -3542,9 +3088,6 @@ TypeInfo.GitConflictFileDirectory.fields = {
     },
     mergeBaseCommit: {
         typeInfo: TypeInfo.GitCommitRef
-    },
-    mergeOrigin: {
-        typeInfo: TypeInfo.GitMergeOriginRef
     },
     mergeSourceCommit: {
         typeInfo: TypeInfo.GitCommitRef
@@ -3561,14 +3104,8 @@ TypeInfo.GitConflictFileDirectory.fields = {
     resolutionStatus: {
         enumType: TypeInfo.GitResolutionStatus
     },
-    resolvedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     resolvedDate: {
         isDate: true,
-    },
-    sourceBlob: {
-        typeInfo: TypeInfo.GitBlobRef
     },
     targetTree: {
         typeInfo: TypeInfo.GitTreeRef
@@ -3576,17 +3113,11 @@ TypeInfo.GitConflictFileDirectory.fields = {
 };
 
 TypeInfo.GitConflictRename1to2.fields = {
-    baseBlob: {
-        typeInfo: TypeInfo.GitBlobRef
-    },
     conflictType: {
         enumType: TypeInfo.GitConflictType
     },
     mergeBaseCommit: {
         typeInfo: TypeInfo.GitCommitRef
-    },
-    mergeOrigin: {
-        typeInfo: TypeInfo.GitMergeOriginRef
     },
     mergeSourceCommit: {
         typeInfo: TypeInfo.GitCommitRef
@@ -3603,17 +3134,8 @@ TypeInfo.GitConflictRename1to2.fields = {
     resolutionStatus: {
         enumType: TypeInfo.GitResolutionStatus
     },
-    resolvedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     resolvedDate: {
         isDate: true,
-    },
-    sourceBlob: {
-        typeInfo: TypeInfo.GitBlobRef
-    },
-    targetBlob: {
-        typeInfo: TypeInfo.GitBlobRef
     },
 };
 
@@ -3624,9 +3146,6 @@ TypeInfo.GitConflictRename2to1.fields = {
     mergeBaseCommit: {
         typeInfo: TypeInfo.GitCommitRef
     },
-    mergeOrigin: {
-        typeInfo: TypeInfo.GitMergeOriginRef
-    },
     mergeSourceCommit: {
         typeInfo: TypeInfo.GitCommitRef
     },
@@ -3642,38 +3161,17 @@ TypeInfo.GitConflictRename2to1.fields = {
     resolutionStatus: {
         enumType: TypeInfo.GitResolutionStatus
     },
-    resolvedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     resolvedDate: {
         isDate: true,
-    },
-    sourceNewBlob: {
-        typeInfo: TypeInfo.GitBlobRef
-    },
-    sourceOriginalBlob: {
-        typeInfo: TypeInfo.GitBlobRef
-    },
-    targetNewBlob: {
-        typeInfo: TypeInfo.GitBlobRef
-    },
-    targetOriginalBlob: {
-        typeInfo: TypeInfo.GitBlobRef
     },
 };
 
 TypeInfo.GitConflictRenameAdd.fields = {
-    baseBlob: {
-        typeInfo: TypeInfo.GitBlobRef
-    },
     conflictType: {
         enumType: TypeInfo.GitConflictType
     },
     mergeBaseCommit: {
         typeInfo: TypeInfo.GitCommitRef
-    },
-    mergeOrigin: {
-        typeInfo: TypeInfo.GitMergeOriginRef
     },
     mergeSourceCommit: {
         typeInfo: TypeInfo.GitCommitRef
@@ -3690,32 +3188,17 @@ TypeInfo.GitConflictRenameAdd.fields = {
     resolutionStatus: {
         enumType: TypeInfo.GitResolutionStatus
     },
-    resolvedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     resolvedDate: {
         isDate: true,
-    },
-    sourceBlob: {
-        typeInfo: TypeInfo.GitBlobRef
-    },
-    targetBlob: {
-        typeInfo: TypeInfo.GitBlobRef
     },
 };
 
 TypeInfo.GitConflictRenameDelete.fields = {
-    baseBlob: {
-        typeInfo: TypeInfo.GitBlobRef
-    },
     conflictType: {
         enumType: TypeInfo.GitConflictType
     },
     mergeBaseCommit: {
         typeInfo: TypeInfo.GitCommitRef
-    },
-    mergeOrigin: {
-        typeInfo: TypeInfo.GitMergeOriginRef
     },
     mergeSourceCommit: {
         typeInfo: TypeInfo.GitCommitRef
@@ -3732,29 +3215,17 @@ TypeInfo.GitConflictRenameDelete.fields = {
     resolutionStatus: {
         enumType: TypeInfo.GitResolutionStatus
     },
-    resolvedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     resolvedDate: {
         isDate: true,
-    },
-    sourceBlob: {
-        typeInfo: TypeInfo.GitBlobRef
     },
 };
 
 TypeInfo.GitConflictRenameRename.fields = {
-    baseBlob: {
-        typeInfo: TypeInfo.GitBlobRef
-    },
     conflictType: {
         enumType: TypeInfo.GitConflictType
     },
     mergeBaseCommit: {
         typeInfo: TypeInfo.GitCommitRef
-    },
-    mergeOrigin: {
-        typeInfo: TypeInfo.GitMergeOriginRef
     },
     mergeSourceCommit: {
         typeInfo: TypeInfo.GitCommitRef
@@ -3771,17 +3242,8 @@ TypeInfo.GitConflictRenameRename.fields = {
     resolutionStatus: {
         enumType: TypeInfo.GitResolutionStatus
     },
-    resolvedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     resolvedDate: {
         isDate: true,
-    },
-    sourceBlob: {
-        typeInfo: TypeInfo.GitBlobRef
-    },
-    targetBlob: {
-        typeInfo: TypeInfo.GitBlobRef
     },
 };
 
@@ -3789,69 +3251,18 @@ TypeInfo.GitDeletedRepository.fields = {
     createdDate: {
         isDate: true,
     },
-    deletedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     deletedDate: {
         isDate: true,
     },
-    project: {
-        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
-    },
-};
-
-TypeInfo.GitFilePathsCollection.fields = {
-};
-
-TypeInfo.GitImportFailedEvent.fields = {
-    targetRepository: {
-        typeInfo: TypeInfo.GitRepository
-    },
-};
-
-TypeInfo.GitImportGitSource.fields = {
 };
 
 TypeInfo.GitImportRequest.fields = {
-    detailedStatus: {
-        typeInfo: TypeInfo.GitImportStatusDetail
-    },
-    parameters: {
-        typeInfo: TypeInfo.GitImportRequestParameters
-    },
-    repository: {
-        typeInfo: TypeInfo.GitRepository
-    },
     status: {
         enumType: TypeInfo.GitAsyncOperationStatus
     },
 };
 
-TypeInfo.GitImportRequestParameters.fields = {
-    gitSource: {
-        typeInfo: TypeInfo.GitImportGitSource
-    },
-    tfvcSource: {
-        typeInfo: TypeInfo.GitImportTfvcSource
-    },
-};
-
-TypeInfo.GitImportStatusDetail.fields = {
-};
-
-TypeInfo.GitImportSucceededEvent.fields = {
-    targetRepository: {
-        typeInfo: TypeInfo.GitRepository
-    },
-};
-
-TypeInfo.GitImportTfvcSource.fields = {
-};
-
 TypeInfo.GitItem.fields = {
-    contentMetadata: {
-        typeInfo: TypeInfo.FileContentMetadata
-    },
     gitObjectType: {
         enumType: TypeInfo.GitObjectType
     },
@@ -3879,24 +3290,14 @@ TypeInfo.GitItemRequestData.fields = {
     },
 };
 
-TypeInfo.GitLastChangeItem.fields = {
-};
-
 TypeInfo.GitLastChangeTreeItems.fields = {
     commits: {
         isArray: true,
         typeInfo: TypeInfo.GitCommitRef
     },
-    items: {
-        isArray: true,
-        typeInfo: TypeInfo.GitLastChangeItem
-    },
     lastExploredTime: {
         isDate: true,
     },
-};
-
-TypeInfo.GitMergeOriginRef.fields = {
 };
 
 TypeInfo.GitPathAction.fields = {
@@ -3907,16 +3308,15 @@ TypeInfo.GitPathAction.fields = {
 
 TypeInfo.GitPathToItemsCollection.fields = {
     items: {
+        isDictionary: true,
+        dictionaryValueFieldInfo: {
+            isArray: true,
+            typeInfo: TypeInfo.GitItem
+        }
     },
 };
 
 TypeInfo.GitPullRequest.fields = {
-    autoCompleteSetBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    closedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     closedDate: {
         isDate: true,
     },
@@ -3924,14 +3324,8 @@ TypeInfo.GitPullRequest.fields = {
         isArray: true,
         typeInfo: TypeInfo.GitCommitRef
     },
-    completionOptions: {
-        typeInfo: TypeInfo.GitPullRequestCompletionOptions
-    },
     completionQueueTime: {
         isDate: true,
-    },
-    createdBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
     creationDate: {
         isDate: true,
@@ -3948,19 +3342,8 @@ TypeInfo.GitPullRequest.fields = {
     mergeStatus: {
         enumType: TypeInfo.PullRequestAsyncStatus
     },
-    repository: {
-        typeInfo: TypeInfo.GitRepository
-    },
-    reviewers: {
-        isArray: true,
-        typeInfo: TypeInfo.IdentityRefWithVote
-    },
     status: {
         enumType: TypeInfo.PullRequestStatus
-    },
-    workItemRefs: {
-        isArray: true,
-        typeInfo: VSSInterfaces.TypeInfo.ResourceRef
     },
 };
 
@@ -3968,14 +3351,8 @@ TypeInfo.GitPullRequestChange.fields = {
     changeType: {
         enumType: TypeInfo.VersionControlChangeType
     },
-    item: {
-        typeInfo: TypeInfo.GitItem
-    },
     newContent: {
         typeInfo: TypeInfo.ItemContent
-    },
-    newContentTemplate: {
-        typeInfo: TypeInfo.GitTemplate
     },
 };
 
@@ -3990,33 +3367,12 @@ TypeInfo.GitPullRequestCommentThread.fields = {
     publishedDate: {
         isDate: true,
     },
-    pullRequestThreadContext: {
-        typeInfo: TypeInfo.GitPullRequestCommentThreadContext
-    },
     status: {
         enumType: TypeInfo.CommentThreadStatus
     },
-    threadContext: {
-        typeInfo: TypeInfo.CommentThreadContext
-    },
-};
-
-TypeInfo.GitPullRequestCommentThreadContext.fields = {
-    iterationContext: {
-        typeInfo: TypeInfo.CommentIterationContext
-    },
-    trackingCriteria: {
-        typeInfo: TypeInfo.CommentTrackingCriteria
-    },
-};
-
-TypeInfo.GitPullRequestCompletionOptions.fields = {
 };
 
 TypeInfo.GitPullRequestIteration.fields = {
-    author: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     changeList: {
         isArray: true,
         typeInfo: TypeInfo.GitPullRequestChange
@@ -4068,9 +3424,6 @@ TypeInfo.GitPullRequestQueryInput.fields = {
     },
 };
 
-TypeInfo.GitPullRequestReviewFileContentInfo.fields = {
-};
-
 TypeInfo.GitPullRequestSearchCriteria.fields = {
     status: {
         enumType: TypeInfo.PullRequestStatus
@@ -4078,12 +3431,6 @@ TypeInfo.GitPullRequestSearchCriteria.fields = {
 };
 
 TypeInfo.GitPullRequestStatus.fields = {
-    context: {
-        typeInfo: TypeInfo.GitStatusContext
-    },
-    createdBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     creationDate: {
         isDate: true,
     },
@@ -4103,16 +3450,6 @@ TypeInfo.GitPush.fields = {
     date: {
         isDate: true,
     },
-    pushedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    refUpdates: {
-        isArray: true,
-        typeInfo: TypeInfo.GitRefUpdate
-    },
-    repository: {
-        typeInfo: TypeInfo.GitRepository
-    },
 };
 
 TypeInfo.GitPushEventData.fields = {
@@ -4120,17 +3457,11 @@ TypeInfo.GitPushEventData.fields = {
         isArray: true,
         typeInfo: TypeInfo.GitCommit
     },
-    repository: {
-        typeInfo: TypeInfo.GitRepository
-    },
 };
 
 TypeInfo.GitPushRef.fields = {
     date: {
         isDate: true,
-    },
-    pushedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
 };
 
@@ -4163,9 +3494,6 @@ TypeInfo.GitQueryCommitsCriteria.fields = {
 };
 
 TypeInfo.GitRef.fields = {
-    isLockedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     statuses: {
         isArray: true,
         typeInfo: TypeInfo.GitStatus
@@ -4178,36 +3506,15 @@ TypeInfo.GitRefFavorite.fields = {
     },
 };
 
-TypeInfo.GitRefLockRequest.fields = {
-};
-
-TypeInfo.GitRefUpdate.fields = {
-};
-
 TypeInfo.GitRefUpdateResult.fields = {
     updateStatus: {
         enumType: TypeInfo.GitRefUpdateStatus
     },
 };
 
-TypeInfo.GitRepository.fields = {
-    project: {
-        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
-    },
-};
-
-TypeInfo.GitRepositoryStats.fields = {
-};
-
-TypeInfo.GitResolution.fields = {
-};
-
 TypeInfo.GitResolutionMergeContent.fields = {
     mergeType: {
         enumType: TypeInfo.GitResolutionMergeType
-    },
-    userMergedBlob: {
-        typeInfo: TypeInfo.GitBlobRef
     },
 };
 
@@ -4230,15 +3537,9 @@ TypeInfo.GitResolutionRename1to2.fields = {
     mergeType: {
         enumType: TypeInfo.GitResolutionMergeType
     },
-    userMergedBlob: {
-        typeInfo: TypeInfo.GitBlobRef
-    },
 };
 
 TypeInfo.GitRevert.fields = {
-    detailedStatus: {
-        typeInfo: TypeInfo.GitAsyncRefOperationDetail
-    },
     parameters: {
         typeInfo: TypeInfo.GitAsyncRefOperationParameters
     },
@@ -4248,12 +3549,6 @@ TypeInfo.GitRevert.fields = {
 };
 
 TypeInfo.GitStatus.fields = {
-    context: {
-        typeInfo: TypeInfo.GitStatusContext
-    },
-    createdBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     creationDate: {
         isDate: true,
     },
@@ -4263,12 +3558,6 @@ TypeInfo.GitStatus.fields = {
     updatedDate: {
         isDate: true,
     },
-};
-
-TypeInfo.GitStatusContext.fields = {
-};
-
-TypeInfo.GitSuggestion.fields = {
 };
 
 TypeInfo.GitTargetVersionDescriptor.fields = {
@@ -4284,9 +3573,6 @@ TypeInfo.GitTargetVersionDescriptor.fields = {
     versionType: {
         enumType: TypeInfo.GitVersionType
     },
-};
-
-TypeInfo.GitTemplate.fields = {
 };
 
 TypeInfo.GitTreeDiff.fields = {
@@ -4345,22 +3631,6 @@ TypeInfo.HistoryEntry.fields = {
     },
 };
 
-TypeInfo.IdentityRefWithVote.fields = {
-    votedFor: {
-        isArray: true,
-        typeInfo: TypeInfo.IdentityRefWithVote
-    },
-};
-
-TypeInfo.ImportRepositoryValidation.fields = {
-    gitSource: {
-        typeInfo: TypeInfo.GitImportGitSource
-    },
-    tfvcSource: {
-        typeInfo: TypeInfo.GitImportTfvcSource
-    },
-};
-
 TypeInfo.IncludedGitCommit.fields = {
     commitTime: {
         isDate: true,
@@ -4379,22 +3649,6 @@ TypeInfo.ItemDetailsOptions.fields = {
     },
 };
 
-TypeInfo.ItemModel.fields = {
-    contentMetadata: {
-        typeInfo: TypeInfo.FileContentMetadata
-    },
-};
-
-TypeInfo.PullRequestTabExtensionConfig.fields = {
-};
-
-TypeInfo.ShareNotificationContext.fields = {
-    receivers: {
-        isArray: true,
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
 TypeInfo.SupportedIde.fields = {
     ideType: {
         enumType: TypeInfo.SupportedIdeType
@@ -4409,31 +3663,11 @@ TypeInfo.TfvcBranch.fields = {
     createdDate: {
         isDate: true,
     },
-    mappings: {
-        isArray: true,
-        typeInfo: TypeInfo.TfvcBranchMapping
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    parent: {
-        typeInfo: TypeInfo.TfvcShallowBranchRef
-    },
-    relatedBranches: {
-        isArray: true,
-        typeInfo: TypeInfo.TfvcShallowBranchRef
-    },
-};
-
-TypeInfo.TfvcBranchMapping.fields = {
 };
 
 TypeInfo.TfvcBranchRef.fields = {
     createdDate: {
         isDate: true,
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
 };
 
@@ -4441,69 +3675,30 @@ TypeInfo.TfvcChange.fields = {
     changeType: {
         enumType: TypeInfo.VersionControlChangeType
     },
-    item: {
-        typeInfo: TypeInfo.TfvcItem
-    },
-    mergeSources: {
-        isArray: true,
-        typeInfo: TypeInfo.TfvcMergeSource
-    },
     newContent: {
         typeInfo: TypeInfo.ItemContent
     },
 };
 
 TypeInfo.TfvcChangeset.fields = {
-    author: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     changes: {
         isArray: true,
         typeInfo: TypeInfo.TfvcChange
     },
-    checkedInBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    checkinNotes: {
-        isArray: true,
-        typeInfo: TypeInfo.CheckinNote
-    },
     createdDate: {
         isDate: true,
-    },
-    policyOverride: {
-        typeInfo: TypeInfo.TfvcPolicyOverrideInfo
-    },
-    workItems: {
-        isArray: true,
-        typeInfo: TypeInfo.AssociatedWorkItem
     },
 };
 
 TypeInfo.TfvcChangesetRef.fields = {
-    author: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    checkedInBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     createdDate: {
         isDate: true,
     },
-};
-
-TypeInfo.TfvcChangesetSearchCriteria.fields = {
-};
-
-TypeInfo.TfvcChangesetsRequestData.fields = {
 };
 
 TypeInfo.TfvcCheckinEventData.fields = {
     changeset: {
         typeInfo: TypeInfo.TfvcChangeset
-    },
-    project: {
-        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
     },
 };
 
@@ -4516,9 +3711,6 @@ TypeInfo.TfvcHistoryEntry.fields = {
 TypeInfo.TfvcItem.fields = {
     changeDate: {
         isDate: true,
-    },
-    contentMetadata: {
-        typeInfo: TypeInfo.FileContentMetadata
     },
 };
 
@@ -4549,37 +3741,12 @@ TypeInfo.TfvcLabel.fields = {
     modifiedDate: {
         isDate: true,
     },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
 };
 
 TypeInfo.TfvcLabelRef.fields = {
     modifiedDate: {
         isDate: true,
     },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
-TypeInfo.TfvcLabelRequestData.fields = {
-};
-
-TypeInfo.TfvcMergeSource.fields = {
-};
-
-TypeInfo.TfvcPolicyFailureInfo.fields = {
-};
-
-TypeInfo.TfvcPolicyOverrideInfo.fields = {
-    policyFailures: {
-        isArray: true,
-        typeInfo: TypeInfo.TfvcPolicyFailureInfo
-    },
-};
-
-TypeInfo.TfvcShallowBranchRef.fields = {
 };
 
 TypeInfo.TfvcShelveset.fields = {
@@ -4590,32 +3757,12 @@ TypeInfo.TfvcShelveset.fields = {
     createdDate: {
         isDate: true,
     },
-    notes: {
-        isArray: true,
-        typeInfo: TypeInfo.CheckinNote
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    policyOverride: {
-        typeInfo: TypeInfo.TfvcPolicyOverrideInfo
-    },
-    workItems: {
-        isArray: true,
-        typeInfo: TypeInfo.AssociatedWorkItem
-    },
 };
 
 TypeInfo.TfvcShelvesetRef.fields = {
     createdDate: {
         isDate: true,
     },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
-TypeInfo.TfvcShelvesetRequestData.fields = {
 };
 
 TypeInfo.TfvcVersionDescriptor.fields = {
@@ -4628,10 +3775,6 @@ TypeInfo.TfvcVersionDescriptor.fields = {
 };
 
 TypeInfo.UpdateRefsRequest.fields = {
-    refUpdateRequests: {
-        isArray: true,
-        typeInfo: TypeInfo.GitRefUpdate
-    },
     updateMode: {
         enumType: TypeInfo.GitRefUpdateMode
     },
@@ -4640,8 +3783,5 @@ TypeInfo.UpdateRefsRequest.fields = {
 TypeInfo.VersionControlProjectInfo.fields = {
     defaultSourceControlType: {
         enumType: TfsCoreInterfaces.TypeInfo.SourceControlTypes
-    },
-    project: {
-        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
     },
 };

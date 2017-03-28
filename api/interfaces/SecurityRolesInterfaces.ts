@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 "use strict";
 
@@ -93,17 +93,10 @@ export var TypeInfo = {
     RoleAccess: {
         enumValues: {
             "assigned": 1,
-            "inherited": 2,
+            "inherited": 2
         }
     },
-    RoleAssignment: {
-        fields: <any>null
-    },
-    SecurityRole: {
-        fields: <any>null
-    },
-    UserRoleAssignmentRef: {
-        fields: <any>null
+    RoleAssignment: <any>{
     },
 };
 
@@ -111,16 +104,4 @@ TypeInfo.RoleAssignment.fields = {
     access: {
         enumType: TypeInfo.RoleAccess
     },
-    identity: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    role: {
-        typeInfo: TypeInfo.SecurityRole
-    },
-};
-
-TypeInfo.SecurityRole.fields = {
-};
-
-TypeInfo.UserRoleAssignmentRef.fields = {
 };

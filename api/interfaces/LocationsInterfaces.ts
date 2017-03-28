@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 "use strict";
 
@@ -167,11 +167,7 @@ export enum ServiceStatus {
 }
 
 export var TypeInfo = {
-    AccessMapping: {
-        fields: <any>null
-    },
-    ConnectionData: {
-        fields: <any>null
+    ConnectionData: <any>{
     },
     InheritLevel: {
         enumValues: {
@@ -179,47 +175,30 @@ export var TypeInfo = {
             "deployment": 1,
             "account": 2,
             "collection": 4,
-            "all": 7,
+            "all": 7
         }
     },
-    LocationMapping: {
-        fields: <any>null
-    },
-    LocationServiceData: {
-        fields: <any>null
+    LocationServiceData: <any>{
     },
     RelativeToSetting: {
         enumValues: {
             "context": 0,
             "webApplication": 2,
-            "fullyQualified": 3,
+            "fullyQualified": 3
         }
     },
-    ResourceAreaInfo: {
-        fields: <any>null
-    },
-    ServiceDefinition: {
-        fields: <any>null
+    ServiceDefinition: <any>{
     },
     ServiceStatus: {
         enumValues: {
             "assigned": 0,
             "active": 1,
-            "moving": 2,
+            "moving": 2
         }
     },
 };
 
-TypeInfo.AccessMapping.fields = {
-};
-
 TypeInfo.ConnectionData.fields = {
-    authenticatedUser: {
-        typeInfo: IdentitiesInterfaces.TypeInfo.Identity
-    },
-    authorizedUser: {
-        typeInfo: IdentitiesInterfaces.TypeInfo.Identity
-    },
     lastUserAccess: {
         isDate: true,
     },
@@ -228,30 +207,16 @@ TypeInfo.ConnectionData.fields = {
     },
 };
 
-TypeInfo.LocationMapping.fields = {
-};
-
 TypeInfo.LocationServiceData.fields = {
-    accessMappings: {
-        isArray: true,
-        typeInfo: TypeInfo.AccessMapping
-    },
     serviceDefinitions: {
         isArray: true,
         typeInfo: TypeInfo.ServiceDefinition
     },
 };
 
-TypeInfo.ResourceAreaInfo.fields = {
-};
-
 TypeInfo.ServiceDefinition.fields = {
     inheritLevel: {
         enumType: TypeInfo.InheritLevel
-    },
-    locationMappings: {
-        isArray: true,
-        typeInfo: TypeInfo.LocationMapping
     },
     relativeToSetting: {
         enumType: TypeInfo.RelativeToSetting

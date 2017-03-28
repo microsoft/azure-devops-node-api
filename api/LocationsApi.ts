@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
@@ -35,12 +35,12 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
     }
 
     /**
-    * This was copied and adapted from TeamFoundationConnectionService.Connect()
-    * 
-    * @param {VSSInterfaces.ConnectOptions} connectOptions
-    * @param {number} lastChangeId - Obsolete 32-bit LastChangeId
-    * @param {number} lastChangeId64 - Non-truncated 64-bit LastChangeId
-    */
+     * This was copied and adapted from TeamFoundationConnectionService.Connect()
+     * 
+     * @param {VSSInterfaces.ConnectOptions} connectOptions
+     * @param {number} lastChangeId - Obsolete 32-bit LastChangeId
+     * @param {number} lastChangeId64 - Non-truncated 64-bit LastChangeId
+     */
     public async getConnectionData(
         connectOptions?: VSSInterfaces.ConnectOptions,
         lastChangeId?: number,
@@ -86,8 +86,8 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
     }
 
     /**
-    * @param {string} areaId
-    */
+     * @param {string} areaId
+     */
     public async getResourceArea(
         areaId: string
         ): Promise<LocationsInterfaces.ResourceAreaInfo> {
@@ -125,7 +125,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
     }
 
     /**
-    */
+     */
     public async getResourceAreas(
         ): Promise<LocationsInterfaces.ResourceAreaInfo[]> {
 
@@ -161,9 +161,9 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
     }
 
     /**
-    * @param {string} serviceType
-    * @param {string} identifier
-    */
+     * @param {string} serviceType
+     * @param {string} identifier
+     */
     public async deleteServiceDefinition(
         serviceType: string,
         identifier: string
@@ -203,10 +203,10 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
     }
 
     /**
-    * @param {string} serviceType
-    * @param {string} identifier
-    * @param {boolean} allowFaultIn
-    */
+     * @param {string} serviceType
+     * @param {string} identifier
+     * @param {boolean} allowFaultIn
+     */
     public async getServiceDefinition(
         serviceType: string,
         identifier: string,
@@ -252,8 +252,8 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
     }
 
     /**
-    * @param {string} serviceType
-    */
+     * @param {string} serviceType
+     */
     public async getServiceDefinitions(
         serviceType?: string
         ): Promise<LocationsInterfaces.ServiceDefinition[]> {
@@ -291,8 +291,8 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
     }
 
     /**
-    * @param {VSSInterfaces.VssJsonCollectionWrapperV<LocationsInterfaces.ServiceDefinition[]>} serviceDefinitions
-    */
+     * @param {VSSInterfaces.VssJsonCollectionWrapperV<LocationsInterfaces.ServiceDefinition[]>} serviceDefinitions
+     */
     public async updateServiceDefinitions(
         serviceDefinitions: VSSInterfaces.VssJsonCollectionWrapperV<LocationsInterfaces.ServiceDefinition[]>
         ): Promise<void> {

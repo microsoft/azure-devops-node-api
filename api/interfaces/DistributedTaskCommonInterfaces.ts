@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 "use strict";
 
@@ -48,42 +48,3 @@ export interface TaskSourceDefinitionBase {
     selector: string;
     target: string;
 }
-
-export var TypeInfo = {
-    DataSourceBindingBase: {
-        fields: <any>null
-    },
-    ProcessParameters: {
-        fields: <any>null
-    },
-    TaskInputDefinitionBase: {
-        fields: <any>null
-    },
-    TaskSourceDefinitionBase: {
-        fields: <any>null
-    },
-};
-
-TypeInfo.DataSourceBindingBase.fields = {
-};
-
-TypeInfo.ProcessParameters.fields = {
-    dataSourceBindings: {
-        isArray: true,
-        typeInfo: TypeInfo.DataSourceBindingBase
-    },
-    inputs: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskInputDefinitionBase
-    },
-    sourceDefinitions: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskSourceDefinitionBase
-    },
-};
-
-TypeInfo.TaskInputDefinitionBase.fields = {
-};
-
-TypeInfo.TaskSourceDefinitionBase.fields = {
-};

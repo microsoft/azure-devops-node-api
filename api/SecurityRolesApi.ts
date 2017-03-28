@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
@@ -33,9 +33,9 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
     }
 
     /**
-    * @param {string} scopeId
-    * @param {string} resourceId
-    */
+     * @param {string} scopeId
+     * @param {string} resourceId
+     */
     public async getRoleAssignments(
         scopeId: string,
         resourceId: string
@@ -56,7 +56,8 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<SecurityRolesInterfaces.RoleAssignment[]>;
                 res = await this.rest.get<SecurityRolesInterfaces.RoleAssignment[]>(url, options);
 
@@ -74,10 +75,10 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
     }
 
     /**
-    * @param {string} scopeId
-    * @param {string} resourceId
-    * @param {string} identityId
-    */
+     * @param {string} scopeId
+     * @param {string} resourceId
+     * @param {string} identityId
+     */
     public async removeRoleAssignment(
         scopeId: string,
         resourceId: string,
@@ -100,7 +101,8 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
@@ -118,10 +120,10 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
     }
 
     /**
-    * @param {string[]} identityIds
-    * @param {string} scopeId
-    * @param {string} resourceId
-    */
+     * @param {string[]} identityIds
+     * @param {string} scopeId
+     * @param {string} resourceId
+     */
     public async removeRoleAssignments(
         identityIds: string[],
         scopeId: string,
@@ -143,7 +145,8 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, identityIds, options);
 
@@ -161,11 +164,11 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
     }
 
     /**
-    * @param {SecurityRolesInterfaces.UserRoleAssignmentRef} roleAssignment
-    * @param {string} scopeId
-    * @param {string} resourceId
-    * @param {string} identityId
-    */
+     * @param {SecurityRolesInterfaces.UserRoleAssignmentRef} roleAssignment
+     * @param {string} scopeId
+     * @param {string} resourceId
+     * @param {string} identityId
+     */
     public async setRoleAssignment(
         roleAssignment: SecurityRolesInterfaces.UserRoleAssignmentRef,
         scopeId: string,
@@ -189,7 +192,8 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<SecurityRolesInterfaces.RoleAssignment>;
                 res = await this.rest.replace<SecurityRolesInterfaces.RoleAssignment>(url, roleAssignment, options);
 
@@ -207,10 +211,10 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
     }
 
     /**
-    * @param {SecurityRolesInterfaces.UserRoleAssignmentRef[]} roleAssignments
-    * @param {string} scopeId
-    * @param {string} resourceId
-    */
+     * @param {SecurityRolesInterfaces.UserRoleAssignmentRef[]} roleAssignments
+     * @param {string} scopeId
+     * @param {string} resourceId
+     */
     public async setRoleAssignments(
         roleAssignments: SecurityRolesInterfaces.UserRoleAssignmentRef[],
         scopeId: string,
@@ -232,7 +236,8 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<SecurityRolesInterfaces.RoleAssignment[]>;
                 res = await this.rest.replace<SecurityRolesInterfaces.RoleAssignment[]>(url, roleAssignments, options);
 
@@ -250,8 +255,8 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
     }
 
     /**
-    * @param {string} scopeId
-    */
+     * @param {string} scopeId
+     */
     public async getRoleDefinitions(
         scopeId: string
         ): Promise<SecurityRolesInterfaces.SecurityRole[]> {
@@ -270,7 +275,8 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                                                                                verData.apiVersion);
+
                 let res: restm.IRestResponse<SecurityRolesInterfaces.SecurityRole[]>;
                 res = await this.rest.get<SecurityRolesInterfaces.SecurityRole[]>(url, options);
 

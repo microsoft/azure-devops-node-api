@@ -1,18 +1,18 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 "use strict";
 
-import SystemInterfaces = require("../interfaces/System");
+import SystemInterfaces = require("../interfaces/common/System");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
-import WorkItemTrackingInterfaces = require("../interfaces/WorkItemTracking");
+import WorkItemTrackingInterfaces = require("../interfaces/WorkItemTrackingInterfaces");
 
 
 export interface Activity {
@@ -1013,109 +1013,41 @@ export interface WorkItemTypeStateInfo {
 }
 
 export var TypeInfo = {
-    Activity: {
-        fields: <any>null
+    BacklogConfiguration: <any>{
     },
-    attribute: {
-        fields: <any>null
+    Board: <any>{
     },
-    BacklogColumn: {
-        fields: <any>null
-    },
-    BacklogConfiguration: {
-        fields: <any>null
-    },
-    BacklogFields: {
-        fields: <any>null
-    },
-    BacklogLevel: {
-        fields: <any>null
-    },
-    BacklogLevelConfiguration: {
-        fields: <any>null
-    },
-    Board: {
-        fields: <any>null
-    },
-    BoardCardRuleSettings: {
-        fields: <any>null
-    },
-    BoardCardSettings: {
-        fields: <any>null
-    },
-    BoardChart: {
-        fields: <any>null
-    },
-    BoardChartReference: {
-        fields: <any>null
-    },
-    BoardColumn: {
-        fields: <any>null
+    BoardColumn: <any>{
     },
     BoardColumnType: {
         enumValues: {
             "incoming": 0,
             "inProgress": 1,
-            "outgoing": 2,
+            "outgoing": 2
         }
-    },
-    BoardFields: {
-        fields: <any>null
-    },
-    BoardFilterSettings: {
-        fields: <any>null
-    },
-    BoardReference: {
-        fields: <any>null
-    },
-    BoardRow: {
-        fields: <any>null
-    },
-    BoardSuggestedValue: {
-        fields: <any>null
-    },
-    BoardUserSettings: {
-        fields: <any>null
     },
     BugsBehavior: {
         enumValues: {
             "off": 0,
             "asRequirements": 1,
-            "asTasks": 2,
+            "asTasks": 2
         }
     },
-    CapacityPatch: {
-        fields: <any>null
+    CapacityPatch: <any>{
     },
-    CardFieldSettings: {
-        fields: <any>null
+    CardFieldSettings: <any>{
     },
-    CardSettings: {
-        fields: <any>null
+    CardSettings: <any>{
     },
-    CategoryConfiguration: {
-        fields: <any>null
+    CreatePlan: <any>{
     },
-    CreatePlan: {
-        fields: <any>null
+    DateRange: <any>{
     },
-    DateRange: {
-        fields: <any>null
+    DeliveryViewData: <any>{
     },
-    DeliveryViewData: {
-        fields: <any>null
+    DeliveryViewPropertyCollection: <any>{
     },
-    DeliveryViewPropertyCollection: {
-        fields: <any>null
-    },
-    FieldInfo: {
-        fields: <any>null
-    },
-    FieldReference: {
-        fields: <any>null
-    },
-    FieldSetting: {
-        fields: <any>null
+    FieldInfo: <any>{
     },
     FieldType: {
         enumValues: {
@@ -1125,46 +1057,25 @@ export var TypeInfo = {
             "dateTime": 3,
             "treePath": 4,
             "boolean": 5,
-            "double": 6,
+            "double": 6
         }
-    },
-    FilterClause: {
-        fields: <any>null
-    },
-    FilterGroup: {
-        fields: <any>null
-    },
-    FilterModel: {
-        fields: <any>null
     },
     IdentityDisplayFormat: {
         enumValues: {
             "avatarOnly": 0,
             "fullName": 1,
-            "avatarAndFullName": 2,
+            "avatarAndFullName": 2
         }
     },
-    Marker: {
-        fields: <any>null
+    Marker: <any>{
     },
-    Member: {
-        fields: <any>null
+    Plan: <any>{
     },
-    ParentChildWIMap: {
-        fields: <any>null
-    },
-    Plan: {
-        fields: <any>null
-    },
-    PlanMetadata: {
-        fields: <any>null
-    },
-    PlanPropertyCollection: {
-        fields: <any>null
+    PlanMetadata: <any>{
     },
     PlanType: {
         enumValues: {
-            "deliveryTimelineView": 0,
+            "deliveryTimelineView": 0
         }
     },
     PlanUserPermissions: {
@@ -1174,81 +1085,45 @@ export var TypeInfo = {
             "edit": 2,
             "delete": 4,
             "manage": 8,
-            "allPermissions": 15,
+            "allPermissions": 15
         }
     },
-    PlanViewData: {
-        fields: <any>null
+    TeamIterationAttributes: <any>{
     },
-    ProcessConfiguration: {
-        fields: <any>null
+    TeamMemberCapacity: <any>{
     },
-    Rule: {
-        fields: <any>null
+    TeamSetting: <any>{
     },
-    TeamBacklogMapping: {
-        fields: <any>null
+    TeamSettingsDaysOff: <any>{
     },
-    TeamFieldValue: {
-        fields: <any>null
+    TeamSettingsDaysOffPatch: <any>{
     },
-    TeamFieldValues: {
-        fields: <any>null
+    TeamSettingsIteration: <any>{
     },
-    TeamFieldValuesPatch: {
-        fields: <any>null
+    TeamSettingsPatch: <any>{
     },
-    TeamIterationAttributes: {
-        fields: <any>null
-    },
-    TeamMemberCapacity: {
-        fields: <any>null
-    },
-    TeamSetting: {
-        fields: <any>null
-    },
-    TeamSettingsDataContractBase: {
-        fields: <any>null
-    },
-    TeamSettingsDaysOff: {
-        fields: <any>null
-    },
-    TeamSettingsDaysOffPatch: {
-        fields: <any>null
-    },
-    TeamSettingsIteration: {
-        fields: <any>null
-    },
-    TeamSettingsPatch: {
-        fields: <any>null
-    },
-    TimelineCriteriaStatus: {
-        fields: <any>null
+    TimelineCriteriaStatus: <any>{
     },
     TimelineCriteriaStatusCode: {
         enumValues: {
             "oK": 0,
             "invalidFilterClause": 1,
-            "unknown": 2,
+            "unknown": 2
         }
     },
-    TimelineIterationStatus: {
-        fields: <any>null
+    TimelineIterationStatus: <any>{
     },
     TimelineIterationStatusCode: {
         enumValues: {
             "oK": 0,
-            "isOverlapping": 1,
+            "isOverlapping": 1
         }
     },
-    TimelineTeamData: {
-        fields: <any>null
+    TimelineTeamData: <any>{
     },
-    TimelineTeamIteration: {
-        fields: <any>null
+    TimelineTeamIteration: <any>{
     },
-    TimelineTeamStatus: {
-        fields: <any>null
+    TimelineTeamStatus: <any>{
     },
     TimelineTeamStatusCode: {
         enumValues: {
@@ -1258,76 +1133,16 @@ export var TypeInfo = {
             "maxTeamFieldsExceeded": 3,
             "backlogInError": 4,
             "missingTeamFieldValue": 5,
-            "noIterationsExist": 6,
+            "noIterationsExist": 6
         }
     },
-    UpdatePlan: {
-        fields: <any>null
-    },
-    WorkItemColor: {
-        fields: <any>null
-    },
-    WorkItemTypeStateInfo: {
-        fields: <any>null
-    },
-};
-
-TypeInfo.Activity.fields = {
-};
-
-TypeInfo.attribute.fields = {
-};
-
-TypeInfo.BacklogColumn.fields = {
-    columnFieldReference: {
-        typeInfo: WorkItemTrackingInterfaces.TypeInfo.WorkItemFieldReference
+    UpdatePlan: <any>{
     },
 };
 
 TypeInfo.BacklogConfiguration.fields = {
-    backlogFields: {
-        typeInfo: TypeInfo.BacklogFields
-    },
     bugsBehavior: {
         enumType: TypeInfo.BugsBehavior
-    },
-    portfolioBacklogs: {
-        isArray: true,
-        typeInfo: TypeInfo.BacklogLevelConfiguration
-    },
-    requirementBacklog: {
-        typeInfo: TypeInfo.BacklogLevelConfiguration
-    },
-    taskBacklog: {
-        typeInfo: TypeInfo.BacklogLevelConfiguration
-    },
-    workItemTypeMappedStates: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkItemTypeStateInfo
-    },
-};
-
-TypeInfo.BacklogFields.fields = {
-};
-
-TypeInfo.BacklogLevel.fields = {
-};
-
-TypeInfo.BacklogLevelConfiguration.fields = {
-    addPanelFields: {
-        isArray: true,
-        typeInfo: WorkItemTrackingInterfaces.TypeInfo.WorkItemFieldReference
-    },
-    columnFields: {
-        isArray: true,
-        typeInfo: TypeInfo.BacklogColumn
-    },
-    defaultWorkItemType: {
-        typeInfo: WorkItemTrackingInterfaces.TypeInfo.WorkItemTypeReference
-    },
-    workItemTypes: {
-        isArray: true,
-        typeInfo: WorkItemTrackingInterfaces.TypeInfo.WorkItemTypeReference
     },
 };
 
@@ -1336,29 +1151,6 @@ TypeInfo.Board.fields = {
         isArray: true,
         typeInfo: TypeInfo.BoardColumn
     },
-    fields: {
-        typeInfo: TypeInfo.BoardFields
-    },
-    rows: {
-        isArray: true,
-        typeInfo: TypeInfo.BoardRow
-    },
-};
-
-TypeInfo.BoardCardRuleSettings.fields = {
-    rules: {
-    },
-};
-
-TypeInfo.BoardCardSettings.fields = {
-    cards: {
-    },
-};
-
-TypeInfo.BoardChart.fields = {
-};
-
-TypeInfo.BoardChartReference.fields = {
 };
 
 TypeInfo.BoardColumn.fields = {
@@ -1367,41 +1159,7 @@ TypeInfo.BoardColumn.fields = {
     },
 };
 
-TypeInfo.BoardFields.fields = {
-    columnField: {
-        typeInfo: TypeInfo.FieldReference
-    },
-    doneField: {
-        typeInfo: TypeInfo.FieldReference
-    },
-    rowField: {
-        typeInfo: TypeInfo.FieldReference
-    },
-};
-
-TypeInfo.BoardFilterSettings.fields = {
-    criteria: {
-        typeInfo: TypeInfo.FilterModel
-    },
-};
-
-TypeInfo.BoardReference.fields = {
-};
-
-TypeInfo.BoardRow.fields = {
-};
-
-TypeInfo.BoardSuggestedValue.fields = {
-};
-
-TypeInfo.BoardUserSettings.fields = {
-};
-
 TypeInfo.CapacityPatch.fields = {
-    activities: {
-        isArray: true,
-        typeInfo: TypeInfo.Activity
-    },
     daysOff: {
         isArray: true,
         typeInfo: TypeInfo.DateRange
@@ -1425,13 +1183,6 @@ TypeInfo.CardFieldSettings.fields = {
 TypeInfo.CardSettings.fields = {
     fields: {
         typeInfo: TypeInfo.CardFieldSettings
-    },
-};
-
-TypeInfo.CategoryConfiguration.fields = {
-    workItemTypes: {
-        isArray: true,
-        typeInfo: WorkItemTrackingInterfaces.TypeInfo.WorkItemTypeReference
     },
 };
 
@@ -1470,17 +1221,9 @@ TypeInfo.DeliveryViewPropertyCollection.fields = {
     cardSettings: {
         typeInfo: TypeInfo.CardSettings
     },
-    criteria: {
-        isArray: true,
-        typeInfo: TypeInfo.FilterClause
-    },
     markers: {
         isArray: true,
         typeInfo: TypeInfo.Marker
-    },
-    teamBacklogMappings: {
-        isArray: true,
-        typeInfo: TypeInfo.TeamBacklogMapping
     },
 };
 
@@ -1490,50 +1233,15 @@ TypeInfo.FieldInfo.fields = {
     },
 };
 
-TypeInfo.FieldReference.fields = {
-};
-
-TypeInfo.FieldSetting.fields = {
-};
-
-TypeInfo.FilterClause.fields = {
-};
-
-TypeInfo.FilterGroup.fields = {
-};
-
-TypeInfo.FilterModel.fields = {
-    clauses: {
-        isArray: true,
-        typeInfo: TypeInfo.FilterClause
-    },
-    groups: {
-        isArray: true,
-        typeInfo: TypeInfo.FilterGroup
-    },
-};
-
 TypeInfo.Marker.fields = {
     date: {
         isDate: true,
     },
 };
 
-TypeInfo.Member.fields = {
-};
-
-TypeInfo.ParentChildWIMap.fields = {
-};
-
 TypeInfo.Plan.fields = {
-    createdByIdentity: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     createdDate: {
         isDate: true,
-    },
-    modifiedByIdentity: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
     modifiedDate: {
         isDate: true,
@@ -1547,69 +1255,11 @@ TypeInfo.Plan.fields = {
 };
 
 TypeInfo.PlanMetadata.fields = {
-    createdByIdentity: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     modifiedDate: {
         isDate: true,
     },
     userPermissions: {
         enumType: TypeInfo.PlanUserPermissions
-    },
-};
-
-TypeInfo.PlanPropertyCollection.fields = {
-};
-
-TypeInfo.PlanViewData.fields = {
-};
-
-TypeInfo.ProcessConfiguration.fields = {
-    bugWorkItems: {
-        typeInfo: TypeInfo.CategoryConfiguration
-    },
-    portfolioBacklogs: {
-        isArray: true,
-        typeInfo: TypeInfo.CategoryConfiguration
-    },
-    requirementBacklog: {
-        typeInfo: TypeInfo.CategoryConfiguration
-    },
-    taskBacklog: {
-        typeInfo: TypeInfo.CategoryConfiguration
-    },
-};
-
-TypeInfo.Rule.fields = {
-    clauses: {
-        isArray: true,
-        typeInfo: TypeInfo.FilterClause
-    },
-    settings: {
-        typeInfo: TypeInfo.attribute
-    },
-};
-
-TypeInfo.TeamBacklogMapping.fields = {
-};
-
-TypeInfo.TeamFieldValue.fields = {
-};
-
-TypeInfo.TeamFieldValues.fields = {
-    field: {
-        typeInfo: TypeInfo.FieldReference
-    },
-    values: {
-        isArray: true,
-        typeInfo: TypeInfo.TeamFieldValue
-    },
-};
-
-TypeInfo.TeamFieldValuesPatch.fields = {
-    values: {
-        isArray: true,
-        typeInfo: TypeInfo.TeamFieldValue
     },
 };
 
@@ -1623,16 +1273,9 @@ TypeInfo.TeamIterationAttributes.fields = {
 };
 
 TypeInfo.TeamMemberCapacity.fields = {
-    activities: {
-        isArray: true,
-        typeInfo: TypeInfo.Activity
-    },
     daysOff: {
         isArray: true,
         typeInfo: TypeInfo.DateRange
-    },
-    teamMember: {
-        typeInfo: TypeInfo.Member
     },
 };
 
@@ -1650,9 +1293,6 @@ TypeInfo.TeamSetting.fields = {
         isArray: true,
         enumType: SystemInterfaces.TypeInfo.DayOfWeek
     },
-};
-
-TypeInfo.TeamSettingsDataContractBase.fields = {
 };
 
 TypeInfo.TeamSettingsDaysOff.fields = {
@@ -1698,23 +1338,12 @@ TypeInfo.TimelineIterationStatus.fields = {
 };
 
 TypeInfo.TimelineTeamData.fields = {
-    backlog: {
-        typeInfo: TypeInfo.BacklogLevel
-    },
     iterations: {
         isArray: true,
         typeInfo: TypeInfo.TimelineTeamIteration
     },
     status: {
         typeInfo: TypeInfo.TimelineTeamStatus
-    },
-    teamFieldValues: {
-        isArray: true,
-        typeInfo: TypeInfo.TeamFieldValue
-    },
-    workItemTypeColors: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkItemColor
     },
 };
 
@@ -1740,10 +1369,4 @@ TypeInfo.UpdatePlan.fields = {
     type: {
         enumType: TypeInfo.PlanType
     },
-};
-
-TypeInfo.WorkItemColor.fields = {
-};
-
-TypeInfo.WorkItemTypeStateInfo.fields = {
 };

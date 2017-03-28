@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
@@ -39,10 +39,10 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
     }
 
     /**
-    * @param {PolicyInterfaces.PolicyConfiguration} configuration
-    * @param {string} project - Project ID or project name
-    * @param {number} configurationId
-    */
+     * @param {PolicyInterfaces.PolicyConfiguration} configuration
+     * @param {string} project - Project ID or project name
+     * @param {number} configurationId
+     */
     public async createPolicyConfiguration(
         configuration: PolicyInterfaces.PolicyConfiguration,
         project: string,
@@ -83,9 +83,9 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} configurationId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} configurationId
+     */
     public async deletePolicyConfiguration(
         project: string,
         configurationId: number
@@ -125,9 +125,9 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} configurationId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} configurationId
+     */
     public async getPolicyConfiguration(
         project: string,
         configurationId: number
@@ -167,8 +167,8 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    */
+     * @param {string} project - Project ID or project name
+     */
     public async getPolicyConfigurations(
         project: string
         ): Promise<PolicyInterfaces.PolicyConfiguration[]> {
@@ -206,10 +206,10 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
     }
 
     /**
-    * @param {PolicyInterfaces.PolicyConfiguration} configuration
-    * @param {string} project - Project ID or project name
-    * @param {number} configurationId
-    */
+     * @param {PolicyInterfaces.PolicyConfiguration} configuration
+     * @param {string} project - Project ID or project name
+     * @param {number} configurationId
+     */
     public async updatePolicyConfiguration(
         configuration: PolicyInterfaces.PolicyConfiguration,
         project: string,
@@ -250,9 +250,9 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {string} evaluationId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {string} evaluationId
+     */
     public async getPolicyEvaluation(
         project: string,
         evaluationId: string
@@ -292,9 +292,9 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {string} evaluationId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {string} evaluationId
+     */
     public async requeuePolicyEvaluation(
         project: string,
         evaluationId: string
@@ -334,12 +334,12 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {string} artifactId
-    * @param {boolean} includeNotApplicable
-    * @param {number} top
-    * @param {number} skip
-    */
+     * @param {string} project - Project ID or project name
+     * @param {string} artifactId
+     * @param {boolean} includeNotApplicable
+     * @param {number} top
+     * @param {number} skip
+     */
     public async getPolicyEvaluations(
         project: string,
         artifactId: string,
@@ -389,10 +389,10 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} configurationId
-    * @param {number} revisionId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} configurationId
+     * @param {number} revisionId
+     */
     public async getPolicyConfigurationRevision(
         project: string,
         configurationId: number,
@@ -434,11 +434,11 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {number} configurationId
-    * @param {number} top
-    * @param {number} skip
-    */
+     * @param {string} project - Project ID or project name
+     * @param {number} configurationId
+     * @param {number} top
+     * @param {number} skip
+     */
     public async getPolicyConfigurationRevisions(
         project: string,
         configurationId: number,
@@ -486,9 +486,9 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    * @param {string} typeId
-    */
+     * @param {string} project - Project ID or project name
+     * @param {string} typeId
+     */
     public async getPolicyType(
         project: string,
         typeId: string
@@ -528,8 +528,8 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
     }
 
     /**
-    * @param {string} project - Project ID or project name
-    */
+     * @param {string} project - Project ID or project name
+     */
     public async getPolicyTypes(
         project: string
         ): Promise<PolicyInterfaces.PolicyType[]> {

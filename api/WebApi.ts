@@ -4,19 +4,32 @@
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import basem = require('./ClientApiBases');
 import buildm = require('./BuildApi');
+import chatm = require('./ChatApi');
 import contributionsm = require("./ContributionsApi");
 import corem = require('./CoreApi');
+import dashboardm = require('./DashboardApi');
+import delegatedauthorizationm = require('./DelegatedAuthorizationApi');
 import extmgmtm = require("./ExtensionManagementApi");
 import featuremgmtm = require("./FeatureManagementApi");
 import filecontainerm = require('./FileContainerApi');
 import gallerym = require('./GalleryApi');
 import gitm = require('./GitApi');
+import identitiesm = require('./IdentitiesApi');
+import locationsm = require('./LocationsApi');
+import notificationm = require('./NotificationApi');
+import organizationm = require('./OrganizationApi');
+import policym = require('./PolicyApi');
+import profilem = require('./ProfileApi');
+import releasem = require('./ReleaseApi');
+import securityrolesm = require('./SecurityRolesApi');
+import servicehooksm = require('./ServiceHooksApi');
 import taskagentm = require('./TaskAgentApi');
 import taskm = require('./TaskApi');
 import testm = require('./TestApi');
 import tfvcm = require('./TfvcApi');
+import tokenm = require('./TokenApi');
+import workm = require('./WorkApi');
 import workitemtrackingm = require('./WorkItemTrackingApi');
-import releasem = require('./ReleaseApi');
 import basicm = require('./handlers/basiccreds');
 import bearm = require('./handlers/bearertoken');
 import ntlmm = require('./handlers/ntlm');
@@ -85,16 +98,35 @@ export class WebApi {
     /**
      * Each API has a method here to create the client.
      */
+
+    public getChatApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): chatm.IChatApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
+        return new chatm.ChatApi(serverUrl, handlers);
+    }
+
     public getCoreApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): corem.ICoreApi {
         serverUrl = serverUrl || this.serverUrl;
         handlers = handlers || [this.authHandler];        
         return new corem.CoreApi(serverUrl, handlers);
     }
 
-    public getContributionsApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): contributionsm.ContributionsApi {
+    public getContributionsApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): contributionsm.IContributionsApi {
         serverUrl = serverUrl || this.serverUrl;
         handlers = handlers || [this.authHandler];        
         return new contributionsm.ContributionsApi(serverUrl, handlers);
+    }
+
+    public getDashboardApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): dashboardm.IDashboardApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
+        return new dashboardm.DashboardApi(serverUrl, handlers);
+    }
+
+    public getDelegatedAuthorizationApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): delegatedauthorizationm.IDelegatedAuthorizationApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
+        return new delegatedauthorizationm.DelegatedAuthorizationApi(serverUrl, handlers);
     }
 
     public getExtensionManagementApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): extmgmtm.IExtensionManagementApi {
@@ -103,7 +135,7 @@ export class WebApi {
         return new extmgmtm.ExtensionManagementApi(serverUrl, handlers);
     }
 
-    public getFeatureManagementApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): featuremgmtm.FeatureManagementApi {
+    public getFeatureManagementApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): featuremgmtm.IFeatureManagementApi {
         serverUrl = serverUrl || this.serverUrl;
         handlers = handlers || [this.authHandler];        
         return new featuremgmtm.FeatureManagementApi(serverUrl, handlers);
@@ -125,6 +157,60 @@ export class WebApi {
         serverUrl = serverUrl || this.serverUrl;
         handlers = handlers || [this.authHandler];        
         return new gitm.GitApi(serverUrl, handlers);
+    }
+
+   public getIdentitiesApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): identitiesm.IIdentitiesApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
+        return new identitiesm.IdentitiesApi(serverUrl, handlers);
+    }
+
+    public getLocationsApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): locationsm.ILocationsApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
+        return new locationsm.LocationsApi(serverUrl, handlers);
+    }
+
+    public getNotificationApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): notificationm.INotificationApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
+        return new notificationm.NotificationApi(serverUrl, handlers);
+    }
+
+    public getOrganizationApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): organizationm.IOrganizationApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
+        return new organizationm.OrganizationApi(serverUrl, handlers);
+    }
+
+    public getPolicyApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): policym.IPolicyApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
+        return new policym.PolicyApi(serverUrl, handlers);
+    }
+
+    public getProfileApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): profilem.IProfileApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
+        return new profilem.ProfileApi(serverUrl, handlers);
+    }
+
+    public getSecurityRolesApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): securityrolesm.ISecurityRolesApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
+        return new securityrolesm.SecurityRolesApi(serverUrl, handlers);
+    }
+
+    public getServiceHooksApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): servicehooksm.IServiceHooksApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
+        return new servicehooksm.ServiceHooksApi(serverUrl, handlers);
+    }
+
+    public getReleaseApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): releasem.IReleaseApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
+        return new releasem.ReleaseApi(serverUrl, handlers);
     }
 
     public getTaskApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): taskm.ITaskApi {
@@ -151,15 +237,15 @@ export class WebApi {
         return new tfvcm.TfvcApi(serverUrl, handlers);
     }
 
+    public getWorkApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): workm.IWorkApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
+        return new workm.WorkApi(serverUrl, handlers);
+    }
+
     public getWorkItemTrackingApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): workitemtrackingm.IWorkItemTrackingApi {
         serverUrl = serverUrl || this.serverUrl;
         handlers = handlers || [this.authHandler];        
         return new workitemtrackingm.WorkItemTrackingApi(serverUrl, handlers);
-    }
-
-    public getReleaseApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): releasem.IReleaseApi {
-        serverUrl = serverUrl || this.serverUrl;
-        handlers = handlers || [this.authHandler];        
-        return new releasem.ReleaseApi(serverUrl, handlers);
     }
 }

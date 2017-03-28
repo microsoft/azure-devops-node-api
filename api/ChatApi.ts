@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
@@ -41,11 +41,11 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     }
 
     /**
-    * Delete a given chat message
-    * 
-    * @param {number} roomId - Id of the room
-    * @param {number} messageId - Id of the message to delete
-    */
+     * Delete a given chat message
+     * 
+     * @param {number} roomId - Id of the room
+     * @param {number} messageId - Id of the message to delete
+     */
     public async deleteMessage(
         roomId: number,
         messageId: number
@@ -85,10 +85,10 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     }
 
     /**
-    * Retrieve a listing of all chat messages in a given room
-    * 
-    * @param {number} roomId - Id of the room
-    */
+     * Retrieve a listing of all chat messages in a given room
+     * 
+     * @param {number} roomId - Id of the room
+     */
     public async getAllChatRoomMessages(
         roomId: number
         ): Promise<ChatInterfaces.Message[]> {
@@ -126,11 +126,11 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     }
 
     /**
-    * Retrieve information on a single chat message
-    * 
-    * @param {number} roomId - Id of the room
-    * @param {number} messageId - Id of the message to retrieve
-    */
+     * Retrieve information on a single chat message
+     * 
+     * @param {number} roomId - Id of the room
+     * @param {number} messageId - Id of the message to retrieve
+     */
     public async getChatRoomMessageById(
         roomId: number,
         messageId: number
@@ -170,11 +170,11 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     }
 
     /**
-    * Post message to a room
-    * 
-    * @param {ChatInterfaces.MessageData} messageUpdate - Content of the message to post
-    * @param {number} roomId - Id of the room
-    */
+     * Post message to a room
+     * 
+     * @param {ChatInterfaces.MessageData} messageUpdate - Content of the message to post
+     * @param {number} roomId - Id of the room
+     */
     public async sendMessageToRoom(
         messageUpdate: ChatInterfaces.MessageData,
         roomId: number
@@ -213,12 +213,12 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     }
 
     /**
-    * Update a given chat message
-    * 
-    * @param {ChatInterfaces.MessageData} messageUpdate - New message content
-    * @param {number} roomId - Id of the room
-    * @param {number} messageId - Id of the message
-    */
+     * Update a given chat message
+     * 
+     * @param {ChatInterfaces.MessageData} messageUpdate - New message content
+     * @param {number} roomId - Id of the room
+     * @param {number} messageId - Id of the message
+     */
     public async updateChatMessage(
         messageUpdate: ChatInterfaces.MessageData,
         roomId: number,
@@ -259,10 +259,10 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     }
 
     /**
-    * Create a single chat room
-    * 
-    * @param {ChatInterfaces.RoomData} roomUpdate - Information to create the room
-    */
+     * Create a single chat room
+     * 
+     * @param {ChatInterfaces.RoomData} roomUpdate - Information to create the room
+     */
     public async createChatRoom(
         roomUpdate: ChatInterfaces.RoomData
         ): Promise<ChatInterfaces.Room> {
@@ -299,10 +299,10 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     }
 
     /**
-    * Delete a given chat room
-    * 
-    * @param {number} roomId - Id of the room
-    */
+     * Delete a given chat room
+     * 
+     * @param {number} roomId - Id of the room
+     */
     public async deleteChatRoom(
         roomId: number
         ): Promise<void> {
@@ -340,7 +340,7 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     }
 
     /**
-    */
+     */
     public async getAllRooms(
         ): Promise<ChatInterfaces.Room[]> {
 
@@ -376,10 +376,10 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     }
 
     /**
-    * Retrieve information on a single chat room
-    * 
-    * @param {number} roomId - Id of the room to retrieve
-    */
+     * Retrieve information on a single chat room
+     * 
+     * @param {number} roomId - Id of the room to retrieve
+     */
     public async getChatRoomById(
         roomId: number
         ): Promise<ChatInterfaces.Room> {
@@ -417,11 +417,11 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     }
 
     /**
-    * Update information on a single chat room
-    * 
-    * @param {ChatInterfaces.RoomData} roomUpdate - Room information
-    * @param {number} roomId - Id of the room to update
-    */
+     * Update information on a single chat room
+     * 
+     * @param {ChatInterfaces.RoomData} roomUpdate - Room information
+     * @param {number} roomId - Id of the room to update
+     */
     public async updateChatRoom(
         roomUpdate: ChatInterfaces.RoomData,
         roomId: number
@@ -460,10 +460,10 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     }
 
     /**
-    * Retrieve a listing of all chat users
-    * 
-    * @param {number} roomId - Id of the room
-    */
+     * Retrieve a listing of all chat users
+     * 
+     * @param {number} roomId - Id of the room
+     */
     public async getAllChatRoomUsers(
         roomId: number
         ): Promise<ChatInterfaces.User[]> {
@@ -501,11 +501,11 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     }
 
     /**
-    * Retrieve information on a single chat user
-    * 
-    * @param {number} roomId - Id of the room
-    * @param {string} userId - TfId of the user
-    */
+     * Retrieve information on a single chat user
+     * 
+     * @param {number} roomId - Id of the room
+     * @param {string} userId - TfId of the user
+     */
     public async getChatRoomUserById(
         roomId: number,
         userId: string
@@ -545,12 +545,12 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     }
 
     /**
-    * Joins a user to a given room
-    * 
-    * @param {ChatInterfaces.UserData} userUpdate - user model information
-    * @param {number} roomId - Id of the room
-    * @param {string} userId - TfId of the user
-    */
+     * Joins a user to a given room
+     * 
+     * @param {ChatInterfaces.UserData} userUpdate - user model information
+     * @param {number} roomId - Id of the room
+     * @param {string} userId - TfId of the user
+     */
     public async joinRoom(
         userUpdate: ChatInterfaces.UserData,
         roomId: number,
@@ -591,11 +591,11 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     }
 
     /**
-    * Leaves a user from a given room
-    * 
-    * @param {number} roomId - Id of the room
-    * @param {string} userId - TfId of the user
-    */
+     * Leaves a user from a given room
+     * 
+     * @param {number} roomId - Id of the room
+     * @param {string} userId - TfId of the user
+     */
     public async leaveRoom(
         roomId: number,
         userId: string

@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
@@ -33,9 +33,9 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
     }
 
     /**
-    * @param {AccountsInterfaces.AccountCreateInfoInternal} info
-    * @param {boolean} usePrecreated
-    */
+     * @param {AccountsInterfaces.AccountCreateInfoInternal} info
+     * @param {boolean} usePrecreated
+     */
     public async createAccount(
         info: AccountsInterfaces.AccountCreateInfoInternal,
         usePrecreated?: boolean
@@ -78,9 +78,9 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
     }
 
     /**
-    * @param {string} accountId
-    * @param {string} properties
-    */
+     * @param {string} accountId
+     * @param {string} properties
+     */
     public async getAccount(
         accountId: string,
         properties?: string
@@ -124,12 +124,12 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
     }
 
     /**
-    * A new version GetAccounts API. Only supports limited set of parameters, returns a list of account ref objects that only contains AccountUrl, AccountName and AccountId information, will use collection host Id as the AccountId.
-    * 
-    * @param {string} ownerId - Owner Id to query for
-    * @param {string} memberId - Member Id to query for
-    * @param {string} properties - Only support service URL properties
-    */
+     * A new version GetAccounts API. Only supports limited set of parameters, returns a list of account ref objects that only contains AccountUrl, AccountName and AccountId information, will use collection host Id as the AccountId.
+     * 
+     * @param {string} ownerId - Owner Id to query for
+     * @param {string} memberId - Member Id to query for
+     * @param {string} properties - Only support service URL properties
+     */
     public async getAccounts(
         ownerId?: string,
         memberId?: string,
@@ -175,8 +175,8 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
     }
 
     /**
-    * @param {string} accountName
-    */
+     * @param {string} accountName
+     */
     public async isValidAccountName(
         accountName: string
         ): Promise<AccountsInterfaces.AccountNameAvailability> {
@@ -214,7 +214,7 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
     }
 
     /**
-    */
+     */
     public async getRegions(
         ): Promise<AccountsInterfaces.AccountRegion[]> {
 
@@ -250,7 +250,7 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
     }
 
     /**
-    */
+     */
     public async getAccountSettings(
         ): Promise<{ [key: string] : string; }> {
 
