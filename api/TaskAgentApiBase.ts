@@ -85,13 +85,13 @@ export interface ITaskAgentApiBase extends basem.ClientApiBase {
     getAgentQueue(queueId: number, project?: string, actionFilter?: TaskAgentInterfaces.TaskAgentQueueActionFilter): Promise<TaskAgentInterfaces.TaskAgentQueue>;
     getAgentQueues(project?: string, queueName?: string, actionFilter?: TaskAgentInterfaces.TaskAgentQueueActionFilter): Promise<TaskAgentInterfaces.TaskAgentQueue[]>;
     getTaskGroupHistory(project: string, taskGroupId: string): Promise<TaskAgentInterfaces.TaskGroupRevision[]>;
-    deleteSecureFile(project: string, secureFileId: number): Promise<void>;
-    downloadSecureFile(project: string, secureFileId: number, ticket: string, download?: boolean): Promise<NodeJS.ReadableStream>;
-    getSecureFile(project: string, secureFileId: number, includeDownloadTicket?: boolean): Promise<TaskAgentInterfaces.SecureFile>;
+    deleteSecureFile(project: string, secureFileId: string): Promise<void>;
+    downloadSecureFile(project: string, secureFileId: string, ticket: string, download?: boolean): Promise<NodeJS.ReadableStream>;
+    getSecureFile(project: string, secureFileId: string, includeDownloadTicket?: boolean): Promise<TaskAgentInterfaces.SecureFile>;
     getSecureFiles(project: string, namePattern?: string, includeDownloadTickets?: boolean, actionFilter?: TaskAgentInterfaces.SecureFileActionFilter): Promise<TaskAgentInterfaces.SecureFile[]>;
-    getSecureFilesByIds(project: string, secureFileIds: number[], includeDownloadTickets?: boolean): Promise<TaskAgentInterfaces.SecureFile[]>;
+    getSecureFilesByIds(project: string, secureFileIds: string[], includeDownloadTickets?: boolean): Promise<TaskAgentInterfaces.SecureFile[]>;
     querySecureFilesByProperties(condition: string, project: string, namePattern?: string): Promise<TaskAgentInterfaces.SecureFile[]>;
-    updateSecureFile(secureFile: TaskAgentInterfaces.SecureFile, project: string, secureFileId: number): Promise<TaskAgentInterfaces.SecureFile>;
+    updateSecureFile(secureFile: TaskAgentInterfaces.SecureFile, project: string, secureFileId: string): Promise<TaskAgentInterfaces.SecureFile>;
     updateSecureFiles(secureFiles: TaskAgentInterfaces.SecureFile[], project: string): Promise<TaskAgentInterfaces.SecureFile[]>;
     uploadSecureFile(customHeaders: any, contentStream: NodeJS.ReadableStream, project: string, name: string): Promise<TaskAgentInterfaces.SecureFile>;
     executeServiceEndpointRequest(serviceEndpointRequest: TaskAgentInterfaces.ServiceEndpointRequest, project: string, endpointId: string): Promise<TaskAgentInterfaces.ServiceEndpointRequestResult>;
@@ -3024,11 +3024,11 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      * Delete a secure file
      * 
      * @param {string} project - Project ID or project name
-     * @param {number} secureFileId - The unique secure file Id
+     * @param {string} secureFileId - The unique secure file Id
      */
     public async deleteSecureFile(
         project: string,
-        secureFileId: number
+        secureFileId: string
         ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
@@ -3068,13 +3068,13 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      * Download a secure file by Id
      * 
      * @param {string} project - Project ID or project name
-     * @param {number} secureFileId - The unique secure file Id
+     * @param {string} secureFileId - The unique secure file Id
      * @param {string} ticket - A valid download ticket
      * @param {boolean} download - If download is true, the file is sent as attachement in the response body. If download is false, the response body contains the file stream.
      */
     public async downloadSecureFile(
         project: string,
-        secureFileId: number,
+        secureFileId: string,
         ticket: string,
         download?: boolean
         ): Promise<NodeJS.ReadableStream> {
@@ -3114,12 +3114,12 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      * Get a secure file
      * 
      * @param {string} project - Project ID or project name
-     * @param {number} secureFileId - The unique secure file Id
+     * @param {string} secureFileId - The unique secure file Id
      * @param {boolean} includeDownloadTicket - If includeDownloadTicket is true and the caller has permissions, a download ticket is included in the response.
      */
     public async getSecureFile(
         project: string,
-        secureFileId: number,
+        secureFileId: string,
         includeDownloadTicket?: boolean
         ): Promise<TaskAgentInterfaces.SecureFile> {
 
@@ -3219,12 +3219,12 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      * Get secure files
      * 
      * @param {string} project - Project ID or project name
-     * @param {number[]} secureFileIds - A list of secure file Ids
+     * @param {string[]} secureFileIds - A list of secure file Ids
      * @param {boolean} includeDownloadTickets - If includeDownloadTickets is true and the caller has permissions, a download ticket for each secure file is included in the response.
      */
     public async getSecureFilesByIds(
         project: string,
-        secureFileIds: number[],
+        secureFileIds: string[],
         includeDownloadTickets?: boolean
         ): Promise<TaskAgentInterfaces.SecureFile[]> {
 
@@ -3321,12 +3321,12 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      * 
      * @param {TaskAgentInterfaces.SecureFile} secureFile - The secure file with updated name and/or properties
      * @param {string} project - Project ID or project name
-     * @param {number} secureFileId - The unique secure file Id
+     * @param {string} secureFileId - The unique secure file Id
      */
     public async updateSecureFile(
         secureFile: TaskAgentInterfaces.SecureFile,
         project: string,
-        secureFileId: number
+        secureFileId: string
         ): Promise<TaskAgentInterfaces.SecureFile> {
 
         return new Promise<TaskAgentInterfaces.SecureFile>(async (resolve, reject) => {
