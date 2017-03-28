@@ -21,16 +21,16 @@ Typings (.d.ts) are now distributed with the api, so intellisense and compile su
 
 ### Create a connection
 ```javascript
-var vsts = require('vso-node-api');
+let vsts = require('vso-node-api');
 
 // your collection url
-var collectionUrl = "https://fabrikam.visualstudio.com/defaultcollection";
+let collectionUrl = "https://fabrikam.visualstudio.com/defaultcollection";
 
 // ideally from config
 let token: string = "cbdeb34vzyuk5l4gxc4qfczn3lko3avfkfqyb47etahq6axpcqha"; 
 
-let authHandler = vm.getPersonalAccessTokenHandler(token); 
-var connect = new vsts.WebApi(collectionUrl, creds);    
+let authHandler = vsts.getPersonalAccessTokenHandler(token); 
+let connect = new vsts.WebApi(collectionUrl, authHandler);    
 ```
 
 ### Get an instance of a client
