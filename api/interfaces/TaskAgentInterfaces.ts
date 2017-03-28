@@ -392,7 +392,7 @@ export interface ResultTransformationDetails {
 export interface SecureFile {
     createdBy: VSSInterfaces.IdentityRef;
     createdOn: Date;
-    id: number;
+    id: string;
     modifiedBy: VSSInterfaces.IdentityRef;
     modifiedOn: Date;
     name: string;
