@@ -6,8 +6,8 @@
 import url = require("url");
 import path = require("path");
 /// Import base rest class ///
-import restm = require("./RestClient");
-import httpm = require("./HttpClient");
+import * as restm from 'typed-rest-client/RestClient';
+import * as httpm from 'typed-rest-client/HttpClient';
 import ifm = require("./interfaces/common/VsoBaseInterfaces");
 
 interface VssApiResourceLocationLookup {
@@ -39,17 +39,16 @@ export class InvalidApiResourceVersionError implements Error {
  * Base class that should be used (derived from) to make requests to VSS REST apis
  */
 export class VsoClient {
-
     private static APIS_RELATIVE_PATH = "_apis";
     private static PREVIEW_INDICATOR = "-preview.";
     private _locationsByAreaPromises: { [areaName: string]: Promise<VssApiResourceLocationLookup>; };
     private _initializationPromise: Promise<any>;
 
-    restClient: restm.RestCallbackClient;
+    restClient: restm.RestClient;
     baseUrl: string;
     basePath: string;
 
-    constructor(baseUrl: string, restClient: restm.RestCallbackClient) {
+    constructor(baseUrl: string, restClient: restm.RestClient) {
         this.baseUrl = baseUrl;
         this.basePath = url.parse(baseUrl).pathname;
         this.restClient = restClient;
@@ -170,25 +169,21 @@ export class VsoClient {
 
             areaLocationsPromise = new Promise<VssApiResourceLocationLookup>((resolve, reject) => {
                 let requestUrl = this.resolveUrl(VsoClient.APIS_RELATIVE_PATH + "/" + area);
+                this.restClient.options<any>(requestUrl)
+                .then((res:restm.IRestResponse<any>) => {                    
+                    let locationsLookup: VssApiResourceLocationLookup = {};
+                    let resourceLocations: ifm.ApiResourceLocation[] = res.result.value;
 
-                this._issueOptionsRequest(requestUrl, (err: any, statusCode: number, locationsResult: any) => {
-                    if (err) {
-                        err.statusCode = statusCode;
-                        reject(err);
+                    let i;
+                    for (i = 0; i < resourceLocations.length; i++) {
+                        let resourceLocation = resourceLocations[i];
+                        locationsLookup[resourceLocation.id.toLowerCase()] = resourceLocation;
                     }
-                    else {
-                        let locationsLookup: VssApiResourceLocationLookup = {};
 
-                        let resourceLocations: ifm.ApiResourceLocation[] = locationsResult.value;
-
-                        let i;
-                        for (i = 0; i < locationsResult.count; i++) {
-                            let resourceLocation = resourceLocations[i];
-                            locationsLookup[resourceLocation.id.toLowerCase()] = resourceLocation;
-                        }
-
-                        resolve(locationsLookup);
-                    }
+                    resolve(locationsLookup);
+                })
+                .catch((err) => {
+                    reject(err);
                 });
             });
 
@@ -200,13 +195,6 @@ export class VsoClient {
 
     public resolveUrl(relativeUrl: string): string {
         return url.resolve(this.baseUrl, path.join(this.basePath, relativeUrl));
-    }
-
-    /**
-     * Issues an OPTIONS request to get location objects from a location id
-     */
-    public _issueOptionsRequest(requestUrl: string, onResult: (err: any, statusCode: number, locationsResult: any) => void): void {
-        return this.restClient.options(requestUrl, onResult);
     }
 
     private getSerializedObject(object: any): string {

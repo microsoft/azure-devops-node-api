@@ -5,6 +5,7 @@ import url = require('url');
 import vsom = require('./VsoClient');
 import TaskAgentInterfaces = require("./interfaces/TaskAgentInterfaces");
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
+import * as restm from 'typed-rest-client/RestClient';
 
 export interface ITaskAgentApi extends taskagentbasem.ITaskAgentApiBase {
     uploadTaskDefinition(customHeaders: VsoBaseInterfaces.IHeaders, contentStream: NodeJS.ReadableStream, taskId: string, overwrite: boolean) : Promise<void>;
@@ -167,43 +168,7 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
      * @param {boolean} overwrite
      * @param onResult callback function
      */
-    public uploadTaskDefinition(
-        customHeaders: VsoBaseInterfaces.IHeaders,
-        contentStream: NodeJS.ReadableStream,
-        taskId: string,
-        overwrite: boolean
-        ): Promise<void> {
-
-        let promise = this.vsoClient.beginGetLocation("distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd")
-            .then((location: ifm.ApiResourceLocation) => {
-                if (location) {
-                    // the resource exists at the url we were given. go!
-                    return this._uploadTaskDefinition(customHeaders, contentStream, taskId, overwrite);
-                }
-                else {
-                    // this is the case when the server doesn't support collection-level task definitions
-                    var fallbackClient = this._getFallbackClient(this.baseUrl);
-                    if (!fallbackClient) {
-                        // couldn't convert
-                        throw new Error("Failed to find api location for area: distributedtask id: 60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd");
-                    }
-                    else {
-                        // use the fallback client 
-                        return fallbackClient._uploadTaskDefinition(customHeaders, contentStream, taskId, overwrite);
-                    }
-                }
-            });
-            
-        return <Promise<void>>(<any>promise);
-    }
-    
-    /**
-     * @param {NodeJS.ReadableStream} contentStream
-     * @param {string} taskId
-     * @param {boolean} overwrite
-     * @param onResult callback function
-     */
-    private _uploadTaskDefinition(
+    public async uploadTaskDefinition(
         customHeaders: VsoBaseInterfaces.IHeaders,
         contentStream: NodeJS.ReadableStream,
         taskId: string,
@@ -217,27 +182,34 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
         let queryValues: any = {
             overwrite: overwrite,
         };
-        
-        customHeaders = customHeaders || {};
-        customHeaders["Content-Type"] = "application/octet-stream";
 
-        return new Promise<void>((resolve, reject) => {
-            this.vsoClient.getVersioningData("3.0-preview.1", "distributedtask", "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues, queryValues)
-                .then((versioningData: vsom.ClientVersioningData) => {
-                    var url: string = versioningData.requestUrl;
-                    var apiVersion: string = versioningData.apiVersion;
-                    var serializationData = {  responseIsCollection: false };
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
 
-                    this.restCallbackClient.uploadStream('PUT', url, apiVersion, contentStream, customHeaders, (err: any, statusCode: number, obj: any) => {
-                        if (err) {
-                            err.statusCode = statusCode;
-                            reject(err);
-                        }
-                        else {
-                            resolve(null);
-                        }
-                    }, serializationData);
-                }); 
+            customHeaders = customHeaders || {};
+            customHeaders["Content-Type"] = "application/octet-stream";
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.0-preview.1", 
+                    "distributedtask", 
+                    "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd", routeValues, queryValues);
+
+                let url: string = verData.requestUrl;
+                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                                                                                verData.apiVersion);
+                options.additionalHeaders = customHeaders;
+
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.uploadStream<void>("POST", url, contentStream, options);
+
+                resolve(res.result);
+            }
+            catch (err) {
+                reject(err);
+            }
         });
     }
     

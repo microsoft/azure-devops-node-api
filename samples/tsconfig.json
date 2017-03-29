@@ -6,7 +6,6 @@
     },
     "files": [
         "run.ts", 
-        "http.ts", 
         "build.ts",
         "task.ts"
     ]
