@@ -31,11 +31,11 @@ export async function run() {
             let taskDefinition = tasks[0];
             let file: NodeJS.WritableStream = fs.createWriteStream(sampleFilePath);
             let stream = (await vstsTask.getTaskContentZip(taskDefinition.id, `${taskDefinition.version.major}.${taskDefinition.version.minor}.${taskDefinition.version.patch}`)).pipe(file);
-            let promise = Q.defer();
+            let defer = Q.defer();
             stream.on('finish', () => {
-                promise.resolve();
+                defer.resolve();
             });
-            await promise;
+            await defer.promise;
             console.log(`Downloaded task ${taskDefinition.name}`);
         }
 
