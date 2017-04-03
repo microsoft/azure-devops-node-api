@@ -17,6 +17,7 @@ import gitm = require('./GitApi');
 import identitiesm = require('./IdentitiesApi');
 import locationsm = require('./LocationsApi');
 import notificationm = require('./NotificationApi');
+import operationsm = require('./OperationsApi');
 import organizationm = require('./OrganizationApi');
 import policym = require('./PolicyApi');
 import profilem = require('./ProfileApi');
@@ -175,6 +176,12 @@ export class WebApi {
         serverUrl = serverUrl || this.serverUrl;
         handlers = handlers || [this.authHandler];        
         return new notificationm.NotificationApi(serverUrl, handlers);
+    }
+
+    public getOperationsApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): operationsm.IOperationsApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];        
+        return new operationsm.OperationsApi(serverUrl, handlers);
     }
 
     public getOrganizationApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): organizationm.IOrganizationApi {

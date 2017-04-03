@@ -2797,10 +2797,12 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-     * @param {string} publisherName
-     * @param {string} extensionName
-     * @param {string} version
-     * @param {string} statType
+     * Increments a daily statistic associated with the extension
+     * 
+     * @param {string} publisherName - Name of the publisher
+     * @param {string} extensionName - Name of the extension
+     * @param {string} version - Version of the extension
+     * @param {string} statType - Type of stat to increment
      */
     public async incrementExtensionDailyStat(
         publisherName: string,

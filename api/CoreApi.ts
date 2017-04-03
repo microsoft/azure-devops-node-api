@@ -25,7 +25,6 @@ export interface ICoreApi extends basem.ClientApiBase {
     getConnectedServiceDetails(projectId: string, name: string): Promise<CoreInterfaces.WebApiConnectedServiceDetails>;
     getConnectedServices(projectId: string, kind?: CoreInterfaces.ConnectedServiceKind): Promise<CoreInterfaces.WebApiConnectedService[]>;
     createIdentityMru(mruData: CoreInterfaces.IdentityData, mruName: string): Promise<void>;
-    deleteIdentityMru(mruData: CoreInterfaces.IdentityData, mruName: string): Promise<void>;
     getIdentityMru(mruName: string): Promise<VSSInterfaces.IdentityRef[]>;
     updateIdentityMru(mruData: CoreInterfaces.IdentityData, mruName: string): Promise<void>;
     getTeamMembers(projectId: string, teamId: string, top?: number, skip?: number): Promise<VSSInterfaces.IdentityRef[]>;
@@ -55,9 +54,9 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {CoreInterfaces.WebApiConnectedServiceDetails} connectedServiceCreationData
-    * @param {string} projectId
-    */
+     * @param {CoreInterfaces.WebApiConnectedServiceDetails} connectedServiceCreationData
+     * @param {string} projectId
+     */
     public async createConnectedService(
         connectedServiceCreationData: CoreInterfaces.WebApiConnectedServiceDetails,
         projectId: string
@@ -96,9 +95,9 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {string} projectId
-    * @param {string} name
-    */
+     * @param {string} projectId
+     * @param {string} name
+     */
     public async getConnectedServiceDetails(
         projectId: string,
         name: string
@@ -138,9 +137,9 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {string} projectId
-    * @param {CoreInterfaces.ConnectedServiceKind} kind
-    */
+     * @param {string} projectId
+     * @param {CoreInterfaces.ConnectedServiceKind} kind
+     */
     public async getConnectedServices(
         projectId: string,
         kind?: CoreInterfaces.ConnectedServiceKind
@@ -184,9 +183,9 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {CoreInterfaces.IdentityData} mruData
-    * @param {string} mruName
-    */
+     * @param {CoreInterfaces.IdentityData} mruData
+     * @param {string} mruName
+     */
     public async createIdentityMru(
         mruData: CoreInterfaces.IdentityData,
         mruName: string
@@ -225,49 +224,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {CoreInterfaces.IdentityData} mruData
-    * @param {string} mruName
-    */
-    public async deleteIdentityMru(
-        mruData: CoreInterfaces.IdentityData,
-        mruName: string
-        ): Promise<void> {
-
-        return new Promise<void>(async (resolve, reject) => {
-            let routeValues: any = {
-                mruName: mruName
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
-                    "core",
-                    "5ead0b70-2572-4697-97e9-f341069a783a",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<void>;
-                res = await this.rest.del<void>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-    * @param {string} mruName
-    */
+     * @param {string} mruName
+     */
     public async getIdentityMru(
         mruName: string
         ): Promise<VSSInterfaces.IdentityRef[]> {
@@ -305,9 +263,9 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {CoreInterfaces.IdentityData} mruData
-    * @param {string} mruName
-    */
+     * @param {CoreInterfaces.IdentityData} mruData
+     * @param {string} mruName
+     */
     public async updateIdentityMru(
         mruData: CoreInterfaces.IdentityData,
         mruName: string
@@ -346,11 +304,11 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {string} projectId
-    * @param {string} teamId
-    * @param {number} top
-    * @param {number} skip
-    */
+     * @param {string} projectId
+     * @param {string} teamId
+     * @param {number} top
+     * @param {number} skip
+     */
     public async getTeamMembers(
         projectId: string,
         teamId: string,
@@ -398,10 +356,10 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Retrieve process by id
-    * 
-    * @param {string} processId
-    */
+     * Retrieve process by id
+     * 
+     * @param {string} processId
+     */
     public async getProcessById(
         processId: string
         ): Promise<CoreInterfaces.Process> {
@@ -439,7 +397,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    */
+     */
     public async getProcesses(
         ): Promise<CoreInterfaces.Process[]> {
 
@@ -475,10 +433,10 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Get project collection with the specified id or name.
-    * 
-    * @param {string} collectionId
-    */
+     * Get project collection with the specified id or name.
+     * 
+     * @param {string} collectionId
+     */
     public async getProjectCollection(
         collectionId: string
         ): Promise<CoreInterfaces.TeamProjectCollection> {
@@ -516,11 +474,11 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Get project collection references for this application.
-    * 
-    * @param {number} top
-    * @param {number} skip
-    */
+     * Get project collection references for this application.
+     * 
+     * @param {number} top
+     * @param {number} skip
+     */
     public async getProjectCollections(
         top?: number,
         skip?: number
@@ -564,8 +522,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {number} minRevision
-    */
+     * @param {number} minRevision
+     */
     public async getProjectHistory(
         minRevision?: number
         ): Promise<CoreInterfaces.TeamProjectReference[]> {
@@ -607,12 +565,12 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Get project with the specified id or name, optionally including capabilities.
-    * 
-    * @param {string} projectId
-    * @param {boolean} includeCapabilities - Include capabilities (such as source control) in the team project result (default: false).
-    * @param {boolean} includeHistory - Search within renamed projects (that had such name in the past).
-    */
+     * Get project with the specified id or name, optionally including capabilities.
+     * 
+     * @param {string} projectId
+     * @param {boolean} includeCapabilities - Include capabilities (such as source control) in the team project result (default: false).
+     * @param {boolean} includeHistory - Search within renamed projects (that had such name in the past).
+     */
     public async getProject(
         projectId: string,
         includeCapabilities?: boolean,
@@ -658,12 +616,12 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Get project references with the specified state
-    * 
-    * @param {any} stateFilter - Filter on team projects in a specific team project state (default: WellFormed).
-    * @param {number} top
-    * @param {number} skip
-    */
+     * Get project references with the specified state
+     * 
+     * @param {any} stateFilter - Filter on team projects in a specific team project state (default: WellFormed).
+     * @param {number} top
+     * @param {number} skip
+     */
     public async getProjects(
         stateFilter?: any,
         top?: number,
@@ -709,10 +667,10 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Queue a project creation.
-    * 
-    * @param {CoreInterfaces.TeamProject} projectToCreate - The project to create.
-    */
+     * Queue a project creation.
+     * 
+     * @param {CoreInterfaces.TeamProject} projectToCreate - The project to create.
+     */
     public async queueCreateProject(
         projectToCreate: CoreInterfaces.TeamProject
         ): Promise<OperationsInterfaces.OperationReference> {
@@ -749,10 +707,10 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Queue a project deletion.
-    * 
-    * @param {string} projectId - The project id of the project to delete.
-    */
+     * Queue a project deletion.
+     * 
+     * @param {string} projectId - The project id of the project to delete.
+     */
     public async queueDeleteProject(
         projectId: string
         ): Promise<OperationsInterfaces.OperationReference> {
@@ -790,11 +748,11 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Update an existing project's name, abbreviation, or description.
-    * 
-    * @param {CoreInterfaces.TeamProject} projectUpdate - The updates for the project.
-    * @param {string} projectId - The project id of the project to update.
-    */
+     * Update an existing project's name, abbreviation, or description.
+     * 
+     * @param {CoreInterfaces.TeamProject} projectUpdate - The updates for the project.
+     * @param {string} projectId - The project id of the project to update.
+     */
     public async updateProject(
         projectUpdate: CoreInterfaces.TeamProject,
         projectId: string
@@ -833,8 +791,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {CoreInterfaces.Proxy} proxy
-    */
+     * @param {CoreInterfaces.Proxy} proxy
+     */
     public async createOrUpdateProxy(
         proxy: CoreInterfaces.Proxy
         ): Promise<CoreInterfaces.Proxy> {
@@ -871,9 +829,9 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {string} proxyUrl
-    * @param {string} site
-    */
+     * @param {string} proxyUrl
+     * @param {string} site
+     */
     public async deleteProxy(
         proxyUrl: string,
         site?: string
@@ -917,8 +875,8 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {string} proxyUrl
-    */
+     * @param {string} proxyUrl
+     */
     public async getProxies(
         proxyUrl?: string
         ): Promise<CoreInterfaces.Proxy[]> {
@@ -960,11 +918,11 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Creates a team
-    * 
-    * @param {CoreInterfaces.WebApiTeam} team - The team data used to create the team.
-    * @param {string} projectId - The name or id (GUID) of the team project in which to create the team.
-    */
+     * Creates a team
+     * 
+     * @param {CoreInterfaces.WebApiTeam} team - The team data used to create the team.
+     * @param {string} projectId - The name or id (GUID) of the team project in which to create the team.
+     */
     public async createTeam(
         team: CoreInterfaces.WebApiTeam,
         projectId: string
@@ -1003,11 +961,11 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Deletes a team
-    * 
-    * @param {string} projectId - The name or id (GUID) of the team project containing the team to delete.
-    * @param {string} teamId - The name of id of the team to delete.
-    */
+     * Deletes a team
+     * 
+     * @param {string} projectId - The name or id (GUID) of the team project containing the team to delete.
+     * @param {string} teamId - The name of id of the team to delete.
+     */
     public async deleteTeam(
         projectId: string,
         teamId: string
@@ -1047,11 +1005,11 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Gets a team
-    * 
-    * @param {string} projectId
-    * @param {string} teamId
-    */
+     * Gets a team
+     * 
+     * @param {string} projectId
+     * @param {string} teamId
+     */
     public async getTeam(
         projectId: string,
         teamId: string
@@ -1091,10 +1049,10 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {string} projectId
-    * @param {number} top
-    * @param {number} skip
-    */
+     * @param {string} projectId
+     * @param {number} top
+     * @param {number} skip
+     */
     public async getTeams(
         projectId: string,
         top?: number,
@@ -1140,12 +1098,12 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Updates a team's name and/or description
-    * 
-    * @param {CoreInterfaces.WebApiTeam} teamData
-    * @param {string} projectId - The name or id (GUID) of the team project containing the team to update.
-    * @param {string} teamId - The name of id of the team to update.
-    */
+     * Updates a team's name and/or description
+     * 
+     * @param {CoreInterfaces.WebApiTeam} teamData
+     * @param {string} projectId - The name or id (GUID) of the team project containing the team to update.
+     * @param {string} teamId - The name of id of the team to update.
+     */
     public async updateTeam(
         teamData: CoreInterfaces.WebApiTeam,
         projectId: string,

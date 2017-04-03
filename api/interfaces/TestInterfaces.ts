@@ -368,7 +368,6 @@ export interface LinkedWorkItemsQuery {
     suiteIds: number[];
     testCaseIds: number[];
     workItemCategory: string;
-    workItemCount: number;
 }
 
 export interface LinkedWorkItemsQueryResult {
