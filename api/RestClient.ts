@@ -48,7 +48,7 @@ export class RestClient {
                 apiVersion: string, 
                 resources: any, 
                 additionalHeaders?: ifm.IHeaders): Promise<IRestClientResponse> {
-        
+
         var headers = additionalHeaders || {};                    
         headers["Accept"] = this.createAcceptHeader('application/json', apiVersion);
         headers["Content-Type"] = headers["Content-Type"] || 'application/json; charset=utf-8';        
@@ -65,7 +65,7 @@ export class RestClient {
 
         var headers = additionalHeaders || {};                    
         headers["Accept"] = this.createAcceptHeader('application/json', apiVersion);
-        headers["Content-Type"] = headers["Content-Type"] || 'application/json; charset=utf-8';        
+        headers["Content-Type"] = headers["Content-Type"] || 'application/json; charset=utf-8';
         
         let data: string = JSON.stringify(resources, null, 2);
         let res: httpm.HttpClientResponse = await this.client.patch(requestUrl, data, headers);
@@ -79,8 +79,8 @@ export class RestClient {
 
         var headers = additionalHeaders || {};                    
         headers["Accept"] = this.createAcceptHeader('application/json', apiVersion);
-        headers["Content-Type"] = headers["Content-Type"] || 'application/json; charset=utf-8';        
-        
+        headers["Content-Type"] = headers["Content-Type"] || 'application/json; charset=utf-8';
+
         let data: string = JSON.stringify(resources, null, 2);
         let res: httpm.HttpClientResponse = await this.client.put(requestUrl, data, headers);
         return this._processResponse(res);
@@ -136,8 +136,8 @@ export class RestClient {
                 reject(new Error(msg));
             } else {
                 resolve(rres);
-            }            
-        });        
+            }
+        });
     } 
 }
 
@@ -164,7 +164,7 @@ export class RestCallbackClient {
     create(url: string, apiVersion: string, resources: any, customHeaders: ifm.IHeaders, onResult: (err: any, statusCode: number, obj: any) => void, serializationData?: serm.SerializationData): void {
         var headers = customHeaders || {};
         headers["Accept"] = this.createAcceptHeader('application/json', apiVersion);
-        headers["Content-Type"] = headers["Content-Type"] || 'application/json; charset=utf-8';        
+        headers["Content-Type"] = headers["Content-Type"] || 'application/json; charset=utf-8';
         this._sendJson('POST', url, apiVersion, resources, customHeaders, onResult);
     }
 
@@ -249,7 +249,7 @@ export class RestCallbackClient {
 
     public createAcceptHeader(type: string, apiVersion?: string): string {
         return type + (apiVersion ? (';' + this.versionParam + '=' + apiVersion) : '');
-    }    
+    }
 
 }
 
@@ -291,7 +291,7 @@ function _processResponse(url: string,
             jsonObj = JSON.parse(contents);
         } catch (e) {
             onResult(new Error('Invalid Resource'), res.statusCode, null);
-            return;            
+            return;
         }
     }
 

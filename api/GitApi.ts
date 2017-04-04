@@ -93,7 +93,6 @@ export interface IGitApi extends basem.ClientApiBase {
     createPush(push: GitInterfaces.GitPush, repositoryId: string, project?: string): Promise<GitInterfaces.GitPush>;
     getPush(repositoryId: string, pushId: number, project?: string, includeCommits?: number, includeRefUpdates?: boolean): Promise<GitInterfaces.GitPush>;
     getPushes(repositoryId: string, project?: string, skip?: number, top?: number, searchCriteria?: GitInterfaces.GitPushSearchCriteria): Promise<GitInterfaces.GitPush[]>;
-    createRefLockRequest(refLockRequest: GitInterfaces.GitRefLockRequest, project: string, repositoryId: string): Promise<void>;
     getRefs(repositoryId: string, project?: string, filter?: string, includeLinks?: boolean, latestStatusesOnly?: boolean): Promise<GitInterfaces.GitRef[]>;
     updateRef(newRefInfo: GitInterfaces.GitRefUpdate, repositoryId: string, filter: string, project?: string, projectId?: string): Promise<GitInterfaces.GitRef>;
     updateRefs(refUpdates: GitInterfaces.GitRefUpdate[], repositoryId: string, project?: string, projectId?: string): Promise<GitInterfaces.GitRefUpdateResult[]>;
@@ -3880,52 +3879,6 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let ret = this.formatResponse(res.result,
                                               GitInterfaces.TypeInfo.GitPush,
                                               true);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Lock or unlock a ref.
-     * 
-     * @param {GitInterfaces.GitRefLockRequest} refLockRequest
-     * @param {string} project - Project ID or project name
-     * @param {string} repositoryId
-     */
-    public async createRefLockRequest(
-        refLockRequest: GitInterfaces.GitRefLockRequest,
-        project: string,
-        repositoryId: string
-        ): Promise<void> {
-
-        return new Promise<void>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                repositoryId: repositoryId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
-                    "git",
-                    "32863ac0-6a8a-4d9f-8afe-ba293b93ec3c",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<void>;
-                res = await this.rest.create<void>(url, refLockRequest, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
 
                 resolve(ret);
                 

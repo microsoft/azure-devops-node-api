@@ -374,6 +374,7 @@ export enum WorkItemExpand {
 
 export interface WorkItemField extends WorkItemTrackingResource {
     description: string;
+    isIdentity: boolean;
     name: string;
     readOnly: boolean;
     referenceName: string;

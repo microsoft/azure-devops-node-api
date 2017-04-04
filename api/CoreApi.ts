@@ -567,7 +567,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     /**
      * Get project with the specified id or name, optionally including capabilities.
      * 
-     * @param {string} projectId
+     * @param {string} projectId - The name or id of the project.
      * @param {boolean} includeCapabilities - Include capabilities (such as source control) in the team project result (default: false).
      * @param {boolean} includeHistory - Search within renamed projects (that had such name in the past).
      */

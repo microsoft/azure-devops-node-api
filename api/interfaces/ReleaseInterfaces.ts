@@ -168,7 +168,6 @@ export enum AuthorizationHeaderFor {
 
 export interface AutoTriggerIssue extends ReleaseIssue {
     buildId: number;
-    issueMessage: string;
     issueSource: IssueSource;
     releaseDefinitionReference: ReleaseDefinitionShallowReference;
 }

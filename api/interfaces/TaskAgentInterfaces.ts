@@ -155,6 +155,7 @@ export interface DependsOn {
 }
 
 export interface DeploymentGroup extends DeploymentGroupReference {
+    description: string;
     machineCount: number;
     machines: DeploymentMachine[];
 }
@@ -991,6 +992,7 @@ export interface TaskDefinition {
     preview: boolean;
     releaseNotes: string;
     runsOn: string[];
+    satisfies: string[];
     serverOwned: boolean;
     sourceDefinitions: TaskSourceDefinition[];
     sourceLocation: string;

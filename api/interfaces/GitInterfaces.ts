@@ -1246,11 +1246,6 @@ export interface GitRefFavorite {
     url: string;
 }
 
-export interface GitRefLockRequest {
-    lock: boolean;
-    name: string;
-}
-
 export interface GitRefUpdate {
     isLocked: boolean;
     name: string;
