@@ -27,6 +27,18 @@ export class ClientApiBase {
         this.userAgent = userAgent;
     }
 
+    // public async connect(): Promise<any> {		
+    //     return new Promise(async (resolve, reject) => {
+    //         try {
+    //             let res: rm.IRestResponse<any> = await this.rest.get<any>(this.vsoClient.resolveUrl('/_apis/connectionData'));
+    //             resolve(res.result);
+    //         }
+    //         catch (err) {
+    //             reject(err);
+    //         }
+    //     });
+    // }
+
     public createAcceptHeader(type: string, apiVersion?: string): string {
         return type + (apiVersion ? (';api-version=' + apiVersion) : '');
     }

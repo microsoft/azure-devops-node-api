@@ -4,12 +4,12 @@ import * as vm from 'vso-node-api';
 import * as ba from 'vso-node-api/BuildApi';
 import * as bi from 'vso-node-api/interfaces/BuildInterfaces';
 
-let vsts: vm.WebApi = cm.getWebApi();
-let vstsBuild: ba.IBuildApi = vsts.getBuildApi();
-
 export async function run() {
     try
     {
+        let vsts: vm.WebApi = await cm.getWebApi();
+        let vstsBuild: ba.IBuildApi = vsts.getBuildApi();
+
         cm.banner('Build Samples');
         let project = cm.getProject();
         console.log('project', project);

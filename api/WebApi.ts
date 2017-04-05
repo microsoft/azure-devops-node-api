@@ -35,6 +35,10 @@ import bearm = require('./handlers/bearertoken');
 import ntlmm = require('./handlers/ntlm');
 import patm = require('./handlers/personalaccesstoken');
 
+import * as rm from 'typed-rest-client/RestClient';
+//import * as hm from 'typed-rest-client/HttpClient';
+import vsom = require('./VsoClient');
+
 /**
  * Methods to return handler objects (see handlers folder)
  */
@@ -93,6 +97,20 @@ export class WebApi {
         serverUrl = serverUrl || this.serverUrl;
         handlers = handlers || [this.authHandler];
         return new buildm.BuildApi(serverUrl, handlers);
+    }
+
+    public async connect(serverUrl?:string): Promise<any> {		
+        return new Promise(async (resolve, reject) => {
+            try {
+                let rest: rm.RestClient = new rm.RestClient('vsts-node-api', null, [this.authHandler]);
+                let vsoClient: vsom.VsoClient = new vsom.VsoClient(serverUrl, rest);
+                let res: rm.IRestResponse<any> = await rest.get<any>(vsoClient.resolveUrl('/_apis/connectionData'));
+                resolve(res.result);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
     }
 
     /**
