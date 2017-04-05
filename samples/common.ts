@@ -19,7 +19,7 @@ export async function getWebApi(): Promise<vm.WebApi> {
             let authHandler = vm.getPersonalAccessTokenHandler(token);
 
             let vsts: vm.WebApi = new vm.WebApi(serverUrl, authHandler);
-            let connData = await vsts.connect(serverUrl);
+            let connData = await vsts.connect();
             console.log('Hello ' + connData.authorizedUser.customDisplayName);
             resolve(vsts);
         }

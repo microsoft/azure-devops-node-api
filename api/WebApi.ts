@@ -68,6 +68,8 @@ export class WebApi {
 
     serverUrl: string;
     authHandler: VsoBaseInterfaces.IRequestHandler;
+    rest: rm.RestClient;
+    vsoClient: vsom.VsoClient;
 
     /*
      * Factory to return client apis and handlers
@@ -77,6 +79,8 @@ export class WebApi {
     constructor(defaultUrl: string, authHandler: VsoBaseInterfaces.IRequestHandler) {
         this.serverUrl = defaultUrl;
         this.authHandler = authHandler;
+        this.rest = new rm.RestClient('vsts-node-api', null, [this.authHandler]);
+        this.vsoClient = new vsom.VsoClient(defaultUrl, this.rest);        
     }
 
     /**
@@ -89,6 +93,18 @@ export class WebApi {
         return new this(defaultUrl, bearerHandler);
     } 
 
+    public async connect(): Promise<any> {		
+        return new Promise(async (resolve, reject) => {
+            try {
+                let res: rm.IRestResponse<any> = await this.rest.get<any>(this.vsoClient.resolveUrl('/_apis/connectionData'));
+                resolve(res.result);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }    
+
     /**
      * Each factory method can take a serverUrl and a list of handlers
      * if these aren't provided, the default url and auth handler given to the constructor for this class will be used
@@ -97,20 +113,6 @@ export class WebApi {
         serverUrl = serverUrl || this.serverUrl;
         handlers = handlers || [this.authHandler];
         return new buildm.BuildApi(serverUrl, handlers);
-    }
-
-    public async connect(serverUrl?:string): Promise<any> {		
-        return new Promise(async (resolve, reject) => {
-            try {
-                let rest: rm.RestClient = new rm.RestClient('vsts-node-api', null, [this.authHandler]);
-                let vsoClient: vsom.VsoClient = new vsom.VsoClient(serverUrl, rest);
-                let res: rm.IRestResponse<any> = await rest.get<any>(vsoClient.resolveUrl('/_apis/connectionData'));
-                resolve(res.result);
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
     }
 
     /**
