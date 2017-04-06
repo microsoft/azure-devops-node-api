@@ -35,6 +35,10 @@ import bearm = require('./handlers/bearertoken');
 import ntlmm = require('./handlers/ntlm');
 import patm = require('./handlers/personalaccesstoken');
 
+import * as rm from 'typed-rest-client/RestClient';
+//import * as hm from 'typed-rest-client/HttpClient';
+import vsom = require('./VsoClient');
+
 /**
  * Methods to return handler objects (see handlers folder)
  */
@@ -64,6 +68,8 @@ export class WebApi {
 
     serverUrl: string;
     authHandler: VsoBaseInterfaces.IRequestHandler;
+    rest: rm.RestClient;
+    vsoClient: vsom.VsoClient;
 
     /*
      * Factory to return client apis and handlers
@@ -73,6 +79,8 @@ export class WebApi {
     constructor(defaultUrl: string, authHandler: VsoBaseInterfaces.IRequestHandler) {
         this.serverUrl = defaultUrl;
         this.authHandler = authHandler;
+        this.rest = new rm.RestClient('vsts-node-api', null, [this.authHandler]);
+        this.vsoClient = new vsom.VsoClient(defaultUrl, this.rest);        
     }
 
     /**
@@ -84,6 +92,18 @@ export class WebApi {
         let bearerHandler = getBearerHandler(token);
         return new this(defaultUrl, bearerHandler);
     } 
+
+    public async connect(): Promise<any> {		
+        return new Promise(async (resolve, reject) => {
+            try {
+                let res: rm.IRestResponse<any> = await this.rest.get<any>(this.vsoClient.resolveUrl('/_apis/connectionData'));
+                resolve(res.result);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }    
 
     /**
      * Each factory method can take a serverUrl and a list of handlers

@@ -9,14 +9,14 @@ import * as vm from 'vso-node-api';
 import * as ta from 'vso-node-api/TaskAgentApi';
 import * as ti from 'vso-node-api/interfaces/TaskAgentInterfaces';
 
-let vsts: vm.WebApi = cm.getWebApi();
-let vstsTask: ta.ITaskAgentApi = vsts.getTaskAgentApi();
-
 let sampleFilePath: string = path.join(process.cwd(), 'taskdefinition.zip');
 
 export async function run() {
     try
     {
+        let vsts: vm.WebApi = await cm.getWebApi();
+        let vstsTask: ta.ITaskAgentApi = vsts.getTaskAgentApi();
+
         cm.banner('Task Samples');
         let project = cm.getProject();
         console.log('project', project);

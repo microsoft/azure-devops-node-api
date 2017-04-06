@@ -11,13 +11,22 @@ function getEnv(name: string): string {
     return val;
 }
 
-export function getWebApi(): vm.WebApi {
-    let serverUrl = getEnv('API_URL');
-    let token = getEnv('API_TOKEN');
-    let authHandler = vm.getPersonalAccessTokenHandler(token);
+export async function getWebApi(): Promise<vm.WebApi> {
+    return new Promise<vm.WebApi>(async (resolve, reject) => {
+        try {
+            let serverUrl = getEnv('API_URL');
+            let token = getEnv('API_TOKEN');
+            let authHandler = vm.getPersonalAccessTokenHandler(token);
 
-    let vsts: vm.WebApi = new vm.WebApi(serverUrl, authHandler);
-    return vsts;
+            let vsts: vm.WebApi = new vm.WebApi(serverUrl, authHandler);
+            let connData = await vsts.connect();
+            console.log('Hello ' + connData.authorizedUser.customDisplayName);
+            resolve(vsts);
+        }
+        catch (err) {
+            reject(err);
+        }
+    });    
 }
 
 export function getProject(): string {
