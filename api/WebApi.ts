@@ -38,6 +38,7 @@ import patm = require('./handlers/personalaccesstoken');
 import * as rm from 'typed-rest-client/RestClient';
 //import * as hm from 'typed-rest-client/HttpClient';
 import vsom = require('./VsoClient');
+import lim = require("./interfaces/LocationsInterfaces");
 
 /**
  * Methods to return handler objects (see handlers folder)
@@ -93,10 +94,11 @@ export class WebApi {
         return new this(defaultUrl, bearerHandler);
     } 
 
-    public async connect(): Promise<any> {		
-        return new Promise(async (resolve, reject) => {
+    public async connect(): Promise<lim.ConnectionData> {		
+        return new Promise<lim.ConnectionData>(async (resolve, reject) => {
             try {
-                let res: rm.IRestResponse<any> = await this.rest.get<any>(this.vsoClient.resolveUrl('/_apis/connectionData'));
+                let res: rm.IRestResponse<lim.ConnectionData>;
+                res = await this.rest.get<lim.ConnectionData>(this.vsoClient.resolveUrl('/_apis/connectionData'));
                 resolve(res.result);
             }
             catch (err) {
