@@ -10,6 +10,7 @@
 
 "use strict";
 
+import DistributedTaskCommonInterfaces = require("../interfaces/DistributedTaskCommonInterfaces");
 import FormInputInterfaces = require("../interfaces/common/FormInputInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
@@ -50,6 +51,7 @@ export interface ApprovalOptions {
     enforceIdentityRevalidation: boolean;
     releaseCreatorCanBeApprover: boolean;
     requiredApproverCount: number;
+    timeoutInMintues: number;
 }
 
 export enum ApprovalStatus {
@@ -180,6 +182,8 @@ export interface BuildVersion {
     id: string;
     name: string;
     sourceBranch: string;
+    sourceRepositoryId: string;
+    sourceVersion: string;
 }
 
 /**
@@ -811,6 +815,10 @@ export interface ReleaseArtifact {
     releaseId: number;
 }
 
+export interface ReleaseCondition extends Condition {
+    result: boolean;
+}
+
 export interface ReleaseCreatedEvent {
     project: ProjectReference;
     release: Release;
@@ -872,6 +880,7 @@ export interface ReleaseDefinitionEnvironment {
     owner: VSSInterfaces.IdentityRef;
     postDeployApprovals: ReleaseDefinitionApprovals;
     preDeployApprovals: ReleaseDefinitionApprovals;
+    processParameters: DistributedTaskCommonInterfaces.ProcessParameters;
     queueId: number;
     rank: number;
     retentionPolicy: EnvironmentRetentionPolicy;
@@ -960,7 +969,7 @@ export interface ReleaseDeployPhase {
 }
 
 export interface ReleaseEnvironment {
-    conditions: Condition[];
+    conditions: ReleaseCondition[];
     createdOn: Date;
     definitionEnvironmentId: number;
     demands: any[];
@@ -976,6 +985,7 @@ export interface ReleaseEnvironment {
     postDeployApprovals: ReleaseApproval[];
     preApprovalsSnapshot: ReleaseDefinitionApprovals;
     preDeployApprovals: ReleaseApproval[];
+    processParameters: DistributedTaskCommonInterfaces.ProcessParameters;
     queueId: number;
     rank: number;
     release: ReleaseShallowReference;
@@ -993,7 +1003,6 @@ export interface ReleaseEnvironment {
 }
 
 export interface ReleaseEnvironmentCompletedEvent {
-    conditions: Condition[];
     createdByName: string;
     definitionId: number;
     definitionName: string;
@@ -1584,6 +1593,8 @@ export var TypeInfo = {
     },
     ReleaseApprovalPendingEvent: <any>{
     },
+    ReleaseCondition: <any>{
+    },
     ReleaseCreatedEvent: <any>{
     },
     ReleaseDefinition: <any>{
@@ -1761,7 +1772,7 @@ export var TypeInfo = {
 TypeInfo.AgentArtifactDefinition.fields = {
     artifactType: {
         enumType: TypeInfo.AgentArtifactType
-    },
+    }
 };
 
 TypeInfo.AgentBasedDeployPhase.fields = {
@@ -1770,33 +1781,33 @@ TypeInfo.AgentBasedDeployPhase.fields = {
     },
     phaseType: {
         enumType: TypeInfo.DeployPhaseTypes
-    },
+    }
 };
 
 TypeInfo.AgentDeploymentInput.fields = {
     parallelExecution: {
         typeInfo: TypeInfo.ExecutionInput
-    },
+    }
 };
 
 TypeInfo.ArtifactContributionDefinition.fields = {
     inputDescriptors: {
         isArray: true,
         typeInfo: FormInputInterfaces.TypeInfo.InputDescriptor
-    },
+    }
 };
 
 TypeInfo.ArtifactSourceTrigger.fields = {
     triggerType: {
         enumType: TypeInfo.ReleaseTriggerType
-    },
+    }
 };
 
 TypeInfo.ArtifactTypeDefinition.fields = {
     inputDescriptors: {
         isArray: true,
         typeInfo: FormInputInterfaces.TypeInfo.InputDescriptor
-    },
+    }
 };
 
 TypeInfo.AutoTriggerIssue.fields = {
@@ -1805,19 +1816,19 @@ TypeInfo.AutoTriggerIssue.fields = {
     },
     issueType: {
         enumType: TypeInfo.ReleaseIssueType
-    },
+    }
 };
 
 TypeInfo.Change.fields = {
     timestamp: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.Condition.fields = {
     conditionType: {
         enumType: TypeInfo.ConditionType
-    },
+    }
 };
 
 TypeInfo.ContinuousDeploymentSetupData.fields = {
@@ -1826,13 +1837,13 @@ TypeInfo.ContinuousDeploymentSetupData.fields = {
     },
     webAppProjectType: {
         enumType: TypeInfo.ContinuousDeploymentWebAppProjectType
-    },
+    }
 };
 
 TypeInfo.ContinuousDeploymentSourceConfiguration.fields = {
     sourceRepository: {
         typeInfo: TypeInfo.SourceRepository
-    },
+    }
 };
 
 TypeInfo.Deployment.fields = {
@@ -1871,7 +1882,7 @@ TypeInfo.Deployment.fields = {
     },
     startedOn: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.DeploymentApprovalCompletedEvent.fields = {
@@ -1880,7 +1891,7 @@ TypeInfo.DeploymentApprovalCompletedEvent.fields = {
     },
     release: {
         typeInfo: TypeInfo.Release
-    },
+    }
 };
 
 TypeInfo.DeploymentApprovalPendingEvent.fields = {
@@ -1900,7 +1911,7 @@ TypeInfo.DeploymentApprovalPendingEvent.fields = {
     },
     release: {
         typeInfo: TypeInfo.Release
-    },
+    }
 };
 
 TypeInfo.DeploymentAttempt.fields = {
@@ -1929,13 +1940,13 @@ TypeInfo.DeploymentAttempt.fields = {
     tasks: {
         isArray: true,
         typeInfo: TypeInfo.ReleaseTask
-    },
+    }
 };
 
 TypeInfo.DeploymentAuthorizationInfo.fields = {
     authorizationHeaderFor: {
         enumType: TypeInfo.AuthorizationHeaderFor
-    },
+    }
 };
 
 TypeInfo.DeploymentCompletedEvent.fields = {
@@ -1944,7 +1955,7 @@ TypeInfo.DeploymentCompletedEvent.fields = {
     },
     environment: {
         typeInfo: TypeInfo.ReleaseEnvironment
-    },
+    }
 };
 
 TypeInfo.DeploymentJob.fields = {
@@ -1954,7 +1965,7 @@ TypeInfo.DeploymentJob.fields = {
     tasks: {
         isArray: true,
         typeInfo: TypeInfo.ReleaseTask
-    },
+    }
 };
 
 TypeInfo.DeploymentManualInterventionPendingEvent.fields = {
@@ -1966,7 +1977,7 @@ TypeInfo.DeploymentManualInterventionPendingEvent.fields = {
     },
     release: {
         typeInfo: TypeInfo.Release
-    },
+    }
 };
 
 TypeInfo.DeploymentQueryParameters.fields = {
@@ -1984,7 +1995,7 @@ TypeInfo.DeploymentQueryParameters.fields = {
     },
     queryOrder: {
         enumType: TypeInfo.ReleaseQueryOrder
-    },
+    }
 };
 
 TypeInfo.DeploymentStartedEvent.fields = {
@@ -1993,19 +2004,19 @@ TypeInfo.DeploymentStartedEvent.fields = {
     },
     release: {
         typeInfo: TypeInfo.Release
-    },
+    }
 };
 
 TypeInfo.DeployPhase.fields = {
     phaseType: {
         enumType: TypeInfo.DeployPhaseTypes
-    },
+    }
 };
 
 TypeInfo.ExecutionInput.fields = {
     parallelExecutionType: {
         enumType: TypeInfo.ParallelExecutionTypes
-    },
+    }
 };
 
 TypeInfo.Folder.fields = {
@@ -2014,13 +2025,13 @@ TypeInfo.Folder.fields = {
     },
     lastChangedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.MachineGroupBasedDeployPhase.fields = {
     phaseType: {
         enumType: TypeInfo.DeployPhaseTypes
-    },
+    }
 };
 
 TypeInfo.MailMessage.fields = {
@@ -2033,7 +2044,7 @@ TypeInfo.MailMessage.fields = {
     },
     senderType: {
         enumType: TypeInfo.SenderType
-    },
+    }
 };
 
 TypeInfo.ManualIntervention.fields = {
@@ -2045,37 +2056,37 @@ TypeInfo.ManualIntervention.fields = {
     },
     status: {
         enumType: TypeInfo.ManualInterventionStatus
-    },
+    }
 };
 
 TypeInfo.ManualInterventionUpdateMetadata.fields = {
     status: {
         enumType: TypeInfo.ManualInterventionStatus
-    },
+    }
 };
 
 TypeInfo.MultiConfigInput.fields = {
     parallelExecutionType: {
         enumType: TypeInfo.ParallelExecutionTypes
-    },
+    }
 };
 
 TypeInfo.MultiMachineInput.fields = {
     parallelExecutionType: {
         enumType: TypeInfo.ParallelExecutionTypes
-    },
+    }
 };
 
 TypeInfo.ParallelExecutionInputBase.fields = {
     parallelExecutionType: {
         enumType: TypeInfo.ParallelExecutionTypes
-    },
+    }
 };
 
 TypeInfo.PropertySelector.fields = {
     selectorType: {
         enumType: TypeInfo.PropertySelectorType
-    },
+    }
 };
 
 TypeInfo.Release.fields = {
@@ -2098,13 +2109,13 @@ TypeInfo.Release.fields = {
     variableGroups: {
         isArray: true,
         typeInfo: TypeInfo.VariableGroup
-    },
+    }
 };
 
 TypeInfo.ReleaseAbandonedEvent.fields = {
     release: {
         typeInfo: TypeInfo.Release
-    },
+    }
 };
 
 TypeInfo.ReleaseApproval.fields = {
@@ -2123,7 +2134,7 @@ TypeInfo.ReleaseApproval.fields = {
     },
     status: {
         enumType: TypeInfo.ApprovalStatus
-    },
+    }
 };
 
 TypeInfo.ReleaseApprovalHistory.fields = {
@@ -2132,7 +2143,7 @@ TypeInfo.ReleaseApprovalHistory.fields = {
     },
     modifiedOn: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.ReleaseApprovalPendingEvent.fields = {
@@ -2153,13 +2164,19 @@ TypeInfo.ReleaseApprovalPendingEvent.fields = {
     pendingApprovals: {
         isArray: true,
         typeInfo: TypeInfo.ReleaseApproval
-    },
+    }
+};
+
+TypeInfo.ReleaseCondition.fields = {
+    conditionType: {
+        enumType: TypeInfo.ConditionType
+    }
 };
 
 TypeInfo.ReleaseCreatedEvent.fields = {
     release: {
         typeInfo: TypeInfo.Release
-    },
+    }
 };
 
 TypeInfo.ReleaseDefinition.fields = {
@@ -2182,7 +2199,7 @@ TypeInfo.ReleaseDefinition.fields = {
     triggers: {
         isArray: true,
         typeInfo: TypeInfo.ReleaseTriggerBase
-    },
+    }
 };
 
 TypeInfo.ReleaseDefinitionEnvironment.fields = {
@@ -2197,13 +2214,13 @@ TypeInfo.ReleaseDefinitionEnvironment.fields = {
     schedules: {
         isArray: true,
         typeInfo: TypeInfo.ReleaseSchedule
-    },
+    }
 };
 
 TypeInfo.ReleaseDefinitionEnvironmentTemplate.fields = {
     environment: {
         typeInfo: TypeInfo.ReleaseDefinitionEnvironment
-    },
+    }
 };
 
 TypeInfo.ReleaseDefinitionRevision.fields = {
@@ -2212,14 +2229,14 @@ TypeInfo.ReleaseDefinitionRevision.fields = {
     },
     changeType: {
         enumType: TypeInfo.AuditAction
-    },
+    }
 };
 
 TypeInfo.ReleaseDefinitionSummary.fields = {
     releases: {
         isArray: true,
         typeInfo: TypeInfo.Release
-    },
+    }
 };
 
 TypeInfo.ReleaseDeployPhase.fields = {
@@ -2236,13 +2253,13 @@ TypeInfo.ReleaseDeployPhase.fields = {
     },
     status: {
         enumType: TypeInfo.DeployPhaseStatus
-    },
+    }
 };
 
 TypeInfo.ReleaseEnvironment.fields = {
     conditions: {
         isArray: true,
-        typeInfo: TypeInfo.Condition
+        typeInfo: TypeInfo.ReleaseCondition
     },
     createdOn: {
         isDate: true,
@@ -2278,20 +2295,16 @@ TypeInfo.ReleaseEnvironment.fields = {
     },
     status: {
         enumType: TypeInfo.EnvironmentStatus
-    },
+    }
 };
 
 TypeInfo.ReleaseEnvironmentCompletedEvent.fields = {
-    conditions: {
-        isArray: true,
-        typeInfo: TypeInfo.Condition
-    },
     environment: {
         typeInfo: TypeInfo.ReleaseEnvironment
     },
     reason: {
         enumType: TypeInfo.DeploymentReason
-    },
+    }
 };
 
 TypeInfo.ReleaseEnvironmentUpdateMetadata.fields = {
@@ -2300,13 +2313,13 @@ TypeInfo.ReleaseEnvironmentUpdateMetadata.fields = {
     },
     status: {
         enumType: TypeInfo.EnvironmentStatus
-    },
+    }
 };
 
 TypeInfo.ReleaseIssue.fields = {
     issueType: {
         enumType: TypeInfo.ReleaseIssueType
-    },
+    }
 };
 
 TypeInfo.ReleaseReference.fields = {
@@ -2315,25 +2328,25 @@ TypeInfo.ReleaseReference.fields = {
     },
     reason: {
         enumType: TypeInfo.ReleaseReason
-    },
+    }
 };
 
 TypeInfo.ReleaseRevision.fields = {
     changedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.ReleaseSchedule.fields = {
     daysToRelease: {
         enumType: TypeInfo.ScheduleDays
-    },
+    }
 };
 
 TypeInfo.ReleaseStartMetadata.fields = {
     reason: {
         enumType: TypeInfo.ReleaseReason
-    },
+    }
 };
 
 TypeInfo.ReleaseTask.fields = {
@@ -2351,7 +2364,7 @@ TypeInfo.ReleaseTask.fields = {
     },
     status: {
         enumType: TypeInfo.TaskStatus
-    },
+    }
 };
 
 TypeInfo.ReleaseTasksUpdatedEvent.fields = {
@@ -2361,31 +2374,31 @@ TypeInfo.ReleaseTasksUpdatedEvent.fields = {
     tasks: {
         isArray: true,
         typeInfo: TypeInfo.ReleaseTask
-    },
+    }
 };
 
 TypeInfo.ReleaseTriggerBase.fields = {
     triggerType: {
         enumType: TypeInfo.ReleaseTriggerType
-    },
+    }
 };
 
 TypeInfo.ReleaseUpdatedEvent.fields = {
     release: {
         typeInfo: TypeInfo.Release
-    },
+    }
 };
 
 TypeInfo.ReleaseUpdateMetadata.fields = {
     status: {
         enumType: TypeInfo.ReleaseStatus
-    },
+    }
 };
 
 TypeInfo.RunOnServerDeployPhase.fields = {
     phaseType: {
         enumType: TypeInfo.DeployPhaseTypes
-    },
+    }
 };
 
 TypeInfo.ScheduledReleaseTrigger.fields = {
@@ -2394,19 +2407,19 @@ TypeInfo.ScheduledReleaseTrigger.fields = {
     },
     triggerType: {
         enumType: TypeInfo.ReleaseTriggerType
-    },
+    }
 };
 
 TypeInfo.SourceRepository.fields = {
     repositoryType: {
         enumType: TypeInfo.SourceRepositoryType
-    },
+    }
 };
 
 TypeInfo.SummaryMailSection.fields = {
     sectionType: {
         enumType: TypeInfo.MailSectionType
-    },
+    }
 };
 
 TypeInfo.VariableGroup.fields = {
@@ -2415,5 +2428,5 @@ TypeInfo.VariableGroup.fields = {
     },
     modifiedOn: {
         isDate: true,
-    },
+    }
 };

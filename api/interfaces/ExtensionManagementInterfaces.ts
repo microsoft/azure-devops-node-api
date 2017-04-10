@@ -1231,7 +1231,7 @@ TypeInfo.AcquisitionOperation.fields = {
     },
     operationType: {
         enumType: TypeInfo.AcquisitionOperationType
-    },
+    }
 };
 
 TypeInfo.AcquisitionOptions.fields = {
@@ -1241,26 +1241,26 @@ TypeInfo.AcquisitionOptions.fields = {
     operations: {
         isArray: true,
         typeInfo: TypeInfo.AcquisitionOperation
-    },
+    }
 };
 
 TypeInfo.ContributionNodeQuery.fields = {
     queryOptions: {
         enumType: TypeInfo.ContributionQueryOptions
-    },
+    }
 };
 
 TypeInfo.ContributionPropertyDescription.fields = {
     type: {
         enumType: TypeInfo.ContributionPropertyType
-    },
+    }
 };
 
 TypeInfo.ContributionType.fields = {
     properties: {
         isDictionary: true,
         dictionaryValueTypeInfo: TypeInfo.ContributionPropertyDescription
-    },
+    }
 };
 
 TypeInfo.ExtensionAcquisitionRequest.fields = {
@@ -1269,20 +1269,20 @@ TypeInfo.ExtensionAcquisitionRequest.fields = {
     },
     operationType: {
         enumType: TypeInfo.AcquisitionOperationType
-    },
+    }
 };
 
 TypeInfo.ExtensionAuditLog.fields = {
     entries: {
         isArray: true,
         typeInfo: TypeInfo.ExtensionAuditLogEntry
-    },
+    }
 };
 
 TypeInfo.ExtensionAuditLogEntry.fields = {
     auditDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.ExtensionEvent.fields = {
@@ -1291,14 +1291,14 @@ TypeInfo.ExtensionEvent.fields = {
     },
     updateType: {
         enumType: TypeInfo.ExtensionUpdateType
-    },
+    }
 };
 
 TypeInfo.ExtensionLicensing.fields = {
     overrides: {
         isArray: true,
         typeInfo: TypeInfo.LicensingOverride
-    },
+    }
 };
 
 TypeInfo.ExtensionManifest.fields = {
@@ -1308,7 +1308,7 @@ TypeInfo.ExtensionManifest.fields = {
     },
     licensing: {
         typeInfo: TypeInfo.ExtensionLicensing
-    },
+    }
 };
 
 TypeInfo.ExtensionRequest.fields = {
@@ -1320,7 +1320,7 @@ TypeInfo.ExtensionRequest.fields = {
     },
     resolveDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.ExtensionRequestEvent.fields = {
@@ -1332,7 +1332,7 @@ TypeInfo.ExtensionRequestEvent.fields = {
     },
     updateType: {
         enumType: TypeInfo.ExtensionRequestUpdateType
-    },
+    }
 };
 
 TypeInfo.ExtensionRequestsEvent.fields = {
@@ -1345,7 +1345,7 @@ TypeInfo.ExtensionRequestsEvent.fields = {
     },
     updateType: {
         enumType: TypeInfo.ExtensionRequestUpdateType
-    },
+    }
 };
 
 TypeInfo.ExtensionState.fields = {
@@ -1361,7 +1361,7 @@ TypeInfo.ExtensionState.fields = {
     },
     lastVersionCheck: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.InstalledExtension.fields = {
@@ -1380,7 +1380,7 @@ TypeInfo.InstalledExtension.fields = {
     },
     licensing: {
         typeInfo: TypeInfo.ExtensionLicensing
-    },
+    }
 };
 
 TypeInfo.InstalledExtensionState.fields = {
@@ -1393,24 +1393,24 @@ TypeInfo.InstalledExtensionState.fields = {
     },
     lastUpdated: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.InstalledExtensionStateIssue.fields = {
     type: {
         enumType: TypeInfo.InstalledExtensionStateIssueType
-    },
+    }
 };
 
 TypeInfo.LicensingOverride.fields = {
     behavior: {
         enumType: TypeInfo.ContributionLicensingBehaviorType
-    },
+    }
 };
 
 TypeInfo.RequestedExtension.fields = {
     extensionRequests: {
         isArray: true,
         typeInfo: TypeInfo.ExtensionRequest
-    },
+    }
 };

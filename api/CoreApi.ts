@@ -38,6 +38,8 @@ export interface ICoreApi extends basem.ClientApiBase {
     queueCreateProject(projectToCreate: CoreInterfaces.TeamProject): Promise<OperationsInterfaces.OperationReference>;
     queueDeleteProject(projectId: string): Promise<OperationsInterfaces.OperationReference>;
     updateProject(projectUpdate: CoreInterfaces.TeamProject, projectId: string): Promise<OperationsInterfaces.OperationReference>;
+    getProjectProperties(projectId: string, keys?: string[]): Promise<CoreInterfaces.ProjectProperty[]>;
+    setProjectProperties(customHeaders: any, projectId: string, patchDocument: VSSInterfaces.JsonPatchDocument): Promise<void>;
     createOrUpdateProxy(proxy: CoreInterfaces.Proxy): Promise<CoreInterfaces.Proxy>;
     deleteProxy(proxyUrl: string, site?: string): Promise<void>;
     getProxies(proxyUrl?: string): Promise<CoreInterfaces.Proxy[]>;
@@ -779,6 +781,102 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
                 let ret = this.formatResponse(res.result,
                                               OperationsInterfaces.TypeInfo.OperationReference,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get project properties.
+     * 
+     * @param {string} projectId - The project ID.
+     * @param {string[]} keys - A comma-delimited string of project property names. If unspecified, all properties will be returned.
+     */
+    public async getProjectProperties(
+        projectId: string,
+        keys?: string[]
+        ): Promise<CoreInterfaces.ProjectProperty[]> {
+
+        return new Promise<CoreInterfaces.ProjectProperty[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                projectId: projectId
+            };
+
+            let queryValues: any = {
+                keys: keys && keys.join(","),
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "core",
+                    "4976a71a-4487-49aa-8aab-a1eda469037a",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<CoreInterfaces.ProjectProperty[]>;
+                res = await this.rest.get<CoreInterfaces.ProjectProperty[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Create, update, and delete project properties.
+     * 
+     * @param {string} projectId - The project ID.
+     * @param {VSSInterfaces.JsonPatchDocument} patchDocument - A JSON Patch document that represents an array of property operations. See RFC 6902 for more details on JSON Patch. The accepted operation verbs are Add and Remove, where Add is used for both creating and updating properties. The path consists of a forward slash and a property name.
+     */
+    public async setProjectProperties(
+        customHeaders: any,
+        projectId: string,
+        patchDocument: VSSInterfaces.JsonPatchDocument
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                projectId: projectId
+            };
+
+            customHeaders = customHeaders || {};
+            customHeaders["Content-Type"] = "application/json-patch+json";
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "core",
+                    "4976a71a-4487-49aa-8aab-a1eda469037a",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                options.additionalHeaders = customHeaders;
+
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.update<void>(url, patchDocument, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
                                               false);
 
                 resolve(ret);

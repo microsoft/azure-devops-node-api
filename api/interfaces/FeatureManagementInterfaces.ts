@@ -146,12 +146,12 @@ export var TypeInfo = {
 TypeInfo.ContributedFeatureState.fields = {
     state: {
         enumType: TypeInfo.ContributedFeatureEnabledValue
-    },
+    }
 };
 
 TypeInfo.ContributedFeatureStateQuery.fields = {
     featureStates: {
         isDictionary: true,
         dictionaryValueTypeInfo: TypeInfo.ContributedFeatureState
-    },
+    }
 };

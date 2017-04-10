@@ -204,14 +204,14 @@ TypeInfo.ConnectionData.fields = {
     },
     locationServiceData: {
         typeInfo: TypeInfo.LocationServiceData
-    },
+    }
 };
 
 TypeInfo.LocationServiceData.fields = {
     serviceDefinitions: {
         isArray: true,
         typeInfo: TypeInfo.ServiceDefinition
-    },
+    }
 };
 
 TypeInfo.ServiceDefinition.fields = {
@@ -223,5 +223,5 @@ TypeInfo.ServiceDefinition.fields = {
     },
     status: {
         enumType: TypeInfo.ServiceStatus
-    },
+    }
 };

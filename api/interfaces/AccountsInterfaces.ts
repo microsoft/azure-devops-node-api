@@ -210,5 +210,5 @@ TypeInfo.Account.fields = {
     },
     lastUpdatedDate: {
         isDate: true,
-    },
+    }
 };

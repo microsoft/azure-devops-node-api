@@ -1868,7 +1868,7 @@ TypeInfo.AcquisitionOperation.fields = {
     },
     operationType: {
         enumType: TypeInfo.AcquisitionOperationType
-    },
+    }
 };
 
 TypeInfo.AcquisitionOptions.fields = {
@@ -1878,13 +1878,13 @@ TypeInfo.AcquisitionOptions.fields = {
     operations: {
         isArray: true,
         typeInfo: TypeInfo.AcquisitionOperation
-    },
+    }
 };
 
 TypeInfo.AzureRestApiResponseModel.fields = {
     operationStatus: {
         typeInfo: TypeInfo.RestApiResponseStatusModel
-    },
+    }
 };
 
 TypeInfo.Concern.fields = {
@@ -1899,7 +1899,7 @@ TypeInfo.Concern.fields = {
     },
     updatedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.ExtensionAcquisitionRequest.fields = {
@@ -1908,26 +1908,26 @@ TypeInfo.ExtensionAcquisitionRequest.fields = {
     },
     operationType: {
         enumType: TypeInfo.AcquisitionOperationType
-    },
+    }
 };
 
 TypeInfo.ExtensionDailyStat.fields = {
     statisticDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.ExtensionDailyStats.fields = {
     dailyStats: {
         isArray: true,
         typeInfo: TypeInfo.ExtensionDailyStat
-    },
+    }
 };
 
 TypeInfo.ExtensionEvent.fields = {
     statisticDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.ExtensionEvents.fields = {
@@ -1937,14 +1937,14 @@ TypeInfo.ExtensionEvents.fields = {
             isArray: true,
             typeInfo: TypeInfo.ExtensionEvent
         }
-    },
+    }
 };
 
 TypeInfo.ExtensionFilterResult.fields = {
     extensions: {
         isArray: true,
         typeInfo: TypeInfo.PublishedExtension
-    },
+    }
 };
 
 TypeInfo.ExtensionPolicy.fields = {
@@ -1953,7 +1953,7 @@ TypeInfo.ExtensionPolicy.fields = {
     },
     request: {
         enumType: TypeInfo.ExtensionPolicyFlags
-    },
+    }
 };
 
 TypeInfo.ExtensionQuery.fields = {
@@ -1963,20 +1963,20 @@ TypeInfo.ExtensionQuery.fields = {
     },
     flags: {
         enumType: TypeInfo.ExtensionQueryFlags
-    },
+    }
 };
 
 TypeInfo.ExtensionQueryResult.fields = {
     results: {
         isArray: true,
         typeInfo: TypeInfo.ExtensionFilterResult
-    },
+    }
 };
 
 TypeInfo.ExtensionStatisticUpdate.fields = {
     operation: {
         enumType: TypeInfo.ExtensionStatisticOperation
-    },
+    }
 };
 
 TypeInfo.ExtensionVersion.fields = {
@@ -1985,7 +1985,7 @@ TypeInfo.ExtensionVersion.fields = {
     },
     lastUpdated: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.PublishedExtension.fields = {
@@ -2010,7 +2010,7 @@ TypeInfo.PublishedExtension.fields = {
     versions: {
         isArray: true,
         typeInfo: TypeInfo.ExtensionVersion
-    },
+    }
 };
 
 TypeInfo.Publisher.fields = {
@@ -2023,20 +2023,20 @@ TypeInfo.Publisher.fields = {
     },
     lastUpdated: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.PublisherFacts.fields = {
     flags: {
         enumType: TypeInfo.PublisherFlags
-    },
+    }
 };
 
 TypeInfo.PublisherFilterResult.fields = {
     publishers: {
         isArray: true,
         typeInfo: TypeInfo.Publisher
-    },
+    }
 };
 
 TypeInfo.PublisherQuery.fields = {
@@ -2046,14 +2046,14 @@ TypeInfo.PublisherQuery.fields = {
     },
     flags: {
         enumType: TypeInfo.PublisherQueryFlags
-    },
+    }
 };
 
 TypeInfo.PublisherQueryResult.fields = {
     results: {
         isArray: true,
         typeInfo: TypeInfo.PublisherFilterResult
-    },
+    }
 };
 
 TypeInfo.QnAItem.fields = {
@@ -2065,13 +2065,13 @@ TypeInfo.QnAItem.fields = {
     },
     updatedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.QueryFilter.fields = {
     direction: {
         enumType: TypeInfo.PagingDirection
-    },
+    }
 };
 
 TypeInfo.Question.fields = {
@@ -2087,14 +2087,14 @@ TypeInfo.Question.fields = {
     },
     updatedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.QuestionsResult.fields = {
     questions: {
         isArray: true,
         typeInfo: TypeInfo.Question
-    },
+    }
 };
 
 TypeInfo.Response.fields = {
@@ -2106,13 +2106,13 @@ TypeInfo.Response.fields = {
     },
     updatedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.RestApiResponseStatusModel.fields = {
     status: {
         enumType: TypeInfo.RestApiResponseStatus
-    },
+    }
 };
 
 TypeInfo.Review.fields = {
@@ -2124,7 +2124,7 @@ TypeInfo.Review.fields = {
     },
     updatedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.ReviewEventProperties.fields = {
@@ -2139,7 +2139,7 @@ TypeInfo.ReviewEventProperties.fields = {
     },
     reviewDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.ReviewPatch.fields = {
@@ -2151,26 +2151,26 @@ TypeInfo.ReviewPatch.fields = {
     },
     reviewItem: {
         typeInfo: TypeInfo.Review
-    },
+    }
 };
 
 TypeInfo.ReviewReply.fields = {
     updatedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.ReviewsResult.fields = {
     reviews: {
         isArray: true,
         typeInfo: TypeInfo.Review
-    },
+    }
 };
 
 TypeInfo.UserExtensionPolicy.fields = {
     permissions: {
         typeInfo: TypeInfo.ExtensionPolicy
-    },
+    }
 };
 
 TypeInfo.UserReportedConcern.fields = {
@@ -2179,5 +2179,5 @@ TypeInfo.UserReportedConcern.fields = {
     },
     submittedDate: {
         isDate: true,
-    },
+    }
 };

@@ -91,11 +91,11 @@ export var TypeInfo = {
 TypeInfo.Operation.fields = {
     status: {
         enumType: TypeInfo.OperationStatus
-    },
+    }
 };
 
 TypeInfo.OperationReference.fields = {
     status: {
         enumType: TypeInfo.OperationStatus
-    },
+    }
 };

@@ -1714,7 +1714,7 @@ TypeInfo.AggregatedDataForResultTrend.fields = {
     },
     testResultsContext: {
         typeInfo: TypeInfo.TestResultsContext
-    },
+    }
 };
 
 TypeInfo.AggregatedResultsAnalysis.fields = {
@@ -1730,13 +1730,13 @@ TypeInfo.AggregatedResultsAnalysis.fields = {
         isDictionary: true,
         dictionaryKeyEnumType: TypeInfo.TestOutcome,
         dictionaryValueTypeInfo: TypeInfo.AggregatedResultsByOutcome
-    },
+    }
 };
 
 TypeInfo.AggregatedResultsByOutcome.fields = {
     outcome: {
         enumType: TypeInfo.TestOutcome
-    },
+    }
 };
 
 TypeInfo.BatchResponse.fields = {
@@ -1758,7 +1758,7 @@ TypeInfo.CloneOperationInformation.fields = {
     },
     state: {
         enumType: TypeInfo.CloneOperationState
-    },
+    }
 };
 
 TypeInfo.CustomTestFieldDefinition.fields = {
@@ -1767,19 +1767,19 @@ TypeInfo.CustomTestFieldDefinition.fields = {
     },
     scope: {
         enumType: TypeInfo.CustomTestFieldScope
-    },
+    }
 };
 
 TypeInfo.FailingSince.fields = {
     date: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.LastResultDetails.fields = {
     dateCompleted: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.Response.fields = {
@@ -1788,7 +1788,7 @@ TypeInfo.Response.fields = {
 TypeInfo.ResultRetentionSettings.fields = {
     lastUpdatedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.ResultsFilter.fields = {
@@ -1797,7 +1797,7 @@ TypeInfo.ResultsFilter.fields = {
     },
     testResultsContext: {
         typeInfo: TypeInfo.TestResultsContext
-    },
+    }
 };
 
 TypeInfo.ResultUpdateRequestModel.fields = {
@@ -1808,7 +1808,7 @@ TypeInfo.ResultUpdateRequestModel.fields = {
     actionResults: {
         isArray: true,
         typeInfo: TypeInfo.TestActionResultModel
-    },
+    }
 };
 
 TypeInfo.RunUpdateModel.fields = {
@@ -1818,7 +1818,7 @@ TypeInfo.RunUpdateModel.fields = {
     },
     substate: {
         enumType: TypeInfo.TestRunSubstate
-    },
+    }
 };
 
 TypeInfo.TestActionResultModel.fields = {
@@ -1827,7 +1827,7 @@ TypeInfo.TestActionResultModel.fields = {
     },
     startedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TestAttachment.fields = {
@@ -1836,7 +1836,7 @@ TypeInfo.TestAttachment.fields = {
     },
     createdDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TestCaseResult.fields = {
@@ -1858,7 +1858,7 @@ TypeInfo.TestCaseResult.fields = {
     },
     startedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TestConfiguration.fields = {
@@ -1867,13 +1867,13 @@ TypeInfo.TestConfiguration.fields = {
     },
     state: {
         enumType: TypeInfo.TestConfigurationState
-    },
+    }
 };
 
 TypeInfo.TestFailuresAnalysis.fields = {
     previousContext: {
         typeInfo: TypeInfo.TestResultsContext
-    },
+    }
 };
 
 TypeInfo.TestIterationDetailsModel.fields = {
@@ -1886,13 +1886,13 @@ TypeInfo.TestIterationDetailsModel.fields = {
     },
     startedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TestMessageLogDetails.fields = {
     dateCreated: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TestPlan.fields = {
@@ -1904,13 +1904,13 @@ TypeInfo.TestPlan.fields = {
     },
     updatedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TestPlanCloneRequest.fields = {
     destinationTestPlan: {
         typeInfo: TypeInfo.TestPlan
-    },
+    }
 };
 
 TypeInfo.TestPlanHubData.fields = {
@@ -1924,14 +1924,14 @@ TypeInfo.TestPlanHubData.fields = {
     testSuites: {
         isArray: true,
         typeInfo: TypeInfo.TestSuite
-    },
+    }
 };
 
 TypeInfo.TestPlansWithSelection.fields = {
     plans: {
         isArray: true,
         typeInfo: TypeInfo.TestPlan
-    },
+    }
 };
 
 TypeInfo.TestPoint.fields = {
@@ -1940,27 +1940,27 @@ TypeInfo.TestPoint.fields = {
     },
     lastUpdatedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TestPointsQuery.fields = {
     points: {
         isArray: true,
         typeInfo: TypeInfo.TestPoint
-    },
+    }
 };
 
 TypeInfo.TestResultHistory.fields = {
     resultsForGroup: {
         isArray: true,
         typeInfo: TypeInfo.TestResultHistoryDetailsForGroup
-    },
+    }
 };
 
 TypeInfo.TestResultHistoryDetailsForGroup.fields = {
     latestResult: {
         typeInfo: TypeInfo.TestCaseResult
-    },
+    }
 };
 
 TypeInfo.TestResultModelBase.fields = {
@@ -1969,20 +1969,20 @@ TypeInfo.TestResultModelBase.fields = {
     },
     startedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TestResultsContext.fields = {
     contextType: {
         enumType: TypeInfo.TestResultsContextType
-    },
+    }
 };
 
 TypeInfo.TestResultsDetails.fields = {
     resultsForGroup: {
         isArray: true,
         typeInfo: TypeInfo.TestResultsDetailsForGroup
-    },
+    }
 };
 
 TypeInfo.TestResultsDetailsForGroup.fields = {
@@ -1994,7 +1994,7 @@ TypeInfo.TestResultsDetailsForGroup.fields = {
         isDictionary: true,
         dictionaryKeyEnumType: TypeInfo.TestOutcome,
         dictionaryValueTypeInfo: TypeInfo.AggregatedResultsByOutcome
-    },
+    }
 };
 
 TypeInfo.TestResultsQuery.fields = {
@@ -2004,7 +2004,7 @@ TypeInfo.TestResultsQuery.fields = {
     },
     resultsFilter: {
         typeInfo: TypeInfo.ResultsFilter
-    },
+    }
 };
 
 TypeInfo.TestResultSummary.fields = {
@@ -2016,13 +2016,13 @@ TypeInfo.TestResultSummary.fields = {
     },
     testResultsContext: {
         typeInfo: TypeInfo.TestResultsContext
-    },
+    }
 };
 
 TypeInfo.TestResultTrendFilter.fields = {
     maxCompleteDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TestRun.fields = {
@@ -2043,7 +2043,7 @@ TypeInfo.TestRun.fields = {
     },
     substate: {
         enumType: TypeInfo.TestRunSubstate
-    },
+    }
 };
 
 TypeInfo.TestSession.fields = {
@@ -2061,7 +2061,7 @@ TypeInfo.TestSession.fields = {
     },
     state: {
         enumType: TypeInfo.TestSessionState
-    },
+    }
 };
 
 TypeInfo.TestSessionExploredWorkItemReference.fields = {
@@ -2070,7 +2070,7 @@ TypeInfo.TestSessionExploredWorkItemReference.fields = {
     },
     startTime: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TestSuite.fields = {
@@ -2083,11 +2083,11 @@ TypeInfo.TestSuite.fields = {
     },
     lastUpdatedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TestSummaryForWorkItem.fields = {
     summary: {
         typeInfo: TypeInfo.AggregatedDataForResultTrend
-    },
+    }
 };

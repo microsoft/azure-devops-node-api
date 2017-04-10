@@ -485,13 +485,13 @@ TypeInfo.Change.fields = {
     },
     newContent: {
         typeInfo: TypeInfo.ItemContent
-    },
+    }
 };
 
 TypeInfo.ItemContent.fields = {
     contentType: {
         enumType: TypeInfo.ItemContentType
-    },
+    }
 };
 
 TypeInfo.TfvcBranch.fields = {
@@ -501,13 +501,13 @@ TypeInfo.TfvcBranch.fields = {
     },
     createdDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcBranchRef.fields = {
     createdDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcChange.fields = {
@@ -516,7 +516,7 @@ TypeInfo.TfvcChange.fields = {
     },
     newContent: {
         typeInfo: TypeInfo.ItemContent
-    },
+    }
 };
 
 TypeInfo.TfvcChangeset.fields = {
@@ -526,19 +526,19 @@ TypeInfo.TfvcChangeset.fields = {
     },
     createdDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcChangesetRef.fields = {
     createdDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcItem.fields = {
     changeDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcItemDescriptor.fields = {
@@ -550,14 +550,14 @@ TypeInfo.TfvcItemDescriptor.fields = {
     },
     versionType: {
         enumType: TypeInfo.TfvcVersionType
-    },
+    }
 };
 
 TypeInfo.TfvcItemRequestData.fields = {
     itemDescriptors: {
         isArray: true,
         typeInfo: TypeInfo.TfvcItemDescriptor
-    },
+    }
 };
 
 TypeInfo.TfvcLabel.fields = {
@@ -567,13 +567,13 @@ TypeInfo.TfvcLabel.fields = {
     },
     modifiedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcLabelRef.fields = {
     modifiedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcShelveset.fields = {
@@ -583,13 +583,13 @@ TypeInfo.TfvcShelveset.fields = {
     },
     createdDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcShelvesetRef.fields = {
     createdDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcVersionDescriptor.fields = {
@@ -598,11 +598,11 @@ TypeInfo.TfvcVersionDescriptor.fields = {
     },
     versionType: {
         enumType: TypeInfo.TfvcVersionType
-    },
+    }
 };
 
 TypeInfo.VersionControlProjectInfo.fields = {
     defaultSourceControlType: {
         enumType: TfsCoreInterfaces.TypeInfo.SourceControlTypes
-    },
+    }
 };

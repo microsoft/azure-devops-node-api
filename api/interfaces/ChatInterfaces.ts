@@ -159,7 +159,7 @@ TypeInfo.Message.fields = {
     },
     postedTime: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.Room.fields = {
@@ -168,7 +168,7 @@ TypeInfo.Room.fields = {
     },
     lastActivity: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.User.fields = {
@@ -177,5 +177,5 @@ TypeInfo.User.fields = {
     },
     lastActivity: {
         isDate: true,
-    },
+    }
 };

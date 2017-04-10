@@ -210,7 +210,7 @@ TypeInfo.FileContainer.fields = {
     },
     options: {
         enumType: TypeInfo.ContainerOptions
-    },
+    }
 };
 
 TypeInfo.FileContainerItem.fields = {
@@ -225,5 +225,5 @@ TypeInfo.FileContainerItem.fields = {
     },
     status: {
         enumType: TypeInfo.ContainerItemStatus
-    },
+    }
 };

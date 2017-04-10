@@ -2673,7 +2673,7 @@ export var TypeInfo = {
 TypeInfo.Attachment.fields = {
     createdDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.Change.fields = {
@@ -2682,7 +2682,7 @@ TypeInfo.Change.fields = {
     },
     newContent: {
         typeInfo: TypeInfo.ItemContent
-    },
+    }
 };
 
 TypeInfo.ChangeList.fields = {
@@ -2695,7 +2695,7 @@ TypeInfo.ChangeList.fields = {
     },
     sortDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.Comment.fields = {
@@ -2707,7 +2707,7 @@ TypeInfo.Comment.fields = {
     },
     publishedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.CommentThread.fields = {
@@ -2723,7 +2723,7 @@ TypeInfo.CommentThread.fields = {
     },
     status: {
         enumType: TypeInfo.CommentThreadStatus
-    },
+    }
 };
 
 TypeInfo.GitAnnotatedTag.fields = {
@@ -2732,7 +2732,7 @@ TypeInfo.GitAnnotatedTag.fields = {
     },
     taggedObjectType: {
         enumType: TypeInfo.GitObjectType
-    },
+    }
 };
 
 TypeInfo.GitAsyncRefOperation.fields = {
@@ -2741,20 +2741,20 @@ TypeInfo.GitAsyncRefOperation.fields = {
     },
     status: {
         enumType: TypeInfo.GitAsyncOperationStatus
-    },
+    }
 };
 
 TypeInfo.GitAsyncRefOperationParameters.fields = {
     source: {
         typeInfo: TypeInfo.GitAsyncRefOperationSource
-    },
+    }
 };
 
 TypeInfo.GitAsyncRefOperationSource.fields = {
     commitList: {
         isArray: true,
         typeInfo: TypeInfo.GitCommitRef
-    },
+    }
 };
 
 TypeInfo.GitBaseVersionDescriptor.fields = {
@@ -2769,13 +2769,13 @@ TypeInfo.GitBaseVersionDescriptor.fields = {
     },
     versionType: {
         enumType: TypeInfo.GitVersionType
-    },
+    }
 };
 
 TypeInfo.GitBranchStats.fields = {
     commit: {
         typeInfo: TypeInfo.GitCommitRef
-    },
+    }
 };
 
 TypeInfo.GitChange.fields = {
@@ -2784,7 +2784,7 @@ TypeInfo.GitChange.fields = {
     },
     newContent: {
         typeInfo: TypeInfo.ItemContent
-    },
+    }
 };
 
 TypeInfo.GitCherryPick.fields = {
@@ -2793,7 +2793,7 @@ TypeInfo.GitCherryPick.fields = {
     },
     status: {
         enumType: TypeInfo.GitAsyncOperationStatus
-    },
+    }
 };
 
 TypeInfo.GitCommit.fields = {
@@ -2813,14 +2813,14 @@ TypeInfo.GitCommit.fields = {
     statuses: {
         isArray: true,
         typeInfo: TypeInfo.GitStatus
-    },
+    }
 };
 
 TypeInfo.GitCommitChanges.fields = {
     changes: {
         isArray: true,
         typeInfo: TypeInfo.GitChange
-    },
+    }
 };
 
 TypeInfo.GitCommitDiffs.fields = {
@@ -2831,7 +2831,7 @@ TypeInfo.GitCommitDiffs.fields = {
     changes: {
         isArray: true,
         typeInfo: TypeInfo.GitChange
-    },
+    }
 };
 
 TypeInfo.GitCommitRef.fields = {
@@ -2848,7 +2848,7 @@ TypeInfo.GitCommitRef.fields = {
     statuses: {
         isArray: true,
         typeInfo: TypeInfo.GitStatus
-    },
+    }
 };
 
 TypeInfo.GitCommitToCreate.fields = {
@@ -2858,7 +2858,7 @@ TypeInfo.GitCommitToCreate.fields = {
     pathActions: {
         isArray: true,
         typeInfo: TypeInfo.GitPathAction
-    },
+    }
 };
 
 TypeInfo.GitConflict.fields = {
@@ -2882,7 +2882,7 @@ TypeInfo.GitConflict.fields = {
     },
     resolvedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.GitConflictAddAdd.fields = {
@@ -2909,7 +2909,7 @@ TypeInfo.GitConflictAddAdd.fields = {
     },
     resolvedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.GitConflictAddRename.fields = {
@@ -2936,7 +2936,7 @@ TypeInfo.GitConflictAddRename.fields = {
     },
     resolvedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.GitConflictDeleteEdit.fields = {
@@ -2963,7 +2963,7 @@ TypeInfo.GitConflictDeleteEdit.fields = {
     },
     resolvedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.GitConflictDeleteRename.fields = {
@@ -2990,7 +2990,7 @@ TypeInfo.GitConflictDeleteRename.fields = {
     },
     resolvedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.GitConflictDirectoryFile.fields = {
@@ -3020,7 +3020,7 @@ TypeInfo.GitConflictDirectoryFile.fields = {
     },
     sourceTree: {
         typeInfo: TypeInfo.GitTreeRef
-    },
+    }
 };
 
 TypeInfo.GitConflictEditDelete.fields = {
@@ -3047,7 +3047,7 @@ TypeInfo.GitConflictEditDelete.fields = {
     },
     resolvedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.GitConflictEditEdit.fields = {
@@ -3074,7 +3074,7 @@ TypeInfo.GitConflictEditEdit.fields = {
     },
     resolvedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.GitConflictFileDirectory.fields = {
@@ -3104,7 +3104,7 @@ TypeInfo.GitConflictFileDirectory.fields = {
     },
     targetTree: {
         typeInfo: TypeInfo.GitTreeRef
-    },
+    }
 };
 
 TypeInfo.GitConflictRename1to2.fields = {
@@ -3131,7 +3131,7 @@ TypeInfo.GitConflictRename1to2.fields = {
     },
     resolvedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.GitConflictRename2to1.fields = {
@@ -3158,7 +3158,7 @@ TypeInfo.GitConflictRename2to1.fields = {
     },
     resolvedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.GitConflictRenameAdd.fields = {
@@ -3185,7 +3185,7 @@ TypeInfo.GitConflictRenameAdd.fields = {
     },
     resolvedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.GitConflictRenameDelete.fields = {
@@ -3212,7 +3212,7 @@ TypeInfo.GitConflictRenameDelete.fields = {
     },
     resolvedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.GitConflictRenameRename.fields = {
@@ -3239,7 +3239,7 @@ TypeInfo.GitConflictRenameRename.fields = {
     },
     resolvedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.GitDeletedRepository.fields = {
@@ -3248,13 +3248,13 @@ TypeInfo.GitDeletedRepository.fields = {
     },
     deletedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.GitImportRequest.fields = {
     status: {
         enumType: TypeInfo.GitAsyncOperationStatus
-    },
+    }
 };
 
 TypeInfo.GitItem.fields = {
@@ -3263,7 +3263,7 @@ TypeInfo.GitItem.fields = {
     },
     latestProcessedChange: {
         typeInfo: TypeInfo.GitCommitRef
-    },
+    }
 };
 
 TypeInfo.GitItemDescriptor.fields = {
@@ -3275,14 +3275,14 @@ TypeInfo.GitItemDescriptor.fields = {
     },
     versionType: {
         enumType: TypeInfo.GitVersionType
-    },
+    }
 };
 
 TypeInfo.GitItemRequestData.fields = {
     itemDescriptors: {
         isArray: true,
         typeInfo: TypeInfo.GitItemDescriptor
-    },
+    }
 };
 
 TypeInfo.GitLastChangeTreeItems.fields = {
@@ -3292,13 +3292,13 @@ TypeInfo.GitLastChangeTreeItems.fields = {
     },
     lastExploredTime: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.GitPathAction.fields = {
     action: {
         enumType: TypeInfo.GitPathActions
-    },
+    }
 };
 
 TypeInfo.GitPathToItemsCollection.fields = {
@@ -3308,7 +3308,7 @@ TypeInfo.GitPathToItemsCollection.fields = {
             isArray: true,
             typeInfo: TypeInfo.GitItem
         }
-    },
+    }
 };
 
 TypeInfo.GitPullRequest.fields = {
@@ -3339,7 +3339,7 @@ TypeInfo.GitPullRequest.fields = {
     },
     status: {
         enumType: TypeInfo.PullRequestStatus
-    },
+    }
 };
 
 TypeInfo.GitPullRequestChange.fields = {
@@ -3348,7 +3348,7 @@ TypeInfo.GitPullRequestChange.fields = {
     },
     newContent: {
         typeInfo: TypeInfo.ItemContent
-    },
+    }
 };
 
 TypeInfo.GitPullRequestCommentThread.fields = {
@@ -3364,7 +3364,7 @@ TypeInfo.GitPullRequestCommentThread.fields = {
     },
     status: {
         enumType: TypeInfo.CommentThreadStatus
-    },
+    }
 };
 
 TypeInfo.GitPullRequestIteration.fields = {
@@ -3396,14 +3396,14 @@ TypeInfo.GitPullRequestIteration.fields = {
     },
     updatedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.GitPullRequestIterationChanges.fields = {
     changeEntries: {
         isArray: true,
         typeInfo: TypeInfo.GitPullRequestChange
-    },
+    }
 };
 
 TypeInfo.GitPullRequestQuery.fields = {
@@ -3416,13 +3416,13 @@ TypeInfo.GitPullRequestQuery.fields = {
 TypeInfo.GitPullRequestQueryInput.fields = {
     type: {
         enumType: TypeInfo.GitPullRequestQueryType
-    },
+    }
 };
 
 TypeInfo.GitPullRequestSearchCriteria.fields = {
     status: {
         enumType: TypeInfo.PullRequestStatus
-    },
+    }
 };
 
 TypeInfo.GitPullRequestStatus.fields = {
@@ -3434,7 +3434,7 @@ TypeInfo.GitPullRequestStatus.fields = {
     },
     updatedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.GitPush.fields = {
@@ -3444,20 +3444,20 @@ TypeInfo.GitPush.fields = {
     },
     date: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.GitPushEventData.fields = {
     commits: {
         isArray: true,
         typeInfo: TypeInfo.GitCommit
-    },
+    }
 };
 
 TypeInfo.GitPushRef.fields = {
     date: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.GitPushSearchCriteria.fields = {
@@ -3466,7 +3466,7 @@ TypeInfo.GitPushSearchCriteria.fields = {
     },
     toDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.GitQueryBranchStatsCriteria.fields = {
@@ -3476,7 +3476,7 @@ TypeInfo.GitQueryBranchStatsCriteria.fields = {
     targetCommits: {
         isArray: true,
         typeInfo: TypeInfo.GitVersionDescriptor
-    },
+    }
 };
 
 TypeInfo.GitQueryCommitsCriteria.fields = {
@@ -3485,44 +3485,44 @@ TypeInfo.GitQueryCommitsCriteria.fields = {
     },
     itemVersion: {
         typeInfo: TypeInfo.GitVersionDescriptor
-    },
+    }
 };
 
 TypeInfo.GitRef.fields = {
     statuses: {
         isArray: true,
         typeInfo: TypeInfo.GitStatus
-    },
+    }
 };
 
 TypeInfo.GitRefFavorite.fields = {
     type: {
         enumType: TypeInfo.RefFavoriteType
-    },
+    }
 };
 
 TypeInfo.GitRefUpdateResult.fields = {
     updateStatus: {
         enumType: TypeInfo.GitRefUpdateStatus
-    },
+    }
 };
 
 TypeInfo.GitResolutionMergeContent.fields = {
     mergeType: {
         enumType: TypeInfo.GitResolutionMergeType
-    },
+    }
 };
 
 TypeInfo.GitResolutionPathConflict.fields = {
     action: {
         enumType: TypeInfo.GitResolutionPathConflictAction
-    },
+    }
 };
 
 TypeInfo.GitResolutionPickOneAction.fields = {
     action: {
         enumType: TypeInfo.GitResolutionWhichAction
-    },
+    }
 };
 
 TypeInfo.GitResolutionRename1to2.fields = {
@@ -3531,7 +3531,7 @@ TypeInfo.GitResolutionRename1to2.fields = {
     },
     mergeType: {
         enumType: TypeInfo.GitResolutionMergeType
-    },
+    }
 };
 
 TypeInfo.GitRevert.fields = {
@@ -3540,7 +3540,7 @@ TypeInfo.GitRevert.fields = {
     },
     status: {
         enumType: TypeInfo.GitAsyncOperationStatus
-    },
+    }
 };
 
 TypeInfo.GitStatus.fields = {
@@ -3552,7 +3552,7 @@ TypeInfo.GitStatus.fields = {
     },
     updatedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.GitTargetVersionDescriptor.fields = {
@@ -3567,14 +3567,14 @@ TypeInfo.GitTargetVersionDescriptor.fields = {
     },
     versionType: {
         enumType: TypeInfo.GitVersionType
-    },
+    }
 };
 
 TypeInfo.GitTreeDiff.fields = {
     diffEntries: {
         isArray: true,
         typeInfo: TypeInfo.GitTreeDiffEntry
-    },
+    }
 };
 
 TypeInfo.GitTreeDiffEntry.fields = {
@@ -3583,32 +3583,32 @@ TypeInfo.GitTreeDiffEntry.fields = {
     },
     objectType: {
         enumType: TypeInfo.GitObjectType
-    },
+    }
 };
 
 TypeInfo.GitTreeDiffResponse.fields = {
     treeDiff: {
         typeInfo: TypeInfo.GitTreeDiff
-    },
+    }
 };
 
 TypeInfo.GitTreeEntryRef.fields = {
     gitObjectType: {
         enumType: TypeInfo.GitObjectType
-    },
+    }
 };
 
 TypeInfo.GitTreeRef.fields = {
     treeEntries: {
         isArray: true,
         typeInfo: TypeInfo.GitTreeEntryRef
-    },
+    }
 };
 
 TypeInfo.GitUserDate.fields = {
     date: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.GitVersionDescriptor.fields = {
@@ -3617,37 +3617,37 @@ TypeInfo.GitVersionDescriptor.fields = {
     },
     versionType: {
         enumType: TypeInfo.GitVersionType
-    },
+    }
 };
 
 TypeInfo.HistoryEntry.fields = {
     itemChangeType: {
         enumType: TypeInfo.VersionControlChangeType
-    },
+    }
 };
 
 TypeInfo.IncludedGitCommit.fields = {
     commitTime: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.ItemContent.fields = {
     contentType: {
         enumType: TypeInfo.ItemContentType
-    },
+    }
 };
 
 TypeInfo.ItemDetailsOptions.fields = {
     recursionLevel: {
         enumType: TypeInfo.VersionControlRecursionType
-    },
+    }
 };
 
 TypeInfo.SupportedIde.fields = {
     ideType: {
         enumType: TypeInfo.SupportedIdeType
-    },
+    }
 };
 
 TypeInfo.TfvcBranch.fields = {
@@ -3657,13 +3657,13 @@ TypeInfo.TfvcBranch.fields = {
     },
     createdDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcBranchRef.fields = {
     createdDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcChange.fields = {
@@ -3672,7 +3672,7 @@ TypeInfo.TfvcChange.fields = {
     },
     newContent: {
         typeInfo: TypeInfo.ItemContent
-    },
+    }
 };
 
 TypeInfo.TfvcChangeset.fields = {
@@ -3682,31 +3682,31 @@ TypeInfo.TfvcChangeset.fields = {
     },
     createdDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcChangesetRef.fields = {
     createdDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcCheckinEventData.fields = {
     changeset: {
         typeInfo: TypeInfo.TfvcChangeset
-    },
+    }
 };
 
 TypeInfo.TfvcHistoryEntry.fields = {
     itemChangeType: {
         enumType: TypeInfo.VersionControlChangeType
-    },
+    }
 };
 
 TypeInfo.TfvcItem.fields = {
     changeDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcItemDescriptor.fields = {
@@ -3718,14 +3718,14 @@ TypeInfo.TfvcItemDescriptor.fields = {
     },
     versionType: {
         enumType: TypeInfo.TfvcVersionType
-    },
+    }
 };
 
 TypeInfo.TfvcItemRequestData.fields = {
     itemDescriptors: {
         isArray: true,
         typeInfo: TypeInfo.TfvcItemDescriptor
-    },
+    }
 };
 
 TypeInfo.TfvcLabel.fields = {
@@ -3735,13 +3735,13 @@ TypeInfo.TfvcLabel.fields = {
     },
     modifiedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcLabelRef.fields = {
     modifiedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcShelveset.fields = {
@@ -3751,13 +3751,13 @@ TypeInfo.TfvcShelveset.fields = {
     },
     createdDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcShelvesetRef.fields = {
     createdDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcVersionDescriptor.fields = {
@@ -3766,17 +3766,17 @@ TypeInfo.TfvcVersionDescriptor.fields = {
     },
     versionType: {
         enumType: TypeInfo.TfvcVersionType
-    },
+    }
 };
 
 TypeInfo.UpdateRefsRequest.fields = {
     updateMode: {
         enumType: TypeInfo.GitRefUpdateMode
-    },
+    }
 };
 
 TypeInfo.VersionControlProjectInfo.fields = {
     defaultSourceControlType: {
         enumType: TfsCoreInterfaces.TypeInfo.SourceControlTypes
-    },
+    }
 };

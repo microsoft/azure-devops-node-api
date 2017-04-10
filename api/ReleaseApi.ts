@@ -33,7 +33,6 @@ export interface IReleaseApi extends basem.ClientApiBase {
     getReleaseDefinition(project: string, definitionId: number, propertyFilters?: string[]): Promise<ReleaseInterfaces.ReleaseDefinition>;
     getReleaseDefinitionRevision(project: string, definitionId: number, revision: number): Promise<NodeJS.ReadableStream>;
     getReleaseDefinitions(project: string, searchText?: string, expand?: ReleaseInterfaces.ReleaseDefinitionExpands, artifactType?: string, artifactSourceId?: string, top?: number, continuationToken?: string, queryOrder?: ReleaseInterfaces.ReleaseDefinitionQueryOrder, path?: string, isExactNameMatch?: boolean, tagFilter?: string[], propertyFilters?: string[]): Promise<ReleaseInterfaces.ReleaseDefinition[]>;
-    getReleaseDefinitionsForArtifactSource(project: string, artifactType: string, artifactSourceId: string, expand?: ReleaseInterfaces.ReleaseDefinitionExpands): Promise<ReleaseInterfaces.ReleaseDefinition[]>;
     updateReleaseDefinition(releaseDefinition: ReleaseInterfaces.ReleaseDefinition, project: string): Promise<ReleaseInterfaces.ReleaseDefinition>;
     getDeployments(project: string, definitionId?: number, definitionEnvironmentId?: number, createdBy?: string, minModifiedTime?: Date, maxModifiedTime?: Date, deploymentStatus?: ReleaseInterfaces.DeploymentStatus, operationStatus?: ReleaseInterfaces.DeploymentOperationStatus, latestAttemptsOnly?: boolean, queryOrder?: ReleaseInterfaces.ReleaseQueryOrder, top?: number, continuationToken?: number, createdFor?: string): Promise<ReleaseInterfaces.Deployment[]>;
     getDeploymentsForMultipleEnvironments(queryParameters: ReleaseInterfaces.DeploymentQueryParameters, project: string): Promise<ReleaseInterfaces.Deployment[]>;
@@ -703,58 +702,6 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 isExactNameMatch: isExactNameMatch,
                 tagFilter: tagFilter && tagFilter.join(","),
                 propertyFilters: propertyFilters && propertyFilters.join(","),
-            };
-            
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.3",
-                    "Release",
-                    "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition[]>;
-                res = await this.rest.get<ReleaseInterfaces.ReleaseDefinition[]>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ReleaseDefinition,
-                                              true);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * @param {string} project - Project ID or project name
-     * @param {string} artifactType
-     * @param {string} artifactSourceId
-     * @param {ReleaseInterfaces.ReleaseDefinitionExpands} expand
-     */
-    public async getReleaseDefinitionsForArtifactSource(
-        project: string,
-        artifactType: string,
-        artifactSourceId: string,
-        expand?: ReleaseInterfaces.ReleaseDefinitionExpands
-        ): Promise<ReleaseInterfaces.ReleaseDefinition[]> {
-
-        return new Promise<ReleaseInterfaces.ReleaseDefinition[]>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project
-            };
-
-            let queryValues: any = {
-                artifactType: artifactType,
-                artifactSourceId: artifactSourceId,
-                '$expand': expand,
             };
             
             try {

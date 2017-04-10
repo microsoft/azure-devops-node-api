@@ -763,14 +763,14 @@ TypeInfo.Consumer.fields = {
     inputDescriptors: {
         isArray: true,
         typeInfo: FormInputInterfaces.TypeInfo.InputDescriptor
-    },
+    }
 };
 
 TypeInfo.ConsumerAction.fields = {
     inputDescriptors: {
         isArray: true,
         typeInfo: FormInputInterfaces.TypeInfo.InputDescriptor
-    },
+    }
 };
 
 TypeInfo.Event.fields = {
@@ -782,7 +782,7 @@ TypeInfo.Event.fields = {
     },
     sessionToken: {
         typeInfo: TypeInfo.SessionToken
-    },
+    }
 };
 
 TypeInfo.Notification.fields = {
@@ -800,7 +800,7 @@ TypeInfo.Notification.fields = {
     },
     status: {
         enumType: TypeInfo.NotificationStatus
-    },
+    }
 };
 
 TypeInfo.NotificationDetails.fields = {
@@ -818,13 +818,13 @@ TypeInfo.NotificationDetails.fields = {
     },
     queuedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.NotificationResultsSummaryDetail.fields = {
     result: {
         enumType: TypeInfo.NotificationResult
-    },
+    }
 };
 
 TypeInfo.NotificationsQuery.fields = {
@@ -851,14 +851,14 @@ TypeInfo.NotificationsQuery.fields = {
     summary: {
         isArray: true,
         typeInfo: TypeInfo.NotificationSummary
-    },
+    }
 };
 
 TypeInfo.NotificationSummary.fields = {
     results: {
         isArray: true,
         typeInfo: TypeInfo.NotificationResultsSummaryDetail
-    },
+    }
 };
 
 TypeInfo.PublisherEvent.fields = {
@@ -868,20 +868,20 @@ TypeInfo.PublisherEvent.fields = {
     publisherInputFilters: {
         isArray: true,
         typeInfo: FormInputInterfaces.TypeInfo.InputFilter
-    },
+    }
 };
 
 TypeInfo.PublishEventsRequestData.fields = {
     events: {
         isArray: true,
         typeInfo: TypeInfo.PublisherEvent
-    },
+    }
 };
 
 TypeInfo.SessionToken.fields = {
     validTo: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.Subscription.fields = {
@@ -896,7 +896,7 @@ TypeInfo.Subscription.fields = {
     },
     status: {
         enumType: TypeInfo.SubscriptionStatus
-    },
+    }
 };
 
 TypeInfo.SubscriptionInputValuesQuery.fields = {
@@ -905,7 +905,7 @@ TypeInfo.SubscriptionInputValuesQuery.fields = {
     },
     subscription: {
         typeInfo: TypeInfo.Subscription
-    },
+    }
 };
 
 TypeInfo.SubscriptionsQuery.fields = {
@@ -923,5 +923,5 @@ TypeInfo.SubscriptionsQuery.fields = {
     },
     scope: {
         enumType: TypeInfo.EventScope
-    },
+    }
 };

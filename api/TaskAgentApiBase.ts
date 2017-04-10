@@ -33,6 +33,8 @@ export interface ITaskAgentApiBase extends basem.ClientApiBase {
     getDeploymentGroup(project: string, deploymentGroupId: number, actionFilter?: TaskAgentInterfaces.DeploymentGroupActionFilter, expand?: TaskAgentInterfaces.DeploymentGroupExpands): Promise<TaskAgentInterfaces.DeploymentGroup>;
     getDeploymentGroups(project: string, name?: string, actionFilter?: TaskAgentInterfaces.DeploymentGroupActionFilter, expand?: TaskAgentInterfaces.DeploymentGroupExpands): Promise<TaskAgentInterfaces.DeploymentGroup[]>;
     updateDeploymentGroup(deploymentGroup: TaskAgentInterfaces.DeploymentGroup, project: string, deploymentGroupId: number): Promise<TaskAgentInterfaces.DeploymentGroup>;
+    getAgentRequestsForDeploymentMachine(project: string, deploymentGroupId: number, machineId: number, completedRequestCount?: number): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>;
+    getAgentRequestsForDeploymentMachines(project: string, deploymentGroupId: number, machineIds?: number[], completedRequestCount?: number): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>;
     queryEndpoint(endpoint: TaskAgentInterfaces.TaskDefinitionEndpoint): Promise<string[]>;
     getTaskHubLicenseDetails(hubName: string, includeEnterpriseUsersCount?: boolean, includeHostedAgentMinutesCount?: boolean): Promise<TaskAgentInterfaces.TaskHubLicenseDetails>;
     updateTaskHubLicenseDetails(taskHubLicenseDetails: TaskAgentInterfaces.TaskHubLicenseDetails, hubName: string): Promise<TaskAgentInterfaces.TaskHubLicenseDetails>;
@@ -52,8 +54,13 @@ export interface ITaskAgentApiBase extends basem.ClientApiBase {
     updateDeploymentMachineGroup(machineGroup: TaskAgentInterfaces.DeploymentMachineGroup, project: string, machineGroupId: number): Promise<TaskAgentInterfaces.DeploymentMachineGroup>;
     getDeploymentMachineGroupMachines(project: string, machineGroupId: number, tagFilters?: string[]): Promise<TaskAgentInterfaces.DeploymentMachine[]>;
     updateDeploymentMachineGroupMachines(deploymentMachines: TaskAgentInterfaces.DeploymentMachine[], project: string, machineGroupId: number): Promise<TaskAgentInterfaces.DeploymentMachine[]>;
-    getDeploymentMachines(project: string, deploymentGroupId: number, tags?: string[]): Promise<TaskAgentInterfaces.DeploymentMachine[]>;
-    updateDeploymentMachines(deploymentMachines: TaskAgentInterfaces.DeploymentMachine[], project: string, deploymentGroupId: number): Promise<TaskAgentInterfaces.DeploymentMachine[]>;
+    addDeploymentMachine(machine: TaskAgentInterfaces.DeploymentMachine, project: string, deploymentGroupId: number): Promise<TaskAgentInterfaces.DeploymentMachine>;
+    deleteDeploymentMachine(project: string, deploymentGroupId: number, machineId: number): Promise<void>;
+    getDeploymentMachine(project: string, deploymentGroupId: number, machineId: number, expand?: TaskAgentInterfaces.DeploymentMachineExpands): Promise<TaskAgentInterfaces.DeploymentMachine>;
+    getDeploymentMachines(project: string, deploymentGroupId: number, tags?: string[], name?: string, expand?: TaskAgentInterfaces.DeploymentMachineExpands): Promise<TaskAgentInterfaces.DeploymentMachine[]>;
+    replaceDeploymentMachine(machine: TaskAgentInterfaces.DeploymentMachine, project: string, deploymentGroupId: number, machineId: number): Promise<TaskAgentInterfaces.DeploymentMachine>;
+    updateDeploymentMachine(machine: TaskAgentInterfaces.DeploymentMachine, project: string, deploymentGroupId: number, machineId: number): Promise<TaskAgentInterfaces.DeploymentMachine>;
+    updateDeploymentMachines(machines: TaskAgentInterfaces.DeploymentMachine[], project: string, deploymentGroupId: number): Promise<TaskAgentInterfaces.DeploymentMachine[]>;
     createAgentPoolMaintenanceDefinition(definition: TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition, poolId: number): Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition>;
     deleteAgentPoolMaintenanceDefinition(poolId: number, definitionId: number): Promise<void>;
     getAgentPoolMaintenanceDefinition(poolId: number, definitionId: number): Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition>;
@@ -715,6 +722,110 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let ret = this.formatResponse(res.result,
                                               TaskAgentInterfaces.TypeInfo.DeploymentGroup,
                                               false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number} deploymentGroupId
+     * @param {number} machineId
+     * @param {number} completedRequestCount
+     */
+    public async getAgentRequestsForDeploymentMachine(
+        project: string,
+        deploymentGroupId: number,
+        machineId: number,
+        completedRequestCount?: number
+        ): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]> {
+
+        return new Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                deploymentGroupId: deploymentGroupId
+            };
+
+            let queryValues: any = {
+                machineId: machineId,
+                completedRequestCount: completedRequestCount,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "distributedtask",
+                    "a3540e5b-f0dc-4668-963b-b752459be545",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest[]>;
+                res = await this.rest.get<TaskAgentInterfaces.TaskAgentJobRequest[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number} deploymentGroupId
+     * @param {number[]} machineIds
+     * @param {number} completedRequestCount
+     */
+    public async getAgentRequestsForDeploymentMachines(
+        project: string,
+        deploymentGroupId: number,
+        machineIds?: number[],
+        completedRequestCount?: number
+        ): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]> {
+
+        return new Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                deploymentGroupId: deploymentGroupId
+            };
+
+            let queryValues: any = {
+                machineIds: machineIds && machineIds.join(","),
+                completedRequestCount: completedRequestCount,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "distributedtask",
+                    "a3540e5b-f0dc-4668-963b-b752459be545",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest[]>;
+                res = await this.rest.get<TaskAgentInterfaces.TaskAgentJobRequest[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
+                                              true);
 
                 resolve(ret);
                 
@@ -1587,14 +1698,159 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
+     * @param {TaskAgentInterfaces.DeploymentMachine} machine
+     * @param {string} project - Project ID or project name
+     * @param {number} deploymentGroupId
+     */
+    public async addDeploymentMachine(
+        machine: TaskAgentInterfaces.DeploymentMachine,
+        project: string,
+        deploymentGroupId: number
+        ): Promise<TaskAgentInterfaces.DeploymentMachine> {
+
+        return new Promise<TaskAgentInterfaces.DeploymentMachine>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                deploymentGroupId: deploymentGroupId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "distributedtask",
+                    "6f6d406f-cfe6-409c-9327-7009928077e7",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine>;
+                res = await this.rest.create<TaskAgentInterfaces.DeploymentMachine>(url, machine, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TaskAgentInterfaces.TypeInfo.DeploymentMachine,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number} deploymentGroupId
+     * @param {number} machineId
+     */
+    public async deleteDeploymentMachine(
+        project: string,
+        deploymentGroupId: number,
+        machineId: number
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                deploymentGroupId: deploymentGroupId,
+                machineId: machineId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "distributedtask",
+                    "6f6d406f-cfe6-409c-9327-7009928077e7",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number} deploymentGroupId
+     * @param {number} machineId
+     * @param {TaskAgentInterfaces.DeploymentMachineExpands} expand
+     */
+    public async getDeploymentMachine(
+        project: string,
+        deploymentGroupId: number,
+        machineId: number,
+        expand?: TaskAgentInterfaces.DeploymentMachineExpands
+        ): Promise<TaskAgentInterfaces.DeploymentMachine> {
+
+        return new Promise<TaskAgentInterfaces.DeploymentMachine>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                deploymentGroupId: deploymentGroupId,
+                machineId: machineId
+            };
+
+            let queryValues: any = {
+                '$expand': expand,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "distributedtask",
+                    "6f6d406f-cfe6-409c-9327-7009928077e7",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine>;
+                res = await this.rest.get<TaskAgentInterfaces.DeploymentMachine>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TaskAgentInterfaces.TypeInfo.DeploymentMachine,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
      * @param {string} project - Project ID or project name
      * @param {number} deploymentGroupId
      * @param {string[]} tags
+     * @param {string} name
+     * @param {TaskAgentInterfaces.DeploymentMachineExpands} expand
      */
     public async getDeploymentMachines(
         project: string,
         deploymentGroupId: number,
-        tags?: string[]
+        tags?: string[],
+        name?: string,
+        expand?: TaskAgentInterfaces.DeploymentMachineExpands
         ): Promise<TaskAgentInterfaces.DeploymentMachine[]> {
 
         return new Promise<TaskAgentInterfaces.DeploymentMachine[]>(async (resolve, reject) => {
@@ -1605,6 +1861,8 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             let queryValues: any = {
                 tags: tags && tags.join(","),
+                name: name,
+                '$expand': expand,
             };
             
             try {
@@ -1636,12 +1894,106 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     }
 
     /**
-     * @param {TaskAgentInterfaces.DeploymentMachine[]} deploymentMachines
+     * @param {TaskAgentInterfaces.DeploymentMachine} machine
+     * @param {string} project - Project ID or project name
+     * @param {number} deploymentGroupId
+     * @param {number} machineId
+     */
+    public async replaceDeploymentMachine(
+        machine: TaskAgentInterfaces.DeploymentMachine,
+        project: string,
+        deploymentGroupId: number,
+        machineId: number
+        ): Promise<TaskAgentInterfaces.DeploymentMachine> {
+
+        return new Promise<TaskAgentInterfaces.DeploymentMachine>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                deploymentGroupId: deploymentGroupId,
+                machineId: machineId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "distributedtask",
+                    "6f6d406f-cfe6-409c-9327-7009928077e7",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine>;
+                res = await this.rest.replace<TaskAgentInterfaces.DeploymentMachine>(url, machine, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TaskAgentInterfaces.TypeInfo.DeploymentMachine,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {TaskAgentInterfaces.DeploymentMachine} machine
+     * @param {string} project - Project ID or project name
+     * @param {number} deploymentGroupId
+     * @param {number} machineId
+     */
+    public async updateDeploymentMachine(
+        machine: TaskAgentInterfaces.DeploymentMachine,
+        project: string,
+        deploymentGroupId: number,
+        machineId: number
+        ): Promise<TaskAgentInterfaces.DeploymentMachine> {
+
+        return new Promise<TaskAgentInterfaces.DeploymentMachine>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                deploymentGroupId: deploymentGroupId,
+                machineId: machineId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "distributedtask",
+                    "6f6d406f-cfe6-409c-9327-7009928077e7",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine>;
+                res = await this.rest.update<TaskAgentInterfaces.DeploymentMachine>(url, machine, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TaskAgentInterfaces.TypeInfo.DeploymentMachine,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {TaskAgentInterfaces.DeploymentMachine[]} machines
      * @param {string} project - Project ID or project name
      * @param {number} deploymentGroupId
      */
     public async updateDeploymentMachines(
-        deploymentMachines: TaskAgentInterfaces.DeploymentMachine[],
+        machines: TaskAgentInterfaces.DeploymentMachine[],
         project: string,
         deploymentGroupId: number
         ): Promise<TaskAgentInterfaces.DeploymentMachine[]> {
@@ -1664,7 +2016,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine[]>;
-                res = await this.rest.update<TaskAgentInterfaces.DeploymentMachine[]>(url, deploymentMachines, options);
+                res = await this.rest.update<TaskAgentInterfaces.DeploymentMachine[]>(url, machines, options);
 
                 let ret = this.formatResponse(res.result,
                                               TaskAgentInterfaces.TypeInfo.DeploymentMachine,

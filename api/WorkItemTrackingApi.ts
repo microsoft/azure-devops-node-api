@@ -40,6 +40,7 @@ export interface IWorkItemTrackingApi extends basem.ClientApiBase {
     deleteQuery(project: string, query: string): Promise<void>;
     getQueries(project: string, expand?: WorkItemTrackingInterfaces.QueryExpand, depth?: number, includeDeleted?: boolean): Promise<WorkItemTrackingInterfaces.QueryHierarchyItem[]>;
     getQuery(project: string, query: string, expand?: WorkItemTrackingInterfaces.QueryExpand, depth?: number, includeDeleted?: boolean): Promise<WorkItemTrackingInterfaces.QueryHierarchyItem>;
+    searchQueries(project: string, filter: string, top?: number, expand?: WorkItemTrackingInterfaces.QueryExpand, includeDeleted?: boolean): Promise<WorkItemTrackingInterfaces.QueryHierarchyItemsResult>;
     updateQuery(queryUpdate: WorkItemTrackingInterfaces.QueryHierarchyItem, project: string, query: string, undeleteDescendants?: boolean): Promise<WorkItemTrackingInterfaces.QueryHierarchyItem>;
     destroyWorkItem(id: number, project?: string): Promise<void>;
     getDeletedWorkItem(id: number, project?: string): Promise<WorkItemTrackingInterfaces.WorkItemDelete>;
@@ -73,6 +74,7 @@ export interface IWorkItemTrackingApi extends basem.ClientApiBase {
     getWorkItemTypeCategories(project: string): Promise<WorkItemTrackingInterfaces.WorkItemTypeCategory[]>;
     getWorkItemTypeCategory(project: string, category: string): Promise<WorkItemTrackingInterfaces.WorkItemTypeCategory>;
     getWorkItemTypeColors(projectNames: string[]): Promise<{ key: string; value: WorkItemTrackingInterfaces.WorkItemTypeColor[] }[]>;
+    getWorkItemTypeColorAndIcons(projectNames: string[]): Promise<{ key: string; value: WorkItemTrackingInterfaces.WorkItemTypeColorAndIcon[] }[]>;
     getWorkItemType(project: string, type: string): Promise<WorkItemTrackingInterfaces.WorkItemType>;
     getWorkItemTypes(project: string): Promise<WorkItemTrackingInterfaces.WorkItemType[]>;
     getDependentFields(project: string, type: string, field: string): Promise<WorkItemTrackingInterfaces.FieldDependentRule>;
@@ -966,6 +968,63 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let ret = this.formatResponse(res.result,
                                               WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Searches all queries the user has access to in the current project
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} filter
+     * @param {number} top
+     * @param {WorkItemTrackingInterfaces.QueryExpand} expand
+     * @param {boolean} includeDeleted
+     */
+    public async searchQueries(
+        project: string,
+        filter: string,
+        top?: number,
+        expand?: WorkItemTrackingInterfaces.QueryExpand,
+        includeDeleted?: boolean
+        ): Promise<WorkItemTrackingInterfaces.QueryHierarchyItemsResult> {
+
+        return new Promise<WorkItemTrackingInterfaces.QueryHierarchyItemsResult>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            let queryValues: any = {
+                '$filter': filter,
+                '$top': top,
+                '$expand': expand,
+                '$includeDeleted': includeDeleted,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.2",
+                    "wit",
+                    "a67d190c-c41f-424b-814d-0e906f659301",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<WorkItemTrackingInterfaces.QueryHierarchyItemsResult>;
+                res = await this.rest.get<WorkItemTrackingInterfaces.QueryHierarchyItemsResult>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItemsResult,
                                               false);
 
                 resolve(ret);
@@ -2578,6 +2637,46 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let res: restm.IRestResponse<{ key: string; value: WorkItemTrackingInterfaces.WorkItemTypeColor[] }[]>;
                 res = await this.rest.create<{ key: string; value: WorkItemTrackingInterfaces.WorkItemTypeColor[] }[]>(url, projectNames, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * INTERNAL ONLY: It is used for color and icon providers. Get the wit type color for multiple projects
+     * 
+     * @param {string[]} projectNames
+     */
+    public async getWorkItemTypeColorAndIcons(
+        projectNames: string[]
+        ): Promise<{ key: string; value: WorkItemTrackingInterfaces.WorkItemTypeColorAndIcon[] }[]> {
+
+        return new Promise<{ key: string; value: WorkItemTrackingInterfaces.WorkItemTypeColorAndIcon[] }[]>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "wit",
+                    "f0f8dc62-3975-48ce-8051-f636b68b52e3",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<{ key: string; value: WorkItemTrackingInterfaces.WorkItemTypeColorAndIcon[] }[]>;
+                res = await this.rest.create<{ key: string; value: WorkItemTrackingInterfaces.WorkItemTypeColorAndIcon[] }[]>(url, projectNames, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,

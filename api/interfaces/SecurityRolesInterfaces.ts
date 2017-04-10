@@ -103,5 +103,5 @@ export var TypeInfo = {
 TypeInfo.RoleAssignment.fields = {
     access: {
         enumType: TypeInfo.RoleAccess
-    },
+    }
 };

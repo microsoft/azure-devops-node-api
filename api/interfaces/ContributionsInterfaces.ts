@@ -680,27 +680,27 @@ export var TypeInfo = {
 TypeInfo.ContributionNodeQuery.fields = {
     queryOptions: {
         enumType: TypeInfo.ContributionQueryOptions
-    },
+    }
 };
 
 TypeInfo.ContributionPropertyDescription.fields = {
     type: {
         enumType: TypeInfo.ContributionPropertyType
-    },
+    }
 };
 
 TypeInfo.ContributionType.fields = {
     properties: {
         isDictionary: true,
         dictionaryValueTypeInfo: TypeInfo.ContributionPropertyDescription
-    },
+    }
 };
 
 TypeInfo.ExtensionLicensing.fields = {
     overrides: {
         isArray: true,
         typeInfo: TypeInfo.LicensingOverride
-    },
+    }
 };
 
 TypeInfo.ExtensionManifest.fields = {
@@ -710,7 +710,7 @@ TypeInfo.ExtensionManifest.fields = {
     },
     licensing: {
         typeInfo: TypeInfo.ExtensionLicensing
-    },
+    }
 };
 
 TypeInfo.InstalledExtension.fields = {
@@ -729,7 +729,7 @@ TypeInfo.InstalledExtension.fields = {
     },
     licensing: {
         typeInfo: TypeInfo.ExtensionLicensing
-    },
+    }
 };
 
 TypeInfo.InstalledExtensionState.fields = {
@@ -742,17 +742,17 @@ TypeInfo.InstalledExtensionState.fields = {
     },
     lastUpdated: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.InstalledExtensionStateIssue.fields = {
     type: {
         enumType: TypeInfo.InstalledExtensionStateIssueType
-    },
+    }
 };
 
 TypeInfo.LicensingOverride.fields = {
     behavior: {
         enumType: TypeInfo.ContributionLicensingBehaviorType
-    },
+    }
 };

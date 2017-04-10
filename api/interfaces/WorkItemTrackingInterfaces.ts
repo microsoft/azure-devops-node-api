@@ -211,6 +211,12 @@ export interface QueryHierarchyItem extends WorkItemTrackingResource {
     wiql: string;
 }
 
+export interface QueryHierarchyItemsResult {
+    count: number;
+    hasMore: boolean;
+    value: QueryHierarchyItem[];
+}
+
 export enum QueryOption {
     Doing = 1,
     Done = 2,
@@ -526,6 +532,12 @@ export interface WorkItemTypeColor {
     workItemTypeName: string;
 }
 
+export interface WorkItemTypeColorAndIcon {
+    color: string;
+    icon: string;
+    workItemTypeName: string;
+}
+
 export interface WorkItemTypeFieldInstance extends WorkItemFieldReference {
     alwaysRequired: boolean;
     field: WorkItemFieldReference;
@@ -648,6 +660,8 @@ export var TypeInfo = {
     },
     QueryHierarchyItem: <any>{
     },
+    QueryHierarchyItemsResult: <any>{
+    },
     QueryOption: {
         enumValues: {
             "doing": 1,
@@ -741,7 +755,7 @@ TypeInfo.AccountMyWorkResult.fields = {
     workItemDetails: {
         isArray: true,
         typeInfo: TypeInfo.AccountWorkWorkItemModel
-    },
+    }
 };
 
 TypeInfo.AccountRecentActivityWorkItemModel.fields = {
@@ -753,13 +767,13 @@ TypeInfo.AccountRecentActivityWorkItemModel.fields = {
     },
     changedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.AccountWorkWorkItemModel.fields = {
     changedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.QueryHierarchyItem.fields = {
@@ -790,7 +804,14 @@ TypeInfo.QueryHierarchyItem.fields = {
     },
     targetClauses: {
         typeInfo: TypeInfo.WorkItemQueryClause
-    },
+    }
+};
+
+TypeInfo.QueryHierarchyItemsResult.fields = {
+    value: {
+        isArray: true,
+        typeInfo: TypeInfo.QueryHierarchyItem
+    }
 };
 
 TypeInfo.ReportingWorkItemLink.fields = {
@@ -799,7 +820,7 @@ TypeInfo.ReportingWorkItemLink.fields = {
     },
     changedOperation: {
         enumType: TypeInfo.LinkChangeType
-    },
+    }
 };
 
 TypeInfo.WorkItemClassificationNode.fields = {
@@ -809,32 +830,32 @@ TypeInfo.WorkItemClassificationNode.fields = {
     },
     structureType: {
         enumType: TypeInfo.TreeNodeStructureType
-    },
+    }
 };
 
 TypeInfo.WorkItemComment.fields = {
     revisedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.WorkItemComments.fields = {
     comments: {
         isArray: true,
         typeInfo: TypeInfo.WorkItemComment
-    },
+    }
 };
 
 TypeInfo.WorkItemField.fields = {
     type: {
         enumType: TypeInfo.FieldType
-    },
+    }
 };
 
 TypeInfo.WorkItemHistory.fields = {
     revisedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.WorkItemQueryClause.fields = {
@@ -844,7 +865,7 @@ TypeInfo.WorkItemQueryClause.fields = {
     },
     logicalOperator: {
         enumType: TypeInfo.LogicalOperation
-    },
+    }
 };
 
 TypeInfo.WorkItemQueryResult.fields = {
@@ -856,7 +877,7 @@ TypeInfo.WorkItemQueryResult.fields = {
     },
     queryType: {
         enumType: TypeInfo.QueryType
-    },
+    }
 };
 
 TypeInfo.WorkItemTypeTemplateUpdateModel.fields = {
@@ -865,11 +886,11 @@ TypeInfo.WorkItemTypeTemplateUpdateModel.fields = {
     },
     templateType: {
         enumType: TypeInfo.TemplateType
-    },
+    }
 };
 
 TypeInfo.WorkItemUpdate.fields = {
     revisedDate: {
         isDate: true,
-    },
+    }
 };

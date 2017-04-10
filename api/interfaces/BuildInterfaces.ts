@@ -2127,7 +2127,7 @@ TypeInfo.Build.fields = {
     validationResults: {
         isArray: true,
         typeInfo: TypeInfo.BuildRequestValidationResult
-    },
+    }
 };
 
 TypeInfo.BuildAgent.fields = {
@@ -2139,13 +2139,13 @@ TypeInfo.BuildAgent.fields = {
     },
     updatedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.BuildArtifactAddedEvent.fields = {
     build: {
         typeInfo: TypeInfo.Build
-    },
+    }
 };
 
 TypeInfo.BuildChangesCalculatedEvent.fields = {
@@ -2155,13 +2155,13 @@ TypeInfo.BuildChangesCalculatedEvent.fields = {
     changes: {
         isArray: true,
         typeInfo: TypeInfo.Change
-    },
+    }
 };
 
 TypeInfo.BuildCompletedEvent.fields = {
     build: {
         typeInfo: TypeInfo.Build
-    },
+    }
 };
 
 TypeInfo.BuildController.fields = {
@@ -2173,7 +2173,7 @@ TypeInfo.BuildController.fields = {
     },
     updatedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.BuildDefinition.fields = {
@@ -2208,7 +2208,7 @@ TypeInfo.BuildDefinition.fields = {
     },
     type: {
         enumType: TypeInfo.DefinitionType
-    },
+    }
 };
 
 TypeInfo.BuildDefinitionChangedEvent.fields = {
@@ -2217,7 +2217,7 @@ TypeInfo.BuildDefinitionChangedEvent.fields = {
     },
     definition: {
         typeInfo: TypeInfo.BuildDefinition
-    },
+    }
 };
 
 TypeInfo.BuildDefinitionChangingEvent.fields = {
@@ -2229,7 +2229,7 @@ TypeInfo.BuildDefinitionChangingEvent.fields = {
     },
     originalDefinition: {
         typeInfo: TypeInfo.BuildDefinition
-    },
+    }
 };
 
 TypeInfo.BuildDefinitionReference.fields = {
@@ -2251,7 +2251,7 @@ TypeInfo.BuildDefinitionReference.fields = {
     },
     type: {
         enumType: TypeInfo.DefinitionType
-    },
+    }
 };
 
 TypeInfo.BuildDefinitionRevision.fields = {
@@ -2260,7 +2260,7 @@ TypeInfo.BuildDefinitionRevision.fields = {
     },
     changeType: {
         enumType: TypeInfo.AuditAction
-    },
+    }
 };
 
 TypeInfo.BuildDefinitionSourceProvider.fields = {
@@ -2269,31 +2269,31 @@ TypeInfo.BuildDefinitionSourceProvider.fields = {
     },
     supportedTriggerTypes: {
         enumType: TypeInfo.DefinitionTriggerType
-    },
+    }
 };
 
 TypeInfo.BuildDefinitionTemplate.fields = {
     template: {
         typeInfo: TypeInfo.BuildDefinition
-    },
+    }
 };
 
 TypeInfo.BuildDeletedEvent.fields = {
     build: {
         typeInfo: TypeInfo.Build
-    },
+    }
 };
 
 TypeInfo.BuildDeployment.fields = {
     deployment: {
         typeInfo: TypeInfo.BuildSummary
-    },
+    }
 };
 
 TypeInfo.BuildDestroyedEvent.fields = {
     build: {
         typeInfo: TypeInfo.Build
-    },
+    }
 };
 
 TypeInfo.BuildLog.fields = {
@@ -2302,26 +2302,26 @@ TypeInfo.BuildLog.fields = {
     },
     lastChangedOn: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.BuildMetric.fields = {
     date: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.BuildOptionDefinition.fields = {
     inputs: {
         isArray: true,
         typeInfo: TypeInfo.BuildOptionInputDefinition
-    },
+    }
 };
 
 TypeInfo.BuildOptionInputDefinition.fields = {
     type: {
         enumType: TypeInfo.BuildOptionInputType
-    },
+    }
 };
 
 TypeInfo.BuildProcessTemplate.fields = {
@@ -2330,13 +2330,13 @@ TypeInfo.BuildProcessTemplate.fields = {
     },
     templateType: {
         enumType: TypeInfo.ProcessTemplateType
-    },
+    }
 };
 
 TypeInfo.BuildQueuedEvent.fields = {
     build: {
         typeInfo: TypeInfo.Build
-    },
+    }
 };
 
 TypeInfo.BuildReference.fields = {
@@ -2354,13 +2354,13 @@ TypeInfo.BuildReference.fields = {
     },
     status: {
         enumType: TypeInfo.BuildStatus
-    },
+    }
 };
 
 TypeInfo.BuildRequestValidationResult.fields = {
     result: {
         enumType: TypeInfo.ValidationResult
-    },
+    }
 };
 
 TypeInfo.BuildServer.fields = {
@@ -2369,13 +2369,13 @@ TypeInfo.BuildServer.fields = {
     },
     statusChangedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.BuildStartedEvent.fields = {
     build: {
         typeInfo: TypeInfo.Build
-    },
+    }
 };
 
 TypeInfo.BuildSummary.fields = {
@@ -2390,31 +2390,31 @@ TypeInfo.BuildSummary.fields = {
     },
     status: {
         enumType: TypeInfo.BuildStatus
-    },
+    }
 };
 
 TypeInfo.BuildTrigger.fields = {
     triggerType: {
         enumType: TypeInfo.DefinitionTriggerType
-    },
+    }
 };
 
 TypeInfo.BuildUpdatedEvent.fields = {
     build: {
         typeInfo: TypeInfo.Build
-    },
+    }
 };
 
 TypeInfo.Change.fields = {
     timestamp: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.ContinuousIntegrationTrigger.fields = {
     triggerType: {
         enumType: TypeInfo.DefinitionTriggerType
-    },
+    }
 };
 
 TypeInfo.DefinitionReference.fields = {
@@ -2426,7 +2426,7 @@ TypeInfo.DefinitionReference.fields = {
     },
     type: {
         enumType: TypeInfo.DefinitionType
-    },
+    }
 };
 
 TypeInfo.Folder.fields = {
@@ -2435,37 +2435,37 @@ TypeInfo.Folder.fields = {
     },
     lastChangedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.GatedCheckInTrigger.fields = {
     triggerType: {
         enumType: TypeInfo.DefinitionTriggerType
-    },
+    }
 };
 
 TypeInfo.InformationNode.fields = {
     lastModifiedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.Issue.fields = {
     type: {
         enumType: TypeInfo.IssueType
-    },
+    }
 };
 
 TypeInfo.PullRequestTrigger.fields = {
     triggerType: {
         enumType: TypeInfo.DefinitionTriggerType
-    },
+    }
 };
 
 TypeInfo.Schedule.fields = {
     daysToBuild: {
         enumType: TypeInfo.ScheduleDays
-    },
+    }
 };
 
 TypeInfo.ScheduleTrigger.fields = {
@@ -2475,19 +2475,19 @@ TypeInfo.ScheduleTrigger.fields = {
     },
     triggerType: {
         enumType: TypeInfo.DefinitionTriggerType
-    },
+    }
 };
 
 TypeInfo.SyncBuildCompletedEvent.fields = {
     build: {
         typeInfo: TypeInfo.Build
-    },
+    }
 };
 
 TypeInfo.SyncBuildStartedEvent.fields = {
     build: {
         typeInfo: TypeInfo.Build
-    },
+    }
 };
 
 TypeInfo.Timeline.fields = {
@@ -2497,7 +2497,7 @@ TypeInfo.Timeline.fields = {
     records: {
         isArray: true,
         typeInfo: TypeInfo.TimelineRecord
-    },
+    }
 };
 
 TypeInfo.TimelineRecord.fields = {
@@ -2519,20 +2519,20 @@ TypeInfo.TimelineRecord.fields = {
     },
     state: {
         enumType: TypeInfo.TimelineRecordState
-    },
+    }
 };
 
 TypeInfo.TimelineRecordsUpdatedEvent.fields = {
     timelineRecords: {
         isArray: true,
         typeInfo: TypeInfo.TimelineRecord
-    },
+    }
 };
 
 TypeInfo.WorkspaceMapping.fields = {
     mappingType: {
         enumType: TypeInfo.WorkspaceMappingType
-    },
+    }
 };
 
 TypeInfo.WorkspaceTemplate.fields = {
@@ -2542,7 +2542,7 @@ TypeInfo.WorkspaceTemplate.fields = {
     mappings: {
         isArray: true,
         typeInfo: TypeInfo.WorkspaceMapping
-    },
+    }
 };
 
 TypeInfo.XamlBuildDefinition.fields = {
@@ -2566,5 +2566,5 @@ TypeInfo.XamlBuildDefinition.fields = {
     },
     type: {
         enumType: TypeInfo.DefinitionType
-    },
+    }
 };

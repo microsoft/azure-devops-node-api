@@ -84,7 +84,7 @@ export var TypeInfo = {
 TypeInfo.PolicyConfiguration.fields = {
     createdDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.PolicyEvaluationRecord.fields = {
@@ -99,5 +99,5 @@ TypeInfo.PolicyEvaluationRecord.fields = {
     },
     status: {
         enumType: TypeInfo.PolicyEvaluationStatus
-    },
+    }
 };

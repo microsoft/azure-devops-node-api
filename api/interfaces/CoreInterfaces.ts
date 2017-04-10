@@ -88,7 +88,7 @@ export interface ProjectMessage {
 
 export interface ProjectProperty {
     name: string;
-    value: string;
+    value: any;
 }
 
 export interface Proxy {
@@ -446,13 +446,13 @@ export var TypeInfo = {
 TypeInfo.Process.fields = {
     type: {
         enumType: TypeInfo.ProcessType
-    },
+    }
 };
 
 TypeInfo.ProjectInfo.fields = {
     lastUpdateTime: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.ProjectMessage.fields = {
@@ -461,11 +461,11 @@ TypeInfo.ProjectMessage.fields = {
     },
     projectChangeType: {
         enumType: TypeInfo.ProjectChangeType
-    },
+    }
 };
 
 TypeInfo.TemporaryDataCreatedDTO.fields = {
     expirationDate: {
         isDate: true,
-    },
+    }
 };

@@ -324,5 +324,5 @@ export var TypeInfo = {
 TypeInfo.JsonPatchOperation.fields = {
     op: {
         enumType: TypeInfo.Operation
-    },
+    }
 };

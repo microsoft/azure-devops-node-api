@@ -1143,27 +1143,27 @@ export var TypeInfo = {
 TypeInfo.BacklogConfiguration.fields = {
     bugsBehavior: {
         enumType: TypeInfo.BugsBehavior
-    },
+    }
 };
 
 TypeInfo.Board.fields = {
     columns: {
         isArray: true,
         typeInfo: TypeInfo.BoardColumn
-    },
+    }
 };
 
 TypeInfo.BoardColumn.fields = {
     columnType: {
         enumType: TypeInfo.BoardColumnType
-    },
+    }
 };
 
 TypeInfo.CapacityPatch.fields = {
     daysOff: {
         isArray: true,
         typeInfo: TypeInfo.DateRange
-    },
+    }
 };
 
 TypeInfo.CardFieldSettings.fields = {
@@ -1177,19 +1177,19 @@ TypeInfo.CardFieldSettings.fields = {
     coreFields: {
         isArray: true,
         typeInfo: TypeInfo.FieldInfo
-    },
+    }
 };
 
 TypeInfo.CardSettings.fields = {
     fields: {
         typeInfo: TypeInfo.CardFieldSettings
-    },
+    }
 };
 
 TypeInfo.CreatePlan.fields = {
     type: {
         enumType: TypeInfo.PlanType
-    },
+    }
 };
 
 TypeInfo.DateRange.fields = {
@@ -1198,7 +1198,7 @@ TypeInfo.DateRange.fields = {
     },
     start: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.DeliveryViewData.fields = {
@@ -1214,7 +1214,7 @@ TypeInfo.DeliveryViewData.fields = {
     teams: {
         isArray: true,
         typeInfo: TypeInfo.TimelineTeamData
-    },
+    }
 };
 
 TypeInfo.DeliveryViewPropertyCollection.fields = {
@@ -1224,19 +1224,19 @@ TypeInfo.DeliveryViewPropertyCollection.fields = {
     markers: {
         isArray: true,
         typeInfo: TypeInfo.Marker
-    },
+    }
 };
 
 TypeInfo.FieldInfo.fields = {
     fieldType: {
         enumType: TypeInfo.FieldType
-    },
+    }
 };
 
 TypeInfo.Marker.fields = {
     date: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.Plan.fields = {
@@ -1251,7 +1251,7 @@ TypeInfo.Plan.fields = {
     },
     userPermissions: {
         enumType: TypeInfo.PlanUserPermissions
-    },
+    }
 };
 
 TypeInfo.PlanMetadata.fields = {
@@ -1260,7 +1260,7 @@ TypeInfo.PlanMetadata.fields = {
     },
     userPermissions: {
         enumType: TypeInfo.PlanUserPermissions
-    },
+    }
 };
 
 TypeInfo.TeamIterationAttributes.fields = {
@@ -1269,14 +1269,14 @@ TypeInfo.TeamIterationAttributes.fields = {
     },
     startDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TeamMemberCapacity.fields = {
     daysOff: {
         isArray: true,
         typeInfo: TypeInfo.DateRange
-    },
+    }
 };
 
 TypeInfo.TeamSetting.fields = {
@@ -1292,27 +1292,27 @@ TypeInfo.TeamSetting.fields = {
     workingDays: {
         isArray: true,
         enumType: SystemInterfaces.TypeInfo.DayOfWeek
-    },
+    }
 };
 
 TypeInfo.TeamSettingsDaysOff.fields = {
     daysOff: {
         isArray: true,
         typeInfo: TypeInfo.DateRange
-    },
+    }
 };
 
 TypeInfo.TeamSettingsDaysOffPatch.fields = {
     daysOff: {
         isArray: true,
         typeInfo: TypeInfo.DateRange
-    },
+    }
 };
 
 TypeInfo.TeamSettingsIteration.fields = {
     attributes: {
         typeInfo: TypeInfo.TeamIterationAttributes
-    },
+    }
 };
 
 TypeInfo.TeamSettingsPatch.fields = {
@@ -1322,19 +1322,19 @@ TypeInfo.TeamSettingsPatch.fields = {
     workingDays: {
         isArray: true,
         enumType: SystemInterfaces.TypeInfo.DayOfWeek
-    },
+    }
 };
 
 TypeInfo.TimelineCriteriaStatus.fields = {
     type: {
         enumType: TypeInfo.TimelineCriteriaStatusCode
-    },
+    }
 };
 
 TypeInfo.TimelineIterationStatus.fields = {
     type: {
         enumType: TypeInfo.TimelineIterationStatusCode
-    },
+    }
 };
 
 TypeInfo.TimelineTeamData.fields = {
@@ -1344,7 +1344,7 @@ TypeInfo.TimelineTeamData.fields = {
     },
     status: {
         typeInfo: TypeInfo.TimelineTeamStatus
-    },
+    }
 };
 
 TypeInfo.TimelineTeamIteration.fields = {
@@ -1356,17 +1356,17 @@ TypeInfo.TimelineTeamIteration.fields = {
     },
     status: {
         typeInfo: TypeInfo.TimelineIterationStatus
-    },
+    }
 };
 
 TypeInfo.TimelineTeamStatus.fields = {
     type: {
         enumType: TypeInfo.TimelineTeamStatusCode
-    },
+    }
 };
 
 TypeInfo.UpdatePlan.fields = {
     type: {
         enumType: TypeInfo.PlanType
-    },
+    }
 };

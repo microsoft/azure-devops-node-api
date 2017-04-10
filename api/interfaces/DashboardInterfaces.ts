@@ -296,25 +296,25 @@ export var TypeInfo = {
 TypeInfo.DashboardGroup.fields = {
     permission: {
         enumType: TypeInfo.GroupMemberPermission
-    },
+    }
 };
 
 TypeInfo.WidgetMetadata.fields = {
     supportedScopes: {
         isArray: true,
         enumType: TypeInfo.WidgetScope
-    },
+    }
 };
 
 TypeInfo.WidgetMetadataResponse.fields = {
     widgetMetadata: {
         typeInfo: TypeInfo.WidgetMetadata
-    },
+    }
 };
 
 TypeInfo.WidgetTypesResponse.fields = {
     widgetTypes: {
         isArray: true,
         typeInfo: TypeInfo.WidgetMetadata
-    },
+    }
 };

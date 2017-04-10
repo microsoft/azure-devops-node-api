@@ -28,10 +28,10 @@ export interface INotificationApi extends basem.ClientApiBase {
     createSubscription(createParameters: NotificationInterfaces.NotificationSubscriptionCreateParameters): Promise<NotificationInterfaces.NotificationSubscription>;
     deleteSubscription(subscriptionId: string): Promise<void>;
     getSubscription(subscriptionId: string, queryFlags?: NotificationInterfaces.SubscriptionQueryFlags): Promise<NotificationInterfaces.NotificationSubscription>;
-    listSubscriptions(subscriber?: string, queryFlags?: NotificationInterfaces.SubscriptionQueryFlags): Promise<NotificationInterfaces.NotificationSubscription[]>;
+    listSubscriptions(targetId?: string, ids?: string[], queryFlags?: NotificationInterfaces.SubscriptionQueryFlags): Promise<NotificationInterfaces.NotificationSubscription[]>;
     updateSubscription(updateParameters: NotificationInterfaces.NotificationSubscriptionUpdateParameters, subscriptionId: string): Promise<NotificationInterfaces.NotificationSubscription>;
     getSubscriptionTemplates(): Promise<NotificationInterfaces.NotificationSubscriptionTemplate[]>;
-    updateSubscriptionUserSettings(userSettings: NotificationInterfaces.SubscriptionUserSettings, subscriptionId: string, userId: string): Promise<NotificationInterfaces.SubscriptionUserSettings>;
+    updateSubscriptionUserSettings(userSettings: NotificationInterfaces.SubscriptionUserSettings, subscriptionId: string, userId?: string): Promise<NotificationInterfaces.SubscriptionUserSettings>;
 }
 
 export class NotificationApi extends basem.ClientApiBase implements INotificationApi {
@@ -373,13 +373,13 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
     }
 
     /**
-     * Get a list of subscriptions. If no subscriber is specified, subscriptions for the calling user are returned.
-     * 
-     * @param {string} subscriber
+     * @param {string} targetId
+     * @param {string[]} ids
      * @param {NotificationInterfaces.SubscriptionQueryFlags} queryFlags
      */
     public async listSubscriptions(
-        subscriber?: string,
+        targetId?: string,
+        ids?: string[],
         queryFlags?: NotificationInterfaces.SubscriptionQueryFlags
         ): Promise<NotificationInterfaces.NotificationSubscription[]> {
 
@@ -388,7 +388,8 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
             };
 
             let queryValues: any = {
-                subscriber: subscriber,
+                targetId: targetId,
+                ids: ids && ids.join(","),
                 queryFlags: queryFlags,
             };
             
@@ -509,7 +510,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
     public async updateSubscriptionUserSettings(
         userSettings: NotificationInterfaces.SubscriptionUserSettings,
         subscriptionId: string,
-        userId: string
+        userId?: string
         ): Promise<NotificationInterfaces.SubscriptionUserSettings> {
 
         return new Promise<NotificationInterfaces.SubscriptionUserSettings>(async (resolve, reject) => {

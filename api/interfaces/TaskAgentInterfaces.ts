@@ -179,8 +179,14 @@ export interface DeploymentGroupReference {
 }
 
 export interface DeploymentMachine {
-    agent: TaskAgentReference;
+    agent: TaskAgent;
     tags: string[];
+}
+
+export enum DeploymentMachineExpands {
+    None = 0,
+    Capabilities = 2,
+    AssignedRequest = 4,
 }
 
 export interface DeploymentMachineGroup extends DeploymentMachineGroupReference {
@@ -211,6 +217,14 @@ export interface EndpointUrl {
     helpText: string;
     isVisible: string;
     value: string;
+}
+
+export interface EventsConfig {
+}
+
+export interface ExecuteTaskResponse {
+    taskEvents: TaskEventsConfig;
+    waitForLocalExecutionComplete: boolean;
 }
 
 export interface HelpLink {
@@ -280,7 +294,7 @@ export interface JobEventConfig {
     timeout: string;
 }
 
-export interface JobEventsConfig {
+export interface JobEventsConfig extends EventsConfig {
     jobAssigned: JobEventConfig;
     jobCompleted: JobEventConfig;
     jobStarted: JobEventConfig;
@@ -413,10 +427,11 @@ export interface SendJobResponse {
 }
 
 export interface ServerExecutionDefinition {
-    events: JobEventsConfig;
+    events: EventsConfig;
+    handlerName: string;
 }
 
-export interface ServerJobRequestMessage extends JobRequestMessage {
+export interface ServerTaskRequestMessage extends JobRequestMessage {
     taskDefinition: TaskDefinition;
     taskInstance: TaskInstance;
 }
@@ -950,6 +965,9 @@ export interface TaskAgentUpdate {
     targetVersion: PackageVersion;
 }
 
+export interface TaskAssignedEvent extends TaskEvent {
+}
+
 export interface TaskAttachment {
     _links: any;
     createdOn: Date;
@@ -962,6 +980,10 @@ export interface TaskAttachment {
 }
 
 export interface TaskChangeEvent {
+}
+
+export interface TaskCompletedEvent extends TaskEvent {
+    result: TaskResult;
 }
 
 export interface TaskDefinition {
@@ -1043,6 +1065,21 @@ export enum TaskDefinitionStatus {
     Updated = 7,
     AlreadyUpToDate = 8,
     InlineUpdateReceived = 9,
+}
+
+export interface TaskEvent extends JobEvent {
+    taskId: string;
+}
+
+export interface TaskEventConfig {
+    enabled: boolean;
+    timeout: string;
+}
+
+export interface TaskEventsConfig extends EventsConfig {
+    taskAssigned: TaskEventConfig;
+    taskCompleted: TaskEventConfig;
+    taskStarted: TaskEventConfig;
 }
 
 export interface TaskExecution {
@@ -1254,6 +1291,9 @@ export enum TaskResult {
 export interface TaskSourceDefinition extends DistributedTaskCommonInterfaces.TaskSourceDefinitionBase {
 }
 
+export interface TaskStartedEvent extends TaskEvent {
+}
+
 export interface TaskVersion {
     isTest: boolean;
     major: number;
@@ -1373,6 +1413,13 @@ export var TypeInfo = {
     },
     DeploymentMachine: <any>{
     },
+    DeploymentMachineExpands: {
+        enumValues: {
+            "none": 0,
+            "capabilities": 2,
+            "assignedRequest": 4
+        }
+    },
     DeploymentMachineGroup: <any>{
     },
     DeploymentMachineGroupReference: <any>{
@@ -1430,7 +1477,7 @@ export var TypeInfo = {
             "use": 16
         }
     },
-    ServerJobRequestMessage: <any>{
+    ServerTaskRequestMessage: <any>{
     },
     ServiceEndpointAuthenticationScheme: <any>{
     },
@@ -1515,6 +1562,8 @@ export var TypeInfo = {
     TaskAgentUpdate: <any>{
     },
     TaskAttachment: <any>{
+    },
+    TaskCompletedEvent: <any>{
     },
     TaskDefinitionStatus: {
         enumValues: {
@@ -1601,7 +1650,7 @@ TypeInfo.AgentChangeEvent.fields = {
     },
     timeStamp: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.AgentJobRequestMessage.fields = {
@@ -1610,26 +1659,26 @@ TypeInfo.AgentJobRequestMessage.fields = {
     },
     lockedUntil: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.AgentPoolEvent.fields = {
     pool: {
         typeInfo: TypeInfo.TaskAgentPool
-    },
+    }
 };
 
 TypeInfo.AgentQueueEvent.fields = {
     queue: {
         typeInfo: TypeInfo.TaskAgentQueue
-    },
+    }
 };
 
 TypeInfo.AgentQueuesEvent.fields = {
     queues: {
         isArray: true,
         typeInfo: TypeInfo.TaskAgentQueue
-    },
+    }
 };
 
 TypeInfo.AgentRequestEvent.fields = {
@@ -1638,7 +1687,7 @@ TypeInfo.AgentRequestEvent.fields = {
     },
     timeStamp: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.DeploymentGroup.fields = {
@@ -1648,19 +1697,19 @@ TypeInfo.DeploymentGroup.fields = {
     },
     pool: {
         typeInfo: TypeInfo.TaskAgentPoolReference
-    },
+    }
 };
 
 TypeInfo.DeploymentGroupReference.fields = {
     pool: {
         typeInfo: TypeInfo.TaskAgentPoolReference
-    },
+    }
 };
 
 TypeInfo.DeploymentMachine.fields = {
     agent: {
-        typeInfo: TypeInfo.TaskAgentReference
-    },
+        typeInfo: TypeInfo.TaskAgent
+    }
 };
 
 TypeInfo.DeploymentMachineGroup.fields = {
@@ -1670,13 +1719,13 @@ TypeInfo.DeploymentMachineGroup.fields = {
     },
     pool: {
         typeInfo: TypeInfo.TaskAgentPoolReference
-    },
+    }
 };
 
 TypeInfo.DeploymentMachineGroupReference.fields = {
     pool: {
         typeInfo: TypeInfo.TaskAgentPoolReference
-    },
+    }
 };
 
 TypeInfo.DeploymentMachinesChangeEvent.fields = {
@@ -1686,25 +1735,25 @@ TypeInfo.DeploymentMachinesChangeEvent.fields = {
     machines: {
         isArray: true,
         typeInfo: TypeInfo.DeploymentMachine
-    },
+    }
 };
 
 TypeInfo.Issue.fields = {
     type: {
         enumType: TypeInfo.IssueType
-    },
+    }
 };
 
 TypeInfo.JobAssignedEvent.fields = {
     request: {
         typeInfo: TypeInfo.TaskAgentJobRequest
-    },
+    }
 };
 
 TypeInfo.JobCompletedEvent.fields = {
     result: {
         enumType: TypeInfo.TaskResult
-    },
+    }
 };
 
 TypeInfo.JobEnvironment.fields = {
@@ -1715,32 +1764,32 @@ TypeInfo.JobEnvironment.fields = {
     secureFiles: {
         isArray: true,
         typeInfo: TypeInfo.SecureFile
-    },
+    }
 };
 
 TypeInfo.JobRequestMessage.fields = {
     environment: {
         typeInfo: TypeInfo.JobEnvironment
-    },
+    }
 };
 
 TypeInfo.MaskHint.fields = {
     type: {
         enumType: TypeInfo.MaskType
-    },
+    }
 };
 
 TypeInfo.PackageMetadata.fields = {
     createdOn: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.PlanEnvironment.fields = {
     mask: {
         isArray: true,
         typeInfo: TypeInfo.MaskHint
-    },
+    }
 };
 
 TypeInfo.SecureFile.fields = {
@@ -1749,20 +1798,20 @@ TypeInfo.SecureFile.fields = {
     },
     modifiedOn: {
         isDate: true,
-    },
+    }
 };
 
-TypeInfo.ServerJobRequestMessage.fields = {
+TypeInfo.ServerTaskRequestMessage.fields = {
     environment: {
         typeInfo: TypeInfo.JobEnvironment
-    },
+    }
 };
 
 TypeInfo.ServiceEndpointAuthenticationScheme.fields = {
     inputDescriptors: {
         isArray: true,
         typeInfo: FormInputInterfaces.TypeInfo.InputDescriptor
-    },
+    }
 };
 
 TypeInfo.ServiceEndpointRequestResult.fields = {
@@ -1776,7 +1825,7 @@ TypeInfo.ServiceEndpointType.fields = {
     inputDescriptors: {
         isArray: true,
         typeInfo: FormInputInterfaces.TypeInfo.InputDescriptor
-    },
+    }
 };
 
 TypeInfo.TaskAgent.fields = {
@@ -1794,7 +1843,7 @@ TypeInfo.TaskAgent.fields = {
     },
     statusChangedOn: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TaskAgentJobRequest.fields = {
@@ -1822,7 +1871,7 @@ TypeInfo.TaskAgentJobRequest.fields = {
     },
     result: {
         enumType: TypeInfo.TaskResult
-    },
+    }
 };
 
 TypeInfo.TaskAgentPool.fields = {
@@ -1831,7 +1880,7 @@ TypeInfo.TaskAgentPool.fields = {
     },
     poolType: {
         enumType: TypeInfo.TaskAgentPoolType
-    },
+    }
 };
 
 TypeInfo.TaskAgentPoolMaintenanceDefinition.fields = {
@@ -1840,7 +1889,7 @@ TypeInfo.TaskAgentPoolMaintenanceDefinition.fields = {
     },
     scheduleSetting: {
         typeInfo: TypeInfo.TaskAgentPoolMaintenanceSchedule
-    },
+    }
 };
 
 TypeInfo.TaskAgentPoolMaintenanceJob.fields = {
@@ -1865,43 +1914,43 @@ TypeInfo.TaskAgentPoolMaintenanceJob.fields = {
     targetAgents: {
         isArray: true,
         typeInfo: TypeInfo.TaskAgentReference
-    },
+    }
 };
 
 TypeInfo.TaskAgentPoolMaintenanceSchedule.fields = {
     daysToBuild: {
         enumType: TypeInfo.TaskAgentPoolMaintenanceScheduleDays
-    },
+    }
 };
 
 TypeInfo.TaskAgentPoolReference.fields = {
     poolType: {
         enumType: TypeInfo.TaskAgentPoolType
-    },
+    }
 };
 
 TypeInfo.TaskAgentQueue.fields = {
     pool: {
         typeInfo: TypeInfo.TaskAgentPoolReference
-    },
+    }
 };
 
 TypeInfo.TaskAgentReference.fields = {
     status: {
         enumType: TypeInfo.TaskAgentStatus
-    },
+    }
 };
 
 TypeInfo.TaskAgentSession.fields = {
     agent: {
         typeInfo: TypeInfo.TaskAgentReference
-    },
+    }
 };
 
 TypeInfo.TaskAgentUpdate.fields = {
     requestTime: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TaskAttachment.fields = {
@@ -1910,7 +1959,13 @@ TypeInfo.TaskAttachment.fields = {
     },
     lastChangedOn: {
         isDate: true,
-    },
+    }
+};
+
+TypeInfo.TaskCompletedEvent.fields = {
+    result: {
+        enumType: TypeInfo.TaskResult
+    }
 };
 
 TypeInfo.TaskGroup.fields = {
@@ -1919,7 +1974,7 @@ TypeInfo.TaskGroup.fields = {
     },
     modifiedOn: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TaskGroupRevision.fields = {
@@ -1928,7 +1983,7 @@ TypeInfo.TaskGroupRevision.fields = {
     },
     changeType: {
         enumType: TypeInfo.AuditAction
-    },
+    }
 };
 
 TypeInfo.TaskLog.fields = {
@@ -1937,7 +1992,7 @@ TypeInfo.TaskLog.fields = {
     },
     lastChangedOn: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TaskOrchestrationContainer.fields = {
@@ -1950,19 +2005,19 @@ TypeInfo.TaskOrchestrationContainer.fields = {
     },
     rollback: {
         typeInfo: TypeInfo.TaskOrchestrationContainer
-    },
+    }
 };
 
 TypeInfo.TaskOrchestrationItem.fields = {
     itemType: {
         enumType: TypeInfo.TaskOrchestrationItemType
-    },
+    }
 };
 
 TypeInfo.TaskOrchestrationJob.fields = {
     itemType: {
         enumType: TypeInfo.TaskOrchestrationItemType
-    },
+    }
 };
 
 TypeInfo.TaskOrchestrationPlan.fields = {
@@ -1983,7 +2038,7 @@ TypeInfo.TaskOrchestrationPlan.fields = {
     },
     state: {
         enumType: TypeInfo.TaskOrchestrationPlanState
-    },
+    }
 };
 
 TypeInfo.TaskOrchestrationQueuedPlan.fields = {
@@ -1992,14 +2047,14 @@ TypeInfo.TaskOrchestrationQueuedPlan.fields = {
     },
     queueTime: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TaskOrchestrationQueuedPlanGroup.fields = {
     plans: {
         isArray: true,
         typeInfo: TypeInfo.TaskOrchestrationQueuedPlan
-    },
+    }
 };
 
 TypeInfo.Timeline.fields = {
@@ -2009,7 +2064,7 @@ TypeInfo.Timeline.fields = {
     records: {
         isArray: true,
         typeInfo: TypeInfo.TimelineRecord
-    },
+    }
 };
 
 TypeInfo.TimelineRecord.fields = {
@@ -2031,7 +2086,7 @@ TypeInfo.TimelineRecord.fields = {
     },
     state: {
         enumType: TypeInfo.TimelineRecordState
-    },
+    }
 };
 
 TypeInfo.VariableGroup.fields = {
@@ -2040,5 +2095,5 @@ TypeInfo.VariableGroup.fields = {
     },
     modifiedOn: {
         isDate: true,
-    },
+    }
 };
