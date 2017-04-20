@@ -95,6 +95,26 @@ export async function run() {
             let history = await vstsBuild.getDefinitionRevisions(project, createdDef.id);
             console.log(`last updated ${history[0].changedDate}`);
 
+            let document = [
+                {
+                    op: "replace",
+                    path: "/key1",
+                    value: "/value1"
+                },
+                {
+                    op: "replace",
+                    path: "/key2",
+                    value: "/value2"
+                }
+            ];
+
+            console.log("setting properties");
+            let updatedProperties = await vstsBuild.updateDefinitionProperties(null, document, project, createdDef.id);
+            console.log(`properties for definition ${createdDef.name}:`);
+            for (let key in updatedProperties.value) {
+                console.log(`${key} = ${updatedProperties.value[key].$value}`);
+            }
+
             // delete def
             console.log("deleting", createdDef.name);
             await vstsBuild.deleteDefinition(createdDef.id, project);
