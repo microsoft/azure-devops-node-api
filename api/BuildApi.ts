@@ -53,6 +53,10 @@ export interface IBuildApi extends basem.ClientApiBase {
     getProjectMetrics(project: string, metricAggregationType?: string, minMetricsTime?: Date): Promise<BuildInterfaces.BuildMetric[]>;
     getDefinitionMetrics(project: string, definitionId: number, minMetricsTime?: Date): Promise<BuildInterfaces.BuildMetric[]>;
     getBuildOptionDefinitions(project?: string): Promise<BuildInterfaces.BuildOptionDefinition[]>;
+    getBuildProperties(project: string, buildId: number, filter?: string[]): Promise<any>;
+    updateBuildProperties(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, project: string, buildId: number): Promise<any>;
+    getDefinitionProperties(project: string, definitionId: number, filter?: string[]): Promise<any>;
+    updateDefinitionProperties(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, project: string, definitionId: number): Promise<any>;
     getBuildReport(project: string, buildId: number, type?: string): Promise<BuildInterfaces.BuildReportMetadata>;
     getBuildReportHtmlContent(project: string, buildId: number, type?: string): Promise<NodeJS.ReadableStream>;
     getResourceUsage(): Promise<BuildInterfaces.BuildResourceUsage>;
@@ -1760,6 +1764,210 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let ret = this.formatResponse(res.result,
                                               BuildInterfaces.TypeInfo.BuildOptionDefinition,
                                               true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Gets properties for a build.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} buildId - The build id.
+     * @param {string[]} filter - Filter to specific properties. Defaults to all properties.
+     */
+    public async getBuildProperties(
+        project: string,
+        buildId: number,
+        filter?: string[]
+        ): Promise<any> {
+
+        return new Promise<any>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId
+            };
+
+            let queryValues: any = {
+                filter: filter && filter.join(","),
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "build",
+                    "0a6312e9-0627-49b7-8083-7d74a64849c9",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<any>;
+                res = await this.rest.get<any>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Updates properties for a build.
+     * 
+     * @param {VSSInterfaces.JsonPatchDocument} document
+     * @param {string} project - Project ID or project name
+     * @param {number} buildId - The build id.
+     */
+    public async updateBuildProperties(
+        customHeaders: any,
+        document: VSSInterfaces.JsonPatchDocument,
+        project: string,
+        buildId: number
+        ): Promise<any> {
+
+        return new Promise<any>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId
+            };
+
+            customHeaders = customHeaders || {};
+            customHeaders["Content-Type"] = "application/json-patch+json";
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "build",
+                    "0a6312e9-0627-49b7-8083-7d74a64849c9",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                options.additionalHeaders = customHeaders;
+
+                let res: restm.IRestResponse<any>;
+                res = await this.rest.update<any>(url, document, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Gets properties for a definition.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} definitionId - The definition id.
+     * @param {string[]} filter - Filter to specific properties. Defaults to all properties.
+     */
+    public async getDefinitionProperties(
+        project: string,
+        definitionId: number,
+        filter?: string[]
+        ): Promise<any> {
+
+        return new Promise<any>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId
+            };
+
+            let queryValues: any = {
+                filter: filter && filter.join(","),
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "build",
+                    "d9826ad7-2a68-46a9-a6e9-677698777895",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<any>;
+                res = await this.rest.get<any>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Updates properties for a definition.
+     * 
+     * @param {VSSInterfaces.JsonPatchDocument} document
+     * @param {string} project - Project ID or project name
+     * @param {number} definitionId - The definition id.
+     */
+    public async updateDefinitionProperties(
+        customHeaders: any,
+        document: VSSInterfaces.JsonPatchDocument,
+        project: string,
+        definitionId: number
+        ): Promise<any> {
+
+        return new Promise<any>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId
+            };
+
+            customHeaders = customHeaders || {};
+            customHeaders["Content-Type"] = "application/json-patch+json";
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.1",
+                    "build",
+                    "d9826ad7-2a68-46a9-a6e9-677698777895",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                options.additionalHeaders = customHeaders;
+
+                let res: restm.IRestResponse<any>;
+                res = await this.rest.update<any>(url, document, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
 
                 resolve(ret);
                 
