@@ -62,8 +62,7 @@ export function getPersonalAccessTokenHandler(token) {
 
 // ---------------------------------------------------------------------------
 // Factory to return client apis
-// When new APIs are added, two methods must be added here to instantiate the
-// API and its corresponding Q Promise-wrapped API
+// When new APIs are added, a method must be added here to instantiate the API
 //----------------------------------------------------------------------------
 export class WebApi {
 
