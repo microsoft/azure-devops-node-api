@@ -1,4 +1,3 @@
-import * as Q from 'q';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as stream from 'stream';
@@ -31,11 +30,12 @@ export async function run() {
             let taskDefinition = tasks[0];
             let file: NodeJS.WritableStream = fs.createWriteStream(sampleFilePath);
             let stream = (await vstsTask.getTaskContentZip(taskDefinition.id, `${taskDefinition.version.major}.${taskDefinition.version.minor}.${taskDefinition.version.patch}`)).pipe(file);
-            let defer = Q.defer();
-            stream.on('finish', () => {
-                defer.resolve();
+            let promise = new Promise((resolve, reject) => {
+                stream.on('finish', () => {
+                    resolve();
+                });
             });
-            await defer.promise;
+            await promise;
             console.log(`Downloaded task ${taskDefinition.name}`);
         }
 

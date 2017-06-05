@@ -10,8 +10,6 @@
 
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
-
-import Q = require('q');
 import * as restm from 'typed-rest-client/RestClient';
 import * as httpm from 'typed-rest-client/HttpClient';
 import vsom = require('./VsoClient');
