@@ -7,6 +7,7 @@
     "files": [
         "run.ts", 
         "build.ts",
-        "task.ts"
+        "task.ts",
+        "filecontainer.ts"
     ]
 }
