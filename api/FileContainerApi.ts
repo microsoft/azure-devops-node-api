@@ -12,6 +12,7 @@
 
 import stream = require("stream");
 import * as restm from 'typed-rest-client/RestClient';
+import * as httpm from 'typed-rest-client//HttpClient';
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import FileContainerApiBase = require("./FileContainerApiBase");
 import FileContainerInterfaces = require("./interfaces/FileContainerInterfaces");
@@ -19,13 +20,95 @@ import vsom = require('./VsoClient');
 
 export interface IFileContainerApi extends FileContainerApiBase.IFileContainerApiBase {
     createItem(contentStream: NodeJS.ReadableStream, uncompressedLength: number, containerId: number, itemPath: string, scope: string, options: any): Promise<FileContainerInterfaces.FileContainerItem>;
+    getItem(containerId: number, scope?: string, itemPath?: string, downloadFileName?: string): Promise<restm.IRestResponse<NodeJS.ReadableStream>>;
 }
 
 export class FileContainerApi extends FileContainerApiBase.FileContainerApiBase implements IFileContainerApi {
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
         super(baseUrl, handlers);
     }
-    
+
+    /**
+     * @param {number} containerId
+     * @param {string} scope
+     * @param {string} itemPath
+     * @param {string} downloadFileName
+     */
+    public async getItem(
+        containerId: number,
+        scope?: string,
+        itemPath?: string,
+        downloadFileName?: string
+        ): Promise<restm.IRestResponse<NodeJS.ReadableStream>> {
+
+        return new Promise<restm.IRestResponse<NodeJS.ReadableStream>>(async (resolve, reject) => {
+            let routeValues: any = {
+                containerId: containerId
+            };
+
+            let queryValues: any = {
+                scope: scope,
+                itemPath: itemPath,
+                '$format': "OctetStream",
+                downloadFileName: downloadFileName
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "3.2-preview.4",
+                    "Container",
+                    "e4f5c81e-e250-447b-9fef-bd48471bea5e",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/octet-stream', 
+                                                                                verData.apiVersion);
+
+                let res = await this.http.get(url);
+
+                let rres: restm.IRestResponse<NodeJS.ReadableStream> = <restm.IRestResponse<NodeJS.ReadableStream>>{};
+                let statusCode = res.message.statusCode;
+                rres.statusCode = statusCode;
+                // not found leads to null obj returned
+                if (statusCode == httpm.HttpCodes.NotFound) {
+                    resolve(rres);
+                }
+
+                if (statusCode > 299) {
+                    let msg;
+                    // if exception/error in body, attempt to get better error
+                    let contents = await res.readBody();
+                    let obj;
+                    if (contents && contents.length > 0) {
+                        obj = JSON.parse(contents);
+                        if (options && options.responseProcessor) {
+                            rres.result = options.responseProcessor(obj);
+                        }
+                        else {
+                            rres.result = obj;
+                        }
+                    }
+
+                    if (obj && obj.message) {
+                        msg = obj.message;
+                    }
+                    else {
+                        msg = "Failed request: (" + statusCode + ") " + res.message.url;
+                    }
+                    reject(new Error(msg));
+                }
+                else {
+                    rres.result = res.message;
+                    resolve(rres);
+                }
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
     public createItem(contentStream: NodeJS.ReadableStream, uncompressedLength: number, containerId: number, itemPath: string, scope: string, options: any): Promise<FileContainerInterfaces.FileContainerItem> {
         return new Promise<FileContainerInterfaces.FileContainerItem>((resolve, reject) => {
             let chunkStream = new ChunkStream(this, uncompressedLength, containerId, itemPath, scope, options);
@@ -61,7 +144,7 @@ export class FileContainerApi extends FileContainerApiBase.FileContainerApiBase 
         customHeaders["Content-Type"] = "";
         
 
-        this.vsoClient.getVersioningData("2.2-preview.3", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
+        this.vsoClient.getVersioningData("3.2-preview.4", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 var url: string = versioningData.requestUrl;
                 var serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainerItem, responseIsCollection: false };
