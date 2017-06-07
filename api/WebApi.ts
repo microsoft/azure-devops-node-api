@@ -7,6 +7,7 @@ import buildm = require('./BuildApi');
 import chatm = require('./ChatApi');
 import contributionsm = require("./ContributionsApi");
 import corem = require('./CoreApi');
+import ci = require('./CustomerIntelligenceApi');
 import dashboardm = require('./DashboardApi');
 import delegatedauthorizationm = require('./DelegatedAuthorizationApi');
 import extmgmtm = require("./ExtensionManagementApi");
@@ -136,6 +137,12 @@ export class WebApi {
         serverUrl = serverUrl || this.serverUrl;
         handlers = handlers || [this.authHandler];        
         return new contributionsm.ContributionsApi(serverUrl, handlers);
+    }
+
+    public getCustomerIntelligenceApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): ci.ICustomerIntelligenceApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];
+        return new ci.CustomerIntelligenceApi(serverUrl, handlers);
     }
 
     public getDashboardApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): dashboardm.IDashboardApi {
