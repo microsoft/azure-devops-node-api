@@ -18,8 +18,9 @@ export async function run() {
         if (containers.length > 0) {
             let container = containers[0];
             console.log("found container " + container.name);
+            let containerId = container.id;
 
-            let items = await fileContainerApi.getItems(container.id, null, null, null, null, null, null, false);
+            let items = await fileContainerApi.getItems(containerId, null, null, null, null, null, null, false);
             console.log("found " + items.length + " items");
 
             let item = items.filter((item) => {
@@ -28,7 +29,7 @@ export async function run() {
 
             if (item) {
                 console.log("downloading " + item.path);
-                let restResponse = await fileContainerApi.getItem(container.id, null, item.path, item.path.substring(item.path.lastIndexOf('/') + 1));
+                let restResponse = await fileContainerApi.getItem(containerId, null, item.path, item.path.substring(item.path.lastIndexOf('/') + 1));
                 
                 let output = "";
                 await new Promise((resolve, reject) => {
@@ -42,7 +43,6 @@ export async function run() {
                 console.log("downloaded " + item.path);
                 console.log(output);
             }
-
         }
     }
     catch (err) {
