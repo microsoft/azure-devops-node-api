@@ -44,20 +44,29 @@ import lim = require("./interfaces/LocationsInterfaces");
  * Methods to return handler objects (see handlers folder)
  */
 
-export function getBasicHandler(username: string, password: string) {
+export function getBasicHandler(username: string, password: string): VsoBaseInterfaces.IRequestHandler {
     return new basicm.BasicCredentialHandler(username, password);
 }
 
-export function getNtlmHandler(username: string, password: string, workstation?: string, domain?: string) {
+export function getNtlmHandler(username: string, password: string, workstation?: string, domain?: string): VsoBaseInterfaces.IRequestHandler {
     return new ntlmm.NtlmCredentialHandler(username, password, workstation, domain);
 }
 
-export function getBearerHandler(token) {
+export function getBearerHandler(token: string): VsoBaseInterfaces.IRequestHandler {
     return new bearm.BearerCredentialHandler(token);
 }
 
-export function getPersonalAccessTokenHandler(token) {
+export function getPersonalAccessTokenHandler(token: string): VsoBaseInterfaces.IRequestHandler {
     return new patm.PersonalAccessTokenCredentialHandler(token);
+}
+
+export function getHandlerFromToken(token: string): VsoBaseInterfaces.IRequestHandler {
+    if (token.length === 52) {
+        return getPersonalAccessTokenHandler(token);
+    }
+    else {
+        return getBearerHandler(token);
+    }
 }
 
 // ---------------------------------------------------------------------------
