@@ -1,5 +1,6 @@
 [
     "build",
     "task",
-    "filecontainer"
+    "filecontainer",
+    "feedapi"
 ]

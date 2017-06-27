@@ -1,0 +1,26 @@
+{
+    // A vscode debug configuration for API samples in the samples dir.
+    // Be sure to set the environment variables appropriately.
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug samples",
+            "program": "${workspaceRoot}/samples/run.js",
+            "env": {
+                "API_URL": "https://<yourAccountHere>.feeds.visualstudio.com/",
+                "API_TOKEN": "yourTokenHere"
+                // Uncomment the next two lines to send traffic through Fiddler or your favorite
+                // packet sniffer.
+                // ,"HTTP_PROXY" : "http://localhost:8888",
+                // "HTTPS_PROXY" : "http://localhost:8888"
+            }
+            // Add/remove samples from samples.json to the array below
+            // to debug only those samples that you are interested in.
+            "args": [
+                "feedapi"
+            ]
+        }
+    ]
+}

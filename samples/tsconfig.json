@@ -5,9 +5,10 @@
         "moduleResolution": "node"
     },
     "files": [
-        "run.ts", 
+        "run.ts",
         "build.ts",
         "task.ts",
-        "filecontainer.ts"
+        "filecontainer.ts",
+        "feedapi.ts"
     ]
 }
