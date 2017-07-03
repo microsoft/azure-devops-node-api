@@ -1,15 +1,16 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 "use strict";
 
+import IdentitiesInterfaces = require("../interfaces/IdentitiesInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
@@ -91,6 +92,7 @@ export interface ProjectProperty {
 }
 
 export interface Proxy {
+    authorization: ProxyAuthorization;
     /**
      * This is a description string
      */
@@ -109,6 +111,25 @@ export interface Proxy {
      * The URL of the proxy server
      */
     url: string;
+}
+
+export interface ProxyAuthorization {
+    /**
+     * Gets or sets the endpoint used to obtain access tokens from the configured token service.
+     */
+    authorizationUrl: string;
+    /**
+     * Gets or sets the client identifier for this proxy.
+     */
+    clientId: string;
+    /**
+     * Gets or sets the user identity to authorize for on-prem.
+     */
+    identity: IdentitiesInterfaces.IdentityDescriptor;
+    /**
+     * Gets or sets the public key used to verify the identity of this proxy. Only specify on hosted.
+     */
+    publicKey: VSSInterfaces.PublicKey;
 }
 
 export enum SourceControlTypes {
@@ -389,104 +410,37 @@ export var TypeInfo = {
             "custom": 0,
             "azureSubscription": 1,
             "chef": 2,
-            "generic": 3,
+            "generic": 3
         }
     },
-    IdentityData: {
-        fields: <any>null
-    },
-    Process: {
-        fields: <any>null
-    },
-    ProcessReference: {
-        fields: <any>null
+    Process: <any>{
     },
     ProcessType: {
         enumValues: {
             "system": 0,
             "custom": 1,
-            "inherited": 2,
+            "inherited": 2
         }
     },
     ProjectChangeType: {
         enumValues: {
             "modified": 0,
             "deleted": 1,
-            "added": 2,
+            "added": 2
         }
     },
-    ProjectInfo: {
-        fields: <any>null
+    ProjectInfo: <any>{
     },
-    ProjectMessage: {
-        fields: <any>null
-    },
-    ProjectProperty: {
-        fields: <any>null
-    },
-    Proxy: {
-        fields: <any>null
+    ProjectMessage: <any>{
     },
     SourceControlTypes: {
         enumValues: {
             "tfvc": 1,
-            "git": 2,
+            "git": 2
         }
     },
-    TeamContext: {
-        fields: <any>null
+    TemporaryDataCreatedDTO: <any>{
     },
-    TeamProject: {
-        fields: <any>null
-    },
-    TeamProjectCollection: {
-        fields: <any>null
-    },
-    TeamProjectCollectionReference: {
-        fields: <any>null
-    },
-    TeamProjectReference: {
-        fields: <any>null
-    },
-    TemporaryDataCreatedDTO: {
-        fields: <any>null
-    },
-    TemporaryDataDTO: {
-        fields: <any>null
-    },
-    WebApiConnectedService: {
-        fields: <any>null
-    },
-    WebApiConnectedServiceDetails: {
-        fields: <any>null
-    },
-    WebApiConnectedServiceRef: {
-        fields: <any>null
-    },
-    WebApiCreateTagRequestData: {
-        fields: <any>null
-    },
-    WebApiProject: {
-        fields: <any>null
-    },
-    WebApiProjectCollection: {
-        fields: <any>null
-    },
-    WebApiProjectCollectionRef: {
-        fields: <any>null
-    },
-    WebApiTagDefinition: {
-        fields: <any>null
-    },
-    WebApiTeam: {
-        fields: <any>null
-    },
-    WebApiTeamRef: {
-        fields: <any>null
-    },
-};
-
-TypeInfo.IdentityData.fields = {
 };
 
 TypeInfo.Process.fields = {
@@ -495,16 +449,9 @@ TypeInfo.Process.fields = {
     },
 };
 
-TypeInfo.ProcessReference.fields = {
-};
-
 TypeInfo.ProjectInfo.fields = {
     lastUpdateTime: {
         isDate: true,
-    },
-    properties: {
-        isArray: true,
-        typeInfo: TypeInfo.ProjectProperty
     },
 };
 
@@ -517,80 +464,8 @@ TypeInfo.ProjectMessage.fields = {
     },
 };
 
-TypeInfo.ProjectProperty.fields = {
-};
-
-TypeInfo.Proxy.fields = {
-};
-
-TypeInfo.TeamContext.fields = {
-};
-
-TypeInfo.TeamProject.fields = {
-    defaultTeam: {
-        typeInfo: TypeInfo.WebApiTeamRef
-    },
-};
-
-TypeInfo.TeamProjectCollection.fields = {
-};
-
-TypeInfo.TeamProjectCollectionReference.fields = {
-};
-
-TypeInfo.TeamProjectReference.fields = {
-};
-
 TypeInfo.TemporaryDataCreatedDTO.fields = {
     expirationDate: {
         isDate: true,
     },
-};
-
-TypeInfo.TemporaryDataDTO.fields = {
-};
-
-TypeInfo.WebApiConnectedService.fields = {
-    authenticatedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    project: {
-        typeInfo: TypeInfo.TeamProjectReference
-    },
-};
-
-TypeInfo.WebApiConnectedServiceDetails.fields = {
-    connectedServiceMetaData: {
-        typeInfo: TypeInfo.WebApiConnectedService
-    },
-};
-
-TypeInfo.WebApiConnectedServiceRef.fields = {
-};
-
-TypeInfo.WebApiCreateTagRequestData.fields = {
-};
-
-TypeInfo.WebApiProject.fields = {
-    collection: {
-        typeInfo: TypeInfo.WebApiProjectCollectionRef
-    },
-    defaultTeam: {
-        typeInfo: TypeInfo.WebApiTeamRef
-    },
-};
-
-TypeInfo.WebApiProjectCollection.fields = {
-};
-
-TypeInfo.WebApiProjectCollectionRef.fields = {
-};
-
-TypeInfo.WebApiTagDefinition.fields = {
-};
-
-TypeInfo.WebApiTeam.fields = {
-};
-
-TypeInfo.WebApiTeamRef.fields = {
 };

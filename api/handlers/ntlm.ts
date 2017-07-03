@@ -14,19 +14,23 @@ export class NtlmCredentialHandler implements VsoBaseInterfaces.IRequestHandler 
     workstation: string;
     domain: string;
 
-    constructor(username: string, password: string,  domain?: string, workstation?: string) {
+    constructor(username: string, password: string,  workstation?: string, domain?: string) {
         this.username = username;
         this.password = password;
-        if (domain !== undefined) {
-            this.domain = domain;
-        }
         if (workstation !== undefined) {
             this.workstation = workstation;
+        }
+        if (domain !== undefined) {
+            this.domain = domain;
         }
     }
 
     prepareRequest(options:any): void {
         // No headers or options need to be set.  We keep the credentials on the handler itself.
+        // If a (proxy) agent is set, remove it as we don't support proxy for NTLM at this time
+        if (options.agent) {
+            delete options.agent;
+        }
     }
 
     canHandleAuthentication(res: VsoBaseInterfaces.IHttpResponse): boolean {

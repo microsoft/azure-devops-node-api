@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 "use strict";
 
@@ -190,6 +190,53 @@ export interface ContributionConstraint {
     relationships: string[];
 }
 
+export enum ContributionLicensingBehaviorType {
+    /**
+     * Default value - only include the contribution if the user is licensed for the extension
+     */
+    OnlyIfLicensed = 0,
+    /**
+     * Only include the contribution if the user is NOT licensed for the extension
+     */
+    OnlyIfUnlicensed = 1,
+    /**
+     * Always include the contribution regardless of whether or not the user is licensed for the extension
+     */
+    AlwaysInclude = 2,
+}
+
+/**
+ * A query that can be issued for contribution nodes
+ */
+export interface ContributionNodeQuery {
+    /**
+     * The contribution ids of the nodes to find.
+     */
+    contributionIds: string[];
+    /**
+     * Indicator if contribution provider details should be included in the result.
+     */
+    includeProviderDetails: boolean;
+    /**
+     * Query options tpo be used when fetching ContributionNodes
+     */
+    queryOptions: ContributionQueryOptions;
+}
+
+/**
+ * Result of a contribution node query.  Wraps the resulting contribution nodes and provider details.
+ */
+export interface ContributionNodeQueryResult {
+    /**
+     * Map of contribution ids to corresponding node.
+     */
+    nodes: { [key: string] : SerializedContributionNode; };
+    /**
+     * Map of provder ids to the corresponding provider details object.
+     */
+    providerDetails: { [key: string] : ContributionProviderDetails; };
+}
+
 /**
  * Description about a property of a contribution type
  */
@@ -259,6 +306,49 @@ export enum ContributionPropertyType {
     Object = 512,
 }
 
+export interface ContributionProviderDetails {
+    /**
+     * Friendly name for the provider.
+     */
+    displayName: string;
+    /**
+     * Unique identifier for this provider. The provider name can be used to cache the contribution data and refer back to it when looking for changes
+     */
+    name: string;
+    /**
+     * Properties associated with the provider
+     */
+    properties: { [key: string] : string; };
+    /**
+     * Version of contributions assoicated with this contribution provider.
+     */
+    version: string;
+}
+
+export enum ContributionQueryOptions {
+    None = 0,
+    /**
+     * Include the direct contributions that have the ids queried.
+     */
+    IncludeSelf = 16,
+    /**
+     * Include the contributions that directly target the contributions queried.
+     */
+    IncludeChildren = 32,
+    /**
+     * Include the contributions from the entire sub-tree targetting the contributions queried.
+     */
+    IncludeSubTree = 96,
+    /**
+     * Include the contribution being queried as well as all contributions that target them recursively.
+     */
+    IncludeAll = 112,
+    /**
+     * Some callers may want the entire tree back without constraint evaluation being performed.
+     */
+    IgnoreConstraints = 256,
+}
+
 /**
  * A contribution type, given by a json schema
  */
@@ -285,6 +375,21 @@ export interface DataProviderContext {
      * Generic property bag that contains context-specific properties that data providers can use when populating their data dictionary
      */
     properties: { [key: string] : any; };
+}
+
+export interface DataProviderExceptionDetails {
+    /**
+     * The type of the exception that was thrown.
+     */
+    exceptionType: string;
+    /**
+     * Message that is associated with the exception.
+     */
+    message: string;
+    /**
+     * The StackTrace from the exception turned into a string.
+     */
+    stackTrace: string;
 }
 
 /**
@@ -428,6 +533,33 @@ export interface ExtensionDataCollectionQuery {
     collections: ExtensionDataCollection[];
 }
 
+export interface ExtensionEvent {
+    /**
+     * The extension which has been updated
+     */
+    extension: GalleryInterfaces.PublishedExtension;
+    /**
+     * The current version of the extension that was updated
+     */
+    extensionVersion: string;
+    /**
+     * Name of the collection for which the extension was requested
+     */
+    host: ExtensionHost;
+    /**
+     * Gallery host url
+     */
+    links: ExtensionEventUrls;
+    /**
+     * Represents the user who initiated the update
+     */
+    modifiedBy: VSSInterfaces.IdentityRef;
+    /**
+     * The type of update that was made
+     */
+    updateType: ExtensionUpdateType;
+}
+
 /**
  * Base class for an event callback for an extension
  */
@@ -472,6 +604,13 @@ export interface ExtensionEventCallbackCollection {
     versionCheck: ExtensionEventCallback;
 }
 
+export interface ExtensionEventUrls extends ExtensionUrls {
+    /**
+     * Url of the extension management page
+     */
+    manageExtensionsPage: string;
+}
+
 export enum ExtensionFlags {
     /**
      * A built-in extension is installed for all VSTS accounts by default
@@ -481,6 +620,21 @@ export enum ExtensionFlags {
      * The extension comes from a fully-trusted publisher
      */
     Trusted = 2,
+}
+
+export interface ExtensionHost {
+    id: string;
+    name: string;
+}
+
+/**
+ * How an extension should handle including contributions based on licensing
+ */
+export interface ExtensionLicensing {
+    /**
+     * A list of contributions which deviate from the default licensing behavior
+     */
+    overrides: LicensingOverride[];
 }
 
 /**
@@ -508,9 +662,17 @@ export interface ExtensionManifest {
      */
     eventCallbacks: ExtensionEventCallbackCollection;
     /**
+     * Secondary location that can be used as base for other relative uri's defined in extension
+     */
+    fallbackBaseUri: string;
+    /**
      * Language Culture Name set by the Gallery
      */
     language: string;
+    /**
+     * How this extension behaves with respect to licensing
+     */
+    licensing: ExtensionLicensing;
     /**
      * Version of the extension manifest format/content
      */
@@ -559,31 +721,54 @@ export interface ExtensionRequest {
     resolvedBy: VSSInterfaces.IdentityRef;
 }
 
-export interface ExtensionRequestedEvent {
-    /**
-     * Name of the account for which the extension was requested
-     */
-    accountName: string;
-    /**
-     * The extension request object
-     */
-    extensionRequest: ExtensionRequest;
-    /**
-     * Gallery host url
-     */
-    galleryHostUrl: string;
-    /**
-     * Link to view the extension details page
-     */
-    itemUrl: string;
+export interface ExtensionRequestEvent {
     /**
      * The extension which has been requested
      */
-    publishedExtension: GalleryInterfaces.PublishedExtension;
+    extension: GalleryInterfaces.PublishedExtension;
     /**
-     * Linkk to view the extension request
+     * Information about the host for which this extension is requested
      */
-    requestUrl: string;
+    host: ExtensionHost;
+    /**
+     * Name of the collection for which the extension was requested
+     */
+    hostName: string;
+    /**
+     * Gallery host url
+     */
+    links: ExtensionRequestUrls;
+    /**
+     * The extension request object
+     */
+    request: ExtensionRequest;
+    /**
+     * The type of update that was made
+     */
+    updateType: ExtensionRequestUpdateType;
+}
+
+export interface ExtensionRequestsEvent {
+    /**
+     * The extension which has been requested
+     */
+    extension: GalleryInterfaces.PublishedExtension;
+    /**
+     * Information about the host for which this extension is requested
+     */
+    host: ExtensionHost;
+    /**
+     * Gallery host url
+     */
+    links: ExtensionRequestUrls;
+    /**
+     * The extension request object
+     */
+    requests: ExtensionRequest[];
+    /**
+     * The type of update that was made
+     */
+    updateType: ExtensionRequestUpdateType;
 }
 
 export enum ExtensionRequestState {
@@ -599,6 +784,20 @@ export enum ExtensionRequestState {
      * The request was rejected (extension not installed or license not assigned)
      */
     Rejected = 2,
+}
+
+export enum ExtensionRequestUpdateType {
+    Created = 1,
+    Approved = 2,
+    Rejected = 3,
+    Deleted = 4,
+}
+
+export interface ExtensionRequestUrls extends ExtensionUrls {
+    /**
+     * Link to view the extension request
+     */
+    requestPage: string;
 }
 
 /**
@@ -659,6 +858,27 @@ export enum ExtensionStateFlags {
      * Extension is currently in a warning state, that can cause a degraded experience. The degraded experience can be caused for example by some installation issues detected such as implicit demands not supported.
      */
     Warning = 512,
+}
+
+export enum ExtensionUpdateType {
+    Installed = 1,
+    Uninstalled = 2,
+    Enabled = 3,
+    Disabled = 4,
+    VersionUpdated = 5,
+    ActionRequired = 6,
+    ActionResolved = 7,
+}
+
+export interface ExtensionUrls {
+    /**
+     * Url of the extension icon
+     */
+    extensionIcon: string;
+    /**
+     * Link to view the extension details page
+     */
+    extensionPage: string;
 }
 
 /**
@@ -760,6 +980,20 @@ export enum InstalledExtensionStateIssueType {
 }
 
 /**
+ * Maps a contribution to a licensing behavior
+ */
+export interface LicensingOverride {
+    /**
+     * How the inclusion of this contribution should change based on licensing
+     */
+    behavior: ContributionLicensingBehaviorType;
+    /**
+     * Fully qualified contribution id which we want to define licensing behavior for
+     */
+    id: string;
+}
+
+/**
  * A request for an extension (to be installed or have a license assigned)
  */
 export interface RequestedExtension {
@@ -804,6 +1038,24 @@ export interface Scope {
 }
 
 /**
+ * Representaion of a ContributionNode that can be used for serialized to clients.
+ */
+export interface SerializedContributionNode {
+    /**
+     * List of ids for contributions which are children to the current contribution.
+     */
+    children: string[];
+    /**
+     * Contribution associated with this node.
+     */
+    contribution: Contribution;
+    /**
+     * List of ids for contributions which are parents to the current contribution.
+     */
+    parents: string[];
+}
+
+/**
  * Information about the extension
  */
 export interface SupportedExtension {
@@ -826,20 +1078,16 @@ export var TypeInfo = {
         enumValues: {
             "none": 0,
             "me": 1,
-            "all": 2,
+            "all": 2
         }
     },
-    AcquisitionOperation: {
-        fields: <any>null
-    },
-    AcquisitionOperationDisallowReason: {
-        fields: <any>null
+    AcquisitionOperation: <any>{
     },
     AcquisitionOperationState: {
         enumValues: {
             "disallow": 0,
             "allow": 1,
-            "completed": 3,
+            "completed": 3
         }
     },
     AcquisitionOperationType: {
@@ -849,23 +1097,21 @@ export var TypeInfo = {
             "buy": 2,
             "try": 3,
             "request": 4,
-            "none": 5,
+            "none": 5
         }
     },
-    AcquisitionOptions: {
-        fields: <any>null
+    AcquisitionOptions: <any>{
     },
-    Contribution: {
-        fields: <any>null
+    ContributionLicensingBehaviorType: {
+        enumValues: {
+            "onlyIfLicensed": 0,
+            "onlyIfUnlicensed": 1,
+            "alwaysInclude": 2
+        }
     },
-    ContributionBase: {
-        fields: <any>null
+    ContributionNodeQuery: <any>{
     },
-    ContributionConstraint: {
-        fields: <any>null
-    },
-    ContributionPropertyDescription: {
-        fields: <any>null
+    ContributionPropertyDescription: <any>{
     },
     ContributionPropertyType: {
         enumValues: {
@@ -879,72 +1125,61 @@ export var TypeInfo = {
             "dateTime": 64,
             "dictionary": 128,
             "array": 256,
-            "object": 512,
+            "object": 512
         }
     },
-    ContributionType: {
-        fields: <any>null
+    ContributionQueryOptions: {
+        enumValues: {
+            "none": 0,
+            "includeSelf": 16,
+            "includeChildren": 32,
+            "includeSubTree": 96,
+            "includeAll": 112,
+            "ignoreConstraints": 256
+        }
     },
-    DataProviderContext: {
-        fields: <any>null
+    ContributionType: <any>{
     },
-    DataProviderQuery: {
-        fields: <any>null
+    ExtensionAcquisitionRequest: <any>{
     },
-    DataProviderResult: {
-        fields: <any>null
+    ExtensionAuditLog: <any>{
     },
-    ExtensionAcquisitionRequest: {
-        fields: <any>null
+    ExtensionAuditLogEntry: <any>{
     },
-    ExtensionAuditAction: {
-        fields: <any>null
-    },
-    ExtensionAuditLog: {
-        fields: <any>null
-    },
-    ExtensionAuditLogEntry: {
-        fields: <any>null
-    },
-    ExtensionAuthorization: {
-        fields: <any>null
-    },
-    ExtensionDataCollection: {
-        fields: <any>null
-    },
-    ExtensionDataCollectionQuery: {
-        fields: <any>null
-    },
-    ExtensionEventCallback: {
-        fields: <any>null
-    },
-    ExtensionEventCallbackCollection: {
-        fields: <any>null
+    ExtensionEvent: <any>{
     },
     ExtensionFlags: {
         enumValues: {
             "builtIn": 1,
-            "trusted": 2,
+            "trusted": 2
         }
     },
-    ExtensionManifest: {
-        fields: <any>null
+    ExtensionLicensing: <any>{
     },
-    ExtensionRequest: {
-        fields: <any>null
+    ExtensionManifest: <any>{
     },
-    ExtensionRequestedEvent: {
-        fields: <any>null
+    ExtensionRequest: <any>{
+    },
+    ExtensionRequestEvent: <any>{
+    },
+    ExtensionRequestsEvent: <any>{
     },
     ExtensionRequestState: {
         enumValues: {
             "open": 0,
             "accepted": 1,
-            "rejected": 2,
+            "rejected": 2
         }
     },
-    ExtensionState: {
-        fields: <any>null
+    ExtensionRequestUpdateType: {
+        enumValues: {
+            "created": 1,
+            "approved": 2,
+            "rejected": 3,
+            "deleted": 4
+        }
+    },
+    ExtensionState: <any>{
     },
     ExtensionStateFlags: {
         enumValues: {
@@ -958,38 +1193,35 @@ export var TypeInfo = {
             "error": 64,
             "needsReauthorization": 128,
             "autoUpgradeError": 256,
-            "warning": 512,
+            "warning": 512
         }
     },
-    InstalledExtension: {
-        fields: <any>null
+    ExtensionUpdateType: {
+        enumValues: {
+            "installed": 1,
+            "uninstalled": 2,
+            "enabled": 3,
+            "disabled": 4,
+            "versionUpdated": 5,
+            "actionRequired": 6,
+            "actionResolved": 7
+        }
     },
-    InstalledExtensionQuery: {
-        fields: <any>null
+    InstalledExtension: <any>{
     },
-    InstalledExtensionState: {
-        fields: <any>null
+    InstalledExtensionState: <any>{
     },
-    InstalledExtensionStateIssue: {
-        fields: <any>null
+    InstalledExtensionStateIssue: <any>{
     },
     InstalledExtensionStateIssueType: {
         enumValues: {
             "warning": 0,
-            "error": 1,
+            "error": 1
         }
     },
-    RequestedExtension: {
-        fields: <any>null
+    LicensingOverride: <any>{
     },
-    ResolvedDataProvider: {
-        fields: <any>null
-    },
-    Scope: {
-        fields: <any>null
-    },
-    SupportedExtension: {
-        fields: <any>null
+    RequestedExtension: <any>{
     },
 };
 
@@ -1000,13 +1232,6 @@ TypeInfo.AcquisitionOperation.fields = {
     operationType: {
         enumType: TypeInfo.AcquisitionOperationType
     },
-    reasons: {
-        isArray: true,
-        typeInfo: TypeInfo.AcquisitionOperationDisallowReason
-    },
-};
-
-TypeInfo.AcquisitionOperationDisallowReason.fields = {
 };
 
 TypeInfo.AcquisitionOptions.fields = {
@@ -1019,17 +1244,10 @@ TypeInfo.AcquisitionOptions.fields = {
     },
 };
 
-TypeInfo.Contribution.fields = {
-    constraints: {
-        isArray: true,
-        typeInfo: TypeInfo.ContributionConstraint
+TypeInfo.ContributionNodeQuery.fields = {
+    queryOptions: {
+        enumType: TypeInfo.ContributionQueryOptions
     },
-};
-
-TypeInfo.ContributionBase.fields = {
-};
-
-TypeInfo.ContributionConstraint.fields = {
 };
 
 TypeInfo.ContributionPropertyDescription.fields = {
@@ -1040,22 +1258,8 @@ TypeInfo.ContributionPropertyDescription.fields = {
 
 TypeInfo.ContributionType.fields = {
     properties: {
-    },
-};
-
-TypeInfo.DataProviderContext.fields = {
-};
-
-TypeInfo.DataProviderQuery.fields = {
-    context: {
-        typeInfo: TypeInfo.DataProviderContext
-    },
-};
-
-TypeInfo.DataProviderResult.fields = {
-    resolvedProviders: {
-        isArray: true,
-        typeInfo: TypeInfo.ResolvedDataProvider
+        isDictionary: true,
+        dictionaryValueTypeInfo: TypeInfo.ContributionPropertyDescription
     },
 };
 
@@ -1066,9 +1270,6 @@ TypeInfo.ExtensionAcquisitionRequest.fields = {
     operationType: {
         enumType: TypeInfo.AcquisitionOperationType
     },
-};
-
-TypeInfo.ExtensionAuditAction.fields = {
 };
 
 TypeInfo.ExtensionAuditLog.fields = {
@@ -1082,62 +1283,31 @@ TypeInfo.ExtensionAuditLogEntry.fields = {
     auditDate: {
         isDate: true,
     },
-    updatedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+};
+
+TypeInfo.ExtensionEvent.fields = {
+    extension: {
+        typeInfo: GalleryInterfaces.TypeInfo.PublishedExtension
+    },
+    updateType: {
+        enumType: TypeInfo.ExtensionUpdateType
     },
 };
 
-TypeInfo.ExtensionAuthorization.fields = {
-};
-
-TypeInfo.ExtensionDataCollection.fields = {
-};
-
-TypeInfo.ExtensionDataCollectionQuery.fields = {
-    collections: {
+TypeInfo.ExtensionLicensing.fields = {
+    overrides: {
         isArray: true,
-        typeInfo: TypeInfo.ExtensionDataCollection
-    },
-};
-
-TypeInfo.ExtensionEventCallback.fields = {
-};
-
-TypeInfo.ExtensionEventCallbackCollection.fields = {
-    postDisable: {
-        typeInfo: TypeInfo.ExtensionEventCallback
-    },
-    postEnable: {
-        typeInfo: TypeInfo.ExtensionEventCallback
-    },
-    postInstall: {
-        typeInfo: TypeInfo.ExtensionEventCallback
-    },
-    postUninstall: {
-        typeInfo: TypeInfo.ExtensionEventCallback
-    },
-    postUpdate: {
-        typeInfo: TypeInfo.ExtensionEventCallback
-    },
-    preInstall: {
-        typeInfo: TypeInfo.ExtensionEventCallback
-    },
-    versionCheck: {
-        typeInfo: TypeInfo.ExtensionEventCallback
+        typeInfo: TypeInfo.LicensingOverride
     },
 };
 
 TypeInfo.ExtensionManifest.fields = {
-    contributions: {
-        isArray: true,
-        typeInfo: TypeInfo.Contribution
-    },
     contributionTypes: {
         isArray: true,
         typeInfo: TypeInfo.ContributionType
     },
-    eventCallbacks: {
-        typeInfo: TypeInfo.ExtensionEventCallbackCollection
+    licensing: {
+        typeInfo: TypeInfo.ExtensionLicensing
     },
 };
 
@@ -1145,26 +1315,36 @@ TypeInfo.ExtensionRequest.fields = {
     requestDate: {
         isDate: true,
     },
-    requestedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     requestState: {
         enumType: TypeInfo.ExtensionRequestState
     },
     resolveDate: {
         isDate: true,
     },
-    resolvedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+};
+
+TypeInfo.ExtensionRequestEvent.fields = {
+    extension: {
+        typeInfo: GalleryInterfaces.TypeInfo.PublishedExtension
+    },
+    request: {
+        typeInfo: TypeInfo.ExtensionRequest
+    },
+    updateType: {
+        enumType: TypeInfo.ExtensionRequestUpdateType
     },
 };
 
-TypeInfo.ExtensionRequestedEvent.fields = {
-    extensionRequest: {
+TypeInfo.ExtensionRequestsEvent.fields = {
+    extension: {
+        typeInfo: GalleryInterfaces.TypeInfo.PublishedExtension
+    },
+    requests: {
+        isArray: true,
         typeInfo: TypeInfo.ExtensionRequest
     },
-    publishedExtension: {
-        typeInfo: GalleryInterfaces.TypeInfo.PublishedExtension
+    updateType: {
+        enumType: TypeInfo.ExtensionRequestUpdateType
     },
 };
 
@@ -1185,20 +1365,9 @@ TypeInfo.ExtensionState.fields = {
 };
 
 TypeInfo.InstalledExtension.fields = {
-    contributions: {
-        isArray: true,
-        typeInfo: TypeInfo.Contribution
-    },
     contributionTypes: {
         isArray: true,
         typeInfo: TypeInfo.ContributionType
-    },
-    eventCallbacks: {
-        typeInfo: TypeInfo.ExtensionEventCallbackCollection
-    },
-    files: {
-        isArray: true,
-        typeInfo: GalleryInterfaces.TypeInfo.ExtensionFile
     },
     flags: {
         enumType: TypeInfo.ExtensionFlags
@@ -1209,12 +1378,8 @@ TypeInfo.InstalledExtension.fields = {
     lastPublished: {
         isDate: true,
     },
-};
-
-TypeInfo.InstalledExtensionQuery.fields = {
-    monikers: {
-        isArray: true,
-        typeInfo: GalleryInterfaces.TypeInfo.ExtensionIdentifier
+    licensing: {
+        typeInfo: TypeInfo.ExtensionLicensing
     },
 };
 
@@ -1237,18 +1402,15 @@ TypeInfo.InstalledExtensionStateIssue.fields = {
     },
 };
 
+TypeInfo.LicensingOverride.fields = {
+    behavior: {
+        enumType: TypeInfo.ContributionLicensingBehaviorType
+    },
+};
+
 TypeInfo.RequestedExtension.fields = {
     extensionRequests: {
         isArray: true,
         typeInfo: TypeInfo.ExtensionRequest
     },
-};
-
-TypeInfo.ResolvedDataProvider.fields = {
-};
-
-TypeInfo.Scope.fields = {
-};
-
-TypeInfo.SupportedExtension.fields = {
 };

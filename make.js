@@ -1,9 +1,8 @@
-
 require('shelljs/make');
 var path = require('path');
 var fs = require('fs');
 
-var rp = function (relPath) {
+var rp = function(relPath) {
     return path.join(__dirname, relPath);
 }
 
@@ -16,20 +15,20 @@ var run = function(cl) {
     if (rc !== 0) {
         echo('Exec failed with rc ' + rc);
         exit(rc);
-    }    
+    }
 }
 
-target.clean = function () {
+target.clean = function() {
     rm('-Rf', buildPath);
     rm('-Rf', testPath);
 };
 
 target.build = function() {
     target.clean();
-    
+
     run('tsc --outDir ' + buildPath);
     cp(rp('dependencies/typings.json'), buildPath);
-    cp('-Rf', rp('api/opensource'), buildPath);        
+    cp('-Rf', rp('api/opensource'), buildPath);
     cp(rp('package.json'), buildPath);
     cp(rp('README.md'), buildPath);
     cp(rp('LICENSE'), buildPath);
@@ -40,7 +39,7 @@ target.build = function() {
 // test is just building samples
 target.test = function() {
     target.build();
-    
+
     var modPath = path.join(__dirname, 'samples', 'node_modules');
     rm('-Rf', modPath);
     mkdir('-p', modPath);
@@ -54,6 +53,7 @@ target.samples = function() {
     target.test();
 
     pushd('samples');
-    run('node all.js');
+    run('node run.js');
     popd();
+    console.log('done');
 }

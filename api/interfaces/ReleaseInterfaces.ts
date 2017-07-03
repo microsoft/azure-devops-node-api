@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 "use strict";
 
@@ -40,15 +40,14 @@ export interface AgentBasedDeployPhase extends DeployPhase {
     deploymentInput: AgentDeploymentInput;
 }
 
-export interface AgentDeploymentInput extends BaseDeploymentInput {
-    demands: any[];
-    enableAccessToken: boolean;
-    queueId: number;
-    skipArtifactsDownload: boolean;
-    timeoutInMinutes: number;
+export interface AgentDeploymentInput extends DeploymentInput {
+    imageId: number;
+    parallelExecution: ExecutionInput;
 }
 
 export interface ApprovalOptions {
+    autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped: boolean;
+    enforceIdentityRevalidation: boolean;
     releaseCreatorCanBeApprover: boolean;
     requiredApproverCount: number;
 }
@@ -91,6 +90,11 @@ export interface ArtifactContributionDefinition {
     uniqueSourceIdentifier: string;
 }
 
+export interface ArtifactFilter {
+    sourceBranch: string;
+    tags: string[];
+}
+
 export interface ArtifactInstanceData {
     accountName: string;
     authenticationToken: string;
@@ -129,6 +133,7 @@ export interface ArtifactSourceTrigger extends ReleaseTriggerBase {
      * Artifact source alias for Artifact Source trigger type
      */
     artifactAlias: string;
+    triggerConditions: ArtifactFilter[];
 }
 
 export interface ArtifactTypeDefinition {
@@ -140,6 +145,7 @@ export interface ArtifactTypeDefinition {
 
 export interface ArtifactVersion {
     alias: string;
+    defaultVersion: BuildVersion;
     errorMessage: string;
     sourceId: string;
     versions: BuildVersion[];
@@ -155,7 +161,20 @@ export enum AuditAction {
     Delete = 3,
 }
 
+export enum AuthorizationHeaderFor {
+    RevalidateApproverIdentity = 0,
+    OnBehalfOf = 1,
+}
+
+export interface AutoTriggerIssue extends ReleaseIssue {
+    buildId: number;
+    issueMessage: string;
+    issueSource: IssueSource;
+    releaseDefinitionReference: ReleaseDefinitionShallowReference;
+}
+
 export interface BaseDeploymentInput {
+    shareOutputVariables: boolean;
 }
 
 export interface BuildVersion {
@@ -208,6 +227,7 @@ export enum ConditionType {
     Undefined = 0,
     Event = 1,
     EnvironmentState = 2,
+    Artifact = 4,
 }
 
 export interface ConfigurationVariableValue {
@@ -218,6 +238,52 @@ export interface ConfigurationVariableValue {
 export interface Consumer {
     consumerId: number;
     consumerName: string;
+}
+
+export interface ContinuousDeploymentAppServicePlanConfiguration {
+    appServicePlan: string;
+    appServicePlanName: string;
+    appServicePricingTier: string;
+}
+
+export interface ContinuousDeploymentSetupData {
+    branch: string;
+    environmentName: string;
+    projectId: string;
+    repoId: string;
+    resourceGroup: string;
+    slotConfiguration: ContinuousDeploymentSlotConfiguration;
+    sourceConfiguration: ContinuousDeploymentSourceConfiguration;
+    subscriptionId: string;
+    subscriptionName: string;
+    tenantId: string;
+    testWebAppConfiguration: ContinuousDeploymentTestWebAppConfiguration;
+    webAppName: string;
+    webAppProjectType: ContinuousDeploymentWebAppProjectType;
+}
+
+export interface ContinuousDeploymentSlotConfiguration {
+    slotName: string;
+    webAppLocation: string;
+}
+
+export interface ContinuousDeploymentSourceConfiguration {
+    branch: string;
+    sourceRepository: SourceRepository;
+}
+
+export interface ContinuousDeploymentTestWebAppConfiguration {
+    appServicePlanConfiguration: ContinuousDeploymentAppServicePlanConfiguration;
+    environmentName: string;
+    testWebAppLocation: string;
+    testWebAppName: string;
+}
+
+export enum ContinuousDeploymentWebAppProjectType {
+    AspNetWap = 0,
+    AspNetCore = 1,
+    NodeJSWithGulp = 2,
+    NodeJSWithGrunt = 3,
 }
 
 export interface ControlOptions {
@@ -234,16 +300,19 @@ export interface DataSourceBinding {
     resultSelector: string;
     resultTemplate: string;
     target: string;
-    transformationTemplate: string;
 }
 
 export interface DefinitionEnvironmentReference {
     definitionEnvironmentId: number;
+    definitionEnvironmentName: string;
     releaseDefinitionId: number;
+    releaseDefinitionName: string;
 }
 
 export interface Deployment {
+    _links: any;
     attempt: number;
+    conditions: Condition[];
     definitionEnvironmentId: number;
     deploymentStatus: DeploymentStatus;
     id: number;
@@ -252,11 +321,14 @@ export interface Deployment {
     operationStatus: DeploymentOperationStatus;
     postDeployApprovals: ReleaseApproval[];
     preDeployApprovals: ReleaseApproval[];
+    queuedOn: Date;
     reason: DeploymentReason;
     release: ReleaseReference;
-    releaseDefinition: ShallowReference;
-    releaseEnvironment: ShallowReference;
+    releaseDefinition: ReleaseDefinitionShallowReference;
+    releaseEnvironment: ReleaseEnvironmentShallowReference;
     requestedBy: VSSInterfaces.IdentityRef;
+    requestedFor: VSSInterfaces.IdentityRef;
+    scheduledDeploymentTime: Date;
     startedOn: Date;
 }
 
@@ -268,6 +340,12 @@ export interface DeploymentApprovalCompletedEvent {
 
 export interface DeploymentApprovalPendingEvent {
     approval: ReleaseApproval;
+    approvalOptions: ApprovalOptions;
+    completedApprovals: ReleaseApproval[];
+    data: { [key: string] : any; };
+    deployment: Deployment;
+    isMultipleRankApproval: boolean;
+    pendingApprovals: ReleaseApproval[];
     project: ProjectReference;
     release: Release;
 }
@@ -292,19 +370,53 @@ export interface DeploymentAttempt {
     reason: DeploymentReason;
     releaseDeployPhases: ReleaseDeployPhase[];
     requestedBy: VSSInterfaces.IdentityRef;
+    requestedFor: VSSInterfaces.IdentityRef;
     runPlanId: string;
     status: DeploymentStatus;
     tasks: ReleaseTask[];
 }
 
+export interface DeploymentAuthorizationInfo {
+    authorizationHeaderFor: AuthorizationHeaderFor;
+    resources: string[];
+    tenantId: string;
+    vstsAccessTokenKey: string;
+}
+
+export enum DeploymentAuthorizationOwner {
+    Automatic = 0,
+    DeploymentSubmitter = 1,
+    FirstPreDeploymentApprover = 2,
+}
+
 export interface DeploymentCompletedEvent {
+    comment: string;
+    data: { [key: string] : any; };
+    deployment: Deployment;
     environment: ReleaseEnvironment;
     project: ProjectReference;
+}
+
+export interface DeploymentInput extends BaseDeploymentInput {
+    demands: any[];
+    enableAccessToken: boolean;
+    queueId: number;
+    skipArtifactsDownload: boolean;
+    timeoutInMinutes: number;
 }
 
 export interface DeploymentJob {
     job: ReleaseTask;
     tasks: ReleaseTask[];
+}
+
+export interface DeploymentManualInterventionPendingEvent {
+    deployment: Deployment;
+    emailRecipients: string[];
+    environmentOwner: VSSInterfaces.IdentityRef;
+    manualIntervention: ManualIntervention;
+    project: ProjectReference;
+    release: Release;
 }
 
 export enum DeploymentOperationStatus {
@@ -323,6 +435,7 @@ export enum DeploymentOperationStatus {
     Canceled = 2048,
     PhaseCanceled = 4096,
     ManualInterventionPending = 8192,
+    QueuedForPipeline = 16384,
 }
 
 export interface DeploymentQueryParameters {
@@ -334,6 +447,8 @@ export interface DeploymentQueryParameters {
     isDeleted: boolean;
     latestDeploymentsOnly: boolean;
     maxDeploymentsPerEnvironment: number;
+    maxModifiedTime: Date;
+    minModifiedTime: Date;
     operationStatus: DeploymentOperationStatus;
     queryOrder: ReleaseQueryOrder;
 }
@@ -348,6 +463,7 @@ export enum DeploymentReason {
 export interface DeploymentStartedEvent {
     environment: ReleaseEnvironment;
     project: ProjectReference;
+    release: Release;
 }
 
 export enum DeploymentStatus {
@@ -360,7 +476,6 @@ export enum DeploymentStatus {
 }
 
 export interface DeployPhase {
-    controlOptions: ControlOptions;
     name: string;
     phaseType: DeployPhaseTypes;
     rank: number;
@@ -430,17 +545,75 @@ export enum EnvironmentStatus {
     PartiallySucceeded = 128,
 }
 
+export interface ExecutionInput {
+    parallelExecutionType: ParallelExecutionTypes;
+}
+
+/**
+ * Class to represent favorite entry
+ */
+export interface FavoriteItem {
+    /**
+     * Application specific data for the entry
+     */
+    data: string;
+    /**
+     * Unique Id of the the entry
+     */
+    id: string;
+    /**
+     * Display text for favorite entry
+     */
+    name: string;
+    /**
+     * Application specific favorite entry type. Empty or Null represents that Favorite item is a Folder
+     */
+    type: string;
+}
+
+export interface Folder {
+    createdBy: VSSInterfaces.IdentityRef;
+    createdOn: Date;
+    description: string;
+    lastChangedBy: VSSInterfaces.IdentityRef;
+    lastChangedDate: Date;
+    path: string;
+}
+
+export enum FolderPathQueryOrder {
+    /**
+     * No order
+     */
+    None = 0,
+    /**
+     * Order by folder name and path ascending.
+     */
+    Ascending = 1,
+    /**
+     * Order by folder name and path descending.
+     */
+    Descending = 2,
+}
+
 export interface Issue {
     issueType: string;
     message: string;
+}
+
+export enum IssueSource {
+    None = 0,
+    User = 1,
+    System = 2,
 }
 
 export interface MachineGroupBasedDeployPhase extends DeployPhase {
     deploymentInput: MachineGroupDeploymentInput;
 }
 
-export interface MachineGroupDeploymentInput extends AgentDeploymentInput {
+export interface MachineGroupDeploymentInput extends DeploymentInput {
+    deploymentHealthOption: string;
     healthPercent: number;
+    tags: string[];
 }
 
 export interface MailMessage {
@@ -472,9 +645,10 @@ export interface ManualIntervention {
     id: number;
     instructions: string;
     modifiedOn: Date;
-    release: ShallowReference;
-    releaseDefinition: ShallowReference;
-    releaseEnvironment: ShallowReference;
+    name: string;
+    release: ReleaseShallowReference;
+    releaseDefinition: ReleaseDefinitionShallowReference;
+    releaseEnvironment: ReleaseEnvironmentShallowReference;
     status: ManualInterventionStatus;
     taskInstanceId: string;
     url: string;
@@ -497,6 +671,29 @@ export interface MappingDetails {
     mappings: { [key: string] : FormInputInterfaces.InputValue; };
 }
 
+export interface Metric {
+    name: string;
+    value: number;
+}
+
+export interface MultiConfigInput extends ParallelExecutionInputBase {
+    multipliers: string;
+}
+
+export interface MultiMachineInput extends ParallelExecutionInputBase {
+}
+
+export interface ParallelExecutionInputBase extends ExecutionInput {
+    continueOnError: boolean;
+    maxNumberOfAgents: number;
+}
+
+export enum ParallelExecutionTypes {
+    None = 0,
+    MultiConfiguration = 1,
+    MultiMachine = 2,
+}
+
 export interface ProjectReference {
     id: string;
     name: string;
@@ -510,6 +707,12 @@ export interface PropertySelector {
 export enum PropertySelectorType {
     Inclusion = 0,
     Exclusion = 1,
+}
+
+export interface QueuedReleaseData {
+    projectId: string;
+    queuePosition: number;
+    releaseId: number;
 }
 
 export interface RealtimeReleaseEvent {
@@ -533,11 +736,15 @@ export interface Release {
     modifiedOn: Date;
     name: string;
     poolName: string;
+    projectReference: ProjectReference;
+    properties: any;
     reason: ReleaseReason;
-    releaseDefinition: ShallowReference;
+    releaseDefinition: ReleaseDefinitionShallowReference;
     releaseNameFormat: string;
     status: ReleaseStatus;
+    tags: string[];
     url: string;
+    variableGroups: VariableGroup[];
     variables: { [key: string] : ConfigurationVariableValue; };
 }
 
@@ -559,9 +766,9 @@ export interface ReleaseApproval {
     isNotificationOn: boolean;
     modifiedOn: Date;
     rank: number;
-    release: ShallowReference;
-    releaseDefinition: ShallowReference;
-    releaseEnvironment: ShallowReference;
+    release: ReleaseShallowReference;
+    releaseDefinition: ReleaseDefinitionShallowReference;
+    releaseEnvironment: ReleaseEnvironmentShallowReference;
     revision: number;
     status: ApprovalStatus;
     trialNumber: number;
@@ -579,10 +786,15 @@ export interface ReleaseApprovalHistory {
 
 export interface ReleaseApprovalPendingEvent {
     approval: ReleaseApproval;
+    approvalOptions: ApprovalOptions;
+    completedApprovals: ReleaseApproval[];
     definitionName: string;
+    deployment: Deployment;
     environmentId: number;
     environmentName: string;
     environments: ReleaseEnvironment[];
+    isMultipleRankApproval: boolean;
+    pendingApprovals: ReleaseApproval[];
     releaseCreator: string;
     releaseName: string;
     title: string;
@@ -613,14 +825,20 @@ export interface ReleaseDefinition {
     createdOn: Date;
     environments: ReleaseDefinitionEnvironment[];
     id: number;
+    lastRelease: ReleaseReference;
     modifiedBy: VSSInterfaces.IdentityRef;
     modifiedOn: Date;
     name: string;
+    path: string;
+    properties: any;
     releaseNameFormat: string;
     retentionPolicy: RetentionPolicy;
     revision: number;
+    source: ReleaseDefinitionSource;
+    tags: string[];
     triggers: ReleaseTriggerBase[];
     url: string;
+    variableGroups: number[];
     variables: { [key: string] : ConfigurationVariableValue; };
 }
 
@@ -669,7 +887,7 @@ export interface ReleaseDefinitionEnvironmentStep {
 
 export interface ReleaseDefinitionEnvironmentSummary {
     id: number;
-    lastReleases: ShallowReference[];
+    lastReleases: ReleaseShallowReference[];
     name: string;
 }
 
@@ -679,6 +897,7 @@ export interface ReleaseDefinitionEnvironmentTemplate {
     description: string;
     environment: ReleaseDefinitionEnvironment;
     iconTaskId: string;
+    iconUri: string;
     id: string;
     name: string;
 }
@@ -688,6 +907,15 @@ export enum ReleaseDefinitionExpands {
     Environments = 2,
     Artifacts = 4,
     Triggers = 8,
+    Variables = 16,
+    Tags = 32,
+}
+
+export enum ReleaseDefinitionQueryOrder {
+    IdAscending = 0,
+    IdDescending = 1,
+    NameAscending = 2,
+    NameDescending = 3,
 }
 
 export interface ReleaseDefinitionRevision {
@@ -700,9 +928,24 @@ export interface ReleaseDefinitionRevision {
     revision: number;
 }
 
+export interface ReleaseDefinitionShallowReference {
+    _links: any;
+    id: number;
+    name: string;
+    url: string;
+}
+
+export enum ReleaseDefinitionSource {
+    Undefined = 0,
+    RestApi = 1,
+    UserInterface = 2,
+    Ibiza = 4,
+    PortalExtensionApi = 8,
+}
+
 export interface ReleaseDefinitionSummary {
     environments: ReleaseDefinitionEnvironmentSummary[];
-    releaseDefinition: ShallowReference;
+    releaseDefinition: ReleaseDefinitionShallowReference;
     releases: Release[];
 }
 
@@ -736,9 +979,9 @@ export interface ReleaseEnvironment {
     preDeployApprovals: ReleaseApproval[];
     queueId: number;
     rank: number;
-    release: ShallowReference;
+    release: ReleaseShallowReference;
     releaseCreatedBy: VSSInterfaces.IdentityRef;
-    releaseDefinition: ShallowReference;
+    releaseDefinition: ReleaseDefinitionShallowReference;
     releaseDescription: string;
     releaseId: number;
     scheduledDeploymentTime: Date;
@@ -767,6 +1010,13 @@ export interface ReleaseEnvironmentCompletedEvent {
     webAccessUri: string;
 }
 
+export interface ReleaseEnvironmentShallowReference {
+    _links: any;
+    id: number;
+    name: string;
+    url: string;
+}
+
 export interface ReleaseEnvironmentUpdateMetadata {
     comment: string;
     scheduledDeploymentTime: Date;
@@ -779,6 +1029,18 @@ export enum ReleaseExpands {
     Artifacts = 4,
     Approvals = 8,
     ManualInterventions = 16,
+    Variables = 32,
+    Tags = 64,
+}
+
+export interface ReleaseIssue {
+    issue: Issue;
+    issueType: ReleaseIssueType;
+}
+
+export enum ReleaseIssueType {
+    None = 0,
+    AutoTrigger = 1,
 }
 
 export enum ReleaseQueryOrder {
@@ -791,13 +1053,23 @@ export enum ReleaseReason {
     Manual = 1,
     ContinuousIntegration = 2,
     Schedule = 3,
+    IndividualCI = 4,
+    BatchedCI = 5,
 }
 
 export interface ReleaseReference {
+    _links: any;
     artifacts: Artifact[];
+    createdBy: VSSInterfaces.IdentityRef;
+    createdOn: Date;
+    description: string;
     id: number;
+    modifiedBy: VSSInterfaces.IdentityRef;
     name: string;
+    reason: ReleaseReason;
+    releaseDefinition: ReleaseDefinitionShallowReference;
     url: string;
+    webAccessUri: string;
 }
 
 export interface ReleaseRevision {
@@ -833,12 +1105,24 @@ export interface ReleaseSchedule {
     timeZoneId: string;
 }
 
+export interface ReleaseSettings {
+    retentionSettings: RetentionSettings;
+}
+
+export interface ReleaseShallowReference {
+    _links: any;
+    id: number;
+    name: string;
+    url: string;
+}
+
 export interface ReleaseStartMetadata {
     artifacts: ArtifactMetadata[];
     definitionId: number;
     description: string;
     isDraft: boolean;
     manualEnvironments: string[];
+    properties: any;
     reason: ReleaseReason;
 }
 
@@ -862,6 +1146,7 @@ export interface ReleaseTask {
     rank: number;
     startTime: Date;
     status: TaskStatus;
+    task: WorkflowTaskReference;
     timelineRecordId: string;
 }
 
@@ -909,6 +1194,12 @@ export interface RetentionPolicy {
     daysToKeep: number;
 }
 
+export interface RetentionSettings {
+    daysToKeepDeletedReleases: number;
+    defaultEnvironmentRetentionPolicy: EnvironmentRetentionPolicy;
+    maximumEnvironmentRetentionPolicy: EnvironmentRetentionPolicy;
+}
+
 export interface RunOnServerDeployPhase extends DeployPhase {
 }
 
@@ -936,15 +1227,21 @@ export enum SenderType {
     RequestingUser = 2,
 }
 
-export interface ShallowReference {
-    id: number;
-    name: string;
-    url: string;
-}
-
 export interface SourceIdInput {
     id: string;
     name: string;
+}
+
+export interface SourceRepository {
+    endpointIdentifier: string;
+    identifier: string;
+    repositoryType: SourceRepositoryType;
+}
+
+export enum SourceRepositoryType {
+    Invalid = 0,
+    VstsGit = 1,
+    GitHub = 2,
 }
 
 export interface SummaryMailSection {
@@ -952,6 +1249,15 @@ export interface SummaryMailSection {
     rank: number;
     sectionType: MailSectionType;
     title: string;
+}
+
+export interface TaskOrchestrationPlanGroupReference {
+    planGroup: string;
+    projectId: string;
+}
+
+export interface TaskOrchestrationPlanGroupsStartedEvent {
+    planGroups: TaskOrchestrationPlanGroupReference[];
 }
 
 export enum TaskStatus {
@@ -977,6 +1283,28 @@ export interface TimeZoneList {
     validTimeZones: TimeZone[];
 }
 
+export interface VariableGroup {
+    createdBy: VSSInterfaces.IdentityRef;
+    createdOn: Date;
+    description: string;
+    id: number;
+    modifiedBy: VSSInterfaces.IdentityRef;
+    modifiedOn: Date;
+    name: string;
+    variables: { [key: string] : VariableValue; };
+}
+
+export enum VariableGroupActionFilter {
+    None = 0,
+    Manage = 2,
+    Use = 16,
+}
+
+export interface VariableValue {
+    isSecret: boolean;
+    value: string;
+}
+
 export interface WorkflowTask {
     alwaysRun: boolean;
     continueOnError: boolean;
@@ -989,9 +1317,14 @@ export interface WorkflowTask {
     version: string;
 }
 
+export interface WorkflowTaskReference {
+    id: string;
+    name: string;
+    version: string;
+}
+
 export var TypeInfo = {
-    AgentArtifactDefinition: {
-        fields: <any>null
+    AgentArtifactDefinition: <any>{
     },
     AgentArtifactType: {
         enumValues: {
@@ -1005,17 +1338,12 @@ export var TypeInfo = {
             "tFGit": 7,
             "externalTfsBuild": 8,
             "custom": 9,
-            "tfvc": 10,
+            "tfvc": 10
         }
     },
-    AgentBasedDeployPhase: {
-        fields: <any>null
+    AgentBasedDeployPhase: <any>{
     },
-    AgentDeploymentInput: {
-        fields: <any>null
-    },
-    ApprovalOptions: {
-        fields: <any>null
+    AgentDeploymentInput: <any>{
     },
     ApprovalStatus: {
         enumValues: {
@@ -1025,7 +1353,7 @@ export var TypeInfo = {
             "rejected": 4,
             "reassigned": 6,
             "canceled": 7,
-            "skipped": 8,
+            "skipped": 8
         }
     },
     ApprovalType: {
@@ -1033,103 +1361,76 @@ export var TypeInfo = {
             "undefined": 0,
             "preDeploy": 1,
             "postDeploy": 2,
-            "all": 3,
+            "all": 3
         }
     },
-    Artifact: {
-        fields: <any>null
+    ArtifactContributionDefinition: <any>{
     },
-    ArtifactContributionDefinition: {
-        fields: <any>null
+    ArtifactSourceTrigger: <any>{
     },
-    ArtifactInstanceData: {
-        fields: <any>null
-    },
-    ArtifactMetadata: {
-        fields: <any>null
-    },
-    ArtifactProvider: {
-        fields: <any>null
-    },
-    ArtifactSourceId: {
-        fields: <any>null
-    },
-    ArtifactSourceIdsQueryResult: {
-        fields: <any>null
-    },
-    ArtifactSourceReference: {
-        fields: <any>null
-    },
-    ArtifactSourceTrigger: {
-        fields: <any>null
-    },
-    ArtifactTypeDefinition: {
-        fields: <any>null
-    },
-    ArtifactVersion: {
-        fields: <any>null
-    },
-    ArtifactVersionQueryResult: {
-        fields: <any>null
+    ArtifactTypeDefinition: <any>{
     },
     AuditAction: {
         enumValues: {
             "add": 1,
             "update": 2,
-            "delete": 3,
+            "delete": 3
         }
     },
-    BaseDeploymentInput: {
-        fields: <any>null
+    AuthorizationHeaderFor: {
+        enumValues: {
+            "revalidateApproverIdentity": 0,
+            "onBehalfOf": 1
+        }
     },
-    BuildVersion: {
-        fields: <any>null
+    AutoTriggerIssue: <any>{
     },
-    Change: {
-        fields: <any>null
+    Change: <any>{
     },
-    Condition: {
-        fields: <any>null
+    Condition: <any>{
     },
     ConditionType: {
         enumValues: {
             "undefined": 0,
             "event": 1,
             "environmentState": 2,
+            "artifact": 4
         }
     },
-    ConfigurationVariableValue: {
-        fields: <any>null
+    ContinuousDeploymentSetupData: <any>{
     },
-    Consumer: {
-        fields: <any>null
+    ContinuousDeploymentSourceConfiguration: <any>{
     },
-    ControlOptions: {
-        fields: <any>null
+    ContinuousDeploymentWebAppProjectType: {
+        enumValues: {
+            "aspNetWap": 0,
+            "aspNetCore": 1,
+            "nodeJSWithGulp": 2,
+            "nodeJSWithGrunt": 3
+        }
     },
-    DataSourceBinding: {
-        fields: <any>null
+    Deployment: <any>{
     },
-    DefinitionEnvironmentReference: {
-        fields: <any>null
+    DeploymentApprovalCompletedEvent: <any>{
     },
-    Deployment: {
-        fields: <any>null
+    DeploymentApprovalPendingEvent: <any>{
     },
-    DeploymentApprovalCompletedEvent: {
-        fields: <any>null
+    DeploymentAttempt: <any>{
     },
-    DeploymentApprovalPendingEvent: {
-        fields: <any>null
+    DeploymentAuthorizationInfo: <any>{
     },
-    DeploymentAttempt: {
-        fields: <any>null
+    DeploymentAuthorizationOwner: {
+        enumValues: {
+            "automatic": 0,
+            "deploymentSubmitter": 1,
+            "firstPreDeploymentApprover": 2
+        }
     },
-    DeploymentCompletedEvent: {
-        fields: <any>null
+    DeploymentCompletedEvent: <any>{
     },
-    DeploymentJob: {
-        fields: <any>null
+    DeploymentJob: <any>{
+    },
+    DeploymentManualInterventionPendingEvent: <any>{
     },
     DeploymentOperationStatus: {
         enumValues: {
@@ -1148,21 +1449,20 @@ export var TypeInfo = {
             "canceled": 2048,
             "phaseCanceled": 4096,
             "manualInterventionPending": 8192,
+            "queuedForPipeline": 16384
         }
     },
-    DeploymentQueryParameters: {
-        fields: <any>null
+    DeploymentQueryParameters: <any>{
     },
     DeploymentReason: {
         enumValues: {
             "none": 0,
             "manual": 1,
             "automated": 2,
-            "scheduled": 4,
+            "scheduled": 4
         }
     },
-    DeploymentStartedEvent: {
-        fields: <any>null
+    DeploymentStartedEvent: <any>{
     },
     DeploymentStatus: {
         enumValues: {
@@ -1171,11 +1471,10 @@ export var TypeInfo = {
             "inProgress": 2,
             "succeeded": 4,
             "partiallySucceeded": 8,
-            "failed": 16,
+            "failed": 16
         }
     },
-    DeployPhase: {
-        fields: <any>null
+    DeployPhase: <any>{
     },
     DeployPhaseStatus: {
         enumValues: {
@@ -1186,7 +1485,7 @@ export var TypeInfo = {
             "succeeded": 8,
             "failed": 16,
             "canceled": 32,
-            "skipped": 64,
+            "skipped": 64
         }
     },
     DeployPhaseTypes: {
@@ -1194,20 +1493,8 @@ export var TypeInfo = {
             "undefined": 0,
             "agentBasedDeployment": 1,
             "runOnServer": 2,
-            "machineGroupBasedDeployment": 4,
+            "machineGroupBasedDeployment": 4
         }
-    },
-    EmailRecipients: {
-        fields: <any>null
-    },
-    EnvironmentExecutionPolicy: {
-        fields: <any>null
-    },
-    EnvironmentOptions: {
-        fields: <any>null
-    },
-    EnvironmentRetentionPolicy: {
-        fields: <any>null
     },
     EnvironmentStatus: {
         enumValues: {
@@ -1219,20 +1506,30 @@ export var TypeInfo = {
             "rejected": 16,
             "queued": 32,
             "scheduled": 64,
-            "partiallySucceeded": 128,
+            "partiallySucceeded": 128
         }
     },
-    Issue: {
-        fields: <any>null
+    ExecutionInput: <any>{
     },
-    MachineGroupBasedDeployPhase: {
-        fields: <any>null
+    Folder: <any>{
     },
-    MachineGroupDeploymentInput: {
-        fields: <any>null
+    FolderPathQueryOrder: {
+        enumValues: {
+            "none": 0,
+            "ascending": 1,
+            "descending": 2
+        }
     },
-    MailMessage: {
-        fields: <any>null
+    IssueSource: {
+        enumValues: {
+            "none": 0,
+            "user": 1,
+            "system": 2
+        }
+    },
+    MachineGroupBasedDeployPhase: <any>{
+    },
+    MailMessage: <any>{
     },
     MailSectionType: {
         enumValues: {
@@ -1241,11 +1538,10 @@ export var TypeInfo = {
             "issues": 2,
             "testResults": 3,
             "workItems": 4,
-            "releaseInfo": 5,
+            "releaseInfo": 5
         }
     },
-    ManualIntervention: {
-        fields: <any>null
+    ManualIntervention: <any>{
     },
     ManualInterventionStatus: {
         enumValues: {
@@ -1253,74 +1549,49 @@ export var TypeInfo = {
             "pending": 1,
             "rejected": 2,
             "approved": 4,
-            "canceled": 8,
+            "canceled": 8
         }
     },
-    ManualInterventionUpdateMetadata: {
-        fields: <any>null
+    ManualInterventionUpdateMetadata: <any>{
     },
-    MappingDetails: {
-        fields: <any>null
+    MultiConfigInput: <any>{
     },
-    ProjectReference: {
-        fields: <any>null
+    MultiMachineInput: <any>{
     },
-    PropertySelector: {
-        fields: <any>null
+    ParallelExecutionInputBase: <any>{
+    },
+    ParallelExecutionTypes: {
+        enumValues: {
+            "none": 0,
+            "multiConfiguration": 1,
+            "multiMachine": 2
+        }
+    },
+    PropertySelector: <any>{
     },
     PropertySelectorType: {
         enumValues: {
             "inclusion": 0,
-            "exclusion": 1,
+            "exclusion": 1
         }
     },
-    RealtimeReleaseEvent: {
-        fields: <any>null
+    Release: <any>{
     },
-    Release: {
-        fields: <any>null
+    ReleaseAbandonedEvent: <any>{
     },
-    ReleaseAbandonedEvent: {
-        fields: <any>null
+    ReleaseApproval: <any>{
     },
-    ReleaseApproval: {
-        fields: <any>null
+    ReleaseApprovalHistory: <any>{
     },
-    ReleaseApprovalHistory: {
-        fields: <any>null
+    ReleaseApprovalPendingEvent: <any>{
     },
-    ReleaseApprovalPendingEvent: {
-        fields: <any>null
+    ReleaseCreatedEvent: <any>{
     },
-    ReleaseArtifact: {
-        fields: <any>null
+    ReleaseDefinition: <any>{
     },
-    ReleaseCreatedEvent: {
-        fields: <any>null
+    ReleaseDefinitionEnvironment: <any>{
     },
-    ReleaseDefinition: {
-        fields: <any>null
-    },
-    ReleaseDefinitionApprovals: {
-        fields: <any>null
-    },
-    ReleaseDefinitionApprovalStep: {
-        fields: <any>null
-    },
-    ReleaseDefinitionDeployStep: {
-        fields: <any>null
-    },
-    ReleaseDefinitionEnvironment: {
-        fields: <any>null
-    },
-    ReleaseDefinitionEnvironmentStep: {
-        fields: <any>null
-    },
-    ReleaseDefinitionEnvironmentSummary: {
-        fields: <any>null
-    },
-    ReleaseDefinitionEnvironmentTemplate: {
-        fields: <any>null
+    ReleaseDefinitionEnvironmentTemplate: <any>{
     },
     ReleaseDefinitionExpands: {
         enumValues: {
@@ -1328,25 +1599,38 @@ export var TypeInfo = {
             "environments": 2,
             "artifacts": 4,
             "triggers": 8,
+            "variables": 16,
+            "tags": 32
         }
     },
-    ReleaseDefinitionRevision: {
-        fields: <any>null
+    ReleaseDefinitionQueryOrder: {
+        enumValues: {
+            "idAscending": 0,
+            "idDescending": 1,
+            "nameAscending": 2,
+            "nameDescending": 3
+        }
     },
-    ReleaseDefinitionSummary: {
-        fields: <any>null
+    ReleaseDefinitionRevision: <any>{
     },
-    ReleaseDeployPhase: {
-        fields: <any>null
+    ReleaseDefinitionSource: {
+        enumValues: {
+            "undefined": 0,
+            "restApi": 1,
+            "userInterface": 2,
+            "ibiza": 4,
+            "portalExtensionApi": 8
+        }
     },
-    ReleaseEnvironment: {
-        fields: <any>null
+    ReleaseDefinitionSummary: <any>{
     },
-    ReleaseEnvironmentCompletedEvent: {
-        fields: <any>null
+    ReleaseDeployPhase: <any>{
     },
-    ReleaseEnvironmentUpdateMetadata: {
-        fields: <any>null
+    ReleaseEnvironment: <any>{
+    },
+    ReleaseEnvironmentCompletedEvent: <any>{
+    },
+    ReleaseEnvironmentUpdateMetadata: <any>{
     },
     ReleaseExpands: {
         enumValues: {
@@ -1355,12 +1639,22 @@ export var TypeInfo = {
             "artifacts": 4,
             "approvals": 8,
             "manualInterventions": 16,
+            "variables": 32,
+            "tags": 64
+        }
+    },
+    ReleaseIssue: <any>{
+    },
+    ReleaseIssueType: {
+        enumValues: {
+            "none": 0,
+            "autoTrigger": 1
         }
     },
     ReleaseQueryOrder: {
         enumValues: {
             "descending": 0,
-            "ascending": 1,
+            "ascending": 1
         }
     },
     ReleaseReason: {
@@ -1369,61 +1663,44 @@ export var TypeInfo = {
             "manual": 1,
             "continuousIntegration": 2,
             "schedule": 3,
+            "individualCI": 4,
+            "batchedCI": 5
         }
     },
-    ReleaseReference: {
-        fields: <any>null
+    ReleaseReference: <any>{
     },
-    ReleaseRevision: {
-        fields: <any>null
+    ReleaseRevision: <any>{
     },
-    ReleaseSchedule: {
-        fields: <any>null
+    ReleaseSchedule: <any>{
     },
-    ReleaseStartMetadata: {
-        fields: <any>null
+    ReleaseStartMetadata: <any>{
     },
     ReleaseStatus: {
         enumValues: {
             "undefined": 0,
             "draft": 1,
             "active": 2,
-            "abandoned": 4,
+            "abandoned": 4
         }
     },
-    ReleaseTask: {
-        fields: <any>null
+    ReleaseTask: <any>{
     },
-    ReleaseTaskLogUpdatedEvent: {
-        fields: <any>null
+    ReleaseTasksUpdatedEvent: <any>{
     },
-    ReleaseTasksUpdatedEvent: {
-        fields: <any>null
-    },
-    ReleaseTriggerBase: {
-        fields: <any>null
+    ReleaseTriggerBase: <any>{
     },
     ReleaseTriggerType: {
         enumValues: {
             "undefined": 0,
             "artifactSource": 1,
-            "schedule": 2,
+            "schedule": 2
         }
     },
-    ReleaseUpdatedEvent: {
-        fields: <any>null
+    ReleaseUpdatedEvent: <any>{
     },
-    ReleaseUpdateMetadata: {
-        fields: <any>null
+    ReleaseUpdateMetadata: <any>{
     },
-    ReleaseWorkItemRef: {
-        fields: <any>null
-    },
-    RetentionPolicy: {
-        fields: <any>null
-    },
-    RunOnServerDeployPhase: {
-        fields: <any>null
+    RunOnServerDeployPhase: <any>{
     },
     ScheduleDays: {
         enumValues: {
@@ -1435,26 +1712,27 @@ export var TypeInfo = {
             "friday": 16,
             "saturday": 32,
             "sunday": 64,
-            "all": 127,
+            "all": 127
         }
     },
-    ScheduledReleaseTrigger: {
-        fields: <any>null
+    ScheduledReleaseTrigger: <any>{
     },
     SenderType: {
         enumValues: {
             "serviceAccount": 1,
-            "requestingUser": 2,
+            "requestingUser": 2
         }
     },
-    ShallowReference: {
-        fields: <any>null
+    SourceRepository: <any>{
     },
-    SourceIdInput: {
-        fields: <any>null
+    SourceRepositoryType: {
+        enumValues: {
+            "invalid": 0,
+            "vstsGit": 1,
+            "gitHub": 2
+        }
     },
-    SummaryMailSection: {
-        fields: <any>null
+    SummaryMailSection: <any>{
     },
     TaskStatus: {
         enumValues: {
@@ -1467,17 +1745,17 @@ export var TypeInfo = {
             "skipped": 6,
             "succeeded": 7,
             "failed": 8,
-            "partiallySucceeded": 9,
+            "partiallySucceeded": 9
         }
     },
-    TimeZone: {
-        fields: <any>null
+    VariableGroup: <any>{
     },
-    TimeZoneList: {
-        fields: <any>null
-    },
-    WorkflowTask: {
-        fields: <any>null
+    VariableGroupActionFilter: {
+        enumValues: {
+            "none": 0,
+            "manage": 2,
+            "use": 16
+        }
     },
 };
 
@@ -1488,70 +1766,25 @@ TypeInfo.AgentArtifactDefinition.fields = {
 };
 
 TypeInfo.AgentBasedDeployPhase.fields = {
-    controlOptions: {
-        typeInfo: TypeInfo.ControlOptions
-    },
     deploymentInput: {
         typeInfo: TypeInfo.AgentDeploymentInput
     },
     phaseType: {
         enumType: TypeInfo.DeployPhaseTypes
     },
-    workflowTasks: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkflowTask
-    },
 };
 
 TypeInfo.AgentDeploymentInput.fields = {
-};
-
-TypeInfo.ApprovalOptions.fields = {
-};
-
-TypeInfo.Artifact.fields = {
-    definitionReference: {
+    parallelExecution: {
+        typeInfo: TypeInfo.ExecutionInput
     },
 };
 
 TypeInfo.ArtifactContributionDefinition.fields = {
-    dataSourceBindings: {
-        isArray: true,
-        typeInfo: TypeInfo.DataSourceBinding
-    },
     inputDescriptors: {
         isArray: true,
         typeInfo: FormInputInterfaces.TypeInfo.InputDescriptor
     },
-};
-
-TypeInfo.ArtifactInstanceData.fields = {
-};
-
-TypeInfo.ArtifactMetadata.fields = {
-    instanceReference: {
-        typeInfo: TypeInfo.BuildVersion
-    },
-};
-
-TypeInfo.ArtifactProvider.fields = {
-};
-
-TypeInfo.ArtifactSourceId.fields = {
-    sourceIdInputs: {
-        isArray: true,
-        typeInfo: TypeInfo.SourceIdInput
-    },
-};
-
-TypeInfo.ArtifactSourceIdsQueryResult.fields = {
-    artifactSourceIds: {
-        isArray: true,
-        typeInfo: TypeInfo.ArtifactSourceId
-    },
-};
-
-TypeInfo.ArtifactSourceReference.fields = {
 };
 
 TypeInfo.ArtifactSourceTrigger.fields = {
@@ -1567,30 +1800,16 @@ TypeInfo.ArtifactTypeDefinition.fields = {
     },
 };
 
-TypeInfo.ArtifactVersion.fields = {
-    versions: {
-        isArray: true,
-        typeInfo: TypeInfo.BuildVersion
+TypeInfo.AutoTriggerIssue.fields = {
+    issueSource: {
+        enumType: TypeInfo.IssueSource
     },
-};
-
-TypeInfo.ArtifactVersionQueryResult.fields = {
-    artifactVersions: {
-        isArray: true,
-        typeInfo: TypeInfo.ArtifactVersion
+    issueType: {
+        enumType: TypeInfo.ReleaseIssueType
     },
-};
-
-TypeInfo.BaseDeploymentInput.fields = {
-};
-
-TypeInfo.BuildVersion.fields = {
 };
 
 TypeInfo.Change.fields = {
-    author: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     timestamp: {
         isDate: true,
     },
@@ -1602,27 +1821,28 @@ TypeInfo.Condition.fields = {
     },
 };
 
-TypeInfo.ConfigurationVariableValue.fields = {
+TypeInfo.ContinuousDeploymentSetupData.fields = {
+    sourceConfiguration: {
+        typeInfo: TypeInfo.ContinuousDeploymentSourceConfiguration
+    },
+    webAppProjectType: {
+        enumType: TypeInfo.ContinuousDeploymentWebAppProjectType
+    },
 };
 
-TypeInfo.Consumer.fields = {
-};
-
-TypeInfo.ControlOptions.fields = {
-};
-
-TypeInfo.DataSourceBinding.fields = {
-};
-
-TypeInfo.DefinitionEnvironmentReference.fields = {
+TypeInfo.ContinuousDeploymentSourceConfiguration.fields = {
+    sourceRepository: {
+        typeInfo: TypeInfo.SourceRepository
+    },
 };
 
 TypeInfo.Deployment.fields = {
+    conditions: {
+        isArray: true,
+        typeInfo: TypeInfo.Condition
+    },
     deploymentStatus: {
         enumType: TypeInfo.DeploymentStatus
-    },
-    lastModifiedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
     lastModifiedOn: {
         isDate: true,
@@ -1638,20 +1858,17 @@ TypeInfo.Deployment.fields = {
         isArray: true,
         typeInfo: TypeInfo.ReleaseApproval
     },
+    queuedOn: {
+        isDate: true,
+    },
     reason: {
         enumType: TypeInfo.DeploymentReason
     },
     release: {
         typeInfo: TypeInfo.ReleaseReference
     },
-    releaseDefinition: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    releaseEnvironment: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    requestedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    scheduledDeploymentTime: {
+        isDate: true,
     },
     startedOn: {
         isDate: true,
@@ -1662,9 +1879,6 @@ TypeInfo.DeploymentApprovalCompletedEvent.fields = {
     approval: {
         typeInfo: TypeInfo.ReleaseApproval
     },
-    project: {
-        typeInfo: TypeInfo.ProjectReference
-    },
     release: {
         typeInfo: TypeInfo.Release
     },
@@ -1674,8 +1888,16 @@ TypeInfo.DeploymentApprovalPendingEvent.fields = {
     approval: {
         typeInfo: TypeInfo.ReleaseApproval
     },
-    project: {
-        typeInfo: TypeInfo.ProjectReference
+    completedApprovals: {
+        isArray: true,
+        typeInfo: TypeInfo.ReleaseApproval
+    },
+    deployment: {
+        typeInfo: TypeInfo.Deployment
+    },
+    pendingApprovals: {
+        isArray: true,
+        typeInfo: TypeInfo.ReleaseApproval
     },
     release: {
         typeInfo: TypeInfo.Release
@@ -1685,9 +1907,6 @@ TypeInfo.DeploymentApprovalPendingEvent.fields = {
 TypeInfo.DeploymentAttempt.fields = {
     job: {
         typeInfo: TypeInfo.ReleaseTask
-    },
-    lastModifiedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
     lastModifiedOn: {
         isDate: true,
@@ -1705,9 +1924,6 @@ TypeInfo.DeploymentAttempt.fields = {
         isArray: true,
         typeInfo: TypeInfo.ReleaseDeployPhase
     },
-    requestedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     status: {
         enumType: TypeInfo.DeploymentStatus
     },
@@ -1717,12 +1933,18 @@ TypeInfo.DeploymentAttempt.fields = {
     },
 };
 
+TypeInfo.DeploymentAuthorizationInfo.fields = {
+    authorizationHeaderFor: {
+        enumType: TypeInfo.AuthorizationHeaderFor
+    },
+};
+
 TypeInfo.DeploymentCompletedEvent.fields = {
+    deployment: {
+        typeInfo: TypeInfo.Deployment
+    },
     environment: {
         typeInfo: TypeInfo.ReleaseEnvironment
-    },
-    project: {
-        typeInfo: TypeInfo.ProjectReference
     },
 };
 
@@ -1736,13 +1958,27 @@ TypeInfo.DeploymentJob.fields = {
     },
 };
 
+TypeInfo.DeploymentManualInterventionPendingEvent.fields = {
+    deployment: {
+        typeInfo: TypeInfo.Deployment
+    },
+    manualIntervention: {
+        typeInfo: TypeInfo.ManualIntervention
+    },
+    release: {
+        typeInfo: TypeInfo.Release
+    },
+};
+
 TypeInfo.DeploymentQueryParameters.fields = {
     deploymentStatus: {
         enumType: TypeInfo.DeploymentStatus
     },
-    environments: {
-        isArray: true,
-        typeInfo: TypeInfo.DefinitionEnvironmentReference
+    maxModifiedTime: {
+        isDate: true,
+    },
+    minModifiedTime: {
+        isDate: true,
     },
     operationStatus: {
         enumType: TypeInfo.DeploymentOperationStatus
@@ -1756,67 +1992,41 @@ TypeInfo.DeploymentStartedEvent.fields = {
     environment: {
         typeInfo: TypeInfo.ReleaseEnvironment
     },
-    project: {
-        typeInfo: TypeInfo.ProjectReference
+    release: {
+        typeInfo: TypeInfo.Release
     },
 };
 
 TypeInfo.DeployPhase.fields = {
-    controlOptions: {
-        typeInfo: TypeInfo.ControlOptions
-    },
     phaseType: {
         enumType: TypeInfo.DeployPhaseTypes
     },
-    workflowTasks: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkflowTask
+};
+
+TypeInfo.ExecutionInput.fields = {
+    parallelExecutionType: {
+        enumType: TypeInfo.ParallelExecutionTypes
     },
 };
 
-TypeInfo.EmailRecipients.fields = {
-};
-
-TypeInfo.EnvironmentExecutionPolicy.fields = {
-};
-
-TypeInfo.EnvironmentOptions.fields = {
-};
-
-TypeInfo.EnvironmentRetentionPolicy.fields = {
-};
-
-TypeInfo.Issue.fields = {
+TypeInfo.Folder.fields = {
+    createdOn: {
+        isDate: true,
+    },
+    lastChangedDate: {
+        isDate: true,
+    },
 };
 
 TypeInfo.MachineGroupBasedDeployPhase.fields = {
-    controlOptions: {
-        typeInfo: TypeInfo.ControlOptions
-    },
-    deploymentInput: {
-        typeInfo: TypeInfo.MachineGroupDeploymentInput
-    },
     phaseType: {
         enumType: TypeInfo.DeployPhaseTypes
     },
-    workflowTasks: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkflowTask
-    },
-};
-
-TypeInfo.MachineGroupDeploymentInput.fields = {
 };
 
 TypeInfo.MailMessage.fields = {
-    cC: {
-        typeInfo: TypeInfo.EmailRecipients
-    },
     replyBy: {
         isDate: true,
-    },
-    replyTo: {
-        typeInfo: TypeInfo.EmailRecipients
     },
     sections: {
         isArray: true,
@@ -1825,29 +2035,14 @@ TypeInfo.MailMessage.fields = {
     senderType: {
         enumType: TypeInfo.SenderType
     },
-    to: {
-        typeInfo: TypeInfo.EmailRecipients
-    },
 };
 
 TypeInfo.ManualIntervention.fields = {
-    approver: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     createdOn: {
         isDate: true,
     },
     modifiedOn: {
         isDate: true,
-    },
-    release: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    releaseDefinition: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    releaseEnvironment: {
-        typeInfo: TypeInfo.ShallowReference
     },
     status: {
         enumType: TypeInfo.ManualInterventionStatus
@@ -1860,10 +2055,22 @@ TypeInfo.ManualInterventionUpdateMetadata.fields = {
     },
 };
 
-TypeInfo.MappingDetails.fields = {
+TypeInfo.MultiConfigInput.fields = {
+    parallelExecutionType: {
+        enumType: TypeInfo.ParallelExecutionTypes
+    },
 };
 
-TypeInfo.ProjectReference.fields = {
+TypeInfo.MultiMachineInput.fields = {
+    parallelExecutionType: {
+        enumType: TypeInfo.ParallelExecutionTypes
+    },
+};
+
+TypeInfo.ParallelExecutionInputBase.fields = {
+    parallelExecutionType: {
+        enumType: TypeInfo.ParallelExecutionTypes
+    },
 };
 
 TypeInfo.PropertySelector.fields = {
@@ -1872,17 +2079,7 @@ TypeInfo.PropertySelector.fields = {
     },
 };
 
-TypeInfo.RealtimeReleaseEvent.fields = {
-};
-
 TypeInfo.Release.fields = {
-    artifacts: {
-        isArray: true,
-        typeInfo: TypeInfo.Artifact
-    },
-    createdBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     createdOn: {
         isDate: true,
     },
@@ -1890,29 +2087,22 @@ TypeInfo.Release.fields = {
         isArray: true,
         typeInfo: TypeInfo.ReleaseEnvironment
     },
-    modifiedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     modifiedOn: {
         isDate: true,
     },
     reason: {
         enumType: TypeInfo.ReleaseReason
     },
-    releaseDefinition: {
-        typeInfo: TypeInfo.ShallowReference
-    },
     status: {
         enumType: TypeInfo.ReleaseStatus
     },
-    variables: {
+    variableGroups: {
+        isArray: true,
+        typeInfo: TypeInfo.VariableGroup
     },
 };
 
 TypeInfo.ReleaseAbandonedEvent.fields = {
-    project: {
-        typeInfo: TypeInfo.ProjectReference
-    },
     release: {
         typeInfo: TypeInfo.Release
     },
@@ -1921,12 +2111,6 @@ TypeInfo.ReleaseAbandonedEvent.fields = {
 TypeInfo.ReleaseApproval.fields = {
     approvalType: {
         enumType: TypeInfo.ApprovalType
-    },
-    approvedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    approver: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
     createdOn: {
         isDate: true,
@@ -1938,27 +2122,12 @@ TypeInfo.ReleaseApproval.fields = {
     modifiedOn: {
         isDate: true,
     },
-    release: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    releaseDefinition: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    releaseEnvironment: {
-        typeInfo: TypeInfo.ShallowReference
-    },
     status: {
         enumType: TypeInfo.ApprovalStatus
     },
 };
 
 TypeInfo.ReleaseApprovalHistory.fields = {
-    approver: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    changedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     createdOn: {
         isDate: true,
     },
@@ -1971,35 +2140,30 @@ TypeInfo.ReleaseApprovalPendingEvent.fields = {
     approval: {
         typeInfo: TypeInfo.ReleaseApproval
     },
+    completedApprovals: {
+        isArray: true,
+        typeInfo: TypeInfo.ReleaseApproval
+    },
+    deployment: {
+        typeInfo: TypeInfo.Deployment
+    },
     environments: {
         isArray: true,
         typeInfo: TypeInfo.ReleaseEnvironment
     },
-};
-
-TypeInfo.ReleaseArtifact.fields = {
-    artifactProvider: {
-        typeInfo: TypeInfo.ArtifactProvider
+    pendingApprovals: {
+        isArray: true,
+        typeInfo: TypeInfo.ReleaseApproval
     },
 };
 
 TypeInfo.ReleaseCreatedEvent.fields = {
-    project: {
-        typeInfo: TypeInfo.ProjectReference
-    },
     release: {
         typeInfo: TypeInfo.Release
     },
 };
 
 TypeInfo.ReleaseDefinition.fields = {
-    artifacts: {
-        isArray: true,
-        typeInfo: TypeInfo.Artifact
-    },
-    createdBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     createdOn: {
         isDate: true,
     },
@@ -2007,43 +2171,18 @@ TypeInfo.ReleaseDefinition.fields = {
         isArray: true,
         typeInfo: TypeInfo.ReleaseDefinitionEnvironment
     },
-    modifiedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
+    lastRelease: {
+        typeInfo: TypeInfo.ReleaseReference
     },
     modifiedOn: {
         isDate: true,
     },
-    retentionPolicy: {
-        typeInfo: TypeInfo.RetentionPolicy
+    source: {
+        enumType: TypeInfo.ReleaseDefinitionSource
     },
     triggers: {
         isArray: true,
         typeInfo: TypeInfo.ReleaseTriggerBase
-    },
-    variables: {
-    },
-};
-
-TypeInfo.ReleaseDefinitionApprovals.fields = {
-    approvalOptions: {
-        typeInfo: TypeInfo.ApprovalOptions
-    },
-    approvals: {
-        isArray: true,
-        typeInfo: TypeInfo.ReleaseDefinitionApprovalStep
-    },
-};
-
-TypeInfo.ReleaseDefinitionApprovalStep.fields = {
-    approver: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
-TypeInfo.ReleaseDefinitionDeployStep.fields = {
-    tasks: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkflowTask
     },
 };
 
@@ -2056,42 +2195,9 @@ TypeInfo.ReleaseDefinitionEnvironment.fields = {
         isArray: true,
         typeInfo: TypeInfo.DeployPhase
     },
-    deployStep: {
-        typeInfo: TypeInfo.ReleaseDefinitionDeployStep
-    },
-    environmentOptions: {
-        typeInfo: TypeInfo.EnvironmentOptions
-    },
-    executionPolicy: {
-        typeInfo: TypeInfo.EnvironmentExecutionPolicy
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    postDeployApprovals: {
-        typeInfo: TypeInfo.ReleaseDefinitionApprovals
-    },
-    preDeployApprovals: {
-        typeInfo: TypeInfo.ReleaseDefinitionApprovals
-    },
-    retentionPolicy: {
-        typeInfo: TypeInfo.EnvironmentRetentionPolicy
-    },
     schedules: {
         isArray: true,
         typeInfo: TypeInfo.ReleaseSchedule
-    },
-    variables: {
-    },
-};
-
-TypeInfo.ReleaseDefinitionEnvironmentStep.fields = {
-};
-
-TypeInfo.ReleaseDefinitionEnvironmentSummary.fields = {
-    lastReleases: {
-        isArray: true,
-        typeInfo: TypeInfo.ShallowReference
     },
 };
 
@@ -2102,9 +2208,6 @@ TypeInfo.ReleaseDefinitionEnvironmentTemplate.fields = {
 };
 
 TypeInfo.ReleaseDefinitionRevision.fields = {
-    changedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     changedDate: {
         isDate: true,
     },
@@ -2114,13 +2217,6 @@ TypeInfo.ReleaseDefinitionRevision.fields = {
 };
 
 TypeInfo.ReleaseDefinitionSummary.fields = {
-    environments: {
-        isArray: true,
-        typeInfo: TypeInfo.ReleaseDefinitionEnvironmentSummary
-    },
-    releaseDefinition: {
-        typeInfo: TypeInfo.ShallowReference
-    },
     releases: {
         isArray: true,
         typeInfo: TypeInfo.Release
@@ -2160,40 +2256,19 @@ TypeInfo.ReleaseEnvironment.fields = {
         isArray: true,
         typeInfo: TypeInfo.DeploymentAttempt
     },
-    environmentOptions: {
-        typeInfo: TypeInfo.EnvironmentOptions
-    },
     modifiedOn: {
         isDate: true,
     },
     nextScheduledUtcTime: {
         isDate: true,
     },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    postApprovalsSnapshot: {
-        typeInfo: TypeInfo.ReleaseDefinitionApprovals
-    },
     postDeployApprovals: {
         isArray: true,
         typeInfo: TypeInfo.ReleaseApproval
     },
-    preApprovalsSnapshot: {
-        typeInfo: TypeInfo.ReleaseDefinitionApprovals
-    },
     preDeployApprovals: {
         isArray: true,
         typeInfo: TypeInfo.ReleaseApproval
-    },
-    release: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    releaseCreatedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    releaseDefinition: {
-        typeInfo: TypeInfo.ShallowReference
     },
     scheduledDeploymentTime: {
         isDate: true,
@@ -2204,12 +2279,6 @@ TypeInfo.ReleaseEnvironment.fields = {
     },
     status: {
         enumType: TypeInfo.EnvironmentStatus
-    },
-    variables: {
-    },
-    workflowTasks: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkflowTask
     },
 };
 
@@ -2224,9 +2293,6 @@ TypeInfo.ReleaseEnvironmentCompletedEvent.fields = {
     reason: {
         enumType: TypeInfo.DeploymentReason
     },
-    releaseCreatedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
 };
 
 TypeInfo.ReleaseEnvironmentUpdateMetadata.fields = {
@@ -2238,17 +2304,22 @@ TypeInfo.ReleaseEnvironmentUpdateMetadata.fields = {
     },
 };
 
+TypeInfo.ReleaseIssue.fields = {
+    issueType: {
+        enumType: TypeInfo.ReleaseIssueType
+    },
+};
+
 TypeInfo.ReleaseReference.fields = {
-    artifacts: {
-        isArray: true,
-        typeInfo: TypeInfo.Artifact
+    createdOn: {
+        isDate: true,
+    },
+    reason: {
+        enumType: TypeInfo.ReleaseReason
     },
 };
 
 TypeInfo.ReleaseRevision.fields = {
-    changedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     changedDate: {
         isDate: true,
     },
@@ -2261,10 +2332,6 @@ TypeInfo.ReleaseSchedule.fields = {
 };
 
 TypeInfo.ReleaseStartMetadata.fields = {
-    artifacts: {
-        isArray: true,
-        typeInfo: TypeInfo.ArtifactMetadata
-    },
     reason: {
         enumType: TypeInfo.ReleaseReason
     },
@@ -2280,19 +2347,12 @@ TypeInfo.ReleaseTask.fields = {
     finishTime: {
         isDate: true,
     },
-    issues: {
-        isArray: true,
-        typeInfo: TypeInfo.Issue
-    },
     startTime: {
         isDate: true,
     },
     status: {
         enumType: TypeInfo.TaskStatus
     },
-};
-
-TypeInfo.ReleaseTaskLogUpdatedEvent.fields = {
 };
 
 TypeInfo.ReleaseTasksUpdatedEvent.fields = {
@@ -2323,22 +2383,9 @@ TypeInfo.ReleaseUpdateMetadata.fields = {
     },
 };
 
-TypeInfo.ReleaseWorkItemRef.fields = {
-};
-
-TypeInfo.RetentionPolicy.fields = {
-};
-
 TypeInfo.RunOnServerDeployPhase.fields = {
-    controlOptions: {
-        typeInfo: TypeInfo.ControlOptions
-    },
     phaseType: {
         enumType: TypeInfo.DeployPhaseTypes
-    },
-    workflowTasks: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkflowTask
     },
 };
 
@@ -2351,10 +2398,10 @@ TypeInfo.ScheduledReleaseTrigger.fields = {
     },
 };
 
-TypeInfo.ShallowReference.fields = {
-};
-
-TypeInfo.SourceIdInput.fields = {
+TypeInfo.SourceRepository.fields = {
+    repositoryType: {
+        enumType: TypeInfo.SourceRepositoryType
+    },
 };
 
 TypeInfo.SummaryMailSection.fields = {
@@ -2363,18 +2410,11 @@ TypeInfo.SummaryMailSection.fields = {
     },
 };
 
-TypeInfo.TimeZone.fields = {
-};
-
-TypeInfo.TimeZoneList.fields = {
-    utcTimeZone: {
-        typeInfo: TypeInfo.TimeZone
+TypeInfo.VariableGroup.fields = {
+    createdOn: {
+        isDate: true,
     },
-    validTimeZones: {
-        isArray: true,
-        typeInfo: TypeInfo.TimeZone
+    modifiedOn: {
+        isDate: true,
     },
-};
-
-TypeInfo.WorkflowTask.fields = {
 };

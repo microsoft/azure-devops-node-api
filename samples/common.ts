@@ -1,6 +1,7 @@
 /// <reference path="typings/index.d.ts" />
 
 import * as vm from 'vso-node-api';
+import * as lim from 'vso-node-api/interfaces/LocationsInterfaces';
 
 function getEnv(name: string): string {
     let val = process.env[name];
@@ -11,13 +12,22 @@ function getEnv(name: string): string {
     return val;
 }
 
-export function getWebApi(): vm.WebApi {
-    let serverUrl = getEnv('API_URL');
-    let token = getEnv('API_TOKEN');
-    let authHandler = vm.getPersonalAccessTokenHandler(token);
+export async function getWebApi(): Promise<vm.WebApi> {
+    return new Promise<vm.WebApi>(async (resolve, reject) => {
+        try {
+            let serverUrl = getEnv('API_URL');
+            let token = getEnv('API_TOKEN');
+            let authHandler = vm.getPersonalAccessTokenHandler(token);
 
-    let vsts: vm.WebApi = new vm.WebApi(serverUrl, authHandler);
-    return vsts;
+            let vsts: vm.WebApi = new vm.WebApi(serverUrl, authHandler);
+            let connData: lim.ConnectionData = await vsts.connect();
+            console.log('Hello ' + connData.authorizedUser.customDisplayName);
+            resolve(vsts);
+        }
+        catch (err) {
+            reject(err);
+        }
+    });    
 }
 
 export function getProject(): string {

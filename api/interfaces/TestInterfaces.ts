@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ * 
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 "use strict";
 
@@ -21,10 +21,12 @@ export interface AggregatedDataForResultTrend {
     duration: any;
     resultsByOutcome: { [key: number] : AggregatedResultsByOutcome; };
     testResultsContext: TestResultsContext;
+    totalTests: number;
 }
 
 export interface AggregatedResultsAnalysis {
     duration: any;
+    notReportedResultsByOutcome: { [key: number] : AggregatedResultsByOutcome; };
     previousContext: TestResultsContext;
     resultsByOutcome: { [key: number] : AggregatedResultsByOutcome; };
     resultsDifference: AggregatedResultsDifference;
@@ -34,12 +36,15 @@ export interface AggregatedResultsAnalysis {
 export interface AggregatedResultsByOutcome {
     count: number;
     duration: any;
+    groupByField: string;
+    groupByValue: any;
     outcome: TestOutcome;
 }
 
 export interface AggregatedResultsDifference {
     increaseInDuration: any;
     increaseInFailures: number;
+    increaseInOtherTests: number;
     increaseInPassedTests: number;
     increaseInTotalTests: number;
 }
@@ -356,6 +361,25 @@ export interface LastResultDetails {
     runBy: VSSInterfaces.IdentityRef;
 }
 
+export interface LinkedWorkItemsQuery {
+    automatedTestNames: string[];
+    planId: number;
+    pointIds: number[];
+    suiteIds: number[];
+    testCaseIds: number[];
+    workItemCategory: string;
+    workItemCount: number;
+}
+
+export interface LinkedWorkItemsQueryResult {
+    automatedTestName: string;
+    planId: number;
+    pointId: number;
+    suiteId: number;
+    testCaseId: number;
+    workItems: WorkItemReference[];
+}
+
 export interface ModuleCoverage {
     blockCount: number;
     blockData: number[];
@@ -392,6 +416,12 @@ export interface PlanUpdateModel {
 export interface PointAssignment {
     configuration: ShallowReference;
     tester: VSSInterfaces.IdentityRef;
+}
+
+export interface PointsFilter {
+    configurationNames: string[];
+    testcaseIds: number[];
+    testers: VSSInterfaces.IdentityRef[];
 }
 
 export interface PointUpdateModel {
@@ -529,6 +559,9 @@ export interface RunStatistic {
 
 export interface RunUpdateModel {
     build: ShallowReference;
+    buildDropLocation: string;
+    buildFlavor: string;
+    buildPlatform: string;
     comment: string;
     completedDate: string;
     controller: string;
@@ -541,6 +574,9 @@ export interface RunUpdateModel {
     iteration: string;
     logEntries: TestMessageLogDetails[];
     name: string;
+    releaseEnvironmentUri: string;
+    releaseUri: string;
+    sourceWorkflow: string;
     startedDate: string;
     state: string;
     substate: TestRunSubstate;
@@ -624,6 +660,10 @@ export interface TestActionResultModel extends TestResultModelBase {
     actionPath: string;
     iterationId: number;
     sharedStepModel: SharedStepModel;
+    /**
+     * This is step Id of test case. For shared step, it is step Id of shared step in test case workitem; step Id in shared step. Example: TestCase workitem has two steps: 1) Normal step with Id = 1 2) Shared Step with Id = 2. Inside shared step: a) Normal Step with Id = 1 Value for StepIdentifier for First step: "1" Second step: "2;1"
+     */
+    stepIdentifier: string;
     url: string;
 }
 
@@ -688,6 +728,7 @@ export interface TestCaseResult {
     startedDate: Date;
     state: string;
     testCase: ShallowReference;
+    testCaseReferenceId: number;
     testCaseTitle: string;
     testPlan: ShallowReference;
     testPoint: ShallowReference;
@@ -799,7 +840,7 @@ export interface TestEnvironment {
 
 export interface TestFailureDetails {
     count: number;
-    testResults: ShallowReference[];
+    testResults: TestCaseResultIdentifier[];
 }
 
 export interface TestFailuresAnalysis {
@@ -844,6 +885,15 @@ export interface TestMessageLogDetails {
 export interface TestMethod {
     container: string;
     name: string;
+}
+
+/**
+ * Class representing a reference to an operation.
+ */
+export interface TestOperationReference {
+    id: string;
+    status: string;
+    url: string;
 }
 
 export enum TestOutcome {
@@ -903,7 +953,11 @@ export enum TestOutcome {
      * Test is currently executing. Added this for TCM charts
      */
     InProgress = 13,
-    MaxValue = 13,
+    /**
+     * Test is not impacted. Added fot TIA.
+     */
+    NotImpacted = 14,
+    MaxValue = 14,
 }
 
 export interface TestPlan {
@@ -975,6 +1029,13 @@ export interface TestPoint {
     workItemProperties: any[];
 }
 
+export interface TestPointsQuery {
+    orderBy: string;
+    points: TestPoint[];
+    pointsFilter: PointsFilter;
+    witFields: string[];
+}
+
 export interface TestResolutionState {
     id: number;
     name: string;
@@ -1010,6 +1071,11 @@ export interface TestResultCreateModel {
     testPoint: ShallowReference;
 }
 
+export interface TestResultDocument {
+    operationReference: TestOperationReference;
+    payload: TestResultPayload;
+}
+
 export interface TestResultHistory {
     groupByField: string;
     resultsForGroup: TestResultHistoryDetailsForGroup[];
@@ -1033,8 +1099,18 @@ export interface TestResultParameterModel {
     actionPath: string;
     iterationId: number;
     parameterName: string;
+    /**
+     * This is step Id of test case. For shared step, it is step Id of shared step in test case workitem; step Id in shared step. Example: TestCase workitem has two steps: 1) Normal step with Id = 1 2) Shared Step with Id = 2. Inside shared step: a) Normal Step with Id = 1 Value for StepIdentifier for First step: "1" Second step: "2;1"
+     */
+    stepIdentifier: string;
     url: string;
     value: string;
+}
+
+export interface TestResultPayload {
+    comment: string;
+    name: string;
+    stream: string;
 }
 
 export interface TestResultsContext {
@@ -1234,7 +1310,7 @@ export enum TestSessionSource {
     /**
      * Source of test session uncertain as it is stale
      */
-    Unkonown = 0,
+    Unknown = 0,
     /**
      * The session was created from Microsoft Test Manager exploratory desktop tool.
      */
@@ -1251,6 +1327,14 @@ export enum TestSessionSource {
      * The session was created from browser extension.
      */
     FeedbackWeb = 4,
+    /**
+     * The session was created from web access using Microsoft Test Manager exploratory desktop tool.
+     */
+    XTDesktop2 = 5,
+    /**
+     * To show sessions from all supported sources.
+     */
+    SessionInsightsForAll = 6,
 }
 
 export enum TestSessionState {
@@ -1412,17 +1496,11 @@ export interface WorkItemToTestLinks {
 }
 
 export var TypeInfo = {
-    AggregatedDataForResultTrend: {
-        fields: <any>null
+    AggregatedDataForResultTrend: <any>{
     },
-    AggregatedResultsAnalysis: {
-        fields: <any>null
+    AggregatedResultsAnalysis: <any>{
     },
-    AggregatedResultsByOutcome: {
-        fields: <any>null
-    },
-    AggregatedResultsDifference: {
-        fields: <any>null
+    AggregatedResultsByOutcome: <any>{
     },
     AttachmentType: {
         enumValues: {
@@ -1437,62 +1515,29 @@ export var TypeInfo = {
             "tmiTestRunReverseDeploymentFiles": 8,
             "tmiTestResultDetail": 9,
             "tmiTestRunSummary": 10,
-            "consoleLog": 11,
+            "consoleLog": 11
         }
     },
-    BatchResponse: {
-        fields: <any>null
+    BatchResponse: <any>{
     },
-    BuildConfiguration: {
-        fields: <any>null
-    },
-    BuildCoverage: {
-        fields: <any>null
-    },
-    BuildReference: {
-        fields: <any>null
-    },
-    CloneOperationInformation: {
-        fields: <any>null
+    CloneOperationInformation: <any>{
     },
     CloneOperationState: {
         enumValues: {
             "failed": 2,
             "inProgress": 1,
             "queued": 0,
-            "succeeded": 3,
+            "succeeded": 3
         }
-    },
-    CloneOptions: {
-        fields: <any>null
-    },
-    CloneStatistics: {
-        fields: <any>null
-    },
-    CodeCoverageData: {
-        fields: <any>null
-    },
-    CodeCoverageStatistics: {
-        fields: <any>null
-    },
-    CodeCoverageSummary: {
-        fields: <any>null
     },
     CoverageQueryFlags: {
         enumValues: {
             "modules": 1,
             "functions": 2,
-            "blockData": 4,
+            "blockData": 4
         }
     },
-    CoverageStatistics: {
-        fields: <any>null
-    },
-    CustomTestField: {
-        fields: <any>null
-    },
-    CustomTestFieldDefinition: {
-        fields: <any>null
+    CustomTestFieldDefinition: <any>{
     },
     CustomTestFieldScope: {
         enumValues: {
@@ -1500,7 +1545,7 @@ export var TypeInfo = {
             "testRun": 1,
             "testResult": 2,
             "system": 4,
-            "all": 7,
+            "all": 7
         }
     },
     CustomTestFieldType: {
@@ -1510,159 +1555,55 @@ export var TypeInfo = {
             "int": 8,
             "float": 6,
             "string": 12,
-            "guid": 14,
+            "guid": 14
         }
     },
-    DtlEnvironmentDetails: {
-        fields: <any>null
+    FailingSince: <any>{
     },
-    FailingSince: {
-        fields: <any>null
+    LastResultDetails: <any>{
     },
-    FunctionCoverage: {
-        fields: <any>null
-    },
-    LastResultDetails: {
-        fields: <any>null
-    },
-    ModuleCoverage: {
-        fields: <any>null
-    },
-    NameValuePair: {
-        fields: <any>null
-    },
-    PlanUpdateModel: {
-        fields: <any>null
-    },
-    PointAssignment: {
-        fields: <any>null
-    },
-    PointUpdateModel: {
-        fields: <any>null
-    },
-    PointWorkItemProperty: {
-        fields: <any>null
-    },
-    PropertyBag: {
-        fields: <any>null
-    },
-    QueryModel: {
-        fields: <any>null
-    },
-    ReleaseReference: {
-        fields: <any>null
-    },
-    Response: {
-        fields: <any>null
+    Response: <any>{
     },
     ResultDetails: {
         enumValues: {
             "none": 0,
             "iterations": 1,
-            "workItems": 2,
+            "workItems": 2
         }
     },
     ResultObjectType: {
         enumValues: {
             "testSuite": 0,
-            "testPlan": 1,
+            "testPlan": 1
         }
     },
-    ResultRetentionSettings: {
-        fields: <any>null
+    ResultRetentionSettings: <any>{
     },
-    ResultsFilter: {
-        fields: <any>null
+    ResultsFilter: <any>{
     },
-    ResultUpdateRequestModel: {
-        fields: <any>null
+    ResultUpdateRequestModel: <any>{
     },
-    ResultUpdateResponseModel: {
-        fields: <any>null
+    RunUpdateModel: <any>{
     },
-    RunCreateModel: {
-        fields: <any>null
+    TestActionResultModel: <any>{
     },
-    RunFilter: {
-        fields: <any>null
+    TestAttachment: <any>{
     },
-    RunStatistic: {
-        fields: <any>null
+    TestCaseResult: <any>{
     },
-    RunUpdateModel: {
-        fields: <any>null
-    },
-    ShallowReference: {
-        fields: <any>null
-    },
-    SharedStepModel: {
-        fields: <any>null
-    },
-    SuiteCreateModel: {
-        fields: <any>null
-    },
-    SuiteEntry: {
-        fields: <any>null
-    },
-    SuiteEntryUpdateModel: {
-        fields: <any>null
-    },
-    SuiteTestCase: {
-        fields: <any>null
-    },
-    SuiteUpdateModel: {
-        fields: <any>null
-    },
-    TestActionResultModel: {
-        fields: <any>null
-    },
-    TestAttachment: {
-        fields: <any>null
-    },
-    TestAttachmentReference: {
-        fields: <any>null
-    },
-    TestAttachmentRequestModel: {
-        fields: <any>null
-    },
-    TestCaseResult: {
-        fields: <any>null
-    },
-    TestCaseResultAttachmentModel: {
-        fields: <any>null
-    },
-    TestCaseResultIdentifier: {
-        fields: <any>null
-    },
-    TestCaseResultUpdateModel: {
-        fields: <any>null
-    },
-    TestConfiguration: {
-        fields: <any>null
+    TestConfiguration: <any>{
     },
     TestConfigurationState: {
         enumValues: {
             "active": 1,
-            "inactive": 2,
+            "inactive": 2
         }
     },
-    TestEnvironment: {
-        fields: <any>null
+    TestFailuresAnalysis: <any>{
     },
-    TestFailureDetails: {
-        fields: <any>null
+    TestIterationDetailsModel: <any>{
     },
-    TestFailuresAnalysis: {
-        fields: <any>null
-    },
-    TestIterationDetailsModel: {
-        fields: <any>null
-    },
-    TestMessageLogDetails: {
-        fields: <any>null
-    },
-    TestMethod: {
-        fields: <any>null
+    TestMessageLogDetails: <any>{
     },
     TestOutcome: {
         enumValues: {
@@ -1680,74 +1621,47 @@ export var TypeInfo = {
             "notApplicable": 11,
             "paused": 12,
             "inProgress": 13,
-            "maxValue": 13,
+            "notImpacted": 14,
+            "maxValue": 14
         }
     },
-    TestPlan: {
-        fields: <any>null
+    TestPlan: <any>{
     },
-    TestPlanCloneRequest: {
-        fields: <any>null
+    TestPlanCloneRequest: <any>{
     },
-    TestPlanHubData: {
-        fields: <any>null
+    TestPlanHubData: <any>{
     },
-    TestPlansWithSelection: {
-        fields: <any>null
+    TestPlansWithSelection: <any>{
     },
-    TestPoint: {
-        fields: <any>null
+    TestPoint: <any>{
     },
-    TestResolutionState: {
-        fields: <any>null
+    TestPointsQuery: <any>{
     },
-    TestResultCreateModel: {
-        fields: <any>null
+    TestResultHistory: <any>{
     },
-    TestResultHistory: {
-        fields: <any>null
+    TestResultHistoryDetailsForGroup: <any>{
     },
-    TestResultHistoryDetailsForGroup: {
-        fields: <any>null
+    TestResultModelBase: <any>{
     },
-    TestResultModelBase: {
-        fields: <any>null
-    },
-    TestResultParameterModel: {
-        fields: <any>null
-    },
-    TestResultsContext: {
-        fields: <any>null
+    TestResultsContext: <any>{
     },
     TestResultsContextType: {
         enumValues: {
             "build": 1,
-            "release": 2,
+            "release": 2
         }
     },
-    TestResultsDetails: {
-        fields: <any>null
+    TestResultsDetails: <any>{
     },
-    TestResultsDetailsForGroup: {
-        fields: <any>null
+    TestResultsDetailsForGroup: <any>{
     },
-    TestResultsQuery: {
-        fields: <any>null
+    TestResultsQuery: <any>{
     },
-    TestResultSummary: {
-        fields: <any>null
+    TestResultSummary: <any>{
     },
-    TestResultTrendFilter: {
-        fields: <any>null
+    TestResultTrendFilter: <any>{
     },
-    TestRun: {
-        fields: <any>null
-    },
-    TestRunCoverage: {
-        fields: <any>null
-    },
-    TestRunStatistic: {
-        fields: <any>null
+    TestRun: <any>{
     },
     TestRunSubstate: {
         enumValues: {
@@ -1759,22 +1673,22 @@ export var TypeInfo = {
             "timedOut": 5,
             "pendingAnalysis": 6,
             "analyzed": 7,
-            "cancellationInProgress": 8,
+            "cancellationInProgress": 8
         }
     },
-    TestSession: {
-        fields: <any>null
+    TestSession: <any>{
     },
-    TestSessionExploredWorkItemReference: {
-        fields: <any>null
+    TestSessionExploredWorkItemReference: <any>{
     },
     TestSessionSource: {
         enumValues: {
-            "unkonown": 0,
+            "unknown": 0,
             "xTDesktop": 1,
             "feedbackDesktop": 2,
             "xTWeb": 3,
             "feedbackWeb": 4,
+            "xTDesktop2": 5,
+            "sessionInsightsForAll": 6
         }
     },
     TestSessionState: {
@@ -1784,40 +1698,20 @@ export var TypeInfo = {
             "inProgress": 2,
             "paused": 3,
             "completed": 4,
-            "declined": 5,
+            "declined": 5
         }
     },
-    TestSessionWorkItemReference: {
-        fields: <any>null
+    TestSuite: <any>{
     },
-    TestSettings: {
-        fields: <any>null
-    },
-    TestSuite: {
-        fields: <any>null
-    },
-    TestSuiteCloneRequest: {
-        fields: <any>null
-    },
-    TestSummaryForWorkItem: {
-        fields: <any>null
-    },
-    TestToWorkItemLinks: {
-        fields: <any>null
-    },
-    TestVariable: {
-        fields: <any>null
-    },
-    WorkItemReference: {
-        fields: <any>null
-    },
-    WorkItemToTestLinks: {
-        fields: <any>null
+    TestSummaryForWorkItem: <any>{
     },
 };
 
 TypeInfo.AggregatedDataForResultTrend.fields = {
     resultsByOutcome: {
+        isDictionary: true,
+        dictionaryKeyEnumType: TypeInfo.TestOutcome,
+        dictionaryValueTypeInfo: TypeInfo.AggregatedResultsByOutcome
     },
     testResultsContext: {
         typeInfo: TypeInfo.TestResultsContext
@@ -1825,13 +1719,18 @@ TypeInfo.AggregatedDataForResultTrend.fields = {
 };
 
 TypeInfo.AggregatedResultsAnalysis.fields = {
+    notReportedResultsByOutcome: {
+        isDictionary: true,
+        dictionaryKeyEnumType: TypeInfo.TestOutcome,
+        dictionaryValueTypeInfo: TypeInfo.AggregatedResultsByOutcome
+    },
     previousContext: {
         typeInfo: TypeInfo.TestResultsContext
     },
     resultsByOutcome: {
-    },
-    resultsDifference: {
-        typeInfo: TypeInfo.AggregatedResultsDifference
+        isDictionary: true,
+        dictionaryKeyEnumType: TypeInfo.TestOutcome,
+        dictionaryValueTypeInfo: TypeInfo.AggregatedResultsByOutcome
     },
 };
 
@@ -1841,9 +1740,6 @@ TypeInfo.AggregatedResultsByOutcome.fields = {
     },
 };
 
-TypeInfo.AggregatedResultsDifference.fields = {
-};
-
 TypeInfo.BatchResponse.fields = {
     responses: {
         isArray: true,
@@ -1851,94 +1747,19 @@ TypeInfo.BatchResponse.fields = {
     },
 };
 
-TypeInfo.BuildConfiguration.fields = {
-    project: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.BuildCoverage.fields = {
-    configuration: {
-        typeInfo: TypeInfo.BuildConfiguration
-    },
-    modules: {
-        isArray: true,
-        typeInfo: TypeInfo.ModuleCoverage
-    },
-};
-
-TypeInfo.BuildReference.fields = {
-};
-
 TypeInfo.CloneOperationInformation.fields = {
-    cloneStatistics: {
-        typeInfo: TypeInfo.CloneStatistics
-    },
     completionDate: {
         isDate: true,
     },
     creationDate: {
         isDate: true,
     },
-    destinationObject: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    destinationPlan: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    destinationProject: {
-        typeInfo: TypeInfo.ShallowReference
-    },
     resultObjectType: {
         enumType: TypeInfo.ResultObjectType
-    },
-    sourceObject: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    sourcePlan: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    sourceProject: {
-        typeInfo: TypeInfo.ShallowReference
     },
     state: {
         enumType: TypeInfo.CloneOperationState
     },
-};
-
-TypeInfo.CloneOptions.fields = {
-};
-
-TypeInfo.CloneStatistics.fields = {
-};
-
-TypeInfo.CodeCoverageData.fields = {
-    coverageStats: {
-        isArray: true,
-        typeInfo: TypeInfo.CodeCoverageStatistics
-    },
-};
-
-TypeInfo.CodeCoverageStatistics.fields = {
-};
-
-TypeInfo.CodeCoverageSummary.fields = {
-    build: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    coverageData: {
-        isArray: true,
-        typeInfo: TypeInfo.CodeCoverageData
-    },
-    deltaBuild: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.CoverageStatistics.fields = {
-};
-
-TypeInfo.CustomTestField.fields = {
 };
 
 TypeInfo.CustomTestFieldDefinition.fields = {
@@ -1950,24 +1771,9 @@ TypeInfo.CustomTestFieldDefinition.fields = {
     },
 };
 
-TypeInfo.DtlEnvironmentDetails.fields = {
-};
-
 TypeInfo.FailingSince.fields = {
-    build: {
-        typeInfo: TypeInfo.BuildReference
-    },
     date: {
         isDate: true,
-    },
-    release: {
-        typeInfo: TypeInfo.ReleaseReference
-    },
-};
-
-TypeInfo.FunctionCoverage.fields = {
-    statistics: {
-        typeInfo: TypeInfo.CoverageStatistics
     },
 };
 
@@ -1975,82 +1781,12 @@ TypeInfo.LastResultDetails.fields = {
     dateCompleted: {
         isDate: true,
     },
-    runBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
-TypeInfo.ModuleCoverage.fields = {
-    functions: {
-        isArray: true,
-        typeInfo: TypeInfo.FunctionCoverage
-    },
-    statistics: {
-        typeInfo: TypeInfo.CoverageStatistics
-    },
-};
-
-TypeInfo.NameValuePair.fields = {
-};
-
-TypeInfo.PlanUpdateModel.fields = {
-    area: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    automatedTestEnvironment: {
-        typeInfo: TypeInfo.TestEnvironment
-    },
-    automatedTestSettings: {
-        typeInfo: TypeInfo.TestSettings
-    },
-    build: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    manualTestEnvironment: {
-        typeInfo: TypeInfo.TestEnvironment
-    },
-    manualTestSettings: {
-        typeInfo: TypeInfo.TestSettings
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
-TypeInfo.PointAssignment.fields = {
-    configuration: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    tester: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
-TypeInfo.PointUpdateModel.fields = {
-    tester: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-};
-
-TypeInfo.PointWorkItemProperty.fields = {
-};
-
-TypeInfo.PropertyBag.fields = {
-};
-
-TypeInfo.QueryModel.fields = {
-};
-
-TypeInfo.ReleaseReference.fields = {
 };
 
 TypeInfo.Response.fields = {
 };
 
 TypeInfo.ResultRetentionSettings.fields = {
-    lastUpdatedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     lastUpdatedDate: {
         isDate: true,
     },
@@ -2074,75 +1810,9 @@ TypeInfo.ResultUpdateRequestModel.fields = {
         isArray: true,
         typeInfo: TypeInfo.TestActionResultModel
     },
-    parameterDeletes: {
-        isArray: true,
-        typeInfo: TypeInfo.TestResultParameterModel
-    },
-    parameters: {
-        isArray: true,
-        typeInfo: TypeInfo.TestResultParameterModel
-    },
-    testCaseResult: {
-        typeInfo: TypeInfo.TestCaseResultUpdateModel
-    },
-};
-
-TypeInfo.ResultUpdateResponseModel.fields = {
-};
-
-TypeInfo.RunCreateModel.fields = {
-    build: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    customTestFields: {
-        isArray: true,
-        typeInfo: TypeInfo.CustomTestField
-    },
-    dtlAutEnvironment: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    dtlTestEnvironment: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    environmentDetails: {
-        typeInfo: TypeInfo.DtlEnvironmentDetails
-    },
-    filter: {
-        typeInfo: TypeInfo.RunFilter
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    plan: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    testSettings: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.RunFilter.fields = {
-};
-
-TypeInfo.RunStatistic.fields = {
-    resolutionState: {
-        typeInfo: TypeInfo.TestResolutionState
-    },
 };
 
 TypeInfo.RunUpdateModel.fields = {
-    build: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    dtlAutEnvironment: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    dtlEnvironment: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    dtlEnvironmentDetails: {
-        typeInfo: TypeInfo.DtlEnvironmentDetails
-    },
     logEntries: {
         isArray: true,
         typeInfo: TypeInfo.TestMessageLogDetails
@@ -2150,45 +1820,11 @@ TypeInfo.RunUpdateModel.fields = {
     substate: {
         enumType: TypeInfo.TestRunSubstate
     },
-    testSettings: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.ShallowReference.fields = {
-};
-
-TypeInfo.SharedStepModel.fields = {
-};
-
-TypeInfo.SuiteCreateModel.fields = {
-};
-
-TypeInfo.SuiteEntry.fields = {
-};
-
-TypeInfo.SuiteEntryUpdateModel.fields = {
-};
-
-TypeInfo.SuiteTestCase.fields = {
-    pointAssignments: {
-        isArray: true,
-        typeInfo: TypeInfo.PointAssignment
-    },
-    testCase: {
-        typeInfo: TypeInfo.WorkItemReference
-    },
-};
-
-TypeInfo.SuiteUpdateModel.fields = {
 };
 
 TypeInfo.TestActionResultModel.fields = {
     completedDate: {
         isDate: true,
-    },
-    sharedStepModel: {
-        typeInfo: TypeInfo.SharedStepModel
     },
     startedDate: {
         isDate: true,
@@ -2204,38 +1840,12 @@ TypeInfo.TestAttachment.fields = {
     },
 };
 
-TypeInfo.TestAttachmentReference.fields = {
-};
-
-TypeInfo.TestAttachmentRequestModel.fields = {
-};
-
 TypeInfo.TestCaseResult.fields = {
-    area: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    associatedBugs: {
-        isArray: true,
-        typeInfo: TypeInfo.ShallowReference
-    },
-    build: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    buildReference: {
-        typeInfo: TypeInfo.BuildReference
-    },
     completedDate: {
         isDate: true,
     },
-    configuration: {
-        typeInfo: TypeInfo.ShallowReference
-    },
     createdDate: {
         isDate: true,
-    },
-    customFields: {
-        isArray: true,
-        typeInfo: TypeInfo.CustomTestField
     },
     failingSince: {
         typeInfo: TypeInfo.FailingSince
@@ -2244,111 +1854,24 @@ TypeInfo.TestCaseResult.fields = {
         isArray: true,
         typeInfo: TypeInfo.TestIterationDetailsModel
     },
-    lastUpdatedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     lastUpdatedDate: {
         isDate: true,
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    project: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    release: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    releaseReference: {
-        typeInfo: TypeInfo.ReleaseReference
-    },
-    runBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
     startedDate: {
         isDate: true,
     },
-    testCase: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    testPlan: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    testPoint: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    testRun: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    testSuite: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.TestCaseResultAttachmentModel.fields = {
-};
-
-TypeInfo.TestCaseResultIdentifier.fields = {
-};
-
-TypeInfo.TestCaseResultUpdateModel.fields = {
-    customFields: {
-        isArray: true,
-        typeInfo: TypeInfo.CustomTestField
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    runBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    testResult: {
-        typeInfo: TypeInfo.ShallowReference
-    },
 };
 
 TypeInfo.TestConfiguration.fields = {
-    area: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    lastUpdatedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     lastUpdatedDate: {
         isDate: true,
-    },
-    project: {
-        typeInfo: TypeInfo.ShallowReference
     },
     state: {
         enumType: TypeInfo.TestConfigurationState
     },
-    values: {
-        isArray: true,
-        typeInfo: TypeInfo.NameValuePair
-    },
-};
-
-TypeInfo.TestEnvironment.fields = {
-};
-
-TypeInfo.TestFailureDetails.fields = {
-    testResults: {
-        isArray: true,
-        typeInfo: TypeInfo.ShallowReference
-    },
 };
 
 TypeInfo.TestFailuresAnalysis.fields = {
-    existingFailures: {
-        typeInfo: TypeInfo.TestFailureDetails
-    },
-    fixedTests: {
-        typeInfo: TypeInfo.TestFailureDetails
-    },
-    newFailures: {
-        typeInfo: TypeInfo.TestFailureDetails
-    },
     previousContext: {
         typeInfo: TypeInfo.TestResultsContext
     },
@@ -2359,16 +1882,8 @@ TypeInfo.TestIterationDetailsModel.fields = {
         isArray: true,
         typeInfo: TypeInfo.TestActionResultModel
     },
-    attachments: {
-        isArray: true,
-        typeInfo: TypeInfo.TestCaseResultAttachmentModel
-    },
     completedDate: {
         isDate: true,
-    },
-    parameters: {
-        isArray: true,
-        typeInfo: TypeInfo.TestResultParameterModel
     },
     startedDate: {
         isDate: true,
@@ -2381,48 +1896,12 @@ TypeInfo.TestMessageLogDetails.fields = {
     },
 };
 
-TypeInfo.TestMethod.fields = {
-};
-
 TypeInfo.TestPlan.fields = {
-    area: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    automatedTestEnvironment: {
-        typeInfo: TypeInfo.TestEnvironment
-    },
-    automatedTestSettings: {
-        typeInfo: TypeInfo.TestSettings
-    },
-    build: {
-        typeInfo: TypeInfo.ShallowReference
-    },
     endDate: {
         isDate: true,
     },
-    manualTestEnvironment: {
-        typeInfo: TypeInfo.TestEnvironment
-    },
-    manualTestSettings: {
-        typeInfo: TypeInfo.TestSettings
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    previousBuild: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    project: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    rootSuite: {
-        typeInfo: TypeInfo.ShallowReference
-    },
     startDate: {
         isDate: true,
-    },
-    updatedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
     updatedDate: {
         isDate: true,
@@ -2432,9 +1911,6 @@ TypeInfo.TestPlan.fields = {
 TypeInfo.TestPlanCloneRequest.fields = {
     destinationTestPlan: {
         typeInfo: TypeInfo.TestPlan
-    },
-    options: {
-        typeInfo: TypeInfo.CloneOptions
     },
 };
 
@@ -2460,66 +1936,18 @@ TypeInfo.TestPlansWithSelection.fields = {
 };
 
 TypeInfo.TestPoint.fields = {
-    assignedTo: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    configuration: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    lastResult: {
-        typeInfo: TypeInfo.ShallowReference
-    },
     lastResultDetails: {
         typeInfo: TypeInfo.LastResultDetails
-    },
-    lastTestRun: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    lastUpdatedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
     },
     lastUpdatedDate: {
         isDate: true,
     },
-    suite: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    testCase: {
-        typeInfo: TypeInfo.WorkItemReference
-    },
-    testPlan: {
-        typeInfo: TypeInfo.ShallowReference
-    },
 };
 
-TypeInfo.TestResolutionState.fields = {
-    project: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.TestResultCreateModel.fields = {
-    area: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    configuration: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    customFields: {
+TypeInfo.TestPointsQuery.fields = {
+    points: {
         isArray: true,
-        typeInfo: TypeInfo.CustomTestField
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    runBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    testCase: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    testPoint: {
-        typeInfo: TypeInfo.ShallowReference
+        typeInfo: TypeInfo.TestPoint
     },
 };
 
@@ -2545,18 +1973,9 @@ TypeInfo.TestResultModelBase.fields = {
     },
 };
 
-TypeInfo.TestResultParameterModel.fields = {
-};
-
 TypeInfo.TestResultsContext.fields = {
-    build: {
-        typeInfo: TypeInfo.BuildReference
-    },
     contextType: {
         enumType: TypeInfo.TestResultsContextType
-    },
-    release: {
-        typeInfo: TypeInfo.ReleaseReference
     },
 };
 
@@ -2573,6 +1992,9 @@ TypeInfo.TestResultsDetailsForGroup.fields = {
         typeInfo: TypeInfo.TestCaseResult
     },
     resultsCountByOutcome: {
+        isDictionary: true,
+        dictionaryKeyEnumType: TypeInfo.TestOutcome,
+        dictionaryValueTypeInfo: TypeInfo.AggregatedResultsByOutcome
     },
 };
 
@@ -2590,9 +2012,6 @@ TypeInfo.TestResultSummary.fields = {
     aggregatedResultsAnalysis: {
         typeInfo: TypeInfo.AggregatedResultsAnalysis
     },
-    teamProject: {
-        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
-    },
     testFailures: {
         typeInfo: TypeInfo.TestFailuresAnalysis
     },
@@ -2608,58 +2027,17 @@ TypeInfo.TestResultTrendFilter.fields = {
 };
 
 TypeInfo.TestRun.fields = {
-    build: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    buildConfiguration: {
-        typeInfo: TypeInfo.BuildConfiguration
-    },
     completedDate: {
         isDate: true,
     },
     createdDate: {
         isDate: true,
     },
-    customFields: {
-        isArray: true,
-        typeInfo: TypeInfo.CustomTestField
-    },
-    dtlAutEnvironment: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    dtlEnvironment: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    dtlEnvironmentCreationDetails: {
-        typeInfo: TypeInfo.DtlEnvironmentDetails
-    },
     dueDate: {
         isDate: true,
     },
-    filter: {
-        typeInfo: TypeInfo.RunFilter
-    },
-    lastUpdatedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     lastUpdatedDate: {
         isDate: true,
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    plan: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    project: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    release: {
-        typeInfo: TypeInfo.ReleaseReference
-    },
-    runStatistics: {
-        isArray: true,
-        typeInfo: TypeInfo.RunStatistic
     },
     startedDate: {
         isDate: true,
@@ -2667,55 +2045,14 @@ TypeInfo.TestRun.fields = {
     substate: {
         enumType: TypeInfo.TestRunSubstate
     },
-    testEnvironment: {
-        typeInfo: TypeInfo.TestEnvironment
-    },
-    testSettings: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.TestRunCoverage.fields = {
-    modules: {
-        isArray: true,
-        typeInfo: TypeInfo.ModuleCoverage
-    },
-    testRun: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.TestRunStatistic.fields = {
-    run: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    runStatistics: {
-        isArray: true,
-        typeInfo: TypeInfo.RunStatistic
-    },
 };
 
 TypeInfo.TestSession.fields = {
-    area: {
-        typeInfo: TypeInfo.ShallowReference
-    },
     endDate: {
         isDate: true,
     },
-    lastUpdatedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     lastUpdatedDate: {
         isDate: true,
-    },
-    owner: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
-    project: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    propertyBag: {
-        typeInfo: TypeInfo.PropertyBag
     },
     source: {
         enumType: TypeInfo.TestSessionSource
@@ -2729,10 +2066,6 @@ TypeInfo.TestSession.fields = {
 };
 
 TypeInfo.TestSessionExploredWorkItemReference.fields = {
-    associatedWorkItems: {
-        isArray: true,
-        typeInfo: TypeInfo.TestSessionWorkItemReference
-    },
     endTime: {
         isDate: true,
     },
@@ -2741,85 +2074,21 @@ TypeInfo.TestSessionExploredWorkItemReference.fields = {
     },
 };
 
-TypeInfo.TestSessionWorkItemReference.fields = {
-};
-
-TypeInfo.TestSettings.fields = {
-};
-
 TypeInfo.TestSuite.fields = {
     children: {
         isArray: true,
         typeInfo: TypeInfo.TestSuite
     },
-    defaultConfigurations: {
-        isArray: true,
-        typeInfo: TypeInfo.ShallowReference
-    },
     lastPopulatedDate: {
         isDate: true,
     },
-    lastUpdatedBy: {
-        typeInfo: VSSInterfaces.TypeInfo.IdentityRef
-    },
     lastUpdatedDate: {
         isDate: true,
-    },
-    parent: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    plan: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    project: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-    suites: {
-        isArray: true,
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.TestSuiteCloneRequest.fields = {
-    cloneOptions: {
-        typeInfo: TypeInfo.CloneOptions
     },
 };
 
 TypeInfo.TestSummaryForWorkItem.fields = {
     summary: {
         typeInfo: TypeInfo.AggregatedDataForResultTrend
-    },
-    workItem: {
-        typeInfo: TypeInfo.WorkItemReference
-    },
-};
-
-TypeInfo.TestToWorkItemLinks.fields = {
-    test: {
-        typeInfo: TypeInfo.TestMethod
-    },
-    workItems: {
-        isArray: true,
-        typeInfo: TypeInfo.WorkItemReference
-    },
-};
-
-TypeInfo.TestVariable.fields = {
-    project: {
-        typeInfo: TypeInfo.ShallowReference
-    },
-};
-
-TypeInfo.WorkItemReference.fields = {
-};
-
-TypeInfo.WorkItemToTestLinks.fields = {
-    tests: {
-        isArray: true,
-        typeInfo: TypeInfo.TestMethod
-    },
-    workItem: {
-        typeInfo: TypeInfo.WorkItemReference
     },
 };

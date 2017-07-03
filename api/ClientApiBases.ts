@@ -1,47 +1,51 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-import Q = require('q');
-import restm = require('./RestClient');
-import httpm = require('./HttpClient');
 import vsom = require('./VsoClient');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
+import serm = require('./Serialization');
+import * as rm from 'typed-rest-client/RestClient';
+import * as hm from 'typed-rest-client/HttpClient';
 
 export class ClientApiBase {
     baseUrl: string;
     userAgent: string;
-    httpClient: httpm.HttpClient;
-    restClient: restm.RestClient;
+    http: hm.HttpClient;
+    rest: rm.RestClient;
+
     vsoClient: vsom.VsoClient;
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], userAgent?: string);
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], userAgent: string) {
         this.baseUrl = baseUrl;
-        this.httpClient = new httpm.HttpClient(userAgent, handlers);
-        this.restClient = new restm.RestClient(this.httpClient);
-        this.vsoClient = new vsom.VsoClient(baseUrl, this.restClient);
+
+        this.http = new hm.HttpClient(userAgent, handlers);
+        this.rest = new rm.RestClient(userAgent, null, handlers);
+
+        this.vsoClient = new vsom.VsoClient(baseUrl, this.rest);
         this.userAgent = userAgent;
     }
 
-    setUserAgent(userAgent: string) {
-        this.userAgent = userAgent;
-        this.httpClient.userAgent = userAgent;
+    public createAcceptHeader(type: string, apiVersion?: string): string {
+        return type + (apiVersion ? (';api-version=' + apiVersion) : '');
     }
-    
-    public connect(): Promise<any> {
-        var defer = Q.defer();
-        
-        this.restClient.getJson(this.vsoClient.resolveUrl('/_apis/connectionData'), "", null, null, (err: any, statusCode: number, obj: any) => {
-            if (err) {
-                err.statusCode = statusCode;
-                defer.reject(err);
-            }
-            else {
-                defer.resolve(obj);
-            }
-        });
-        
-        return defer.promise;
+
+    public createRequestOptions(type: string, apiVersion?: string) {
+        let options: rm.IRequestOptions = <rm.IRequestOptions>{};
+        options.acceptHeader = this.createAcceptHeader(type, apiVersion);
+        return options;
     }
+
+    public formatResponse(data: any, responseTypeMetadata: any, isCollection: boolean): any {
+        let serializationData = {  
+            responseTypeMetadata: responseTypeMetadata, 
+            responseIsCollection: isCollection 
+        };
+        let deserializedResult = serm.ContractSerializer.deserialize(data, 
+                                            serializationData.responseTypeMetadata, 
+                                            false, 
+                                            serializationData.responseIsCollection);
+        return deserializedResult;
+    } 
 }
