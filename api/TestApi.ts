@@ -3477,7 +3477,8 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             let routeValues: any = {
                 project: project,
                 planId: planId,
-                suiteId: suiteId
+                suiteId: suiteId,
+		action: 'TestCases'
             };
 
             try {
