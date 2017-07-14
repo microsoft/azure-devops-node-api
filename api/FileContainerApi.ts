@@ -25,8 +25,8 @@ export interface IFileContainerApi extends FileContainerApiBase.IFileContainerAp
 }
 
 export class FileContainerApi extends FileContainerApiBase.FileContainerApiBase implements IFileContainerApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        super(baseUrl, handlers);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
+        super(baseUrl, handlers, options);
     }
 
     /**
@@ -40,7 +40,7 @@ export class FileContainerApi extends FileContainerApiBase.FileContainerApiBase 
         scope?: string,
         itemPath?: string,
         downloadFileName?: string
-        ): Promise<restm.IRestResponse<NodeJS.ReadableStream>> {
+    ): Promise<restm.IRestResponse<NodeJS.ReadableStream>> {
 
         return new Promise<restm.IRestResponse<NodeJS.ReadableStream>>(async (resolve, reject) => {
             let routeValues: any = {
@@ -137,7 +137,7 @@ export class FileContainerApi extends FileContainerApiBase.FileContainerApiBase 
         itemPath: string,
         scope: string,
         onResult: (err: any, statusCode: number, Container: FileContainerInterfaces.FileContainerItem) => void
-        ): void {
+    ): void {
 
         var routeValues: any = {
             containerId: containerId
@@ -147,29 +147,29 @@ export class FileContainerApi extends FileContainerApiBase.FileContainerApiBase 
             itemPath: itemPath,
             scope: scope,
         };
-        
+
         customHeaders = customHeaders || {};
         customHeaders["Content-Type"] = "";
-        
+
 
         this.vsoClient.getVersioningData("4.0-preview.4", "Container", "e4f5c81e-e250-447b-9fef-bd48471bea5e", routeValues, queryValues)
             .then((versioningData: vsom.ClientVersioningData) => {
                 var url: string = versioningData.requestUrl;
-                var serializationData = {  responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainerItem, responseIsCollection: false };
+                var serializationData = { responseTypeMetadata: FileContainerInterfaces.TypeInfo.FileContainerItem, responseIsCollection: false };
 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/octet-stream',
-                                                                                versioningData.apiVersion);
+                    versioningData.apiVersion);
                 options.additionalHeaders = customHeaders;
                 this.rest.uploadStream<FileContainerInterfaces.FileContainerItem>('PUT', url, contentStream, options)
-                .then((res: restm.IRestResponse<FileContainerInterfaces.FileContainerItem>) => {
-                    let ret = this.formatResponse(res.result, 
-                                                  FileContainerInterfaces.TypeInfo.FileContainerItem, 
-                                                  false);
-                    onResult(null, res.statusCode, ret);
-                })
-                .catch((err) => {
-                    onResult(err, err.statusCode, null);    
-                });
+                    .then((res: restm.IRestResponse<FileContainerInterfaces.FileContainerItem>) => {
+                        let ret = this.formatResponse(res.result,
+                            FileContainerInterfaces.TypeInfo.FileContainerItem,
+                            false);
+                        onResult(null, res.statusCode, ret);
+                    })
+                    .catch((err) => {
+                        onResult(err, err.statusCode, null);
+                    });
             }, (error) => {
                 onResult(error, error.statusCode, null);
             });

@@ -83,8 +83,8 @@ export interface IBuildApi extends basem.ClientApiBase {
 }
 
 export class BuildApi extends basem.ClientApiBase implements IBuildApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        super(baseUrl, handlers, 'node-Build-api');
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
+        super(baseUrl, handlers, 'node-Build-api', options);
     }
 
     /**

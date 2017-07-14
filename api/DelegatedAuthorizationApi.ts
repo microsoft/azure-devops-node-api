@@ -35,8 +35,8 @@ export interface IDelegatedAuthorizationApi extends basem.ClientApiBase {
 }
 
 export class DelegatedAuthorizationApi extends basem.ClientApiBase implements IDelegatedAuthorizationApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        super(baseUrl, handlers, 'node-DelegatedAuthorization-api');
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
+        super(baseUrl, handlers, 'node-DelegatedAuthorization-api', options);
     }
 
     /**
@@ -52,7 +52,7 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
         clientId: string,
         scopes: string,
         userId?: string
-        ): Promise<DelegatedAuthorizationInterfaces.AuthorizationDecision> {
+    ): Promise<DelegatedAuthorizationInterfaces.AuthorizationDecision> {
 
         return new Promise<DelegatedAuthorizationInterfaces.AuthorizationDecision>(async (resolve, reject) => {
             let routeValues: any = {
@@ -64,7 +64,7 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
                 clientId: clientId,
                 scopes: scopes,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -74,18 +74,18 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<DelegatedAuthorizationInterfaces.AuthorizationDecision>;
                 res = await this.rest.create<DelegatedAuthorizationInterfaces.AuthorizationDecision>(url, redirectUri, options);
 
                 let ret = this.formatResponse(res.result,
-                                              DelegatedAuthorizationInterfaces.TypeInfo.AuthorizationDecision,
-                                              false);
+                    DelegatedAuthorizationInterfaces.TypeInfo.AuthorizationDecision,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -98,7 +98,7 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
     */
     public async getAuthorizations(
         userId?: string
-        ): Promise<DelegatedAuthorizationInterfaces.AuthorizationDetails[]> {
+    ): Promise<DelegatedAuthorizationInterfaces.AuthorizationDetails[]> {
 
         return new Promise<DelegatedAuthorizationInterfaces.AuthorizationDetails[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -113,18 +113,18 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<DelegatedAuthorizationInterfaces.AuthorizationDetails[]>;
                 res = await this.rest.get<DelegatedAuthorizationInterfaces.AuthorizationDetails[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              DelegatedAuthorizationInterfaces.TypeInfo.AuthorizationDetails,
-                                              true);
+                    DelegatedAuthorizationInterfaces.TypeInfo.AuthorizationDetails,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -145,7 +145,7 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
         clientId: string,
         scopes: string,
         userId?: string
-        ): Promise<DelegatedAuthorizationInterfaces.AuthorizationDescription> {
+    ): Promise<DelegatedAuthorizationInterfaces.AuthorizationDescription> {
 
         return new Promise<DelegatedAuthorizationInterfaces.AuthorizationDescription>(async (resolve, reject) => {
             let routeValues: any = {
@@ -157,7 +157,7 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
                 clientId: clientId,
                 scopes: scopes,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -167,18 +167,18 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<DelegatedAuthorizationInterfaces.AuthorizationDescription>;
                 res = await this.rest.get<DelegatedAuthorizationInterfaces.AuthorizationDescription>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              DelegatedAuthorizationInterfaces.TypeInfo.AuthorizationDescription,
-                                              false);
+                    DelegatedAuthorizationInterfaces.TypeInfo.AuthorizationDescription,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -193,7 +193,7 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
     public async revokeAuthorization(
         authorizationId: string,
         userId?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -203,7 +203,7 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
             let queryValues: any = {
                 authorizationId: authorizationId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -213,18 +213,18 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -237,7 +237,7 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
     */
     public async host(
         clientId: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -246,7 +246,7 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
             let queryValues: any = {
                 clientId: clientId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -256,18 +256,18 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -282,7 +282,7 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
     public async revoke(
         clientId: string,
         hostId?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -292,7 +292,7 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
                 clientId: clientId,
                 hostId: hostId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -302,18 +302,18 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -328,7 +328,7 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
     public async create(
         registration: DelegatedAuthorizationInterfaces.Registration,
         includeSecret?: boolean
-        ): Promise<DelegatedAuthorizationInterfaces.Registration> {
+    ): Promise<DelegatedAuthorizationInterfaces.Registration> {
 
         return new Promise<DelegatedAuthorizationInterfaces.Registration>(async (resolve, reject) => {
             let routeValues: any = {
@@ -337,7 +337,7 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
             let queryValues: any = {
                 includeSecret: includeSecret,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -347,18 +347,18 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<DelegatedAuthorizationInterfaces.Registration>;
                 res = await this.rest.replace<DelegatedAuthorizationInterfaces.Registration>(url, registration, options);
 
                 let ret = this.formatResponse(res.result,
-                                              DelegatedAuthorizationInterfaces.TypeInfo.Registration,
-                                              false);
+                    DelegatedAuthorizationInterfaces.TypeInfo.Registration,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -371,7 +371,7 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
     */
     public async delete(
         registrationId: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -386,18 +386,18 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -412,7 +412,7 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
     public async get(
         registrationId: string,
         includeSecret: boolean
-        ): Promise<DelegatedAuthorizationInterfaces.Registration> {
+    ): Promise<DelegatedAuthorizationInterfaces.Registration> {
 
         return new Promise<DelegatedAuthorizationInterfaces.Registration>(async (resolve, reject) => {
             let routeValues: any = {
@@ -422,7 +422,7 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
             let queryValues: any = {
                 includeSecret: includeSecret,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -432,18 +432,18 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<DelegatedAuthorizationInterfaces.Registration>;
                 res = await this.rest.get<DelegatedAuthorizationInterfaces.Registration>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              DelegatedAuthorizationInterfaces.TypeInfo.Registration,
-                                              false);
+                    DelegatedAuthorizationInterfaces.TypeInfo.Registration,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -454,7 +454,7 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
     /**
     */
     public async list(
-        ): Promise<DelegatedAuthorizationInterfaces.Registration[]> {
+    ): Promise<DelegatedAuthorizationInterfaces.Registration[]> {
 
         return new Promise<DelegatedAuthorizationInterfaces.Registration[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -468,18 +468,18 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<DelegatedAuthorizationInterfaces.Registration[]>;
                 res = await this.rest.get<DelegatedAuthorizationInterfaces.Registration[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              DelegatedAuthorizationInterfaces.TypeInfo.Registration,
-                                              true);
+                    DelegatedAuthorizationInterfaces.TypeInfo.Registration,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -494,7 +494,7 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
     public async update(
         registration: DelegatedAuthorizationInterfaces.Registration,
         includeSecret?: boolean
-        ): Promise<DelegatedAuthorizationInterfaces.Registration> {
+    ): Promise<DelegatedAuthorizationInterfaces.Registration> {
 
         return new Promise<DelegatedAuthorizationInterfaces.Registration>(async (resolve, reject) => {
             let routeValues: any = {
@@ -503,7 +503,7 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
             let queryValues: any = {
                 includeSecret: includeSecret,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -513,18 +513,18 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<DelegatedAuthorizationInterfaces.Registration>;
                 res = await this.rest.create<DelegatedAuthorizationInterfaces.Registration>(url, registration, options);
 
                 let ret = this.formatResponse(res.result,
-                                              DelegatedAuthorizationInterfaces.TypeInfo.Registration,
-                                              false);
+                    DelegatedAuthorizationInterfaces.TypeInfo.Registration,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -537,7 +537,7 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
     */
     public async getSecret(
         registrationId: string
-        ): Promise<VSSInterfaces.JsonWebToken> {
+    ): Promise<VSSInterfaces.JsonWebToken> {
 
         return new Promise<VSSInterfaces.JsonWebToken>(async (resolve, reject) => {
             let routeValues: any = {
@@ -552,18 +552,18 @@ export class DelegatedAuthorizationApi extends basem.ClientApiBase implements ID
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<VSSInterfaces.JsonWebToken>;
                 res = await this.rest.get<VSSInterfaces.JsonWebToken>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);

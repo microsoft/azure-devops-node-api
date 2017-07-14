@@ -36,8 +36,8 @@ export interface IChatApi extends basem.ClientApiBase {
 }
 
 export class ChatApi extends basem.ClientApiBase implements IChatApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        super(baseUrl, handlers, 'node-Chat-api');
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
+        super(baseUrl, handlers, 'node-Chat-api', options);
     }
 
     /**
@@ -49,7 +49,7 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     public async deleteMessage(
         roomId: number,
         messageId: number
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -65,18 +65,18 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -91,7 +91,7 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
      */
     public async getAllChatRoomMessages(
         roomId: number
-        ): Promise<ChatInterfaces.Message[]> {
+    ): Promise<ChatInterfaces.Message[]> {
 
         return new Promise<ChatInterfaces.Message[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -106,18 +106,18 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ChatInterfaces.Message[]>;
                 res = await this.rest.get<ChatInterfaces.Message[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ChatInterfaces.TypeInfo.Message,
-                                              true);
+                    ChatInterfaces.TypeInfo.Message,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -134,7 +134,7 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     public async getChatRoomMessageById(
         roomId: number,
         messageId: number
-        ): Promise<ChatInterfaces.Message> {
+    ): Promise<ChatInterfaces.Message> {
 
         return new Promise<ChatInterfaces.Message>(async (resolve, reject) => {
             let routeValues: any = {
@@ -150,18 +150,18 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ChatInterfaces.Message>;
                 res = await this.rest.get<ChatInterfaces.Message>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ChatInterfaces.TypeInfo.Message,
-                                              false);
+                    ChatInterfaces.TypeInfo.Message,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -178,7 +178,7 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     public async sendMessageToRoom(
         messageUpdate: ChatInterfaces.MessageData,
         roomId: number
-        ): Promise<ChatInterfaces.Message> {
+    ): Promise<ChatInterfaces.Message> {
 
         return new Promise<ChatInterfaces.Message>(async (resolve, reject) => {
             let routeValues: any = {
@@ -193,18 +193,18 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ChatInterfaces.Message>;
                 res = await this.rest.create<ChatInterfaces.Message>(url, messageUpdate, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ChatInterfaces.TypeInfo.Message,
-                                              false);
+                    ChatInterfaces.TypeInfo.Message,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -223,7 +223,7 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
         messageUpdate: ChatInterfaces.MessageData,
         roomId: number,
         messageId: number
-        ): Promise<ChatInterfaces.Message> {
+    ): Promise<ChatInterfaces.Message> {
 
         return new Promise<ChatInterfaces.Message>(async (resolve, reject) => {
             let routeValues: any = {
@@ -239,18 +239,18 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ChatInterfaces.Message>;
                 res = await this.rest.update<ChatInterfaces.Message>(url, messageUpdate, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ChatInterfaces.TypeInfo.Message,
-                                              false);
+                    ChatInterfaces.TypeInfo.Message,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -265,7 +265,7 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
      */
     public async createChatRoom(
         roomUpdate: ChatInterfaces.RoomData
-        ): Promise<ChatInterfaces.Room> {
+    ): Promise<ChatInterfaces.Room> {
 
         return new Promise<ChatInterfaces.Room>(async (resolve, reject) => {
             let routeValues: any = {
@@ -279,18 +279,18 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ChatInterfaces.Room>;
                 res = await this.rest.create<ChatInterfaces.Room>(url, roomUpdate, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ChatInterfaces.TypeInfo.Room,
-                                              false);
+                    ChatInterfaces.TypeInfo.Room,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -305,7 +305,7 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
      */
     public async deleteChatRoom(
         roomId: number
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -320,18 +320,18 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -342,7 +342,7 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     /**
      */
     public async getAllRooms(
-        ): Promise<ChatInterfaces.Room[]> {
+    ): Promise<ChatInterfaces.Room[]> {
 
         return new Promise<ChatInterfaces.Room[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -356,18 +356,18 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ChatInterfaces.Room[]>;
                 res = await this.rest.get<ChatInterfaces.Room[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ChatInterfaces.TypeInfo.Room,
-                                              true);
+                    ChatInterfaces.TypeInfo.Room,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -382,7 +382,7 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
      */
     public async getChatRoomById(
         roomId: number
-        ): Promise<ChatInterfaces.Room> {
+    ): Promise<ChatInterfaces.Room> {
 
         return new Promise<ChatInterfaces.Room>(async (resolve, reject) => {
             let routeValues: any = {
@@ -397,18 +397,18 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ChatInterfaces.Room>;
                 res = await this.rest.get<ChatInterfaces.Room>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ChatInterfaces.TypeInfo.Room,
-                                              false);
+                    ChatInterfaces.TypeInfo.Room,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -425,7 +425,7 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     public async updateChatRoom(
         roomUpdate: ChatInterfaces.RoomData,
         roomId: number
-        ): Promise<ChatInterfaces.Room> {
+    ): Promise<ChatInterfaces.Room> {
 
         return new Promise<ChatInterfaces.Room>(async (resolve, reject) => {
             let routeValues: any = {
@@ -440,18 +440,18 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ChatInterfaces.Room>;
                 res = await this.rest.update<ChatInterfaces.Room>(url, roomUpdate, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ChatInterfaces.TypeInfo.Room,
-                                              false);
+                    ChatInterfaces.TypeInfo.Room,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -466,7 +466,7 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
      */
     public async getAllChatRoomUsers(
         roomId: number
-        ): Promise<ChatInterfaces.User[]> {
+    ): Promise<ChatInterfaces.User[]> {
 
         return new Promise<ChatInterfaces.User[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -481,18 +481,18 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ChatInterfaces.User[]>;
                 res = await this.rest.get<ChatInterfaces.User[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ChatInterfaces.TypeInfo.User,
-                                              true);
+                    ChatInterfaces.TypeInfo.User,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -509,7 +509,7 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     public async getChatRoomUserById(
         roomId: number,
         userId: string
-        ): Promise<ChatInterfaces.User> {
+    ): Promise<ChatInterfaces.User> {
 
         return new Promise<ChatInterfaces.User>(async (resolve, reject) => {
             let routeValues: any = {
@@ -525,18 +525,18 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ChatInterfaces.User>;
                 res = await this.rest.get<ChatInterfaces.User>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ChatInterfaces.TypeInfo.User,
-                                              false);
+                    ChatInterfaces.TypeInfo.User,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -555,7 +555,7 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
         userUpdate: ChatInterfaces.UserData,
         roomId: number,
         userId: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -571,18 +571,18 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.replace<void>(url, userUpdate, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -599,7 +599,7 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
     public async leaveRoom(
         roomId: number,
         userId: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -615,18 +615,18 @@ export class ChatApi extends basem.ClientApiBase implements IChatApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);

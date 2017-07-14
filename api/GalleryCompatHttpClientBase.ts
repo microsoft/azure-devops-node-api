@@ -25,8 +25,8 @@ export interface IGalleryCompatHttpClientBase extends basem.ClientApiBase {
 }
 
 export class GalleryCompatHttpClientBase extends basem.ClientApiBase implements IGalleryCompatHttpClientBase {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], userAgent?: string) {
-        super(baseUrl, handlers, userAgent);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], userAgent?: string, options?: VsoBaseInterfaces.IRequestOptions) {
+        super(baseUrl, handlers, userAgent, options);
     }
 
     /**
@@ -34,7 +34,7 @@ export class GalleryCompatHttpClientBase extends basem.ClientApiBase implements 
     */
     public createExtensionJson(
         extensionPackage: GalleryInterfaces.ExtensionPackage
-        ): Promise<GalleryInterfaces.PublishedExtension> {
+    ): Promise<GalleryInterfaces.PublishedExtension> {
 
         return new Promise<GalleryInterfaces.PublishedExtension>(async (resolve, reject) => {
             let routeValues: any = {
@@ -48,17 +48,17 @@ export class GalleryCompatHttpClientBase extends basem.ClientApiBase implements 
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.create<GalleryInterfaces.PublishedExtension>(url, extensionPackage, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GalleryInterfaces.TypeInfo.PublishedExtension,
-                                              false);
+                    GalleryInterfaces.TypeInfo.PublishedExtension,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -73,8 +73,8 @@ export class GalleryCompatHttpClientBase extends basem.ClientApiBase implements 
     public updateExtensionByIdJson(
         extensionPackage: GalleryInterfaces.ExtensionPackage,
         extensionId: string
-        ): Promise<GalleryInterfaces.PublishedExtension> {
-    
+    ): Promise<GalleryInterfaces.PublishedExtension> {
+
         return new Promise<GalleryInterfaces.PublishedExtension>(async (resolve, reject) => {
             let routeValues: any = {
                 extensionId: extensionId
@@ -88,17 +88,17 @@ export class GalleryCompatHttpClientBase extends basem.ClientApiBase implements 
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.replace<GalleryInterfaces.PublishedExtension>(url, extensionPackage, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GalleryInterfaces.TypeInfo.PublishedExtension,
-                                              false);
+                    GalleryInterfaces.TypeInfo.PublishedExtension,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -113,7 +113,7 @@ export class GalleryCompatHttpClientBase extends basem.ClientApiBase implements 
     public createExtensionWithPublisherJson(
         extensionPackage: GalleryInterfaces.ExtensionPackage,
         publisherName: string
-        ): Promise<GalleryInterfaces.PublishedExtension> {
+    ): Promise<GalleryInterfaces.PublishedExtension> {
 
         return new Promise<GalleryInterfaces.PublishedExtension>(async (resolve, reject) => {
             let routeValues: any = {
@@ -128,17 +128,17 @@ export class GalleryCompatHttpClientBase extends basem.ClientApiBase implements 
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.create<GalleryInterfaces.PublishedExtension>(url, extensionPackage, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GalleryInterfaces.TypeInfo.PublishedExtension,
-                                              false);
+                    GalleryInterfaces.TypeInfo.PublishedExtension,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -155,13 +155,13 @@ export class GalleryCompatHttpClientBase extends basem.ClientApiBase implements 
         extensionPackage: GalleryInterfaces.ExtensionPackage,
         publisherName: string,
         extensionName: string
-        ): Promise<GalleryInterfaces.PublishedExtension> {
-    
+    ): Promise<GalleryInterfaces.PublishedExtension> {
+
         return new Promise<GalleryInterfaces.PublishedExtension>(async (resolve, reject) => {
             let routeValues: any = {
-            publisherName: publisherName,
-            extensionName: extensionName
-        };
+                publisherName: publisherName,
+                extensionName: extensionName
+            };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
@@ -171,17 +171,17 @@ export class GalleryCompatHttpClientBase extends basem.ClientApiBase implements 
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.replace<GalleryInterfaces.PublishedExtension>(url, extensionPackage, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GalleryInterfaces.TypeInfo.PublishedExtension,
-                                              false);
+                    GalleryInterfaces.TypeInfo.PublishedExtension,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);

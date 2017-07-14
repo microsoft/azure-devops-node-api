@@ -40,8 +40,8 @@ export interface IProfileApi extends basem.ClientApiBase {
 }
 
 export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        super(baseUrl, handlers, 'node-Profile-api');
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
+        super(baseUrl, handlers, 'node-Profile-api', options);
     }
 
     /**
@@ -51,7 +51,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
     public async deleteProfileAttribute(
         id: string,
         descriptor: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -61,7 +61,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
             let queryValues: any = {
                 descriptor: descriptor,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -71,17 +71,17 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -96,7 +96,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
     public async getProfileAttribute(
         id: string,
         descriptor: string
-        ): Promise<ProfileInterfaces.ProfileAttribute> {
+    ): Promise<ProfileInterfaces.ProfileAttribute> {
 
         return new Promise<ProfileInterfaces.ProfileAttribute>(async (resolve, reject) => {
             let routeValues: any = {
@@ -106,7 +106,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
             let queryValues: any = {
                 descriptor: descriptor,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -116,17 +116,17 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<ProfileInterfaces.ProfileAttribute>;
                 res = await this.rest.get<ProfileInterfaces.ProfileAttribute>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ProfileInterfaces.TypeInfo.ProfileAttribute,
-                                              false);
+                    ProfileInterfaces.TypeInfo.ProfileAttribute,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -149,7 +149,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
         modifiedAfterRevision?: string,
         withCoreAttributes?: boolean,
         coreAttributes?: string
-        ): Promise<ProfileInterfaces.ProfileAttribute[]> {
+    ): Promise<ProfileInterfaces.ProfileAttribute[]> {
 
         return new Promise<ProfileInterfaces.ProfileAttribute[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -163,7 +163,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                 withCoreAttributes: withCoreAttributes,
                 coreAttributes: coreAttributes,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -173,17 +173,17 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<ProfileInterfaces.ProfileAttribute[]>;
                 res = await this.rest.get<ProfileInterfaces.ProfileAttribute[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ProfileInterfaces.TypeInfo.ProfileAttribute,
-                                              true);
+                    ProfileInterfaces.TypeInfo.ProfileAttribute,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -200,7 +200,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
         container: any,
         id: string,
         descriptor: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -210,7 +210,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
             let queryValues: any = {
                 descriptor: descriptor,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -220,17 +220,17 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.replace<void>(url, container, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -245,7 +245,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
     public async setProfileAttributes(
         attributesCollection: VSSInterfaces.VssJsonCollectionWrapperV<ProfileInterfaces.ProfileAttributeBase<any>[]>,
         id: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -260,17 +260,17 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, attributesCollection, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -287,7 +287,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
         id: string,
         size?: string,
         format?: string
-        ): Promise<ProfileInterfaces.Avatar> {
+    ): Promise<ProfileInterfaces.Avatar> {
 
         return new Promise<ProfileInterfaces.Avatar>(async (resolve, reject) => {
             let routeValues: any = {
@@ -298,7 +298,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                 size: size,
                 format: format,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -308,17 +308,17 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<ProfileInterfaces.Avatar>;
                 res = await this.rest.get<ProfileInterfaces.Avatar>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ProfileInterfaces.TypeInfo.Avatar,
-                                              false);
+                    ProfileInterfaces.TypeInfo.Avatar,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -339,7 +339,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
         size?: string,
         format?: string,
         displayName?: string
-        ): Promise<ProfileInterfaces.Avatar> {
+    ): Promise<ProfileInterfaces.Avatar> {
 
         return new Promise<ProfileInterfaces.Avatar>(async (resolve, reject) => {
             let routeValues: any = {
@@ -351,7 +351,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                 format: format,
                 displayName: displayName,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -361,17 +361,17 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<ProfileInterfaces.Avatar>;
                 res = await this.rest.create<ProfileInterfaces.Avatar>(url, container, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ProfileInterfaces.TypeInfo.Avatar,
-                                              false);
+                    ProfileInterfaces.TypeInfo.Avatar,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -384,7 +384,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
     */
     public async resetAvatar(
         id: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -399,17 +399,17 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -424,7 +424,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
     public async setAvatar(
         container: any,
         id: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -439,17 +439,17 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.replace<void>(url, container, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -464,7 +464,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
     */
     public async getGeoRegion(
         ipaddress: string
-        ): Promise<ProfileInterfaces.GeoRegion> {
+    ): Promise<ProfileInterfaces.GeoRegion> {
 
         return new Promise<ProfileInterfaces.GeoRegion>(async (resolve, reject) => {
             let routeValues: any = {
@@ -473,7 +473,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
             let queryValues: any = {
                 ipaddress: ipaddress,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -483,17 +483,17 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<ProfileInterfaces.GeoRegion>;
                 res = await this.rest.get<ProfileInterfaces.GeoRegion>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -510,7 +510,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
     public async createProfile(
         createProfileContext: ProfileInterfaces.CreateProfileContext,
         autoCreate?: boolean
-        ): Promise<ProfileInterfaces.Profile> {
+    ): Promise<ProfileInterfaces.Profile> {
 
         return new Promise<ProfileInterfaces.Profile>(async (resolve, reject) => {
             let routeValues: any = {
@@ -519,7 +519,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
             let queryValues: any = {
                 autoCreate: autoCreate,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.3",
@@ -529,17 +529,17 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<ProfileInterfaces.Profile>;
                 res = await this.rest.create<ProfileInterfaces.Profile>(url, createProfileContext, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ProfileInterfaces.TypeInfo.Profile,
-                                              false);
+                    ProfileInterfaces.TypeInfo.Profile,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -562,7 +562,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
         partition?: string,
         coreAttributes?: string,
         forceRefresh?: boolean
-        ): Promise<ProfileInterfaces.Profile> {
+    ): Promise<ProfileInterfaces.Profile> {
 
         return new Promise<ProfileInterfaces.Profile>(async (resolve, reject) => {
             let routeValues: any = {
@@ -576,7 +576,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                 coreAttributes: coreAttributes,
                 forceRefresh: forceRefresh,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.3",
@@ -586,17 +586,17 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<ProfileInterfaces.Profile>;
                 res = await this.rest.get<ProfileInterfaces.Profile>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ProfileInterfaces.TypeInfo.Profile,
-                                              false);
+                    ProfileInterfaces.TypeInfo.Profile,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -613,7 +613,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
     public async updateProfile(
         profile: ProfileInterfaces.Profile,
         id: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -628,17 +628,17 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, profile, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -649,7 +649,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
     /**
     */
     public async getRegions(
-        ): Promise<ProfileInterfaces.ProfileRegions> {
+    ): Promise<ProfileInterfaces.ProfileRegions> {
 
         return new Promise<ProfileInterfaces.ProfileRegions>(async (resolve, reject) => {
             let routeValues: any = {
@@ -663,17 +663,17 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<ProfileInterfaces.ProfileRegions>;
                 res = await this.rest.get<ProfileInterfaces.ProfileRegions>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -684,7 +684,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
     /**
     */
     public async getSupportedLcids(
-        ): Promise<string[]> {
+    ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -698,17 +698,17 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -721,7 +721,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
     */
     public async getUserDefaults(
         includeAvatar?: boolean
-        ): Promise<ProfileInterfaces.Profile> {
+    ): Promise<ProfileInterfaces.Profile> {
 
         return new Promise<ProfileInterfaces.Profile>(async (resolve, reject) => {
             let routeValues: any = {
@@ -730,7 +730,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
             let queryValues: any = {
                 includeAvatar: includeAvatar,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -740,17 +740,17 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<ProfileInterfaces.Profile>;
                 res = await this.rest.get<ProfileInterfaces.Profile>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ProfileInterfaces.TypeInfo.Profile,
-                                              false);
+                    ProfileInterfaces.TypeInfo.Profile,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -763,7 +763,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
     */
     public async refreshUserDefaults(
         id: string
-        ): Promise<ProfileInterfaces.Profile> {
+    ): Promise<ProfileInterfaces.Profile> {
 
         return new Promise<ProfileInterfaces.Profile>(async (resolve, reject) => {
             let routeValues: any = {
@@ -778,17 +778,17 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<ProfileInterfaces.Profile>;
                 res = await this.rest.replace<ProfileInterfaces.Profile>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ProfileInterfaces.TypeInfo.Profile,
-                                              false);
+                    ProfileInterfaces.TypeInfo.Profile,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);

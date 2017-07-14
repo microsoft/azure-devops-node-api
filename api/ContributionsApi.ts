@@ -26,8 +26,8 @@ export interface IContributionsApi extends basem.ClientApiBase {
 }
 
 export class ContributionsApi extends basem.ClientApiBase implements IContributionsApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        super(baseUrl, handlers, 'node-Contributions-api');
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
+        super(baseUrl, handlers, 'node-Contributions-api', options);
     }
 
     /**
@@ -37,7 +37,7 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
      */
     public async queryContributionNodes(
         query: ContributionsInterfaces.ContributionNodeQuery
-        ): Promise<ContributionsInterfaces.ContributionNodeQueryResult> {
+    ): Promise<ContributionsInterfaces.ContributionNodeQueryResult> {
 
         return new Promise<ContributionsInterfaces.ContributionNodeQueryResult>(async (resolve, reject) => {
             let routeValues: any = {
@@ -51,18 +51,18 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ContributionsInterfaces.ContributionNodeQueryResult>;
                 res = await this.rest.create<ContributionsInterfaces.ContributionNodeQueryResult>(url, query, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -75,7 +75,7 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
      */
     public async queryDataProviders(
         query: ContributionsInterfaces.DataProviderQuery
-        ): Promise<ContributionsInterfaces.DataProviderResult> {
+    ): Promise<ContributionsInterfaces.DataProviderResult> {
 
         return new Promise<ContributionsInterfaces.DataProviderResult>(async (resolve, reject) => {
             let routeValues: any = {
@@ -89,18 +89,18 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ContributionsInterfaces.DataProviderResult>;
                 res = await this.rest.create<ContributionsInterfaces.DataProviderResult>(url, query, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -117,7 +117,7 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
         contributionIds?: string[],
         includeDisabledApps?: boolean,
         assetTypes?: string[]
-        ): Promise<ContributionsInterfaces.InstalledExtension[]> {
+    ): Promise<ContributionsInterfaces.InstalledExtension[]> {
 
         return new Promise<ContributionsInterfaces.InstalledExtension[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -128,7 +128,7 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
                 includeDisabledApps: includeDisabledApps,
                 assetTypes: assetTypes && assetTypes.join(":"),
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -138,18 +138,18 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ContributionsInterfaces.InstalledExtension[]>;
                 res = await this.rest.get<ContributionsInterfaces.InstalledExtension[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ContributionsInterfaces.TypeInfo.InstalledExtension,
-                                              true);
+                    ContributionsInterfaces.TypeInfo.InstalledExtension,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -166,7 +166,7 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
         publisherName: string,
         extensionName: string,
         assetTypes?: string[]
-        ): Promise<ContributionsInterfaces.InstalledExtension> {
+    ): Promise<ContributionsInterfaces.InstalledExtension> {
 
         return new Promise<ContributionsInterfaces.InstalledExtension>(async (resolve, reject) => {
             let routeValues: any = {
@@ -177,7 +177,7 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
             let queryValues: any = {
                 assetTypes: assetTypes && assetTypes.join(":"),
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -187,18 +187,18 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ContributionsInterfaces.InstalledExtension>;
                 res = await this.rest.get<ContributionsInterfaces.InstalledExtension>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ContributionsInterfaces.TypeInfo.InstalledExtension,
-                                              false);
+                    ContributionsInterfaces.TypeInfo.InstalledExtension,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
