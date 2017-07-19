@@ -82,8 +82,8 @@ export interface IWorkItemTrackingApi extends basem.ClientApiBase {
 }
 
 export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkItemTrackingApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        super(baseUrl, handlers, 'node-WorkItemTracking-api');
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
+        super(baseUrl, handlers, 'node-WorkItemTracking-api', options);
     }
 
     /**
@@ -93,7 +93,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      */
     public async getAccountMyWorkData(
         queryOption?: WorkItemTrackingInterfaces.QueryOption
-        ): Promise<WorkItemTrackingInterfaces.AccountMyWorkResult> {
+    ): Promise<WorkItemTrackingInterfaces.AccountMyWorkResult> {
 
         return new Promise<WorkItemTrackingInterfaces.AccountMyWorkResult>(async (resolve, reject) => {
             let routeValues: any = {
@@ -102,7 +102,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             let queryValues: any = {
                 '$queryOption': queryOption,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -112,18 +112,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.AccountMyWorkResult>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.AccountMyWorkResult>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              WorkItemTrackingInterfaces.TypeInfo.AccountMyWorkResult,
-                                              false);
+                    WorkItemTrackingInterfaces.TypeInfo.AccountMyWorkResult,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -134,7 +134,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     /**
      */
     public async getRecentActivityData(
-        ): Promise<WorkItemTrackingInterfaces.AccountRecentActivityWorkItemModel[]> {
+    ): Promise<WorkItemTrackingInterfaces.AccountRecentActivityWorkItemModel[]> {
 
         return new Promise<WorkItemTrackingInterfaces.AccountRecentActivityWorkItemModel[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -148,18 +148,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.AccountRecentActivityWorkItemModel[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.AccountRecentActivityWorkItemModel[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              WorkItemTrackingInterfaces.TypeInfo.AccountRecentActivityWorkItemModel,
-                                              true);
+                    WorkItemTrackingInterfaces.TypeInfo.AccountRecentActivityWorkItemModel,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -179,7 +179,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         contentStream: NodeJS.ReadableStream,
         fileName?: string,
         uploadType?: string
-        ): Promise<WorkItemTrackingInterfaces.AttachmentReference> {
+    ): Promise<WorkItemTrackingInterfaces.AttachmentReference> {
 
         return new Promise<WorkItemTrackingInterfaces.AttachmentReference>(async (resolve, reject) => {
             let routeValues: any = {
@@ -189,7 +189,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 fileName: fileName,
                 uploadType: uploadType,
             };
-            
+
             customHeaders = customHeaders || {};
             customHeaders["Content-Type"] = "application/octet-stream";
 
@@ -202,17 +202,17 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                
+
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                                                                                verData.apiVersion);
+                    verData.apiVersion);
                 options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.AttachmentReference>;
                 res = await this.rest.uploadStream<WorkItemTrackingInterfaces.AttachmentReference>("POST", url, contentStream, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
             }
@@ -231,7 +231,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     public async getAttachmentContent(
         id: string,
         fileName?: string
-        ): Promise<NodeJS.ReadableStream> {
+    ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -241,7 +241,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             let queryValues: any = {
                 fileName: fileName,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -251,7 +251,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                
+
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -271,7 +271,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     public async getAttachmentZip(
         id: string,
         fileName?: string
-        ): Promise<NodeJS.ReadableStream> {
+    ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -281,7 +281,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             let queryValues: any = {
                 fileName: fileName,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -291,7 +291,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                
+
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -309,7 +309,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     public async getRootNodes(
         project: string,
         depth?: number
-        ): Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode[]> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode[]> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -319,7 +319,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             let queryValues: any = {
                 '$depth': depth,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -329,18 +329,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemClassificationNode[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemClassificationNode[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode,
-                                              true);
+                    WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -359,7 +359,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         project: string,
         structureGroup: WorkItemTrackingInterfaces.TreeStructureGroup,
         path?: string
-        ): Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode>(async (resolve, reject) => {
             let routeValues: any = {
@@ -376,18 +376,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemClassificationNode>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.WorkItemClassificationNode>(url, postedNode, options);
 
                 let ret = this.formatResponse(res.result,
-                                              WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode,
-                                              false);
+                    WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -406,7 +406,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         structureGroup: WorkItemTrackingInterfaces.TreeStructureGroup,
         path?: string,
         reclassifyId?: number
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -418,7 +418,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             let queryValues: any = {
                 '$reclassifyId': reclassifyId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -428,18 +428,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -458,7 +458,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         structureGroup: WorkItemTrackingInterfaces.TreeStructureGroup,
         path?: string,
         depth?: number
-        ): Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode>(async (resolve, reject) => {
             let routeValues: any = {
@@ -470,7 +470,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             let queryValues: any = {
                 '$depth': depth,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -480,18 +480,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemClassificationNode>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemClassificationNode>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode,
-                                              false);
+                    WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -510,7 +510,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         project: string,
         structureGroup: WorkItemTrackingInterfaces.TreeStructureGroup,
         path?: string
-        ): Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode>(async (resolve, reject) => {
             let routeValues: any = {
@@ -527,18 +527,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemClassificationNode>;
                 res = await this.rest.update<WorkItemTrackingInterfaces.WorkItemClassificationNode>(url, postedNode, options);
 
                 let ret = this.formatResponse(res.result,
-                                              WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode,
-                                              false);
+                    WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -555,7 +555,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     public async getComment(
         id: number,
         revision: number
-        ): Promise<WorkItemTrackingInterfaces.WorkItemComment> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemComment> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemComment>(async (resolve, reject) => {
             let routeValues: any = {
@@ -571,18 +571,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemComment>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemComment>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              WorkItemTrackingInterfaces.TypeInfo.WorkItemComment,
-                                              false);
+                    WorkItemTrackingInterfaces.TypeInfo.WorkItemComment,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -603,7 +603,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         fromRevision?: number,
         top?: number,
         order?: WorkItemTrackingInterfaces.CommentSortOrder
-        ): Promise<WorkItemTrackingInterfaces.WorkItemComments> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemComments> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemComments>(async (resolve, reject) => {
             let routeValues: any = {
@@ -615,7 +615,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 '$top': top,
                 order: order,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -625,18 +625,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemComments>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemComments>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              WorkItemTrackingInterfaces.TypeInfo.WorkItemComments,
-                                              false);
+                    WorkItemTrackingInterfaces.TypeInfo.WorkItemComments,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -651,7 +651,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     public async deleteField(
         fieldNameOrRefName: string,
         project?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -667,18 +667,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -695,7 +695,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     public async getField(
         fieldNameOrRefName: string,
         project?: string
-        ): Promise<WorkItemTrackingInterfaces.WorkItemField> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemField> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemField>(async (resolve, reject) => {
             let routeValues: any = {
@@ -711,18 +711,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemField>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemField>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              WorkItemTrackingInterfaces.TypeInfo.WorkItemField,
-                                              false);
+                    WorkItemTrackingInterfaces.TypeInfo.WorkItemField,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -739,7 +739,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     public async getFields(
         project?: string,
         expand?: WorkItemTrackingInterfaces.GetFieldsExpand
-        ): Promise<WorkItemTrackingInterfaces.WorkItemField[]> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemField[]> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemField[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -749,7 +749,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             let queryValues: any = {
                 '$expand': expand,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -759,18 +759,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemField[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemField[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              WorkItemTrackingInterfaces.TypeInfo.WorkItemField,
-                                              true);
+                    WorkItemTrackingInterfaces.TypeInfo.WorkItemField,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -789,7 +789,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         postedQuery: WorkItemTrackingInterfaces.QueryHierarchyItem,
         project: string,
         query: string
-        ): Promise<WorkItemTrackingInterfaces.QueryHierarchyItem> {
+    ): Promise<WorkItemTrackingInterfaces.QueryHierarchyItem> {
 
         return new Promise<WorkItemTrackingInterfaces.QueryHierarchyItem>(async (resolve, reject) => {
             let routeValues: any = {
@@ -805,18 +805,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.QueryHierarchyItem>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.QueryHierarchyItem>(url, postedQuery, options);
 
                 let ret = this.formatResponse(res.result,
-                                              WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem,
-                                              false);
+                    WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -831,7 +831,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     public async deleteQuery(
         project: string,
         query: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -847,18 +847,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -879,7 +879,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         expand?: WorkItemTrackingInterfaces.QueryExpand,
         depth?: number,
         includeDeleted?: boolean
-        ): Promise<WorkItemTrackingInterfaces.QueryHierarchyItem[]> {
+    ): Promise<WorkItemTrackingInterfaces.QueryHierarchyItem[]> {
 
         return new Promise<WorkItemTrackingInterfaces.QueryHierarchyItem[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -891,7 +891,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 '$depth': depth,
                 '$includeDeleted': includeDeleted,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -901,18 +901,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.QueryHierarchyItem[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.QueryHierarchyItem[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem,
-                                              true);
+                    WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -935,7 +935,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         expand?: WorkItemTrackingInterfaces.QueryExpand,
         depth?: number,
         includeDeleted?: boolean
-        ): Promise<WorkItemTrackingInterfaces.QueryHierarchyItem> {
+    ): Promise<WorkItemTrackingInterfaces.QueryHierarchyItem> {
 
         return new Promise<WorkItemTrackingInterfaces.QueryHierarchyItem>(async (resolve, reject) => {
             let routeValues: any = {
@@ -948,7 +948,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 '$depth': depth,
                 '$includeDeleted': includeDeleted,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -958,18 +958,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.QueryHierarchyItem>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.QueryHierarchyItem>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem,
-                                              false);
+                    WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -988,7 +988,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         project: string,
         query: string,
         undeleteDescendants?: boolean
-        ): Promise<WorkItemTrackingInterfaces.QueryHierarchyItem> {
+    ): Promise<WorkItemTrackingInterfaces.QueryHierarchyItem> {
 
         return new Promise<WorkItemTrackingInterfaces.QueryHierarchyItem>(async (resolve, reject) => {
             let routeValues: any = {
@@ -999,7 +999,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             let queryValues: any = {
                 '$undeleteDescendants': undeleteDescendants,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -1009,18 +1009,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.QueryHierarchyItem>;
                 res = await this.rest.update<WorkItemTrackingInterfaces.QueryHierarchyItem>(url, queryUpdate, options);
 
                 let ret = this.formatResponse(res.result,
-                                              WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem,
-                                              false);
+                    WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1035,7 +1035,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     public async destroyWorkItem(
         id: number,
         project?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1051,18 +1051,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1077,7 +1077,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     public async getDeletedWorkItem(
         id: number,
         project?: string
-        ): Promise<WorkItemTrackingInterfaces.WorkItemDelete> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemDelete> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemDelete>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1093,18 +1093,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemDelete>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemDelete>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1117,7 +1117,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      */
     public async getDeletedWorkItemReferences(
         project?: string
-        ): Promise<WorkItemTrackingInterfaces.WorkItemDeleteShallowReference[]> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemDeleteShallowReference[]> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemDeleteShallowReference[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1132,18 +1132,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemDeleteShallowReference[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemDeleteShallowReference[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1158,7 +1158,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     public async getDeletedWorkItems(
         ids: number[],
         project?: string
-        ): Promise<WorkItemTrackingInterfaces.WorkItemDeleteReference[]> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemDeleteReference[]> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemDeleteReference[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1168,7 +1168,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             let queryValues: any = {
                 ids: ids && ids.join(","),
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -1178,18 +1178,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemDeleteReference[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemDeleteReference[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1206,7 +1206,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         payload: WorkItemTrackingInterfaces.WorkItemDeleteUpdate,
         id: number,
         project?: string
-        ): Promise<WorkItemTrackingInterfaces.WorkItemDelete> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemDelete> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemDelete>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1222,18 +1222,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemDelete>;
                 res = await this.rest.update<WorkItemTrackingInterfaces.WorkItemDelete>(url, payload, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1252,7 +1252,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         id: number,
         revisionNumber: number,
         expand?: WorkItemTrackingInterfaces.WorkItemExpand
-        ): Promise<WorkItemTrackingInterfaces.WorkItem> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItem> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItem>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1263,7 +1263,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             let queryValues: any = {
                 '$expand': expand,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -1273,18 +1273,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItem>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1305,7 +1305,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         top?: number,
         skip?: number,
         expand?: WorkItemTrackingInterfaces.WorkItemExpand
-        ): Promise<WorkItemTrackingInterfaces.WorkItem[]> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItem[]> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItem[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1317,7 +1317,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 '$skip': skip,
                 '$expand': expand,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -1327,18 +1327,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItem[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1353,7 +1353,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      */
     public async evaluateRulesOnField(
         ruleEngineInput: WorkItemTrackingInterfaces.FieldsToEvaluate
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1367,18 +1367,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, ruleEngineInput, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1395,7 +1395,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     public async createTemplate(
         template: WorkItemTrackingInterfaces.WorkItemTemplate,
         teamContext: TfsCoreInterfaces.TeamContext
-        ): Promise<WorkItemTrackingInterfaces.WorkItemTemplate> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemTemplate> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemTemplate>(async (resolve, reject) => {
             let project = teamContext.projectId || teamContext.project;
@@ -1414,18 +1414,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTemplate>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.WorkItemTemplate>(url, template, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1442,7 +1442,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     public async getTemplates(
         teamContext: TfsCoreInterfaces.TeamContext,
         workitemtypename?: string
-        ): Promise<WorkItemTrackingInterfaces.WorkItemTemplateReference[]> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemTemplateReference[]> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemTemplateReference[]>(async (resolve, reject) => {
             let project = teamContext.projectId || teamContext.project;
@@ -1456,7 +1456,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             let queryValues: any = {
                 workitemtypename: workitemtypename,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -1466,18 +1466,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTemplateReference[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTemplateReference[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1494,7 +1494,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     public async deleteTemplate(
         teamContext: TfsCoreInterfaces.TeamContext,
         templateId: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let project = teamContext.projectId || teamContext.project;
@@ -1514,18 +1514,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1542,7 +1542,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     public async getTemplate(
         teamContext: TfsCoreInterfaces.TeamContext,
         templateId: string
-        ): Promise<WorkItemTrackingInterfaces.WorkItemTemplate> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemTemplate> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemTemplate>(async (resolve, reject) => {
             let project = teamContext.projectId || teamContext.project;
@@ -1562,18 +1562,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTemplate>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTemplate>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1592,7 +1592,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         templateContent: WorkItemTrackingInterfaces.WorkItemTemplate,
         teamContext: TfsCoreInterfaces.TeamContext,
         templateId: string
-        ): Promise<WorkItemTrackingInterfaces.WorkItemTemplate> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemTemplate> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemTemplate>(async (resolve, reject) => {
             let project = teamContext.projectId || teamContext.project;
@@ -1612,18 +1612,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTemplate>;
                 res = await this.rest.replace<WorkItemTrackingInterfaces.WorkItemTemplate>(url, templateContent, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1640,7 +1640,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     public async getUpdate(
         id: number,
         updateNumber: number
-        ): Promise<WorkItemTrackingInterfaces.WorkItemUpdate> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemUpdate> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemUpdate>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1656,18 +1656,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemUpdate>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemUpdate>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              WorkItemTrackingInterfaces.TypeInfo.WorkItemUpdate,
-                                              false);
+                    WorkItemTrackingInterfaces.TypeInfo.WorkItemUpdate,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1686,7 +1686,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         id: number,
         top?: number,
         skip?: number
-        ): Promise<WorkItemTrackingInterfaces.WorkItemUpdate[]> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemUpdate[]> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemUpdate[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1697,7 +1697,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 '$top': top,
                 '$skip': skip,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -1707,18 +1707,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemUpdate[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemUpdate[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              WorkItemTrackingInterfaces.TypeInfo.WorkItemUpdate,
-                                              true);
+                    WorkItemTrackingInterfaces.TypeInfo.WorkItemUpdate,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1739,7 +1739,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         teamContext?: TfsCoreInterfaces.TeamContext,
         timePrecision?: boolean,
         top?: number
-        ): Promise<WorkItemTrackingInterfaces.WorkItemQueryResult> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemQueryResult> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemQueryResult>(async (resolve, reject) => {
             let project = teamContext.projectId || teamContext.project;
@@ -1754,7 +1754,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 timePrecision: timePrecision,
                 '$top': top,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -1764,18 +1764,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemQueryResult>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.WorkItemQueryResult>(url, wiql, options);
 
                 let ret = this.formatResponse(res.result,
-                                              WorkItemTrackingInterfaces.TypeInfo.WorkItemQueryResult,
-                                              false);
+                    WorkItemTrackingInterfaces.TypeInfo.WorkItemQueryResult,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1794,7 +1794,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         id: string,
         teamContext?: TfsCoreInterfaces.TeamContext,
         timePrecision?: boolean
-        ): Promise<WorkItemTrackingInterfaces.WorkItemQueryResult> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemQueryResult> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemQueryResult>(async (resolve, reject) => {
             let project = teamContext.projectId || teamContext.project;
@@ -1809,7 +1809,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             let queryValues: any = {
                 timePrecision: timePrecision,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -1819,18 +1819,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemQueryResult>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemQueryResult>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              WorkItemTrackingInterfaces.TypeInfo.WorkItemQueryResult,
-                                              false);
+                    WorkItemTrackingInterfaces.TypeInfo.WorkItemQueryResult,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1851,7 +1851,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         types?: string[],
         continuationToken?: string,
         startDateTime?: Date
-        ): Promise<WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch> {
+    ): Promise<WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch> {
 
         return new Promise<WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1863,7 +1863,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 continuationToken: continuationToken,
                 startDateTime: startDateTime,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -1873,18 +1873,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1899,7 +1899,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      */
     public async getRelationType(
         relation: string
-        ): Promise<WorkItemTrackingInterfaces.WorkItemRelationType> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemRelationType> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemRelationType>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1914,18 +1914,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemRelationType>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemRelationType>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1936,7 +1936,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     /**
      */
     public async getRelationTypes(
-        ): Promise<WorkItemTrackingInterfaces.WorkItemRelationType[]> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemRelationType[]> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemRelationType[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1950,18 +1950,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemRelationType[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemRelationType[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1996,7 +1996,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         includeLatestOnly?: boolean,
         expand?: WorkItemTrackingInterfaces.ReportingRevisionsExpand,
         includeDiscussionChangesOnly?: boolean
-        ): Promise<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch> {
+    ): Promise<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch> {
 
         return new Promise<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2015,7 +2015,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 '$expand': expand,
                 includeDiscussionChangesOnly: includeDiscussionChangesOnly,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -2025,18 +2025,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2059,7 +2059,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         continuationToken?: string,
         startDateTime?: Date,
         expand?: WorkItemTrackingInterfaces.ReportingRevisionsExpand
-        ): Promise<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch> {
+    ): Promise<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch> {
 
         return new Promise<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2071,7 +2071,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 startDateTime: startDateTime,
                 '$expand': expand,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -2081,18 +2081,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>(url, filter, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2107,7 +2107,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     public async deleteWorkItem(
         id: number,
         destroy?: boolean
-        ): Promise<WorkItemTrackingInterfaces.WorkItemDelete> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemDelete> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemDelete>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2117,7 +2117,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             let queryValues: any = {
                 destroy: destroy,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -2127,18 +2127,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemDelete>;
                 res = await this.rest.del<WorkItemTrackingInterfaces.WorkItemDelete>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2159,7 +2159,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         fields?: string[],
         asOf?: Date,
         expand?: WorkItemTrackingInterfaces.WorkItemExpand
-        ): Promise<WorkItemTrackingInterfaces.WorkItem> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItem> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItem>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2171,7 +2171,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 asOf: asOf,
                 '$expand': expand,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -2181,18 +2181,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItem>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2215,7 +2215,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         asOf?: Date,
         expand?: WorkItemTrackingInterfaces.WorkItemExpand,
         errorPolicy?: WorkItemTrackingInterfaces.WorkItemErrorPolicy
-        ): Promise<WorkItemTrackingInterfaces.WorkItem[]> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItem[]> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItem[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2228,7 +2228,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 '$expand': expand,
                 errorPolicy: errorPolicy,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -2238,18 +2238,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItem[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2269,7 +2269,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         id: number,
         validateOnly?: boolean,
         bypassRules?: boolean
-        ): Promise<WorkItemTrackingInterfaces.WorkItem> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItem> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItem>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2280,7 +2280,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 validateOnly: validateOnly,
                 bypassRules: bypassRules,
             };
-            
+
             customHeaders = customHeaders || {};
             customHeaders["Content-Type"] = "application/json-patch+json";
 
@@ -2293,19 +2293,19 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem>;
                 res = await this.rest.update<WorkItemTrackingInterfaces.WorkItem>(url, document, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2327,7 +2327,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         type: string,
         validateOnly?: boolean,
         bypassRules?: boolean
-        ): Promise<WorkItemTrackingInterfaces.WorkItem> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItem> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItem>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2339,7 +2339,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 validateOnly: validateOnly,
                 bypassRules: bypassRules,
             };
-            
+
             customHeaders = customHeaders || {};
             customHeaders["Content-Type"] = "application/json-patch+json";
 
@@ -2352,19 +2352,19 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.WorkItem>(url, document, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2387,7 +2387,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         fields?: string,
         asOf?: Date,
         expand?: WorkItemTrackingInterfaces.WorkItemExpand
-        ): Promise<WorkItemTrackingInterfaces.WorkItem> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItem> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItem>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2400,7 +2400,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 asOf: asOf,
                 '$expand': expand,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -2410,18 +2410,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItem>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2436,7 +2436,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      */
     public async getWorkItemStateColors(
         projectNames: string[]
-        ): Promise<WorkItemTrackingInterfaces.ProjectWorkItemStateColors[]> {
+    ): Promise<WorkItemTrackingInterfaces.ProjectWorkItemStateColors[]> {
 
         return new Promise<WorkItemTrackingInterfaces.ProjectWorkItemStateColors[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2450,18 +2450,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.ProjectWorkItemStateColors[]>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.ProjectWorkItemStateColors[]>(url, projectNames, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2474,7 +2474,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      */
     public async getWorkItemTypeCategories(
         project: string
-        ): Promise<WorkItemTrackingInterfaces.WorkItemTypeCategory[]> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemTypeCategory[]> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemTypeCategory[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2489,18 +2489,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTypeCategory[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTypeCategory[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2517,7 +2517,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     public async getWorkItemTypeCategory(
         project: string,
         category: string
-        ): Promise<WorkItemTrackingInterfaces.WorkItemTypeCategory> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemTypeCategory> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemTypeCategory>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2533,18 +2533,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTypeCategory>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTypeCategory>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2559,7 +2559,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      */
     public async getWorkItemTypeColors(
         projectNames: string[]
-        ): Promise<{ key: string; value: WorkItemTrackingInterfaces.WorkItemTypeColor[] }[]> {
+    ): Promise<{ key: string; value: WorkItemTrackingInterfaces.WorkItemTypeColor[] }[]> {
 
         return new Promise<{ key: string; value: WorkItemTrackingInterfaces.WorkItemTypeColor[] }[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2573,18 +2573,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<{ key: string; value: WorkItemTrackingInterfaces.WorkItemTypeColor[] }[]>;
                 res = await this.rest.create<{ key: string; value: WorkItemTrackingInterfaces.WorkItemTypeColor[] }[]>(url, projectNames, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2601,7 +2601,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     public async getWorkItemType(
         project: string,
         type: string
-        ): Promise<WorkItemTrackingInterfaces.WorkItemType> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemType> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemType>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2617,18 +2617,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemType>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemType>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2641,7 +2641,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      */
     public async getWorkItemTypes(
         project: string
-        ): Promise<WorkItemTrackingInterfaces.WorkItemType[]> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemType[]> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemType[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2656,18 +2656,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemType[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemType[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2686,7 +2686,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         project: string,
         type: string,
         field: string
-        ): Promise<WorkItemTrackingInterfaces.FieldDependentRule> {
+    ): Promise<WorkItemTrackingInterfaces.FieldDependentRule> {
 
         return new Promise<WorkItemTrackingInterfaces.FieldDependentRule>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2703,18 +2703,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.FieldDependentRule>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.FieldDependentRule>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2731,7 +2731,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     public async getWorkItemTypeStates(
         project: string,
         type: string
-        ): Promise<WorkItemTrackingInterfaces.WorkItemStateColor[]> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemStateColor[]> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemStateColor[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2747,18 +2747,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemStateColor[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemStateColor[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2777,7 +2777,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         project?: string,
         type?: string,
         exportGlobalLists?: boolean
-        ): Promise<WorkItemTrackingInterfaces.WorkItemTypeTemplate> {
+    ): Promise<WorkItemTrackingInterfaces.WorkItemTypeTemplate> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemTypeTemplate>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2788,7 +2788,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             let queryValues: any = {
                 exportGlobalLists: exportGlobalLists,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -2798,18 +2798,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTypeTemplate>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTypeTemplate>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2826,7 +2826,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     public async updateWorkItemTypeDefinition(
         updateModel: WorkItemTrackingInterfaces.WorkItemTypeTemplateUpdateModel,
         project?: string
-        ): Promise<WorkItemTrackingInterfaces.ProvisioningResult> {
+    ): Promise<WorkItemTrackingInterfaces.ProvisioningResult> {
 
         return new Promise<WorkItemTrackingInterfaces.ProvisioningResult>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2841,18 +2841,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.ProvisioningResult>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.ProvisioningResult>(url, updateModel, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);

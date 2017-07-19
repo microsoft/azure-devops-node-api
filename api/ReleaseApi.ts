@@ -95,8 +95,8 @@ export interface IReleaseApi extends basem.ClientApiBase {
 }
 
 export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        super(baseUrl, handlers, 'node-Release-api');
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
+        super(baseUrl, handlers, 'node-Release-api', options);
     }
 
     /**
@@ -108,7 +108,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getAgentArtifactDefinitions(
         project: string,
         releaseId: number
-        ): Promise<ReleaseInterfaces.AgentArtifactDefinition[]> {
+    ): Promise<ReleaseInterfaces.AgentArtifactDefinition[]> {
 
         return new Promise<ReleaseInterfaces.AgentArtifactDefinition[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -124,18 +124,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.AgentArtifactDefinition[]>;
                 res = await this.rest.get<ReleaseInterfaces.AgentArtifactDefinition[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.AgentArtifactDefinition,
-                                              true);
+                    ReleaseInterfaces.TypeInfo.AgentArtifactDefinition,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -150,7 +150,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getApprovalHistory(
         project: string,
         approvalStepId: number
-        ): Promise<ReleaseInterfaces.ReleaseApproval> {
+    ): Promise<ReleaseInterfaces.ReleaseApproval> {
 
         return new Promise<ReleaseInterfaces.ReleaseApproval>(async (resolve, reject) => {
             let routeValues: any = {
@@ -166,18 +166,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseApproval>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ReleaseApproval,
-                                              false);
+                    ReleaseInterfaces.TypeInfo.ReleaseApproval,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -194,7 +194,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         approvalId: number,
         includeHistory?: boolean
-        ): Promise<ReleaseInterfaces.ReleaseApproval> {
+    ): Promise<ReleaseInterfaces.ReleaseApproval> {
 
         return new Promise<ReleaseInterfaces.ReleaseApproval>(async (resolve, reject) => {
             let routeValues: any = {
@@ -205,7 +205,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 includeHistory: includeHistory,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -215,18 +215,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseApproval>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ReleaseApproval,
-                                              false);
+                    ReleaseInterfaces.TypeInfo.ReleaseApproval,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -243,7 +243,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         approval: ReleaseInterfaces.ReleaseApproval,
         project: string,
         approvalId: number
-        ): Promise<ReleaseInterfaces.ReleaseApproval> {
+    ): Promise<ReleaseInterfaces.ReleaseApproval> {
 
         return new Promise<ReleaseInterfaces.ReleaseApproval>(async (resolve, reject) => {
             let routeValues: any = {
@@ -259,18 +259,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval>;
                 res = await this.rest.update<ReleaseInterfaces.ReleaseApproval>(url, approval, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ReleaseApproval,
-                                              false);
+                    ReleaseInterfaces.TypeInfo.ReleaseApproval,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -299,7 +299,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         continuationToken?: number,
         queryOrder?: ReleaseInterfaces.ReleaseQueryOrder,
         includeMyGroupApprovals?: boolean
-        ): Promise<ReleaseInterfaces.ReleaseApproval[]> {
+    ): Promise<ReleaseInterfaces.ReleaseApproval[]> {
 
         return new Promise<ReleaseInterfaces.ReleaseApproval[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -316,7 +316,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 queryOrder: queryOrder,
                 includeMyGroupApprovals: includeMyGroupApprovals,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -326,18 +326,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseApproval[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ReleaseApproval,
-                                              true);
+                    ReleaseInterfaces.TypeInfo.ReleaseApproval,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -356,7 +356,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         releaseId: number,
         baseReleaseId?: number,
         top?: number
-        ): Promise<ReleaseInterfaces.Change[]> {
+    ): Promise<ReleaseInterfaces.Change[]> {
 
         return new Promise<ReleaseInterfaces.Change[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -368,7 +368,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 baseReleaseId: baseReleaseId,
                 '$top': top,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -378,18 +378,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Change[]>;
                 res = await this.rest.get<ReleaseInterfaces.Change[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.Change,
-                                              true);
+                    ReleaseInterfaces.TypeInfo.Change,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -404,7 +404,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async setupContinuousDeployment(
         configData: ReleaseInterfaces.ContinuousDeploymentSetupData,
         project: string
-        ): Promise<string> {
+    ): Promise<string> {
 
         return new Promise<string>(async (resolve, reject) => {
             let routeValues: any = {
@@ -419,18 +419,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.create<string>(url, configData, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -445,7 +445,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getDefinitionEnvironments(
         project: string,
         taskGroupId?: string
-        ): Promise<ReleaseInterfaces.DefinitionEnvironmentReference[]> {
+    ): Promise<ReleaseInterfaces.DefinitionEnvironmentReference[]> {
 
         return new Promise<ReleaseInterfaces.DefinitionEnvironmentReference[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -455,7 +455,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 taskGroupId: taskGroupId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -465,18 +465,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.DefinitionEnvironmentReference[]>;
                 res = await this.rest.get<ReleaseInterfaces.DefinitionEnvironmentReference[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -491,7 +491,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async createReleaseDefinition(
         releaseDefinition: ReleaseInterfaces.ReleaseDefinition,
         project: string
-        ): Promise<ReleaseInterfaces.ReleaseDefinition> {
+    ): Promise<ReleaseInterfaces.ReleaseDefinition> {
 
         return new Promise<ReleaseInterfaces.ReleaseDefinition>(async (resolve, reject) => {
             let routeValues: any = {
@@ -506,18 +506,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition>;
                 res = await this.rest.create<ReleaseInterfaces.ReleaseDefinition>(url, releaseDefinition, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ReleaseDefinition,
-                                              false);
+                    ReleaseInterfaces.TypeInfo.ReleaseDefinition,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -532,7 +532,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async deleteReleaseDefinition(
         project: string,
         definitionId: number
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -548,18 +548,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -576,7 +576,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         definitionId: number,
         propertyFilters?: string[]
-        ): Promise<ReleaseInterfaces.ReleaseDefinition> {
+    ): Promise<ReleaseInterfaces.ReleaseDefinition> {
 
         return new Promise<ReleaseInterfaces.ReleaseDefinition>(async (resolve, reject) => {
             let routeValues: any = {
@@ -587,7 +587,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 propertyFilters: propertyFilters && propertyFilters.join(","),
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.3",
@@ -597,18 +597,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinition>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ReleaseDefinition,
-                                              false);
+                    ReleaseInterfaces.TypeInfo.ReleaseDefinition,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -625,7 +625,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         definitionId: number,
         revision: number
-        ): Promise<NodeJS.ReadableStream> {
+    ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -636,7 +636,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 revision: revision,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.3",
@@ -646,7 +646,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                
+
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -684,7 +684,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         isExactNameMatch?: boolean,
         tagFilter?: string[],
         propertyFilters?: string[]
-        ): Promise<ReleaseInterfaces.ReleaseDefinition[]> {
+    ): Promise<ReleaseInterfaces.ReleaseDefinition[]> {
 
         return new Promise<ReleaseInterfaces.ReleaseDefinition[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -704,7 +704,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 tagFilter: tagFilter && tagFilter.join(","),
                 propertyFilters: propertyFilters && propertyFilters.join(","),
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.3",
@@ -714,18 +714,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinition[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ReleaseDefinition,
-                                              true);
+                    ReleaseInterfaces.TypeInfo.ReleaseDefinition,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -744,7 +744,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         artifactType: string,
         artifactSourceId: string,
         expand?: ReleaseInterfaces.ReleaseDefinitionExpands
-        ): Promise<ReleaseInterfaces.ReleaseDefinition[]> {
+    ): Promise<ReleaseInterfaces.ReleaseDefinition[]> {
 
         return new Promise<ReleaseInterfaces.ReleaseDefinition[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -756,7 +756,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 artifactSourceId: artifactSourceId,
                 '$expand': expand,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.3",
@@ -766,18 +766,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinition[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ReleaseDefinition,
-                                              true);
+                    ReleaseInterfaces.TypeInfo.ReleaseDefinition,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -792,7 +792,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async updateReleaseDefinition(
         releaseDefinition: ReleaseInterfaces.ReleaseDefinition,
         project: string
-        ): Promise<ReleaseInterfaces.ReleaseDefinition> {
+    ): Promise<ReleaseInterfaces.ReleaseDefinition> {
 
         return new Promise<ReleaseInterfaces.ReleaseDefinition>(async (resolve, reject) => {
             let routeValues: any = {
@@ -807,18 +807,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition>;
                 res = await this.rest.replace<ReleaseInterfaces.ReleaseDefinition>(url, releaseDefinition, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ReleaseDefinition,
-                                              false);
+                    ReleaseInterfaces.TypeInfo.ReleaseDefinition,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -855,7 +855,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         top?: number,
         continuationToken?: number,
         createdFor?: string
-        ): Promise<ReleaseInterfaces.Deployment[]> {
+    ): Promise<ReleaseInterfaces.Deployment[]> {
 
         return new Promise<ReleaseInterfaces.Deployment[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -876,7 +876,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 continuationToken: continuationToken,
                 createdFor: createdFor,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -886,18 +886,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Deployment[]>;
                 res = await this.rest.get<ReleaseInterfaces.Deployment[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.Deployment,
-                                              true);
+                    ReleaseInterfaces.TypeInfo.Deployment,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -912,7 +912,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getDeploymentsForMultipleEnvironments(
         queryParameters: ReleaseInterfaces.DeploymentQueryParameters,
         project: string
-        ): Promise<ReleaseInterfaces.Deployment[]> {
+    ): Promise<ReleaseInterfaces.Deployment[]> {
 
         return new Promise<ReleaseInterfaces.Deployment[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -927,18 +927,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Deployment[]>;
                 res = await this.rest.create<ReleaseInterfaces.Deployment[]>(url, queryParameters, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.Deployment,
-                                              true);
+                    ReleaseInterfaces.TypeInfo.Deployment,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -955,7 +955,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         releaseId: number,
         environmentId: number
-        ): Promise<ReleaseInterfaces.ReleaseEnvironment> {
+    ): Promise<ReleaseInterfaces.ReleaseEnvironment> {
 
         return new Promise<ReleaseInterfaces.ReleaseEnvironment>(async (resolve, reject) => {
             let routeValues: any = {
@@ -972,18 +972,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseEnvironment>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseEnvironment>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ReleaseEnvironment,
-                                              false);
+                    ReleaseInterfaces.TypeInfo.ReleaseEnvironment,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1002,7 +1002,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         releaseId: number,
         environmentId: number
-        ): Promise<ReleaseInterfaces.ReleaseEnvironment> {
+    ): Promise<ReleaseInterfaces.ReleaseEnvironment> {
 
         return new Promise<ReleaseInterfaces.ReleaseEnvironment>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1019,18 +1019,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseEnvironment>;
                 res = await this.rest.update<ReleaseInterfaces.ReleaseEnvironment>(url, environmentUpdateData, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ReleaseEnvironment,
-                                              false);
+                    ReleaseInterfaces.TypeInfo.ReleaseEnvironment,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1045,7 +1045,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async createDefinitionEnvironmentTemplate(
         template: ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate,
         project: string
-        ): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate> {
+    ): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate> {
 
         return new Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1060,18 +1060,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>;
                 res = await this.rest.create<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>(url, template, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate,
-                                              false);
+                    ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1086,7 +1086,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async deleteDefinitionEnvironmentTemplate(
         project: string,
         templateId: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1096,7 +1096,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 templateId: templateId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -1106,18 +1106,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1132,7 +1132,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getDefinitionEnvironmentTemplate(
         project: string,
         templateId: string
-        ): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate> {
+    ): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate> {
 
         return new Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1142,7 +1142,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 templateId: templateId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -1152,18 +1152,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate,
-                                              false);
+                    ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1176,7 +1176,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
      */
     public async listDefinitionEnvironmentTemplates(
         project: string
-        ): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]> {
+    ): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]> {
 
         return new Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1191,18 +1191,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate,
-                                              true);
+                    ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1221,7 +1221,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         scope: string,
         identityId?: string
-        ): Promise<ReleaseInterfaces.FavoriteItem[]> {
+    ): Promise<ReleaseInterfaces.FavoriteItem[]> {
 
         return new Promise<ReleaseInterfaces.FavoriteItem[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1232,7 +1232,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 identityId: identityId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -1242,18 +1242,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.FavoriteItem[]>;
                 res = await this.rest.create<ReleaseInterfaces.FavoriteItem[]>(url, favoriteItems, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1272,7 +1272,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         scope: string,
         identityId?: string,
         favoriteItemIds?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1284,7 +1284,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 identityId: identityId,
                 favoriteItemIds: favoriteItemIds,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -1294,18 +1294,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1322,7 +1322,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         scope: string,
         identityId?: string
-        ): Promise<ReleaseInterfaces.FavoriteItem[]> {
+    ): Promise<ReleaseInterfaces.FavoriteItem[]> {
 
         return new Promise<ReleaseInterfaces.FavoriteItem[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1333,7 +1333,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 identityId: identityId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -1343,18 +1343,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.FavoriteItem[]>;
                 res = await this.rest.get<ReleaseInterfaces.FavoriteItem[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1373,7 +1373,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         folder: ReleaseInterfaces.Folder,
         project: string,
         path: string
-        ): Promise<ReleaseInterfaces.Folder> {
+    ): Promise<ReleaseInterfaces.Folder> {
 
         return new Promise<ReleaseInterfaces.Folder>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1389,18 +1389,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Folder>;
                 res = await this.rest.create<ReleaseInterfaces.Folder>(url, folder, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.Folder,
-                                              false);
+                    ReleaseInterfaces.TypeInfo.Folder,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1417,7 +1417,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async deleteFolder(
         project: string,
         path: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1433,18 +1433,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1463,7 +1463,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         path?: string,
         queryOrder?: ReleaseInterfaces.FolderPathQueryOrder
-        ): Promise<ReleaseInterfaces.Folder[]> {
+    ): Promise<ReleaseInterfaces.Folder[]> {
 
         return new Promise<ReleaseInterfaces.Folder[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1474,7 +1474,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 queryOrder: queryOrder,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -1484,18 +1484,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Folder[]>;
                 res = await this.rest.get<ReleaseInterfaces.Folder[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.Folder,
-                                              true);
+                    ReleaseInterfaces.TypeInfo.Folder,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1514,7 +1514,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         folder: ReleaseInterfaces.Folder,
         project: string,
         path: string
-        ): Promise<ReleaseInterfaces.Folder> {
+    ): Promise<ReleaseInterfaces.Folder> {
 
         return new Promise<ReleaseInterfaces.Folder>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1530,18 +1530,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Folder>;
                 res = await this.rest.update<ReleaseInterfaces.Folder>(url, folder, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.Folder,
-                                              false);
+                    ReleaseInterfaces.TypeInfo.Folder,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1556,7 +1556,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getReleaseHistory(
         project: string,
         releaseId: number
-        ): Promise<ReleaseInterfaces.ReleaseRevision[]> {
+    ): Promise<ReleaseInterfaces.ReleaseRevision[]> {
 
         return new Promise<ReleaseInterfaces.ReleaseRevision[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1572,18 +1572,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseRevision[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseRevision[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ReleaseRevision,
-                                              true);
+                    ReleaseInterfaces.TypeInfo.ReleaseRevision,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1598,7 +1598,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getInputValues(
         query: FormInputInterfaces.InputValuesQuery,
         project: string
-        ): Promise<FormInputInterfaces.InputValuesQuery> {
+    ): Promise<FormInputInterfaces.InputValuesQuery> {
 
         return new Promise<FormInputInterfaces.InputValuesQuery>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1613,18 +1613,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<FormInputInterfaces.InputValuesQuery>;
                 res = await this.rest.create<FormInputInterfaces.InputValuesQuery>(url, query, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1639,7 +1639,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getIssues(
         project: string,
         buildId: number
-        ): Promise<ReleaseInterfaces.ReleaseIssue[]> {
+    ): Promise<ReleaseInterfaces.ReleaseIssue[]> {
 
         return new Promise<ReleaseInterfaces.ReleaseIssue[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1655,18 +1655,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseIssue[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseIssue[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ReleaseIssue,
-                                              true);
+                    ReleaseInterfaces.TypeInfo.ReleaseIssue,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1687,7 +1687,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         environmentId: number,
         taskId: number,
         attemptId?: number
-        ): Promise<NodeJS.ReadableStream> {
+    ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1700,7 +1700,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 attemptId: attemptId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -1710,7 +1710,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                
+
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -1728,7 +1728,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getLogs(
         project: string,
         releaseId: number
-        ): Promise<NodeJS.ReadableStream> {
+    ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1744,7 +1744,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                
+
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -1768,7 +1768,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         environmentId: number,
         releaseDeployPhaseId: number,
         taskId: number
-        ): Promise<NodeJS.ReadableStream> {
+    ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1787,7 +1787,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                
+
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -1807,7 +1807,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         releaseId: number,
         manualInterventionId: number
-        ): Promise<ReleaseInterfaces.ManualIntervention> {
+    ): Promise<ReleaseInterfaces.ManualIntervention> {
 
         return new Promise<ReleaseInterfaces.ManualIntervention>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1824,18 +1824,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ManualIntervention>;
                 res = await this.rest.get<ReleaseInterfaces.ManualIntervention>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ManualIntervention,
-                                              false);
+                    ReleaseInterfaces.TypeInfo.ManualIntervention,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1850,7 +1850,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getManualInterventions(
         project: string,
         releaseId: number
-        ): Promise<ReleaseInterfaces.ManualIntervention[]> {
+    ): Promise<ReleaseInterfaces.ManualIntervention[]> {
 
         return new Promise<ReleaseInterfaces.ManualIntervention[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1866,18 +1866,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ManualIntervention[]>;
                 res = await this.rest.get<ReleaseInterfaces.ManualIntervention[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ManualIntervention,
-                                              true);
+                    ReleaseInterfaces.TypeInfo.ManualIntervention,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1896,7 +1896,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         releaseId: number,
         manualInterventionId: number
-        ): Promise<ReleaseInterfaces.ManualIntervention> {
+    ): Promise<ReleaseInterfaces.ManualIntervention> {
 
         return new Promise<ReleaseInterfaces.ManualIntervention>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1913,18 +1913,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ManualIntervention>;
                 res = await this.rest.update<ReleaseInterfaces.ManualIntervention>(url, manualInterventionUpdateMetadata, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ManualIntervention,
-                                              false);
+                    ReleaseInterfaces.TypeInfo.ManualIntervention,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1939,7 +1939,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getMetrics(
         project: string,
         minMetricsTime?: Date
-        ): Promise<ReleaseInterfaces.Metric[]> {
+    ): Promise<ReleaseInterfaces.Metric[]> {
 
         return new Promise<ReleaseInterfaces.Metric[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1949,7 +1949,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 minMetricsTime: minMetricsTime,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -1959,18 +1959,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Metric[]>;
                 res = await this.rest.get<ReleaseInterfaces.Metric[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1985,7 +1985,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getReleaseProjects(
         artifactType: string,
         artifactSourceId: string
-        ): Promise<ReleaseInterfaces.ProjectReference[]> {
+    ): Promise<ReleaseInterfaces.ProjectReference[]> {
 
         return new Promise<ReleaseInterfaces.ProjectReference[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1995,7 +1995,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 artifactType: artifactType,
                 artifactSourceId: artifactSourceId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -2005,18 +2005,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ProjectReference[]>;
                 res = await this.rest.get<ReleaseInterfaces.ProjectReference[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2067,7 +2067,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         isDeleted?: boolean,
         tagFilter?: string[],
         propertyFilters?: string[]
-        ): Promise<ReleaseInterfaces.Release[]> {
+    ): Promise<ReleaseInterfaces.Release[]> {
 
         return new Promise<ReleaseInterfaces.Release[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2095,7 +2095,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 tagFilter: tagFilter && tagFilter.join(","),
                 propertyFilters: propertyFilters && propertyFilters.join(","),
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.4",
@@ -2105,18 +2105,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Release[]>;
                 res = await this.rest.get<ReleaseInterfaces.Release[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.Release,
-                                              true);
+                    ReleaseInterfaces.TypeInfo.Release,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2131,7 +2131,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async createRelease(
         releaseStartMetadata: ReleaseInterfaces.ReleaseStartMetadata,
         project: string
-        ): Promise<ReleaseInterfaces.Release> {
+    ): Promise<ReleaseInterfaces.Release> {
 
         return new Promise<ReleaseInterfaces.Release>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2146,18 +2146,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Release>;
                 res = await this.rest.create<ReleaseInterfaces.Release>(url, releaseStartMetadata, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.Release,
-                                              false);
+                    ReleaseInterfaces.TypeInfo.Release,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2174,7 +2174,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         releaseId: number,
         comment?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2185,7 +2185,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 comment: comment,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.4",
@@ -2195,18 +2195,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2225,7 +2225,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         releaseId: number,
         includeAllApprovals?: boolean,
         propertyFilters?: string[]
-        ): Promise<ReleaseInterfaces.Release> {
+    ): Promise<ReleaseInterfaces.Release> {
 
         return new Promise<ReleaseInterfaces.Release>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2237,7 +2237,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 includeAllApprovals: includeAllApprovals,
                 propertyFilters: propertyFilters && propertyFilters.join(","),
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.4",
@@ -2247,18 +2247,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Release>;
                 res = await this.rest.get<ReleaseInterfaces.Release>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.Release,
-                                              false);
+                    ReleaseInterfaces.TypeInfo.Release,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2279,7 +2279,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         releaseCount: number,
         includeArtifact?: boolean,
         definitionEnvironmentIdsFilter?: number[]
-        ): Promise<ReleaseInterfaces.ReleaseDefinitionSummary> {
+    ): Promise<ReleaseInterfaces.ReleaseDefinitionSummary> {
 
         return new Promise<ReleaseInterfaces.ReleaseDefinitionSummary>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2292,7 +2292,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 includeArtifact: includeArtifact,
                 definitionEnvironmentIdsFilter: definitionEnvironmentIdsFilter && definitionEnvironmentIdsFilter.join(","),
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.4",
@@ -2302,18 +2302,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionSummary>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinitionSummary>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ReleaseDefinitionSummary,
-                                              false);
+                    ReleaseInterfaces.TypeInfo.ReleaseDefinitionSummary,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2330,7 +2330,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         releaseId: number,
         definitionSnapshotRevision: number
-        ): Promise<NodeJS.ReadableStream> {
+    ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2341,7 +2341,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 definitionSnapshotRevision: definitionSnapshotRevision,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.4",
@@ -2351,7 +2351,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                
+
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -2371,7 +2371,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         releaseId: number,
         comment: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2382,7 +2382,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 comment: comment,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.4",
@@ -2392,18 +2392,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.replace<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2420,7 +2420,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         release: ReleaseInterfaces.Release,
         project: string,
         releaseId: number
-        ): Promise<ReleaseInterfaces.Release> {
+    ): Promise<ReleaseInterfaces.Release> {
 
         return new Promise<ReleaseInterfaces.Release>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2436,18 +2436,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Release>;
                 res = await this.rest.replace<ReleaseInterfaces.Release>(url, release, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.Release,
-                                              false);
+                    ReleaseInterfaces.TypeInfo.Release,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2464,7 +2464,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         releaseUpdateMetadata: ReleaseInterfaces.ReleaseUpdateMetadata,
         project: string,
         releaseId: number
-        ): Promise<ReleaseInterfaces.Release> {
+    ): Promise<ReleaseInterfaces.Release> {
 
         return new Promise<ReleaseInterfaces.Release>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2480,18 +2480,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Release>;
                 res = await this.rest.update<ReleaseInterfaces.Release>(url, releaseUpdateMetadata, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.Release,
-                                              false);
+                    ReleaseInterfaces.TypeInfo.Release,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2504,7 +2504,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
      */
     public async getReleaseSettings(
         project: string
-        ): Promise<ReleaseInterfaces.ReleaseSettings> {
+    ): Promise<ReleaseInterfaces.ReleaseSettings> {
 
         return new Promise<ReleaseInterfaces.ReleaseSettings>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2519,18 +2519,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseSettings>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseSettings>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2547,7 +2547,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async updateReleaseSettings(
         releaseSettings: ReleaseInterfaces.ReleaseSettings,
         project: string
-        ): Promise<ReleaseInterfaces.ReleaseSettings> {
+    ): Promise<ReleaseInterfaces.ReleaseSettings> {
 
         return new Promise<ReleaseInterfaces.ReleaseSettings>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2562,18 +2562,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseSettings>;
                 res = await this.rest.replace<ReleaseInterfaces.ReleaseSettings>(url, releaseSettings, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2590,7 +2590,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         definitionId: number,
         revision: number
-        ): Promise<NodeJS.ReadableStream> {
+    ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2607,7 +2607,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                
+
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -2625,7 +2625,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getReleaseDefinitionHistory(
         project: string,
         definitionId: number
-        ): Promise<ReleaseInterfaces.ReleaseDefinitionRevision[]> {
+    ): Promise<ReleaseInterfaces.ReleaseDefinitionRevision[]> {
 
         return new Promise<ReleaseInterfaces.ReleaseDefinitionRevision[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2641,18 +2641,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionRevision[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinitionRevision[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ReleaseDefinitionRevision,
-                                              true);
+                    ReleaseInterfaces.TypeInfo.ReleaseDefinitionRevision,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2667,7 +2667,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getSummaryMailSections(
         project: string,
         releaseId: number
-        ): Promise<ReleaseInterfaces.SummaryMailSection[]> {
+    ): Promise<ReleaseInterfaces.SummaryMailSection[]> {
 
         return new Promise<ReleaseInterfaces.SummaryMailSection[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2683,18 +2683,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.SummaryMailSection[]>;
                 res = await this.rest.get<ReleaseInterfaces.SummaryMailSection[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.SummaryMailSection,
-                                              true);
+                    ReleaseInterfaces.TypeInfo.SummaryMailSection,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2711,7 +2711,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         mailMessage: ReleaseInterfaces.MailMessage,
         project: string,
         releaseId: number
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2727,18 +2727,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, mailMessage, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2753,7 +2753,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getSourceBranches(
         project: string,
         definitionId: number
-        ): Promise<string[]> {
+    ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2769,18 +2769,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2799,7 +2799,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         releaseDefinitionId: number,
         tag: string
-        ): Promise<string[]> {
+    ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2816,18 +2816,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.update<string[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2846,7 +2846,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         tags: string[],
         project: string,
         releaseDefinitionId: number
-        ): Promise<string[]> {
+    ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2862,18 +2862,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.create<string[]>(url, tags, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2892,7 +2892,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         releaseDefinitionId: number,
         tag: string
-        ): Promise<string[]> {
+    ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2909,18 +2909,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.del<string[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2937,7 +2937,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getDefinitionTags(
         project: string,
         releaseDefinitionId: number
-        ): Promise<string[]> {
+    ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2953,18 +2953,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2983,7 +2983,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         releaseId: number,
         tag: string
-        ): Promise<string[]> {
+    ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3000,18 +3000,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.update<string[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3030,7 +3030,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         tags: string[],
         project: string,
         releaseId: number
-        ): Promise<string[]> {
+    ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3046,18 +3046,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.create<string[]>(url, tags, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3076,7 +3076,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         releaseId: number,
         tag: string
-        ): Promise<string[]> {
+    ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3093,18 +3093,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.del<string[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3121,7 +3121,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getReleaseTags(
         project: string,
         releaseId: number
-        ): Promise<string[]> {
+    ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3137,18 +3137,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3161,7 +3161,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
      */
     public async getTags(
         project: string
-        ): Promise<string[]> {
+    ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3176,18 +3176,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3206,7 +3206,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         releaseId: number,
         environmentId: number,
         attemptId?: number
-        ): Promise<ReleaseInterfaces.ReleaseTask[]> {
+    ): Promise<ReleaseInterfaces.ReleaseTask[]> {
 
         return new Promise<ReleaseInterfaces.ReleaseTask[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3218,7 +3218,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 attemptId: attemptId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -3228,18 +3228,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseTask[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseTask[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ReleaseTask,
-                                              true);
+                    ReleaseInterfaces.TypeInfo.ReleaseTask,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3258,7 +3258,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         releaseId: number,
         environmentId: number,
         releaseDeployPhaseId: number
-        ): Promise<ReleaseInterfaces.ReleaseTask[]> {
+    ): Promise<ReleaseInterfaces.ReleaseTask[]> {
 
         return new Promise<ReleaseInterfaces.ReleaseTask[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3276,18 +3276,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseTask[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseTask[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ReleaseTask,
-                                              true);
+                    ReleaseInterfaces.TypeInfo.ReleaseTask,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3300,7 +3300,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
      */
     public async getArtifactTypeDefinitions(
         project: string
-        ): Promise<ReleaseInterfaces.ArtifactTypeDefinition[]> {
+    ): Promise<ReleaseInterfaces.ArtifactTypeDefinition[]> {
 
         return new Promise<ReleaseInterfaces.ArtifactTypeDefinition[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3315,18 +3315,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ArtifactTypeDefinition[]>;
                 res = await this.rest.get<ReleaseInterfaces.ArtifactTypeDefinition[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              ReleaseInterfaces.TypeInfo.ArtifactTypeDefinition,
-                                              true);
+                    ReleaseInterfaces.TypeInfo.ArtifactTypeDefinition,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3341,7 +3341,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getArtifactVersions(
         project: string,
         releaseDefinitionId: number
-        ): Promise<ReleaseInterfaces.ArtifactVersionQueryResult> {
+    ): Promise<ReleaseInterfaces.ArtifactVersionQueryResult> {
 
         return new Promise<ReleaseInterfaces.ArtifactVersionQueryResult>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3351,7 +3351,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 releaseDefinitionId: releaseDefinitionId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -3361,18 +3361,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ArtifactVersionQueryResult>;
                 res = await this.rest.get<ReleaseInterfaces.ArtifactVersionQueryResult>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3387,7 +3387,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getArtifactVersionsForSources(
         artifacts: ReleaseInterfaces.Artifact[],
         project: string
-        ): Promise<ReleaseInterfaces.ArtifactVersionQueryResult> {
+    ): Promise<ReleaseInterfaces.ArtifactVersionQueryResult> {
 
         return new Promise<ReleaseInterfaces.ArtifactVersionQueryResult>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3402,18 +3402,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ArtifactVersionQueryResult>;
                 res = await this.rest.create<ReleaseInterfaces.ArtifactVersionQueryResult>(url, artifacts, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3432,7 +3432,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         releaseId: number,
         baseReleaseId?: number,
         top?: number
-        ): Promise<ReleaseInterfaces.ReleaseWorkItemRef[]> {
+    ): Promise<ReleaseInterfaces.ReleaseWorkItemRef[]> {
 
         return new Promise<ReleaseInterfaces.ReleaseWorkItemRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3444,7 +3444,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 baseReleaseId: baseReleaseId,
                 '$top': top,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -3454,18 +3454,18 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseWorkItemRef[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseWorkItemRef[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);

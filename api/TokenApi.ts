@@ -35,8 +35,8 @@ export interface ITokenApi extends basem.ClientApiBase {
 }
 
 export class TokenApi extends basem.ClientApiBase implements ITokenApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        super(baseUrl, handlers, 'node-Token-api');
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
+        super(baseUrl, handlers, 'node-Token-api', options);
     }
 
     /**
@@ -52,7 +52,7 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
         clientId: string,
         scopes: string,
         userId?: string
-        ): Promise<TokenInterfaces.AuthorizationDecision> {
+    ): Promise<TokenInterfaces.AuthorizationDecision> {
 
         return new Promise<TokenInterfaces.AuthorizationDecision>(async (resolve, reject) => {
             let routeValues: any = {
@@ -64,7 +64,7 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
                 clientId: clientId,
                 scopes: scopes,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -74,17 +74,17 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<TokenInterfaces.AuthorizationDecision>;
                 res = await this.rest.create<TokenInterfaces.AuthorizationDecision>(url, redirectUri, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TokenInterfaces.TypeInfo.AuthorizationDecision,
-                                              false);
+                    TokenInterfaces.TypeInfo.AuthorizationDecision,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -97,7 +97,7 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
     */
     public async getAuthorizations(
         userId?: string
-        ): Promise<TokenInterfaces.AuthorizationDetails[]> {
+    ): Promise<TokenInterfaces.AuthorizationDetails[]> {
 
         return new Promise<TokenInterfaces.AuthorizationDetails[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -112,17 +112,17 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<TokenInterfaces.AuthorizationDetails[]>;
                 res = await this.rest.get<TokenInterfaces.AuthorizationDetails[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TokenInterfaces.TypeInfo.AuthorizationDetails,
-                                              true);
+                    TokenInterfaces.TypeInfo.AuthorizationDetails,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -143,7 +143,7 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
         clientId: string,
         scopes: string,
         userId?: string
-        ): Promise<TokenInterfaces.AuthorizationDescription> {
+    ): Promise<TokenInterfaces.AuthorizationDescription> {
 
         return new Promise<TokenInterfaces.AuthorizationDescription>(async (resolve, reject) => {
             let routeValues: any = {
@@ -155,7 +155,7 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
                 clientId: clientId,
                 scopes: scopes,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -165,17 +165,17 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<TokenInterfaces.AuthorizationDescription>;
                 res = await this.rest.get<TokenInterfaces.AuthorizationDescription>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TokenInterfaces.TypeInfo.AuthorizationDescription,
-                                              false);
+                    TokenInterfaces.TypeInfo.AuthorizationDescription,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -190,7 +190,7 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
     public async revokeAuthorization(
         authorizationId: string,
         userId?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -200,7 +200,7 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
             let queryValues: any = {
                 authorizationId: authorizationId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -210,17 +210,17 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -233,7 +233,7 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
     */
     public async host(
         clientId: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -242,7 +242,7 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
             let queryValues: any = {
                 clientId: clientId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -252,17 +252,17 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -277,7 +277,7 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
     public async revoke(
         clientId: string,
         hostId?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -287,7 +287,7 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
                 clientId: clientId,
                 hostId: hostId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -297,17 +297,17 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -322,7 +322,7 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
     public async create(
         registration: TokenInterfaces.Registration,
         includeSecret?: boolean
-        ): Promise<TokenInterfaces.Registration> {
+    ): Promise<TokenInterfaces.Registration> {
 
         return new Promise<TokenInterfaces.Registration>(async (resolve, reject) => {
             let routeValues: any = {
@@ -331,7 +331,7 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
             let queryValues: any = {
                 includeSecret: includeSecret,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -341,17 +341,17 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<TokenInterfaces.Registration>;
                 res = await this.rest.replace<TokenInterfaces.Registration>(url, registration, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TokenInterfaces.TypeInfo.Registration,
-                                              false);
+                    TokenInterfaces.TypeInfo.Registration,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -364,7 +364,7 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
     */
     public async delete(
         registrationId: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -379,17 +379,17 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -404,7 +404,7 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
     public async get(
         registrationId: string,
         includeSecret: boolean
-        ): Promise<TokenInterfaces.Registration> {
+    ): Promise<TokenInterfaces.Registration> {
 
         return new Promise<TokenInterfaces.Registration>(async (resolve, reject) => {
             let routeValues: any = {
@@ -414,7 +414,7 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
             let queryValues: any = {
                 includeSecret: includeSecret,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -424,17 +424,17 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<TokenInterfaces.Registration>;
                 res = await this.rest.get<TokenInterfaces.Registration>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TokenInterfaces.TypeInfo.Registration,
-                                              false);
+                    TokenInterfaces.TypeInfo.Registration,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -445,7 +445,7 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
     /**
     */
     public async list(
-        ): Promise<TokenInterfaces.Registration[]> {
+    ): Promise<TokenInterfaces.Registration[]> {
 
         return new Promise<TokenInterfaces.Registration[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -459,17 +459,17 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<TokenInterfaces.Registration[]>;
                 res = await this.rest.get<TokenInterfaces.Registration[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TokenInterfaces.TypeInfo.Registration,
-                                              true);
+                    TokenInterfaces.TypeInfo.Registration,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -484,7 +484,7 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
     public async update(
         registration: TokenInterfaces.Registration,
         includeSecret?: boolean
-        ): Promise<TokenInterfaces.Registration> {
+    ): Promise<TokenInterfaces.Registration> {
 
         return new Promise<TokenInterfaces.Registration>(async (resolve, reject) => {
             let routeValues: any = {
@@ -493,7 +493,7 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
             let queryValues: any = {
                 includeSecret: includeSecret,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -503,17 +503,17 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<TokenInterfaces.Registration>;
                 res = await this.rest.create<TokenInterfaces.Registration>(url, registration, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TokenInterfaces.TypeInfo.Registration,
-                                              false);
+                    TokenInterfaces.TypeInfo.Registration,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -526,7 +526,7 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
     */
     public async getSecret(
         registrationId: string
-        ): Promise<VSSInterfaces.JsonWebToken> {
+    ): Promise<VSSInterfaces.JsonWebToken> {
 
         return new Promise<VSSInterfaces.JsonWebToken>(async (resolve, reject) => {
             let routeValues: any = {
@@ -541,17 +541,17 @@ export class TokenApi extends basem.ClientApiBase implements ITokenApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<VSSInterfaces.JsonWebToken>;
                 res = await this.rest.get<VSSInterfaces.JsonWebToken>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);

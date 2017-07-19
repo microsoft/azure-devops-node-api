@@ -24,12 +24,12 @@ export interface IAccountsApi extends basem.ClientApiBase {
     getAccounts(ownerId?: string, memberId?: string, properties?: string): Promise<AccountsInterfaces.Account[]>;
     isValidAccountName(accountName: string): Promise<AccountsInterfaces.AccountNameAvailability>;
     getRegions(): Promise<AccountsInterfaces.AccountRegion[]>;
-    getAccountSettings(): Promise<{ [key: string] : string; }>;
+    getAccountSettings(): Promise<{ [key: string]: string; }>;
 }
 
 export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        super(baseUrl, handlers, 'node-Accounts-api');
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
+        super(baseUrl, handlers, 'node-Accounts-api', options);
     }
 
     /**
@@ -39,7 +39,7 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
     public async createAccount(
         info: AccountsInterfaces.AccountCreateInfoInternal,
         usePrecreated?: boolean
-        ): Promise<AccountsInterfaces.Account> {
+    ): Promise<AccountsInterfaces.Account> {
 
         return new Promise<AccountsInterfaces.Account>(async (resolve, reject) => {
             let routeValues: any = {
@@ -48,7 +48,7 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
             let queryValues: any = {
                 usePrecreated: usePrecreated,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -58,18 +58,18 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<AccountsInterfaces.Account>;
                 res = await this.rest.create<AccountsInterfaces.Account>(url, info, options);
 
                 let ret = this.formatResponse(res.result,
-                                              AccountsInterfaces.TypeInfo.Account,
-                                              false);
+                    AccountsInterfaces.TypeInfo.Account,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -84,7 +84,7 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
     public async getAccount(
         accountId: string,
         properties?: string
-        ): Promise<AccountsInterfaces.Account> {
+    ): Promise<AccountsInterfaces.Account> {
 
         return new Promise<AccountsInterfaces.Account>(async (resolve, reject) => {
             let routeValues: any = {
@@ -94,7 +94,7 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
             let queryValues: any = {
                 properties: properties,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -104,18 +104,18 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<AccountsInterfaces.Account>;
                 res = await this.rest.get<AccountsInterfaces.Account>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              AccountsInterfaces.TypeInfo.Account,
-                                              false);
+                    AccountsInterfaces.TypeInfo.Account,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -134,7 +134,7 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
         ownerId?: string,
         memberId?: string,
         properties?: string
-        ): Promise<AccountsInterfaces.Account[]> {
+    ): Promise<AccountsInterfaces.Account[]> {
 
         return new Promise<AccountsInterfaces.Account[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -145,7 +145,7 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
                 memberId: memberId,
                 properties: properties,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -155,18 +155,18 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<AccountsInterfaces.Account[]>;
                 res = await this.rest.get<AccountsInterfaces.Account[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              AccountsInterfaces.TypeInfo.Account,
-                                              true);
+                    AccountsInterfaces.TypeInfo.Account,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -179,7 +179,7 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
      */
     public async isValidAccountName(
         accountName: string
-        ): Promise<AccountsInterfaces.AccountNameAvailability> {
+    ): Promise<AccountsInterfaces.AccountNameAvailability> {
 
         return new Promise<AccountsInterfaces.AccountNameAvailability>(async (resolve, reject) => {
             let routeValues: any = {
@@ -194,18 +194,18 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<AccountsInterfaces.AccountNameAvailability>;
                 res = await this.rest.get<AccountsInterfaces.AccountNameAvailability>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -216,7 +216,7 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
     /**
      */
     public async getRegions(
-        ): Promise<AccountsInterfaces.AccountRegion[]> {
+    ): Promise<AccountsInterfaces.AccountRegion[]> {
 
         return new Promise<AccountsInterfaces.AccountRegion[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -230,18 +230,18 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<AccountsInterfaces.AccountRegion[]>;
                 res = await this.rest.get<AccountsInterfaces.AccountRegion[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -252,9 +252,9 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
     /**
      */
     public async getAccountSettings(
-        ): Promise<{ [key: string] : string; }> {
+    ): Promise<{ [key: string]: string; }> {
 
-        return new Promise<{ [key: string] : string; }>(async (resolve, reject) => {
+        return new Promise<{ [key: string]: string; }>(async (resolve, reject) => {
             let routeValues: any = {
             };
 
@@ -266,18 +266,18 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
-                let res: restm.IRestResponse<{ [key: string] : string; }>;
-                res = await this.rest.get<{ [key: string] : string; }>(url, options);
+                let res: restm.IRestResponse<{ [key: string]: string; }>;
+                res = await this.rest.get<{ [key: string]: string; }>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);

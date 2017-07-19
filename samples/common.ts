@@ -8,7 +8,7 @@ function getEnv(name: string): string {
     if (!val) {
         console.error(name + ' env var not set');
         process.exit(1);
-    } 
+    }
     return val;
 }
 
@@ -19,15 +19,30 @@ export async function getWebApi(): Promise<vm.WebApi> {
             let token = getEnv('API_TOKEN');
             let authHandler = vm.getPersonalAccessTokenHandler(token);
 
-            let vsts: vm.WebApi = new vm.WebApi(serverUrl, authHandler);
+            let option = undefined;
+            
+            // The following sample is for testing proxy
+            // option = {
+            //     proxy: {
+            //         proxyUrl: "http://127.0.0.1:8888",
+            //         proxyUsername: "1",
+            //         proxyPassword: "1",
+            //         proxyBypassHosts: [
+            //             "github\.com"
+            //         ],
+            //     },
+            //     ignoreSslError: true
+            // };
+
+            let vsts: vm.WebApi = new vm.WebApi(serverUrl, authHandler, option);
             let connData: lim.ConnectionData = await vsts.connect();
-            console.log('Hello ' + connData.authorizedUser.customDisplayName);
+            console.log('Hello ' + connData.authenticatedUser.providerDisplayName);
             resolve(vsts);
         }
         catch (err) {
             reject(err);
         }
-    });    
+    });
 }
 
 export function getProject(): string {

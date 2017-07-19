@@ -38,8 +38,8 @@ export interface IOrganizationApi extends basem.ClientApiBase {
 }
 
 export class OrganizationApi extends basem.ClientApiBase implements IOrganizationApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        super(baseUrl, handlers, 'node-Organization-api');
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
+        super(baseUrl, handlers, 'node-Organization-api', options);
     }
 
     /**
@@ -50,7 +50,7 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
         customHeaders: any,
         collectionId: string,
         patchDocument: VSSInterfaces.JsonPatchDocument
-        ): Promise<boolean> {
+    ): Promise<boolean> {
 
         return new Promise<boolean>(async (resolve, reject) => {
             let routeValues: any = {
@@ -68,17 +68,17 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<boolean>;
                 res = await this.rest.update<boolean>(url, patchDocument, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -91,7 +91,7 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
     */
     public async createCollection(
         resource: OrganizationInterfaces.Collection
-        ): Promise<OrganizationInterfaces.Collection> {
+    ): Promise<OrganizationInterfaces.Collection> {
 
         return new Promise<OrganizationInterfaces.Collection>(async (resolve, reject) => {
             let routeValues: any = {
@@ -105,17 +105,17 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<OrganizationInterfaces.Collection>;
                 res = await this.rest.create<OrganizationInterfaces.Collection>(url, resource, options);
 
                 let ret = this.formatResponse(res.result,
-                                              OrganizationInterfaces.TypeInfo.Collection,
-                                              false);
+                    OrganizationInterfaces.TypeInfo.Collection,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -128,7 +128,7 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
     */
     public async deleteCollection(
         collectionId: string
-        ): Promise<boolean> {
+    ): Promise<boolean> {
 
         return new Promise<boolean>(async (resolve, reject) => {
             let routeValues: any = {
@@ -143,17 +143,17 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<boolean>;
                 res = await this.rest.del<boolean>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -168,7 +168,7 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
     public async getCollection(
         collectionId: string,
         propertyNames?: string[]
-        ): Promise<OrganizationInterfaces.Collection> {
+    ): Promise<OrganizationInterfaces.Collection> {
 
         return new Promise<OrganizationInterfaces.Collection>(async (resolve, reject) => {
             let routeValues: any = {
@@ -178,7 +178,7 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
             let queryValues: any = {
                 propertyNames: propertyNames && propertyNames.join(","),
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -188,17 +188,17 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<OrganizationInterfaces.Collection>;
                 res = await this.rest.get<OrganizationInterfaces.Collection>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              OrganizationInterfaces.TypeInfo.Collection,
-                                              false);
+                    OrganizationInterfaces.TypeInfo.Collection,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -209,7 +209,7 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
     /**
     */
     public async getCollections(
-        ): Promise<OrganizationInterfaces.Collection[]> {
+    ): Promise<OrganizationInterfaces.Collection[]> {
 
         return new Promise<OrganizationInterfaces.Collection[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -223,17 +223,17 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<OrganizationInterfaces.Collection[]>;
                 res = await this.rest.get<OrganizationInterfaces.Collection[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              OrganizationInterfaces.TypeInfo.Collection,
-                                              true);
+                    OrganizationInterfaces.TypeInfo.Collection,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -248,7 +248,7 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
     public async restoreCollection(
         collectionId: string,
         collectionName: string
-        ): Promise<boolean> {
+    ): Promise<boolean> {
 
         return new Promise<boolean>(async (resolve, reject) => {
             let routeValues: any = {
@@ -258,7 +258,7 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
             let queryValues: any = {
                 collectionName: collectionName,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -268,17 +268,17 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<boolean>;
                 res = await this.rest.update<boolean>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -294,7 +294,7 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
         customHeaders: any,
         patchDocument: VSSInterfaces.JsonPatchDocument,
         collectionId: string
-        ): Promise<OrganizationInterfaces.Collection> {
+    ): Promise<OrganizationInterfaces.Collection> {
 
         return new Promise<OrganizationInterfaces.Collection>(async (resolve, reject) => {
             let routeValues: any = {
@@ -312,17 +312,17 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<OrganizationInterfaces.Collection>;
                 res = await this.rest.update<OrganizationInterfaces.Collection>(url, patchDocument, options);
 
                 let ret = this.formatResponse(res.result,
-                                              OrganizationInterfaces.TypeInfo.Collection,
-                                              false);
+                    OrganizationInterfaces.TypeInfo.Collection,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -335,7 +335,7 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
     */
     public async exportOrganizationMigrationBlob(
         organizationId: string
-        ): Promise<OrganizationInterfaces.OrganizationMigrationBlob> {
+    ): Promise<OrganizationInterfaces.OrganizationMigrationBlob> {
 
         return new Promise<OrganizationInterfaces.OrganizationMigrationBlob>(async (resolve, reject) => {
             let routeValues: any = {
@@ -350,17 +350,17 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<OrganizationInterfaces.OrganizationMigrationBlob>;
                 res = await this.rest.get<OrganizationInterfaces.OrganizationMigrationBlob>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -373,7 +373,7 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
     */
     public async importOrganizationMigrationBlob(
         migrationBlob: OrganizationInterfaces.OrganizationMigrationBlob
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -387,17 +387,17 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, migrationBlob, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -413,7 +413,7 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
         customHeaders: any,
         organizationId: string,
         patchDocument: VSSInterfaces.JsonPatchDocument
-        ): Promise<boolean> {
+    ): Promise<boolean> {
 
         return new Promise<boolean>(async (resolve, reject) => {
             let routeValues: any = {
@@ -431,17 +431,17 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<boolean>;
                 res = await this.rest.update<boolean>(url, patchDocument, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -454,7 +454,7 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
     */
     public async createOrganization(
         resource: OrganizationInterfaces.Organization
-        ): Promise<OrganizationInterfaces.Organization> {
+    ): Promise<OrganizationInterfaces.Organization> {
 
         return new Promise<OrganizationInterfaces.Organization>(async (resolve, reject) => {
             let routeValues: any = {
@@ -468,17 +468,17 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<OrganizationInterfaces.Organization>;
                 res = await this.rest.create<OrganizationInterfaces.Organization>(url, resource, options);
 
                 let ret = this.formatResponse(res.result,
-                                              OrganizationInterfaces.TypeInfo.Organization,
-                                              false);
+                    OrganizationInterfaces.TypeInfo.Organization,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -493,7 +493,7 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
     public async getOrganization(
         organizationId: string,
         propertyNames?: string[]
-        ): Promise<OrganizationInterfaces.Organization> {
+    ): Promise<OrganizationInterfaces.Organization> {
 
         return new Promise<OrganizationInterfaces.Organization>(async (resolve, reject) => {
             let routeValues: any = {
@@ -503,7 +503,7 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
             let queryValues: any = {
                 propertyNames: propertyNames && propertyNames.join(","),
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -513,17 +513,17 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<OrganizationInterfaces.Organization>;
                 res = await this.rest.get<OrganizationInterfaces.Organization>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              OrganizationInterfaces.TypeInfo.Organization,
-                                              false);
+                    OrganizationInterfaces.TypeInfo.Organization,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -540,7 +540,7 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
         searchKind: OrganizationInterfaces.OrganizationSearchKind,
         searchValue: string,
         isActivated?: boolean
-        ): Promise<OrganizationInterfaces.Organization[]> {
+    ): Promise<OrganizationInterfaces.Organization[]> {
 
         return new Promise<OrganizationInterfaces.Organization[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -551,7 +551,7 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
                 searchValue: searchValue,
                 isActivated: isActivated,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -561,17 +561,17 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<OrganizationInterfaces.Organization[]>;
                 res = await this.rest.get<OrganizationInterfaces.Organization[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              OrganizationInterfaces.TypeInfo.Organization,
-                                              true);
+                    OrganizationInterfaces.TypeInfo.Organization,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -587,7 +587,7 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
         customHeaders: any,
         patchDocument: VSSInterfaces.JsonPatchDocument,
         organizationId: string
-        ): Promise<OrganizationInterfaces.Organization> {
+    ): Promise<OrganizationInterfaces.Organization> {
 
         return new Promise<OrganizationInterfaces.Organization>(async (resolve, reject) => {
             let routeValues: any = {
@@ -605,17 +605,17 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<OrganizationInterfaces.Organization>;
                 res = await this.rest.update<OrganizationInterfaces.Organization>(url, patchDocument, options);
 
                 let ret = this.formatResponse(res.result,
-                                              OrganizationInterfaces.TypeInfo.Organization,
-                                              false);
+                    OrganizationInterfaces.TypeInfo.Organization,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -626,7 +626,7 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
     /**
     */
     public async getRegions(
-        ): Promise<OrganizationInterfaces.Region[]> {
+    ): Promise<OrganizationInterfaces.Region[]> {
 
         return new Promise<OrganizationInterfaces.Region[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -640,17 +640,17 @@ export class OrganizationApi extends basem.ClientApiBase implements IOrganizatio
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion); 
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 let res: restm.IRestResponse<OrganizationInterfaces.Region[]>;
                 res = await this.rest.get<OrganizationInterfaces.Region[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);

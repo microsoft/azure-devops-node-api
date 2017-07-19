@@ -30,8 +30,8 @@ export interface ILocationsApi extends basem.ClientApiBase {
 }
 
 export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        super(baseUrl, handlers, 'node-Locations-api');
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
+        super(baseUrl, handlers, 'node-Locations-api', options);
     }
 
     /**

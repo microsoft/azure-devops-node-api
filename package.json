@@ -1,7 +1,7 @@
 {
   "name": "vso-node-api",
   "description": "Node client for Visual Studio Online/TFS REST APIs",
-  "version": "6.2.5-preview",
+  "version": "6.2.6-preview",
   "main": "./WebApi.js",
   "typings": "./WebApi.d.ts",
   "scripts": {
@@ -22,7 +22,7 @@
   "license": "MIT",
   "dependencies": {
     "tunnel": "0.0.4",
-    "typed-rest-client": "^0.10.0",
+    "typed-rest-client": "^0.11.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {

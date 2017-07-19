@@ -50,8 +50,8 @@ export interface ICoreApi extends basem.ClientApiBase {
 }
 
 export class CoreApi extends basem.ClientApiBase implements ICoreApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        super(baseUrl, handlers, 'node-Core-api');
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
+        super(baseUrl, handlers, 'node-Core-api', options);
     }
 
     /**
@@ -61,7 +61,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     public async createConnectedService(
         connectedServiceCreationData: CoreInterfaces.WebApiConnectedServiceDetails,
         projectId: string
-        ): Promise<CoreInterfaces.WebApiConnectedService> {
+    ): Promise<CoreInterfaces.WebApiConnectedService> {
 
         return new Promise<CoreInterfaces.WebApiConnectedService>(async (resolve, reject) => {
             let routeValues: any = {
@@ -76,18 +76,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.WebApiConnectedService>;
                 res = await this.rest.create<CoreInterfaces.WebApiConnectedService>(url, connectedServiceCreationData, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -102,7 +102,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     public async getConnectedServiceDetails(
         projectId: string,
         name: string
-        ): Promise<CoreInterfaces.WebApiConnectedServiceDetails> {
+    ): Promise<CoreInterfaces.WebApiConnectedServiceDetails> {
 
         return new Promise<CoreInterfaces.WebApiConnectedServiceDetails>(async (resolve, reject) => {
             let routeValues: any = {
@@ -118,18 +118,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.WebApiConnectedServiceDetails>;
                 res = await this.rest.get<CoreInterfaces.WebApiConnectedServiceDetails>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -144,7 +144,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     public async getConnectedServices(
         projectId: string,
         kind?: CoreInterfaces.ConnectedServiceKind
-        ): Promise<CoreInterfaces.WebApiConnectedService[]> {
+    ): Promise<CoreInterfaces.WebApiConnectedService[]> {
 
         return new Promise<CoreInterfaces.WebApiConnectedService[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -154,7 +154,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             let queryValues: any = {
                 kind: kind,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -164,18 +164,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.WebApiConnectedService[]>;
                 res = await this.rest.get<CoreInterfaces.WebApiConnectedService[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -190,7 +190,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     public async createIdentityMru(
         mruData: CoreInterfaces.IdentityData,
         mruName: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -205,18 +205,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, mruData, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -231,7 +231,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     public async deleteIdentityMru(
         mruData: CoreInterfaces.IdentityData,
         mruName: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -246,18 +246,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -270,7 +270,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     */
     public async getIdentityMru(
         mruName: string
-        ): Promise<VSSInterfaces.IdentityRef[]> {
+    ): Promise<VSSInterfaces.IdentityRef[]> {
 
         return new Promise<VSSInterfaces.IdentityRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -285,18 +285,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<VSSInterfaces.IdentityRef[]>;
                 res = await this.rest.get<VSSInterfaces.IdentityRef[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -311,7 +311,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     public async updateIdentityMru(
         mruData: CoreInterfaces.IdentityData,
         mruName: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -326,18 +326,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, mruData, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -356,7 +356,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         teamId: string,
         top?: number,
         skip?: number
-        ): Promise<VSSInterfaces.IdentityRef[]> {
+    ): Promise<VSSInterfaces.IdentityRef[]> {
 
         return new Promise<VSSInterfaces.IdentityRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -368,7 +368,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 '$top': top,
                 '$skip': skip,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -378,18 +378,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<VSSInterfaces.IdentityRef[]>;
                 res = await this.rest.get<VSSInterfaces.IdentityRef[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -404,7 +404,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     */
     public async getProcessById(
         processId: string
-        ): Promise<CoreInterfaces.Process> {
+    ): Promise<CoreInterfaces.Process> {
 
         return new Promise<CoreInterfaces.Process>(async (resolve, reject) => {
             let routeValues: any = {
@@ -419,18 +419,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.Process>;
                 res = await this.rest.get<CoreInterfaces.Process>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              CoreInterfaces.TypeInfo.Process,
-                                              false);
+                    CoreInterfaces.TypeInfo.Process,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -441,7 +441,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     /**
     */
     public async getProcesses(
-        ): Promise<CoreInterfaces.Process[]> {
+    ): Promise<CoreInterfaces.Process[]> {
 
         return new Promise<CoreInterfaces.Process[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -455,18 +455,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.Process[]>;
                 res = await this.rest.get<CoreInterfaces.Process[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              CoreInterfaces.TypeInfo.Process,
-                                              true);
+                    CoreInterfaces.TypeInfo.Process,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -481,7 +481,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     */
     public async getProjectCollection(
         collectionId: string
-        ): Promise<CoreInterfaces.TeamProjectCollection> {
+    ): Promise<CoreInterfaces.TeamProjectCollection> {
 
         return new Promise<CoreInterfaces.TeamProjectCollection>(async (resolve, reject) => {
             let routeValues: any = {
@@ -496,18 +496,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.TeamProjectCollection>;
                 res = await this.rest.get<CoreInterfaces.TeamProjectCollection>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -524,7 +524,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     public async getProjectCollections(
         top?: number,
         skip?: number
-        ): Promise<CoreInterfaces.TeamProjectCollectionReference[]> {
+    ): Promise<CoreInterfaces.TeamProjectCollectionReference[]> {
 
         return new Promise<CoreInterfaces.TeamProjectCollectionReference[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -534,7 +534,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 '$top': top,
                 '$skip': skip,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -544,18 +544,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.TeamProjectCollectionReference[]>;
                 res = await this.rest.get<CoreInterfaces.TeamProjectCollectionReference[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -568,7 +568,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     */
     public async getProjectHistory(
         minRevision?: number
-        ): Promise<CoreInterfaces.TeamProjectReference[]> {
+    ): Promise<CoreInterfaces.TeamProjectReference[]> {
 
         return new Promise<CoreInterfaces.TeamProjectReference[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -577,7 +577,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             let queryValues: any = {
                 minRevision: minRevision,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -587,18 +587,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.TeamProjectReference[]>;
                 res = await this.rest.get<CoreInterfaces.TeamProjectReference[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -617,7 +617,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         projectId: string,
         includeCapabilities?: boolean,
         includeHistory?: boolean
-        ): Promise<CoreInterfaces.TeamProject> {
+    ): Promise<CoreInterfaces.TeamProject> {
 
         return new Promise<CoreInterfaces.TeamProject>(async (resolve, reject) => {
             let routeValues: any = {
@@ -628,7 +628,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 includeCapabilities: includeCapabilities,
                 includeHistory: includeHistory,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.3",
@@ -638,18 +638,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.TeamProject>;
                 res = await this.rest.get<CoreInterfaces.TeamProject>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -668,7 +668,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         stateFilter?: any,
         top?: number,
         skip?: number
-        ): Promise<CoreInterfaces.TeamProjectReference[]> {
+    ): Promise<CoreInterfaces.TeamProjectReference[]> {
 
         return new Promise<CoreInterfaces.TeamProjectReference[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -679,7 +679,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 '$top': top,
                 '$skip': skip,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.3",
@@ -689,18 +689,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.TeamProjectReference[]>;
                 res = await this.rest.get<CoreInterfaces.TeamProjectReference[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -715,7 +715,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     */
     public async queueCreateProject(
         projectToCreate: CoreInterfaces.TeamProject
-        ): Promise<OperationsInterfaces.OperationReference> {
+    ): Promise<OperationsInterfaces.OperationReference> {
 
         return new Promise<OperationsInterfaces.OperationReference>(async (resolve, reject) => {
             let routeValues: any = {
@@ -729,18 +729,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<OperationsInterfaces.OperationReference>;
                 res = await this.rest.create<OperationsInterfaces.OperationReference>(url, projectToCreate, options);
 
                 let ret = this.formatResponse(res.result,
-                                              OperationsInterfaces.TypeInfo.OperationReference,
-                                              false);
+                    OperationsInterfaces.TypeInfo.OperationReference,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -755,7 +755,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     */
     public async queueDeleteProject(
         projectId: string
-        ): Promise<OperationsInterfaces.OperationReference> {
+    ): Promise<OperationsInterfaces.OperationReference> {
 
         return new Promise<OperationsInterfaces.OperationReference>(async (resolve, reject) => {
             let routeValues: any = {
@@ -770,18 +770,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<OperationsInterfaces.OperationReference>;
                 res = await this.rest.del<OperationsInterfaces.OperationReference>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              OperationsInterfaces.TypeInfo.OperationReference,
-                                              false);
+                    OperationsInterfaces.TypeInfo.OperationReference,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -798,7 +798,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     public async updateProject(
         projectUpdate: CoreInterfaces.TeamProject,
         projectId: string
-        ): Promise<OperationsInterfaces.OperationReference> {
+    ): Promise<OperationsInterfaces.OperationReference> {
 
         return new Promise<OperationsInterfaces.OperationReference>(async (resolve, reject) => {
             let routeValues: any = {
@@ -813,18 +813,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<OperationsInterfaces.OperationReference>;
                 res = await this.rest.update<OperationsInterfaces.OperationReference>(url, projectUpdate, options);
 
                 let ret = this.formatResponse(res.result,
-                                              OperationsInterfaces.TypeInfo.OperationReference,
-                                              false);
+                    OperationsInterfaces.TypeInfo.OperationReference,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -837,7 +837,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     */
     public async createOrUpdateProxy(
         proxy: CoreInterfaces.Proxy
-        ): Promise<CoreInterfaces.Proxy> {
+    ): Promise<CoreInterfaces.Proxy> {
 
         return new Promise<CoreInterfaces.Proxy>(async (resolve, reject) => {
             let routeValues: any = {
@@ -851,18 +851,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.Proxy>;
                 res = await this.rest.replace<CoreInterfaces.Proxy>(url, proxy, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -877,7 +877,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     public async deleteProxy(
         proxyUrl: string,
         site?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -887,7 +887,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 proxyUrl: proxyUrl,
                 site: site,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -897,18 +897,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -921,7 +921,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     */
     public async getProxies(
         proxyUrl?: string
-        ): Promise<CoreInterfaces.Proxy[]> {
+    ): Promise<CoreInterfaces.Proxy[]> {
 
         return new Promise<CoreInterfaces.Proxy[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -930,7 +930,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             let queryValues: any = {
                 proxyUrl: proxyUrl,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -940,18 +940,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.Proxy[]>;
                 res = await this.rest.get<CoreInterfaces.Proxy[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -968,7 +968,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     public async createTeam(
         team: CoreInterfaces.WebApiTeam,
         projectId: string
-        ): Promise<CoreInterfaces.WebApiTeam> {
+    ): Promise<CoreInterfaces.WebApiTeam> {
 
         return new Promise<CoreInterfaces.WebApiTeam>(async (resolve, reject) => {
             let routeValues: any = {
@@ -983,18 +983,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.WebApiTeam>;
                 res = await this.rest.create<CoreInterfaces.WebApiTeam>(url, team, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1011,7 +1011,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     public async deleteTeam(
         projectId: string,
         teamId: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1027,18 +1027,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1055,7 +1055,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     public async getTeam(
         projectId: string,
         teamId: string
-        ): Promise<CoreInterfaces.WebApiTeam> {
+    ): Promise<CoreInterfaces.WebApiTeam> {
 
         return new Promise<CoreInterfaces.WebApiTeam>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1071,18 +1071,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.WebApiTeam>;
                 res = await this.rest.get<CoreInterfaces.WebApiTeam>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1099,7 +1099,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         projectId: string,
         top?: number,
         skip?: number
-        ): Promise<CoreInterfaces.WebApiTeam[]> {
+    ): Promise<CoreInterfaces.WebApiTeam[]> {
 
         return new Promise<CoreInterfaces.WebApiTeam[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1110,7 +1110,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 '$top': top,
                 '$skip': skip,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -1120,18 +1120,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.WebApiTeam[]>;
                 res = await this.rest.get<CoreInterfaces.WebApiTeam[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1150,7 +1150,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         teamData: CoreInterfaces.WebApiTeam,
         projectId: string,
         teamId: string
-        ): Promise<CoreInterfaces.WebApiTeam> {
+    ): Promise<CoreInterfaces.WebApiTeam> {
 
         return new Promise<CoreInterfaces.WebApiTeam>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1166,18 +1166,18 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.WebApiTeam>;
                 res = await this.rest.update<CoreInterfaces.WebApiTeam>(url, teamData, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);

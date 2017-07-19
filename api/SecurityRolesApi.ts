@@ -28,8 +28,8 @@ export interface ISecurityRolesApi extends basem.ClientApiBase {
 }
 
 export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRolesApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        super(baseUrl, handlers, 'node-SecurityRoles-api');
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
+        super(baseUrl, handlers, 'node-SecurityRoles-api', options);
     }
 
     /**
@@ -39,7 +39,7 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
     public async getRoleAssignments(
         scopeId: string,
         resourceId: string
-        ): Promise<SecurityRolesInterfaces.RoleAssignment[]> {
+    ): Promise<SecurityRolesInterfaces.RoleAssignment[]> {
 
         return new Promise<SecurityRolesInterfaces.RoleAssignment[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -55,18 +55,18 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<SecurityRolesInterfaces.RoleAssignment[]>;
                 res = await this.rest.get<SecurityRolesInterfaces.RoleAssignment[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              SecurityRolesInterfaces.TypeInfo.RoleAssignment,
-                                              true);
+                    SecurityRolesInterfaces.TypeInfo.RoleAssignment,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -83,7 +83,7 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
         scopeId: string,
         resourceId: string,
         identityId: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -100,18 +100,18 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -128,7 +128,7 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
         identityIds: string[],
         scopeId: string,
         resourceId: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -144,18 +144,18 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, identityIds, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -174,7 +174,7 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
         scopeId: string,
         resourceId: string,
         identityId: string
-        ): Promise<SecurityRolesInterfaces.RoleAssignment> {
+    ): Promise<SecurityRolesInterfaces.RoleAssignment> {
 
         return new Promise<SecurityRolesInterfaces.RoleAssignment>(async (resolve, reject) => {
             let routeValues: any = {
@@ -191,18 +191,18 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<SecurityRolesInterfaces.RoleAssignment>;
                 res = await this.rest.replace<SecurityRolesInterfaces.RoleAssignment>(url, roleAssignment, options);
 
                 let ret = this.formatResponse(res.result,
-                                              SecurityRolesInterfaces.TypeInfo.RoleAssignment,
-                                              false);
+                    SecurityRolesInterfaces.TypeInfo.RoleAssignment,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -219,7 +219,7 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
         roleAssignments: SecurityRolesInterfaces.UserRoleAssignmentRef[],
         scopeId: string,
         resourceId: string
-        ): Promise<SecurityRolesInterfaces.RoleAssignment[]> {
+    ): Promise<SecurityRolesInterfaces.RoleAssignment[]> {
 
         return new Promise<SecurityRolesInterfaces.RoleAssignment[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -235,18 +235,18 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<SecurityRolesInterfaces.RoleAssignment[]>;
                 res = await this.rest.replace<SecurityRolesInterfaces.RoleAssignment[]>(url, roleAssignments, options);
 
                 let ret = this.formatResponse(res.result,
-                                              SecurityRolesInterfaces.TypeInfo.RoleAssignment,
-                                              true);
+                    SecurityRolesInterfaces.TypeInfo.RoleAssignment,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -259,7 +259,7 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
      */
     public async getRoleDefinitions(
         scopeId: string
-        ): Promise<SecurityRolesInterfaces.SecurityRole[]> {
+    ): Promise<SecurityRolesInterfaces.SecurityRole[]> {
 
         return new Promise<SecurityRolesInterfaces.SecurityRole[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -274,18 +274,18 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<SecurityRolesInterfaces.SecurityRole[]>;
                 res = await this.rest.get<SecurityRolesInterfaces.SecurityRole[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);

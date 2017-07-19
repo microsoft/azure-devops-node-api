@@ -115,7 +115,7 @@ export interface ITaskAgentApiBase extends basem.ClientApiBase {
     getTaskDefinition(taskId: string, versionString: string, visibility?: string[], scopeLocal?: boolean): Promise<TaskAgentInterfaces.TaskDefinition>;
     getTaskDefinitions(taskId?: string, visibility?: string[], scopeLocal?: boolean): Promise<TaskAgentInterfaces.TaskDefinition[]>;
     updateAgentUpdateState(poolId: number, agentId: number, currentState: string): Promise<TaskAgentInterfaces.TaskAgent>;
-    updateAgentUserCapabilities(userCapabilities: { [key: string] : string; }, poolId: number, agentId: number): Promise<TaskAgentInterfaces.TaskAgent>;
+    updateAgentUserCapabilities(userCapabilities: { [key: string]: string; }, poolId: number, agentId: number): Promise<TaskAgentInterfaces.TaskAgent>;
     addVariableGroup(group: TaskAgentInterfaces.VariableGroup, project: string): Promise<TaskAgentInterfaces.VariableGroup>;
     deleteVariableGroup(project: string, groupId: number): Promise<void>;
     getVariableGroup(project: string, groupId: number): Promise<TaskAgentInterfaces.VariableGroup>;
@@ -128,8 +128,8 @@ export interface ITaskAgentApiBase extends basem.ClientApiBase {
 }
 
 export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentApiBase {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        super(baseUrl, handlers, 'node-TaskAgent-api');
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
+        super(baseUrl, handlers, 'node-TaskAgent-api', options);
     }
 
     /**
@@ -139,7 +139,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async addAgent(
         agent: TaskAgentInterfaces.TaskAgent,
         poolId: number
-        ): Promise<TaskAgentInterfaces.TaskAgent> {
+    ): Promise<TaskAgentInterfaces.TaskAgent> {
 
         return new Promise<TaskAgentInterfaces.TaskAgent>(async (resolve, reject) => {
             let routeValues: any = {
@@ -154,18 +154,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgent>;
                 res = await this.rest.create<TaskAgentInterfaces.TaskAgent>(url, agent, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgent,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskAgent,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -180,7 +180,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async deleteAgent(
         poolId: number,
         agentId: number
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -196,18 +196,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -228,7 +228,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         includeCapabilities?: boolean,
         includeAssignedRequest?: boolean,
         propertyFilters?: string[]
-        ): Promise<TaskAgentInterfaces.TaskAgent> {
+    ): Promise<TaskAgentInterfaces.TaskAgent> {
 
         return new Promise<TaskAgentInterfaces.TaskAgent>(async (resolve, reject) => {
             let routeValues: any = {
@@ -241,7 +241,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 includeAssignedRequest: includeAssignedRequest,
                 propertyFilters: propertyFilters && propertyFilters.join(","),
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -251,18 +251,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgent>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgent>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgent,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskAgent,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -285,7 +285,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         includeAssignedRequest?: boolean,
         propertyFilters?: string[],
         demands?: string[]
-        ): Promise<TaskAgentInterfaces.TaskAgent[]> {
+    ): Promise<TaskAgentInterfaces.TaskAgent[]> {
 
         return new Promise<TaskAgentInterfaces.TaskAgent[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -299,7 +299,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 propertyFilters: propertyFilters && propertyFilters.join(","),
                 demands: demands && demands.join(","),
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -309,18 +309,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgent[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgent[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgent,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.TaskAgent,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -337,7 +337,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         agent: TaskAgentInterfaces.TaskAgent,
         poolId: number,
         agentId: number
-        ): Promise<TaskAgentInterfaces.TaskAgent> {
+    ): Promise<TaskAgentInterfaces.TaskAgent> {
 
         return new Promise<TaskAgentInterfaces.TaskAgent>(async (resolve, reject) => {
             let routeValues: any = {
@@ -353,18 +353,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgent>;
                 res = await this.rest.replace<TaskAgentInterfaces.TaskAgent>(url, agent, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgent,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskAgent,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -381,7 +381,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         agent: TaskAgentInterfaces.TaskAgent,
         poolId: number,
         agentId: number
-        ): Promise<TaskAgentInterfaces.TaskAgent> {
+    ): Promise<TaskAgentInterfaces.TaskAgent> {
 
         return new Promise<TaskAgentInterfaces.TaskAgent>(async (resolve, reject) => {
             let routeValues: any = {
@@ -397,18 +397,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgent>;
                 res = await this.rest.update<TaskAgentInterfaces.TaskAgent>(url, agent, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgent,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskAgent,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -419,7 +419,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     /**
      */
     public async getAzureSubscriptions(
-        ): Promise<TaskAgentInterfaces.AzureSubscriptionQueryResult> {
+    ): Promise<TaskAgentInterfaces.AzureSubscriptionQueryResult> {
 
         return new Promise<TaskAgentInterfaces.AzureSubscriptionQueryResult>(async (resolve, reject) => {
             let routeValues: any = {
@@ -433,18 +433,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.AzureSubscriptionQueryResult>;
                 res = await this.rest.get<TaskAgentInterfaces.AzureSubscriptionQueryResult>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -459,7 +459,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async generateDeploymentGroupAccessToken(
         project: string,
         deploymentGroupId: number
-        ): Promise<string> {
+    ): Promise<string> {
 
         return new Promise<string>(async (resolve, reject) => {
             let routeValues: any = {
@@ -475,18 +475,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.create<string>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -501,7 +501,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async addDeploymentGroup(
         deploymentGroup: TaskAgentInterfaces.DeploymentGroup,
         project: string
-        ): Promise<TaskAgentInterfaces.DeploymentGroup> {
+    ): Promise<TaskAgentInterfaces.DeploymentGroup> {
 
         return new Promise<TaskAgentInterfaces.DeploymentGroup>(async (resolve, reject) => {
             let routeValues: any = {
@@ -516,18 +516,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentGroup>;
                 res = await this.rest.create<TaskAgentInterfaces.DeploymentGroup>(url, deploymentGroup, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.DeploymentGroup,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.DeploymentGroup,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -542,7 +542,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async deleteDeploymentGroup(
         project: string,
         deploymentGroupId: number
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -558,18 +558,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -588,7 +588,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         deploymentGroupId: number,
         actionFilter?: TaskAgentInterfaces.DeploymentGroupActionFilter,
         expand?: TaskAgentInterfaces.DeploymentGroupExpands
-        ): Promise<TaskAgentInterfaces.DeploymentGroup> {
+    ): Promise<TaskAgentInterfaces.DeploymentGroup> {
 
         return new Promise<TaskAgentInterfaces.DeploymentGroup>(async (resolve, reject) => {
             let routeValues: any = {
@@ -600,7 +600,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 actionFilter: actionFilter,
                 '$expand': expand,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -610,18 +610,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentGroup>;
                 res = await this.rest.get<TaskAgentInterfaces.DeploymentGroup>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.DeploymentGroup,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.DeploymentGroup,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -640,7 +640,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         name?: string,
         actionFilter?: TaskAgentInterfaces.DeploymentGroupActionFilter,
         expand?: TaskAgentInterfaces.DeploymentGroupExpands
-        ): Promise<TaskAgentInterfaces.DeploymentGroup[]> {
+    ): Promise<TaskAgentInterfaces.DeploymentGroup[]> {
 
         return new Promise<TaskAgentInterfaces.DeploymentGroup[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -652,7 +652,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 actionFilter: actionFilter,
                 '$expand': expand,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -662,18 +662,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentGroup[]>;
                 res = await this.rest.get<TaskAgentInterfaces.DeploymentGroup[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.DeploymentGroup,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.DeploymentGroup,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -690,7 +690,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         deploymentGroup: TaskAgentInterfaces.DeploymentGroup,
         project: string,
         deploymentGroupId: number
-        ): Promise<TaskAgentInterfaces.DeploymentGroup> {
+    ): Promise<TaskAgentInterfaces.DeploymentGroup> {
 
         return new Promise<TaskAgentInterfaces.DeploymentGroup>(async (resolve, reject) => {
             let routeValues: any = {
@@ -706,18 +706,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentGroup>;
                 res = await this.rest.update<TaskAgentInterfaces.DeploymentGroup>(url, deploymentGroup, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.DeploymentGroup,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.DeploymentGroup,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -732,7 +732,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      */
     public async queryEndpoint(
         endpoint: TaskAgentInterfaces.TaskDefinitionEndpoint
-        ): Promise<string[]> {
+    ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -746,18 +746,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.create<string[]>(url, endpoint, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -774,7 +774,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         hubName: string,
         includeEnterpriseUsersCount?: boolean,
         includeHostedAgentMinutesCount?: boolean
-        ): Promise<TaskAgentInterfaces.TaskHubLicenseDetails> {
+    ): Promise<TaskAgentInterfaces.TaskHubLicenseDetails> {
 
         return new Promise<TaskAgentInterfaces.TaskHubLicenseDetails>(async (resolve, reject) => {
             let routeValues: any = {
@@ -785,7 +785,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 includeEnterpriseUsersCount: includeEnterpriseUsersCount,
                 includeHostedAgentMinutesCount: includeHostedAgentMinutesCount,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -795,18 +795,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskHubLicenseDetails>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskHubLicenseDetails>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -821,7 +821,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async updateTaskHubLicenseDetails(
         taskHubLicenseDetails: TaskAgentInterfaces.TaskHubLicenseDetails,
         hubName: string
-        ): Promise<TaskAgentInterfaces.TaskHubLicenseDetails> {
+    ): Promise<TaskAgentInterfaces.TaskHubLicenseDetails> {
 
         return new Promise<TaskAgentInterfaces.TaskHubLicenseDetails>(async (resolve, reject) => {
             let routeValues: any = {
@@ -836,18 +836,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskHubLicenseDetails>;
                 res = await this.rest.replace<TaskAgentInterfaces.TaskHubLicenseDetails>(url, taskHubLicenseDetails, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -860,7 +860,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      */
     public async validateInputs(
         inputValidationRequest: TaskAgentInterfaces.InputValidationRequest
-        ): Promise<TaskAgentInterfaces.InputValidationRequest> {
+    ): Promise<TaskAgentInterfaces.InputValidationRequest> {
 
         return new Promise<TaskAgentInterfaces.InputValidationRequest>(async (resolve, reject) => {
             let routeValues: any = {
@@ -874,18 +874,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.InputValidationRequest>;
                 res = await this.rest.create<TaskAgentInterfaces.InputValidationRequest>(url, inputValidationRequest, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -904,7 +904,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         requestId: number,
         lockToken: string,
         result?: TaskAgentInterfaces.TaskResult
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -916,7 +916,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 lockToken: lockToken,
                 result: result,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -926,18 +926,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -952,7 +952,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async getAgentRequest(
         poolId: number,
         requestId: number
-        ): Promise<TaskAgentInterfaces.TaskAgentJobRequest> {
+    ): Promise<TaskAgentInterfaces.TaskAgentJobRequest> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentJobRequest>(async (resolve, reject) => {
             let routeValues: any = {
@@ -968,18 +968,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentJobRequest>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -996,7 +996,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         poolId: number,
         agentId: number,
         completedRequestCount?: number
-        ): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]> {
+    ): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1007,7 +1007,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 agentId: agentId,
                 completedRequestCount: completedRequestCount,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -1017,18 +1017,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentJobRequest[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1045,7 +1045,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         poolId: number,
         agentIds?: number[],
         completedRequestCount?: number
-        ): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]> {
+    ): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1056,7 +1056,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 agentIds: agentIds && agentIds.join(","),
                 completedRequestCount: completedRequestCount,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -1066,18 +1066,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentJobRequest[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1094,7 +1094,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         poolId: number,
         planId: string,
         jobId?: string
-        ): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]> {
+    ): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1105,7 +1105,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 planId: planId,
                 jobId: jobId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -1115,18 +1115,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentJobRequest[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1141,7 +1141,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async queueAgentRequest(
         request: TaskAgentInterfaces.TaskAgentJobRequest,
         poolId: number
-        ): Promise<TaskAgentInterfaces.TaskAgentJobRequest> {
+    ): Promise<TaskAgentInterfaces.TaskAgentJobRequest> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentJobRequest>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1156,18 +1156,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest>;
                 res = await this.rest.create<TaskAgentInterfaces.TaskAgentJobRequest>(url, request, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1186,7 +1186,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         poolId: number,
         requestId: number,
         lockToken: string
-        ): Promise<TaskAgentInterfaces.TaskAgentJobRequest> {
+    ): Promise<TaskAgentInterfaces.TaskAgentJobRequest> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentJobRequest>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1197,7 +1197,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             let queryValues: any = {
                 lockToken: lockToken,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -1207,18 +1207,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest>;
                 res = await this.rest.update<TaskAgentInterfaces.TaskAgentJobRequest>(url, request, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1233,7 +1233,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async generateDeploymentMachineGroupAccessToken(
         project: string,
         machineGroupId: number
-        ): Promise<string> {
+    ): Promise<string> {
 
         return new Promise<string>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1249,18 +1249,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.create<string>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1275,7 +1275,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async addDeploymentMachineGroup(
         machineGroup: TaskAgentInterfaces.DeploymentMachineGroup,
         project: string
-        ): Promise<TaskAgentInterfaces.DeploymentMachineGroup> {
+    ): Promise<TaskAgentInterfaces.DeploymentMachineGroup> {
 
         return new Promise<TaskAgentInterfaces.DeploymentMachineGroup>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1290,18 +1290,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachineGroup>;
                 res = await this.rest.create<TaskAgentInterfaces.DeploymentMachineGroup>(url, machineGroup, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.DeploymentMachineGroup,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.DeploymentMachineGroup,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1316,7 +1316,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async deleteDeploymentMachineGroup(
         project: string,
         machineGroupId: number
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1332,18 +1332,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1360,7 +1360,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         project: string,
         machineGroupId: number,
         actionFilter?: TaskAgentInterfaces.MachineGroupActionFilter
-        ): Promise<TaskAgentInterfaces.DeploymentMachineGroup> {
+    ): Promise<TaskAgentInterfaces.DeploymentMachineGroup> {
 
         return new Promise<TaskAgentInterfaces.DeploymentMachineGroup>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1371,7 +1371,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             let queryValues: any = {
                 actionFilter: actionFilter,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -1381,18 +1381,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachineGroup>;
                 res = await this.rest.get<TaskAgentInterfaces.DeploymentMachineGroup>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.DeploymentMachineGroup,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.DeploymentMachineGroup,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1409,7 +1409,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         project: string,
         machineGroupName?: string,
         actionFilter?: TaskAgentInterfaces.MachineGroupActionFilter
-        ): Promise<TaskAgentInterfaces.DeploymentMachineGroup[]> {
+    ): Promise<TaskAgentInterfaces.DeploymentMachineGroup[]> {
 
         return new Promise<TaskAgentInterfaces.DeploymentMachineGroup[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1420,7 +1420,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 machineGroupName: machineGroupName,
                 actionFilter: actionFilter,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -1430,18 +1430,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachineGroup[]>;
                 res = await this.rest.get<TaskAgentInterfaces.DeploymentMachineGroup[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.DeploymentMachineGroup,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.DeploymentMachineGroup,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1458,7 +1458,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         machineGroup: TaskAgentInterfaces.DeploymentMachineGroup,
         project: string,
         machineGroupId: number
-        ): Promise<TaskAgentInterfaces.DeploymentMachineGroup> {
+    ): Promise<TaskAgentInterfaces.DeploymentMachineGroup> {
 
         return new Promise<TaskAgentInterfaces.DeploymentMachineGroup>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1474,18 +1474,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachineGroup>;
                 res = await this.rest.update<TaskAgentInterfaces.DeploymentMachineGroup>(url, machineGroup, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.DeploymentMachineGroup,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.DeploymentMachineGroup,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1502,7 +1502,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         project: string,
         machineGroupId: number,
         tagFilters?: string[]
-        ): Promise<TaskAgentInterfaces.DeploymentMachine[]> {
+    ): Promise<TaskAgentInterfaces.DeploymentMachine[]> {
 
         return new Promise<TaskAgentInterfaces.DeploymentMachine[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1513,7 +1513,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             let queryValues: any = {
                 tagFilters: tagFilters && tagFilters.join(","),
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -1523,18 +1523,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine[]>;
                 res = await this.rest.get<TaskAgentInterfaces.DeploymentMachine[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.DeploymentMachine,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.DeploymentMachine,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1551,7 +1551,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         deploymentMachines: TaskAgentInterfaces.DeploymentMachine[],
         project: string,
         machineGroupId: number
-        ): Promise<TaskAgentInterfaces.DeploymentMachine[]> {
+    ): Promise<TaskAgentInterfaces.DeploymentMachine[]> {
 
         return new Promise<TaskAgentInterfaces.DeploymentMachine[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1567,18 +1567,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine[]>;
                 res = await this.rest.update<TaskAgentInterfaces.DeploymentMachine[]>(url, deploymentMachines, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.DeploymentMachine,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.DeploymentMachine,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1595,7 +1595,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         project: string,
         deploymentGroupId: number,
         tags?: string[]
-        ): Promise<TaskAgentInterfaces.DeploymentMachine[]> {
+    ): Promise<TaskAgentInterfaces.DeploymentMachine[]> {
 
         return new Promise<TaskAgentInterfaces.DeploymentMachine[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1606,7 +1606,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             let queryValues: any = {
                 tags: tags && tags.join(","),
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -1616,18 +1616,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine[]>;
                 res = await this.rest.get<TaskAgentInterfaces.DeploymentMachine[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.DeploymentMachine,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.DeploymentMachine,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1644,7 +1644,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         deploymentMachines: TaskAgentInterfaces.DeploymentMachine[],
         project: string,
         deploymentGroupId: number
-        ): Promise<TaskAgentInterfaces.DeploymentMachine[]> {
+    ): Promise<TaskAgentInterfaces.DeploymentMachine[]> {
 
         return new Promise<TaskAgentInterfaces.DeploymentMachine[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1660,18 +1660,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine[]>;
                 res = await this.rest.update<TaskAgentInterfaces.DeploymentMachine[]>(url, deploymentMachines, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.DeploymentMachine,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.DeploymentMachine,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1686,7 +1686,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async createAgentPoolMaintenanceDefinition(
         definition: TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition,
         poolId: number
-        ): Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition> {
+    ): Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1701,18 +1701,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition>;
                 res = await this.rest.create<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition>(url, definition, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceDefinition,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceDefinition,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1727,7 +1727,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async deleteAgentPoolMaintenanceDefinition(
         poolId: number,
         definitionId: number
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1743,18 +1743,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1769,7 +1769,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async getAgentPoolMaintenanceDefinition(
         poolId: number,
         definitionId: number
-        ): Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition> {
+    ): Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1785,18 +1785,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceDefinition,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceDefinition,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1809,7 +1809,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      */
     public async getAgentPoolMaintenanceDefinitions(
         poolId: number
-        ): Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition[]> {
+    ): Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition[]> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1824,18 +1824,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceDefinition,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceDefinition,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1852,7 +1852,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         definition: TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition,
         poolId: number,
         definitionId: number
-        ): Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition> {
+    ): Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1868,18 +1868,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition>;
                 res = await this.rest.replace<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition>(url, definition, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceDefinition,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceDefinition,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1894,7 +1894,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async deleteAgentPoolMaintenanceJob(
         poolId: number,
         jobId: number
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1910,18 +1910,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1936,7 +1936,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async getAgentPoolMaintenanceJob(
         poolId: number,
         jobId: number
-        ): Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob> {
+    ): Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1952,18 +1952,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceJob,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceJob,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1978,7 +1978,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async getAgentPoolMaintenanceJobLogs(
         poolId: number,
         jobId: number
-        ): Promise<NodeJS.ReadableStream> {
+    ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1994,7 +1994,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                
+
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -2012,7 +2012,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async getAgentPoolMaintenanceJobs(
         poolId: number,
         definitionId?: number
-        ): Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob[]> {
+    ): Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob[]> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2022,7 +2022,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             let queryValues: any = {
                 definitionId: definitionId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -2032,18 +2032,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceJob,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceJob,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2058,7 +2058,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async queueAgentPoolMaintenanceJob(
         job: TaskAgentInterfaces.TaskAgentPoolMaintenanceJob,
         poolId: number
-        ): Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob> {
+    ): Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2073,18 +2073,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob>;
                 res = await this.rest.create<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob>(url, job, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceJob,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceJob,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2101,7 +2101,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         job: TaskAgentInterfaces.TaskAgentPoolMaintenanceJob,
         poolId: number,
         jobId: number
-        ): Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob> {
+    ): Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2117,18 +2117,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob>;
                 res = await this.rest.update<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob>(url, job, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceJob,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceJob,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2145,7 +2145,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         poolId: number,
         messageId: number,
         sessionId: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2156,7 +2156,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             let queryValues: any = {
                 sessionId: sessionId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -2166,18 +2166,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2194,7 +2194,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         poolId: number,
         sessionId: string,
         lastMessageId?: number
-        ): Promise<TaskAgentInterfaces.TaskAgentMessage> {
+    ): Promise<TaskAgentInterfaces.TaskAgentMessage> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentMessage>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2205,7 +2205,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 sessionId: sessionId,
                 lastMessageId: lastMessageId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -2215,18 +2215,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentMessage>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentMessage>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2241,7 +2241,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async refreshAgent(
         poolId: number,
         agentId: number
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2251,7 +2251,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             let queryValues: any = {
                 agentId: agentId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -2261,18 +2261,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2285,7 +2285,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      */
     public async refreshAgents(
         poolId: number
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2300,18 +2300,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2328,7 +2328,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         message: TaskAgentInterfaces.TaskAgentMessage,
         poolId: number,
         requestId: number
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2338,7 +2338,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             let queryValues: any = {
                 requestId: requestId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -2348,18 +2348,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, message, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2376,7 +2376,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         packageType: string,
         platform: string,
         version: string
-        ): Promise<TaskAgentInterfaces.PackageMetadata> {
+    ): Promise<TaskAgentInterfaces.PackageMetadata> {
 
         return new Promise<TaskAgentInterfaces.PackageMetadata>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2393,18 +2393,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.PackageMetadata>;
                 res = await this.rest.get<TaskAgentInterfaces.PackageMetadata>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.PackageMetadata,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.PackageMetadata,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2421,7 +2421,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         packageType?: string,
         platform?: string,
         top?: number
-        ): Promise<TaskAgentInterfaces.PackageMetadata[]> {
+    ): Promise<TaskAgentInterfaces.PackageMetadata[]> {
 
         return new Promise<TaskAgentInterfaces.PackageMetadata[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2432,7 +2432,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             let queryValues: any = {
                 '$top': top,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -2442,18 +2442,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.PackageMetadata[]>;
                 res = await this.rest.get<TaskAgentInterfaces.PackageMetadata[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.PackageMetadata,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.PackageMetadata,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2466,7 +2466,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      */
     public async getAgentPoolRoles(
         poolId?: number
-        ): Promise<VSSInterfaces.IdentityRef[]> {
+    ): Promise<VSSInterfaces.IdentityRef[]> {
 
         return new Promise<VSSInterfaces.IdentityRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2481,18 +2481,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<VSSInterfaces.IdentityRef[]>;
                 res = await this.rest.get<VSSInterfaces.IdentityRef[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2505,7 +2505,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      */
     public async addAgentPool(
         pool: TaskAgentInterfaces.TaskAgentPool
-        ): Promise<TaskAgentInterfaces.TaskAgentPool> {
+    ): Promise<TaskAgentInterfaces.TaskAgentPool> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentPool>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2519,18 +2519,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPool>;
                 res = await this.rest.create<TaskAgentInterfaces.TaskAgentPool>(url, pool, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgentPool,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskAgentPool,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2543,7 +2543,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      */
     public async deleteAgentPool(
         poolId: number
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2558,18 +2558,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2586,7 +2586,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         poolId: number,
         properties?: string[],
         actionFilter?: TaskAgentInterfaces.TaskAgentPoolActionFilter
-        ): Promise<TaskAgentInterfaces.TaskAgentPool> {
+    ): Promise<TaskAgentInterfaces.TaskAgentPool> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentPool>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2597,7 +2597,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 properties: properties && properties.join(","),
                 actionFilter: actionFilter,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -2607,18 +2607,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPool>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentPool>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgentPool,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskAgentPool,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2637,7 +2637,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         properties?: string[],
         poolType?: TaskAgentInterfaces.TaskAgentPoolType,
         actionFilter?: TaskAgentInterfaces.TaskAgentPoolActionFilter
-        ): Promise<TaskAgentInterfaces.TaskAgentPool[]> {
+    ): Promise<TaskAgentInterfaces.TaskAgentPool[]> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentPool[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2649,7 +2649,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 poolType: poolType,
                 actionFilter: actionFilter,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -2659,18 +2659,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPool[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentPool[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgentPool,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.TaskAgentPool,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2685,7 +2685,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async updateAgentPool(
         pool: TaskAgentInterfaces.TaskAgentPool,
         poolId: number
-        ): Promise<TaskAgentInterfaces.TaskAgentPool> {
+    ): Promise<TaskAgentInterfaces.TaskAgentPool> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentPool>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2700,18 +2700,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPool>;
                 res = await this.rest.update<TaskAgentInterfaces.TaskAgentPool>(url, pool, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgentPool,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskAgentPool,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2724,7 +2724,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      */
     public async getAgentQueueRoles(
         queueId?: number
-        ): Promise<VSSInterfaces.IdentityRef[]> {
+    ): Promise<VSSInterfaces.IdentityRef[]> {
 
         return new Promise<VSSInterfaces.IdentityRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2739,18 +2739,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<VSSInterfaces.IdentityRef[]>;
                 res = await this.rest.get<VSSInterfaces.IdentityRef[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2765,7 +2765,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async addAgentQueue(
         queue: TaskAgentInterfaces.TaskAgentQueue,
         project?: string
-        ): Promise<TaskAgentInterfaces.TaskAgentQueue> {
+    ): Promise<TaskAgentInterfaces.TaskAgentQueue> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentQueue>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2780,18 +2780,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentQueue>;
                 res = await this.rest.create<TaskAgentInterfaces.TaskAgentQueue>(url, queue, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgentQueue,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskAgentQueue,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2804,7 +2804,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      */
     public async createTeamProject(
         project?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2819,18 +2819,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.replace<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2845,7 +2845,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async deleteAgentQueue(
         queueId: number,
         project?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2861,18 +2861,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2889,7 +2889,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         queueId: number,
         project?: string,
         actionFilter?: TaskAgentInterfaces.TaskAgentQueueActionFilter
-        ): Promise<TaskAgentInterfaces.TaskAgentQueue> {
+    ): Promise<TaskAgentInterfaces.TaskAgentQueue> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentQueue>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2900,7 +2900,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             let queryValues: any = {
                 actionFilter: actionFilter,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -2910,18 +2910,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentQueue>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentQueue>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgentQueue,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskAgentQueue,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2938,7 +2938,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         project?: string,
         queueName?: string,
         actionFilter?: TaskAgentInterfaces.TaskAgentQueueActionFilter
-        ): Promise<TaskAgentInterfaces.TaskAgentQueue[]> {
+    ): Promise<TaskAgentInterfaces.TaskAgentQueue[]> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentQueue[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2949,7 +2949,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 queueName: queueName,
                 actionFilter: actionFilter,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -2959,18 +2959,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentQueue[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentQueue[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgentQueue,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.TaskAgentQueue,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2985,7 +2985,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async getTaskGroupHistory(
         project: string,
         taskGroupId: string
-        ): Promise<TaskAgentInterfaces.TaskGroupRevision[]> {
+    ): Promise<TaskAgentInterfaces.TaskGroupRevision[]> {
 
         return new Promise<TaskAgentInterfaces.TaskGroupRevision[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3001,18 +3001,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskGroupRevision[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskGroupRevision[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskGroupRevision,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.TaskGroupRevision,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3029,7 +3029,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async deleteSecureFile(
         project: string,
         secureFileId: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3045,18 +3045,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3077,7 +3077,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         secureFileId: string,
         ticket: string,
         download?: boolean
-        ): Promise<NodeJS.ReadableStream> {
+    ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3089,7 +3089,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 ticket: ticket,
                 download: download,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -3099,7 +3099,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                
+
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -3121,7 +3121,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         project: string,
         secureFileId: string,
         includeDownloadTicket?: boolean
-        ): Promise<TaskAgentInterfaces.SecureFile> {
+    ): Promise<TaskAgentInterfaces.SecureFile> {
 
         return new Promise<TaskAgentInterfaces.SecureFile>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3132,7 +3132,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             let queryValues: any = {
                 includeDownloadTicket: includeDownloadTicket,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -3142,18 +3142,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile>;
                 res = await this.rest.get<TaskAgentInterfaces.SecureFile>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.SecureFile,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.SecureFile,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3174,7 +3174,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         namePattern?: string,
         includeDownloadTickets?: boolean,
         actionFilter?: TaskAgentInterfaces.SecureFileActionFilter
-        ): Promise<TaskAgentInterfaces.SecureFile[]> {
+    ): Promise<TaskAgentInterfaces.SecureFile[]> {
 
         return new Promise<TaskAgentInterfaces.SecureFile[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3186,7 +3186,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 includeDownloadTickets: includeDownloadTickets,
                 actionFilter: actionFilter,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -3196,18 +3196,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile[]>;
                 res = await this.rest.get<TaskAgentInterfaces.SecureFile[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.SecureFile,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.SecureFile,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3226,7 +3226,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         project: string,
         secureFileIds: string[],
         includeDownloadTickets?: boolean
-        ): Promise<TaskAgentInterfaces.SecureFile[]> {
+    ): Promise<TaskAgentInterfaces.SecureFile[]> {
 
         return new Promise<TaskAgentInterfaces.SecureFile[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3237,7 +3237,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 secureFileIds: secureFileIds && secureFileIds.join(","),
                 includeDownloadTickets: includeDownloadTickets,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -3247,18 +3247,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile[]>;
                 res = await this.rest.get<TaskAgentInterfaces.SecureFile[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.SecureFile,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.SecureFile,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3277,7 +3277,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         condition: string,
         project: string,
         namePattern?: string
-        ): Promise<TaskAgentInterfaces.SecureFile[]> {
+    ): Promise<TaskAgentInterfaces.SecureFile[]> {
 
         return new Promise<TaskAgentInterfaces.SecureFile[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3287,7 +3287,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             let queryValues: any = {
                 namePattern: namePattern,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -3297,18 +3297,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile[]>;
                 res = await this.rest.create<TaskAgentInterfaces.SecureFile[]>(url, condition, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.SecureFile,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.SecureFile,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3327,7 +3327,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         secureFile: TaskAgentInterfaces.SecureFile,
         project: string,
         secureFileId: string
-        ): Promise<TaskAgentInterfaces.SecureFile> {
+    ): Promise<TaskAgentInterfaces.SecureFile> {
 
         return new Promise<TaskAgentInterfaces.SecureFile>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3343,18 +3343,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile>;
                 res = await this.rest.update<TaskAgentInterfaces.SecureFile>(url, secureFile, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.SecureFile,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.SecureFile,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3371,7 +3371,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async updateSecureFiles(
         secureFiles: TaskAgentInterfaces.SecureFile[],
         project: string
-        ): Promise<TaskAgentInterfaces.SecureFile[]> {
+    ): Promise<TaskAgentInterfaces.SecureFile[]> {
 
         return new Promise<TaskAgentInterfaces.SecureFile[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3386,18 +3386,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile[]>;
                 res = await this.rest.update<TaskAgentInterfaces.SecureFile[]>(url, secureFiles, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.SecureFile,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.SecureFile,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3417,7 +3417,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         contentStream: NodeJS.ReadableStream,
         project: string,
         name: string
-        ): Promise<TaskAgentInterfaces.SecureFile> {
+    ): Promise<TaskAgentInterfaces.SecureFile> {
 
         return new Promise<TaskAgentInterfaces.SecureFile>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3427,7 +3427,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             let queryValues: any = {
                 name: name,
             };
-            
+
             customHeaders = customHeaders || {};
             customHeaders["Content-Type"] = "application/octet-stream";
 
@@ -3440,17 +3440,17 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                
+
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                                                                                verData.apiVersion);
+                    verData.apiVersion);
                 options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile>;
                 res = await this.rest.uploadStream<TaskAgentInterfaces.SecureFile>("POST", url, contentStream, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.SecureFile,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.SecureFile,
+                    false);
 
                 resolve(ret);
             }
@@ -3469,7 +3469,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         serviceEndpointRequest: TaskAgentInterfaces.ServiceEndpointRequest,
         project: string,
         endpointId: string
-        ): Promise<TaskAgentInterfaces.ServiceEndpointRequestResult> {
+    ): Promise<TaskAgentInterfaces.ServiceEndpointRequestResult> {
 
         return new Promise<TaskAgentInterfaces.ServiceEndpointRequestResult>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3479,7 +3479,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             let queryValues: any = {
                 endpointId: endpointId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -3489,18 +3489,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.ServiceEndpointRequestResult>;
                 res = await this.rest.create<TaskAgentInterfaces.ServiceEndpointRequestResult>(url, serviceEndpointRequest, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.ServiceEndpointRequestResult,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.ServiceEndpointRequestResult,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3517,7 +3517,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async queryServiceEndpoint(
         binding: TaskAgentInterfaces.DataSourceBinding,
         project: string
-        ): Promise<string[]> {
+    ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3532,18 +3532,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.create<string[]>(url, binding, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3558,7 +3558,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async createServiceEndpoint(
         endpoint: TaskAgentInterfaces.ServiceEndpoint,
         project: string
-        ): Promise<TaskAgentInterfaces.ServiceEndpoint> {
+    ): Promise<TaskAgentInterfaces.ServiceEndpoint> {
 
         return new Promise<TaskAgentInterfaces.ServiceEndpoint>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3573,18 +3573,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.ServiceEndpoint>;
                 res = await this.rest.create<TaskAgentInterfaces.ServiceEndpoint>(url, endpoint, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3599,7 +3599,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async deleteServiceEndpoint(
         project: string,
         endpointId: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3615,18 +3615,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3641,7 +3641,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async getServiceEndpointDetails(
         project: string,
         endpointId: string
-        ): Promise<TaskAgentInterfaces.ServiceEndpoint> {
+    ): Promise<TaskAgentInterfaces.ServiceEndpoint> {
 
         return new Promise<TaskAgentInterfaces.ServiceEndpoint>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3657,18 +3657,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.ServiceEndpoint>;
                 res = await this.rest.get<TaskAgentInterfaces.ServiceEndpoint>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3689,7 +3689,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         authSchemes?: string[],
         endpointIds?: string[],
         includeFailed?: boolean
-        ): Promise<TaskAgentInterfaces.ServiceEndpoint[]> {
+    ): Promise<TaskAgentInterfaces.ServiceEndpoint[]> {
 
         return new Promise<TaskAgentInterfaces.ServiceEndpoint[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3702,7 +3702,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 endpointIds: endpointIds && endpointIds.join(","),
                 includeFailed: includeFailed,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.2",
@@ -3712,18 +3712,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.ServiceEndpoint[]>;
                 res = await this.rest.get<TaskAgentInterfaces.ServiceEndpoint[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3740,7 +3740,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         endpoint: TaskAgentInterfaces.ServiceEndpoint,
         project: string,
         endpointId: string
-        ): Promise<TaskAgentInterfaces.ServiceEndpoint> {
+    ): Promise<TaskAgentInterfaces.ServiceEndpoint> {
 
         return new Promise<TaskAgentInterfaces.ServiceEndpoint>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3756,18 +3756,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.ServiceEndpoint>;
                 res = await this.rest.replace<TaskAgentInterfaces.ServiceEndpoint>(url, endpoint, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3782,7 +3782,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async updateServiceEndpoints(
         endpoints: TaskAgentInterfaces.ServiceEndpoint[],
         project: string
-        ): Promise<TaskAgentInterfaces.ServiceEndpoint[]> {
+    ): Promise<TaskAgentInterfaces.ServiceEndpoint[]> {
 
         return new Promise<TaskAgentInterfaces.ServiceEndpoint[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3797,18 +3797,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.ServiceEndpoint[]>;
                 res = await this.rest.replace<TaskAgentInterfaces.ServiceEndpoint[]>(url, endpoints, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3823,7 +3823,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async getServiceEndpointTypes(
         type?: string,
         scheme?: string
-        ): Promise<TaskAgentInterfaces.ServiceEndpointType[]> {
+    ): Promise<TaskAgentInterfaces.ServiceEndpointType[]> {
 
         return new Promise<TaskAgentInterfaces.ServiceEndpointType[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3833,7 +3833,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 type: type,
                 scheme: scheme,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -3843,18 +3843,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.ServiceEndpointType[]>;
                 res = await this.rest.get<TaskAgentInterfaces.ServiceEndpointType[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.ServiceEndpointType,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.ServiceEndpointType,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3869,7 +3869,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async createAgentSession(
         session: TaskAgentInterfaces.TaskAgentSession,
         poolId: number
-        ): Promise<TaskAgentInterfaces.TaskAgentSession> {
+    ): Promise<TaskAgentInterfaces.TaskAgentSession> {
 
         return new Promise<TaskAgentInterfaces.TaskAgentSession>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3884,18 +3884,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentSession>;
                 res = await this.rest.create<TaskAgentInterfaces.TaskAgentSession>(url, session, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgentSession,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskAgentSession,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3910,7 +3910,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async deleteAgentSession(
         poolId: number,
         sessionId: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3926,18 +3926,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3952,7 +3952,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async addTaskGroup(
         taskGroup: TaskAgentInterfaces.TaskGroup,
         project: string
-        ): Promise<TaskAgentInterfaces.TaskGroup> {
+    ): Promise<TaskAgentInterfaces.TaskGroup> {
 
         return new Promise<TaskAgentInterfaces.TaskGroup>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3967,18 +3967,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskGroup>;
                 res = await this.rest.create<TaskAgentInterfaces.TaskGroup>(url, taskGroup, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskGroup,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskGroup,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3993,7 +3993,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async deleteTaskGroup(
         project: string,
         taskGroupId: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4009,18 +4009,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4037,7 +4037,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         project: string,
         taskGroupId: string,
         revision: number
-        ): Promise<NodeJS.ReadableStream> {
+    ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4048,7 +4048,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             let queryValues: any = {
                 revision: revision,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -4058,7 +4058,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                
+
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -4078,7 +4078,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         project: string,
         taskGroupId?: string,
         expanded?: boolean
-        ): Promise<TaskAgentInterfaces.TaskGroup[]> {
+    ): Promise<TaskAgentInterfaces.TaskGroup[]> {
 
         return new Promise<TaskAgentInterfaces.TaskGroup[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4089,7 +4089,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             let queryValues: any = {
                 expanded: expanded,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -4099,18 +4099,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskGroup[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskGroup[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskGroup,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.TaskGroup,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4125,7 +4125,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async updateTaskGroup(
         taskGroup: TaskAgentInterfaces.TaskGroup,
         project: string
-        ): Promise<TaskAgentInterfaces.TaskGroup> {
+    ): Promise<TaskAgentInterfaces.TaskGroup> {
 
         return new Promise<TaskAgentInterfaces.TaskGroup>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4140,18 +4140,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskGroup>;
                 res = await this.rest.replace<TaskAgentInterfaces.TaskGroup>(url, taskGroup, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskGroup,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskGroup,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4164,7 +4164,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      */
     public async deleteTaskDefinition(
         taskId: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4179,18 +4179,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4209,7 +4209,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         versionString: string,
         visibility?: string[],
         scopeLocal?: boolean
-        ): Promise<NodeJS.ReadableStream> {
+    ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4221,7 +4221,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 visibility: visibility,
                 scopeLocal: scopeLocal,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -4231,7 +4231,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                
+
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -4253,7 +4253,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         versionString: string,
         visibility?: string[],
         scopeLocal?: boolean
-        ): Promise<TaskAgentInterfaces.TaskDefinition> {
+    ): Promise<TaskAgentInterfaces.TaskDefinition> {
 
         return new Promise<TaskAgentInterfaces.TaskDefinition>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4265,7 +4265,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 visibility: visibility,
                 scopeLocal: scopeLocal,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -4275,18 +4275,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskDefinition>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskDefinition>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4303,7 +4303,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         taskId?: string,
         visibility?: string[],
         scopeLocal?: boolean
-        ): Promise<TaskAgentInterfaces.TaskDefinition[]> {
+    ): Promise<TaskAgentInterfaces.TaskDefinition[]> {
 
         return new Promise<TaskAgentInterfaces.TaskDefinition[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4314,7 +4314,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 visibility: visibility,
                 scopeLocal: scopeLocal,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -4324,18 +4324,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskDefinition[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskDefinition[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4352,7 +4352,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         poolId: number,
         agentId: number,
         currentState: string
-        ): Promise<TaskAgentInterfaces.TaskAgent> {
+    ): Promise<TaskAgentInterfaces.TaskAgent> {
 
         return new Promise<TaskAgentInterfaces.TaskAgent>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4363,7 +4363,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             let queryValues: any = {
                 currentState: currentState,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -4373,18 +4373,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgent>;
                 res = await this.rest.replace<TaskAgentInterfaces.TaskAgent>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgent,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskAgent,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4398,10 +4398,10 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      * @param {number} agentId
      */
     public async updateAgentUserCapabilities(
-        userCapabilities: { [key: string] : string; },
+        userCapabilities: { [key: string]: string; },
         poolId: number,
         agentId: number
-        ): Promise<TaskAgentInterfaces.TaskAgent> {
+    ): Promise<TaskAgentInterfaces.TaskAgent> {
 
         return new Promise<TaskAgentInterfaces.TaskAgent>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4417,18 +4417,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgent>;
                 res = await this.rest.replace<TaskAgentInterfaces.TaskAgent>(url, userCapabilities, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.TaskAgent,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.TaskAgent,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4443,7 +4443,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async addVariableGroup(
         group: TaskAgentInterfaces.VariableGroup,
         project: string
-        ): Promise<TaskAgentInterfaces.VariableGroup> {
+    ): Promise<TaskAgentInterfaces.VariableGroup> {
 
         return new Promise<TaskAgentInterfaces.VariableGroup>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4458,18 +4458,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.VariableGroup>;
                 res = await this.rest.create<TaskAgentInterfaces.VariableGroup>(url, group, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.VariableGroup,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.VariableGroup,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4484,7 +4484,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async deleteVariableGroup(
         project: string,
         groupId: number
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4500,18 +4500,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4526,7 +4526,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async getVariableGroup(
         project: string,
         groupId: number
-        ): Promise<TaskAgentInterfaces.VariableGroup> {
+    ): Promise<TaskAgentInterfaces.VariableGroup> {
 
         return new Promise<TaskAgentInterfaces.VariableGroup>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4542,18 +4542,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.VariableGroup>;
                 res = await this.rest.get<TaskAgentInterfaces.VariableGroup>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.VariableGroup,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.VariableGroup,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4570,7 +4570,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         project: string,
         groupName?: string,
         actionFilter?: TaskAgentInterfaces.VariableGroupActionFilter
-        ): Promise<TaskAgentInterfaces.VariableGroup[]> {
+    ): Promise<TaskAgentInterfaces.VariableGroup[]> {
 
         return new Promise<TaskAgentInterfaces.VariableGroup[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4581,7 +4581,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 groupName: groupName,
                 actionFilter: actionFilter,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -4591,18 +4591,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.VariableGroup[]>;
                 res = await this.rest.get<TaskAgentInterfaces.VariableGroup[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.VariableGroup,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.VariableGroup,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4617,7 +4617,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     public async getVariableGroupsById(
         project: string,
         groupIds: number[]
-        ): Promise<TaskAgentInterfaces.VariableGroup[]> {
+    ): Promise<TaskAgentInterfaces.VariableGroup[]> {
 
         return new Promise<TaskAgentInterfaces.VariableGroup[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4627,7 +4627,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             let queryValues: any = {
                 groupIds: groupIds && groupIds.join(","),
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -4637,18 +4637,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.VariableGroup[]>;
                 res = await this.rest.get<TaskAgentInterfaces.VariableGroup[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.VariableGroup,
-                                              true);
+                    TaskAgentInterfaces.TypeInfo.VariableGroup,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4665,7 +4665,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         group: TaskAgentInterfaces.VariableGroup,
         project: string,
         groupId: number
-        ): Promise<TaskAgentInterfaces.VariableGroup> {
+    ): Promise<TaskAgentInterfaces.VariableGroup> {
 
         return new Promise<TaskAgentInterfaces.VariableGroup>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4681,18 +4681,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.VariableGroup>;
                 res = await this.rest.replace<TaskAgentInterfaces.VariableGroup>(url, group, options);
 
                 let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.VariableGroup,
-                                              false);
+                    TaskAgentInterfaces.TypeInfo.VariableGroup,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4705,7 +4705,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      */
     public async acquireAccessToken(
         authenticationRequest: TaskAgentInterfaces.AadOauthTokenRequest
-        ): Promise<TaskAgentInterfaces.AadOauthTokenResult> {
+    ): Promise<TaskAgentInterfaces.AadOauthTokenResult> {
 
         return new Promise<TaskAgentInterfaces.AadOauthTokenResult>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4719,18 +4719,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.AadOauthTokenResult>;
                 res = await this.rest.create<TaskAgentInterfaces.AadOauthTokenResult>(url, authenticationRequest, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4747,7 +4747,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         tenantId: string,
         redirectUri: string,
         promptOption?: TaskAgentInterfaces.AadLoginPromptOption
-        ): Promise<string> {
+    ): Promise<string> {
 
         return new Promise<string>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4758,7 +4758,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 redirectUri: redirectUri,
                 promptOption: promptOption,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -4768,18 +4768,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.create<string>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4790,7 +4790,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
     /**
      */
     public async getVstsAadTenantId(
-        ): Promise<string> {
+    ): Promise<string> {
 
         return new Promise<string>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4804,18 +4804,18 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.get<string>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);

@@ -36,8 +36,8 @@ export interface IDashboardApi extends basem.ClientApiBase {
 }
 
 export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        super(baseUrl, handlers, 'node-Dashboard-api');
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
+        super(baseUrl, handlers, 'node-Dashboard-api', options);
     }
 
     /**
@@ -47,7 +47,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
     public async createDashboard(
         dashboard: DashboardInterfaces.Dashboard,
         teamContext: TfsCoreInterfaces.TeamContext
-        ): Promise<DashboardInterfaces.Dashboard> {
+    ): Promise<DashboardInterfaces.Dashboard> {
 
         return new Promise<DashboardInterfaces.Dashboard>(async (resolve, reject) => {
             let project = teamContext.projectId || teamContext.project;
@@ -66,18 +66,18 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.Dashboard>;
                 res = await this.rest.create<DashboardInterfaces.Dashboard>(url, dashboard, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -92,7 +92,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
     public async deleteDashboard(
         teamContext: TfsCoreInterfaces.TeamContext,
         dashboardId: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let project = teamContext.projectId || teamContext.project;
@@ -112,18 +112,18 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -138,7 +138,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
     public async getDashboard(
         teamContext: TfsCoreInterfaces.TeamContext,
         dashboardId: string
-        ): Promise<DashboardInterfaces.Dashboard> {
+    ): Promise<DashboardInterfaces.Dashboard> {
 
         return new Promise<DashboardInterfaces.Dashboard>(async (resolve, reject) => {
             let project = teamContext.projectId || teamContext.project;
@@ -158,18 +158,18 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.Dashboard>;
                 res = await this.rest.get<DashboardInterfaces.Dashboard>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -182,7 +182,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
      */
     public async getDashboards(
         teamContext: TfsCoreInterfaces.TeamContext
-        ): Promise<DashboardInterfaces.DashboardGroup> {
+    ): Promise<DashboardInterfaces.DashboardGroup> {
 
         return new Promise<DashboardInterfaces.DashboardGroup>(async (resolve, reject) => {
             let project = teamContext.projectId || teamContext.project;
@@ -201,18 +201,18 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.DashboardGroup>;
                 res = await this.rest.get<DashboardInterfaces.DashboardGroup>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              DashboardInterfaces.TypeInfo.DashboardGroup,
-                                              false);
+                    DashboardInterfaces.TypeInfo.DashboardGroup,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -229,7 +229,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
         dashboard: DashboardInterfaces.Dashboard,
         teamContext: TfsCoreInterfaces.TeamContext,
         dashboardId: string
-        ): Promise<DashboardInterfaces.Dashboard> {
+    ): Promise<DashboardInterfaces.Dashboard> {
 
         return new Promise<DashboardInterfaces.Dashboard>(async (resolve, reject) => {
             let project = teamContext.projectId || teamContext.project;
@@ -249,18 +249,18 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.Dashboard>;
                 res = await this.rest.replace<DashboardInterfaces.Dashboard>(url, dashboard, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -275,7 +275,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
     public async replaceDashboards(
         group: DashboardInterfaces.DashboardGroup,
         teamContext: TfsCoreInterfaces.TeamContext
-        ): Promise<DashboardInterfaces.DashboardGroup> {
+    ): Promise<DashboardInterfaces.DashboardGroup> {
 
         return new Promise<DashboardInterfaces.DashboardGroup>(async (resolve, reject) => {
             let project = teamContext.projectId || teamContext.project;
@@ -294,18 +294,18 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.DashboardGroup>;
                 res = await this.rest.replace<DashboardInterfaces.DashboardGroup>(url, group, options);
 
                 let ret = this.formatResponse(res.result,
-                                              DashboardInterfaces.TypeInfo.DashboardGroup,
-                                              false);
+                    DashboardInterfaces.TypeInfo.DashboardGroup,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -322,7 +322,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
         widget: DashboardInterfaces.Widget,
         teamContext: TfsCoreInterfaces.TeamContext,
         dashboardId: string
-        ): Promise<DashboardInterfaces.Widget> {
+    ): Promise<DashboardInterfaces.Widget> {
 
         return new Promise<DashboardInterfaces.Widget>(async (resolve, reject) => {
             let project = teamContext.projectId || teamContext.project;
@@ -342,18 +342,18 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.Widget>;
                 res = await this.rest.create<DashboardInterfaces.Widget>(url, widget, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -370,7 +370,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
         teamContext: TfsCoreInterfaces.TeamContext,
         dashboardId: string,
         widgetId: string
-        ): Promise<DashboardInterfaces.Dashboard> {
+    ): Promise<DashboardInterfaces.Dashboard> {
 
         return new Promise<DashboardInterfaces.Dashboard>(async (resolve, reject) => {
             let project = teamContext.projectId || teamContext.project;
@@ -391,18 +391,18 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.Dashboard>;
                 res = await this.rest.del<DashboardInterfaces.Dashboard>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -419,7 +419,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
         teamContext: TfsCoreInterfaces.TeamContext,
         dashboardId: string,
         widgetId: string
-        ): Promise<DashboardInterfaces.Widget> {
+    ): Promise<DashboardInterfaces.Widget> {
 
         return new Promise<DashboardInterfaces.Widget>(async (resolve, reject) => {
             let project = teamContext.projectId || teamContext.project;
@@ -440,18 +440,18 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.Widget>;
                 res = await this.rest.get<DashboardInterfaces.Widget>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -470,7 +470,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
         teamContext: TfsCoreInterfaces.TeamContext,
         dashboardId: string,
         widgetId: string
-        ): Promise<DashboardInterfaces.Widget> {
+    ): Promise<DashboardInterfaces.Widget> {
 
         return new Promise<DashboardInterfaces.Widget>(async (resolve, reject) => {
             let project = teamContext.projectId || teamContext.project;
@@ -491,18 +491,18 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.Widget>;
                 res = await this.rest.replace<DashboardInterfaces.Widget>(url, widget, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -521,7 +521,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
         teamContext: TfsCoreInterfaces.TeamContext,
         dashboardId: string,
         widgetId: string
-        ): Promise<DashboardInterfaces.Widget> {
+    ): Promise<DashboardInterfaces.Widget> {
 
         return new Promise<DashboardInterfaces.Widget>(async (resolve, reject) => {
             let project = teamContext.projectId || teamContext.project;
@@ -542,18 +542,18 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.Widget>;
                 res = await this.rest.update<DashboardInterfaces.Widget>(url, widget, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -566,7 +566,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
      */
     public async getWidgetMetadata(
         contributionId: string
-        ): Promise<DashboardInterfaces.WidgetMetadataResponse> {
+    ): Promise<DashboardInterfaces.WidgetMetadataResponse> {
 
         return new Promise<DashboardInterfaces.WidgetMetadataResponse>(async (resolve, reject) => {
             let routeValues: any = {
@@ -581,18 +581,18 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.WidgetMetadataResponse>;
                 res = await this.rest.get<DashboardInterfaces.WidgetMetadataResponse>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              DashboardInterfaces.TypeInfo.WidgetMetadataResponse,
-                                              false);
+                    DashboardInterfaces.TypeInfo.WidgetMetadataResponse,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -607,7 +607,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
      */
     public async getWidgetTypes(
         scope: DashboardInterfaces.WidgetScope
-        ): Promise<DashboardInterfaces.WidgetTypesResponse> {
+    ): Promise<DashboardInterfaces.WidgetTypesResponse> {
 
         return new Promise<DashboardInterfaces.WidgetTypesResponse>(async (resolve, reject) => {
             let routeValues: any = {
@@ -616,7 +616,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
             let queryValues: any = {
                 '$scope': scope,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
@@ -626,18 +626,18 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<DashboardInterfaces.WidgetTypesResponse>;
                 res = await this.rest.get<DashboardInterfaces.WidgetTypesResponse>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              DashboardInterfaces.TypeInfo.WidgetTypesResponse,
-                                              false);
+                    DashboardInterfaces.TypeInfo.WidgetTypesResponse,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);

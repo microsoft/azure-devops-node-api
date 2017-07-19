@@ -15,13 +15,13 @@ export class ClientApiBase {
 
     vsoClient: vsom.VsoClient;
 
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], userAgent?: string);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], userAgent?: string, options?: VsoBaseInterfaces.IRequestOptions);
 
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], userAgent: string) {
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], userAgent: string, options?: VsoBaseInterfaces.IRequestOptions) {
         this.baseUrl = baseUrl;
 
-        this.http = new hm.HttpClient(userAgent, handlers);
-        this.rest = new rm.RestClient(userAgent, null, handlers);
+        this.http = new hm.HttpClient(userAgent, handlers, options);
+        this.rest = new rm.RestClient(userAgent, null, handlers, options);
 
         this.vsoClient = new vsom.VsoClient(baseUrl, this.rest);
         this.userAgent = userAgent;
@@ -38,14 +38,14 @@ export class ClientApiBase {
     }
 
     public formatResponse(data: any, responseTypeMetadata: any, isCollection: boolean): any {
-        let serializationData = {  
-            responseTypeMetadata: responseTypeMetadata, 
-            responseIsCollection: isCollection 
+        let serializationData = {
+            responseTypeMetadata: responseTypeMetadata,
+            responseIsCollection: isCollection
         };
-        let deserializedResult = serm.ContractSerializer.deserialize(data, 
-                                            serializationData.responseTypeMetadata, 
-                                            false, 
-                                            serializationData.responseIsCollection);
+        let deserializedResult = serm.ContractSerializer.deserialize(data,
+            serializationData.responseTypeMetadata,
+            false,
+            serializationData.responseIsCollection);
         return deserializedResult;
-    } 
+    }
 }
