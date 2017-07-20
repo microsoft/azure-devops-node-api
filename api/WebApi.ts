@@ -79,7 +79,7 @@ export class WebApi {
     authHandler: VsoBaseInterfaces.IRequestHandler;
     rest: rm.RestClient;
     vsoClient: vsom.VsoClient;
-    options?: VsoBaseInterfaces.IRequestOptions;
+    options: VsoBaseInterfaces.IRequestOptions;
 
     /*
      * Factory to return client apis and handlers

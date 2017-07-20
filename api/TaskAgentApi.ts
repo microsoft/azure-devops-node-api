@@ -13,7 +13,7 @@ export interface ITaskAgentApi extends taskagentbasem.ITaskAgentApiBase {
 
 export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITaskAgentApi {
     private _handlers: VsoBaseInterfaces.IRequestHandler[];
-    private _options?: VsoBaseInterfaces.IRequestOptions;
+    private _options: VsoBaseInterfaces.IRequestOptions;
     private _fallbackClient: TaskAgentApi;
 
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
