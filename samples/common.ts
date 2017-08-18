@@ -20,7 +20,7 @@ export async function getWebApi(): Promise<vm.WebApi> {
             let authHandler = vm.getPersonalAccessTokenHandler(token);
 
             let option = undefined;
-            
+
             // The following sample is for testing proxy
             // option = {
             //     proxy: {
@@ -32,6 +32,16 @@ export async function getWebApi(): Promise<vm.WebApi> {
             //         ],
             //     },
             //     ignoreSslError: true
+            // };
+
+            // The following sample is for testing cert
+            // option = {
+            //     cert: {
+            //         caFile: "E:\\certutil\\doctest\\ca2.pem",
+            //         certFile: "E:\\certutil\\doctest\\client-cert2.pem",
+            //         keyFile: "E:\\certutil\\doctest\\client-cert-key2.pem",
+            //         passphrase: "test123",
+            //     },
             // };
 
             let vsts: vm.WebApi = new vm.WebApi(serverUrl, authHandler, option);

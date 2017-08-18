@@ -36,9 +36,11 @@ import ntlmm = require('./handlers/ntlm');
 import patm = require('./handlers/personalaccesstoken');
 
 import * as rm from 'typed-rest-client/RestClient';
-//import * as hm from 'typed-rest-client/HttpClient';
 import vsom = require('./VsoClient');
 import lim = require("./interfaces/LocationsInterfaces");
+
+import fs = require('fs');
+import crypto = require('crypto');
 
 /**
  * Methods to return handler objects (see handlers folder)
@@ -89,8 +91,37 @@ export class WebApi {
     constructor(defaultUrl: string, authHandler: VsoBaseInterfaces.IRequestHandler, options?: VsoBaseInterfaces.IRequestOptions) {
         this.serverUrl = defaultUrl;
         this.authHandler = authHandler;
-        this.options = options;
-        this.rest = new rm.RestClient('vsts-node-api', null, [this.authHandler], options);
+        this.options = options || {};
+
+        // try get proxy setting from environment variable set by VSTS-Task-Lib if there is no proxy setting in the options
+        if (!this.options.proxy || !this.options.proxy.proxyUrl) {
+            if (global['_vsts_task_lib_proxy']) {
+                let proxyFromEnv: VsoBaseInterfaces.IProxyConfiguration = {
+                    proxyUrl: global['_vsts_task_lib_proxy_url'],
+                    proxyUsername: global['_vsts_task_lib_proxy_username'],
+                    proxyPassword: this._readTaskLibSecrets(global['_vsts_task_lib_proxy_password']),
+                    proxyBypassHosts: JSON.parse(global['_vsts_task_lib_proxy_bypass'] || "[]"),
+                };
+
+                this.options.proxy = proxyFromEnv;
+            }
+        }
+
+        // try get cert setting from environment variable set by VSTS-Task-Lib if there is no cert setting in the options
+        if (!this.options.cert) {
+            if (global['_vsts_task_lib_cert']) {
+                let certFromEnv: VsoBaseInterfaces.ICertConfiguration = {
+                    caFile: global['_vsts_task_lib_cert_ca'],
+                    certFile: global['_vsts_task_lib_cert_clientcert'],
+                    keyFile: global['_vsts_task_lib_cert_key'],
+                    passphrase: this._readTaskLibSecrets(global['_vsts_task_lib_cert_passphrase']),
+                };
+
+                this.options.cert = certFromEnv;
+            }
+        }
+
+        this.rest = new rm.RestClient('vsts-node-api', null, [this.authHandler], this.options);
         this.vsoClient = new vsom.VsoClient(defaultUrl, this.rest);
     }
 
@@ -279,5 +310,25 @@ export class WebApi {
         serverUrl = serverUrl || this.serverUrl;
         handlers = handlers || [this.authHandler];
         return new workitemtrackingm.WorkItemTrackingApi(serverUrl, handlers, this.options);
+    }
+
+    private _readTaskLibSecrets(lookupKey: string): string {
+        // the lookupKey should has following format
+        // base64encoded<keyFilePath>:base64encoded<encryptedContent>
+        if (lookupKey && lookupKey.indexOf(':') > 0) {
+            let lookupInfo: string[] = lookupKey.split(':', 2);
+
+            // file contains encryption key
+            let keyFile = new Buffer(lookupInfo[0], 'base64').toString('utf8');
+            let encryptKey = new Buffer(fs.readFileSync(keyFile, 'utf8'), 'base64');
+
+            let encryptedContent: string = new Buffer(lookupInfo[1], 'base64').toString('utf8');
+
+            let decipher = crypto.createDecipher("aes-256-ctr", encryptKey)
+            let decryptedContent = decipher.update(encryptedContent, 'hex', 'utf8')
+            decryptedContent += decipher.final('utf8');
+
+            return decryptedContent;
+        }
     }
 }

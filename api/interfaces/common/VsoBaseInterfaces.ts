@@ -67,6 +67,7 @@ export interface IRequestOptions {
     socketTimeout?: number,
     ignoreSslError?: boolean,
     proxy?: IProxyConfiguration
+    cert?: ICertConfiguration
 }
 
 export interface IProxyConfiguration {
@@ -74,4 +75,11 @@ export interface IProxyConfiguration {
     proxyUsername?: string;
     proxyPassword?: string;
     proxyBypassHosts?: string[];
+}
+
+export interface ICertConfiguration {
+    caFile?: string;
+    certFile?: string;
+    keyFile?: string;
+    passphrase?: string;
 }
