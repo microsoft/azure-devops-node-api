@@ -87,10 +87,17 @@ export class WebApi {
      * @param authHandler default authentication credentials to use when creating new apis from factory methods
      */
     constructor(defaultUrl: string, authHandler: VsoBaseInterfaces.IRequestHandler, options?: VsoBaseInterfaces.IRequestOptions) {
+        let userAgent = 'vsts-node-api';
         this.serverUrl = defaultUrl;
         this.authHandler = authHandler;
         this.options = options;
-        this.rest = new rm.RestClient('vsts-node-api', null, [this.authHandler], options);
+
+        if (options.hasOwnProperty('userAgent')) {
+            userAgent = options.userAgent;
+            delete options.userAgent;
+        }
+
+        this.rest = new rm.RestClient(userAgent, null, [this.authHandler], options);
         this.vsoClient = new vsom.VsoClient(defaultUrl, this.rest);
     }
 
