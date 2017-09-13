@@ -66,7 +66,8 @@ export interface IHttpResponse {
 export interface IRequestOptions {
     socketTimeout?: number,
     ignoreSslError?: boolean,
-    proxy?: IProxyConfiguration
+    proxy?: IProxyConfiguration,
+    userAgent?: string,
     cert?: ICertConfiguration
 }
 

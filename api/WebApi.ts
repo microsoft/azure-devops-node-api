@@ -89,9 +89,15 @@ export class WebApi {
      * @param authHandler default authentication credentials to use when creating new apis from factory methods
      */
     constructor(defaultUrl: string, authHandler: VsoBaseInterfaces.IRequestHandler, options?: VsoBaseInterfaces.IRequestOptions) {
+        let userAgent = 'vsts-node-api';
         this.serverUrl = defaultUrl;
         this.authHandler = authHandler;
         this.options = options || {};
+
+         if (options.hasOwnProperty('userAgent')) {
+            userAgent = options.userAgent;
+            delete options.userAgent;
+        }
 
         // try get proxy setting from environment variable set by VSTS-Task-Lib if there is no proxy setting in the options
         if (!this.options.proxy || !this.options.proxy.proxyUrl) {
@@ -121,7 +127,7 @@ export class WebApi {
             }
         }
 
-        this.rest = new rm.RestClient('vsts-node-api', null, [this.authHandler], this.options);
+        this.rest = new rm.RestClient(userAgent, null, [this.authHandler], this.options);
         this.vsoClient = new vsom.VsoClient(defaultUrl, this.rest);
     }
 
