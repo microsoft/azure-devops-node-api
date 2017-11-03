@@ -121,6 +121,11 @@ export class WebApi {
             }
         }
 
+        // try get ignore SSL error setting from environment variable set by VSTS-Task-Lib if there is no ignore SSL error setting in the options
+        if (!this.options.ignoreSslError) {
+            this.options.ignoreSslError = !!global['_vsts_task_lib_skip_cert_validation'];
+        }
+
         this.rest = new rm.RestClient('vsts-node-api', null, [this.authHandler], this.options);
         this.vsoClient = new vsom.VsoClient(defaultUrl, this.rest);
     }
