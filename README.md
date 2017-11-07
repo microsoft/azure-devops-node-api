@@ -53,6 +53,7 @@ These clients are available in the new 6.x preview API (`npm install vso-node-ap
 * Dashboard
 * DelegatedAuthorization
 * ExtensionManagement
+* FeatureAvailability
 * FeatureManagement
 * FileContainer
 * Gallery
