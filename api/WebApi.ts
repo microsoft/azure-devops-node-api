@@ -10,6 +10,7 @@ import corem = require('./CoreApi');
 import dashboardm = require('./DashboardApi');
 import delegatedauthorizationm = require('./DelegatedAuthorizationApi');
 import extmgmtm = require("./ExtensionManagementApi");
+import featureavailabilitym = require("./FeatureAvailabilityApi");
 import featuremgmtm = require("./FeatureManagementApi");
 import filecontainerm = require('./FileContainerApi');
 import gallerym = require('./GalleryApi');
@@ -201,6 +202,12 @@ export class WebApi {
         serverUrl = serverUrl || this.serverUrl;
         handlers = handlers || [this.authHandler];
         return new extmgmtm.ExtensionManagementApi(serverUrl, handlers, this.options);
+    }
+
+    public getFeatureAvailabilityApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): featureavailabilitym.IFeatureAvailabilityApi {
+        serverUrl = serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];
+        return new featureavailabilitym.FeatureAvailabilityApi(serverUrl, handlers, this.options);
     }
 
     public getFeatureManagementApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): featuremgmtm.IFeatureManagementApi {
