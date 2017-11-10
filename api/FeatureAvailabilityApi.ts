@@ -27,8 +27,8 @@ export interface IFeatureAvailabilityApi extends basem.ClientApiBase {
 }
 
 export class FeatureAvailabilityApi extends basem.ClientApiBase implements IFeatureAvailabilityApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[]) {
-        super(baseUrl, handlers, 'node-FeatureAvailability-api');
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
+        super(baseUrl, handlers, 'node-FeatureAvailability-api', options);
     }
 
     /**
