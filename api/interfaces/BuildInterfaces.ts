@@ -1373,6 +1373,12 @@ export enum RepositoryCleanOptions {
     AllBuildDir = 3,
 }
 
+export enum RepositoryLabelSources {
+	None = 0,
+	OnSuccessfulBuild = 6,
+	OnEveryBuild = 46
+}
+
 export interface RetentionPolicy {
     artifacts: string[];
     artifactTypesToDelete: string[];
