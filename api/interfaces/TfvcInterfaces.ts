@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -16,11 +16,14 @@ import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 export interface AssociatedWorkItem {
     assignedTo: string;
+    /**
+     * Id of associated the work item.
+     */
     id: number;
     state: string;
     title: string;
     /**
-     * REST url
+     * REST Url of the work item.
      */
     url: string;
     webUrl: string;
@@ -28,10 +31,25 @@ export interface AssociatedWorkItem {
 }
 
 export interface Change<T> {
+    /**
+     * The type of change that was made to the item.
+     */
     changeType: VersionControlChangeType;
+    /**
+     * Current version.
+     */
     item: T;
+    /**
+     * Content of the item after the change.
+     */
     newContent: ItemContent;
+    /**
+     * Path of the item on the server.
+     */
     sourceServerItem: string;
+    /**
+     * URL to retrieve the item.
+     */
     url: string;
 }
 
@@ -48,6 +66,40 @@ export interface FileContentMetadata {
     isBinary: boolean;
     isImage: boolean;
     vsLink: string;
+}
+
+export interface GitRepository {
+    _links: any;
+    defaultBranch: string;
+    id: string;
+    /**
+     * True if the repository was created as a fork
+     */
+    isFork: boolean;
+    name: string;
+    parentRepository: GitRepositoryRef;
+    project: TfsCoreInterfaces.TeamProjectReference;
+    remoteUrl: string;
+    sshUrl: string;
+    url: string;
+    validRemoteUrls: string[];
+}
+
+export interface GitRepositoryRef {
+    /**
+     * Team Project Collection where this Fork resides
+     */
+    collection: TfsCoreInterfaces.TeamProjectCollectionReference;
+    id: string;
+    /**
+     * True if the repository was created as a fork
+     */
+    isFork: boolean;
+    name: string;
+    project: TfsCoreInterfaces.TeamProjectReference;
+    remoteUrl: string;
+    sshUrl: string;
+    url: string;
 }
 
 export interface ItemContent {
@@ -70,24 +122,63 @@ export interface ItemModel {
 }
 
 export interface TfvcBranch extends TfvcBranchRef {
+    /**
+     * List of children for the branch.
+     */
     children: TfvcBranch[];
+    /**
+     * List of branch mappings.
+     */
     mappings: TfvcBranchMapping[];
+    /**
+     * Path of the branch's parent.
+     */
     parent: TfvcShallowBranchRef;
+    /**
+     * List of paths of the related branches.
+     */
     relatedBranches: TfvcShallowBranchRef[];
 }
 
 export interface TfvcBranchMapping {
+    /**
+     * Depth of the branch.
+     */
     depth: string;
+    /**
+     * Server item for the branch.
+     */
     serverItem: string;
+    /**
+     * Type of the branch.
+     */
     type: string;
 }
 
 export interface TfvcBranchRef extends TfvcShallowBranchRef {
+    /**
+     * A collection of REST reference links.
+     */
     _links: any;
+    /**
+     * Creation date of the branch.
+     */
     createdDate: Date;
+    /**
+     * Description of the branch.
+     */
     description: string;
+    /**
+     * Is the branch deleted?
+     */
     isDeleted: boolean;
+    /**
+     * Alias or display name of user
+     */
     owner: VSSInterfaces.IdentityRef;
+    /**
+     * URL to retrieve the item.
+     */
     url: string;
 }
 
@@ -103,24 +194,72 @@ export interface TfvcChange extends Change<TfvcItem> {
 }
 
 export interface TfvcChangeset extends TfvcChangesetRef {
+    /**
+     * Account Id of the changeset.
+     */
     accountId: string;
+    /**
+     * List of associated changes.
+     */
     changes: TfvcChange[];
+    /**
+     * Checkin Notes for the changeset.
+     */
     checkinNotes: CheckinNote[];
+    /**
+     * Collection Id of the changeset.
+     */
     collectionId: string;
+    /**
+     * Are more changes available.
+     */
     hasMoreChanges: boolean;
+    /**
+     * Policy Override for the changeset.
+     */
     policyOverride: TfvcPolicyOverrideInfo;
+    /**
+     * Team Project Ids for the changeset.
+     */
     teamProjectIds: string[];
+    /**
+     * List of work items associated with the changeset.
+     */
     workItems: AssociatedWorkItem[];
 }
 
 export interface TfvcChangesetRef {
+    /**
+     * A collection of REST reference links.
+     */
     _links: any;
+    /**
+     * Alias or display name of user
+     */
     author: VSSInterfaces.IdentityRef;
+    /**
+     * Id of the changeset.
+     */
     changesetId: number;
+    /**
+     * Alias or display name of user
+     */
     checkedInBy: VSSInterfaces.IdentityRef;
+    /**
+     * Comment for the changeset.
+     */
     comment: string;
+    /**
+     * Was the Comment result truncated?
+     */
     commentTruncated: boolean;
+    /**
+     * Creation date of the changeset.
+     */
     createdDate: Date;
+    /**
+     * URL to retrieve the item.
+     */
     url: string;
 }
 
@@ -163,7 +302,13 @@ export interface TfvcChangesetSearchCriteria {
 }
 
 export interface TfvcChangesetsRequestData {
+    /**
+     * List of changeset Ids.
+     */
     changesetIds: number[];
+    /**
+     * Length of the comment.
+     */
     commentLength: number;
     /**
      * Whether to include the _links field on the shallow references
@@ -267,6 +412,9 @@ export interface TfvcPolicyOverrideInfo {
 }
 
 export interface TfvcShallowBranchRef {
+    /**
+     * Path for the branch.
+     */
     path: string;
 }
 
@@ -395,6 +543,10 @@ export enum VersionControlRecursionType {
 export var TypeInfo = {
     Change: <any>{
     },
+    GitRepository: <any>{
+    },
+    GitRepositoryRef: <any>{
+    },
     ItemContent: <any>{
     },
     ItemContentType: {
@@ -485,13 +637,28 @@ TypeInfo.Change.fields = {
     },
     newContent: {
         typeInfo: TypeInfo.ItemContent
+    }
+};
+
+TypeInfo.GitRepository.fields = {
+    parentRepository: {
+        typeInfo: TypeInfo.GitRepositoryRef
     },
+    project: {
+        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
+    }
+};
+
+TypeInfo.GitRepositoryRef.fields = {
+    project: {
+        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
+    }
 };
 
 TypeInfo.ItemContent.fields = {
     contentType: {
         enumType: TypeInfo.ItemContentType
-    },
+    }
 };
 
 TypeInfo.TfvcBranch.fields = {
@@ -501,13 +668,13 @@ TypeInfo.TfvcBranch.fields = {
     },
     createdDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcBranchRef.fields = {
     createdDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcChange.fields = {
@@ -516,7 +683,7 @@ TypeInfo.TfvcChange.fields = {
     },
     newContent: {
         typeInfo: TypeInfo.ItemContent
-    },
+    }
 };
 
 TypeInfo.TfvcChangeset.fields = {
@@ -526,19 +693,19 @@ TypeInfo.TfvcChangeset.fields = {
     },
     createdDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcChangesetRef.fields = {
     createdDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcItem.fields = {
     changeDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcItemDescriptor.fields = {
@@ -550,14 +717,14 @@ TypeInfo.TfvcItemDescriptor.fields = {
     },
     versionType: {
         enumType: TypeInfo.TfvcVersionType
-    },
+    }
 };
 
 TypeInfo.TfvcItemRequestData.fields = {
     itemDescriptors: {
         isArray: true,
         typeInfo: TypeInfo.TfvcItemDescriptor
-    },
+    }
 };
 
 TypeInfo.TfvcLabel.fields = {
@@ -567,13 +734,13 @@ TypeInfo.TfvcLabel.fields = {
     },
     modifiedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcLabelRef.fields = {
     modifiedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcShelveset.fields = {
@@ -583,13 +750,13 @@ TypeInfo.TfvcShelveset.fields = {
     },
     createdDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcShelvesetRef.fields = {
     createdDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TfvcVersionDescriptor.fields = {
@@ -598,11 +765,14 @@ TypeInfo.TfvcVersionDescriptor.fields = {
     },
     versionType: {
         enumType: TypeInfo.TfvcVersionType
-    },
+    }
 };
 
 TypeInfo.VersionControlProjectInfo.fields = {
     defaultSourceControlType: {
         enumType: TfsCoreInterfaces.TypeInfo.SourceControlTypes
     },
+    project: {
+        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
+    }
 };

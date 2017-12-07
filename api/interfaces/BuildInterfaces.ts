@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -15,14 +15,17 @@ import TfsCoreInterfaces = require("../interfaces/CoreInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
+/**
+ * Represents a queue for running builds.
+ */
 export interface AgentPoolQueue {
     _links: any;
     /**
-     * Id of the resource
+     * The ID of the queue.
      */
     id: number;
     /**
-     * Name of the linked resource (definition name, controller name, etc.)
+     * The name of the queue.
      */
     name: string;
     /**
@@ -30,9 +33,38 @@ export interface AgentPoolQueue {
      */
     pool: TaskAgentPoolReference;
     /**
-     * Full http link to the resource
+     * The full http link to the resource.
      */
     url: string;
+}
+
+/**
+ * Represents a reference to an agent queue.
+ */
+export interface AgentPoolQueueReference extends ResourceReference {
+    /**
+     * The ID of the queue.
+     */
+    id: number;
+}
+
+/**
+ * Describes how a phase should run against an agent queue.
+ */
+export interface AgentPoolQueueTarget extends PhaseTarget {
+    /**
+     * Enables scripts and other processes launched while executing phase to access the OAuth token
+     */
+    allowScriptsAuthAccessOption: boolean;
+    demands: any[];
+    /**
+     * The execution options.
+     */
+    executionOptions: AgentTargetExecutionOptions;
+    /**
+     * The queue.
+     */
+    queue: AgentPoolQueue;
 }
 
 export enum AgentStatus {
@@ -50,18 +82,28 @@ export enum AgentStatus {
     Offline = 2,
 }
 
+/**
+ * Additional options for running phases against an agent queue.
+ */
+export interface AgentTargetExecutionOptions {
+    /**
+     * Indicates the type of execution options.
+     */
+    type: number;
+}
+
 export interface ArtifactResource {
     _links: any;
     /**
-     * The type-specific resource data. For example, "#/10002/5/drop", "$/drops/5", "\\myshare\myfolder\mydrops\5"
+     * Type-specific data about the artifact.
      */
     data: string;
     /**
-     * Link to the resource. This might include things like query parameters to download as a zip file
+     * A link to download the resource.
      */
     downloadUrl: string;
     /**
-     * Properties of Artifact Resource
+     * Type-specific properties of the artifact.
      */
     properties: { [key: string] : string; };
     /**
@@ -69,7 +111,7 @@ export interface ArtifactResource {
      */
     type: string;
     /**
-     * Link to the resource
+     * The full http link to the resource.
      */
     url: string;
 }
@@ -81,24 +123,24 @@ export enum AuditAction {
 }
 
 /**
- * Data representation of a build
+ * Data representation of a build.
  */
 export interface Build {
     _links: any;
     /**
-     * Build number/name of the build
+     * The build number/name of the build.
      */
     buildNumber: string;
     /**
-     * Build number revision
+     * The build number revision.
      */
     buildNumberRevision: number;
     /**
-     * The build controller. This should only be set if the definition type is Xaml.
+     * The build controller. This is only set if the definition type is Xaml.
      */
     controller: BuildController;
     /**
-     * The definition associated with the build
+     * The definition associated with the build.
      */
     definition: DefinitionReference;
     /**
@@ -106,48 +148,51 @@ export interface Build {
      */
     deleted: boolean;
     /**
-     * Process or person that deleted the build
+     * The identity of the process or person that deleted the build.
      */
     deletedBy: VSSInterfaces.IdentityRef;
     /**
-     * Date the build was deleted
+     * The date the build was deleted.
      */
     deletedDate: Date;
     /**
-     * Description of how the build was deleted
+     * The description of how the build was deleted.
      */
     deletedReason: string;
     /**
-     * Demands
+     * A list of demands that represents the agent capabilities required by this build.
      */
     demands: any[];
     /**
-     * Time that the build was completed
+     * The time that the build was completed.
      */
     finishTime: Date;
     /**
-     * Id of the build
+     * The ID of the build.
      */
     id: number;
+    /**
+     * Indicates whether the build should be skipped by retention policies.
+     */
     keepForever: boolean;
     /**
-     * Process or person that last changed the build
+     * The identity representing the process or person that last changed the build.
      */
     lastChangedBy: VSSInterfaces.IdentityRef;
     /**
-     * Date the build was last changed
+     * The date the build was last changed.
      */
     lastChangedDate: Date;
     /**
-     * Log location of the build
+     * Information about the build logs.
      */
     logs: BuildLogReference;
     /**
-     * Orchestration plan for the build
+     * The orchestration plan for the build.
      */
     orchestrationPlan: TaskOrchestrationPlanReference;
     /**
-     * Parameters for the build
+     * The parameters for the build.
      */
     parameters: string;
     /**
@@ -155,72 +200,72 @@ export interface Build {
      */
     plans: TaskOrchestrationPlanReference[];
     /**
-     * The build's priority
+     * The build's priority.
      */
     priority: QueuePriority;
     /**
-     * The team project
+     * The team project.
      */
     project: TfsCoreInterfaces.TeamProjectReference;
     properties: any;
     /**
-     * Quality of the xaml build (good, bad, etc.)
+     * The quality of the xaml build (good, bad, etc.)
      */
     quality: string;
     /**
-     * The queue. This should only be set if the definition type is Build.
+     * The queue. This is only set if the definition type is Build.
      */
     queue: AgentPoolQueue;
     /**
-     * Queue option of the build.
+     * Additional options for queueing the build.
      */
     queueOptions: QueueOptions;
     /**
-     * The current position of the build in the queue
+     * The current position of the build in the queue.
      */
     queuePosition: number;
     /**
-     * Time that the build was queued
+     * The time that the build was queued.
      */
     queueTime: Date;
     /**
-     * Reason that the build was created
+     * The reason that the build was created.
      */
     reason: BuildReason;
     /**
-     * The repository
+     * The repository.
      */
     repository: BuildRepository;
     /**
-     * The identity that queued the build
+     * The identity that queued the build.
      */
     requestedBy: VSSInterfaces.IdentityRef;
     /**
-     * The identity on whose behalf the build was queued
+     * The identity on whose behalf the build was queued.
      */
     requestedFor: VSSInterfaces.IdentityRef;
     /**
-     * The build result
+     * The build result.
      */
     result: BuildResult;
     /**
-     * Specifies if Build should be retained by Release
+     * Indicates whether the build is retained by a release.
      */
     retainedByRelease: boolean;
     /**
-     * Source branch
+     * The source branch.
      */
     sourceBranch: string;
     /**
-     * Source version
+     * The source version.
      */
     sourceVersion: string;
     /**
-     * Time that the build was started
+     * The time that the build was started.
      */
     startTime: Date;
     /**
-     * Status of the build
+     * The status of the build.
      */
     status: BuildStatus;
     tags: string[];
@@ -229,11 +274,11 @@ export interface Build {
      */
     triggerInfo: { [key: string] : string; };
     /**
-     * Uri of the build
+     * The URI of the build.
      */
     uri: string;
     /**
-     * REST url of the build
+     * The REST URL of the build.
      */
     url: string;
     validationResults: BuildRequestValidationResult[];
@@ -272,17 +317,20 @@ export interface BuildAgentReference {
     url: string;
 }
 
+/**
+ * Represents an artifact produced by a build.
+ */
 export interface BuildArtifact {
     /**
-     * The artifact id
+     * The artifact ID.
      */
     id: number;
     /**
-     * The name of the artifact
+     * The name of the artifact.
      */
     name: string;
     /**
-     * The actual resource
+     * The actual resource.
      */
     resource: ArtifactResource;
 }
@@ -291,6 +339,9 @@ export interface BuildArtifactAddedEvent extends BuildUpdatedEvent {
     artifact: BuildArtifact;
 }
 
+/**
+ * Represents the desired scope of authorization for a build.
+ */
 export enum BuildAuthorizationScope {
     /**
      * The identity used should have build service account permissions scoped to the project collection. This is useful when resources for a single build are spread across multiple projects.
@@ -303,15 +354,15 @@ export enum BuildAuthorizationScope {
 }
 
 /**
- * Data representation of a build badge
+ * Represents a build badge.
  */
 export interface BuildBadge {
     /**
-     * Build id, if exists that this badge corresponds to
+     * The ID of the build represented by this badge.
      */
     buildId: number;
     /**
-     * Self Url that generates SVG
+     * A link to the SVG resource.
      */
     imageUrl: string;
 }
@@ -321,6 +372,18 @@ export interface BuildChangesCalculatedEvent extends BuildUpdatedEvent {
 }
 
 export interface BuildCompletedEvent extends BuildUpdatedEvent {
+    /**
+     * errors associated with a build used for build notifications
+     */
+    buildErrors: BuildRequestValidationResult[];
+    /**
+     * warnings associated with a build used for build notifications
+     */
+    buildWarnings: BuildRequestValidationResult[];
+    /**
+     * Changes associated with a build used for build notifications
+     */
+    changes: Change[];
 }
 
 export interface BuildController extends XamlBuildControllerReference {
@@ -351,7 +414,68 @@ export interface BuildController extends XamlBuildControllerReference {
     uri: string;
 }
 
+/**
+ * Represents a build definition.
+ */
 export interface BuildDefinition extends BuildDefinitionReference {
+    /**
+     * Indicates whether badges are enabled for this definition.
+     */
+    badgeEnabled: boolean;
+    /**
+     * The build number format.
+     */
+    buildNumberFormat: string;
+    /**
+     * A save-time comment for the definition.
+     */
+    comment: string;
+    demands: any[];
+    /**
+     * The description.
+     */
+    description: string;
+    /**
+     * The drop location for the definition.
+     */
+    dropLocation: string;
+    /**
+     * The job authorization scope for builds queued against this definition.
+     */
+    jobAuthorizationScope: BuildAuthorizationScope;
+    /**
+     * The job cancel timeout (in minutes) for builds cancelled by user for this definition.
+     */
+    jobCancelTimeoutInMinutes: number;
+    /**
+     * The job execution timeout (in minutes) for builds queued against this definition.
+     */
+    jobTimeoutInMinutes: number;
+    options: BuildOption[];
+    /**
+     * The build process.
+     */
+    process: BuildProcess;
+    /**
+     * The process parameters for this definition.
+     */
+    processParameters: DistributedTaskCommonInterfaces.ProcessParameters;
+    properties: any;
+    /**
+     * The repository.
+     */
+    repository: BuildRepository;
+    retentionRules: RetentionPolicy[];
+    tags: string[];
+    triggers: BuildTrigger[];
+    variableGroups: VariableGroup[];
+    variables: { [key: string] : BuildDefinitionVariable; };
+}
+
+/**
+ * For back-compat with extensions that use the old Steps format instead of Process and Phases
+ */
+export interface BuildDefinition3_2 extends BuildDefinitionReference3_2 {
     /**
      * Indicates whether badges are enabled for this definition
      */
@@ -375,15 +499,15 @@ export interface BuildDefinition extends BuildDefinitionReference {
      */
     dropLocation: string;
     /**
-     * Gets or sets the job authorization scope for builds which are queued against this definition
+     * The job authorization scope for builds which are queued against this definition
      */
     jobAuthorizationScope: BuildAuthorizationScope;
     /**
-     * Gets or sets the job cancel timeout in minutes for builds which are cancelled by user for this definition
+     * The job cancel timeout in minutes for builds which are cancelled by user for this definition
      */
     jobCancelTimeoutInMinutes: number;
     /**
-     * Gets or sets the job execution timeout in minutes for builds which are queued against this definition
+     * The job execution timeout in minutes for builds which are queued against this definition
      */
     jobTimeoutInMinutes: number;
     latestBuild: Build;
@@ -415,6 +539,9 @@ export interface BuildDefinitionChangingEvent {
     originalDefinition: BuildDefinition;
 }
 
+/**
+ * Represents a reference to a build definition.
+ */
 export interface BuildDefinitionReference extends DefinitionReference {
     _links: any;
     /**
@@ -422,27 +549,85 @@ export interface BuildDefinitionReference extends DefinitionReference {
      */
     authoredBy: VSSInterfaces.IdentityRef;
     /**
-     * If this is a draft definition, it might have a parent
+     * A reference to the definition that this definition is a draft of, if this is a draft definition.
      */
     draftOf: DefinitionReference;
+    /**
+     * The list of drafts associated with this definition, if this is not a draft definition.
+     */
+    drafts: DefinitionReference[];
+    latestBuild: Build;
+    latestCompletedBuild: Build;
     metrics: BuildMetric[];
     /**
      * The quality of the definition document (draft, etc.)
      */
     quality: DefinitionQuality;
     /**
-     * The default queue which should be used for requests.
+     * The default queue for builds run against this definition.
      */
     queue: AgentPoolQueue;
 }
 
+/**
+ * For back-compat with extensions that use the old Steps format instead of Process and Phases
+ */
+export interface BuildDefinitionReference3_2 extends DefinitionReference {
+    _links: any;
+    /**
+     * The author of the definition.
+     */
+    authoredBy: VSSInterfaces.IdentityRef;
+    /**
+     * A reference to the definition that this definition is a draft of, if this is a draft definition.
+     */
+    draftOf: DefinitionReference;
+    /**
+     * The list of drafts associated with this definition, if this is not a draft definition.
+     */
+    drafts: DefinitionReference[];
+    metrics: BuildMetric[];
+    /**
+     * The quality of the definition document (draft, etc.)
+     */
+    quality: DefinitionQuality;
+    /**
+     * The default queue for builds run against this definition.
+     */
+    queue: AgentPoolQueue;
+}
+
+/**
+ * Represents a revision of a build definition.
+ */
 export interface BuildDefinitionRevision {
+    /**
+     * The identity of the person or process that changed the definition.
+     */
     changedBy: VSSInterfaces.IdentityRef;
+    /**
+     * The date and time that the definition was changed.
+     */
     changedDate: Date;
+    /**
+     * The change type (add, edit, delete).
+     */
     changeType: AuditAction;
+    /**
+     * The comment associated with the change.
+     */
     comment: string;
+    /**
+     * A link to the definition at this revision.
+     */
     definitionUrl: string;
+    /**
+     * The name of the definition.
+     */
     name: string;
+    /**
+     * The revision number.
+     */
     revision: number;
 }
 
@@ -473,18 +658,85 @@ export interface BuildDefinitionSourceProvider {
     supportedTriggerTypes: DefinitionTriggerType;
 }
 
+/**
+ * Represents a step in a build phase.
+ */
 export interface BuildDefinitionStep {
+    /**
+     * Indicates whether this step should run even if a previous step fails.
+     */
     alwaysRun: boolean;
+    /**
+     * A condition that determines whether this step should run.
+     */
     condition: string;
+    /**
+     * Indicates whether the phase should continue even if this step fails.
+     */
     continueOnError: boolean;
+    /**
+     * The display name for this step.
+     */
     displayName: string;
+    /**
+     * Indicates whether the step is enabled.
+     */
     enabled: boolean;
+    environment: { [key: string] : string; };
     inputs: { [key: string] : string; };
+    /**
+     * The reference name for this step.
+     */
+    refName: string;
+    /**
+     * The task associated with this step.
+     */
     task: TaskDefinitionReference;
+    /**
+     * The time, in minutes, that this step is allowed to run.
+     */
     timeoutInMinutes: number;
 }
 
+/**
+ * Represents a template from which new build definitions can be created.
+ */
 export interface BuildDefinitionTemplate {
+    /**
+     * Indicates whether the template can be deleted.
+     */
+    canDelete: boolean;
+    /**
+     * The template category.
+     */
+    category: string;
+    /**
+     * A description of the template.
+     */
+    description: string;
+    icons: { [key: string] : string; };
+    /**
+     * The ID of the task whose icon is used when showing this template in the UI.
+     */
+    iconTaskId: string;
+    /**
+     * The ID of the template.
+     */
+    id: string;
+    /**
+     * The name of the template.
+     */
+    name: string;
+    /**
+     * The actual template.
+     */
+    template: BuildDefinition;
+}
+
+/**
+ * For back-compat with extensions that use the old Steps format instead of Process and Phases
+ */
+export interface BuildDefinitionTemplate3_2 {
     canDelete: boolean;
     category: string;
     description: string;
@@ -492,12 +744,24 @@ export interface BuildDefinitionTemplate {
     iconTaskId: string;
     id: string;
     name: string;
-    template: BuildDefinition;
+    template: BuildDefinition3_2;
 }
 
+/**
+ * Represents a variable used by a build definition.
+ */
 export interface BuildDefinitionVariable {
+    /**
+     * Indicates whether the value can be set at queue time.
+     */
     allowOverride: boolean;
+    /**
+     * Indicates whether the variable's value is a secret.
+     */
     isSecret: boolean;
+    /**
+     * The value of the variable.
+     */
     value: string;
 }
 
@@ -519,11 +783,11 @@ export interface BuildDestroyedEvent extends RealtimeBuildEvent {
  */
 export interface BuildLog extends BuildLogReference {
     /**
-     * The date the log was created.
+     * The date and time the log was created.
      */
     createdOn: Date;
     /**
-     * The date the log was last changed.
+     * The date and time the log was last changed.
      */
     lastChangedOn: Date;
     /**
@@ -533,11 +797,11 @@ export interface BuildLog extends BuildLogReference {
 }
 
 /**
- * Data representation of a build log reference
+ * Represents a reference to a build log.
  */
 export interface BuildLogReference {
     /**
-     * The id of the log.
+     * The ID of the log.
      */
     id: number;
     /**
@@ -545,63 +809,135 @@ export interface BuildLogReference {
      */
     type: string;
     /**
-     * Full link to the log resource.
+     * A full link to the log resource.
      */
     url: string;
 }
 
+/**
+ * Represents metadata about builds in the system.
+ */
 export interface BuildMetric {
     /**
-     * Scoped date of the metric
+     * The date for the scope.
      */
     date: Date;
     /**
-     * The int value of the metric
+     * The value.
      */
     intValue: number;
     /**
-     * The name of the metric
+     * The name of the metric.
      */
     name: string;
     /**
-     * The scope of the metric
+     * The scope.
      */
     scope: string;
 }
 
+/**
+ * Represents the application of an optional behavior to a build definition.
+ */
 export interface BuildOption {
+    /**
+     * A reference to the build option.
+     */
     definition: BuildOptionDefinitionReference;
+    /**
+     * Indicates whether the behavior is enabled.
+     */
     enabled: boolean;
     inputs: { [key: string] : string; };
 }
 
+/**
+ * Represents an optional behavior that can be applied to a build definition.
+ */
 export interface BuildOptionDefinition extends BuildOptionDefinitionReference {
+    /**
+     * The description.
+     */
     description: string;
+    /**
+     * The list of input groups defined for the build option.
+     */
     groups: BuildOptionGroupDefinition[];
+    /**
+     * The list of inputs defined for the build option.
+     */
     inputs: BuildOptionInputDefinition[];
+    /**
+     * The name of the build option.
+     */
     name: string;
+    /**
+     * A value that indicates the relative order in which the behavior should be applied.
+     */
     ordinal: number;
 }
 
+/**
+ * Represents a reference to a build option definition.
+ */
 export interface BuildOptionDefinitionReference {
+    /**
+     * The ID of the referenced build option.
+     */
     id: string;
 }
 
+/**
+ * Represents a group of inputs for a build option.
+ */
 export interface BuildOptionGroupDefinition {
+    /**
+     * The name of the group to display in the UI.
+     */
     displayName: string;
+    /**
+     * Indicates whether the group is initially displayed as expanded in the UI.
+     */
     isExpanded: boolean;
+    /**
+     * The internal name of the group.
+     */
     name: string;
 }
 
+/**
+ * Represents an input for a build option.
+ */
 export interface BuildOptionInputDefinition {
+    /**
+     * The default value.
+     */
     defaultValue: string;
+    /**
+     * The name of the input group that this input belongs to.
+     */
     groupName: string;
     help: { [key: string] : string; };
+    /**
+     * The label for the input.
+     */
     label: string;
+    /**
+     * The name of the input.
+     */
     name: string;
     options: { [key: string] : string; };
+    /**
+     * Indicates whether the input is required to have a value.
+     */
     required: boolean;
+    /**
+     * Indicates the type of the input value.
+     */
     type: BuildOptionInputType;
+    /**
+     * The rule that is applied to determine whether the input is visible in the UI.
+     */
     visibleRule: string;
 }
 
@@ -633,6 +969,25 @@ export enum BuildPhaseStatus {
 export interface BuildPollingSummaryEvent {
 }
 
+/**
+ * Represents a build process.
+ */
+export interface BuildProcess {
+    /**
+     * The type of the process.
+     */
+    type: number;
+}
+
+/**
+ * Represents resources used by a build process.
+ */
+export interface BuildProcessResources {
+    endpoints: ServiceEndpointReference[];
+    files: SecureFileReference[];
+    queues: AgentPoolQueueReference[];
+}
+
 export interface BuildProcessTemplate {
     description: string;
     fileExists: boolean;
@@ -646,6 +1001,9 @@ export interface BuildProcessTemplate {
     version: string;
 }
 
+/**
+ * Specifies the desired ordering of builds.
+ */
 export enum BuildQueryOrder {
     /**
      * Order by finish time ascending.
@@ -655,6 +1013,22 @@ export enum BuildQueryOrder {
      * Order by finish time descending.
      */
     FinishTimeDescending = 3,
+    /**
+     * Order by finish time descending.
+     */
+    QueueTimeDescending = 4,
+    /**
+     * Order by finish time descending.
+     */
+    QueueTimeAscending = 5,
+    /**
+     * Order by finish time descending.
+     */
+    StartTimeDescending = 6,
+    /**
+     * Order by finish time descending.
+     */
+    StartTimeAscending = 7,
 }
 
 export interface BuildQueuedEvent extends BuildUpdatedEvent {
@@ -707,90 +1081,145 @@ export enum BuildReason {
     All = 495,
 }
 
+/**
+ * Represents a reference to a build.
+ */
 export interface BuildReference {
     _links: any;
     /**
-     * Build number/name of the build
+     * The build number.
      */
     buildNumber: string;
     /**
-     * Time that the build was completed
+     * Indicates whether the build has been deleted.
+     */
+    deleted: boolean;
+    /**
+     * The time that the build was completed.
      */
     finishTime: Date;
     /**
-     * Id of the build
+     * The ID of the build.
      */
     id: number;
     /**
-     * Time that the build was queued
+     * The time that the build was queued.
      */
     queueTime: Date;
     /**
-     * The identity on whose behalf the build was queued
+     * The identity on whose behalf the build was queued.
      */
     requestedFor: VSSInterfaces.IdentityRef;
     /**
-     * The build result
+     * The build result.
      */
     result: BuildResult;
     /**
-     * Time that the build was started
+     * The time that the build was started.
      */
     startTime: Date;
     /**
-     * Status of the build
+     * The build status.
      */
     status: BuildStatus;
 }
 
+/**
+ * Represents information about a build report.
+ */
 export interface BuildReportMetadata {
+    /**
+     * The Id of the build.
+     */
     buildId: number;
+    /**
+     * The content of the report.
+     */
     content: string;
+    /**
+     * The type of the report.
+     */
     type: string;
 }
 
+/**
+ * Represents a repository used by a build definition.
+ */
 export interface BuildRepository {
+    /**
+     * Indicates whether to checkout submodules.
+     */
     checkoutSubmodules: boolean;
     /**
-     * Indicates whether to clean the target folder when getting code from the repository. This is a String so that it can reference variables.
+     * Indicates whether to clean the target folder when getting code from the repository.
      */
     clean: string;
     /**
-     * Gets or sets the name of the default branch.
+     * The name of the default branch.
      */
     defaultBranch: string;
+    /**
+     * The ID of the repository.
+     */
     id: string;
     /**
-     * Gets or sets the friendly name of the repository.
+     * The friendly name of the repository.
      */
     name: string;
     properties: { [key: string] : string; };
     /**
-     * Gets or sets the root folder.
+     * The root folder.
      */
     rootFolder: string;
     /**
-     * Gets or sets the type of the repository.
+     * The type of the repository.
      */
     type: string;
     /**
-     * Gets or sets the url of the repository.
+     * The URL of the repository.
      */
     url: string;
 }
 
+/**
+ * Represents the result of validating a build request.
+ */
 export interface BuildRequestValidationResult {
+    /**
+     * The message associated with the result.
+     */
     message: string;
+    /**
+     * The result.
+     */
     result: ValidationResult;
 }
 
+/**
+ * Represents information about resources used by builds in the system.
+ */
 export interface BuildResourceUsage {
+    /**
+     * The number of build agents.
+     */
     distributedTaskAgents: number;
+    /**
+     * The number of paid private agent slots.
+     */
     paidPrivateAgentSlots: number;
+    /**
+     * The total usage.
+     */
     totalUsage: number;
+    /**
+     * The number of XAML controllers.
+     */
     xamlControllers: number;
 }
 
+/**
+ * This is not a Flags enum because we don't want to set multiple statuses on a build. However, when adding values, please stick to powers of 2 as if it were a Flags enum This will ensure that things that key off multiple result types (like labelling sources) continue to work
+ */
 export enum BuildResult {
     /**
      * No result
@@ -829,9 +1258,21 @@ export interface BuildServer {
     version: number;
 }
 
+/**
+ * Represents system-wide build settings.
+ */
 export interface BuildSettings {
+    /**
+     * The number of days to keep records of deleted builds.
+     */
     daysToKeepDeletedBuildsBeforeDestroy: number;
+    /**
+     * The default retention policy.
+     */
     defaultRetentionPolicy: RetentionPolicy;
+    /**
+     * The maximum retention policy.
+     */
     maximumRetentionPolicy: RetentionPolicy;
 }
 
@@ -880,7 +1321,13 @@ export interface BuildSummary {
     status: BuildStatus;
 }
 
+/**
+ * Represents a trigger for a buld definition.
+ */
 export interface BuildTrigger {
+    /**
+     * The type of the trigger.
+     */
     triggerType: DefinitionTriggerType;
 }
 
@@ -888,6 +1335,9 @@ export interface BuildUpdatedEvent extends RealtimeBuildEvent {
     build: Build;
 }
 
+/**
+ * Represents a workspace mapping.
+ */
 export interface BuildWorkspace {
     mappings: MappingDetails[];
 }
@@ -905,7 +1355,7 @@ export interface Change {
      */
     displayUri: string;
     /**
-     * Something that identifies the change. For a commit, this would be the SHA1. For a TFVC changeset, this would be the changeset id.
+     * The identifier for the change. For a commit, this would be the SHA1. For a TFVC changeset, this would be the changeset ID.
      */
     id: string;
     /**
@@ -913,15 +1363,19 @@ export interface Change {
      */
     location: string;
     /**
-     * A description of the change. This might be a commit message or changeset description.
+     * The description of the change. This might be a commit message or changeset description.
      */
     message: string;
     /**
-     * Indicates whether the message was truncated
+     * Indicates whether the message was truncated.
      */
     messageTruncated: boolean;
     /**
-     * A timestamp for the change.
+     * The person or process that pushed the change.
+     */
+    pusher: string;
+    /**
+     * The timestamp for the change.
      */
     timestamp: Date;
     /**
@@ -955,17 +1409,26 @@ export interface ContinuousDeploymentDefinition {
     webspace: string;
 }
 
+/**
+ * Represents a continuous integration (CI) trigger.
+ */
 export interface ContinuousIntegrationTrigger extends BuildTrigger {
+    /**
+     * Indicates whether changes should be batched while another CI build is running.
+     */
     batchChanges: boolean;
     branchFilters: string[];
+    /**
+     * The maximum number of simultaneous CI builds that will run per branch.
+     */
     maxConcurrentBuildsPerBranch: number;
     pathFilters: string[];
     /**
-     * The polling interval in seconds.
+     * The polling interval, in seconds.
      */
     pollingInterval: number;
     /**
-     * This is the id of the polling job that polls the external repository.  Once the build definition is saved/updated, this value is set.
+     * The ID of the job used to poll an external repository.
      */
     pollingJobId: string;
 }
@@ -990,6 +1453,9 @@ export enum DefinitionQuality {
     Draft = 2,
 }
 
+/**
+ * Specifies the desired ordering of definitions.
+ */
 export enum DefinitionQueryOrder {
     /**
      * No order
@@ -1029,31 +1495,31 @@ export enum DefinitionQueueStatus {
 }
 
 /**
- * A reference to a definition.
+ * Represents a reference to a definition.
  */
 export interface DefinitionReference {
     /**
-     * The date the definition was created
+     * The date the definition was created.
      */
     createdDate: Date;
     /**
-     * Id of the resource
+     * The ID of the referenced definition.
      */
     id: number;
     /**
-     * Name of the linked resource (definition name, controller name, etc.)
+     * The name of the referenced definition.
      */
     name: string;
     /**
-     * The path this definitions belongs to
+     * The folder path of the definition.
      */
     path: string;
     /**
-     * The project.
+     * A reference to the project.
      */
     project: TfsCoreInterfaces.TeamProjectReference;
     /**
-     * If builds can be queued from this definition
+     * A value that indicates whether builds can be queued against this definition.
      */
     queueStatus: DefinitionQueueStatus;
     /**
@@ -1065,11 +1531,11 @@ export interface DefinitionReference {
      */
     type: DefinitionType;
     /**
-     * The Uri of the definition
+     * The definition's URI.
      */
     uri: string;
     /**
-     * Full http link to the resource
+     * The REST URL of the definition.
      */
     url: string;
 }
@@ -1146,6 +1612,20 @@ export enum DeleteOptions {
 }
 
 /**
+ * Represents a dependency.
+ */
+export interface Dependency {
+    /**
+     * The event. The dependency is satisfied when the referenced object emits this event.
+     */
+    event: string;
+    /**
+     * The scope. This names the object referenced by the dependency.
+     */
+    scope: string;
+}
+
+/**
  * Represents the data from the build information nodes for type "DeploymentInformation" for xaml builds
  */
 export interface Deployment {
@@ -1173,29 +1653,39 @@ export interface DeploymentTest extends Deployment {
     runId: number;
 }
 
+/**
+ * Represents a build process supported by the build definition designer.
+ */
+export interface DesignerProcess extends BuildProcess {
+    phases: Phase[];
+}
+
+/**
+ * Represents a folder that contains build definitions.
+ */
 export interface Folder {
     /**
-     * Process or person who created the folder
+     * The process or person who created the folder.
      */
     createdBy: VSSInterfaces.IdentityRef;
     /**
-     * Creation date of the folder
+     * The date the folder was created.
      */
     createdOn: Date;
     /**
-     * The description of the folder
+     * The description.
      */
     description: string;
     /**
-     * Process or person that last changed the folder
+     * The process or person that last changed the folder.
      */
     lastChangedBy: VSSInterfaces.IdentityRef;
     /**
-     * Date the folder was last changed
+     * The date the folder was last changed.
      */
     lastChangedDate: Date;
     /**
-     * The path of the folder
+     * The full path.
      */
     path: string;
     /**
@@ -1204,6 +1694,9 @@ export interface Folder {
     project: TfsCoreInterfaces.TeamProjectReference;
 }
 
+/**
+ * Specifies the desired ordering of folders.
+ */
 export enum FolderQueryOrder {
     /**
      * No order
@@ -1219,9 +1712,32 @@ export enum FolderQueryOrder {
     FolderDescending = 2,
 }
 
+/**
+ * Represents the ability to build forks of the selected repository.
+ */
+export interface Forks {
+    /**
+     * Indicates whether a build should use secrets when building forks of the selected repository.
+     */
+    allowSecrets: boolean;
+    /**
+     * Indicates whether the trigger should queue builds for forks of the selected repository.
+     */
+    enabled: boolean;
+}
+
+/**
+ * Represents a gated check-in trigger.
+ */
 export interface GatedCheckInTrigger extends BuildTrigger {
     pathFilters: string[];
+    /**
+     * Indicates whether CI triggers should run after the gated check-in succeeds.
+     */
     runContinuousIntegration: boolean;
+    /**
+     * Indicates whether to take workspace mappings into account when determining whether a build should run.
+     */
     useWorkspaceMappings: boolean;
 }
 
@@ -1270,10 +1786,22 @@ export interface InformationNode {
     type: string;
 }
 
+/**
+ * Represents an issue (error, warning) associated with a build.
+ */
 export interface Issue {
+    /**
+     * The category.
+     */
     category: string;
     data: { [key: string] : string; };
+    /**
+     * A description of the issue.
+     */
     message: string;
+    /**
+     * The type (error, warning) of the issue.
+     */
     type: IssueType;
 }
 
@@ -1282,10 +1810,79 @@ export enum IssueType {
     Warning = 2,
 }
 
+/**
+ * Represents an entry in a workspace mapping.
+ */
 export interface MappingDetails {
+    /**
+     * The local path.
+     */
     localPath: string;
+    /**
+     * The mapping type.
+     */
     mappingType: string;
+    /**
+     * The server path.
+     */
     serverPath: string;
+}
+
+/**
+ * Represents options for running a phase against multiple agents.
+ */
+export interface MultipleAgentExecutionOptions extends AgentTargetExecutionOptions {
+    /**
+     * Indicates whether failure on one agent should prevent the phase from running on other agents.
+     */
+    continueOnError: boolean;
+    /**
+     * The maximum number of agents to use simultaneously.
+     */
+    maxConcurrency: number;
+}
+
+/**
+ * Represents a phase of a build definition.
+ */
+export interface Phase {
+    /**
+     * The condition that must be true for this phase to execute.
+     */
+    condition: string;
+    dependencies: Dependency[];
+    /**
+     * The job authorization scope for builds queued against this definition.
+     */
+    jobAuthorizationScope: BuildAuthorizationScope;
+    /**
+     * The cancellation timeout, in minutes, for builds queued against this definition.
+     */
+    jobCancelTimeoutInMinutes: number;
+    /**
+     * The job execution timeout, in minutes, for builds queued against this definition.
+     */
+    jobTimeoutInMinutes: number;
+    /**
+     * The name of the phase.
+     */
+    name: string;
+    steps: BuildDefinitionStep[];
+    /**
+     * The target (agent, server, etc.) for this phase.
+     */
+    target: PhaseTarget;
+    variables: { [key: string] : BuildDefinitionVariable; };
+}
+
+/**
+ * Represents the target of a phase.
+ */
+export interface PhaseTarget {
+    /**
+     * The type of the target.
+     */
+    type: number;
 }
 
 export enum ProcessTemplateType {
@@ -1303,8 +1900,12 @@ export enum ProcessTemplateType {
     Upgrade = 2,
 }
 
+/**
+ * Represents a pull request trigger.
+ */
 export interface PullRequestTrigger extends BuildTrigger {
     branchFilters: string[];
+    forks: Forks;
 }
 
 export enum QueryDeletedOption {
@@ -1360,6 +1961,11 @@ export interface RealtimeBuildEvent {
     buildId: number;
 }
 
+export interface RecreateSubscriptionResult {
+    eventType: string;
+    repositoryType: string;
+}
+
 export enum RepositoryCleanOptions {
     Source = 0,
     SourceAndOutputDir = 1,
@@ -1373,13 +1979,56 @@ export enum RepositoryCleanOptions {
     AllBuildDir = 3,
 }
 
+/**
+ * Represents a repository's webhook returned from a source provider.
+ */
+export interface RepositoryWebhook {
+    /**
+     * The friendly name of the repository.
+     */
+    name: string;
+    /**
+     * The type of the webhook.
+     */
+    type: string;
+    /**
+     * The URL of the repository.
+     */
+    url: string;
+}
+
+/**
+ * Represents a reference to a resource.
+ */
+export interface ResourceReference {
+    /**
+     * An alias to be used when referencing the resource.
+     */
+    alias: string;
+}
+
+/**
+ * Represents a retention policy for a build definition.
+ */
 export interface RetentionPolicy {
     artifacts: string[];
     artifactTypesToDelete: string[];
     branches: string[];
+    /**
+     * The number of days to keep builds.
+     */
     daysToKeep: number;
+    /**
+     * Indicates whether the build record itself should be deleted.
+     */
     deleteBuildRecord: boolean;
+    /**
+     * Indicates whether to delete test results associated with the build.
+     */
     deleteTestResults: boolean;
+    /**
+     * The minimum number of builds to keep.
+     */
     minimumToKeep: number;
 }
 
@@ -1394,6 +2043,10 @@ export interface Schedule {
      */
     scheduleJobId: string;
     /**
+     * Flag to determine if this schedule should only build if the associated source has been changed.
+     */
+    scheduleOnlyWithChanges: boolean;
+    /**
      * Local timezone hour to start
      */
     startHours: number;
@@ -1402,7 +2055,7 @@ export interface Schedule {
      */
     startMinutes: number;
     /**
-     * Time zone of the build schedule (string representation of the time zone id)
+     * Time zone of the build schedule (String representation of the time zone ID)
      */
     timeZoneId: string;
 }
@@ -1446,8 +2099,51 @@ export enum ScheduleDays {
     All = 127,
 }
 
+/**
+ * Represents a schedule trigger.
+ */
 export interface ScheduleTrigger extends BuildTrigger {
     schedules: Schedule[];
+}
+
+/**
+ * Represents a reference to a secure file.
+ */
+export interface SecureFileReference extends ResourceReference {
+    /**
+     * The ID of the secure file.
+     */
+    id: string;
+}
+
+/**
+ * Represents a phase target that runs on the server.
+ */
+export interface ServerTarget extends PhaseTarget {
+    /**
+     * The execution options.
+     */
+    executionOptions: ServerTargetExecutionOptions;
+}
+
+/**
+ * Represents options for running a phase on the server.
+ */
+export interface ServerTargetExecutionOptions {
+    /**
+     * The type.
+     */
+    type: number;
+}
+
+/**
+ * Represents a referenec to a service endpoint.
+ */
+export interface ServiceEndpointReference extends ResourceReference {
+    /**
+     * The ID of the service endpoint.
+     */
+    id: string;
 }
 
 export enum ServiceHostStatus {
@@ -1461,14 +2157,130 @@ export enum ServiceHostStatus {
     Offline = 2,
 }
 
+export interface SourceProviderAttributes {
+    /**
+     * The name of the source provider.
+     */
+    name: string;
+    /**
+     * The capabilities supported by this source provider.
+     */
+    supportedCapabilities: { [key: string] : boolean; };
+    /**
+     * The types of triggers supported by this source provider.
+     */
+    supportedTriggers: SupportedTrigger[];
+}
+
+export enum SourceProviderAvailability {
+    /**
+     * The source provider is available in the hosted environment.
+     */
+    Hosted = 1,
+    /**
+     * The source provider is available in the on-premises environment.
+     */
+    OnPremises = 2,
+    /**
+     * The source provider is available in all environments.
+     */
+    All = 3,
+}
+
+/**
+ * Represents a repository returned from a source provider.
+ */
+export interface SourceRepository {
+    /**
+     * The name of the default branch.
+     */
+    defaultBranch: string;
+    /**
+     * The full name of the repository.
+     */
+    fullName: string;
+    /**
+     * The ID of the repository.
+     */
+    id: string;
+    /**
+     * The friendly name of the repository.
+     */
+    name: string;
+    properties: { [key: string] : string; };
+    /**
+     * The name of the source provider the repository is from.
+     */
+    sourceProviderName: string;
+    /**
+     * The URL of the repository.
+     */
+    url: string;
+}
+
+export interface SupportedTrigger {
+    /**
+     * The default interval to wait between polls (only relevant when NotificationType is Polling).
+     */
+    defaultPollingInterval: number;
+    /**
+     * How the trigger is notified of changes.
+     */
+    notificationType: string;
+    /**
+     * The capabilities supported by this trigger.
+     */
+    supportedCapabilities: { [key: string] : SupportLevel; };
+    /**
+     * The type of trigger.
+     */
+    type: DefinitionTriggerType;
+}
+
+export enum SupportLevel {
+    /**
+     * The functionality is not supported.
+     */
+    Unsupported = 0,
+    /**
+     * The functionality is supported.
+     */
+    Supported = 1,
+    /**
+     * The functionality is required.
+     */
+    Required = 2,
+}
+
+/**
+ * Represents a Subversion mapping entry.
+ */
 export interface SvnMappingDetails {
+    /**
+     * The depth.
+     */
     depth: number;
+    /**
+     * Indicates whether to ignore externals.
+     */
     ignoreExternals: boolean;
+    /**
+     * The local path.
+     */
     localPath: string;
+    /**
+     * The revision.
+     */
     revision: string;
+    /**
+     * The server path.
+     */
     serverPath: string;
 }
 
+/**
+ * Represents a subversion workspace.
+ */
 export interface SvnWorkspace {
     mappings: SvnMappingDetails[];
 }
@@ -1479,23 +2291,53 @@ export interface SyncBuildCompletedEvent extends BuildUpdatedEvent {
 export interface SyncBuildStartedEvent extends BuildUpdatedEvent {
 }
 
+/**
+ * Represents a reference to an agent pool.
+ */
 export interface TaskAgentPoolReference {
+    /**
+     * The pool ID.
+     */
     id: number;
     /**
-     * Gets or sets a value indicating whether or not this pool is managed by the service.
+     * A value indicating whether or not this pool is managed by the service.
      */
     isHosted: boolean;
+    /**
+     * The pool name.
+     */
     name: string;
 }
 
+/**
+ * A reference to a task definition.
+ */
 export interface TaskDefinitionReference {
+    /**
+     * The type of task (task or task group).
+     */
     definitionType: string;
+    /**
+     * The ID of the task.
+     */
     id: string;
+    /**
+     * The version of the task.
+     */
     versionSpec: string;
 }
 
+/**
+ * Represents a reference to a plan group.
+ */
 export interface TaskOrchestrationPlanGroupReference {
+    /**
+     * The name of the plan group.
+     */
     planGroup: string;
+    /**
+     * The project ID.
+     */
     projectId: string;
 }
 
@@ -1503,17 +2345,35 @@ export interface TaskOrchestrationPlanGroupsStartedEvent {
     planGroups: TaskOrchestrationPlanGroupReference[];
 }
 
+/**
+ * Represents a reference to an orchestration plan.
+ */
 export interface TaskOrchestrationPlanReference {
     /**
-     * Orchestration Type for Build (build, cleanup etc.)
+     * The type of the plan.
      */
     orchestrationType: number;
+    /**
+     * The ID of the plan.
+     */
     planId: string;
 }
 
+/**
+ * Represents a reference to a task.
+ */
 export interface TaskReference {
+    /**
+     * The ID of the task definition.
+     */
     id: string;
+    /**
+     * The name of the task definition.
+     */
     name: string;
+    /**
+     * The version of the task definition.
+     */
     version: string;
 }
 
@@ -1526,35 +2386,110 @@ export enum TaskResult {
     Abandoned = 5,
 }
 
+/**
+ * Represents the timeline of a build.
+ */
 export interface Timeline extends TimelineReference {
+    /**
+     * The process or person that last changed the timeline.
+     */
     lastChangedBy: string;
+    /**
+     * The time the timeline was last changed.
+     */
     lastChangedOn: Date;
     records: TimelineRecord[];
 }
 
+/**
+ * Represents an entry in a build's timeline.
+ */
 export interface TimelineRecord {
     _links: any;
+    /**
+     * The change ID.
+     */
     changeId: number;
+    /**
+     * A string that indicates the current operation.
+     */
     currentOperation: string;
+    /**
+     * A reference to a sub-timeline.
+     */
     details: TimelineReference;
+    /**
+     * The number of errors produced by this operation.
+     */
     errorCount: number;
+    /**
+     * The finish time.
+     */
     finishTime: Date;
+    /**
+     * The ID of the record.
+     */
     id: string;
     issues: Issue[];
+    /**
+     * The time the record was last modified.
+     */
     lastModified: Date;
+    /**
+     * A reference to the log produced by this operation.
+     */
     log: BuildLogReference;
+    /**
+     * The name.
+     */
     name: string;
+    /**
+     * An ordinal value relative to other records.
+     */
     order: number;
+    /**
+     * The ID of the record's parent.
+     */
     parentId: string;
+    /**
+     * The current completion percentage.
+     */
     percentComplete: number;
+    /**
+     * The result.
+     */
     result: TaskResult;
+    /**
+     * The result code.
+     */
     resultCode: string;
+    /**
+     * The start time.
+     */
     startTime: Date;
+    /**
+     * The state of the record.
+     */
     state: TimelineRecordState;
+    /**
+     * A reference to the task represented by this timeline record.
+     */
     task: TaskReference;
+    /**
+     * The type of the record.
+     */
     type: string;
+    /**
+     * The REST URL of the timeline record.
+     */
     url: string;
+    /**
+     * The number of warnings produced by this operation.
+     */
     warningCount: number;
+    /**
+     * The name of the agent running the operation.
+     */
     workerName: string;
 }
 
@@ -1568,9 +2503,21 @@ export interface TimelineRecordsUpdatedEvent extends RealtimeBuildEvent {
     timelineRecords: TimelineRecord[];
 }
 
+/**
+ * Represents a reference to a timeline.
+ */
 export interface TimelineReference {
+    /**
+     * The change ID.
+     */
     changeId: number;
+    /**
+     * The ID of the timeline.
+     */
     id: string;
+    /**
+     * The REST URL of the timeline.
+     */
     url: string;
 }
 
@@ -1578,6 +2525,65 @@ export enum ValidationResult {
     OK = 0,
     Warning = 1,
     Error = 2,
+}
+
+/**
+ * Represents a variable group.
+ */
+export interface VariableGroup extends VariableGroupReference {
+    /**
+     * The description.
+     */
+    description: string;
+    /**
+     * The name of the variable group.
+     */
+    name: string;
+    /**
+     * The type of the variable group.
+     */
+    type: string;
+    variables: { [key: string] : BuildDefinitionVariable; };
+}
+
+/**
+ * Represents a reference to a variable group.
+ */
+export interface VariableGroupReference {
+    /**
+     * The ID of the variable group.
+     */
+    id: number;
+}
+
+/**
+ * Represents options for running a phase based on values specified by a list of variables.
+ */
+export interface VariableMultipliersAgentExecutionOptions extends AgentTargetExecutionOptions {
+    /**
+     * Indicates whether failure on one agent should prevent the phase from running on other agents.
+     */
+    continueOnError: boolean;
+    /**
+     * The maximum number of agents to use in parallel.
+     */
+    maxConcurrency: number;
+    multipliers: string[];
+}
+
+/**
+ * Represents options for running a phase based on values specified by a list of variables.
+ */
+export interface VariableMultipliersServerExecutionOptions extends ServerTargetExecutionOptions {
+    /**
+     * Indicates whether failure of one job should prevent the phase from running in other jobs.
+     */
+    continueOnError: boolean;
+    /**
+     * The maximum number of server jobs to run in parallel.
+     */
+    maxConcurrency: number;
+    multipliers: string[];
 }
 
 /**
@@ -1749,6 +2755,21 @@ export interface XamlDefinitionReference {
     url: string;
 }
 
+/**
+ * Represents a YAML process.
+ */
+export interface YamlProcess extends BuildProcess {
+    errors: string[];
+    /**
+     * The resources used by the build definition.
+     */
+    resources: BuildProcessResources;
+    /**
+     * The YAML filename.
+     */
+    yamlFilename: string;
+}
+
 export var TypeInfo = {
     AgentStatus: {
         enumValues: {
@@ -1784,17 +2805,23 @@ export var TypeInfo = {
     },
     BuildDefinition: <any>{
     },
+    BuildDefinition3_2: <any>{
+    },
     BuildDefinitionChangedEvent: <any>{
     },
     BuildDefinitionChangingEvent: <any>{
     },
     BuildDefinitionReference: <any>{
     },
+    BuildDefinitionReference3_2: <any>{
+    },
     BuildDefinitionRevision: <any>{
     },
     BuildDefinitionSourceProvider: <any>{
     },
     BuildDefinitionTemplate: <any>{
+    },
+    BuildDefinitionTemplate3_2: <any>{
     },
     BuildDeletedEvent: <any>{
     },
@@ -1833,7 +2860,11 @@ export var TypeInfo = {
     BuildQueryOrder: {
         enumValues: {
             "finishTimeAscending": 2,
-            "finishTimeDescending": 3
+            "finishTimeDescending": 3,
+            "queueTimeDescending": 4,
+            "queueTimeAscending": 5,
+            "startTimeDescending": 6,
+            "startTimeAscending": 7
         }
     },
     BuildQueuedEvent: <any>{
@@ -1888,6 +2919,8 @@ export var TypeInfo = {
     BuildUpdatedEvent: <any>{
     },
     Change: <any>{
+    },
+    ContinuousDeploymentDefinition: <any>{
     },
     ContinuousIntegrationTrigger: <any>{
     },
@@ -1951,6 +2984,8 @@ export var TypeInfo = {
             "all": 31
         }
     },
+    DesignerProcess: <any>{
+    },
     Folder: <any>{
     },
     FolderQueryOrder: {
@@ -1978,6 +3013,8 @@ export var TypeInfo = {
             "error": 1,
             "warning": 2
         }
+    },
+    Phase: <any>{
     },
     ProcessTemplateType: {
         enumValues: {
@@ -2039,6 +3076,24 @@ export var TypeInfo = {
         enumValues: {
             "online": 1,
             "offline": 2
+        }
+    },
+    SourceProviderAttributes: <any>{
+    },
+    SourceProviderAvailability: {
+        enumValues: {
+            "hosted": 1,
+            "onPremises": 2,
+            "all": 3
+        }
+    },
+    SupportedTrigger: <any>{
+    },
+    SupportLevel: {
+        enumValues: {
+            "unsupported": 0,
+            "supported": 1,
+            "required": 2
         }
     },
     SyncBuildCompletedEvent: <any>{
@@ -2108,6 +3163,9 @@ TypeInfo.Build.fields = {
     priority: {
         enumType: TypeInfo.QueuePriority
     },
+    project: {
+        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
+    },
     queueOptions: {
         enumType: TypeInfo.QueueOptions
     },
@@ -2163,6 +3221,18 @@ TypeInfo.BuildChangesCalculatedEvent.fields = {
 TypeInfo.BuildCompletedEvent.fields = {
     build: {
         typeInfo: TypeInfo.Build
+    },
+    buildErrors: {
+        isArray: true,
+        typeInfo: TypeInfo.BuildRequestValidationResult
+    },
+    buildWarnings: {
+        isArray: true,
+        typeInfo: TypeInfo.BuildRequestValidationResult
+    },
+    changes: {
+        isArray: true,
+        typeInfo: TypeInfo.Change
     }
 };
 
@@ -2185,6 +3255,10 @@ TypeInfo.BuildDefinition.fields = {
     draftOf: {
         typeInfo: TypeInfo.DefinitionReference
     },
+    drafts: {
+        isArray: true,
+        typeInfo: TypeInfo.DefinitionReference
+    },
     jobAuthorizationScope: {
         enumType: TypeInfo.BuildAuthorizationScope
     },
@@ -2197,6 +3271,51 @@ TypeInfo.BuildDefinition.fields = {
     metrics: {
         isArray: true,
         typeInfo: TypeInfo.BuildMetric
+    },
+    project: {
+        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
+    },
+    quality: {
+        enumType: TypeInfo.DefinitionQuality
+    },
+    queueStatus: {
+        enumType: TypeInfo.DefinitionQueueStatus
+    },
+    triggers: {
+        isArray: true,
+        typeInfo: TypeInfo.BuildTrigger
+    },
+    type: {
+        enumType: TypeInfo.DefinitionType
+    }
+};
+
+TypeInfo.BuildDefinition3_2.fields = {
+    createdDate: {
+        isDate: true,
+    },
+    draftOf: {
+        typeInfo: TypeInfo.DefinitionReference
+    },
+    drafts: {
+        isArray: true,
+        typeInfo: TypeInfo.DefinitionReference
+    },
+    jobAuthorizationScope: {
+        enumType: TypeInfo.BuildAuthorizationScope
+    },
+    latestBuild: {
+        typeInfo: TypeInfo.Build
+    },
+    latestCompletedBuild: {
+        typeInfo: TypeInfo.Build
+    },
+    metrics: {
+        isArray: true,
+        typeInfo: TypeInfo.BuildMetric
+    },
+    project: {
+        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
     },
     quality: {
         enumType: TypeInfo.DefinitionQuality
@@ -2241,9 +3360,51 @@ TypeInfo.BuildDefinitionReference.fields = {
     draftOf: {
         typeInfo: TypeInfo.DefinitionReference
     },
+    drafts: {
+        isArray: true,
+        typeInfo: TypeInfo.DefinitionReference
+    },
+    latestBuild: {
+        typeInfo: TypeInfo.Build
+    },
+    latestCompletedBuild: {
+        typeInfo: TypeInfo.Build
+    },
     metrics: {
         isArray: true,
         typeInfo: TypeInfo.BuildMetric
+    },
+    project: {
+        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
+    },
+    quality: {
+        enumType: TypeInfo.DefinitionQuality
+    },
+    queueStatus: {
+        enumType: TypeInfo.DefinitionQueueStatus
+    },
+    type: {
+        enumType: TypeInfo.DefinitionType
+    }
+};
+
+TypeInfo.BuildDefinitionReference3_2.fields = {
+    createdDate: {
+        isDate: true,
+    },
+    draftOf: {
+        typeInfo: TypeInfo.DefinitionReference
+    },
+    drafts: {
+        isArray: true,
+        typeInfo: TypeInfo.DefinitionReference
+    },
+    metrics: {
+        isArray: true,
+        typeInfo: TypeInfo.BuildMetric
+    },
+    project: {
+        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
     },
     quality: {
         enumType: TypeInfo.DefinitionQuality
@@ -2277,6 +3438,12 @@ TypeInfo.BuildDefinitionSourceProvider.fields = {
 TypeInfo.BuildDefinitionTemplate.fields = {
     template: {
         typeInfo: TypeInfo.BuildDefinition
+    }
+};
+
+TypeInfo.BuildDefinitionTemplate3_2.fields = {
+    template: {
+        typeInfo: TypeInfo.BuildDefinition3_2
     }
 };
 
@@ -2413,6 +3580,12 @@ TypeInfo.Change.fields = {
     }
 };
 
+TypeInfo.ContinuousDeploymentDefinition.fields = {
+    project: {
+        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
+    }
+};
+
 TypeInfo.ContinuousIntegrationTrigger.fields = {
     triggerType: {
         enumType: TypeInfo.DefinitionTriggerType
@@ -2423,11 +3596,21 @@ TypeInfo.DefinitionReference.fields = {
     createdDate: {
         isDate: true,
     },
+    project: {
+        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
+    },
     queueStatus: {
         enumType: TypeInfo.DefinitionQueueStatus
     },
     type: {
         enumType: TypeInfo.DefinitionType
+    }
+};
+
+TypeInfo.DesignerProcess.fields = {
+    phases: {
+        isArray: true,
+        typeInfo: TypeInfo.Phase
     }
 };
 
@@ -2437,6 +3620,9 @@ TypeInfo.Folder.fields = {
     },
     lastChangedDate: {
         isDate: true,
+    },
+    project: {
+        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
     }
 };
 
@@ -2458,6 +3644,12 @@ TypeInfo.Issue.fields = {
     }
 };
 
+TypeInfo.Phase.fields = {
+    jobAuthorizationScope: {
+        enumType: TypeInfo.BuildAuthorizationScope
+    }
+};
+
 TypeInfo.PullRequestTrigger.fields = {
     triggerType: {
         enumType: TypeInfo.DefinitionTriggerType
@@ -2476,6 +3668,23 @@ TypeInfo.ScheduleTrigger.fields = {
         typeInfo: TypeInfo.Schedule
     },
     triggerType: {
+        enumType: TypeInfo.DefinitionTriggerType
+    }
+};
+
+TypeInfo.SourceProviderAttributes.fields = {
+    supportedTriggers: {
+        isArray: true,
+        typeInfo: TypeInfo.SupportedTrigger
+    }
+};
+
+TypeInfo.SupportedTrigger.fields = {
+    supportedCapabilities: {
+        isDictionary: true,
+        dictionaryValueEnumType: TypeInfo.SupportLevel
+    },
+    type: {
         enumType: TypeInfo.DefinitionTriggerType
     }
 };
@@ -2556,6 +3765,9 @@ TypeInfo.XamlBuildDefinition.fields = {
     },
     createdOn: {
         isDate: true,
+    },
+    project: {
+        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
     },
     queueStatus: {
         enumType: TypeInfo.DefinitionQueueStatus

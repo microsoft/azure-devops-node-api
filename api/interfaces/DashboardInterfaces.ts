@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -12,21 +12,63 @@
 
 
 
+/**
+ * Model of a Dashboard.
+ */
 export interface Dashboard {
     _links: any;
+    /**
+     * Description of the dashboard.
+     */
+    description: string;
+    /**
+     * Server defined version tracking value, used for edit collision detection.
+     */
     eTag: string;
+    /**
+     * ID of the Dashboard. Provided by service at creation time.
+     */
     id: string;
+    /**
+     * Name of the Dashboard.
+     */
     name: string;
+    /**
+     * ID of the Owner for a dashboard. For any legacy dashboards, this would be the unique identifier for the team associated with the dashboard.
+     */
+    ownerId: string;
+    /**
+     * Position of the dashboard, within a dashboard group. If unset at creation time, position is decided by the service.
+     */
     position: number;
+    /**
+     * Interval for client to automatically refresh the dashboard. Expressed in minutes.
+     */
     refreshInterval: number;
     url: string;
+    /**
+     * The set of Widgets on the dashboard.
+     */
     widgets: Widget[];
 }
 
+/**
+ * Describes a list of dashboards associated to an owner. Currently, teams own dashboard groups.
+ */
 export interface DashboardGroup {
     _links: any;
+    /**
+     * A list of Dashboards held by the Dashboard Group
+     */
     dashboardEntries: DashboardGroupEntry[];
+    /**
+     * Deprecated: The old permission model describing the level of permissions for the current team. Pre-M125.
+     */
     permission: GroupMemberPermission;
+    /**
+     * A permissions bit mask describing the security permissions of the current team for dashboards. When this permission is the value None, use GroupMemberPermission. Permissions are evaluated based on the presence of a value other than None, else the GroupMemberPermission will be saved.
+     */
+    teamDashboardPermission: TeamDashboardPermission;
     url: string;
 }
 
@@ -45,6 +87,9 @@ export interface DashboardGroupEntryResponse extends DashboardGroupEntry {
 export interface DashboardResponse extends DashboardGroupEntry {
 }
 
+/**
+ * identifies the scope of dashboard storage and permissions.
+ */
 export enum DashboardScope {
     Collection_User = 0,
     Project_Team = 1,
@@ -93,6 +138,15 @@ export interface SemanticVersion {
     patch: number;
 }
 
+export enum TeamDashboardPermission {
+    None = 0,
+    Read = 1,
+    Create = 2,
+    Edit = 4,
+    Delete = 8,
+    ManagePermissions = 16,
+}
+
 /**
  * Widget data
  */
@@ -133,7 +187,7 @@ export interface Widget {
 }
 
 /**
- * For V1, this is just a pool of definitions describing our possible Widgets.
+ * Contribution based information describing Dashboard Widgets.
  */
 export interface WidgetMetadata {
     /**
@@ -165,7 +219,7 @@ export interface WidgetMetadata {
      */
     configurationRequired: boolean;
     /**
-     * Uri for the WidgetFactory to get the widget
+     * Uri for the widget content to be loaded from .
      */
     contentUri: string;
     /**
@@ -173,7 +227,7 @@ export interface WidgetMetadata {
      */
     contributionId: string;
     /**
-     * Optional default settings to be copied into widget settings
+     * Optional default settings to be copied into widget settings.
      */
     defaultSettings: string;
     /**
@@ -189,11 +243,11 @@ export interface WidgetMetadata {
      */
     isNameConfigurable: boolean;
     /**
-     * Opt-out boolean indicating if the widget is hidden from the catalog.  For V1, only "pull" model widgets can be provided from the catalog.
+     * Opt-out boolean indicating if the widget is hidden from the catalog. Commonly, this is used to allow developers to disable creation of a deprecated widget. A widget must have a functional default state, or have a configuration experience, in order to be visible from the catalog.
      */
     isVisibleFromCatalog: boolean;
     /**
-     * Opt-in lightbox properties
+     * Opt-in properties for customizing widget presentation in a "lightbox" dialog.
      */
     lightboxOptions: LightboxOptions;
     /**
@@ -217,7 +271,7 @@ export interface WidgetMetadata {
      */
     targets: string[];
     /**
-     * Dev-facing id of this kind of widget.
+     * Deprecated: locally unique developer-facing id of this kind of widget. ContributionId provides a globally unique identifier for widget types.
      */
     typeId: string;
 }
@@ -238,13 +292,22 @@ export interface WidgetPosition {
 export interface WidgetResponse extends Widget {
 }
 
+/**
+ * data contract required for the widget to function in a webaccess area or page.
+ */
 export enum WidgetScope {
     Collection_User = 0,
     Project_Team = 1,
 }
 
 export interface WidgetSize {
+    /**
+     * The Width of the widget, expressed in dashboard grid columns.
+     */
     columnSpan: number;
+    /**
+     * The height of the widget, expressed in dashboard grid rows.
+     */
     rowSpan: number;
 }
 
@@ -279,6 +342,16 @@ export var TypeInfo = {
             "managePermissions": 3
         }
     },
+    TeamDashboardPermission: {
+        enumValues: {
+            "none": 0,
+            "read": 1,
+            "create": 2,
+            "edit": 4,
+            "delete": 8,
+            "managePermissions": 16
+        }
+    },
     WidgetMetadata: <any>{
     },
     WidgetMetadataResponse: <any>{
@@ -297,24 +370,27 @@ TypeInfo.DashboardGroup.fields = {
     permission: {
         enumType: TypeInfo.GroupMemberPermission
     },
+    teamDashboardPermission: {
+        enumType: TypeInfo.TeamDashboardPermission
+    }
 };
 
 TypeInfo.WidgetMetadata.fields = {
     supportedScopes: {
         isArray: true,
         enumType: TypeInfo.WidgetScope
-    },
+    }
 };
 
 TypeInfo.WidgetMetadataResponse.fields = {
     widgetMetadata: {
         typeInfo: TypeInfo.WidgetMetadata
-    },
+    }
 };
 
 TypeInfo.WidgetTypesResponse.fields = {
     widgetTypes: {
         isArray: true,
         typeInfo: TypeInfo.WidgetMetadata
-    },
+    }
 };

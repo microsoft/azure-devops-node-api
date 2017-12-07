@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -82,36 +82,10 @@ export interface AccountCreateInfoInternal {
     serviceDefinitions: { key: string; value: string }[];
 }
 
-export interface AccountNameAvailability {
-    isValidName: boolean;
-    /**
-     * Reason for current status
-     */
-    statusReason: string;
-}
-
 export interface AccountPreferencesInternal {
     culture: any;
     language: any;
     timeZone: any;
-}
-
-/**
- * Account region metadata
- */
-export interface AccountRegion {
-    /**
-     * Display name of the account region
-     */
-    displayName: string;
-    /**
-     * Whether the region is default or not
-     */
-    isDefault: boolean;
-    /**
-     * Azure location name
-     */
-    locationName: string;
 }
 
 export enum AccountStatus {
@@ -210,5 +184,5 @@ TypeInfo.Account.fields = {
     },
     lastUpdatedDate: {
         isDate: true,
-    },
+    }
 };

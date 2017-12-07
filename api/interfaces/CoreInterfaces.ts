@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -79,16 +79,25 @@ export interface ProjectInfo {
     state: any;
     uri: string;
     version: number;
+    visibility: ProjectVisibility;
 }
 
 export interface ProjectMessage {
     project: ProjectInfo;
     projectChangeType: ProjectChangeType;
+    shouldInvalidateSystemStore: boolean;
 }
 
 export interface ProjectProperty {
     name: string;
-    value: string;
+    value: any;
+}
+
+export enum ProjectVisibility {
+    Unchanged = -1,
+    Private = 0,
+    Organization = 1,
+    Public = 2,
 }
 
 export interface Proxy {
@@ -245,6 +254,10 @@ export interface TeamProjectReference {
      * Url to the full version of the object.
      */
     url: string;
+    /**
+     * Project visibility.
+     */
+    visibility: ProjectVisibility;
 }
 
 /**
@@ -320,6 +333,9 @@ export interface WebApiConnectedServiceRef {
  * The representation of data needed to create a tag definition which is sent across the wire.
  */
 export interface WebApiCreateTagRequestData {
+    /**
+     * Name of the tag definition that will be created.
+     */
     name: string;
 }
 
@@ -372,9 +388,21 @@ export interface WebApiProjectCollectionRef {
  * The representation of a tag definition which is sent across the wire.
  */
 export interface WebApiTagDefinition {
+    /**
+     * Whether or not the tag definition is active.
+     */
     active: boolean;
+    /**
+     * ID of the tag definition.
+     */
     id: string;
+    /**
+     * The name of the tag definition.
+     */
     name: string;
+    /**
+     * Resource URL for the Tag Definition.
+     */
     url: string;
 }
 
@@ -433,26 +461,47 @@ export var TypeInfo = {
     },
     ProjectMessage: <any>{
     },
+    ProjectVisibility: {
+        enumValues: {
+            "unchanged": -1,
+            "private": 0,
+            "organization": 1,
+            "public": 2
+        }
+    },
     SourceControlTypes: {
         enumValues: {
             "tfvc": 1,
             "git": 2
         }
     },
+    TeamProject: <any>{
+    },
+    TeamProjectReference: <any>{
+    },
     TemporaryDataCreatedDTO: <any>{
+    },
+    WebApiConnectedService: <any>{
+    },
+    WebApiConnectedServiceDetails: <any>{
+    },
+    WebApiProject: <any>{
     },
 };
 
 TypeInfo.Process.fields = {
     type: {
         enumType: TypeInfo.ProcessType
-    },
+    }
 };
 
 TypeInfo.ProjectInfo.fields = {
     lastUpdateTime: {
         isDate: true,
     },
+    visibility: {
+        enumType: TypeInfo.ProjectVisibility
+    }
 };
 
 TypeInfo.ProjectMessage.fields = {
@@ -461,11 +510,41 @@ TypeInfo.ProjectMessage.fields = {
     },
     projectChangeType: {
         enumType: TypeInfo.ProjectChangeType
-    },
+    }
+};
+
+TypeInfo.TeamProject.fields = {
+    visibility: {
+        enumType: TypeInfo.ProjectVisibility
+    }
+};
+
+TypeInfo.TeamProjectReference.fields = {
+    visibility: {
+        enumType: TypeInfo.ProjectVisibility
+    }
 };
 
 TypeInfo.TemporaryDataCreatedDTO.fields = {
     expirationDate: {
         isDate: true,
-    },
+    }
+};
+
+TypeInfo.WebApiConnectedService.fields = {
+    project: {
+        typeInfo: TypeInfo.TeamProjectReference
+    }
+};
+
+TypeInfo.WebApiConnectedServiceDetails.fields = {
+    connectedServiceMetaData: {
+        typeInfo: TypeInfo.WebApiConnectedService
+    }
+};
+
+TypeInfo.WebApiProject.fields = {
+    visibility: {
+        enumType: TypeInfo.ProjectVisibility
+    }
 };

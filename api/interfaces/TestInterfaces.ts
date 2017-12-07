@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -39,6 +39,7 @@ export interface AggregatedResultsByOutcome {
     groupByField: string;
     groupByValue: any;
     outcome: TestOutcome;
+    rerunResultCount: number;
 }
 
 export interface AggregatedResultsDifference {
@@ -49,6 +50,9 @@ export interface AggregatedResultsDifference {
     increaseInTotalTests: number;
 }
 
+/**
+ * The types of test attachments.
+ */
 export enum AttachmentType {
     GeneralAttachment = 0,
     AfnStrip = 1,
@@ -280,6 +284,9 @@ export interface CodeCoverageSummary {
     deltaBuild: ShallowReference;
 }
 
+/**
+ * Used to choose which coverage data is returned by a QueryXXXCoverage() call.
+ */
 export enum CoverageQueryFlags {
     /**
      * If set, the Coverage.Modules property will be populated.
@@ -347,6 +354,17 @@ export interface FailingSince {
     release: ReleaseReference;
 }
 
+export interface FieldDetailsForTestResults {
+    /**
+     * Group by field name
+     */
+    fieldName: string;
+    /**
+     * Group by field values
+     */
+    groupsForField: any[];
+}
+
 export interface FunctionCoverage {
     class: string;
     name: string;
@@ -368,7 +386,6 @@ export interface LinkedWorkItemsQuery {
     suiteIds: number[];
     testCaseIds: number[];
     workItemCategory: string;
-    workItemCount: number;
 }
 
 export interface LinkedWorkItemsQueryResult {
@@ -400,6 +417,7 @@ export interface PlanUpdateModel {
     automatedTestEnvironment: TestEnvironment;
     automatedTestSettings: TestSettings;
     build: ShallowReference;
+    buildDefinition: ShallowReference;
     configurationIds: number[];
     description: string;
     endDate: string;
@@ -408,6 +426,7 @@ export interface PlanUpdateModel {
     manualTestSettings: TestSettings;
     name: string;
     owner: VSSInterfaces.IdentityRef;
+    releaseEnvironmentDefinition: ReleaseEnvironmentDefinitionReference;
     startDate: string;
     state: string;
     status: string;
@@ -445,6 +464,11 @@ export interface QueryModel {
     query: string;
 }
 
+export interface ReleaseEnvironmentDefinitionReference {
+    definitionId: number;
+    environmentDefinitionId: number;
+}
+
 export interface ReleaseReference {
     definitionId: number;
     environmentDefinitionId: number;
@@ -468,6 +492,9 @@ export enum ResultDetails {
     WorkItems = 2,
 }
 
+/**
+ * The top level entity that is being cloned as part of a Clone operation
+ */
 export enum ResultObjectType {
     TestSuite = 0,
     TestPlan = 1,
@@ -486,6 +513,7 @@ export interface ResultsFilter {
     groupBy: string;
     maxCompleteDate: Date;
     resultsCount: number;
+    testCaseReferenceIds: number[];
     testResultsContext: TestResultsContext;
     trendDays: number;
 }
@@ -654,6 +682,12 @@ export interface SuiteTestCase {
 }
 
 export interface SuiteUpdateModel {
+    defaultConfigurations: ShallowReference[];
+    defaultTesters: ShallowReference[];
+    inheritDefaultConfigurations: boolean;
+    name: string;
+    parent: ShallowReference;
+    queryString: string;
 }
 
 export interface TestActionResultModel extends TestResultModelBase {
@@ -822,6 +856,9 @@ export interface TestConfiguration {
     values: NameValuePair[];
 }
 
+/**
+ * Represents the state of an ITestConfiguration object.
+ */
 export enum TestConfigurationState {
     /**
      * The configuration can be used for new test runs.
@@ -965,6 +1002,7 @@ export interface TestPlan {
     automatedTestEnvironment: TestEnvironment;
     automatedTestSettings: TestSettings;
     build: ShallowReference;
+    buildDefinition: ShallowReference;
     clientUrl: string;
     description: string;
     endDate: Date;
@@ -976,6 +1014,7 @@ export interface TestPlan {
     owner: VSSInterfaces.IdentityRef;
     previousBuild: ShallowReference;
     project: ShallowReference;
+    releaseEnvironmentDefinition: ReleaseEnvironmentDefinitionReference;
     revision: number;
     rootSuite: ShallowReference;
     startDate: Date;
@@ -996,6 +1035,7 @@ export interface TestPlanHubData {
     testPlan: TestPlan;
     testPoints: TestPoint[];
     testSuites: TestSuite[];
+    totalTestPoints: number;
 }
 
 export interface TestPlansWithSelection {
@@ -1135,6 +1175,32 @@ export interface TestResultsDetailsForGroup {
     resultsCountByOutcome: { [key: number] : AggregatedResultsByOutcome; };
 }
 
+export interface TestResultsGroupsForBuild {
+    /**
+     * BuildId for which groupby result is fetched.
+     */
+    buildId: number;
+    /**
+     * The group by results
+     */
+    fields: FieldDetailsForTestResults[];
+}
+
+export interface TestResultsGroupsForRelease {
+    /**
+     * The group by results
+     */
+    fields: FieldDetailsForTestResults[];
+    /**
+     * Release Environment Id for which groupby result is fetched.
+     */
+    releaseEnvId: number;
+    /**
+     * ReleaseId for which groupby result is fetched.
+     */
+    releaseId: number;
+}
+
 export interface TestResultsQuery {
     fields: string[];
     results: TestCaseResult[];
@@ -1152,6 +1218,7 @@ export interface TestResultTrendFilter {
     branchNames: string[];
     buildCount: number;
     definitionIds: number[];
+    envDefinitionIds: number[];
     maxCompleteDate: Date;
     publishContext: string;
     testRunTitles: string[];
@@ -1211,11 +1278,66 @@ export interface TestRunCoverage {
     testRun: ShallowReference;
 }
 
+/**
+ * The types of publish context for run.
+ */
+export enum TestRunPublishContext {
+    /**
+     * Run is published for Build Context.
+     */
+    Build = 1,
+    /**
+     * Run is published for Release Context.
+     */
+    Release = 2,
+    /**
+     * Run is published for any Context.
+     */
+    All = 3,
+}
+
+/**
+ * The types of states for test run.
+ */
+export enum TestRunState {
+    /**
+     * Only used during an update to preserve the existing value.
+     */
+    Unspecified = 0,
+    /**
+     * The run is still being created.  No tests have started yet.
+     */
+    NotStarted = 1,
+    /**
+     * Tests are running.
+     */
+    InProgress = 2,
+    /**
+     * All tests have completed or been skipped.
+     */
+    Completed = 3,
+    /**
+     * Run is stopped and remaing tests have been aborted
+     */
+    Aborted = 4,
+    /**
+     * Run is currently initializing This is a legacy state and should not be used any more
+     */
+    Waiting = 5,
+    /**
+     * Run requires investigation because of a test point failure This is a legacy state and should not be used any more
+     */
+    NeedsInvestigation = 6,
+}
+
 export interface TestRunStatistic {
     run: ShallowReference;
     runStatistics: RunStatistic[];
 }
 
+/**
+ * The types of sub states for test run. It gives the user more info about the test run beyond the high level test run state
+ */
 export enum TestRunSubstate {
     None = 0,
     CreatingEnvironment = 1,
@@ -1306,6 +1428,9 @@ export interface TestSessionExploredWorkItemReference extends TestSessionWorkIte
     startTime: Date;
 }
 
+/**
+ * Represents the state of the test session.
+ */
 export enum TestSessionSource {
     /**
      * Source of test session uncertain as it is stale
@@ -1337,6 +1462,9 @@ export enum TestSessionSource {
     SessionInsightsForAll = 6,
 }
 
+/**
+ * Represents the state of the test session.
+ */
 export enum TestSessionState {
     /**
      * Only used during an update to preserve the existing value.
@@ -1413,6 +1541,7 @@ export interface TestSuite {
     areaUri: string;
     children: TestSuite[];
     defaultConfigurations: ShallowReference[];
+    defaultTesters: ShallowReference[];
     id: number;
     inheritDefaultConfigurations: boolean;
     lastError: string;
@@ -1663,6 +1792,24 @@ export var TypeInfo = {
     },
     TestRun: <any>{
     },
+    TestRunPublishContext: {
+        enumValues: {
+            "build": 1,
+            "release": 2,
+            "all": 3
+        }
+    },
+    TestRunState: {
+        enumValues: {
+            "unspecified": 0,
+            "notStarted": 1,
+            "inProgress": 2,
+            "completed": 3,
+            "aborted": 4,
+            "waiting": 5,
+            "needsInvestigation": 6
+        }
+    },
     TestRunSubstate: {
         enumValues: {
             "none": 0,
@@ -1715,7 +1862,7 @@ TypeInfo.AggregatedDataForResultTrend.fields = {
     },
     testResultsContext: {
         typeInfo: TypeInfo.TestResultsContext
-    },
+    }
 };
 
 TypeInfo.AggregatedResultsAnalysis.fields = {
@@ -1731,13 +1878,13 @@ TypeInfo.AggregatedResultsAnalysis.fields = {
         isDictionary: true,
         dictionaryKeyEnumType: TypeInfo.TestOutcome,
         dictionaryValueTypeInfo: TypeInfo.AggregatedResultsByOutcome
-    },
+    }
 };
 
 TypeInfo.AggregatedResultsByOutcome.fields = {
     outcome: {
         enumType: TypeInfo.TestOutcome
-    },
+    }
 };
 
 TypeInfo.BatchResponse.fields = {
@@ -1759,7 +1906,7 @@ TypeInfo.CloneOperationInformation.fields = {
     },
     state: {
         enumType: TypeInfo.CloneOperationState
-    },
+    }
 };
 
 TypeInfo.CustomTestFieldDefinition.fields = {
@@ -1768,19 +1915,19 @@ TypeInfo.CustomTestFieldDefinition.fields = {
     },
     scope: {
         enumType: TypeInfo.CustomTestFieldScope
-    },
+    }
 };
 
 TypeInfo.FailingSince.fields = {
     date: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.LastResultDetails.fields = {
     dateCompleted: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.Response.fields = {
@@ -1789,7 +1936,7 @@ TypeInfo.Response.fields = {
 TypeInfo.ResultRetentionSettings.fields = {
     lastUpdatedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.ResultsFilter.fields = {
@@ -1798,7 +1945,7 @@ TypeInfo.ResultsFilter.fields = {
     },
     testResultsContext: {
         typeInfo: TypeInfo.TestResultsContext
-    },
+    }
 };
 
 TypeInfo.ResultUpdateRequestModel.fields = {
@@ -1809,7 +1956,7 @@ TypeInfo.ResultUpdateRequestModel.fields = {
     actionResults: {
         isArray: true,
         typeInfo: TypeInfo.TestActionResultModel
-    },
+    }
 };
 
 TypeInfo.RunUpdateModel.fields = {
@@ -1819,7 +1966,7 @@ TypeInfo.RunUpdateModel.fields = {
     },
     substate: {
         enumType: TypeInfo.TestRunSubstate
-    },
+    }
 };
 
 TypeInfo.TestActionResultModel.fields = {
@@ -1828,7 +1975,7 @@ TypeInfo.TestActionResultModel.fields = {
     },
     startedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TestAttachment.fields = {
@@ -1837,7 +1984,7 @@ TypeInfo.TestAttachment.fields = {
     },
     createdDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TestCaseResult.fields = {
@@ -1859,7 +2006,7 @@ TypeInfo.TestCaseResult.fields = {
     },
     startedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TestConfiguration.fields = {
@@ -1868,13 +2015,13 @@ TypeInfo.TestConfiguration.fields = {
     },
     state: {
         enumType: TypeInfo.TestConfigurationState
-    },
+    }
 };
 
 TypeInfo.TestFailuresAnalysis.fields = {
     previousContext: {
         typeInfo: TypeInfo.TestResultsContext
-    },
+    }
 };
 
 TypeInfo.TestIterationDetailsModel.fields = {
@@ -1887,13 +2034,13 @@ TypeInfo.TestIterationDetailsModel.fields = {
     },
     startedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TestMessageLogDetails.fields = {
     dateCreated: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TestPlan.fields = {
@@ -1905,13 +2052,13 @@ TypeInfo.TestPlan.fields = {
     },
     updatedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TestPlanCloneRequest.fields = {
     destinationTestPlan: {
         typeInfo: TypeInfo.TestPlan
-    },
+    }
 };
 
 TypeInfo.TestPlanHubData.fields = {
@@ -1925,14 +2072,14 @@ TypeInfo.TestPlanHubData.fields = {
     testSuites: {
         isArray: true,
         typeInfo: TypeInfo.TestSuite
-    },
+    }
 };
 
 TypeInfo.TestPlansWithSelection.fields = {
     plans: {
         isArray: true,
         typeInfo: TypeInfo.TestPlan
-    },
+    }
 };
 
 TypeInfo.TestPoint.fields = {
@@ -1941,27 +2088,27 @@ TypeInfo.TestPoint.fields = {
     },
     lastUpdatedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TestPointsQuery.fields = {
     points: {
         isArray: true,
         typeInfo: TypeInfo.TestPoint
-    },
+    }
 };
 
 TypeInfo.TestResultHistory.fields = {
     resultsForGroup: {
         isArray: true,
         typeInfo: TypeInfo.TestResultHistoryDetailsForGroup
-    },
+    }
 };
 
 TypeInfo.TestResultHistoryDetailsForGroup.fields = {
     latestResult: {
         typeInfo: TypeInfo.TestCaseResult
-    },
+    }
 };
 
 TypeInfo.TestResultModelBase.fields = {
@@ -1970,20 +2117,20 @@ TypeInfo.TestResultModelBase.fields = {
     },
     startedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TestResultsContext.fields = {
     contextType: {
         enumType: TypeInfo.TestResultsContextType
-    },
+    }
 };
 
 TypeInfo.TestResultsDetails.fields = {
     resultsForGroup: {
         isArray: true,
         typeInfo: TypeInfo.TestResultsDetailsForGroup
-    },
+    }
 };
 
 TypeInfo.TestResultsDetailsForGroup.fields = {
@@ -1995,7 +2142,7 @@ TypeInfo.TestResultsDetailsForGroup.fields = {
         isDictionary: true,
         dictionaryKeyEnumType: TypeInfo.TestOutcome,
         dictionaryValueTypeInfo: TypeInfo.AggregatedResultsByOutcome
-    },
+    }
 };
 
 TypeInfo.TestResultsQuery.fields = {
@@ -2005,25 +2152,28 @@ TypeInfo.TestResultsQuery.fields = {
     },
     resultsFilter: {
         typeInfo: TypeInfo.ResultsFilter
-    },
+    }
 };
 
 TypeInfo.TestResultSummary.fields = {
     aggregatedResultsAnalysis: {
         typeInfo: TypeInfo.AggregatedResultsAnalysis
     },
+    teamProject: {
+        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
+    },
     testFailures: {
         typeInfo: TypeInfo.TestFailuresAnalysis
     },
     testResultsContext: {
         typeInfo: TypeInfo.TestResultsContext
-    },
+    }
 };
 
 TypeInfo.TestResultTrendFilter.fields = {
     maxCompleteDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TestRun.fields = {
@@ -2044,7 +2194,7 @@ TypeInfo.TestRun.fields = {
     },
     substate: {
         enumType: TypeInfo.TestRunSubstate
-    },
+    }
 };
 
 TypeInfo.TestSession.fields = {
@@ -2062,7 +2212,7 @@ TypeInfo.TestSession.fields = {
     },
     state: {
         enumType: TypeInfo.TestSessionState
-    },
+    }
 };
 
 TypeInfo.TestSessionExploredWorkItemReference.fields = {
@@ -2071,7 +2221,7 @@ TypeInfo.TestSessionExploredWorkItemReference.fields = {
     },
     startTime: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TestSuite.fields = {
@@ -2084,11 +2234,11 @@ TypeInfo.TestSuite.fields = {
     },
     lastUpdatedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.TestSummaryForWorkItem.fields = {
     summary: {
         typeInfo: TypeInfo.AggregatedDataForResultTrend
-    },
+    }
 };

@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -24,7 +24,7 @@ export interface ILocationsApi extends basem.ClientApiBase {
     getResourceArea(areaId: string): Promise<LocationsInterfaces.ResourceAreaInfo>;
     getResourceAreas(): Promise<LocationsInterfaces.ResourceAreaInfo[]>;
     deleteServiceDefinition(serviceType: string, identifier: string): Promise<void>;
-    getServiceDefinition(serviceType: string, identifier: string, allowFaultIn?: boolean): Promise<LocationsInterfaces.ServiceDefinition>;
+    getServiceDefinition(serviceType: string, identifier: string, allowFaultIn?: boolean, previewFaultIn?: boolean): Promise<LocationsInterfaces.ServiceDefinition>;
     getServiceDefinitions(serviceType?: string): Promise<LocationsInterfaces.ServiceDefinition[]>;
     updateServiceDefinitions(serviceDefinitions: VSSInterfaces.VssJsonCollectionWrapperV<LocationsInterfaces.ServiceDefinition[]>): Promise<void>;
 }
@@ -59,7 +59,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Location",
                     "00d9565f-ed9c-4a06-9a50-00e7896ccab4",
                     routeValues,
@@ -99,7 +99,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Location",
                     "e81700f7-3be2-46de-8624-2eb35882fcaa",
                     routeValues);
@@ -135,7 +135,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Location",
                     "e81700f7-3be2-46de-8624-2eb35882fcaa",
                     routeValues);
@@ -177,7 +177,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Location",
                     "d810a47d-f4f4-4a62-a03f-fa1860585c4c",
                     routeValues);
@@ -203,14 +203,18 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
     }
 
     /**
+     * Finds a given service definition.
+     * 
      * @param {string} serviceType
      * @param {string} identifier
-     * @param {boolean} allowFaultIn
+     * @param {boolean} allowFaultIn - If true, we will attempt to fault in a host instance mapping if in SPS.
+     * @param {boolean} previewFaultIn - If true, we will calculate and return a host instance mapping, but not persist it.
      */
     public async getServiceDefinition(
         serviceType: string,
         identifier: string,
-        allowFaultIn?: boolean
+        allowFaultIn?: boolean,
+        previewFaultIn?: boolean
         ): Promise<LocationsInterfaces.ServiceDefinition> {
 
         return new Promise<LocationsInterfaces.ServiceDefinition>(async (resolve, reject) => {
@@ -221,11 +225,12 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
 
             let queryValues: any = {
                 allowFaultIn: allowFaultIn,
+                previewFaultIn: previewFaultIn,
             };
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Location",
                     "d810a47d-f4f4-4a62-a03f-fa1860585c4c",
                     routeValues,
@@ -265,7 +270,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Location",
                     "d810a47d-f4f4-4a62-a03f-fa1860585c4c",
                     routeValues);
@@ -303,7 +308,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Location",
                     "d810a47d-f4f4-4a62-a03f-fa1860585c4c",
                     routeValues);

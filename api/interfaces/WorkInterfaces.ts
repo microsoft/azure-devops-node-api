@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -193,12 +193,6 @@ export interface BoardFields {
     rowField: FieldReference;
 }
 
-export interface BoardFilterSettings {
-    criteria: FilterModel;
-    parentWorkItemIds: number[];
-    queryText: string;
-}
-
 export interface BoardReference {
     /**
      * Id of the resource
@@ -227,6 +221,9 @@ export interface BoardUserSettings {
     autoRefreshState: boolean;
 }
 
+/**
+ * The behavior of the work item types that are in the work item category specified in the BugWorkItems section in the Process Configuration
+ */
 export enum BugsBehavior {
     Off = 0,
     AsRequirements = 1,
@@ -448,12 +445,9 @@ export interface FilterGroup {
     start: number;
 }
 
-export interface FilterModel {
-    clauses: FilterClause[];
-    groups: FilterGroup[];
-    maxGroupLevel: number;
-}
-
+/**
+ * Enum for the various modes of identity picker
+ */
 export enum IdentityDisplayFormat {
     /**
      * Display avatar only
@@ -583,10 +577,16 @@ export interface PlanMetadata {
 export interface PlanPropertyCollection {
 }
 
+/**
+ * Enum for the various types of plans
+ */
 export enum PlanType {
     DeliveryTimelineView = 0,
 }
 
+/**
+ * Flag for permissions a user can have for this plan.
+ */
 export enum PlanUserPermissions {
     /**
      * None
@@ -702,6 +702,7 @@ export interface TeamFieldValuesPatch {
 export interface TeamIterationAttributes {
     finishDate: Date;
     startDate: Date;
+    timeFrame: TimeFrame;
 }
 
 /**
@@ -808,6 +809,12 @@ export interface TeamSettingsPatch {
     workingDays: SystemInterfaces.DayOfWeek[];
 }
 
+export enum TimeFrame {
+    Past = 0,
+    Current = 1,
+    Future = 2,
+}
+
 export interface TimelineCriteriaStatus {
     message: string;
     type: TimelineCriteriaStatusCode;
@@ -858,7 +865,7 @@ export interface TimelineTeamData {
      */
     id: string;
     /**
-     * Was iteration and work item data retrieved for this team.  Teams with IsExpanded false have not had their iteration, work item, and field related data queried and will never contain this data. If true then these items are queried and, if there are items in the queried range, there will be data.
+     * Was iteration and work item data retrieved for this team. <remarks> Teams with IsExpanded false have not had their iteration, work item, and field related data queried and will never contain this data. If true then these items are queried and, if there are items in the queried range, there will be data. </remarks>
      */
     isExpanded: boolean;
     /**
@@ -994,9 +1001,10 @@ export interface UpdatePlan {
 }
 
 /**
- * Work item color.
+ * Work item color and icon.
  */
 export interface WorkItemColor {
+    icon: string;
     primaryColor: string;
     workItemTypeName: string;
 }
@@ -1102,6 +1110,13 @@ export var TypeInfo = {
     },
     TeamSettingsPatch: <any>{
     },
+    TimeFrame: {
+        enumValues: {
+            "past": 0,
+            "current": 1,
+            "future": 2
+        }
+    },
     TimelineCriteriaStatus: <any>{
     },
     TimelineCriteriaStatusCode: {
@@ -1143,27 +1158,27 @@ export var TypeInfo = {
 TypeInfo.BacklogConfiguration.fields = {
     bugsBehavior: {
         enumType: TypeInfo.BugsBehavior
-    },
+    }
 };
 
 TypeInfo.Board.fields = {
     columns: {
         isArray: true,
         typeInfo: TypeInfo.BoardColumn
-    },
+    }
 };
 
 TypeInfo.BoardColumn.fields = {
     columnType: {
         enumType: TypeInfo.BoardColumnType
-    },
+    }
 };
 
 TypeInfo.CapacityPatch.fields = {
     daysOff: {
         isArray: true,
         typeInfo: TypeInfo.DateRange
-    },
+    }
 };
 
 TypeInfo.CardFieldSettings.fields = {
@@ -1177,19 +1192,19 @@ TypeInfo.CardFieldSettings.fields = {
     coreFields: {
         isArray: true,
         typeInfo: TypeInfo.FieldInfo
-    },
+    }
 };
 
 TypeInfo.CardSettings.fields = {
     fields: {
         typeInfo: TypeInfo.CardFieldSettings
-    },
+    }
 };
 
 TypeInfo.CreatePlan.fields = {
     type: {
         enumType: TypeInfo.PlanType
-    },
+    }
 };
 
 TypeInfo.DateRange.fields = {
@@ -1198,7 +1213,7 @@ TypeInfo.DateRange.fields = {
     },
     start: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.DeliveryViewData.fields = {
@@ -1214,7 +1229,7 @@ TypeInfo.DeliveryViewData.fields = {
     teams: {
         isArray: true,
         typeInfo: TypeInfo.TimelineTeamData
-    },
+    }
 };
 
 TypeInfo.DeliveryViewPropertyCollection.fields = {
@@ -1224,19 +1239,19 @@ TypeInfo.DeliveryViewPropertyCollection.fields = {
     markers: {
         isArray: true,
         typeInfo: TypeInfo.Marker
-    },
+    }
 };
 
 TypeInfo.FieldInfo.fields = {
     fieldType: {
         enumType: TypeInfo.FieldType
-    },
+    }
 };
 
 TypeInfo.Marker.fields = {
     date: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.Plan.fields = {
@@ -1251,7 +1266,7 @@ TypeInfo.Plan.fields = {
     },
     userPermissions: {
         enumType: TypeInfo.PlanUserPermissions
-    },
+    }
 };
 
 TypeInfo.PlanMetadata.fields = {
@@ -1260,7 +1275,7 @@ TypeInfo.PlanMetadata.fields = {
     },
     userPermissions: {
         enumType: TypeInfo.PlanUserPermissions
-    },
+    }
 };
 
 TypeInfo.TeamIterationAttributes.fields = {
@@ -1270,13 +1285,16 @@ TypeInfo.TeamIterationAttributes.fields = {
     startDate: {
         isDate: true,
     },
+    timeFrame: {
+        enumType: TypeInfo.TimeFrame
+    }
 };
 
 TypeInfo.TeamMemberCapacity.fields = {
     daysOff: {
         isArray: true,
         typeInfo: TypeInfo.DateRange
-    },
+    }
 };
 
 TypeInfo.TeamSetting.fields = {
@@ -1292,27 +1310,27 @@ TypeInfo.TeamSetting.fields = {
     workingDays: {
         isArray: true,
         enumType: SystemInterfaces.TypeInfo.DayOfWeek
-    },
+    }
 };
 
 TypeInfo.TeamSettingsDaysOff.fields = {
     daysOff: {
         isArray: true,
         typeInfo: TypeInfo.DateRange
-    },
+    }
 };
 
 TypeInfo.TeamSettingsDaysOffPatch.fields = {
     daysOff: {
         isArray: true,
         typeInfo: TypeInfo.DateRange
-    },
+    }
 };
 
 TypeInfo.TeamSettingsIteration.fields = {
     attributes: {
         typeInfo: TypeInfo.TeamIterationAttributes
-    },
+    }
 };
 
 TypeInfo.TeamSettingsPatch.fields = {
@@ -1322,19 +1340,19 @@ TypeInfo.TeamSettingsPatch.fields = {
     workingDays: {
         isArray: true,
         enumType: SystemInterfaces.TypeInfo.DayOfWeek
-    },
+    }
 };
 
 TypeInfo.TimelineCriteriaStatus.fields = {
     type: {
         enumType: TypeInfo.TimelineCriteriaStatusCode
-    },
+    }
 };
 
 TypeInfo.TimelineIterationStatus.fields = {
     type: {
         enumType: TypeInfo.TimelineIterationStatusCode
-    },
+    }
 };
 
 TypeInfo.TimelineTeamData.fields = {
@@ -1344,7 +1362,7 @@ TypeInfo.TimelineTeamData.fields = {
     },
     status: {
         typeInfo: TypeInfo.TimelineTeamStatus
-    },
+    }
 };
 
 TypeInfo.TimelineTeamIteration.fields = {
@@ -1356,17 +1374,17 @@ TypeInfo.TimelineTeamIteration.fields = {
     },
     status: {
         typeInfo: TypeInfo.TimelineIterationStatus
-    },
+    }
 };
 
 TypeInfo.TimelineTeamStatus.fields = {
     type: {
         enumType: TypeInfo.TimelineTeamStatusCode
-    },
+    }
 };
 
 TypeInfo.UpdatePlan.fields = {
     type: {
         enumType: TypeInfo.PlanType
-    },
+    }
 };
