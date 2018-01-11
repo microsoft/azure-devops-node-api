@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -42,7 +42,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
         items: VSSInterfaces.VssJsonCollectionWrapperV<FileContainerInterfaces.FileContainerItem[]>,
         containerId: number,
         scope?: string
-    ): Promise<FileContainerInterfaces.FileContainerItem[]> {
+        ): Promise<FileContainerInterfaces.FileContainerItem[]> {
 
         return new Promise<FileContainerInterfaces.FileContainerItem[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -52,28 +52,28 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
             let queryValues: any = {
                 scope: scope,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.4",
+                    "4.1-preview.4",
                     "Container",
                     "e4f5c81e-e250-447b-9fef-bd48471bea5e",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<FileContainerInterfaces.FileContainerItem[]>;
                 res = await this.rest.create<FileContainerInterfaces.FileContainerItem[]>(url, items, options);
 
                 let ret = this.formatResponse(res.result,
-                    FileContainerInterfaces.TypeInfo.FileContainerItem,
-                    true);
+                                              FileContainerInterfaces.TypeInfo.FileContainerItem,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -92,7 +92,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
         containerId: number,
         itemPath: string,
         scope?: string
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -103,28 +103,28 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
                 itemPath: itemPath,
                 scope: scope,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.4",
+                    "4.1-preview.4",
                     "Container",
                     "e4f5c81e-e250-447b-9fef-bd48471bea5e",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -141,7 +141,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
     public async getContainers(
         scope?: string,
         artifactUris?: string
-    ): Promise<FileContainerInterfaces.FileContainer[]> {
+        ): Promise<FileContainerInterfaces.FileContainer[]> {
 
         return new Promise<FileContainerInterfaces.FileContainer[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -151,28 +151,28 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
                 scope: scope,
                 artifactUris: artifactUris,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.4",
+                    "4.1-preview.4",
                     "Container",
                     "e4f5c81e-e250-447b-9fef-bd48471bea5e",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<FileContainerInterfaces.FileContainer[]>;
                 res = await this.rest.get<FileContainerInterfaces.FileContainer[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    FileContainerInterfaces.TypeInfo.FileContainer,
-                    true);
+                                              FileContainerInterfaces.TypeInfo.FileContainer,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -199,7 +199,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
         downloadFileName?: string,
         includeDownloadTickets?: boolean,
         isShallow?: boolean
-    ): Promise<FileContainerInterfaces.FileContainerItem[]> {
+        ): Promise<FileContainerInterfaces.FileContainerItem[]> {
 
         return new Promise<FileContainerInterfaces.FileContainerItem[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -215,28 +215,28 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
                 includeDownloadTickets: includeDownloadTickets,
                 isShallow: isShallow,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.4",
+                    "4.1-preview.4",
                     "Container",
                     "e4f5c81e-e250-447b-9fef-bd48471bea5e",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<FileContainerInterfaces.FileContainerItem[]>;
                 res = await this.rest.get<FileContainerInterfaces.FileContainerItem[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    FileContainerInterfaces.TypeInfo.FileContainerItem,
-                    true);
+                                              FileContainerInterfaces.TypeInfo.FileContainerItem,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);

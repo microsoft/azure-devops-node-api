@@ -1,12 +1,12 @@
 /*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ *
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 "use strict";
 
@@ -96,6 +96,7 @@ export interface Identity {
      */
     providerDisplayName: string;
     resourceVersion: number;
+    subjectDescriptor: string;
     uniqueUserId: number;
 }
 
@@ -131,6 +132,7 @@ export interface IdentityScope {
     parentId: string;
     scopeType: GroupScopeType;
     securingHostId: string;
+    subjectDescriptor: string;
 }
 
 export interface IdentitySelf {
@@ -189,56 +191,30 @@ export interface TenantInfo {
 }
 
 export var TypeInfo = {
-    ChangedIdentities: {
-        fields: <any>null
+    CreateScopeInfo: <any>{
     },
-    ChangedIdentitiesContext: {
-        fields: <any>null
-    },
-    CreateScopeInfo: {
-        fields: <any>null
-    },
-    FrameworkIdentityInfo: {
-        fields: <any>null
+    FrameworkIdentityInfo: <any>{
     },
     FrameworkIdentityType: {
         enumValues: {
             "none": 0,
             "serviceIdentity": 1,
             "aggregateIdentity": 2,
-            "importedIdentity": 3,
+            "importedIdentity": 3
         }
-    },
-    GroupMembership: {
-        fields: <any>null
     },
     GroupScopeType: {
         enumValues: {
             "generic": 0,
             "serviceHost": 1,
-            "teamProject": 2,
+            "teamProject": 2
         }
     },
-    Identity: {
-        fields: <any>null
+    IdentityBatchInfo: <any>{
     },
-    IdentityBatchInfo: {
-        fields: <any>null
+    IdentityScope: <any>{
     },
-    IdentityDescriptor: {
-        fields: <any>null
-    },
-    IdentityScope: {
-        fields: <any>null
-    },
-    IdentitySelf: {
-        fields: <any>null
-    },
-    IdentitySnapshot: {
-        fields: <any>null
-    },
-    IdentityUpdateData: {
-        fields: <any>null
+    IdentitySnapshot: <any>{
     },
     QueryMembership: {
         enumValues: {
@@ -246,111 +222,44 @@ export var TypeInfo = {
             "direct": 1,
             "expanded": 2,
             "expandedUp": 3,
-            "expandedDown": 4,
+            "expandedDown": 4
         }
     },
     ReadIdentitiesOptions: {
         enumValues: {
             "none": 0,
-            "filterIllegalMemberships": 1,
+            "filterIllegalMemberships": 1
         }
     },
-    TenantInfo: {
-        fields: <any>null
-    },
-};
-
-TypeInfo.ChangedIdentities.fields = {
-    identities: {
-        isArray: true,
-        typeInfo: TypeInfo.Identity
-    },
-    sequenceContext: {
-        typeInfo: TypeInfo.ChangedIdentitiesContext
-    },
-};
-
-TypeInfo.ChangedIdentitiesContext.fields = {
 };
 
 TypeInfo.CreateScopeInfo.fields = {
     scopeType: {
         enumType: TypeInfo.GroupScopeType
-    },
+    }
 };
 
 TypeInfo.FrameworkIdentityInfo.fields = {
     identityType: {
         enumType: TypeInfo.FrameworkIdentityType
-    },
-};
-
-TypeInfo.GroupMembership.fields = {
-    descriptor: {
-        typeInfo: TypeInfo.IdentityDescriptor
-    },
-};
-
-TypeInfo.Identity.fields = {
-    descriptor: {
-        typeInfo: TypeInfo.IdentityDescriptor
-    },
-    memberOf: {
-        isArray: true,
-        typeInfo: TypeInfo.IdentityDescriptor
-    },
-    members: {
-        isArray: true,
-        typeInfo: TypeInfo.IdentityDescriptor
-    },
+    }
 };
 
 TypeInfo.IdentityBatchInfo.fields = {
-    descriptors: {
-        isArray: true,
-        typeInfo: TypeInfo.IdentityDescriptor
-    },
     queryMembership: {
         enumType: TypeInfo.QueryMembership
-    },
-};
-
-TypeInfo.IdentityDescriptor.fields = {
+    }
 };
 
 TypeInfo.IdentityScope.fields = {
-    administrators: {
-        typeInfo: TypeInfo.IdentityDescriptor
-    },
     scopeType: {
         enumType: TypeInfo.GroupScopeType
-    },
-};
-
-TypeInfo.IdentitySelf.fields = {
-    tenants: {
-        isArray: true,
-        typeInfo: TypeInfo.TenantInfo
-    },
+    }
 };
 
 TypeInfo.IdentitySnapshot.fields = {
-    groups: {
-        isArray: true,
-        typeInfo: TypeInfo.Identity
-    },
-    memberships: {
-        isArray: true,
-        typeInfo: TypeInfo.GroupMembership
-    },
     scopes: {
         isArray: true,
         typeInfo: TypeInfo.IdentityScope
-    },
-};
-
-TypeInfo.IdentityUpdateData.fields = {
-};
-
-TypeInfo.TenantInfo.fields = {
+    }
 };

@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -12,6 +12,9 @@
 
 
 
+/**
+ * Status of a container item.
+ */
 export enum ContainerItemStatus {
     /**
      * Item is created.
@@ -23,6 +26,9 @@ export enum ContainerItemStatus {
     PendingUpload = 2,
 }
 
+/**
+ * Type of a container item.
+ */
 export enum ContainerItemType {
     /**
      * Any item type.
@@ -38,6 +44,9 @@ export enum ContainerItemType {
     File = 2,
 }
 
+/**
+ * Options a container can have.
+ */
 export enum ContainerOptions {
     /**
      * No option.
@@ -210,7 +219,7 @@ TypeInfo.FileContainer.fields = {
     },
     options: {
         enumType: TypeInfo.ContainerOptions
-    },
+    }
 };
 
 TypeInfo.FileContainerItem.fields = {
@@ -225,5 +234,5 @@ TypeInfo.FileContainerItem.fields = {
     },
     status: {
         enumType: TypeInfo.ContainerItemStatus
-    },
+    }
 };

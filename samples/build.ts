@@ -57,68 +57,80 @@ export async function run() {
         });
 
         // new definition
-        if (lastDef && lastDef.build) {
-            cm.heading('creating a new definition');
-            let newDef: bi.BuildDefinition = <bi.BuildDefinition>{};
-            
-            let newName: string = "api copy of " + lastDef.name;
-            console.log("name", newName);
-            newDef.name = newName;
+        if (lastDef && lastDef.process && lastDef.process.type === 1 /* Designer */) {
+            let process = lastDef.process as bi.DesignerProcess;
+            if (process.phases && process.phases.length > 0) {
+                let phase = process.phases[0];
+                cm.heading('creating a new definition');
+                let newDef: bi.BuildDefinition = <bi.BuildDefinition>{};
+                
+                let newName: string = "api copy of " + lastDef.name;
+                console.log("name", newName);
+                newDef.name = newName;
 
-            console.log("repo", lastDef.repository.name);
-            newDef.repository = lastDef.repository;
+                console.log("repo", lastDef.repository.name);
+                newDef.repository = lastDef.repository;
 
-            let steps: bi.BuildDefinitionStep[] = [];
-            lastDef.build.forEach((step: bi.BuildDefinitionStep) => {
-                console.log("adding step", step.displayName);
-                steps.push(step);
-            });
-            newDef.build = steps;
-            
-            newDef.comment = "copy of definition from sample";
-            newDef.buildNumberFormat = lastDef.buildNumberFormat;
-            
-            console.log("project", project);
-            newDef.project = lastDef.project;
+                let steps: bi.BuildDefinitionStep[] = [];
+                phase.steps.forEach((step: bi.BuildDefinitionStep) => {
+                    console.log("adding step", step.displayName);
+                    steps.push(step);
+                });
 
-            console.log("queue", lastDef.queue.name);
-            newDef.queue = lastDef.queue;
+                let newProcess = {
+                    type: 1, /* Designer */
+                    phases: [
+                        {
+                            steps: steps
+                        }
+                    ]
+                } as bi.DesignerProcess;
 
-            console.log("type", lastDef.type);
-            newDef.type = lastDef.type;
+                newDef.comment = "copy of definition from sample";
+                newDef.buildNumberFormat = lastDef.buildNumberFormat;
+                
+                console.log("project", project);
+                newDef.project = lastDef.project;
 
-            console.log("creating");
-            let createdDef: bi.BuildDefinition = await vstsBuild.createDefinition(newDef, project);
-            console.log("created", createdDef.name);
+                console.log("queue", lastDef.queue.name);
+                newDef.queue = lastDef.queue;
 
-            console.log("reading history");
-            let history = await vstsBuild.getDefinitionRevisions(project, createdDef.id);
-            console.log(`last updated ${history[0].changedDate}`);
+                console.log("type", lastDef.type);
+                newDef.type = lastDef.type;
 
-            let document = [
-                {
-                    op: "replace",
-                    path: "/key1",
-                    value: "/value1"
-                },
-                {
-                    op: "replace",
-                    path: "/key2",
-                    value: "/value2"
+                console.log("creating");
+                let createdDef: bi.BuildDefinition = await vstsBuild.createDefinition(newDef, project);
+                console.log("created", createdDef.name);
+
+                console.log("reading history");
+                let history = await vstsBuild.getDefinitionRevisions(project, createdDef.id);
+                console.log(`last updated ${history[0].changedDate}`);
+
+                let document = [
+                    {
+                        op: "replace",
+                        path: "/key1",
+                        value: "/value1"
+                    },
+                    {
+                        op: "replace",
+                        path: "/key2",
+                        value: "/value2"
+                    }
+                ];
+
+                console.log("setting properties");
+                let updatedProperties = await vstsBuild.updateDefinitionProperties(null, document, project, createdDef.id);
+                console.log(`properties for definition ${createdDef.name}:`);
+                for (let key in updatedProperties.value) {
+                    console.log(`${key} = ${updatedProperties.value[key].$value}`);
                 }
-            ];
 
-            console.log("setting properties");
-            let updatedProperties = await vstsBuild.updateDefinitionProperties(null, document, project, createdDef.id);
-            console.log(`properties for definition ${createdDef.name}:`);
-            for (let key in updatedProperties.value) {
-                console.log(`${key} = ${updatedProperties.value[key].$value}`);
+                // delete def
+                console.log("deleting", createdDef.name);
+                await vstsBuild.deleteDefinition(createdDef.id, project);
+                console.log("deleted");
             }
-
-            // delete def
-            console.log("deleting", createdDef.name);
-            await vstsBuild.deleteDefinition(createdDef.id, project);
-            console.log("deleted");
         }
     }
     catch (err) {

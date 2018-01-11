@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -131,11 +131,11 @@ export interface ServiceDefinition {
     inheritLevel: InheritLevel;
     locationMappings: LocationMapping[];
     /**
-     * Maximum api version that this resource supports (current server version for this resource). Copied from ApiResourceLocation.
+     * Maximum api version that this resource supports (current server version for this resource). Copied from <c>ApiResourceLocation</c>.
      */
     maxVersion: string;
     /**
-     * Minimum api version that this resource supports. Copied from ApiResourceLocation.
+     * Minimum api version that this resource supports. Copied from <c>ApiResourceLocation</c>.
      */
     minVersion: string;
     parentIdentifier: string;
@@ -144,11 +144,11 @@ export interface ServiceDefinition {
     relativePath: string;
     relativeToSetting: RelativeToSetting;
     /**
-     * The latest version of this resource location that is in "Release" (non-preview) mode. Copied from ApiResourceLocation.
+     * The latest version of this resource location that is in "Release" (non-preview) mode. Copied from <c>ApiResourceLocation</c>.
      */
     releasedVersion: string;
     /**
-     * The current resource version supported by this resource location. Copied from ApiResourceLocation.
+     * The current resource version supported by this resource location. Copied from <c>ApiResourceLocation</c>.
      */
     resourceVersion: number;
     /**
@@ -204,14 +204,14 @@ TypeInfo.ConnectionData.fields = {
     },
     locationServiceData: {
         typeInfo: TypeInfo.LocationServiceData
-    },
+    }
 };
 
 TypeInfo.LocationServiceData.fields = {
     serviceDefinitions: {
         isArray: true,
         typeInfo: TypeInfo.ServiceDefinition
-    },
+    }
 };
 
 TypeInfo.ServiceDefinition.fields = {
@@ -223,5 +223,5 @@ TypeInfo.ServiceDefinition.fields = {
     },
     status: {
         enumType: TypeInfo.ServiceStatus
-    },
+    }
 };

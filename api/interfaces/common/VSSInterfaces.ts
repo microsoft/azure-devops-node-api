@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -11,6 +11,9 @@
 "use strict";
 
 
+
+export interface AnonymousObject {
+}
 
 /**
  * Information about the location of a REST API resource
@@ -68,6 +71,9 @@ export interface ApiResourceVersion {
     resourceVersion: number;
 }
 
+/**
+ * Enumeration of the options that can be passed in on Connect.
+ */
 export enum ConnectOptions {
     /**
      * Retrieve no optional data.
@@ -114,12 +120,17 @@ export interface EventScope {
      */
     id: string;
     /**
+     * Optional: The display name of the scope
+     */
+    name: string;
+    /**
      * Required: The event specific type of a scope.
      */
     type: string;
 }
 
 export interface IdentityRef {
+    directoryAlias: string;
     displayName: string;
     id: string;
     imageUrl: string;
@@ -129,6 +140,10 @@ export interface IdentityRef {
     profileUrl: string;
     uniqueName: string;
     url: string;
+}
+
+export interface IdentityRefWithEmail extends IdentityRef {
+    preferredEmailAddress: string;
 }
 
 /**
@@ -203,7 +218,7 @@ export interface Publisher {
 }
 
 /**
- * The class to represent a REST reference link.  Example: { self: { href: "http://localhost:8080/tfs/DefaultCollection/_apis/wit/workItems/1" } }  RFC: http://tools.ietf.org/html/draft-kelly-json-hal-06  The RFC is not fully implemented, additional properties are allowed on the reference link but as of yet we don't have a need for them.
+ * The class to represent a REST reference link.  RFC: http://tools.ietf.org/html/draft-kelly-json-hal-06  The RFC is not fully implemented, additional properties are allowed on the reference link but as of yet we don't have a need for them.
  */
 export interface ReferenceLink {
     href: string;
@@ -235,6 +250,11 @@ export interface ServiceEvent {
      * This is the version of the resource.
      */
     resourceVersion: string;
+}
+
+export interface TeamMember {
+    identity: IdentityRef;
+    isTeamAdmin: boolean;
 }
 
 export interface VssJsonCollectionWrapper extends VssJsonCollectionWrapperBase {
@@ -324,5 +344,5 @@ export var TypeInfo = {
 TypeInfo.JsonPatchOperation.fields = {
     op: {
         enumType: TypeInfo.Operation
-    },
+    }
 };

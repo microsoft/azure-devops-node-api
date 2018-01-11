@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -28,24 +28,27 @@ export interface ICoreApi extends basem.ClientApiBase {
     deleteIdentityMru(mruData: CoreInterfaces.IdentityData, mruName: string): Promise<void>;
     getIdentityMru(mruName: string): Promise<VSSInterfaces.IdentityRef[]>;
     updateIdentityMru(mruData: CoreInterfaces.IdentityData, mruName: string): Promise<void>;
-    getTeamMembers(projectId: string, teamId: string, top?: number, skip?: number): Promise<VSSInterfaces.IdentityRef[]>;
+    getTeamMembersWithExtendedProperties(projectId: string, teamId: string, top?: number, skip?: number): Promise<VSSInterfaces.TeamMember[]>;
     getProcessById(processId: string): Promise<CoreInterfaces.Process>;
     getProcesses(): Promise<CoreInterfaces.Process[]>;
     getProjectCollection(collectionId: string): Promise<CoreInterfaces.TeamProjectCollection>;
     getProjectCollections(top?: number, skip?: number): Promise<CoreInterfaces.TeamProjectCollectionReference[]>;
-    getProjectHistory(minRevision?: number): Promise<CoreInterfaces.TeamProjectReference[]>;
+    getProjectHistoryEntries(minRevision?: number): Promise<CoreInterfaces.ProjectInfo[]>;
     getProject(projectId: string, includeCapabilities?: boolean, includeHistory?: boolean): Promise<CoreInterfaces.TeamProject>;
-    getProjects(stateFilter?: any, top?: number, skip?: number): Promise<CoreInterfaces.TeamProjectReference[]>;
+    getProjects(stateFilter?: any, top?: number, skip?: number, continuationToken?: string): Promise<CoreInterfaces.TeamProjectReference[]>;
     queueCreateProject(projectToCreate: CoreInterfaces.TeamProject): Promise<OperationsInterfaces.OperationReference>;
     queueDeleteProject(projectId: string): Promise<OperationsInterfaces.OperationReference>;
     updateProject(projectUpdate: CoreInterfaces.TeamProject, projectId: string): Promise<OperationsInterfaces.OperationReference>;
+    getProjectProperties(projectId: string, keys?: string[]): Promise<CoreInterfaces.ProjectProperty[]>;
+    setProjectProperties(customHeaders: any, projectId: string, patchDocument: VSSInterfaces.JsonPatchDocument): Promise<void>;
     createOrUpdateProxy(proxy: CoreInterfaces.Proxy): Promise<CoreInterfaces.Proxy>;
     deleteProxy(proxyUrl: string, site?: string): Promise<void>;
     getProxies(proxyUrl?: string): Promise<CoreInterfaces.Proxy[]>;
+    getAllTeams(mine?: boolean, top?: number, skip?: number): Promise<CoreInterfaces.WebApiTeam[]>;
     createTeam(team: CoreInterfaces.WebApiTeam, projectId: string): Promise<CoreInterfaces.WebApiTeam>;
     deleteTeam(projectId: string, teamId: string): Promise<void>;
     getTeam(projectId: string, teamId: string): Promise<CoreInterfaces.WebApiTeam>;
-    getTeams(projectId: string, top?: number, skip?: number): Promise<CoreInterfaces.WebApiTeam[]>;
+    getTeams(projectId: string, mine?: boolean, top?: number, skip?: number): Promise<CoreInterfaces.WebApiTeam[]>;
     updateTeam(teamData: CoreInterfaces.WebApiTeam, projectId: string, teamId: string): Promise<CoreInterfaces.WebApiTeam>;
 }
 
@@ -54,14 +57,16 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         super(baseUrl, handlers, 'node-Core-api', options);
     }
 
+    public static readonly RESOURCE_AREA_ID = "79134c72-4a58-4b42-976c-04e7115f32bf";
+
     /**
-    * @param {CoreInterfaces.WebApiConnectedServiceDetails} connectedServiceCreationData
-    * @param {string} projectId
-    */
+     * @param {CoreInterfaces.WebApiConnectedServiceDetails} connectedServiceCreationData
+     * @param {string} projectId
+     */
     public async createConnectedService(
         connectedServiceCreationData: CoreInterfaces.WebApiConnectedServiceDetails,
         projectId: string
-    ): Promise<CoreInterfaces.WebApiConnectedService> {
+        ): Promise<CoreInterfaces.WebApiConnectedService> {
 
         return new Promise<CoreInterfaces.WebApiConnectedService>(async (resolve, reject) => {
             let routeValues: any = {
@@ -70,24 +75,24 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "core",
                     "b4f70219-e18b-42c5-abe3-98b07d35525e",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.WebApiConnectedService>;
                 res = await this.rest.create<CoreInterfaces.WebApiConnectedService>(url, connectedServiceCreationData, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              CoreInterfaces.TypeInfo.WebApiConnectedService,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -96,13 +101,13 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {string} projectId
-    * @param {string} name
-    */
+     * @param {string} projectId
+     * @param {string} name
+     */
     public async getConnectedServiceDetails(
         projectId: string,
         name: string
-    ): Promise<CoreInterfaces.WebApiConnectedServiceDetails> {
+        ): Promise<CoreInterfaces.WebApiConnectedServiceDetails> {
 
         return new Promise<CoreInterfaces.WebApiConnectedServiceDetails>(async (resolve, reject) => {
             let routeValues: any = {
@@ -112,24 +117,24 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "core",
                     "b4f70219-e18b-42c5-abe3-98b07d35525e",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.WebApiConnectedServiceDetails>;
                 res = await this.rest.get<CoreInterfaces.WebApiConnectedServiceDetails>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              CoreInterfaces.TypeInfo.WebApiConnectedServiceDetails,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -138,13 +143,13 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {string} projectId
-    * @param {CoreInterfaces.ConnectedServiceKind} kind
-    */
+     * @param {string} projectId
+     * @param {CoreInterfaces.ConnectedServiceKind} kind
+     */
     public async getConnectedServices(
         projectId: string,
         kind?: CoreInterfaces.ConnectedServiceKind
-    ): Promise<CoreInterfaces.WebApiConnectedService[]> {
+        ): Promise<CoreInterfaces.WebApiConnectedService[]> {
 
         return new Promise<CoreInterfaces.WebApiConnectedService[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -154,28 +159,28 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             let queryValues: any = {
                 kind: kind,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "core",
                     "b4f70219-e18b-42c5-abe3-98b07d35525e",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.WebApiConnectedService[]>;
                 res = await this.rest.get<CoreInterfaces.WebApiConnectedService[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              CoreInterfaces.TypeInfo.WebApiConnectedService,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -184,13 +189,13 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {CoreInterfaces.IdentityData} mruData
-    * @param {string} mruName
-    */
+     * @param {CoreInterfaces.IdentityData} mruData
+     * @param {string} mruName
+     */
     public async createIdentityMru(
         mruData: CoreInterfaces.IdentityData,
         mruName: string
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -199,24 +204,24 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "core",
                     "5ead0b70-2572-4697-97e9-f341069a783a",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, mruData, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -225,13 +230,13 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {CoreInterfaces.IdentityData} mruData
-    * @param {string} mruName
-    */
+     * @param {CoreInterfaces.IdentityData} mruData
+     * @param {string} mruName
+     */
     public async deleteIdentityMru(
         mruData: CoreInterfaces.IdentityData,
         mruName: string
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -240,24 +245,24 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "core",
                     "5ead0b70-2572-4697-97e9-f341069a783a",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -266,11 +271,11 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {string} mruName
-    */
+     * @param {string} mruName
+     */
     public async getIdentityMru(
         mruName: string
-    ): Promise<VSSInterfaces.IdentityRef[]> {
+        ): Promise<VSSInterfaces.IdentityRef[]> {
 
         return new Promise<VSSInterfaces.IdentityRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -279,24 +284,24 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "core",
                     "5ead0b70-2572-4697-97e9-f341069a783a",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<VSSInterfaces.IdentityRef[]>;
                 res = await this.rest.get<VSSInterfaces.IdentityRef[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -305,13 +310,13 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {CoreInterfaces.IdentityData} mruData
-    * @param {string} mruName
-    */
+     * @param {CoreInterfaces.IdentityData} mruData
+     * @param {string} mruName
+     */
     public async updateIdentityMru(
         mruData: CoreInterfaces.IdentityData,
         mruName: string
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -320,24 +325,24 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "core",
                     "5ead0b70-2572-4697-97e9-f341069a783a",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, mruData, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -346,19 +351,21 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {string} projectId
-    * @param {string} teamId
-    * @param {number} top
-    * @param {number} skip
-    */
-    public async getTeamMembers(
+     * Get a list of members for a specific team.
+     * 
+     * @param {string} projectId - The name or ID (GUID) of the team project the team belongs to.
+     * @param {string} teamId - The name or ID (GUID) of the team .
+     * @param {number} top
+     * @param {number} skip
+     */
+    public async getTeamMembersWithExtendedProperties(
         projectId: string,
         teamId: string,
         top?: number,
         skip?: number
-    ): Promise<VSSInterfaces.IdentityRef[]> {
+        ): Promise<VSSInterfaces.TeamMember[]> {
 
-        return new Promise<VSSInterfaces.IdentityRef[]>(async (resolve, reject) => {
+        return new Promise<VSSInterfaces.TeamMember[]>(async (resolve, reject) => {
             let routeValues: any = {
                 projectId: projectId,
                 teamId: teamId
@@ -368,28 +375,28 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 '$top': top,
                 '$skip': skip,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.2",
                     "core",
                     "294c494c-2600-4d7e-b76c-3dd50c3c95be",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
-                let res: restm.IRestResponse<VSSInterfaces.IdentityRef[]>;
-                res = await this.rest.get<VSSInterfaces.IdentityRef[]>(url, options);
+                let res: restm.IRestResponse<VSSInterfaces.TeamMember[]>;
+                res = await this.rest.get<VSSInterfaces.TeamMember[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -398,13 +405,13 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Retrieve process by id
-    * 
-    * @param {string} processId
-    */
+     * Get a process by ID.
+     * 
+     * @param {string} processId - ID for a process.
+     */
     public async getProcessById(
         processId: string
-    ): Promise<CoreInterfaces.Process> {
+        ): Promise<CoreInterfaces.Process> {
 
         return new Promise<CoreInterfaces.Process>(async (resolve, reject) => {
             let routeValues: any = {
@@ -413,24 +420,24 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "core",
                     "93878975-88c5-4e6a-8abb-7ddd77a8a7d8",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.Process>;
                 res = await this.rest.get<CoreInterfaces.Process>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    CoreInterfaces.TypeInfo.Process,
-                    false);
+                                              CoreInterfaces.TypeInfo.Process,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -439,9 +446,11 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    */
+     * Get a list of processes.
+     * 
+     */
     public async getProcesses(
-    ): Promise<CoreInterfaces.Process[]> {
+        ): Promise<CoreInterfaces.Process[]> {
 
         return new Promise<CoreInterfaces.Process[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -449,24 +458,24 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "core",
                     "93878975-88c5-4e6a-8abb-7ddd77a8a7d8",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.Process[]>;
                 res = await this.rest.get<CoreInterfaces.Process[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    CoreInterfaces.TypeInfo.Process,
-                    true);
+                                              CoreInterfaces.TypeInfo.Process,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -475,13 +484,13 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Get project collection with the specified id or name.
-    * 
-    * @param {string} collectionId
-    */
+     * Get project collection with the specified id or name.
+     * 
+     * @param {string} collectionId
+     */
     public async getProjectCollection(
         collectionId: string
-    ): Promise<CoreInterfaces.TeamProjectCollection> {
+        ): Promise<CoreInterfaces.TeamProjectCollection> {
 
         return new Promise<CoreInterfaces.TeamProjectCollection>(async (resolve, reject) => {
             let routeValues: any = {
@@ -490,24 +499,24 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
+                    "4.1-preview.2",
                     "core",
                     "8031090f-ef1d-4af6-85fc-698cd75d42bf",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.TeamProjectCollection>;
                 res = await this.rest.get<CoreInterfaces.TeamProjectCollection>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -516,15 +525,15 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Get project collection references for this application.
-    * 
-    * @param {number} top
-    * @param {number} skip
-    */
+     * Get project collection references for this application.
+     * 
+     * @param {number} top
+     * @param {number} skip
+     */
     public async getProjectCollections(
         top?: number,
         skip?: number
-    ): Promise<CoreInterfaces.TeamProjectCollectionReference[]> {
+        ): Promise<CoreInterfaces.TeamProjectCollectionReference[]> {
 
         return new Promise<CoreInterfaces.TeamProjectCollectionReference[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -534,28 +543,28 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 '$top': top,
                 '$skip': skip,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
+                    "4.1-preview.2",
                     "core",
                     "8031090f-ef1d-4af6-85fc-698cd75d42bf",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.TeamProjectCollectionReference[]>;
                 res = await this.rest.get<CoreInterfaces.TeamProjectCollectionReference[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -564,41 +573,41 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {number} minRevision
-    */
-    public async getProjectHistory(
+     * @param {number} minRevision
+     */
+    public async getProjectHistoryEntries(
         minRevision?: number
-    ): Promise<CoreInterfaces.TeamProjectReference[]> {
+        ): Promise<CoreInterfaces.ProjectInfo[]> {
 
-        return new Promise<CoreInterfaces.TeamProjectReference[]>(async (resolve, reject) => {
+        return new Promise<CoreInterfaces.ProjectInfo[]>(async (resolve, reject) => {
             let routeValues: any = {
             };
 
             let queryValues: any = {
                 minRevision: minRevision,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.2",
                     "core",
                     "6488a877-4749-4954-82ea-7340d36be9f2",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
-                let res: restm.IRestResponse<CoreInterfaces.TeamProjectReference[]>;
-                res = await this.rest.get<CoreInterfaces.TeamProjectReference[]>(url, options);
+                let res: restm.IRestResponse<CoreInterfaces.ProjectInfo[]>;
+                res = await this.rest.get<CoreInterfaces.ProjectInfo[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              CoreInterfaces.TypeInfo.ProjectInfo,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -607,17 +616,17 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Get project with the specified id or name, optionally including capabilities.
-    * 
-    * @param {string} projectId
-    * @param {boolean} includeCapabilities - Include capabilities (such as source control) in the team project result (default: false).
-    * @param {boolean} includeHistory - Search within renamed projects (that had such name in the past).
-    */
+     * Get project with the specified id or name, optionally including capabilities.
+     * 
+     * @param {string} projectId
+     * @param {boolean} includeCapabilities - Include capabilities (such as source control) in the team project result (default: false).
+     * @param {boolean} includeHistory - Search within renamed projects (that had such name in the past).
+     */
     public async getProject(
         projectId: string,
         includeCapabilities?: boolean,
         includeHistory?: boolean
-    ): Promise<CoreInterfaces.TeamProject> {
+        ): Promise<CoreInterfaces.TeamProject> {
 
         return new Promise<CoreInterfaces.TeamProject>(async (resolve, reject) => {
             let routeValues: any = {
@@ -628,28 +637,28 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 includeCapabilities: includeCapabilities,
                 includeHistory: includeHistory,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.3",
+                    "4.1-preview.3",
                     "core",
                     "603fe2ac-9723-48b9-88ad-09305aa6c6e1",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.TeamProject>;
                 res = await this.rest.get<CoreInterfaces.TeamProject>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              CoreInterfaces.TypeInfo.TeamProject,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -658,17 +667,19 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Get project references with the specified state
-    * 
-    * @param {any} stateFilter - Filter on team projects in a specific team project state (default: WellFormed).
-    * @param {number} top
-    * @param {number} skip
-    */
+     * Get project references with the specified state
+     * 
+     * @param {any} stateFilter - Filter on team projects in a specific team project state (default: WellFormed).
+     * @param {number} top
+     * @param {number} skip
+     * @param {string} continuationToken
+     */
     public async getProjects(
         stateFilter?: any,
         top?: number,
-        skip?: number
-    ): Promise<CoreInterfaces.TeamProjectReference[]> {
+        skip?: number,
+        continuationToken?: string
+        ): Promise<CoreInterfaces.TeamProjectReference[]> {
 
         return new Promise<CoreInterfaces.TeamProjectReference[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -678,29 +689,30 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 stateFilter: stateFilter,
                 '$top': top,
                 '$skip': skip,
+                continuationToken: continuationToken,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.3",
+                    "4.1-preview.3",
                     "core",
                     "603fe2ac-9723-48b9-88ad-09305aa6c6e1",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.TeamProjectReference[]>;
                 res = await this.rest.get<CoreInterfaces.TeamProjectReference[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              CoreInterfaces.TypeInfo.TeamProjectReference,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -709,13 +721,13 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Queue a project creation.
-    * 
-    * @param {CoreInterfaces.TeamProject} projectToCreate - The project to create.
-    */
+     * Queue a project creation.
+     * 
+     * @param {CoreInterfaces.TeamProject} projectToCreate - The project to create.
+     */
     public async queueCreateProject(
         projectToCreate: CoreInterfaces.TeamProject
-    ): Promise<OperationsInterfaces.OperationReference> {
+        ): Promise<OperationsInterfaces.OperationReference> {
 
         return new Promise<OperationsInterfaces.OperationReference>(async (resolve, reject) => {
             let routeValues: any = {
@@ -723,24 +735,24 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.3",
+                    "4.1-preview.3",
                     "core",
                     "603fe2ac-9723-48b9-88ad-09305aa6c6e1",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<OperationsInterfaces.OperationReference>;
                 res = await this.rest.create<OperationsInterfaces.OperationReference>(url, projectToCreate, options);
 
                 let ret = this.formatResponse(res.result,
-                    OperationsInterfaces.TypeInfo.OperationReference,
-                    false);
+                                              OperationsInterfaces.TypeInfo.OperationReference,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -749,13 +761,13 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Queue a project deletion.
-    * 
-    * @param {string} projectId - The project id of the project to delete.
-    */
+     * Queue a project deletion.
+     * 
+     * @param {string} projectId - The project id of the project to delete.
+     */
     public async queueDeleteProject(
         projectId: string
-    ): Promise<OperationsInterfaces.OperationReference> {
+        ): Promise<OperationsInterfaces.OperationReference> {
 
         return new Promise<OperationsInterfaces.OperationReference>(async (resolve, reject) => {
             let routeValues: any = {
@@ -764,24 +776,24 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.3",
+                    "4.1-preview.3",
                     "core",
                     "603fe2ac-9723-48b9-88ad-09305aa6c6e1",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<OperationsInterfaces.OperationReference>;
                 res = await this.rest.del<OperationsInterfaces.OperationReference>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    OperationsInterfaces.TypeInfo.OperationReference,
-                    false);
+                                              OperationsInterfaces.TypeInfo.OperationReference,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -790,15 +802,15 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Update an existing project's name, abbreviation, or description.
-    * 
-    * @param {CoreInterfaces.TeamProject} projectUpdate - The updates for the project.
-    * @param {string} projectId - The project id of the project to update.
-    */
+     * Update an existing project's name, abbreviation, or description.
+     * 
+     * @param {CoreInterfaces.TeamProject} projectUpdate - The updates for the project.
+     * @param {string} projectId - The project id of the project to update.
+     */
     public async updateProject(
         projectUpdate: CoreInterfaces.TeamProject,
         projectId: string
-    ): Promise<OperationsInterfaces.OperationReference> {
+        ): Promise<OperationsInterfaces.OperationReference> {
 
         return new Promise<OperationsInterfaces.OperationReference>(async (resolve, reject) => {
             let routeValues: any = {
@@ -807,24 +819,24 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.3",
+                    "4.1-preview.3",
                     "core",
                     "603fe2ac-9723-48b9-88ad-09305aa6c6e1",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<OperationsInterfaces.OperationReference>;
                 res = await this.rest.update<OperationsInterfaces.OperationReference>(url, projectUpdate, options);
 
                 let ret = this.formatResponse(res.result,
-                    OperationsInterfaces.TypeInfo.OperationReference,
-                    false);
+                                              OperationsInterfaces.TypeInfo.OperationReference,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -833,11 +845,107 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {CoreInterfaces.Proxy} proxy
-    */
+     * Get a collection of team project properties.
+     * 
+     * @param {string} projectId - The team project ID.
+     * @param {string[]} keys - A comma-delimited string of team project property names. Wildcard characters ("?" and "*") are supported. If no key is specified, all properties will be returned.
+     */
+    public async getProjectProperties(
+        projectId: string,
+        keys?: string[]
+        ): Promise<CoreInterfaces.ProjectProperty[]> {
+
+        return new Promise<CoreInterfaces.ProjectProperty[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                projectId: projectId
+            };
+
+            let queryValues: any = {
+                keys: keys && keys.join(","),
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.1",
+                    "core",
+                    "4976a71a-4487-49aa-8aab-a1eda469037a",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<CoreInterfaces.ProjectProperty[]>;
+                res = await this.rest.get<CoreInterfaces.ProjectProperty[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Create, update, and delete team project properties.
+     * 
+     * @param {string} projectId - The team project ID.
+     * @param {VSSInterfaces.JsonPatchDocument} patchDocument - A JSON Patch document that represents an array of property operations. See RFC 6902 for more details on JSON Patch. The accepted operation verbs are Add and Remove, where Add is used for both creating and updating properties. The path consists of a forward slash and a property name.
+     */
+    public async setProjectProperties(
+        customHeaders: any,
+        projectId: string,
+        patchDocument: VSSInterfaces.JsonPatchDocument
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                projectId: projectId
+            };
+
+            customHeaders = customHeaders || {};
+            customHeaders["Content-Type"] = "application/json-patch+json";
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.1",
+                    "core",
+                    "4976a71a-4487-49aa-8aab-a1eda469037a",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                options.additionalHeaders = customHeaders;
+
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.update<void>(url, patchDocument, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {CoreInterfaces.Proxy} proxy
+     */
     public async createOrUpdateProxy(
         proxy: CoreInterfaces.Proxy
-    ): Promise<CoreInterfaces.Proxy> {
+        ): Promise<CoreInterfaces.Proxy> {
 
         return new Promise<CoreInterfaces.Proxy>(async (resolve, reject) => {
             let routeValues: any = {
@@ -845,24 +953,24 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
+                    "4.1-preview.2",
                     "core",
                     "ec1f4311-f2b4-4c15-b2b8-8990b80d2908",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.Proxy>;
                 res = await this.rest.replace<CoreInterfaces.Proxy>(url, proxy, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -871,13 +979,13 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {string} proxyUrl
-    * @param {string} site
-    */
+     * @param {string} proxyUrl
+     * @param {string} site
+     */
     public async deleteProxy(
         proxyUrl: string,
         site?: string
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -887,28 +995,28 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 proxyUrl: proxyUrl,
                 site: site,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
+                    "4.1-preview.2",
                     "core",
                     "ec1f4311-f2b4-4c15-b2b8-8990b80d2908",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -917,11 +1025,11 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {string} proxyUrl
-    */
+     * @param {string} proxyUrl
+     */
     public async getProxies(
         proxyUrl?: string
-    ): Promise<CoreInterfaces.Proxy[]> {
+        ): Promise<CoreInterfaces.Proxy[]> {
 
         return new Promise<CoreInterfaces.Proxy[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -930,28 +1038,28 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             let queryValues: any = {
                 proxyUrl: proxyUrl,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
+                    "4.1-preview.2",
                     "core",
                     "ec1f4311-f2b4-4c15-b2b8-8990b80d2908",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.Proxy[]>;
                 res = await this.rest.get<CoreInterfaces.Proxy[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -960,15 +1068,66 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Creates a team
-    * 
-    * @param {CoreInterfaces.WebApiTeam} team - The team data used to create the team.
-    * @param {string} projectId - The name or id (GUID) of the team project in which to create the team.
-    */
+     * Get a list of all teams.
+     * 
+     * @param {boolean} mine - If true return all the teams requesting user is member, otherwise return all the teams user has read access
+     * @param {number} top - Maximum number of teams to return.
+     * @param {number} skip - Number of teams to skip.
+     */
+    public async getAllTeams(
+        mine?: boolean,
+        top?: number,
+        skip?: number
+        ): Promise<CoreInterfaces.WebApiTeam[]> {
+
+        return new Promise<CoreInterfaces.WebApiTeam[]>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
+
+            let queryValues: any = {
+                '$mine': mine,
+                '$top': top,
+                '$skip': skip,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.2",
+                    "core",
+                    "7a4d9ee9-3433-4347-b47a-7a80f1cf307e",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<CoreInterfaces.WebApiTeam[]>;
+                res = await this.rest.get<CoreInterfaces.WebApiTeam[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Create a team in a team project.
+     * 
+     * @param {CoreInterfaces.WebApiTeam} team - The team data used to create the team.
+     * @param {string} projectId - The name or ID (GUID) of the team project in which to create the team.
+     */
     public async createTeam(
         team: CoreInterfaces.WebApiTeam,
         projectId: string
-    ): Promise<CoreInterfaces.WebApiTeam> {
+        ): Promise<CoreInterfaces.WebApiTeam> {
 
         return new Promise<CoreInterfaces.WebApiTeam>(async (resolve, reject) => {
             let routeValues: any = {
@@ -977,24 +1136,24 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.2",
                     "core",
                     "d30a3dd1-f8ba-442a-b86a-bd0c0c383e59",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.WebApiTeam>;
                 res = await this.rest.create<CoreInterfaces.WebApiTeam>(url, team, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1003,15 +1162,15 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Deletes a team
-    * 
-    * @param {string} projectId - The name or id (GUID) of the team project containing the team to delete.
-    * @param {string} teamId - The name of id of the team to delete.
-    */
+     * Delete a team.
+     * 
+     * @param {string} projectId - The name or ID (GUID) of the team project containing the team to delete.
+     * @param {string} teamId - The name of ID of the team to delete.
+     */
     public async deleteTeam(
         projectId: string,
         teamId: string
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1021,24 +1180,24 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.2",
                     "core",
                     "d30a3dd1-f8ba-442a-b86a-bd0c0c383e59",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1047,15 +1206,15 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Gets a team
-    * 
-    * @param {string} projectId
-    * @param {string} teamId
-    */
+     * Get a specific team.
+     * 
+     * @param {string} projectId - The name or ID (GUID) of the team project containing the team.
+     * @param {string} teamId - The name or ID (GUID) of the team.
+     */
     public async getTeam(
         projectId: string,
         teamId: string
-    ): Promise<CoreInterfaces.WebApiTeam> {
+        ): Promise<CoreInterfaces.WebApiTeam> {
 
         return new Promise<CoreInterfaces.WebApiTeam>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1065,24 +1224,24 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.2",
                     "core",
                     "d30a3dd1-f8ba-442a-b86a-bd0c0c383e59",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.WebApiTeam>;
                 res = await this.rest.get<CoreInterfaces.WebApiTeam>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1091,15 +1250,19 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * @param {string} projectId
-    * @param {number} top
-    * @param {number} skip
-    */
+     * Get a list of teams.
+     * 
+     * @param {string} projectId
+     * @param {boolean} mine - If true return all the teams requesting user is member, otherwise return all the teams user has read access
+     * @param {number} top - Maximum number of teams to return.
+     * @param {number} skip - Number of teams to skip.
+     */
     public async getTeams(
         projectId: string,
+        mine?: boolean,
         top?: number,
         skip?: number
-    ): Promise<CoreInterfaces.WebApiTeam[]> {
+        ): Promise<CoreInterfaces.WebApiTeam[]> {
 
         return new Promise<CoreInterfaces.WebApiTeam[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1107,31 +1270,32 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             };
 
             let queryValues: any = {
+                '$mine': mine,
                 '$top': top,
                 '$skip': skip,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.2",
                     "core",
                     "d30a3dd1-f8ba-442a-b86a-bd0c0c383e59",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.WebApiTeam[]>;
                 res = await this.rest.get<CoreInterfaces.WebApiTeam[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1140,17 +1304,17 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-    * Updates a team's name and/or description
-    * 
-    * @param {CoreInterfaces.WebApiTeam} teamData
-    * @param {string} projectId - The name or id (GUID) of the team project containing the team to update.
-    * @param {string} teamId - The name of id of the team to update.
-    */
+     * Update a team's name and/or description.
+     * 
+     * @param {CoreInterfaces.WebApiTeam} teamData
+     * @param {string} projectId - The name or ID (GUID) of the team project containing the team to update.
+     * @param {string} teamId - The name of ID of the team to update.
+     */
     public async updateTeam(
         teamData: CoreInterfaces.WebApiTeam,
         projectId: string,
         teamId: string
-    ): Promise<CoreInterfaces.WebApiTeam> {
+        ): Promise<CoreInterfaces.WebApiTeam> {
 
         return new Promise<CoreInterfaces.WebApiTeam>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1160,24 +1324,24 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.2",
                     "core",
                     "d30a3dd1-f8ba-442a-b86a-bd0c0c383e59",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<CoreInterfaces.WebApiTeam>;
                 res = await this.rest.update<CoreInterfaces.WebApiTeam>(url, teamData, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
