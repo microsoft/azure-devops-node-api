@@ -172,18 +172,18 @@ export async function run() {
 
         /********** Identities **********/
         // BROKEN
-        printSectionStart('Identities');
-        const identitiesApi = await vsts.getIdentitiesApi();
+        // printSectionStart('Identities');
+        // const identitiesApi = await vsts.getIdentitiesApi();
 
-        const identityGroups = await identitiesApi.listGroups();
-        if (identityGroups) {
-            console.log(`found ${identityGroups.length} identity groups`);
-        }
+        // const identityGroups = await identitiesApi.listGroups();
+        // if (identityGroups) {
+        //     console.log(`found ${identityGroups.length} identity groups`);
+        // }
 
-        const self: IdentitySelf = await identitiesApi.getSelf();
-        if (self) {
-            console.log(self.displayName);
-        }
+        // const self: IdentitySelf = await identitiesApi.getSelf();
+        // if (self) {
+        //     console.log(self.displayName);
+        // }
 
         /********** Locations **********/
         // WORKS
@@ -321,13 +321,13 @@ export async function run() {
 
         /********** Token **********/
         // BROKEN
-        // printSectionStart('Token');
-        // const tokenApi = await vsts.getTokenApi();
-        // const tokenList: TokenRegistration[] = await tokenApi.list();
+        printSectionStart('Token');
+        const tokenApi = await vsts.getTokenApi();
+        const tokenList: TokenRegistration[] = await tokenApi.list();
 
-        // if (tokenList) {
-        //     console.log(`found ${tokenList.length} token registrations`);
-        // }
+        if (tokenList) {
+            console.log(`found ${tokenList.length} token registrations`);
+        }
 
         /********** Work **********/
         // WORKS
