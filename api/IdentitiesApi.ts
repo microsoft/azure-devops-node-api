@@ -704,7 +704,7 @@ export class IdentitiesApi extends basem.ClientApiBase implements IIdentitiesApi
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "IMS",
                     "4bb02b5b-c120-4be2-b68e-21f7c50a4b82",
                     routeValues);

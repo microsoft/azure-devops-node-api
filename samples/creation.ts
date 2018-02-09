@@ -29,6 +29,7 @@ import { WidgetScope, WidgetTypesResponse } from 'vso-node-api/interfaces/Dashbo
 import { WorkItemField } from 'vso-node-api/interfaces/WorkItemTrackingInterfaces';
 
 import { Registration as TokenRegistration } from 'vso-node-api/interfaces/TokenInterfaces';
+import { IdentitiesApi } from '../_build/IdentitiesApi';
 
 // In order for this to run you will need to set the following environment variables:
 // 
@@ -173,8 +174,13 @@ export async function run() {
         // BROKEN
         printSectionStart('Identities');
         const identitiesApi = await vsts.getIdentitiesApi();
+
+        const identityGroups = await identitiesApi.listGroups();
+        if (identityGroups) {
+            console.log(`found ${identityGroups.length} identity groups`);
+        }
+
         const self: IdentitySelf = await identitiesApi.getSelf();
-        
         if (self) {
             console.log(self.displayName);
         }

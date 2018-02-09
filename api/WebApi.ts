@@ -251,6 +251,9 @@ export class WebApi {
         // 8a3d49b8-91f0-46ef-b33d-dda338c25db3 -- name: IMS
         // fc3682be-3d6c-427a-87c8-e527b16a1d05 -- name: Identity
         serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "8a3d49b8-91f0-46ef-b33d-dda338c25db3");
+
+        console.log(serverUrl);
+
         handlers = handlers || [this.authHandler];
         return new identitiesm.IdentitiesApi(serverUrl, handlers, this.options);
     }
