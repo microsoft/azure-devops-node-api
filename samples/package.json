@@ -4,7 +4,7 @@
   "description": "VSTS Node Api Samples",
   "main": "build.js",
   "dependencies": {
-    "vso-node-api": "^4.0.0"
+    "vso-node-api": "file:../_build"
   },
   "devDependencies": {},
   "scripts": {

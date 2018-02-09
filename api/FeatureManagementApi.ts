@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -42,7 +42,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
      */
     public async getFeature(
         featureId: string
-    ): Promise<FeatureManagementInterfaces.ContributedFeature> {
+        ): Promise<FeatureManagementInterfaces.ContributedFeature> {
 
         return new Promise<FeatureManagementInterfaces.ContributedFeature>(async (resolve, reject) => {
             let routeValues: any = {
@@ -51,24 +51,24 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "FeatureManagement",
                     "c4209f25-7a27-41dd-9f04-06080c7b6afd",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeature>;
                 res = await this.rest.get<FeatureManagementInterfaces.ContributedFeature>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -83,7 +83,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
      */
     public async getFeatures(
         targetContributionId?: string
-    ): Promise<FeatureManagementInterfaces.ContributedFeature[]> {
+        ): Promise<FeatureManagementInterfaces.ContributedFeature[]> {
 
         return new Promise<FeatureManagementInterfaces.ContributedFeature[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -92,28 +92,28 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
             let queryValues: any = {
                 targetContributionId: targetContributionId,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "FeatureManagement",
                     "c4209f25-7a27-41dd-9f04-06080c7b6afd",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeature[]>;
                 res = await this.rest.get<FeatureManagementInterfaces.ContributedFeature[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -130,7 +130,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
     public async getFeatureState(
         featureId: string,
         userScope: string
-    ): Promise<FeatureManagementInterfaces.ContributedFeatureState> {
+        ): Promise<FeatureManagementInterfaces.ContributedFeatureState> {
 
         return new Promise<FeatureManagementInterfaces.ContributedFeatureState>(async (resolve, reject) => {
             let routeValues: any = {
@@ -140,24 +140,24 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "FeatureManagement",
                     "98911314-3f9b-4eaf-80e8-83900d8e85d9",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
                 res = await this.rest.get<FeatureManagementInterfaces.ContributedFeatureState>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    FeatureManagementInterfaces.TypeInfo.ContributedFeatureState,
-                    false);
+                                              FeatureManagementInterfaces.TypeInfo.ContributedFeatureState,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -180,7 +180,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
         userScope: string,
         reason?: string,
         reasonCode?: string
-    ): Promise<FeatureManagementInterfaces.ContributedFeatureState> {
+        ): Promise<FeatureManagementInterfaces.ContributedFeatureState> {
 
         return new Promise<FeatureManagementInterfaces.ContributedFeatureState>(async (resolve, reject) => {
             let routeValues: any = {
@@ -192,28 +192,28 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                 reason: reason,
                 reasonCode: reasonCode,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "FeatureManagement",
                     "98911314-3f9b-4eaf-80e8-83900d8e85d9",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
                 res = await this.rest.update<FeatureManagementInterfaces.ContributedFeatureState>(url, feature, options);
 
                 let ret = this.formatResponse(res.result,
-                    FeatureManagementInterfaces.TypeInfo.ContributedFeatureState,
-                    false);
+                                              FeatureManagementInterfaces.TypeInfo.ContributedFeatureState,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -234,7 +234,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
         userScope: string,
         scopeName: string,
         scopeValue: string
-    ): Promise<FeatureManagementInterfaces.ContributedFeatureState> {
+        ): Promise<FeatureManagementInterfaces.ContributedFeatureState> {
 
         return new Promise<FeatureManagementInterfaces.ContributedFeatureState>(async (resolve, reject) => {
             let routeValues: any = {
@@ -246,24 +246,24 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "FeatureManagement",
                     "dd291e43-aa9f-4cee-8465-a93c78e414a4",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
                 res = await this.rest.get<FeatureManagementInterfaces.ContributedFeatureState>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    FeatureManagementInterfaces.TypeInfo.ContributedFeatureState,
-                    false);
+                                              FeatureManagementInterfaces.TypeInfo.ContributedFeatureState,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -290,7 +290,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
         scopeValue: string,
         reason?: string,
         reasonCode?: string
-    ): Promise<FeatureManagementInterfaces.ContributedFeatureState> {
+        ): Promise<FeatureManagementInterfaces.ContributedFeatureState> {
 
         return new Promise<FeatureManagementInterfaces.ContributedFeatureState>(async (resolve, reject) => {
             let routeValues: any = {
@@ -304,28 +304,28 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                 reason: reason,
                 reasonCode: reasonCode,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "FeatureManagement",
                     "dd291e43-aa9f-4cee-8465-a93c78e414a4",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
                 res = await this.rest.update<FeatureManagementInterfaces.ContributedFeatureState>(url, feature, options);
 
                 let ret = this.formatResponse(res.result,
-                    FeatureManagementInterfaces.TypeInfo.ContributedFeatureState,
-                    false);
+                                              FeatureManagementInterfaces.TypeInfo.ContributedFeatureState,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -340,7 +340,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
      */
     public async queryFeatureStates(
         query: FeatureManagementInterfaces.ContributedFeatureStateQuery
-    ): Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery> {
+        ): Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery> {
 
         return new Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery>(async (resolve, reject) => {
             let routeValues: any = {
@@ -348,24 +348,24 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "FeatureManagement",
                     "2b4486ad-122b-400c-ae65-17b6672c1f9d",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureStateQuery>;
                 res = await this.rest.create<FeatureManagementInterfaces.ContributedFeatureStateQuery>(url, query, options);
 
                 let ret = this.formatResponse(res.result,
-                    FeatureManagementInterfaces.TypeInfo.ContributedFeatureStateQuery,
-                    false);
+                                              FeatureManagementInterfaces.TypeInfo.ContributedFeatureStateQuery,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -382,7 +382,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
     public async queryFeatureStatesForDefaultScope(
         query: FeatureManagementInterfaces.ContributedFeatureStateQuery,
         userScope: string
-    ): Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery> {
+        ): Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery> {
 
         return new Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery>(async (resolve, reject) => {
             let routeValues: any = {
@@ -391,24 +391,24 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "FeatureManagement",
                     "3f810f28-03e2-4239-b0bc-788add3005e5",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureStateQuery>;
                 res = await this.rest.create<FeatureManagementInterfaces.ContributedFeatureStateQuery>(url, query, options);
 
                 let ret = this.formatResponse(res.result,
-                    FeatureManagementInterfaces.TypeInfo.ContributedFeatureStateQuery,
-                    false);
+                                              FeatureManagementInterfaces.TypeInfo.ContributedFeatureStateQuery,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -429,7 +429,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
         userScope: string,
         scopeName: string,
         scopeValue: string
-    ): Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery> {
+        ): Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery> {
 
         return new Promise<FeatureManagementInterfaces.ContributedFeatureStateQuery>(async (resolve, reject) => {
             let routeValues: any = {
@@ -440,24 +440,24 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "FeatureManagement",
                     "f29e997b-c2da-4d15-8380-765788a1a74c",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureStateQuery>;
                 res = await this.rest.create<FeatureManagementInterfaces.ContributedFeatureStateQuery>(url, query, options);
 
                 let ret = this.formatResponse(res.result,
-                    FeatureManagementInterfaces.TypeInfo.ContributedFeatureStateQuery,
-                    false);
+                                              FeatureManagementInterfaces.TypeInfo.ContributedFeatureStateQuery,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);

@@ -14,7 +14,7 @@ export async function run() {
     try
     {
         let vsts: vm.WebApi = await cm.getWebApi();
-        let vstsTask: ta.ITaskAgentApi = vsts.getTaskAgentApi();
+        let vstsTask: ta.ITaskAgentApi = await vsts.getTaskAgentApi();
 
         cm.banner('Task Samples');
         let project = cm.getProject();

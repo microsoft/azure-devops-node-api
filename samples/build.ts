@@ -8,7 +8,7 @@ export async function run() {
     try
     {
         let vsts: vm.WebApi = await cm.getWebApi();
-        let vstsBuild: ba.IBuildApi = vsts.getBuildApi();
+        let vstsBuild: ba.IBuildApi = await vsts.getBuildApi();
 
         cm.banner('Build Samples');
         let project = cm.getProject();

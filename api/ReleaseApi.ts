@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -21,19 +21,23 @@ import ReleaseInterfaces = require("./interfaces/ReleaseInterfaces");
 
 export interface IReleaseApi extends basem.ClientApiBase {
     getAgentArtifactDefinitions(project: string, releaseId: number): Promise<ReleaseInterfaces.AgentArtifactDefinition[]>;
+    getApprovals(project: string, assignedToFilter?: string, statusFilter?: ReleaseInterfaces.ApprovalStatus, releaseIdsFilter?: number[], typeFilter?: ReleaseInterfaces.ApprovalType, top?: number, continuationToken?: number, queryOrder?: ReleaseInterfaces.ReleaseQueryOrder, includeMyGroupApprovals?: boolean): Promise<ReleaseInterfaces.ReleaseApproval[]>;
     getApprovalHistory(project: string, approvalStepId: number): Promise<ReleaseInterfaces.ReleaseApproval>;
     getApproval(project: string, approvalId: number, includeHistory?: boolean): Promise<ReleaseInterfaces.ReleaseApproval>;
     updateReleaseApproval(approval: ReleaseInterfaces.ReleaseApproval, project: string, approvalId: number): Promise<ReleaseInterfaces.ReleaseApproval>;
-    getApprovals(project: string, assignedToFilter?: string, statusFilter?: ReleaseInterfaces.ApprovalStatus, releaseIdsFilter?: number[], typeFilter?: ReleaseInterfaces.ApprovalType, top?: number, continuationToken?: number, queryOrder?: ReleaseInterfaces.ReleaseQueryOrder, includeMyGroupApprovals?: boolean): Promise<ReleaseInterfaces.ReleaseApproval[]>;
+    updateReleaseApprovals(approvals: ReleaseInterfaces.ReleaseApproval[], project: string): Promise<ReleaseInterfaces.ReleaseApproval[]>;
+    getTaskAttachmentContent(project: string, releaseId: number, environmentId: number, attemptId: number, timelineId: string, recordId: string, type: string, name: string): Promise<NodeJS.ReadableStream>;
+    getTaskAttachments(project: string, releaseId: number, environmentId: number, attemptId: number, timelineId: string, type: string): Promise<ReleaseInterfaces.ReleaseTaskAttachment[]>;
+    getAutoTriggerIssues(artifactType: string, sourceId: string, artifactVersionId: string, project?: string): Promise<ReleaseInterfaces.AutoTriggerIssue[]>;
+    getDeploymentBadge(projectId: string, releaseDefinitionId: number, environmentId: number, branchName?: string): Promise<string>;
     getReleaseChanges(project: string, releaseId: number, baseReleaseId?: number, top?: number): Promise<ReleaseInterfaces.Change[]>;
-    setupContinuousDeployment(configData: ReleaseInterfaces.ContinuousDeploymentSetupData, project: string): Promise<string>;
-    getDefinitionEnvironments(project: string, taskGroupId?: string): Promise<ReleaseInterfaces.DefinitionEnvironmentReference[]>;
+    getDefinitionEnvironments(project: string, taskGroupId?: string, propertyFilters?: string[]): Promise<ReleaseInterfaces.DefinitionEnvironmentReference[]>;
     createReleaseDefinition(releaseDefinition: ReleaseInterfaces.ReleaseDefinition, project: string): Promise<ReleaseInterfaces.ReleaseDefinition>;
-    deleteReleaseDefinition(project: string, definitionId: number): Promise<void>;
+    deleteReleaseDefinition(project: string, definitionId: number, comment?: string, forceDelete?: boolean): Promise<void>;
     getReleaseDefinition(project: string, definitionId: number, propertyFilters?: string[]): Promise<ReleaseInterfaces.ReleaseDefinition>;
     getReleaseDefinitionRevision(project: string, definitionId: number, revision: number): Promise<NodeJS.ReadableStream>;
-    getReleaseDefinitions(project: string, searchText?: string, expand?: ReleaseInterfaces.ReleaseDefinitionExpands, artifactType?: string, artifactSourceId?: string, top?: number, continuationToken?: string, queryOrder?: ReleaseInterfaces.ReleaseDefinitionQueryOrder, path?: string, isExactNameMatch?: boolean, tagFilter?: string[], propertyFilters?: string[]): Promise<ReleaseInterfaces.ReleaseDefinition[]>;
-    getReleaseDefinitionsForArtifactSource(project: string, artifactType: string, artifactSourceId: string, expand?: ReleaseInterfaces.ReleaseDefinitionExpands): Promise<ReleaseInterfaces.ReleaseDefinition[]>;
+    getReleaseDefinitions(project: string, searchText?: string, expand?: ReleaseInterfaces.ReleaseDefinitionExpands, artifactType?: string, artifactSourceId?: string, top?: number, continuationToken?: string, queryOrder?: ReleaseInterfaces.ReleaseDefinitionQueryOrder, path?: string, isExactNameMatch?: boolean, tagFilter?: string[], propertyFilters?: string[], definitionIdFilter?: string[], isDeleted?: boolean): Promise<ReleaseInterfaces.ReleaseDefinition[]>;
+    undeleteReleaseDefinition(releaseDefinitionUndeleteParameter: ReleaseInterfaces.ReleaseDefinitionUndeleteParameter, project: string, definitionId: number): Promise<ReleaseInterfaces.ReleaseDefinition>;
     updateReleaseDefinition(releaseDefinition: ReleaseInterfaces.ReleaseDefinition, project: string): Promise<ReleaseInterfaces.ReleaseDefinition>;
     getDeployments(project: string, definitionId?: number, definitionEnvironmentId?: number, createdBy?: string, minModifiedTime?: Date, maxModifiedTime?: Date, deploymentStatus?: ReleaseInterfaces.DeploymentStatus, operationStatus?: ReleaseInterfaces.DeploymentOperationStatus, latestAttemptsOnly?: boolean, queryOrder?: ReleaseInterfaces.ReleaseQueryOrder, top?: number, continuationToken?: number, createdFor?: string): Promise<ReleaseInterfaces.Deployment[]>;
     getDeploymentsForMultipleEnvironments(queryParameters: ReleaseInterfaces.DeploymentQueryParameters, project: string): Promise<ReleaseInterfaces.Deployment[]>;
@@ -42,7 +46,8 @@ export interface IReleaseApi extends basem.ClientApiBase {
     createDefinitionEnvironmentTemplate(template: ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate, project: string): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>;
     deleteDefinitionEnvironmentTemplate(project: string, templateId: string): Promise<void>;
     getDefinitionEnvironmentTemplate(project: string, templateId: string): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>;
-    listDefinitionEnvironmentTemplates(project: string): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]>;
+    listDefinitionEnvironmentTemplates(project: string, isDeleted?: boolean): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]>;
+    undeleteReleaseDefinitionEnvironmentTemplate(project: string, templateId: string): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>;
     createFavorites(favoriteItems: ReleaseInterfaces.FavoriteItem[], project: string, scope: string, identityId?: string): Promise<ReleaseInterfaces.FavoriteItem[]>;
     deleteFavorites(project: string, scope: string, identityId?: string, favoriteItemIds?: string): Promise<void>;
     getFavorites(project: string, scope: string, identityId?: string): Promise<ReleaseInterfaces.FavoriteItem[]>;
@@ -52,19 +57,21 @@ export interface IReleaseApi extends basem.ClientApiBase {
     updateFolder(folder: ReleaseInterfaces.Folder, project: string, path: string): Promise<ReleaseInterfaces.Folder>;
     getReleaseHistory(project: string, releaseId: number): Promise<ReleaseInterfaces.ReleaseRevision[]>;
     getInputValues(query: FormInputInterfaces.InputValuesQuery, project: string): Promise<FormInputInterfaces.InputValuesQuery>;
-    getIssues(project: string, buildId: number): Promise<ReleaseInterfaces.ReleaseIssue[]>;
-    getLog(project: string, releaseId: number, environmentId: number, taskId: number, attemptId?: number): Promise<NodeJS.ReadableStream>;
+    getIssues(project: string, buildId: number, sourceId?: string): Promise<ReleaseInterfaces.AutoTriggerIssue[]>;
+    getGateLog(project: string, releaseId: number, environmentId: number, gateId: number, taskId: number): Promise<NodeJS.ReadableStream>;
     getLogs(project: string, releaseId: number): Promise<NodeJS.ReadableStream>;
-    getTaskLog(project: string, releaseId: number, environmentId: number, releaseDeployPhaseId: number, taskId: number): Promise<NodeJS.ReadableStream>;
+    getLog(project: string, releaseId: number, environmentId: number, taskId: number, attemptId?: number): Promise<NodeJS.ReadableStream>;
+    getTaskLog2(project: string, releaseId: number, environmentId: number, attemptId: number, timelineId: string, taskId: number, startLine?: number, endLine?: number): Promise<NodeJS.ReadableStream>;
+    getTaskLog(project: string, releaseId: number, environmentId: number, releaseDeployPhaseId: number, taskId: number, startLine?: number, endLine?: number): Promise<NodeJS.ReadableStream>;
     getManualIntervention(project: string, releaseId: number, manualInterventionId: number): Promise<ReleaseInterfaces.ManualIntervention>;
     getManualInterventions(project: string, releaseId: number): Promise<ReleaseInterfaces.ManualIntervention[]>;
     updateManualIntervention(manualInterventionUpdateMetadata: ReleaseInterfaces.ManualInterventionUpdateMetadata, project: string, releaseId: number, manualInterventionId: number): Promise<ReleaseInterfaces.ManualIntervention>;
     getMetrics(project: string, minMetricsTime?: Date): Promise<ReleaseInterfaces.Metric[]>;
     getReleaseProjects(artifactType: string, artifactSourceId: string): Promise<ReleaseInterfaces.ProjectReference[]>;
-    getReleases(project?: string, definitionId?: number, definitionEnvironmentId?: number, searchText?: string, createdBy?: string, statusFilter?: ReleaseInterfaces.ReleaseStatus, environmentStatusFilter?: number, minCreatedTime?: Date, maxCreatedTime?: Date, queryOrder?: ReleaseInterfaces.ReleaseQueryOrder, top?: number, continuationToken?: number, expand?: ReleaseInterfaces.ReleaseExpands, artifactTypeId?: string, sourceId?: string, artifactVersionId?: string, sourceBranchFilter?: string, isDeleted?: boolean, tagFilter?: string[], propertyFilters?: string[]): Promise<ReleaseInterfaces.Release[]>;
+    getReleases(project?: string, definitionId?: number, definitionEnvironmentId?: number, searchText?: string, createdBy?: string, statusFilter?: ReleaseInterfaces.ReleaseStatus, environmentStatusFilter?: number, minCreatedTime?: Date, maxCreatedTime?: Date, queryOrder?: ReleaseInterfaces.ReleaseQueryOrder, top?: number, continuationToken?: number, expand?: ReleaseInterfaces.ReleaseExpands, artifactTypeId?: string, sourceId?: string, artifactVersionId?: string, sourceBranchFilter?: string, isDeleted?: boolean, tagFilter?: string[], propertyFilters?: string[], releaseIdFilter?: number[]): Promise<ReleaseInterfaces.Release[]>;
     createRelease(releaseStartMetadata: ReleaseInterfaces.ReleaseStartMetadata, project: string): Promise<ReleaseInterfaces.Release>;
     deleteRelease(project: string, releaseId: number, comment?: string): Promise<void>;
-    getRelease(project: string, releaseId: number, includeAllApprovals?: boolean, propertyFilters?: string[]): Promise<ReleaseInterfaces.Release>;
+    getRelease(project: string, releaseId: number, approvalFilters?: ReleaseInterfaces.ApprovalFilters, propertyFilters?: string[]): Promise<ReleaseInterfaces.Release>;
     getReleaseDefinitionSummary(project: string, definitionId: number, releaseCount: number, includeArtifact?: boolean, definitionEnvironmentIdsFilter?: number[]): Promise<ReleaseInterfaces.ReleaseDefinitionSummary>;
     getReleaseRevision(project: string, releaseId: number, definitionSnapshotRevision: number): Promise<NodeJS.ReadableStream>;
     undeleteRelease(project: string, releaseId: number, comment: string): Promise<void>;
@@ -86,8 +93,9 @@ export interface IReleaseApi extends basem.ClientApiBase {
     deleteReleaseTag(project: string, releaseId: number, tag: string): Promise<string[]>;
     getReleaseTags(project: string, releaseId: number): Promise<string[]>;
     getTags(project: string): Promise<string[]>;
-    getTasks(project: string, releaseId: number, environmentId: number, attemptId?: number): Promise<ReleaseInterfaces.ReleaseTask[]>;
     getTasksForTaskGroup(project: string, releaseId: number, environmentId: number, releaseDeployPhaseId: number): Promise<ReleaseInterfaces.ReleaseTask[]>;
+    getTasks2(project: string, releaseId: number, environmentId: number, attemptId: number, timelineId: string): Promise<ReleaseInterfaces.ReleaseTask[]>;
+    getTasks(project: string, releaseId: number, environmentId: number, attemptId?: number): Promise<ReleaseInterfaces.ReleaseTask[]>;
     getArtifactTypeDefinitions(project: string): Promise<ReleaseInterfaces.ArtifactTypeDefinition[]>;
     getArtifactVersions(project: string, releaseDefinitionId: number): Promise<ReleaseInterfaces.ArtifactVersionQueryResult>;
     getArtifactVersionsForSources(artifacts: ReleaseInterfaces.Artifact[], project: string): Promise<ReleaseInterfaces.ArtifactVersionQueryResult>;
@@ -99,6 +107,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         super(baseUrl, handlers, 'node-Release-api', options);
     }
 
+    public static readonly RESOURCE_AREA_ID = "efc2f575-36ef-48e9-b672-0c6fb4a48ac5";
+
     /**
      * Returns the artifact details that automation agent requires
      * 
@@ -108,7 +118,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getAgentArtifactDefinitions(
         project: string,
         releaseId: number
-    ): Promise<ReleaseInterfaces.AgentArtifactDefinition[]> {
+        ): Promise<ReleaseInterfaces.AgentArtifactDefinition[]> {
 
         return new Promise<ReleaseInterfaces.AgentArtifactDefinition[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -118,24 +128,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "f2571c27-bf50-4938-b396-32d109ddef26",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.AgentArtifactDefinition[]>;
                 res = await this.rest.get<ReleaseInterfaces.AgentArtifactDefinition[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.AgentArtifactDefinition,
-                    true);
+                                              ReleaseInterfaces.TypeInfo.AgentArtifactDefinition,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -144,150 +154,17 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Get a list of approvals
+     * 
      * @param {string} project - Project ID or project name
-     * @param {number} approvalStepId
-     */
-    public async getApprovalHistory(
-        project: string,
-        approvalStepId: number
-    ): Promise<ReleaseInterfaces.ReleaseApproval> {
-
-        return new Promise<ReleaseInterfaces.ReleaseApproval>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                approvalStepId: approvalStepId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
-                    "Release",
-                    "250c7158-852e-4130-a00f-a0cce9b72d05",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
-
-                let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval>;
-                res = await this.rest.get<ReleaseInterfaces.ReleaseApproval>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ReleaseApproval,
-                    false);
-
-                resolve(ret);
-
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * @param {string} project - Project ID or project name
-     * @param {number} approvalId
-     * @param {boolean} includeHistory
-     */
-    public async getApproval(
-        project: string,
-        approvalId: number,
-        includeHistory?: boolean
-    ): Promise<ReleaseInterfaces.ReleaseApproval> {
-
-        return new Promise<ReleaseInterfaces.ReleaseApproval>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                approvalId: approvalId
-            };
-
-            let queryValues: any = {
-                includeHistory: includeHistory,
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
-                    "Release",
-                    "9328e074-59fb-465a-89d9-b09c82ee5109",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
-
-                let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval>;
-                res = await this.rest.get<ReleaseInterfaces.ReleaseApproval>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ReleaseApproval,
-                    false);
-
-                resolve(ret);
-
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * @param {ReleaseInterfaces.ReleaseApproval} approval
-     * @param {string} project - Project ID or project name
-     * @param {number} approvalId
-     */
-    public async updateReleaseApproval(
-        approval: ReleaseInterfaces.ReleaseApproval,
-        project: string,
-        approvalId: number
-    ): Promise<ReleaseInterfaces.ReleaseApproval> {
-
-        return new Promise<ReleaseInterfaces.ReleaseApproval>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                approvalId: approvalId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
-                    "Release",
-                    "9328e074-59fb-465a-89d9-b09c82ee5109",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
-
-                let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval>;
-                res = await this.rest.update<ReleaseInterfaces.ReleaseApproval>(url, approval, options);
-
-                let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ReleaseApproval,
-                    false);
-
-                resolve(ret);
-
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * @param {string} project - Project ID or project name
-     * @param {string} assignedToFilter
-     * @param {ReleaseInterfaces.ApprovalStatus} statusFilter
-     * @param {number[]} releaseIdsFilter
-     * @param {ReleaseInterfaces.ApprovalType} typeFilter
-     * @param {number} top
-     * @param {number} continuationToken
-     * @param {ReleaseInterfaces.ReleaseQueryOrder} queryOrder
-     * @param {boolean} includeMyGroupApprovals
+     * @param {string} assignedToFilter - Approvals assigned to this user.
+     * @param {ReleaseInterfaces.ApprovalStatus} statusFilter - Approvals with this status. Default is 'pending'.
+     * @param {number[]} releaseIdsFilter - Approvals for release id(s) mentioned in the filter. Multiple releases can be mentioned by separating them with ',' e.g. releaseIdsFilter=1,2,3,4.
+     * @param {ReleaseInterfaces.ApprovalType} typeFilter - Approval with this type.
+     * @param {number} top - Number of approvals to get. Default is 50.
+     * @param {number} continuationToken - Gets the approvals after the continuation token provided.
+     * @param {ReleaseInterfaces.ReleaseQueryOrder} queryOrder - Gets the results in the defined order of created approvals. Default is 'descending'.
+     * @param {boolean} includeMyGroupApprovals - 'true' to include my group approvals. Default is 'false'.
      */
     public async getApprovals(
         project: string,
@@ -299,7 +176,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         continuationToken?: number,
         queryOrder?: ReleaseInterfaces.ReleaseQueryOrder,
         includeMyGroupApprovals?: boolean
-    ): Promise<ReleaseInterfaces.ReleaseApproval[]> {
+        ): Promise<ReleaseInterfaces.ReleaseApproval[]> {
 
         return new Promise<ReleaseInterfaces.ReleaseApproval[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -316,28 +193,418 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 queryOrder: queryOrder,
                 includeMyGroupApprovals: includeMyGroupApprovals,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
+                    "4.1-preview.3",
                     "Release",
                     "b47c6458-e73b-47cb-a770-4df1e8813a91",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseApproval[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ReleaseApproval,
-                    true);
+                                              ReleaseInterfaces.TypeInfo.ReleaseApproval,
+                                              true);
 
                 resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
+    /**
+     * Get approval history.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} approvalStepId - Id of the approval.
+     */
+    public async getApprovalHistory(
+        project: string,
+        approvalStepId: number
+        ): Promise<ReleaseInterfaces.ReleaseApproval> {
+
+        return new Promise<ReleaseInterfaces.ReleaseApproval>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                approvalStepId: approvalStepId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.3",
+                    "Release",
+                    "250c7158-852e-4130-a00f-a0cce9b72d05",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval>;
+                res = await this.rest.get<ReleaseInterfaces.ReleaseApproval>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              ReleaseInterfaces.TypeInfo.ReleaseApproval,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get an approval.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} approvalId - Id of the approval.
+     * @param {boolean} includeHistory - 'true' to include history of the approval. Default is 'false'.
+     */
+    public async getApproval(
+        project: string,
+        approvalId: number,
+        includeHistory?: boolean
+        ): Promise<ReleaseInterfaces.ReleaseApproval> {
+
+        return new Promise<ReleaseInterfaces.ReleaseApproval>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                approvalId: approvalId
+            };
+
+            let queryValues: any = {
+                includeHistory: includeHistory,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.3",
+                    "Release",
+                    "9328e074-59fb-465a-89d9-b09c82ee5109",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval>;
+                res = await this.rest.get<ReleaseInterfaces.ReleaseApproval>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              ReleaseInterfaces.TypeInfo.ReleaseApproval,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Update status of an approval
+     * 
+     * @param {ReleaseInterfaces.ReleaseApproval} approval - ReleaseApproval object having status, approver and comments.
+     * @param {string} project - Project ID or project name
+     * @param {number} approvalId - Id of the approval.
+     */
+    public async updateReleaseApproval(
+        approval: ReleaseInterfaces.ReleaseApproval,
+        project: string,
+        approvalId: number
+        ): Promise<ReleaseInterfaces.ReleaseApproval> {
+
+        return new Promise<ReleaseInterfaces.ReleaseApproval>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                approvalId: approvalId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.3",
+                    "Release",
+                    "9328e074-59fb-465a-89d9-b09c82ee5109",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval>;
+                res = await this.rest.update<ReleaseInterfaces.ReleaseApproval>(url, approval, options);
+
+                let ret = this.formatResponse(res.result,
+                                              ReleaseInterfaces.TypeInfo.ReleaseApproval,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {ReleaseInterfaces.ReleaseApproval[]} approvals
+     * @param {string} project - Project ID or project name
+     */
+    public async updateReleaseApprovals(
+        approvals: ReleaseInterfaces.ReleaseApproval[],
+        project: string
+        ): Promise<ReleaseInterfaces.ReleaseApproval[]> {
+
+        return new Promise<ReleaseInterfaces.ReleaseApproval[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.3",
+                    "Release",
+                    "c957584a-82aa-4131-8222-6d47f78bfa7a",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval[]>;
+                res = await this.rest.update<ReleaseInterfaces.ReleaseApproval[]>(url, approvals, options);
+
+                let ret = this.formatResponse(res.result,
+                                              ReleaseInterfaces.TypeInfo.ReleaseApproval,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number} releaseId
+     * @param {number} environmentId
+     * @param {number} attemptId
+     * @param {string} timelineId
+     * @param {string} recordId
+     * @param {string} type
+     * @param {string} name
+     */
+    public async getTaskAttachmentContent(
+        project: string,
+        releaseId: number,
+        environmentId: number,
+        attemptId: number,
+        timelineId: string,
+        recordId: string,
+        type: string,
+        name: string
+        ): Promise<NodeJS.ReadableStream> {
+
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId,
+                environmentId: environmentId,
+                attemptId: attemptId,
+                timelineId: timelineId,
+                recordId: recordId,
+                type: type,
+                name: name
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.1",
+                    "Release",
+                    "c4071f6d-3697-46ca-858e-8b10ff09e52f",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number} releaseId
+     * @param {number} environmentId
+     * @param {number} attemptId
+     * @param {string} timelineId
+     * @param {string} type
+     */
+    public async getTaskAttachments(
+        project: string,
+        releaseId: number,
+        environmentId: number,
+        attemptId: number,
+        timelineId: string,
+        type: string
+        ): Promise<ReleaseInterfaces.ReleaseTaskAttachment[]> {
+
+        return new Promise<ReleaseInterfaces.ReleaseTaskAttachment[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId,
+                environmentId: environmentId,
+                attemptId: attemptId,
+                timelineId: timelineId,
+                type: type
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.1",
+                    "Release",
+                    "214111ee-2415-4df2-8ed2-74417f7d61f9",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<ReleaseInterfaces.ReleaseTaskAttachment[]>;
+                res = await this.rest.get<ReleaseInterfaces.ReleaseTaskAttachment[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              ReleaseInterfaces.TypeInfo.ReleaseTaskAttachment,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} artifactType
+     * @param {string} sourceId
+     * @param {string} artifactVersionId
+     * @param {string} project - Project ID or project name
+     */
+    public async getAutoTriggerIssues(
+        artifactType: string,
+        sourceId: string,
+        artifactVersionId: string,
+        project?: string
+        ): Promise<ReleaseInterfaces.AutoTriggerIssue[]> {
+
+        return new Promise<ReleaseInterfaces.AutoTriggerIssue[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            let queryValues: any = {
+                artifactType: artifactType,
+                sourceId: sourceId,
+                artifactVersionId: artifactVersionId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.1",
+                    "Release",
+                    "c1a68497-69da-40fb-9423-cab19cfeeca9",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<ReleaseInterfaces.AutoTriggerIssue[]>;
+                res = await this.rest.get<ReleaseInterfaces.AutoTriggerIssue[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              ReleaseInterfaces.TypeInfo.AutoTriggerIssue,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Gets a badge that indicates the status of the most recent deployment for an environment.
+     * 
+     * @param {string} projectId - The ID of the Project.
+     * @param {number} releaseDefinitionId - The ID of the Release Definition.
+     * @param {number} environmentId - The ID of the Environment.
+     * @param {string} branchName - The name of the branch.
+     */
+    public async getDeploymentBadge(
+        projectId: string,
+        releaseDefinitionId: number,
+        environmentId: number,
+        branchName?: string
+        ): Promise<string> {
+
+        return new Promise<string>(async (resolve, reject) => {
+            let routeValues: any = {
+                projectId: projectId,
+                releaseDefinitionId: releaseDefinitionId,
+                environmentId: environmentId,
+                branchName: branchName
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.1",
+                    "Release",
+                    "1a60a35d-b8c9-45fb-bf67-da0829711147",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<string>;
+                res = await this.rest.get<string>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
             }
             catch (err) {
                 reject(err);
@@ -356,7 +623,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         releaseId: number,
         baseReleaseId?: number,
         top?: number
-    ): Promise<ReleaseInterfaces.Change[]> {
+        ): Promise<ReleaseInterfaces.Change[]> {
 
         return new Promise<ReleaseInterfaces.Change[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -368,69 +635,28 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 baseReleaseId: baseReleaseId,
                 '$top': top,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "8dcf9fe9-ca37-4113-8ee1-37928e98407c",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Change[]>;
                 res = await this.rest.get<ReleaseInterfaces.Change[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.Change,
-                    true);
+                                              ReleaseInterfaces.TypeInfo.Change,
+                                              true);
 
                 resolve(ret);
-
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * @param {ReleaseInterfaces.ContinuousDeploymentSetupData} configData
-     * @param {string} project - Project ID or project name
-     */
-    public async setupContinuousDeployment(
-        configData: ReleaseInterfaces.ContinuousDeploymentSetupData,
-        project: string
-    ): Promise<string> {
-
-        return new Promise<string>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
-                    "Release",
-                    "c5788899-1e84-439b-b5f9-dbc10ecffe24",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
-
-                let res: restm.IRestResponse<string>;
-                res = await this.rest.create<string>(url, configData, options);
-
-                let ret = this.formatResponse(res.result,
-                    null,
-                    false);
-
-                resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -441,11 +667,13 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     /**
      * @param {string} project - Project ID or project name
      * @param {string} taskGroupId
+     * @param {string[]} propertyFilters
      */
     public async getDefinitionEnvironments(
         project: string,
-        taskGroupId?: string
-    ): Promise<ReleaseInterfaces.DefinitionEnvironmentReference[]> {
+        taskGroupId?: string,
+        propertyFilters?: string[]
+        ): Promise<ReleaseInterfaces.DefinitionEnvironmentReference[]> {
 
         return new Promise<ReleaseInterfaces.DefinitionEnvironmentReference[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -454,29 +682,30 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             let queryValues: any = {
                 taskGroupId: taskGroupId,
+                propertyFilters: propertyFilters && propertyFilters.join(","),
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "12b5d21a-f54c-430e-a8c1-7515d196890e",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.DefinitionEnvironmentReference[]>;
                 res = await this.rest.get<ReleaseInterfaces.DefinitionEnvironmentReference[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -485,13 +714,15 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {ReleaseInterfaces.ReleaseDefinition} releaseDefinition
+     * Create a release definition
+     * 
+     * @param {ReleaseInterfaces.ReleaseDefinition} releaseDefinition - release definition object to create.
      * @param {string} project - Project ID or project name
      */
     public async createReleaseDefinition(
         releaseDefinition: ReleaseInterfaces.ReleaseDefinition,
         project: string
-    ): Promise<ReleaseInterfaces.ReleaseDefinition> {
+        ): Promise<ReleaseInterfaces.ReleaseDefinition> {
 
         return new Promise<ReleaseInterfaces.ReleaseDefinition>(async (resolve, reject) => {
             let routeValues: any = {
@@ -500,24 +731,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.3",
+                    "4.1-preview.3",
                     "Release",
                     "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition>;
                 res = await this.rest.create<ReleaseInterfaces.ReleaseDefinition>(url, releaseDefinition, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ReleaseDefinition,
-                    false);
+                                              ReleaseInterfaces.TypeInfo.ReleaseDefinition,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -526,13 +757,19 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Delete a release definition.
+     * 
      * @param {string} project - Project ID or project name
-     * @param {number} definitionId
+     * @param {number} definitionId - Id of the release definition.
+     * @param {string} comment - Comment for deleting a release definition.
+     * @param {boolean} forceDelete - 'true' to automatically cancel any in-progress release deployments and proceed with release definition deletion . Default is 'false'.
      */
     public async deleteReleaseDefinition(
         project: string,
-        definitionId: number
-    ): Promise<void> {
+        definitionId: number,
+        comment?: string,
+        forceDelete?: boolean
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -540,26 +777,32 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 definitionId: definitionId
             };
 
+            let queryValues: any = {
+                comment: comment,
+                forceDelete: forceDelete,
+            };
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.3",
+                    "4.1-preview.3",
                     "Release",
                     "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
-                    routeValues);
+                    routeValues,
+                    queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -568,15 +811,17 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Get a release definition.
+     * 
      * @param {string} project - Project ID or project name
-     * @param {number} definitionId
-     * @param {string[]} propertyFilters
+     * @param {number} definitionId - Id of the release definition.
+     * @param {string[]} propertyFilters - A comma-delimited list of extended properties to retrieve.
      */
     public async getReleaseDefinition(
         project: string,
         definitionId: number,
         propertyFilters?: string[]
-    ): Promise<ReleaseInterfaces.ReleaseDefinition> {
+        ): Promise<ReleaseInterfaces.ReleaseDefinition> {
 
         return new Promise<ReleaseInterfaces.ReleaseDefinition>(async (resolve, reject) => {
             let routeValues: any = {
@@ -587,28 +832,28 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 propertyFilters: propertyFilters && propertyFilters.join(","),
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.3",
+                    "4.1-preview.3",
                     "Release",
                     "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinition>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ReleaseDefinition,
-                    false);
+                                              ReleaseInterfaces.TypeInfo.ReleaseDefinition,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -617,15 +862,17 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Get release definition of a given revision.
+     * 
      * @param {string} project - Project ID or project name
-     * @param {number} definitionId
-     * @param {number} revision
+     * @param {number} definitionId - Id of the release definition.
+     * @param {number} revision - Revision number of the release definition.
      */
     public async getReleaseDefinitionRevision(
         project: string,
         definitionId: number,
         revision: number
-    ): Promise<NodeJS.ReadableStream> {
+        ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -636,17 +883,17 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 revision: revision,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.3",
+                    "4.1-preview.3",
                     "Release",
                     "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-
+                
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -658,18 +905,22 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Get a list of release definitions.
+     * 
      * @param {string} project - Project ID or project name
-     * @param {string} searchText
-     * @param {ReleaseInterfaces.ReleaseDefinitionExpands} expand
-     * @param {string} artifactType
-     * @param {string} artifactSourceId
-     * @param {number} top
-     * @param {string} continuationToken
-     * @param {ReleaseInterfaces.ReleaseDefinitionQueryOrder} queryOrder
-     * @param {string} path
-     * @param {boolean} isExactNameMatch
-     * @param {string[]} tagFilter
-     * @param {string[]} propertyFilters
+     * @param {string} searchText - Get release definitions with names starting with searchText.
+     * @param {ReleaseInterfaces.ReleaseDefinitionExpands} expand - The properties that should be expanded in the list of Release definitions.
+     * @param {string} artifactType - Release definitions with given artifactType will be returned. Values can be Build, Jenkins, GitHub, Nuget, Team Build (external), ExternalTFSBuild, Git, TFVC, ExternalTfsXamlBuild.
+     * @param {string} artifactSourceId - Release definitions with given artifactSourceId will be returned. e.g. For build it would be {projectGuid}:{BuildDefinitionId}, for Jenkins it would be {JenkinsConnectionId}:{JenkinsDefinitionId}, for TfsOnPrem it would be {TfsOnPremConnectionId}:{ProjectName}:{TfsOnPremDefinitionId}. For third-party artifacts e.g. TeamCity, BitBucket you may refer 'uniqueSourceIdentifier' inside vss-extension.json at https://github.com/Microsoft/vsts-rm-extensions/blob/master/Extensions.
+     * @param {number} top - Number of release definitions to get.
+     * @param {string} continuationToken - Gets the release definitions after the continuation token provided.
+     * @param {ReleaseInterfaces.ReleaseDefinitionQueryOrder} queryOrder - Gets the results in the defined order. Default is 'IdAscending'.
+     * @param {string} path - Gets the release definitions under the specified path.
+     * @param {boolean} isExactNameMatch - 'true'to gets the release definitions with exact match as specified in searchText. Default is 'false'.
+     * @param {string[]} tagFilter - A comma-delimited list of tags. Only release definitions with these tags will be returned.
+     * @param {string[]} propertyFilters - A comma-delimited list of extended properties to retrieve.
+     * @param {string[]} definitionIdFilter - A comma-delimited list of release definitions to retrieve.
+     * @param {boolean} isDeleted - 'true' to get release definitions that has been deleted. Default is 'false'
      */
     public async getReleaseDefinitions(
         project: string,
@@ -683,8 +934,10 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         path?: string,
         isExactNameMatch?: boolean,
         tagFilter?: string[],
-        propertyFilters?: string[]
-    ): Promise<ReleaseInterfaces.ReleaseDefinition[]> {
+        propertyFilters?: string[],
+        definitionIdFilter?: string[],
+        isDeleted?: boolean
+        ): Promise<ReleaseInterfaces.ReleaseDefinition[]> {
 
         return new Promise<ReleaseInterfaces.ReleaseDefinition[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -703,29 +956,31 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 isExactNameMatch: isExactNameMatch,
                 tagFilter: tagFilter && tagFilter.join(","),
                 propertyFilters: propertyFilters && propertyFilters.join(","),
+                definitionIdFilter: definitionIdFilter && definitionIdFilter.join(","),
+                isDeleted: isDeleted,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.3",
+                    "4.1-preview.3",
                     "Release",
                     "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinition[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ReleaseDefinition,
-                    true);
+                                              ReleaseInterfaces.TypeInfo.ReleaseDefinition,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -734,50 +989,44 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Undelete a release definition.
+     * 
+     * @param {ReleaseInterfaces.ReleaseDefinitionUndeleteParameter} releaseDefinitionUndeleteParameter - Object for undelete release definition.
      * @param {string} project - Project ID or project name
-     * @param {string} artifactType
-     * @param {string} artifactSourceId
-     * @param {ReleaseInterfaces.ReleaseDefinitionExpands} expand
+     * @param {number} definitionId - Id of the release definition to be undeleted
      */
-    public async getReleaseDefinitionsForArtifactSource(
+    public async undeleteReleaseDefinition(
+        releaseDefinitionUndeleteParameter: ReleaseInterfaces.ReleaseDefinitionUndeleteParameter,
         project: string,
-        artifactType: string,
-        artifactSourceId: string,
-        expand?: ReleaseInterfaces.ReleaseDefinitionExpands
-    ): Promise<ReleaseInterfaces.ReleaseDefinition[]> {
+        definitionId: number
+        ): Promise<ReleaseInterfaces.ReleaseDefinition> {
 
-        return new Promise<ReleaseInterfaces.ReleaseDefinition[]>(async (resolve, reject) => {
+        return new Promise<ReleaseInterfaces.ReleaseDefinition>(async (resolve, reject) => {
             let routeValues: any = {
-                project: project
-            };
-
-            let queryValues: any = {
-                artifactType: artifactType,
-                artifactSourceId: artifactSourceId,
-                '$expand': expand,
+                project: project,
+                definitionId: definitionId
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.3",
+                    "4.1-preview.3",
                     "Release",
                     "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
-                    routeValues,
-                    queryValues);
+                    routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
-                let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition[]>;
-                res = await this.rest.get<ReleaseInterfaces.ReleaseDefinition[]>(url, options);
+                let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition>;
+                res = await this.rest.update<ReleaseInterfaces.ReleaseDefinition>(url, releaseDefinitionUndeleteParameter, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ReleaseDefinition,
-                    true);
+                                              ReleaseInterfaces.TypeInfo.ReleaseDefinition,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -786,13 +1035,15 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {ReleaseInterfaces.ReleaseDefinition} releaseDefinition
+     * Update a release definition.
+     * 
+     * @param {ReleaseInterfaces.ReleaseDefinition} releaseDefinition - Release definition object to update.
      * @param {string} project - Project ID or project name
      */
     public async updateReleaseDefinition(
         releaseDefinition: ReleaseInterfaces.ReleaseDefinition,
         project: string
-    ): Promise<ReleaseInterfaces.ReleaseDefinition> {
+        ): Promise<ReleaseInterfaces.ReleaseDefinition> {
 
         return new Promise<ReleaseInterfaces.ReleaseDefinition>(async (resolve, reject) => {
             let routeValues: any = {
@@ -801,24 +1052,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.3",
+                    "4.1-preview.3",
                     "Release",
                     "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition>;
                 res = await this.rest.replace<ReleaseInterfaces.ReleaseDefinition>(url, releaseDefinition, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ReleaseDefinition,
-                    false);
+                                              ReleaseInterfaces.TypeInfo.ReleaseDefinition,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -855,7 +1106,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         top?: number,
         continuationToken?: number,
         createdFor?: string
-    ): Promise<ReleaseInterfaces.Deployment[]> {
+        ): Promise<ReleaseInterfaces.Deployment[]> {
 
         return new Promise<ReleaseInterfaces.Deployment[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -876,28 +1127,28 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 continuationToken: continuationToken,
                 createdFor: createdFor,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.2",
                     "Release",
                     "b005ef73-cddc-448e-9ba2-5193bf36b19f",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Deployment[]>;
                 res = await this.rest.get<ReleaseInterfaces.Deployment[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.Deployment,
-                    true);
+                                              ReleaseInterfaces.TypeInfo.Deployment,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -912,7 +1163,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getDeploymentsForMultipleEnvironments(
         queryParameters: ReleaseInterfaces.DeploymentQueryParameters,
         project: string
-    ): Promise<ReleaseInterfaces.Deployment[]> {
+        ): Promise<ReleaseInterfaces.Deployment[]> {
 
         return new Promise<ReleaseInterfaces.Deployment[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -921,24 +1172,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.2",
                     "Release",
                     "b005ef73-cddc-448e-9ba2-5193bf36b19f",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Deployment[]>;
                 res = await this.rest.create<ReleaseInterfaces.Deployment[]>(url, queryParameters, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.Deployment,
-                    true);
+                                              ReleaseInterfaces.TypeInfo.Deployment,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -955,7 +1206,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         releaseId: number,
         environmentId: number
-    ): Promise<ReleaseInterfaces.ReleaseEnvironment> {
+        ): Promise<ReleaseInterfaces.ReleaseEnvironment> {
 
         return new Promise<ReleaseInterfaces.ReleaseEnvironment>(async (resolve, reject) => {
             let routeValues: any = {
@@ -966,24 +1217,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.4",
+                    "4.1-preview.5",
                     "Release",
                     "a7e426b1-03dc-48af-9dfe-c98bac612dcb",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseEnvironment>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseEnvironment>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ReleaseEnvironment,
-                    false);
+                                              ReleaseInterfaces.TypeInfo.ReleaseEnvironment,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -992,17 +1243,19 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {ReleaseInterfaces.ReleaseEnvironmentUpdateMetadata} environmentUpdateData
+     * Update the status of a release environment
+     * 
+     * @param {ReleaseInterfaces.ReleaseEnvironmentUpdateMetadata} environmentUpdateData - Environment update meta data.
      * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {number} environmentId
+     * @param {number} releaseId - Id of the release.
+     * @param {number} environmentId - Id of release environment.
      */
     public async updateReleaseEnvironment(
         environmentUpdateData: ReleaseInterfaces.ReleaseEnvironmentUpdateMetadata,
         project: string,
         releaseId: number,
         environmentId: number
-    ): Promise<ReleaseInterfaces.ReleaseEnvironment> {
+        ): Promise<ReleaseInterfaces.ReleaseEnvironment> {
 
         return new Promise<ReleaseInterfaces.ReleaseEnvironment>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1013,24 +1266,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.4",
+                    "4.1-preview.5",
                     "Release",
                     "a7e426b1-03dc-48af-9dfe-c98bac612dcb",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseEnvironment>;
                 res = await this.rest.update<ReleaseInterfaces.ReleaseEnvironment>(url, environmentUpdateData, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ReleaseEnvironment,
-                    false);
+                                              ReleaseInterfaces.TypeInfo.ReleaseEnvironment,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1039,13 +1292,15 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate} template
+     * Creates a definition environment template
+     * 
+     * @param {ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate} template - Definition environment template to create
      * @param {string} project - Project ID or project name
      */
     public async createDefinitionEnvironmentTemplate(
         template: ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate,
         project: string
-    ): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate> {
+        ): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate> {
 
         return new Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1054,24 +1309,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
+                    "4.1-preview.3",
                     "Release",
                     "6b03b696-824e-4479-8eb2-6644a51aba89",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>;
                 res = await this.rest.create<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>(url, template, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate,
-                    false);
+                                              ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1080,13 +1335,15 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Delete a definition environment template
+     * 
      * @param {string} project - Project ID or project name
-     * @param {string} templateId
+     * @param {string} templateId - Id of the definition environment template
      */
     public async deleteDefinitionEnvironmentTemplate(
         project: string,
         templateId: string
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1096,28 +1353,28 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 templateId: templateId,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
+                    "4.1-preview.3",
                     "Release",
                     "6b03b696-824e-4479-8eb2-6644a51aba89",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1126,13 +1383,15 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Gets a definition environment template
+     * 
      * @param {string} project - Project ID or project name
-     * @param {string} templateId
+     * @param {string} templateId - Id of the definition environment template
      */
     public async getDefinitionEnvironmentTemplate(
         project: string,
         templateId: string
-    ): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate> {
+        ): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate> {
 
         return new Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1142,28 +1401,28 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 templateId: templateId,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
+                    "4.1-preview.3",
                     "Release",
                     "6b03b696-824e-4479-8eb2-6644a51aba89",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate,
-                    false);
+                                              ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1172,37 +1431,94 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Gets a list of definition environment templates
+     * 
      * @param {string} project - Project ID or project name
+     * @param {boolean} isDeleted - 'true' to get definition environment templates that have been deleted. Default is 'false'
      */
     public async listDefinitionEnvironmentTemplates(
-        project: string
-    ): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]> {
+        project: string,
+        isDeleted?: boolean
+        ): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]> {
 
         return new Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]>(async (resolve, reject) => {
             let routeValues: any = {
                 project: project
             };
 
+            let queryValues: any = {
+                isDeleted: isDeleted,
+            };
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
+                    "4.1-preview.3",
                     "Release",
                     "6b03b696-824e-4479-8eb2-6644a51aba89",
-                    routeValues);
+                    routeValues,
+                    queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate,
-                    true);
+                                              ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate,
+                                              true);
 
                 resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
+    /**
+     * Undelete a release definition environment template.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} templateId - Id of the definition environment template to be undeleted
+     */
+    public async undeleteReleaseDefinitionEnvironmentTemplate(
+        project: string,
+        templateId: string
+        ): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate> {
+
+        return new Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            let queryValues: any = {
+                templateId: templateId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.3",
+                    "Release",
+                    "6b03b696-824e-4479-8eb2-6644a51aba89",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>;
+                res = await this.rest.update<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate,
+                                              false);
+
+                resolve(ret);
+                
             }
             catch (err) {
                 reject(err);
@@ -1221,7 +1537,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         scope: string,
         identityId?: string
-    ): Promise<ReleaseInterfaces.FavoriteItem[]> {
+        ): Promise<ReleaseInterfaces.FavoriteItem[]> {
 
         return new Promise<ReleaseInterfaces.FavoriteItem[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1232,28 +1548,28 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 identityId: identityId,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "938f7222-9acb-48fe-b8a3-4eda04597171",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.FavoriteItem[]>;
                 res = await this.rest.create<ReleaseInterfaces.FavoriteItem[]>(url, favoriteItems, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1272,7 +1588,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         scope: string,
         identityId?: string,
         favoriteItemIds?: string
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1284,28 +1600,28 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 identityId: identityId,
                 favoriteItemIds: favoriteItemIds,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "938f7222-9acb-48fe-b8a3-4eda04597171",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1322,7 +1638,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         scope: string,
         identityId?: string
-    ): Promise<ReleaseInterfaces.FavoriteItem[]> {
+        ): Promise<ReleaseInterfaces.FavoriteItem[]> {
 
         return new Promise<ReleaseInterfaces.FavoriteItem[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1333,28 +1649,28 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 identityId: identityId,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "938f7222-9acb-48fe-b8a3-4eda04597171",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.FavoriteItem[]>;
                 res = await this.rest.get<ReleaseInterfaces.FavoriteItem[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1373,7 +1689,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         folder: ReleaseInterfaces.Folder,
         project: string,
         path: string
-    ): Promise<ReleaseInterfaces.Folder> {
+        ): Promise<ReleaseInterfaces.Folder> {
 
         return new Promise<ReleaseInterfaces.Folder>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1383,24 +1699,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "f7ddf76d-ce0c-4d68-94ff-becaec5d9dea",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Folder>;
                 res = await this.rest.create<ReleaseInterfaces.Folder>(url, folder, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.Folder,
-                    false);
+                                              ReleaseInterfaces.TypeInfo.Folder,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1417,7 +1733,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async deleteFolder(
         project: string,
         path: string
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1427,24 +1743,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "f7ddf76d-ce0c-4d68-94ff-becaec5d9dea",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1463,7 +1779,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         path?: string,
         queryOrder?: ReleaseInterfaces.FolderPathQueryOrder
-    ): Promise<ReleaseInterfaces.Folder[]> {
+        ): Promise<ReleaseInterfaces.Folder[]> {
 
         return new Promise<ReleaseInterfaces.Folder[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1474,28 +1790,28 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 queryOrder: queryOrder,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "f7ddf76d-ce0c-4d68-94ff-becaec5d9dea",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Folder[]>;
                 res = await this.rest.get<ReleaseInterfaces.Folder[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.Folder,
-                    true);
+                                              ReleaseInterfaces.TypeInfo.Folder,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1514,7 +1830,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         folder: ReleaseInterfaces.Folder,
         project: string,
         path: string
-    ): Promise<ReleaseInterfaces.Folder> {
+        ): Promise<ReleaseInterfaces.Folder> {
 
         return new Promise<ReleaseInterfaces.Folder>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1524,24 +1840,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "f7ddf76d-ce0c-4d68-94ff-becaec5d9dea",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Folder>;
                 res = await this.rest.update<ReleaseInterfaces.Folder>(url, folder, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.Folder,
-                    false);
+                                              ReleaseInterfaces.TypeInfo.Folder,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1556,7 +1872,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getReleaseHistory(
         project: string,
         releaseId: number
-    ): Promise<ReleaseInterfaces.ReleaseRevision[]> {
+        ): Promise<ReleaseInterfaces.ReleaseRevision[]> {
 
         return new Promise<ReleaseInterfaces.ReleaseRevision[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1566,24 +1882,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "23f461c8-629a-4144-a076-3054fa5f268a",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseRevision[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseRevision[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ReleaseRevision,
-                    true);
+                                              ReleaseInterfaces.TypeInfo.ReleaseRevision,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1598,7 +1914,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getInputValues(
         query: FormInputInterfaces.InputValuesQuery,
         project: string
-    ): Promise<FormInputInterfaces.InputValuesQuery> {
+        ): Promise<FormInputInterfaces.InputValuesQuery> {
 
         return new Promise<FormInputInterfaces.InputValuesQuery>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1607,24 +1923,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "71dd499b-317d-45ea-9134-140ea1932b5e",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<FormInputInterfaces.InputValuesQuery>;
                 res = await this.rest.create<FormInputInterfaces.InputValuesQuery>(url, query, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1635,38 +1951,45 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     /**
      * @param {string} project - Project ID or project name
      * @param {number} buildId
+     * @param {string} sourceId
      */
     public async getIssues(
         project: string,
-        buildId: number
-    ): Promise<ReleaseInterfaces.ReleaseIssue[]> {
+        buildId: number,
+        sourceId?: string
+        ): Promise<ReleaseInterfaces.AutoTriggerIssue[]> {
 
-        return new Promise<ReleaseInterfaces.ReleaseIssue[]>(async (resolve, reject) => {
+        return new Promise<ReleaseInterfaces.AutoTriggerIssue[]>(async (resolve, reject) => {
             let routeValues: any = {
                 project: project,
                 buildId: buildId
             };
 
+            let queryValues: any = {
+                sourceId: sourceId,
+            };
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "cd42261a-f5c6-41c8-9259-f078989b9f25",
-                    routeValues);
+                    routeValues,
+                    queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
-                let res: restm.IRestResponse<ReleaseInterfaces.ReleaseIssue[]>;
-                res = await this.rest.get<ReleaseInterfaces.ReleaseIssue[]>(url, options);
+                let res: restm.IRestResponse<ReleaseInterfaces.AutoTriggerIssue[]>;
+                res = await this.rest.get<ReleaseInterfaces.AutoTriggerIssue[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ReleaseIssue,
-                    true);
+                                              ReleaseInterfaces.TypeInfo.AutoTriggerIssue,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1675,11 +1998,94 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Gets gate logs
+     * 
      * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {number} environmentId
-     * @param {number} taskId
-     * @param {number} attemptId
+     * @param {number} releaseId - Id of the release.
+     * @param {number} environmentId - Id of release environment.
+     * @param {number} gateId - Id of the gate.
+     * @param {number} taskId - ReleaseTask Id for the log.
+     */
+    public async getGateLog(
+        project: string,
+        releaseId: number,
+        environmentId: number,
+        gateId: number,
+        taskId: number
+        ): Promise<NodeJS.ReadableStream> {
+
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId,
+                environmentId: environmentId,
+                gateId: gateId,
+                taskId: taskId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.2",
+                    "Release",
+                    "dec7ca5a-7f7f-4797-8bf1-8efc0dc93b28",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("text/plain", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get logs for a release Id.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} releaseId - Id of the release.
+     */
+    public async getLogs(
+        project: string,
+        releaseId: number
+        ): Promise<NodeJS.ReadableStream> {
+
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.2",
+                    "Release",
+                    "c37fbab5-214b-48e4-a55b-cb6b4f6e4038",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/zip", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Gets logs
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} releaseId - Id of the release.
+     * @param {number} environmentId - Id of release environment.
+     * @param {number} taskId - ReleaseTask Id for the log.
+     * @param {number} attemptId - Id of the attempt.
      */
     public async getLog(
         project: string,
@@ -1687,7 +2093,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         environmentId: number,
         taskId: number,
         attemptId?: number
-    ): Promise<NodeJS.ReadableStream> {
+        ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1700,17 +2106,17 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 attemptId: attemptId,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.2",
                     "Release",
                     "e71ba1ed-c0a4-4a28-a61f-2dd5f68cf3fd",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-
+                
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -1722,31 +2128,55 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Gets the task log of a release as a plain text file.
+     * 
      * @param {string} project - Project ID or project name
-     * @param {number} releaseId
+     * @param {number} releaseId - Id of the release.
+     * @param {number} environmentId - Id of release environment.
+     * @param {number} attemptId
+     * @param {string} timelineId
+     * @param {number} taskId - ReleaseTask Id for the log.
+     * @param {number} startLine - Starting line number for logs
+     * @param {number} endLine - Ending line number for logs
      */
-    public async getLogs(
+    public async getTaskLog2(
         project: string,
-        releaseId: number
-    ): Promise<NodeJS.ReadableStream> {
+        releaseId: number,
+        environmentId: number,
+        attemptId: number,
+        timelineId: string,
+        taskId: number,
+        startLine?: number,
+        endLine?: number
+        ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
                 project: project,
-                releaseId: releaseId
+                releaseId: releaseId,
+                environmentId: environmentId,
+                attemptId: attemptId,
+                timelineId: timelineId,
+                taskId: taskId
             };
 
+            let queryValues: any = {
+                startLine: startLine,
+                endLine: endLine,
+            };
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
+                    "4.1-preview.2",
                     "Release",
-                    "c37fbab5-214b-48e4-a55b-cb6b4f6e4038",
-                    routeValues);
+                    "2577e6c3-6999-4400-bc69-fe1d837755fe",
+                    routeValues,
+                    queryValues);
 
                 let url: string = verData.requestUrl;
-
+                
                 let apiVersion: string = verData.apiVersion;
-                let accept: string = this.createAcceptHeader("application/zip", apiVersion);
+                let accept: string = this.createAcceptHeader("text/plain", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
             }
             catch (err) {
@@ -1756,19 +2186,25 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Gets the task log of a release as a plain text file.
+     * 
      * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {number} environmentId
-     * @param {number} releaseDeployPhaseId
-     * @param {number} taskId
+     * @param {number} releaseId - Id of the release.
+     * @param {number} environmentId - Id of release environment.
+     * @param {number} releaseDeployPhaseId - Release deploy phase Id.
+     * @param {number} taskId - ReleaseTask Id for the log.
+     * @param {number} startLine - Starting line number for logs
+     * @param {number} endLine - Ending line number for logs
      */
     public async getTaskLog(
         project: string,
         releaseId: number,
         environmentId: number,
         releaseDeployPhaseId: number,
-        taskId: number
-    ): Promise<NodeJS.ReadableStream> {
+        taskId: number,
+        startLine?: number,
+        endLine?: number
+        ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1779,15 +2215,21 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 taskId: taskId
             };
 
+            let queryValues: any = {
+                startLine: startLine,
+                endLine: endLine,
+            };
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
+                    "4.1-preview.2",
                     "Release",
                     "17c91af7-09fd-4256-bff1-c24ee4f73bc0",
-                    routeValues);
+                    routeValues,
+                    queryValues);
 
                 let url: string = verData.requestUrl;
-
+                
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -1799,15 +2241,17 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Get manual intervention for a given release and manual intervention id.
+     * 
      * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {number} manualInterventionId
+     * @param {number} releaseId - Id of the release.
+     * @param {number} manualInterventionId - Id of the manual intervention.
      */
     public async getManualIntervention(
         project: string,
         releaseId: number,
         manualInterventionId: number
-    ): Promise<ReleaseInterfaces.ManualIntervention> {
+        ): Promise<ReleaseInterfaces.ManualIntervention> {
 
         return new Promise<ReleaseInterfaces.ManualIntervention>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1818,24 +2262,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "616c46e4-f370-4456-adaa-fbaf79c7b79e",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ManualIntervention>;
                 res = await this.rest.get<ReleaseInterfaces.ManualIntervention>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ManualIntervention,
-                    false);
+                                              ReleaseInterfaces.TypeInfo.ManualIntervention,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1844,13 +2288,15 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * List all manual interventions for a given release.
+     * 
      * @param {string} project - Project ID or project name
-     * @param {number} releaseId
+     * @param {number} releaseId - Id of the release.
      */
     public async getManualInterventions(
         project: string,
         releaseId: number
-    ): Promise<ReleaseInterfaces.ManualIntervention[]> {
+        ): Promise<ReleaseInterfaces.ManualIntervention[]> {
 
         return new Promise<ReleaseInterfaces.ManualIntervention[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1860,24 +2306,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "616c46e4-f370-4456-adaa-fbaf79c7b79e",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ManualIntervention[]>;
                 res = await this.rest.get<ReleaseInterfaces.ManualIntervention[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ManualIntervention,
-                    true);
+                                              ReleaseInterfaces.TypeInfo.ManualIntervention,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1886,17 +2332,19 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {ReleaseInterfaces.ManualInterventionUpdateMetadata} manualInterventionUpdateMetadata
+     * Update manual intervention.
+     * 
+     * @param {ReleaseInterfaces.ManualInterventionUpdateMetadata} manualInterventionUpdateMetadata - Meta data to update manual intervention.
      * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {number} manualInterventionId
+     * @param {number} releaseId - Id of the release.
+     * @param {number} manualInterventionId - Id of the manual intervention.
      */
     public async updateManualIntervention(
         manualInterventionUpdateMetadata: ReleaseInterfaces.ManualInterventionUpdateMetadata,
         project: string,
         releaseId: number,
         manualInterventionId: number
-    ): Promise<ReleaseInterfaces.ManualIntervention> {
+        ): Promise<ReleaseInterfaces.ManualIntervention> {
 
         return new Promise<ReleaseInterfaces.ManualIntervention>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1907,24 +2355,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "616c46e4-f370-4456-adaa-fbaf79c7b79e",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ManualIntervention>;
                 res = await this.rest.update<ReleaseInterfaces.ManualIntervention>(url, manualInterventionUpdateMetadata, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ManualIntervention,
-                    false);
+                                              ReleaseInterfaces.TypeInfo.ManualIntervention,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1939,7 +2387,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getMetrics(
         project: string,
         minMetricsTime?: Date
-    ): Promise<ReleaseInterfaces.Metric[]> {
+        ): Promise<ReleaseInterfaces.Metric[]> {
 
         return new Promise<ReleaseInterfaces.Metric[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1949,28 +2397,28 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 minMetricsTime: minMetricsTime,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "cd1502bb-3c73-4e11-80a6-d11308dceae5",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Metric[]>;
                 res = await this.rest.get<ReleaseInterfaces.Metric[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1985,7 +2433,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getReleaseProjects(
         artifactType: string,
         artifactSourceId: string
-    ): Promise<ReleaseInterfaces.ProjectReference[]> {
+        ): Promise<ReleaseInterfaces.ProjectReference[]> {
 
         return new Promise<ReleaseInterfaces.ProjectReference[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1995,28 +2443,28 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 artifactType: artifactType,
                 artifactSourceId: artifactSourceId,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "917ace4a-79d1-45a7-987c-7be4db4268fa",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ProjectReference[]>;
                 res = await this.rest.get<ReleaseInterfaces.ProjectReference[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2025,26 +2473,29 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Get a list of releases
+     * 
      * @param {string} project - Project ID or project name
-     * @param {number} definitionId
+     * @param {number} definitionId - Releases from this release definition Id.
      * @param {number} definitionEnvironmentId
-     * @param {string} searchText
-     * @param {string} createdBy
-     * @param {ReleaseInterfaces.ReleaseStatus} statusFilter
+     * @param {string} searchText - Releases with names starting with searchText.
+     * @param {string} createdBy - Releases created by this user.
+     * @param {ReleaseInterfaces.ReleaseStatus} statusFilter - Releases that have this status.
      * @param {number} environmentStatusFilter
-     * @param {Date} minCreatedTime
-     * @param {Date} maxCreatedTime
-     * @param {ReleaseInterfaces.ReleaseQueryOrder} queryOrder
-     * @param {number} top
-     * @param {number} continuationToken
-     * @param {ReleaseInterfaces.ReleaseExpands} expand
-     * @param {string} artifactTypeId
-     * @param {string} sourceId
-     * @param {string} artifactVersionId
-     * @param {string} sourceBranchFilter
-     * @param {boolean} isDeleted
-     * @param {string[]} tagFilter
-     * @param {string[]} propertyFilters
+     * @param {Date} minCreatedTime - Releases that were created after this time.
+     * @param {Date} maxCreatedTime - Releases that were created before this time.
+     * @param {ReleaseInterfaces.ReleaseQueryOrder} queryOrder - Gets the results in the defined order of created date for releases. Default is descending.
+     * @param {number} top - Number of releases to get. Default is 50.
+     * @param {number} continuationToken - Gets the releases after the continuation token provided.
+     * @param {ReleaseInterfaces.ReleaseExpands} expand - The property that should be expanded in the list of releases.
+     * @param {string} artifactTypeId - Releases with given artifactTypeId will be returned. Values can be Build, Jenkins, GitHub, Nuget, Team Build (external), ExternalTFSBuild, Git, TFVC, ExternalTfsXamlBuild.
+     * @param {string} sourceId - Unique identifier of the artifact used. e.g. For build it would be {projectGuid}:{BuildDefinitionId}, for Jenkins it would be {JenkinsConnectionId}:{JenkinsDefinitionId}, for TfsOnPrem it would be {TfsOnPremConnectionId}:{ProjectName}:{TfsOnPremDefinitionId}. For third-party artifacts e.g. TeamCity, BitBucket you may refer 'uniqueSourceIdentifier' inside vss-extension.json https://github.com/Microsoft/vsts-rm-extensions/blob/master/Extensions.
+     * @param {string} artifactVersionId - Releases with given artifactVersionId will be returned. E.g. in case of Build artifactType, it is buildId.
+     * @param {string} sourceBranchFilter - Releases with given sourceBranchFilter will be returned.
+     * @param {boolean} isDeleted - Gets the soft deleted releases, if true.
+     * @param {string[]} tagFilter - A comma-delimited list of tags. Only releases with these tags will be returned.
+     * @param {string[]} propertyFilters - A comma-delimited list of extended properties to retrieve.
+     * @param {number[]} releaseIdFilter - A comma-delimited list of releases Ids. Only releases with these Ids will be returned.
      */
     public async getReleases(
         project?: string,
@@ -2066,8 +2517,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         sourceBranchFilter?: string,
         isDeleted?: boolean,
         tagFilter?: string[],
-        propertyFilters?: string[]
-    ): Promise<ReleaseInterfaces.Release[]> {
+        propertyFilters?: string[],
+        releaseIdFilter?: number[]
+        ): Promise<ReleaseInterfaces.Release[]> {
 
         return new Promise<ReleaseInterfaces.Release[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2094,29 +2546,30 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 isDeleted: isDeleted,
                 tagFilter: tagFilter && tagFilter.join(","),
                 propertyFilters: propertyFilters && propertyFilters.join(","),
+                releaseIdFilter: releaseIdFilter && releaseIdFilter.join(","),
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.4",
+                    "4.1-preview.6",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Release[]>;
                 res = await this.rest.get<ReleaseInterfaces.Release[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.Release,
-                    true);
+                                              ReleaseInterfaces.TypeInfo.Release,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2125,13 +2578,15 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {ReleaseInterfaces.ReleaseStartMetadata} releaseStartMetadata
+     * Create a release.
+     * 
+     * @param {ReleaseInterfaces.ReleaseStartMetadata} releaseStartMetadata - Metadata to create a release.
      * @param {string} project - Project ID or project name
      */
     public async createRelease(
         releaseStartMetadata: ReleaseInterfaces.ReleaseStartMetadata,
         project: string
-    ): Promise<ReleaseInterfaces.Release> {
+        ): Promise<ReleaseInterfaces.Release> {
 
         return new Promise<ReleaseInterfaces.Release>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2140,24 +2595,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.4",
+                    "4.1-preview.6",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Release>;
                 res = await this.rest.create<ReleaseInterfaces.Release>(url, releaseStartMetadata, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.Release,
-                    false);
+                                              ReleaseInterfaces.TypeInfo.Release,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2166,15 +2621,17 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Soft delete a release
+     * 
      * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {string} comment
+     * @param {number} releaseId - Id of the release.
+     * @param {string} comment - Comment for deleting a release.
      */
     public async deleteRelease(
         project: string,
         releaseId: number,
         comment?: string
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2185,28 +2642,28 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 comment: comment,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.4",
+                    "4.1-preview.6",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2215,17 +2672,19 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Get a Release
+     * 
      * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {boolean} includeAllApprovals
-     * @param {string[]} propertyFilters
+     * @param {number} releaseId - Id of the release.
+     * @param {ReleaseInterfaces.ApprovalFilters} approvalFilters - A filter which would allow fetching approval steps selectively based on whether it is automated, or manual. This would also decide whether we should fetch pre and post approval snapshots. Assumes All by default
+     * @param {string[]} propertyFilters - A comma-delimited list of properties to include in the results.
      */
     public async getRelease(
         project: string,
         releaseId: number,
-        includeAllApprovals?: boolean,
+        approvalFilters?: ReleaseInterfaces.ApprovalFilters,
         propertyFilters?: string[]
-    ): Promise<ReleaseInterfaces.Release> {
+        ): Promise<ReleaseInterfaces.Release> {
 
         return new Promise<ReleaseInterfaces.Release>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2234,31 +2693,31 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             };
 
             let queryValues: any = {
-                includeAllApprovals: includeAllApprovals,
+                approvalFilters: approvalFilters,
                 propertyFilters: propertyFilters && propertyFilters.join(","),
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.4",
+                    "4.1-preview.6",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Release>;
                 res = await this.rest.get<ReleaseInterfaces.Release>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.Release,
-                    false);
+                                              ReleaseInterfaces.TypeInfo.Release,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2267,10 +2726,12 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Get release summary of a given definition Id.
+     * 
      * @param {string} project - Project ID or project name
-     * @param {number} definitionId
-     * @param {number} releaseCount
-     * @param {boolean} includeArtifact
+     * @param {number} definitionId - Id of the definition to get release summary.
+     * @param {number} releaseCount - Count of releases to be included in summary.
+     * @param {boolean} includeArtifact - Include artifact details.Default is 'false'.
      * @param {number[]} definitionEnvironmentIdsFilter
      */
     public async getReleaseDefinitionSummary(
@@ -2279,7 +2740,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         releaseCount: number,
         includeArtifact?: boolean,
         definitionEnvironmentIdsFilter?: number[]
-    ): Promise<ReleaseInterfaces.ReleaseDefinitionSummary> {
+        ): Promise<ReleaseInterfaces.ReleaseDefinitionSummary> {
 
         return new Promise<ReleaseInterfaces.ReleaseDefinitionSummary>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2292,28 +2753,28 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 includeArtifact: includeArtifact,
                 definitionEnvironmentIdsFilter: definitionEnvironmentIdsFilter && definitionEnvironmentIdsFilter.join(","),
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.4",
+                    "4.1-preview.6",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionSummary>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinitionSummary>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ReleaseDefinitionSummary,
-                    false);
+                                              ReleaseInterfaces.TypeInfo.ReleaseDefinitionSummary,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2322,15 +2783,17 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Get release for a given revision number.
+     * 
      * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {number} definitionSnapshotRevision
+     * @param {number} releaseId - Id of the release.
+     * @param {number} definitionSnapshotRevision - Definition snapshot revision number.
      */
     public async getReleaseRevision(
         project: string,
         releaseId: number,
         definitionSnapshotRevision: number
-    ): Promise<NodeJS.ReadableStream> {
+        ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2341,17 +2804,17 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 definitionSnapshotRevision: definitionSnapshotRevision,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.4",
+                    "4.1-preview.6",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-
+                
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -2363,15 +2826,17 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Undelete a soft deleted release.
+     * 
      * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {string} comment
+     * @param {number} releaseId - Id of release to be undeleted.
+     * @param {string} comment - Any comment for undeleting.
      */
     public async undeleteRelease(
         project: string,
         releaseId: number,
         comment: string
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2382,28 +2847,28 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 comment: comment,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.4",
+                    "4.1-preview.6",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.replace<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2412,15 +2877,17 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {ReleaseInterfaces.Release} release
+     * Update a complete release object.
+     * 
+     * @param {ReleaseInterfaces.Release} release - Release object for update.
      * @param {string} project - Project ID or project name
-     * @param {number} releaseId
+     * @param {number} releaseId - Id of the release to update.
      */
     public async updateRelease(
         release: ReleaseInterfaces.Release,
         project: string,
         releaseId: number
-    ): Promise<ReleaseInterfaces.Release> {
+        ): Promise<ReleaseInterfaces.Release> {
 
         return new Promise<ReleaseInterfaces.Release>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2430,24 +2897,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.4",
+                    "4.1-preview.6",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Release>;
                 res = await this.rest.replace<ReleaseInterfaces.Release>(url, release, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.Release,
-                    false);
+                                              ReleaseInterfaces.TypeInfo.Release,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2456,15 +2923,17 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * @param {ReleaseInterfaces.ReleaseUpdateMetadata} releaseUpdateMetadata
+     * Update few properties of a release.
+     * 
+     * @param {ReleaseInterfaces.ReleaseUpdateMetadata} releaseUpdateMetadata - Properties of release to update.
      * @param {string} project - Project ID or project name
-     * @param {number} releaseId
+     * @param {number} releaseId - Id of the release to update.
      */
     public async updateReleaseResource(
         releaseUpdateMetadata: ReleaseInterfaces.ReleaseUpdateMetadata,
         project: string,
         releaseId: number
-    ): Promise<ReleaseInterfaces.Release> {
+        ): Promise<ReleaseInterfaces.Release> {
 
         return new Promise<ReleaseInterfaces.Release>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2474,24 +2943,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.4",
+                    "4.1-preview.6",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.Release>;
                 res = await this.rest.update<ReleaseInterfaces.Release>(url, releaseUpdateMetadata, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.Release,
-                    false);
+                                              ReleaseInterfaces.TypeInfo.Release,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2500,11 +2969,13 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Gets the release settings
+     * 
      * @param {string} project - Project ID or project name
      */
     public async getReleaseSettings(
         project: string
-    ): Promise<ReleaseInterfaces.ReleaseSettings> {
+        ): Promise<ReleaseInterfaces.ReleaseSettings> {
 
         return new Promise<ReleaseInterfaces.ReleaseSettings>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2513,24 +2984,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "c63c3718-7cfd-41e0-b89b-81c1ca143437",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseSettings>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseSettings>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2547,7 +3018,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async updateReleaseSettings(
         releaseSettings: ReleaseInterfaces.ReleaseSettings,
         project: string
-    ): Promise<ReleaseInterfaces.ReleaseSettings> {
+        ): Promise<ReleaseInterfaces.ReleaseSettings> {
 
         return new Promise<ReleaseInterfaces.ReleaseSettings>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2556,24 +3027,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "c63c3718-7cfd-41e0-b89b-81c1ca143437",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseSettings>;
                 res = await this.rest.replace<ReleaseInterfaces.ReleaseSettings>(url, releaseSettings, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2582,15 +3053,17 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Get release definition for a given definitionId and revision
+     * 
      * @param {string} project - Project ID or project name
-     * @param {number} definitionId
-     * @param {number} revision
+     * @param {number} definitionId - Id of the definition.
+     * @param {number} revision - Id of the revision.
      */
     public async getDefinitionRevision(
         project: string,
         definitionId: number,
         revision: number
-    ): Promise<NodeJS.ReadableStream> {
+        ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2601,13 +3074,13 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "258b82e0-9d41-43f3-86d6-fef14ddd44bc",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-
+                
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -2619,13 +3092,15 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Get revision history for a release definition
+     * 
      * @param {string} project - Project ID or project name
-     * @param {number} definitionId
+     * @param {number} definitionId - Id of the definition.
      */
     public async getReleaseDefinitionHistory(
         project: string,
         definitionId: number
-    ): Promise<ReleaseInterfaces.ReleaseDefinitionRevision[]> {
+        ): Promise<ReleaseInterfaces.ReleaseDefinitionRevision[]> {
 
         return new Promise<ReleaseInterfaces.ReleaseDefinitionRevision[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2635,24 +3110,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "258b82e0-9d41-43f3-86d6-fef14ddd44bc",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionRevision[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinitionRevision[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ReleaseDefinitionRevision,
-                    true);
+                                              ReleaseInterfaces.TypeInfo.ReleaseDefinitionRevision,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2667,7 +3142,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getSummaryMailSections(
         project: string,
         releaseId: number
-    ): Promise<ReleaseInterfaces.SummaryMailSection[]> {
+        ): Promise<ReleaseInterfaces.SummaryMailSection[]> {
 
         return new Promise<ReleaseInterfaces.SummaryMailSection[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2677,24 +3152,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "224e92b2-8d13-4c14-b120-13d877c516f8",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.SummaryMailSection[]>;
                 res = await this.rest.get<ReleaseInterfaces.SummaryMailSection[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.SummaryMailSection,
-                    true);
+                                              ReleaseInterfaces.TypeInfo.SummaryMailSection,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2711,7 +3186,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         mailMessage: ReleaseInterfaces.MailMessage,
         project: string,
         releaseId: number
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2721,24 +3196,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "224e92b2-8d13-4c14-b120-13d877c516f8",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, mailMessage, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2753,7 +3228,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getSourceBranches(
         project: string,
         definitionId: number
-    ): Promise<string[]> {
+        ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2763,24 +3238,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "0e5def23-78b3-461f-8198-1558f25041c8",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2799,7 +3274,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         releaseDefinitionId: number,
         tag: string
-    ): Promise<string[]> {
+        ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2810,24 +3285,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "3d21b4c8-c32e-45b2-a7cb-770a369012f4",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.update<string[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2846,7 +3321,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         tags: string[],
         project: string,
         releaseDefinitionId: number
-    ): Promise<string[]> {
+        ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2856,24 +3331,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "3d21b4c8-c32e-45b2-a7cb-770a369012f4",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.create<string[]>(url, tags, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2892,7 +3367,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         releaseDefinitionId: number,
         tag: string
-    ): Promise<string[]> {
+        ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2903,24 +3378,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "3d21b4c8-c32e-45b2-a7cb-770a369012f4",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.del<string[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2937,7 +3412,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getDefinitionTags(
         project: string,
         releaseDefinitionId: number
-    ): Promise<string[]> {
+        ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2947,24 +3422,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "3d21b4c8-c32e-45b2-a7cb-770a369012f4",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2983,7 +3458,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         releaseId: number,
         tag: string
-    ): Promise<string[]> {
+        ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2994,24 +3469,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "c5b602b6-d1b3-4363-8a51-94384f78068f",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.update<string[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -3030,7 +3505,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         tags: string[],
         project: string,
         releaseId: number
-    ): Promise<string[]> {
+        ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3040,24 +3515,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "c5b602b6-d1b3-4363-8a51-94384f78068f",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.create<string[]>(url, tags, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -3076,7 +3551,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         releaseId: number,
         tag: string
-    ): Promise<string[]> {
+        ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3087,24 +3562,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "c5b602b6-d1b3-4363-8a51-94384f78068f",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.del<string[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -3121,7 +3596,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getReleaseTags(
         project: string,
         releaseId: number
-    ): Promise<string[]> {
+        ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3131,24 +3606,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "c5b602b6-d1b3-4363-8a51-94384f78068f",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -3161,7 +3636,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
      */
     public async getTags(
         project: string
-    ): Promise<string[]> {
+        ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3170,76 +3645,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "86cee25a-68ba-4ba3-9171-8ad6ffc6df93",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * @param {string} project - Project ID or project name
-     * @param {number} releaseId
-     * @param {number} environmentId
-     * @param {number} attemptId
-     */
-    public async getTasks(
-        project: string,
-        releaseId: number,
-        environmentId: number,
-        attemptId?: number
-    ): Promise<ReleaseInterfaces.ReleaseTask[]> {
-
-        return new Promise<ReleaseInterfaces.ReleaseTask[]>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                releaseId: releaseId,
-                environmentId: environmentId
-            };
-
-            let queryValues: any = {
-                attemptId: attemptId,
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
-                    "Release",
-                    "36b276e0-3c70-4320-a63c-1a2e1466a0d1",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
-
-                let res: restm.IRestResponse<ReleaseInterfaces.ReleaseTask[]>;
-                res = await this.rest.get<ReleaseInterfaces.ReleaseTask[]>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ReleaseTask,
-                    true);
-
-                resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -3258,7 +3681,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         releaseId: number,
         environmentId: number,
         releaseDeployPhaseId: number
-    ): Promise<ReleaseInterfaces.ReleaseTask[]> {
+        ): Promise<ReleaseInterfaces.ReleaseTask[]> {
 
         return new Promise<ReleaseInterfaces.ReleaseTask[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3270,24 +3693,127 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
+                    "4.1-preview.2",
                     "Release",
                     "4259191d-4b0a-4409-9fb3-09f22ab9bc47",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseTask[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseTask[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ReleaseTask,
-                    true);
+                                              ReleaseInterfaces.TypeInfo.ReleaseTask,
+                                              true);
 
                 resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number} releaseId
+     * @param {number} environmentId
+     * @param {number} attemptId
+     * @param {string} timelineId
+     */
+    public async getTasks2(
+        project: string,
+        releaseId: number,
+        environmentId: number,
+        attemptId: number,
+        timelineId: string
+        ): Promise<ReleaseInterfaces.ReleaseTask[]> {
+
+        return new Promise<ReleaseInterfaces.ReleaseTask[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId,
+                environmentId: environmentId,
+                attemptId: attemptId,
+                timelineId: timelineId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.2",
+                    "Release",
+                    "4259291d-4b0a-4409-9fb3-04f22ab9bc47",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<ReleaseInterfaces.ReleaseTask[]>;
+                res = await this.rest.get<ReleaseInterfaces.ReleaseTask[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              ReleaseInterfaces.TypeInfo.ReleaseTask,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number} releaseId
+     * @param {number} environmentId
+     * @param {number} attemptId
+     */
+    public async getTasks(
+        project: string,
+        releaseId: number,
+        environmentId: number,
+        attemptId?: number
+        ): Promise<ReleaseInterfaces.ReleaseTask[]> {
+
+        return new Promise<ReleaseInterfaces.ReleaseTask[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                releaseId: releaseId,
+                environmentId: environmentId
+            };
+
+            let queryValues: any = {
+                attemptId: attemptId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.2",
+                    "Release",
+                    "36b276e0-3c70-4320-a63c-1a2e1466a0d1",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<ReleaseInterfaces.ReleaseTask[]>;
+                res = await this.rest.get<ReleaseInterfaces.ReleaseTask[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              ReleaseInterfaces.TypeInfo.ReleaseTask,
+                                              true);
+
+                resolve(ret);
+                
             }
             catch (err) {
                 reject(err);
@@ -3300,7 +3826,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
      */
     public async getArtifactTypeDefinitions(
         project: string
-    ): Promise<ReleaseInterfaces.ArtifactTypeDefinition[]> {
+        ): Promise<ReleaseInterfaces.ArtifactTypeDefinition[]> {
 
         return new Promise<ReleaseInterfaces.ArtifactTypeDefinition[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3309,24 +3835,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "8efc2a3c-1fc8-4f6d-9822-75e98cecb48f",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ArtifactTypeDefinition[]>;
                 res = await this.rest.get<ReleaseInterfaces.ArtifactTypeDefinition[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ReleaseInterfaces.TypeInfo.ArtifactTypeDefinition,
-                    true);
+                                              ReleaseInterfaces.TypeInfo.ArtifactTypeDefinition,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -3341,7 +3867,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getArtifactVersions(
         project: string,
         releaseDefinitionId: number
-    ): Promise<ReleaseInterfaces.ArtifactVersionQueryResult> {
+        ): Promise<ReleaseInterfaces.ArtifactVersionQueryResult> {
 
         return new Promise<ReleaseInterfaces.ArtifactVersionQueryResult>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3351,28 +3877,28 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             let queryValues: any = {
                 releaseDefinitionId: releaseDefinitionId,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "30fc787e-a9e0-4a07-9fbc-3e903aa051d2",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ArtifactVersionQueryResult>;
                 res = await this.rest.get<ReleaseInterfaces.ArtifactVersionQueryResult>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -3387,7 +3913,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     public async getArtifactVersionsForSources(
         artifacts: ReleaseInterfaces.Artifact[],
         project: string
-    ): Promise<ReleaseInterfaces.ArtifactVersionQueryResult> {
+        ): Promise<ReleaseInterfaces.ArtifactVersionQueryResult> {
 
         return new Promise<ReleaseInterfaces.ArtifactVersionQueryResult>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3396,24 +3922,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "30fc787e-a9e0-4a07-9fbc-3e903aa051d2",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ArtifactVersionQueryResult>;
                 res = await this.rest.create<ReleaseInterfaces.ArtifactVersionQueryResult>(url, artifacts, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -3432,7 +3958,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         releaseId: number,
         baseReleaseId?: number,
         top?: number
-    ): Promise<ReleaseInterfaces.ReleaseWorkItemRef[]> {
+        ): Promise<ReleaseInterfaces.ReleaseWorkItemRef[]> {
 
         return new Promise<ReleaseInterfaces.ReleaseWorkItemRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3444,28 +3970,28 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 baseReleaseId: baseReleaseId,
                 '$top': top,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Release",
                     "4f165cc0-875c-4768-b148-f12f78769fab",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseWorkItemRef[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseWorkItemRef[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
