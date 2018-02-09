@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -13,6 +13,13 @@
 import FormInputInterfaces = require("../interfaces/common/FormInputInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
+
+export interface ActorFilter extends RoleBasedFilter {
+}
+
+export interface ActorNotificationReason extends NotificationReason {
+    matchedRoles: string[];
+}
 
 export interface ArtifactFilter extends BaseSubscriptionFilter {
     artifactId: string;
@@ -31,6 +38,24 @@ export interface BatchNotificationOperation {
     notificationQueryConditions: NotificationQueryCondition[];
 }
 
+export interface BlockFilter extends RoleBasedFilter {
+}
+
+export interface BlockSubscriptionChannel {
+    type: string;
+}
+
+export interface EmailHtmlSubscriptionChannel extends SubscriptionChannelWithAddress {
+    type: string;
+}
+
+export interface EmailPlaintextSubscriptionChannel extends SubscriptionChannelWithAddress {
+    type: string;
+}
+
+/**
+ * Describes the subscription evaluation operation status.
+ */
 export enum EvaluationOperationStatus {
     /**
      * The operation object does not have the status set.
@@ -66,6 +91,24 @@ export enum EvaluationOperationStatus {
     NotFound = 7,
 }
 
+export interface EventBacklogStatus {
+    maxUnprocessedEventAgeMs: number;
+    publisher: string;
+    timeSinceLastProcessedEventMs: number;
+    unprocessedEvents: number;
+}
+
+/**
+ * Set of flags used to determine which set of information is retrieved when querying for event publishers
+ */
+export enum EventPublisherQueryFlags {
+    None = 0,
+    /**
+     * Include event types from the remote services too
+     */
+    IncludeRemoteServices = 2,
+}
+
 /**
  * Encapsulates events result properties. It defines the total number of events used and the number of matched events.
  */
@@ -78,6 +121,22 @@ export interface EventsEvaluationResult {
      * Count of matched events.
      */
     matchedCount: number;
+}
+
+/**
+ * Set of flags used to determine which set of information is retrieved when querying for eventtypes
+ */
+export enum EventTypeQueryFlags {
+    None = 0,
+    /**
+     * IncludeFields will include all fields and their types
+     */
+    IncludeFields = 1,
+}
+
+export interface ExpressionFilter extends BaseSubscriptionFilter {
+    criteria: ExpressionFilterModel;
+    type: string;
 }
 
 /**
@@ -139,6 +198,10 @@ export interface FieldValuesQuery extends FormInputInterfaces.InputValuesQuery {
     scope: string;
 }
 
+export interface GroupSubscriptionChannel extends SubscriptionChannelWithAddress {
+    type: string;
+}
+
 export interface ISubscriptionChannel {
     type: string;
 }
@@ -148,36 +211,21 @@ export interface ISubscriptionFilter {
     type: string;
 }
 
-export interface NotificationCommonViewData {
-    /**
-     * The Url to the admin page
-     */
-    adminPageUrl: string;
-    /**
-     * Default service instance type, currently it is Tfs, it used if there is no publisher passed
-     */
-    defaultServiceInstanceType: string;
-    eventsPublishers: NotificationEventPublisher[];
-    /**
-     * Indicates whether the current user generally has permissions to manage (create, delete, etc) subscriptions in the view
-     */
-    hasManagePermission: boolean;
-    /**
-     * Is the subscription view being presented for the purpose of administration (not for managing personal subscriptions)
-     */
-    isAdminMode: boolean;
-    /**
-     * Indicates whether the user's preferred email address is pending confirmation.
-     */
-    isSubscriberEmailPending: boolean;
-    /**
-     * Subscriber to use when creating new subscriptions in the view
-     */
-    subscriber: VSSInterfaces.IdentityRef;
-    /**
-     * Email address that notifications for this user will be sent to by default.
-     */
-    subscriberEmail: string;
+export interface MessageQueueSubscriptionChannel {
+    type: string;
+}
+
+export interface NotificationBacklogStatus {
+    channel: string;
+    maxUnprocessedNotificationAgeMs: number;
+    publisher: string;
+    timeSinceLastProcessedNotificationMs: number;
+    unprocessedNotifications: number;
+}
+
+export interface NotificationEventBacklogStatus {
+    eventBacklogStatus: EventBacklogStatus[];
+    notificationBacklogStatus: NotificationBacklogStatus[];
 }
 
 /**
@@ -207,6 +255,20 @@ export interface NotificationEventField {
 }
 
 /**
+ * Encapsulates the properties of a field type. It includes a unique id for the operator and a localized string for display name
+ */
+export interface NotificationEventFieldOperator {
+    /**
+     * Gets or sets the display name of an operator
+     */
+    displayName: string;
+    /**
+     * Gets or sets the id of an operator
+     */
+    id: string;
+}
+
+/**
  * Encapsulates the properties of a field type. It describes the data type of a field, the operators it support and how to populate it in the UI
  */
 export interface NotificationEventFieldType {
@@ -218,7 +280,8 @@ export interface NotificationEventFieldType {
     /**
      * Gets or sets the list of operators that this type supports.
      */
-    operators: string[];
+    operators: NotificationEventFieldOperator[];
+    subscriptionFieldType: SubscriptionFieldType;
     /**
      * Gets or sets the value definition of this field like the getValuesMethod and template to display in the UI
      */
@@ -246,6 +309,10 @@ export interface NotificationEventRole {
      * Gets or sets the Name for that role, this name is used for UI display.
      */
     name: string;
+    /**
+     * Gets or sets whether this role can be a group or just an individual user
+     */
+    supportsGroups: boolean;
 }
 
 /**
@@ -310,6 +377,26 @@ export interface NotificationQueryCondition {
     subscriptionId: string;
 }
 
+export interface NotificationReason {
+    notificationReasonType: NotificationReasonType;
+    targetIdentities: VSSInterfaces.IdentityRef[];
+}
+
+export enum NotificationReasonType {
+    Unknown = 0,
+    Follows = 1,
+    Personal = 2,
+    PersonalAlias = 3,
+    DirectMember = 4,
+    IndirectMember = 5,
+    GroupAlias = 6,
+    SubscriptionAlias = 7,
+    SingleRole = 8,
+    DirectMemberGroupRole = 9,
+    InDirectMemberGroupRole = 10,
+    AliasMemberGroupRole = 11,
+}
+
 /**
  * Encapsulates notifications result properties. It defines the number of notifications and the recipients of notifications.
  */
@@ -333,9 +420,10 @@ export interface NotificationStatisticsQuery {
 }
 
 export interface NotificationStatisticsQueryConditions {
-    date: Date;
+    endDate: Date;
     hitCountMinimum: number;
     path: string;
+    startDate: Date;
     type: NotificationStatisticType;
     user: VSSInterfaces.IdentityRef;
 }
@@ -348,11 +436,75 @@ export enum NotificationStatisticType {
     NotificationByEventTypePerUser = 4,
     Events = 5,
     Notifications = 6,
+    NotificationFailureBySubscription = 7,
+    UnprocessedRangeStart = 100,
+    UnprocessedEventsByPublisher = 101,
+    UnprocessedEventDelayByPublisher = 102,
+    UnprocessedNotificationsByChannelByPublisher = 103,
+    UnprocessedNotificationDelayByChannelByPublisher = 104,
+    DelayRangeStart = 200,
+    TotalPipelineTime = 201,
+    NotificationPipelineTime = 202,
+    EventPipelineTime = 203,
     HourlyRangeStart = 1000,
     HourlyNotificationBySubscription = 1001,
     HourlyEventsByEventTypePerUser = 1002,
     HourlyEvents = 1003,
     HourlyNotifications = 1004,
+    HourlyUnprocessedEventsByPublisher = 1101,
+    HourlyUnprocessedEventDelayByPublisher = 1102,
+    HourlyUnprocessedNotificationsByChannelByPublisher = 1103,
+    HourlyUnprocessedNotificationDelayByChannelByPublisher = 1104,
+    HourlyTotalPipelineTime = 1201,
+    HourlyNotificationPipelineTime = 1202,
+    HourlyEventPipelineTime = 1203,
+}
+
+/**
+ * A subscriber is a user or group that has the potential to receive notifications.
+ */
+export interface NotificationSubscriber {
+    /**
+     * Indicates how the subscriber should be notified by default.
+     */
+    deliveryPreference: NotificationSubscriberDeliveryPreference;
+    flags: SubscriberFlags;
+    /**
+     * Identifier of the subscriber.
+     */
+    id: string;
+    /**
+     * Preferred email address of the subscriber. A null or empty value indicates no preferred email address has been set.
+     */
+    preferredEmailAddress: string;
+}
+
+/**
+ * Delivery preference for a subscriber. Indicates how the subscriber should be notified.
+ */
+export enum NotificationSubscriberDeliveryPreference {
+    None = 0,
+    /**
+     * Deliver notifications to the subscriber's preferred email address.
+     */
+    PreferredEmailAddress = 1,
+    EachMember = 2,
+    NoDelivery = -1,
+    NotSet = -2147483648,
+}
+
+/**
+ * Updates to a subscriber. Typically used to change (or set) a preferred email address or default delivery preference.
+ */
+export interface NotificationSubscriberUpdateParameters {
+    /**
+     * New delivery preference for the subscriber (indicates how the subscriber should be notified).
+     */
+    deliveryPreference: NotificationSubscriberDeliveryPreference;
+    /**
+     * New preferred email address for the subscriber. Specify an empty string to clear the current address.
+     */
+    preferredEmailAddress: string;
 }
 
 /**
@@ -376,7 +528,15 @@ export interface NotificationSubscription {
      */
     description: string;
     /**
-     * Matching criteria for the subscription.
+     * Diagnostics for this subscription.
+     */
+    diagnostics: SubscriptionDiagnostics;
+    /**
+     * Any extra properties like detailed description for different contexts, user/group contexts
+     */
+    extendedProperties: { [key: string] : string; };
+    /**
+     * Matching criteria for the subscription. ExpressionFilter
      */
     filter: ISubscriptionFilter;
     /**
@@ -416,13 +576,13 @@ export interface NotificationSubscription {
      */
     subscriber: VSSInterfaces.IdentityRef;
     /**
-     * User-managed settings for the subscription. Only applies when the subscriber is a group. Typically used to indicate whether the calling user is opted in or out of a group subscription.
-     */
-    subscriptionUserSettings: SubscriptionUserSettings;
-    /**
      * REST API URL of the subscriotion.
      */
     url: string;
+    /**
+     * User-managed settings for the subscription. Only applies when the subscriber is a group. Typically used to indicate whether the calling user is opted in or out of a group subscription.
+     */
+    userSettings: SubscriptionUserSettings;
 }
 
 /**
@@ -438,7 +598,7 @@ export interface NotificationSubscriptionCreateParameters {
      */
     description: string;
     /**
-     * Matching criteria for the new subscription.
+     * Matching criteria for the new subscription. ExpressionFilter
      */
     filter: ISubscriptionFilter;
     /**
@@ -449,23 +609,6 @@ export interface NotificationSubscriptionCreateParameters {
      * User or group that will receive notifications for events matching the subscription's filter criteria. If not specified, defaults to the calling user.
      */
     subscriber: VSSInterfaces.IdentityRef;
-}
-
-export interface NotificationSubscriptionsViewData {
-    /**
-     * Supported  event types info, with their fields and field types
-     */
-    eventTypes: { [key: string] : NotificationEventType; };
-    mapCategoryIdToCategoryName: { [key: string] : string; };
-    mapCategoryIdToSubscriptionTemplates: { [key: string] : NotificationSubscriptionTemplate[]; };
-    mapEventTypeToPublisherId: { [key: string] : string; };
-    publishers: { [key: string] : NotificationEventPublisher; };
-    scopes: { [key: string] : SubscriptionScope; };
-    subscriptions: NotificationSubscription[];
-    /**
-     * The subscription evaluation operation settings needed for the UI
-     */
-    subsEvaluationSettings: SubscriptionEvaluationSettings;
 }
 
 export interface NotificationSubscriptionTemplate {
@@ -493,7 +636,7 @@ export interface NotificationSubscriptionUpdateParameters {
      */
     description: string;
     /**
-     * Matching criteria for the subscription.
+     * Matching criteria for the subscription. ExpressionFilter
      */
     filter: ISubscriptionFilter;
     /**
@@ -509,13 +652,32 @@ export interface NotificationSubscriptionUpdateParameters {
      */
     statusMessage: string;
     /**
-     * User or group that will receive notifications for events matching the subscription's filter criteria.
-     */
-    subscriber: VSSInterfaces.IdentityRef;
-    /**
      * User-managed settings for the subscription. Only applies to subscriptions where the subscriber is a group. Typically used to opt-in or opt-out a user from a group subscription.
      */
-    subscriptionUserSettings: SubscriptionUserSettings;
+    userSettings: SubscriptionUserSettings;
+}
+
+export interface NotificationTracing extends NotificationTracingSetParameters {
+    /**
+     * Trace until the specified end date.
+     */
+    endDate: Date;
+    /**
+     * The maximum number of result details to trace.
+     */
+    maxTracedEntries: number;
+    /**
+     * The date and time tracing started.
+     */
+    startDate: Date;
+    /**
+     * Trace until remaining count reaches 0.
+     */
+    tracedEntries: number;
+}
+
+export interface NotificationTracingSetParameters {
+    enabled: boolean;
 }
 
 /**
@@ -527,6 +689,55 @@ export interface OperatorConstraint {
      * Gets or sets the list of scopes that this type supports.
      */
     supportedScopes: string[];
+}
+
+export interface RoleBasedFilter extends ExpressionFilter {
+    exclusions: string[];
+    inclusions: string[];
+}
+
+export interface ServiceBusSubscriptionChannel {
+    type: string;
+}
+
+export interface ServiceHooksSubscriptionChannel {
+    type: string;
+}
+
+export interface SoapSubscriptionChannel extends SubscriptionChannelWithAddress {
+    type: string;
+}
+
+export enum SubscriberFlags {
+    None = 0,
+    /**
+     * Subscriber's delivery preferences could be updated
+     */
+    DeliveryPreferencesEditable = 2,
+    /**
+     * Subscriber's delivery preferences supports email delivery
+     */
+    SupportsPreferredEmailAddressDelivery = 4,
+    /**
+     * Subscriber's delivery preferences supports individual members delivery(group expansion)
+     */
+    SupportsEachMemberDelivery = 8,
+    /**
+     * Subscriber's delivery preferences supports no delivery
+     */
+    SupportsNoDelivery = 16,
+    /**
+     * Subscriber is a user
+     */
+    IsUser = 32,
+    /**
+     * Subscriber is a group
+     */
+    IsGroup = 64,
+    /**
+     * Subscriber is a team
+     */
+    IsTeam = 128,
 }
 
 /**
@@ -543,6 +754,13 @@ export interface SubscriptionChannelWithAddress {
     address: string;
     type: string;
     useCustomAddress: boolean;
+}
+
+export interface SubscriptionDiagnostics {
+    /**
+     * Optional. Contol the tracing
+     */
+    notificationTracing: NotificationTracing;
 }
 
 /**
@@ -603,6 +821,27 @@ export interface SubscriptionEvaluationSettings {
     timeOut: number;
 }
 
+export enum SubscriptionFieldType {
+    String = 1,
+    Integer = 2,
+    DateTime = 3,
+    PlainText = 5,
+    Html = 7,
+    TreePath = 8,
+    History = 9,
+    Double = 10,
+    Guid = 11,
+    Boolean = 12,
+    Identity = 13,
+    PicklistInteger = 14,
+    PicklistString = 15,
+    PicklistDouble = 16,
+    TeamProject = 17,
+}
+
+/**
+ * Read-only indicators that further describe the subscription.
+ */
 export enum SubscriptionFlags {
     /**
      * None
@@ -634,6 +873,9 @@ export interface SubscriptionManagement {
     url: string;
 }
 
+/**
+ * The permissions that a user has to a certain subscription
+ */
 export enum SubscriptionPermissions {
     /**
      * None
@@ -676,26 +918,28 @@ export interface SubscriptionQueryCondition {
      */
     filter: ISubscriptionFilter;
     /**
+     * Flags to specify the the type subscriptions to query for.
+     */
+    flags: SubscriptionFlags;
+    /**
      * Scope that matching subscriptions must have.
      */
     scope: string;
     /**
      * ID of the subscriber (user or group) that matching subscriptions must be subscribed to.
      */
-    subscriber: string;
+    subscriberId: string;
     /**
      * ID of the subscription to query for.
      */
     subscriptionId: string;
-    subscriptionType: SubscriptionType;
 }
 
+/**
+ * Flags that influence the result set of a subscription query.
+ */
 export enum SubscriptionQueryFlags {
     None = 0,
-    /**
-     * Include all team subscriptions for teams that the user is not member of.
-     */
-    IncludeAllGroupSubscriptions = 1,
     /**
      * Include subscriptions with invalid subscribers.
      */
@@ -711,31 +955,18 @@ export enum SubscriptionQueryFlags {
     /**
      * For a subscription the caller does not have permission to view, return basic (non-confidential) information.
      */
-    AlwaysReturnBasicInformation = 22,
-    /**
-     * Include all group, invalid, and subscriptions marked for deletion.
-     */
-    IncludeAllSubscriptions = 7,
+    AlwaysReturnBasicInformation = 16,
 }
 
 /**
  * A resource, typically an account or project, in which events are published from.
  */
 export interface SubscriptionScope extends VSSInterfaces.EventScope {
-    name: string;
 }
 
-export interface SubscriptionStatisticViewData {
-    events: { [key: string] : NotificationEventType; };
-    isAdmin: boolean;
-    /**
-     * Date used for querying for those statistics
-     */
-    queryDate: Date;
-    statistics: { [key: number] : NotificationStatistic[]; };
-    subscriptions: { [key: string] : NotificationSubscription; };
-}
-
+/**
+ * Subscription status values. A value greater than or equal to zero indicates the subscription is enabled. A negative value indicates the subscription is disabled.
+ */
 export enum SubscriptionStatus {
     /**
      * Subscription is disabled because it generated a high volume of notifications.
@@ -745,6 +976,10 @@ export enum SubscriptionStatus {
      * Subscription is disabled and will be deleted.
      */
     PendingDeletion = -100,
+    /**
+     * Subscription is disabled service due to failures.
+     */
+    DisabledBySystem = -9,
     /**
      * Subscription is disabled because the identity is no longer active
      */
@@ -787,16 +1022,34 @@ export enum SubscriptionStatus {
     EnabledOnProbation = 1,
 }
 
+/**
+ * Set of flags used to determine which set of templates is retrieved when querying for subscription templates
+ */
+export enum SubscriptionTemplateQueryFlags {
+    None = 0,
+    /**
+     * Include user templates
+     */
+    IncludeUser = 1,
+    /**
+     * Include group templates
+     */
+    IncludeGroup = 2,
+    /**
+     * Include user and group templates
+     */
+    IncludeUserAndGroup = 4,
+    /**
+     * Include the event type details like the fields and operators
+     */
+    IncludeEventTypeInformation = 22,
+}
+
 export enum SubscriptionTemplateType {
     User = 0,
     Team = 1,
     Both = 2,
     None = 3,
-}
-
-export enum SubscriptionType {
-    Default = 0,
-    Shared = 1,
 }
 
 /**
@@ -809,6 +1062,22 @@ export interface SubscriptionUserSettings {
     optedOut: boolean;
 }
 
+export interface UnsupportedFilter extends BaseSubscriptionFilter {
+    type: string;
+}
+
+export interface UnsupportedSubscriptionChannel {
+    type: string;
+}
+
+export interface UserSubscriptionChannel extends SubscriptionChannelWithAddress {
+    type: string;
+}
+
+export interface UserSystemSubscriptionChannel extends SubscriptionChannelWithAddress {
+    type: string;
+}
+
 /**
  * Encapsulates the properties of a field value definition. It has the information needed to retrieve the list of possible values for a certain field and how to handle that field values in the UI. This information includes what type of object this value represents, which property to use for UI display and which property to use for saving the subscription
  */
@@ -816,7 +1085,7 @@ export interface ValueDefinition {
     /**
      * Gets or sets the data source.
      */
-    dataSource: any[];
+    dataSource: FormInputInterfaces.InputValue[];
     /**
      * Gets or sets the rest end point.
      */
@@ -828,6 +1097,8 @@ export interface ValueDefinition {
 }
 
 export var TypeInfo = {
+    ActorNotificationReason: <any>{
+    },
     BatchNotificationOperation: <any>{
     },
     EvaluationOperationStatus: {
@@ -842,10 +1113,46 @@ export var TypeInfo = {
             "notFound": 7
         }
     },
+    EventPublisherQueryFlags: {
+        enumValues: {
+            "none": 0,
+            "includeRemoteServices": 2
+        }
+    },
+    EventTypeQueryFlags: {
+        enumValues: {
+            "none": 0,
+            "includeFields": 1
+        }
+    },
+    NotificationEventField: <any>{
+    },
+    NotificationEventFieldType: <any>{
+    },
+    NotificationEventType: <any>{
+    },
     NotificationOperation: {
         enumValues: {
             "none": 0,
             "suspendUnprocessed": 1
+        }
+    },
+    NotificationReason: <any>{
+    },
+    NotificationReasonType: {
+        enumValues: {
+            "unknown": 0,
+            "follows": 1,
+            "personal": 2,
+            "personalAlias": 3,
+            "directMember": 4,
+            "indirectMember": 5,
+            "groupAlias": 6,
+            "subscriptionAlias": 7,
+            "singleRole": 8,
+            "directMemberGroupRole": 9,
+            "inDirectMemberGroupRole": 10,
+            "aliasMemberGroupRole": 11
         }
     },
     NotificationStatistic: <any>{
@@ -863,24 +1170,87 @@ export var TypeInfo = {
             "notificationByEventTypePerUser": 4,
             "events": 5,
             "notifications": 6,
+            "notificationFailureBySubscription": 7,
+            "unprocessedRangeStart": 100,
+            "unprocessedEventsByPublisher": 101,
+            "unprocessedEventDelayByPublisher": 102,
+            "unprocessedNotificationsByChannelByPublisher": 103,
+            "unprocessedNotificationDelayByChannelByPublisher": 104,
+            "delayRangeStart": 200,
+            "totalPipelineTime": 201,
+            "notificationPipelineTime": 202,
+            "eventPipelineTime": 203,
             "hourlyRangeStart": 1000,
             "hourlyNotificationBySubscription": 1001,
             "hourlyEventsByEventTypePerUser": 1002,
             "hourlyEvents": 1003,
-            "hourlyNotifications": 1004
+            "hourlyNotifications": 1004,
+            "hourlyUnprocessedEventsByPublisher": 1101,
+            "hourlyUnprocessedEventDelayByPublisher": 1102,
+            "hourlyUnprocessedNotificationsByChannelByPublisher": 1103,
+            "hourlyUnprocessedNotificationDelayByChannelByPublisher": 1104,
+            "hourlyTotalPipelineTime": 1201,
+            "hourlyNotificationPipelineTime": 1202,
+            "hourlyEventPipelineTime": 1203
         }
     },
-    NotificationSubscription: <any>{
+    NotificationSubscriber: <any>{
     },
-    NotificationSubscriptionsViewData: <any>{
+    NotificationSubscriberDeliveryPreference: {
+        enumValues: {
+            "none": 0,
+            "preferredEmailAddress": 1,
+            "eachMember": 2,
+            "noDelivery": -1,
+            "notSet": -2147483648
+        }
+    },
+    NotificationSubscriberUpdateParameters: <any>{
+    },
+    NotificationSubscription: <any>{
     },
     NotificationSubscriptionTemplate: <any>{
     },
     NotificationSubscriptionUpdateParameters: <any>{
     },
+    NotificationTracing: <any>{
+    },
+    SubscriberFlags: {
+        enumValues: {
+            "none": 0,
+            "deliveryPreferencesEditable": 2,
+            "supportsPreferredEmailAddressDelivery": 4,
+            "supportsEachMemberDelivery": 8,
+            "supportsNoDelivery": 16,
+            "isUser": 32,
+            "isGroup": 64,
+            "isTeam": 128
+        }
+    },
+    SubscriptionDiagnostics: <any>{
+    },
     SubscriptionEvaluationRequest: <any>{
     },
     SubscriptionEvaluationResult: <any>{
+    },
+    SubscriptionFieldType: {
+        enumValues: {
+            "string": 1,
+            "integer": 2,
+            "dateTime": 3,
+            "plainText": 5,
+            "html": 7,
+            "treePath": 8,
+            "history": 9,
+            "double": 10,
+            "guid": 11,
+            "boolean": 12,
+            "identity": 13,
+            "picklistInteger": 14,
+            "picklistString": 15,
+            "picklistDouble": 16,
+            "teamProject": 17
+        }
     },
     SubscriptionFlags: {
         enumValues: {
@@ -906,20 +1276,17 @@ export var TypeInfo = {
     SubscriptionQueryFlags: {
         enumValues: {
             "none": 0,
-            "includeAllGroupSubscriptions": 1,
             "includeInvalidSubscriptions": 2,
             "includeDeletedSubscriptions": 4,
             "includeFilterDetails": 8,
-            "alwaysReturnBasicInformation": 22,
-            "includeAllSubscriptions": 7
+            "alwaysReturnBasicInformation": 16
         }
-    },
-    SubscriptionStatisticViewData: <any>{
     },
     SubscriptionStatus: {
         enumValues: {
             "jailedByNotificationsVolume": -200,
             "pendingDeletion": -100,
+            "disabledBySystem": -9,
             "disabledInactiveIdentity": -8,
             "disabledMessageQueueNotSupported": -7,
             "disabledMissingIdentity": -6,
@@ -932,6 +1299,15 @@ export var TypeInfo = {
             "enabledOnProbation": 1
         }
     },
+    SubscriptionTemplateQueryFlags: {
+        enumValues: {
+            "none": 0,
+            "includeUser": 1,
+            "includeGroup": 2,
+            "includeUserAndGroup": 4,
+            "includeEventTypeInformation": 22
+        }
+    },
     SubscriptionTemplateType: {
         enumValues: {
             "user": 0,
@@ -940,18 +1316,43 @@ export var TypeInfo = {
             "none": 3
         }
     },
-    SubscriptionType: {
-        enumValues: {
-            "default": 0,
-            "shared": 1
-        }
-    },
+};
+
+TypeInfo.ActorNotificationReason.fields = {
+    notificationReasonType: {
+        enumType: TypeInfo.NotificationReasonType
+    }
 };
 
 TypeInfo.BatchNotificationOperation.fields = {
     notificationOperation: {
         enumType: TypeInfo.NotificationOperation
-    },
+    }
+};
+
+TypeInfo.NotificationEventField.fields = {
+    fieldType: {
+        typeInfo: TypeInfo.NotificationEventFieldType
+    }
+};
+
+TypeInfo.NotificationEventFieldType.fields = {
+    subscriptionFieldType: {
+        enumType: TypeInfo.SubscriptionFieldType
+    }
+};
+
+TypeInfo.NotificationEventType.fields = {
+    fields: {
+        isDictionary: true,
+        dictionaryValueTypeInfo: TypeInfo.NotificationEventField
+    }
+};
+
+TypeInfo.NotificationReason.fields = {
+    notificationReasonType: {
+        enumType: TypeInfo.NotificationReasonType
+    }
 };
 
 TypeInfo.NotificationStatistic.fields = {
@@ -960,26 +1361,47 @@ TypeInfo.NotificationStatistic.fields = {
     },
     type: {
         enumType: TypeInfo.NotificationStatisticType
-    },
+    }
 };
 
 TypeInfo.NotificationStatisticsQuery.fields = {
     conditions: {
         isArray: true,
         typeInfo: TypeInfo.NotificationStatisticsQueryConditions
-    },
+    }
 };
 
 TypeInfo.NotificationStatisticsQueryConditions.fields = {
-    date: {
+    endDate: {
+        isDate: true,
+    },
+    startDate: {
         isDate: true,
     },
     type: {
         enumType: TypeInfo.NotificationStatisticType
+    }
+};
+
+TypeInfo.NotificationSubscriber.fields = {
+    deliveryPreference: {
+        enumType: TypeInfo.NotificationSubscriberDeliveryPreference
     },
+    flags: {
+        enumType: TypeInfo.SubscriberFlags
+    }
+};
+
+TypeInfo.NotificationSubscriberUpdateParameters.fields = {
+    deliveryPreference: {
+        enumType: TypeInfo.NotificationSubscriberDeliveryPreference
+    }
 };
 
 TypeInfo.NotificationSubscription.fields = {
+    diagnostics: {
+        typeInfo: TypeInfo.SubscriptionDiagnostics
+    },
     flags: {
         enumType: TypeInfo.SubscriptionFlags
     },
@@ -991,45 +1413,49 @@ TypeInfo.NotificationSubscription.fields = {
     },
     status: {
         enumType: TypeInfo.SubscriptionStatus
-    },
-};
-
-TypeInfo.NotificationSubscriptionsViewData.fields = {
-    mapCategoryIdToSubscriptionTemplates: {
-        isDictionary: true,
-        dictionaryValueFieldInfo: {
-            isArray: true,
-            typeInfo: TypeInfo.NotificationSubscriptionTemplate
-        }
-    },
-    subscriptions: {
-        isArray: true,
-        typeInfo: TypeInfo.NotificationSubscription
-    },
+    }
 };
 
 TypeInfo.NotificationSubscriptionTemplate.fields = {
+    notificationEventInformation: {
+        typeInfo: TypeInfo.NotificationEventType
+    },
     type: {
         enumType: TypeInfo.SubscriptionTemplateType
-    },
+    }
 };
 
 TypeInfo.NotificationSubscriptionUpdateParameters.fields = {
     status: {
         enumType: TypeInfo.SubscriptionStatus
+    }
+};
+
+TypeInfo.NotificationTracing.fields = {
+    endDate: {
+        isDate: true,
     },
+    startDate: {
+        isDate: true,
+    }
+};
+
+TypeInfo.SubscriptionDiagnostics.fields = {
+    notificationTracing: {
+        typeInfo: TypeInfo.NotificationTracing
+    }
 };
 
 TypeInfo.SubscriptionEvaluationRequest.fields = {
     minEventsCreatedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.SubscriptionEvaluationResult.fields = {
     evaluationJobStatus: {
         enumType: TypeInfo.EvaluationOperationStatus
-    },
+    }
 };
 
 TypeInfo.SubscriptionQuery.fields = {
@@ -1039,28 +1465,11 @@ TypeInfo.SubscriptionQuery.fields = {
     },
     queryFlags: {
         enumType: TypeInfo.SubscriptionQueryFlags
-    },
+    }
 };
 
 TypeInfo.SubscriptionQueryCondition.fields = {
-    subscriptionType: {
-        enumType: TypeInfo.SubscriptionType
-    },
-};
-
-TypeInfo.SubscriptionStatisticViewData.fields = {
-    queryDate: {
-        isDate: true,
-    },
-    statistics: {
-        isDictionary: true,
-        dictionaryValueFieldInfo: {
-            isArray: true,
-            typeInfo: TypeInfo.NotificationStatistic
-        }
-    },
-    subscriptions: {
-        isDictionary: true,
-        dictionaryValueTypeInfo: TypeInfo.NotificationSubscription
-    },
+    flags: {
+        enumType: TypeInfo.SubscriptionFlags
+    }
 };

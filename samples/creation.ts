@@ -73,15 +73,15 @@ export async function run() {
 
         /********** Contributions **********/
         // BROKEN
-        // printSectionStart('Contributions');
-        // const contributionsApi = await vsts.getContributionsApi();
-        // const installedExtensions: InstalledExtension[] = await contributionsApi.getInstalledExtensions();
+        printSectionStart('Contributions');
+        const contributionsApi = await vsts.getContributionsApi();
+        const installedExtensions: InstalledExtension[] = await contributionsApi.getInstalledExtensions();
 
-        // if (installedExtensions) {
-        //     for (var installedExtension of installedExtensions) {
-        //         console.log(installedExtension.extensionName);
-        //     }
-        // }
+        if (installedExtensions) {
+            for (var installedExtension of installedExtensions) {
+                console.log(installedExtension.extensionName);
+            }
+        }
 
         /********** Dashboard **********/
         printSectionStart('Dashboard');
@@ -145,13 +145,13 @@ export async function run() {
 
         /********** Identities **********/
         // BROKEN
-        printSectionStart('Identities');
-        const identitiesApi = await vsts.getIdentitiesApi();
-        const self: IdentitySelf = await identitiesApi.getSelf();
+        // printSectionStart('Identities');
+        // const identitiesApi = await vsts.getIdentitiesApi();
+        // const self: IdentitySelf = await identitiesApi.getSelf();
         
-        if (self) {
-            console.log(self.displayName);
-        }
+        // if (self) {
+        //     console.log(self.displayName);
+        // }
 
         /********** Locations **********/
         printSectionStart('Locations');
