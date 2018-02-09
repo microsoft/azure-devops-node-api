@@ -21,8 +21,10 @@ import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
 export interface ILocationsApi extends basem.ClientApiBase {
     getConnectionData(connectOptions?: VSSInterfaces.ConnectOptions, lastChangeId?: number, lastChangeId64?: number): Promise<LocationsInterfaces.ConnectionData>;
-    getResourceArea(areaId: string): Promise<LocationsInterfaces.ResourceAreaInfo>;
-    getResourceAreas(): Promise<LocationsInterfaces.ResourceAreaInfo[]>;
+    getResourceArea(areaId: string, organizationName?: string, accountName?: string): Promise<LocationsInterfaces.ResourceAreaInfo>;
+    getResourceAreaByHost(areaId: string, hostId: string): Promise<LocationsInterfaces.ResourceAreaInfo>;
+    getResourceAreas(organizationName?: string, accountName?: string): Promise<LocationsInterfaces.ResourceAreaInfo[]>;
+    getResourceAreasByHost(hostId: string): Promise<LocationsInterfaces.ResourceAreaInfo[]>;
     deleteServiceDefinition(serviceType: string, identifier: string): Promise<void>;
     getServiceDefinition(serviceType: string, identifier: string, allowFaultIn?: boolean, previewFaultIn?: boolean): Promise<LocationsInterfaces.ServiceDefinition>;
     getServiceDefinitions(serviceType?: string): Promise<LocationsInterfaces.ServiceDefinition[]>;
@@ -87,9 +89,13 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
 
     /**
      * @param {string} areaId
+     * @param {string} organizationName
+     * @param {string} accountName
      */
     public async getResourceArea(
-        areaId: string
+        areaId: string,
+        organizationName?: string,
+        accountName?: string
         ): Promise<LocationsInterfaces.ResourceAreaInfo> {
 
         return new Promise<LocationsInterfaces.ResourceAreaInfo>(async (resolve, reject) => {
@@ -97,12 +103,18 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
                 areaId: areaId
             };
 
+            let queryValues: any = {
+                organizationName: organizationName,
+                accountName: accountName,
+            };
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "4.1-preview.1",
                     "Location",
                     "e81700f7-3be2-46de-8624-2eb35882fcaa",
-                    routeValues);
+                    routeValues,
+                    queryValues);
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
@@ -125,20 +137,119 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
     }
 
     /**
+     * @param {string} areaId
+     * @param {string} hostId
+     */
+    public async getResourceAreaByHost(
+        areaId: string,
+        hostId: string
+        ): Promise<LocationsInterfaces.ResourceAreaInfo> {
+
+        return new Promise<LocationsInterfaces.ResourceAreaInfo>(async (resolve, reject) => {
+            let routeValues: any = {
+                areaId: areaId
+            };
+
+            let queryValues: any = {
+                hostId: hostId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.1",
+                    "Location",
+                    "e81700f7-3be2-46de-8624-2eb35882fcaa",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<LocationsInterfaces.ResourceAreaInfo>;
+                res = await this.rest.get<LocationsInterfaces.ResourceAreaInfo>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} organizationName
+     * @param {string} accountName
      */
     public async getResourceAreas(
+        organizationName?: string,
+        accountName?: string
         ): Promise<LocationsInterfaces.ResourceAreaInfo[]> {
 
         return new Promise<LocationsInterfaces.ResourceAreaInfo[]>(async (resolve, reject) => {
             let routeValues: any = {
             };
 
+            let queryValues: any = {
+                organizationName: organizationName,
+                accountName: accountName,
+            };
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "4.1-preview.1",
                     "Location",
                     "e81700f7-3be2-46de-8624-2eb35882fcaa",
-                    routeValues);
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<LocationsInterfaces.ResourceAreaInfo[]>;
+                res = await this.rest.get<LocationsInterfaces.ResourceAreaInfo[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} hostId
+     */
+    public async getResourceAreasByHost(
+        hostId: string
+        ): Promise<LocationsInterfaces.ResourceAreaInfo[]> {
+
+        return new Promise<LocationsInterfaces.ResourceAreaInfo[]>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
+
+            let queryValues: any = {
+                hostId: hostId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.1",
+                    "Location",
+                    "e81700f7-3be2-46de-8624-2eb35882fcaa",
+                    routeValues,
+                    queryValues);
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 

@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
+import accountm = require('./AccountsApi');
 import basem = require('./ClientApiBases');
 import buildm = require('./BuildApi');
 import chatm = require('./ChatApi');
@@ -20,6 +21,7 @@ import notificationm = require('./NotificationApi');
 import organizationm = require('./OrganizationApi');
 import policym = require('./PolicyApi');
 import profilem = require('./ProfileApi');
+import projectm = require('./ProjectAnalysisApi');
 import releasem = require('./ReleaseApi');
 import securityrolesm = require('./SecurityRolesApi');
 import servicehooksm = require('./ServiceHooksApi');
@@ -155,6 +157,13 @@ export class WebApi {
         });
     }
 
+    public async getAccountsApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<accountm.IAccountsApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "0d55247a-1c47-4462-9b1f-5e2125590ee6");
+        handlers = handlers || [this.authHandler];
+        return new accountm.AccountsApi(serverUrl, handlers, this.options);
+    }
+
     /**
      * Each factory method can take a serverUrl and a list of handlers
      * if these aren't provided, the default url and auth handler given to the constructor for this class will be used
@@ -281,6 +290,13 @@ export class WebApi {
         return new profilem.ProfileApi(serverUrl, handlers, this.options);
     }
 
+    public async getProjectAnalysisApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<projectm.IProjectAnalysisApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "7658fa33-b1bf-4580-990f-fac5896773d3");
+        handlers = handlers || [this.authHandler];
+        return new projectm.ProjectAnalysisApi(serverUrl, handlers, this.options);
+    }
+
     public async getSecurityRolesApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<securityrolesm.ISecurityRolesApi> {
         // TODO: Load RESOURCE_AREA_ID correctly.
         serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "");
@@ -328,6 +344,13 @@ export class WebApi {
         serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "8aa40520-446d-40e6-89f6-9c9f9ce44c48");
         handlers = handlers || [this.authHandler];
         return new tfvcm.TfvcApi(serverUrl, handlers, this.options);
+    }
+
+    public async getTokenApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<tokenm.ITokenApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "");
+        handlers = handlers || [this.authHandler];
+        return new tokenm.TokenApi(serverUrl, handlers, this.options);
     }
 
     public async getWorkApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<workm.IWorkApi> {
