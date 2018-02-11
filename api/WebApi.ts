@@ -247,13 +247,8 @@ export class WebApi {
     }
 
     public async getIdentitiesApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<identitiesm.IIdentitiesApi> {
-        // TODO: This should be: identitiesm.IdentitiesApi.RESOURCE_AREA_ID;
-        // 8a3d49b8-91f0-46ef-b33d-dda338c25db3 -- name: IMS
-        // fc3682be-3d6c-427a-87c8-e527b16a1d05 -- name: Identity
+        // TODO: Load RESOURCE_AREA_ID correctly.
         serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "8a3d49b8-91f0-46ef-b33d-dda338c25db3");
-
-        console.log(serverUrl);
-
         handlers = handlers || [this.authHandler];
         return new identitiesm.IdentitiesApi(serverUrl, handlers, this.options);
     }
