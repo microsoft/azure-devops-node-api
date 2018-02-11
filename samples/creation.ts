@@ -14,7 +14,9 @@ import { Identity, IdentitySelf } from 'vso-node-api/interfaces/IdentitiesInterf
 import { InstalledExtension } from 'vso-node-api/interfaces/ContributionsInterfaces';
 import { Plan } from 'vso-node-api/interfaces/WorkInterfaces';
 import { PolicyType } from 'vso-node-api/interfaces/PolicyInterfaces';
+import { ProfileRegions } from 'vso-node-api/interfaces/ProfileInterfaces';
 import { ProjectLanguageAnalytics } from 'vso-node-api/interfaces/ProjectAnalysisInterfaces';
+import { Registration as TokenRegistration } from 'vso-node-api/interfaces/TokenInterfaces';
 import { Release } from 'vso-node-api/interfaces/ReleaseInterfaces';
 import { ResourceAreaInfo } from 'vso-node-api/interfaces/LocationsInterfaces';
 import { RequestedExtension } from 'vso-node-api/interfaces/ExtensionManagementInterfaces';
@@ -27,9 +29,6 @@ import { Timeline as TaskAgentTimeline } from "vso-node-api/interfaces/TaskAgent
 import { WebApiTeam } from 'vso-node-api/interfaces/CoreInterfaces';
 import { WidgetScope, WidgetTypesResponse } from 'vso-node-api/interfaces/DashboardInterfaces';
 import { WorkItemField } from 'vso-node-api/interfaces/WorkItemTrackingInterfaces';
-
-import { Registration as TokenRegistration } from 'vso-node-api/interfaces/TokenInterfaces';
-import { IdentitiesApi } from '../_build/IdentitiesApi';
 
 // In order for this to run you will need to set the following environment variables:
 // 
