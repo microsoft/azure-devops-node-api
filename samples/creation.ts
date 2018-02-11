@@ -55,14 +55,13 @@ export async function run() {
         // }
 
         /********** Build **********/
-        // WORKS
-        // printSectionStart('Build');
-        // const buildApi = await vsts.getBuildApi();
-        // const builds: Build[] = await buildApi.getBuilds(common.getProject());
+        printSectionStart('Build');
+        const buildApi = await vsts.getBuildApi();
+        const builds: Build[] = await buildApi.getBuilds(common.getProject());
 
-        // if (builds) {
-        //     console.log(`found ${builds.length} builds`);
-        // }
+        if (builds) {
+            console.log(`found ${builds.length} builds`);
+        }
 
         /********** Chat **********/
         // BROKEN
@@ -77,14 +76,13 @@ export async function run() {
         // }
 
         /********** Core **********/
-        // WORKS
-        // printSectionStart('Core');
-        // const coreApi = await vsts.getCoreApi();
-        // const teams: WebApiTeam[] = await coreApi.getAllTeams();
+        printSectionStart('Core');
+        const coreApi = await vsts.getCoreApi();
+        const teams: WebApiTeam[] = await coreApi.getAllTeams();
 
-        // if (teams) {
-        //     console.log(`found ${teams.length} teams`);
-        // }
+        if (teams) {
+            console.log(`found ${teams.length} teams`);
+        }
 
         /********** Contributions **********/
         // BROKEN
@@ -103,14 +101,13 @@ export async function run() {
 
 
         /********** Dashboard **********/
-        // WORKS
-        // printSectionStart('Dashboard');
-        // const dashboardApi = await vsts.getDashboardApi();
-        // const widgetTypes: WidgetTypesResponse = await dashboardApi.getWidgetTypes(WidgetScope.Collection_User);
+        printSectionStart('Dashboard');
+        const dashboardApi = await vsts.getDashboardApi();
+        const widgetTypes: WidgetTypesResponse = await dashboardApi.getWidgetTypes(WidgetScope.Collection_User);
 
-        // if (widgetTypes) {
-        //     console.log(`found ${widgetTypes.widgetTypes.length} widget types`);
-        // }
+        if (widgetTypes) {
+            console.log(`found ${widgetTypes.widgetTypes.length} widget types`);
+        }
 
         /********** Delegated Authorization **********/
         // // BROKEN
@@ -123,37 +120,34 @@ export async function run() {
         // }
 
         /********** Extension Management **********/
-        // WORKS
-        // printSectionStart('Extension Management');
-        // const extensionManagementApi = await vsts.getExtensionManagementApi();
-        // const requests:RequestedExtension[] = await extensionManagementApi.getRequests();
+        printSectionStart('Extension Management');
+        const extensionManagementApi = await vsts.getExtensionManagementApi();
+        const requests:RequestedExtension[] = await extensionManagementApi.getRequests();
 
-        // if (requests) {
-        //     console.log(`found ${requests.length} requests`);
-        // }
+        if (requests) {
+            console.log(`found ${requests.length} requests`);
+        }
 
         /********** Feature Availability **********/
 
 
         /********** Feature Management **********/
-        // WORKS
-        // printSectionStart('Feature Management');
-        // const featureManagementApi = await vsts.getFeatureManagementApi();
-        // const features: ContributedFeature[] = await featureManagementApi.getFeatures();
+        printSectionStart('Feature Management');
+        const featureManagementApi = await vsts.getFeatureManagementApi();
+        const features: ContributedFeature[] = await featureManagementApi.getFeatures();
 
-        // if (features) {
-        //     console.log(`found ${features.length} features`);
-        // }
+        if (features) {
+            console.log(`found ${features.length} features`);
+        }
 
         /********** File Container **********/
-        // WORKS
-        // printSectionStart('File Container');
-        // const fileContainerApi = await vsts.getFileContainerApi();
-        // const containers: FileContainer[] = await fileContainerApi.getContainers();
+        printSectionStart('File Container');
+        const fileContainerApi = await vsts.getFileContainerApi();
+        const containers: FileContainer[] = await fileContainerApi.getContainers();
 
-        // if (containers) {
-        //     console.log(`found ${containers.length} containers`);
-        // }
+        if (containers) {
+            console.log(`found ${containers.length} containers`);
+        }
 
         /********** Gallery **********/
         // BROKEN
@@ -161,14 +155,13 @@ export async function run() {
         // const galleryApi = await vsts.getGalleryApi();
 
         /********** Git **********/
-        // WORKS
-        // printSectionStart('Git');
-        // const gitApi = await vsts.getGitApi();
-        // const respositories: GitRepository[] = await gitApi.getRepositories();
+        printSectionStart('Git');
+        const gitApi = await vsts.getGitApi();
+        const respositories: GitRepository[] = await gitApi.getRepositories();
 
-        // if (respositories) {
-        //     console.log(`found ${respositories.length} respositories`);
-        // }
+        if (respositories) {
+            console.log(`found ${respositories.length} respositories`);
+        }
 
         /********** Identities **********/
         // BROKEN
@@ -186,24 +179,22 @@ export async function run() {
         // }
 
         /********** Locations **********/
-        // WORKS
-        // printSectionStart('Locations');
-        // const locationsApi = await vsts.getLocationsApi();
-        // const resourceAreas: ResourceAreaInfo[] = await locationsApi.getResourceAreas();
+        printSectionStart('Locations');
+        const locationsApi = await vsts.getLocationsApi();
+        const resourceAreas: ResourceAreaInfo[] = await locationsApi.getResourceAreas();
 
-        // if (resourceAreas) {
-        //     console.log(`found ${resourceAreas.length} resource areas`);
-        // }
+        if (resourceAreas) {
+            console.log(`found ${resourceAreas.length} resource areas`);
+        }
 
         /********** Notifications **********/
-        // WORKS
-        // printSectionStart('Notifications');
-        // const notificationsApi = await vsts.getNotificationApi();
-        // const subscriptions = await notificationsApi.listSubscriptions();
+        printSectionStart('Notifications');
+        const notificationsApi = await vsts.getNotificationApi();
+        const subscriptions = await notificationsApi.listSubscriptions();
 
-        // if (subscriptions) {
-        //     console.log(`found ${subscriptions.length} subscriptions`);
-        // }
+        if (subscriptions) {
+            console.log(`found ${subscriptions.length} subscriptions`);
+        }
 
         /********** Organization **********/
         // BROKEN
@@ -218,54 +209,49 @@ export async function run() {
         // }
 
         /********** Policy **********/
-        // WORKS
-        // printSectionStart('Policy');
-        // const policyApi = await vsts.getPolicyApi();
-        // const policyTypes: PolicyType[] = await policyApi.getPolicyTypes(common.getProject());
+        printSectionStart('Policy');
+        const policyApi = await vsts.getPolicyApi();
+        const policyTypes: PolicyType[] = await policyApi.getPolicyTypes(common.getProject());
 
-        // if (policyTypes) {
-        //     console.log(`found ${policyTypes.length} policy types`);
-        // }
+        if (policyTypes) {
+            console.log(`found ${policyTypes.length} policy types`);
+        }
 
         /********** Profile **********/
-        // WORKS
-        // printSectionStart('Profile');
-        // const profileApi = await vsts.getProfileApi();
-        // const regions: ProfileRegions = await profileApi.getRegions();
+        printSectionStart('Profile');
+        const profileApi = await vsts.getProfileApi();
+        const regions: ProfileRegions = await profileApi.getRegions();
 
-        // if (regions && regions.regions) {
-        //     console.log(`found ${regions.regions.length} regions`);
-        // }
+        if (regions && regions.regions) {
+            console.log(`found ${regions.regions.length} regions`);
+        }
 
         /********** Project Analysis **********/
-        // WORKS
-        // printSectionStart('Project Analysis');
-        // const projectAnalysisApi = await vsts.getProjectAnalysisApi();
-        // const languageAnalytics: ProjectLanguageAnalytics = await projectAnalysisApi.getProjectLanguageAnalytics(common.getProject());
+        printSectionStart('Project Analysis');
+        const projectAnalysisApi = await vsts.getProjectAnalysisApi();
+        const languageAnalytics: ProjectLanguageAnalytics = await projectAnalysisApi.getProjectLanguageAnalytics(common.getProject());
 
-        // if (languageAnalytics) {
-        //     console.log(`language analytics id ${languageAnalytics.id}`);
-        // }
+        if (languageAnalytics) {
+            console.log(`language analytics id ${languageAnalytics.id}`);
+        }
 
         /********** Release **********/
-        // WORKS
-        // printSectionStart('Release');
-        // const releaseApi = await vsts.getReleaseApi();
-        // const releases: Release[] = await releaseApi.getReleases();
+        printSectionStart('Release');
+        const releaseApi = await vsts.getReleaseApi();
+        const releases: Release[] = await releaseApi.getReleases();
 
-        // if (releases) {
-        //     console.log(`found ${releases.length} releases`);
-        // }
+        if (releases) {
+            console.log(`found ${releases.length} releases`);
+        }
 
         /********** Security **********/
-        // WORKS
-        // printSectionStart('Security');
-        // const securityApi = await vsts.getSecurityRolesApi();
-        // const roleDefinitions: SecurityRole[] = await securityApi.getRoleDefinitions("");
+        printSectionStart('Security');
+        const securityApi = await vsts.getSecurityRolesApi();
+        const roleDefinitions: SecurityRole[] = await securityApi.getRoleDefinitions("");
 
-        // if (roleDefinitions) {
-        //     console.log(`found ${roleDefinitions.length} role definitions`);
-        // }
+        if (roleDefinitions) {
+            console.log(`found ${roleDefinitions.length} role definitions`);
+        }
 
         /********** Service Hooks **********/
         // BROKEN
@@ -280,74 +266,68 @@ export async function run() {
         // }
 
         /********** Task **********/
-        // WORKS
-        // printSectionStart('Task');
-        // const taskApi = await vsts.getTaskApi();
-        // const timelines: TaskAgentTimeline[] = await taskApi.getTimelines("", "", "");
+        printSectionStart('Task');
+        const taskApi = await vsts.getTaskApi();
+        const timelines: TaskAgentTimeline[] = await taskApi.getTimelines("", "", "");
 
-        // if (timelines) {
-        //     console.log(`found ${timelines.length} timelines`);
-        // }
+        if (timelines) {
+            console.log(`found ${timelines.length} timelines`);
+        }
 
         /********** Task Agent **********/
-        // WORKS
-        // printSectionStart('Task Agent');
-        // const taskAgentApi = await vsts.getTaskAgentApi();
-        // const agentPools: TaskAgentPool[] = await taskAgentApi.getAgentPools();
+        printSectionStart('Task Agent');
+        const taskAgentApi = await vsts.getTaskAgentApi();
+        const agentPools: TaskAgentPool[] = await taskAgentApi.getAgentPools();
 
-        // if (agentPools) {
-        //     console.log(`found ${agentPools.length} agent pools`);
-        // }
+        if (agentPools) {
+            console.log(`found ${agentPools.length} agent pools`);
+        }
 
         /********** Test **********/
-        // WORKS
-        // printSectionStart('Test');
-        // const testApi = await vsts.getTestApi();
-        // const plans: TestPlan[] = await testApi.getPlans(common.getProject());
+        printSectionStart('Test');
+        const testApi = await vsts.getTestApi();
+        const plans: TestPlan[] = await testApi.getPlans(common.getProject());
 
-        // if (plans) {
-        //     console.log(`found ${plans.length} plans`);
-        // }
+        if (plans) {
+            console.log(`found ${plans.length} plans`);
+        }
 
         /********** Tfvc **********/
-        // WORKS
-        // printSectionStart('Tfvc');
-        // const tfvcApi = await vsts.getTfvcApi();
-        // const changesets: TfvcChangesetRef[] = await tfvcApi.getChangesets();
+        printSectionStart('Tfvc');
+        const tfvcApi = await vsts.getTfvcApi();
+        const changesets: TfvcChangesetRef[] = await tfvcApi.getChangesets();
 
-        // if (changesets) {
-        //     console.log(`found ${changesets.length} changesets`);
-        // }
+        if (changesets) {
+            console.log(`found ${changesets.length} changesets`);
+        }
 
         /********** Token **********/
         // BROKEN
-        printSectionStart('Token');
-        const tokenApi = await vsts.getTokenApi();
-        const tokenList: TokenRegistration[] = await tokenApi.list();
+        // printSectionStart('Token');
+        // const tokenApi = await vsts.getTokenApi();
+        // const tokenList: TokenRegistration[] = await tokenApi.list();
 
-        if (tokenList) {
-            console.log(`found ${tokenList.length} token registrations`);
-        }
+        // if (tokenList) {
+        //     console.log(`found ${tokenList.length} token registrations`);
+        // }
 
         /********** Work **********/
-        // WORKS
-        // printSectionStart('Work');
-        // const workApi = await vsts.getWorkApi();
-        // const workPlans: Plan[] = await workApi.getPlans(common.getProject());
+        printSectionStart('Work');
+        const workApi = await vsts.getWorkApi();
+        const workPlans: Plan[] = await workApi.getPlans(common.getProject());
 
-        // if (workPlans) {
-        //     console.log(`found ${workPlans.length} work plans`);
-        // }
+        if (workPlans) {
+            console.log(`found ${workPlans.length} work plans`);
+        }
 
         /********** Work Item Tracking **********/
-        // WORKS
-        // printSectionStart('Work Item Tracking');
-        // const workItemTrackingApi = await vsts.getWorkItemTrackingApi();
-        // const workItemFields: WorkItemField[] = await workItemTrackingApi.getFields();
+        printSectionStart('Work Item Tracking');
+        const workItemTrackingApi = await vsts.getWorkItemTrackingApi();
+        const workItemFields: WorkItemField[] = await workItemTrackingApi.getFields();
 
-        // if (workItemFields) {
-        //     console.log(`found ${workItemFields.length} work items`);
-        // }
+        if (workItemFields) {
+            console.log(`found ${workItemFields.length} work items`);
+        }
     }
     catch (err) {
         console.error('Error: ' + err.stack);
