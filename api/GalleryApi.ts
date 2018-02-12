@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -36,7 +36,17 @@ export interface IGalleryApi extends compatBase.GalleryCompatHttpClientBase {
     getCategoryTree(product: string, categoryId: string, lcid?: number, source?: string, productVersion?: string, skus?: string, subSkus?: string): Promise<GalleryInterfaces.ProductCategory>;
     getRootCategories(product: string, lcid?: number, source?: string, productVersion?: string, skus?: string, subSkus?: string): Promise<GalleryInterfaces.ProductCategoriesResult>;
     getCertificate(publisherName: string, extensionName: string, version?: string): Promise<NodeJS.ReadableStream>;
-    getExtensionEvents(publisherName: string, extensionName: string, count?: number, afterDate?: Date, include?: string): Promise<GalleryInterfaces.ExtensionEvents>;
+    createDraftForEditExtension(publisherName: string, extensionName: string): Promise<GalleryInterfaces.ExtensionDraft>;
+    performEditExtensionDraftOperation(draftPatch: GalleryInterfaces.ExtensionDraftPatch, publisherName: string, extensionName: string, draftId: string): Promise<GalleryInterfaces.ExtensionDraft>;
+    updatePayloadInDraftForEditExtension(customHeaders: any, contentStream: NodeJS.ReadableStream, publisherName: string, extensionName: string, draftId: string, fileName?: String): Promise<GalleryInterfaces.ExtensionDraft>;
+    addAssetForEditExtensionDraft(customHeaders: any, contentStream: NodeJS.ReadableStream, publisherName: string, extensionName: string, draftId: string, assetType: string): Promise<GalleryInterfaces.ExtensionDraftAsset>;
+    createDraftForNewExtension(customHeaders: any, contentStream: NodeJS.ReadableStream, publisherName: string, product: String, fileName?: String): Promise<GalleryInterfaces.ExtensionDraft>;
+    performNewExtensionDraftOperation(draftPatch: GalleryInterfaces.ExtensionDraftPatch, publisherName: string, draftId: string): Promise<GalleryInterfaces.ExtensionDraft>;
+    updatePayloadInDraftForNewExtension(customHeaders: any, contentStream: NodeJS.ReadableStream, publisherName: string, draftId: string, fileName?: String): Promise<GalleryInterfaces.ExtensionDraft>;
+    addAssetForNewExtensionDraft(customHeaders: any, contentStream: NodeJS.ReadableStream, publisherName: string, draftId: string, assetType: string): Promise<GalleryInterfaces.ExtensionDraftAsset>;
+    getAssetFromEditExtensionDraft(publisherName: string, draftId: string, assetType: string, extensionName: string): Promise<NodeJS.ReadableStream>;
+    getAssetFromNewExtensionDraft(publisherName: string, draftId: string, assetType: string): Promise<NodeJS.ReadableStream>;
+    getExtensionEvents(publisherName: string, extensionName: string, count?: number, afterDate?: Date, include?: string, includeProperty?: string): Promise<GalleryInterfaces.ExtensionEvents>;
     publishExtensionEvents(extensionEvents: GalleryInterfaces.ExtensionEvents[]): Promise<void>;
     queryExtensions(extensionQuery: GalleryInterfaces.ExtensionQuery, accountToken?: string): Promise<GalleryInterfaces.ExtensionQueryResult>;
     createExtension(customHeaders: any, contentStream: NodeJS.ReadableStream): Promise<GalleryInterfaces.PublishedExtension>;
@@ -49,6 +59,7 @@ export interface IGalleryApi extends compatBase.GalleryCompatHttpClientBase {
     updateExtension(customHeaders: any, contentStream: NodeJS.ReadableStream, publisherName: string, extensionName: string): Promise<GalleryInterfaces.PublishedExtension>;
     updateExtensionProperties(publisherName: string, extensionName: string, flags: GalleryInterfaces.PublishedExtensionFlags): Promise<GalleryInterfaces.PublishedExtension>;
     extensionValidator(azureRestApiRequestModel: GalleryInterfaces.AzureRestApiRequestModel): Promise<void>;
+    sendNotifications(notificationData: GalleryInterfaces.NotificationsData): Promise<void>;
     getPackage(publisherName: string, extensionName: string, version: string, accountToken?: string, acceptDefault?: boolean): Promise<NodeJS.ReadableStream>;
     getAssetWithToken(publisherName: string, extensionName: string, version: string, assetType: string, assetToken?: string, accountToken?: string, acceptDefault?: boolean): Promise<NodeJS.ReadableStream>;
     queryPublishers(publisherQuery: GalleryInterfaces.PublisherQuery): Promise<GalleryInterfaces.PublisherQueryResult>;
@@ -56,7 +67,7 @@ export interface IGalleryApi extends compatBase.GalleryCompatHttpClientBase {
     deletePublisher(publisherName: string): Promise<void>;
     getPublisher(publisherName: string, flags?: number): Promise<GalleryInterfaces.Publisher>;
     updatePublisher(publisher: GalleryInterfaces.Publisher, publisherName: string): Promise<GalleryInterfaces.Publisher>;
-    getQuestions(publisherName: string, extensionName: string, count?: number, page?: number): Promise<GalleryInterfaces.QuestionsResult>;
+    getQuestions(publisherName: string, extensionName: string, count?: number, page?: number, afterDate?: Date): Promise<GalleryInterfaces.QuestionsResult>;
     reportQuestion(concern: GalleryInterfaces.Concern, pubName: string, extName: string, questionId: number): Promise<GalleryInterfaces.Concern>;
     createQuestion(question: GalleryInterfaces.Question, publisherName: string, extensionName: string): Promise<GalleryInterfaces.Question>;
     deleteQuestion(publisherName: string, extensionName: string, questionId: number): Promise<void>;
@@ -71,20 +82,23 @@ export interface IGalleryApi extends compatBase.GalleryCompatHttpClientBase {
     deleteReview(pubName: string, extName: string, reviewId: number): Promise<void>;
     updateReview(reviewPatch: GalleryInterfaces.ReviewPatch, pubName: string, extName: string, reviewId: number): Promise<GalleryInterfaces.ReviewPatch>;
     createCategory(category: GalleryInterfaces.ExtensionCategory): Promise<GalleryInterfaces.ExtensionCategory>;
-    getGalleryUserSettings(userScope: string, key?: string): Promise<{ [key: string]: any; }>;
-    setGalleryUserSettings(entries: { [key: string]: any; }, userScope: string): Promise<void>;
+    getGalleryUserSettings(userScope: string, key?: string): Promise<{ [key: string] : any; }>;
+    setGalleryUserSettings(entries: { [key: string] : any; }, userScope: string): Promise<void>;
     generateKey(keyType: string, expireCurrentSeconds?: number): Promise<void>;
     getSigningKey(keyType: string): Promise<string>;
     updateExtensionStatistics(extensionStatisticsUpdate: GalleryInterfaces.ExtensionStatisticUpdate, publisherName: string, extensionName: string): Promise<void>;
-    getExtensionDailyStats(publisherName: string, extensionName: string, days?: number, aggregate?: GalleryInterfaces.ExtensionStatsAggregateType): Promise<GalleryInterfaces.ExtensionDailyStats>;
+    getExtensionDailyStats(publisherName: string, extensionName: string, days?: number, aggregate?: GalleryInterfaces.ExtensionStatsAggregateType, afterDate?: Date): Promise<GalleryInterfaces.ExtensionDailyStats>;
     getExtensionDailyStatsAnonymous(publisherName: string, extensionName: string, version: string): Promise<GalleryInterfaces.ExtensionDailyStats>;
     incrementExtensionDailyStat(publisherName: string, extensionName: string, version: string, statType: string): Promise<void>;
+    getVerificationLog(publisherName: string, extensionName: string, version: string): Promise<NodeJS.ReadableStream>;
 }
 
 export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implements IGalleryApi {
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
         super(baseUrl, handlers, 'node-Gallery-api', options);
     }
+
+    public static readonly RESOURCE_AREA_ID = "69d21c00-f135-441b-b5ce-3626378e0819";
 
     /**
      * @param {string} extensionId
@@ -93,7 +107,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     public async shareExtensionById(
         extensionId: string,
         accountName: string
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -103,24 +117,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "1f19631b-a0b4-4a03-89c2-d79785d24360",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -135,7 +149,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     public async unshareExtensionById(
         extensionId: string,
         accountName: string
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -145,24 +159,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "1f19631b-a0b4-4a03-89c2-d79785d24360",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -179,7 +193,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         publisherName: string,
         extensionName: string,
         accountName: string
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -190,24 +204,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "a1e66d8f-f5de-4d16-8309-91a4e015ee46",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -224,7 +238,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         publisherName: string,
         extensionName: string,
         accountName: string
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -235,24 +249,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "a1e66d8f-f5de-4d16-8309-91a4e015ee46",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -271,7 +285,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         installationTarget: string,
         testCommerce?: boolean,
         isFreeOrTrialInstall?: boolean
-    ): Promise<GalleryInterfaces.AcquisitionOptions> {
+        ): Promise<GalleryInterfaces.AcquisitionOptions> {
 
         return new Promise<GalleryInterfaces.AcquisitionOptions>(async (resolve, reject) => {
             let routeValues: any = {
@@ -283,28 +297,28 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 testCommerce: testCommerce,
                 isFreeOrTrialInstall: isFreeOrTrialInstall,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "9d0a0105-075e-4760-aa15-8bcf54d1bd7d",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.AcquisitionOptions>;
                 res = await this.rest.get<GalleryInterfaces.AcquisitionOptions>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.AcquisitionOptions,
-                    false);
+                                              GalleryInterfaces.TypeInfo.AcquisitionOptions,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -317,7 +331,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
      */
     public async requestAcquisition(
         acquisitionRequest: GalleryInterfaces.ExtensionAcquisitionRequest
-    ): Promise<GalleryInterfaces.ExtensionAcquisitionRequest> {
+        ): Promise<GalleryInterfaces.ExtensionAcquisitionRequest> {
 
         return new Promise<GalleryInterfaces.ExtensionAcquisitionRequest>(async (resolve, reject) => {
             let routeValues: any = {
@@ -325,24 +339,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "3adb1f2d-e328-446e-be73-9f6d98071c45",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionAcquisitionRequest>;
                 res = await this.rest.create<GalleryInterfaces.ExtensionAcquisitionRequest>(url, acquisitionRequest, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.ExtensionAcquisitionRequest,
-                    false);
+                                              GalleryInterfaces.TypeInfo.ExtensionAcquisitionRequest,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -365,7 +379,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         assetType: string,
         accountToken?: string,
         acceptDefault?: boolean
-    ): Promise<NodeJS.ReadableStream> {
+        ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -379,17 +393,17 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 accountToken: accountToken,
                 acceptDefault: acceptDefault,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "7529171f-a002-4180-93ba-685f358a0482",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-
+                
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -413,7 +427,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         assetType: string,
         accountToken?: string,
         acceptDefault?: boolean
-    ): Promise<NodeJS.ReadableStream> {
+        ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -426,17 +440,17 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 accountToken: accountToken,
                 acceptDefault: acceptDefault,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "5d545f3d-ef47-488b-8be3-f5ee1517856c",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-
+                
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -460,7 +474,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         version: string,
         assetType: string,
         accountToken?: string
-    ): Promise<NodeJS.ReadableStream> {
+        ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -473,17 +487,17 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             let queryValues: any = {
                 accountToken: accountToken,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "506aff36-2622-4f70-8063-77cce6366d20",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-
+                
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -501,7 +515,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     public async associateAzurePublisher(
         publisherName: string,
         azurePublisherId: string
-    ): Promise<GalleryInterfaces.AzurePublisher> {
+        ): Promise<GalleryInterfaces.AzurePublisher> {
 
         return new Promise<GalleryInterfaces.AzurePublisher>(async (resolve, reject) => {
             let routeValues: any = {
@@ -511,28 +525,28 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             let queryValues: any = {
                 azurePublisherId: azurePublisherId,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "efd202a6-9d87-4ebc-9229-d2b8ae2fdb6d",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.AzurePublisher>;
                 res = await this.rest.replace<GalleryInterfaces.AzurePublisher>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -545,7 +559,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
      */
     public async queryAssociatedAzurePublisher(
         publisherName: string
-    ): Promise<GalleryInterfaces.AzurePublisher> {
+        ): Promise<GalleryInterfaces.AzurePublisher> {
 
         return new Promise<GalleryInterfaces.AzurePublisher>(async (resolve, reject) => {
             let routeValues: any = {
@@ -554,24 +568,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "efd202a6-9d87-4ebc-9229-d2b8ae2fdb6d",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.AzurePublisher>;
                 res = await this.rest.get<GalleryInterfaces.AzurePublisher>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -584,7 +598,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
      */
     public async getCategories(
         languages?: string
-    ): Promise<string[]> {
+        ): Promise<string[]> {
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -593,28 +607,28 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             let queryValues: any = {
                 languages: languages,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "e0a5a71e-3ac3-43a0-ae7d-0bb5c3046a2a",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -631,7 +645,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         categoryName: string,
         languages?: string,
         product?: string
-    ): Promise<GalleryInterfaces.CategoriesResult> {
+        ): Promise<GalleryInterfaces.CategoriesResult> {
 
         return new Promise<GalleryInterfaces.CategoriesResult>(async (resolve, reject) => {
             let routeValues: any = {
@@ -642,28 +656,28 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 languages: languages,
                 product: product,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "75d3c04d-84d2-4973-acd2-22627587dabc",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.CategoriesResult>;
                 res = await this.rest.get<GalleryInterfaces.CategoriesResult>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -688,7 +702,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         productVersion?: string,
         skus?: string,
         subSkus?: string
-    ): Promise<GalleryInterfaces.ProductCategory> {
+        ): Promise<GalleryInterfaces.ProductCategory> {
 
         return new Promise<GalleryInterfaces.ProductCategory>(async (resolve, reject) => {
             let routeValues: any = {
@@ -703,28 +717,28 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 skus: skus,
                 subSkus: subSkus,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "1102bb42-82b0-4955-8d8a-435d6b4cedd3",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.ProductCategory>;
                 res = await this.rest.get<GalleryInterfaces.ProductCategory>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -747,7 +761,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         productVersion?: string,
         skus?: string,
         subSkus?: string
-    ): Promise<GalleryInterfaces.ProductCategoriesResult> {
+        ): Promise<GalleryInterfaces.ProductCategoriesResult> {
 
         return new Promise<GalleryInterfaces.ProductCategoriesResult>(async (resolve, reject) => {
             let routeValues: any = {
@@ -761,28 +775,28 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 skus: skus,
                 subSkus: subSkus,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "31fba831-35b2-46f6-a641-d05de5a877d8",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.ProductCategoriesResult>;
                 res = await this.rest.get<GalleryInterfaces.ProductCategoriesResult>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -799,7 +813,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         publisherName: string,
         extensionName: string,
         version?: string
-    ): Promise<NodeJS.ReadableStream> {
+        ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -810,13 +824,13 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "e905ad6a-3f1f-4d08-9f6d-7d357ff8b7d0",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-
+                
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -828,21 +842,503 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-     * Get install/uninstall events of an extension.
+     * @param {string} publisherName
+     * @param {string} extensionName
+     */
+    public async createDraftForEditExtension(
+        publisherName: string,
+        extensionName: string
+        ): Promise<GalleryInterfaces.ExtensionDraft> {
+
+        return new Promise<GalleryInterfaces.ExtensionDraft>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.1",
+                    "gallery",
+                    "02b33873-4e61-496e-83a2-59d1df46b7d8",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<GalleryInterfaces.ExtensionDraft>;
+                res = await this.rest.create<GalleryInterfaces.ExtensionDraft>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.ExtensionDraft,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {GalleryInterfaces.ExtensionDraftPatch} draftPatch
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} draftId
+     */
+    public async performEditExtensionDraftOperation(
+        draftPatch: GalleryInterfaces.ExtensionDraftPatch,
+        publisherName: string,
+        extensionName: string,
+        draftId: string
+        ): Promise<GalleryInterfaces.ExtensionDraft> {
+
+        return new Promise<GalleryInterfaces.ExtensionDraft>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                draftId: draftId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.1",
+                    "gallery",
+                    "02b33873-4e61-496e-83a2-59d1df46b7d8",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<GalleryInterfaces.ExtensionDraft>;
+                res = await this.rest.update<GalleryInterfaces.ExtensionDraft>(url, draftPatch, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.ExtensionDraft,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {NodeJS.ReadableStream} contentStream - Content to upload
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} draftId
+     * @param {String} fileName - Header to pass the filename of the uploaded data
+     */
+    public async updatePayloadInDraftForEditExtension(
+        customHeaders: any,
+        contentStream: NodeJS.ReadableStream,
+        publisherName: string,
+        extensionName: string,
+        draftId: string,
+        fileName?: String
+        ): Promise<GalleryInterfaces.ExtensionDraft> {
+
+        return new Promise<GalleryInterfaces.ExtensionDraft>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                draftId: draftId
+            };
+
+            customHeaders = customHeaders || {};
+            customHeaders["Content-Type"] = "application/octet-stream";
+            customHeaders["X-Market-UploadFileName"] = "fileName";
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.1",
+                    "gallery",
+                    "02b33873-4e61-496e-83a2-59d1df46b7d8",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                                                                                verData.apiVersion);
+                options.additionalHeaders = customHeaders;
+
+                let res: restm.IRestResponse<GalleryInterfaces.ExtensionDraft>;
+                res = await this.rest.uploadStream<GalleryInterfaces.ExtensionDraft>("PUT", url, contentStream, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.ExtensionDraft,
+                                              false);
+
+                resolve(ret);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {NodeJS.ReadableStream} contentStream - Content to upload
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} draftId
+     * @param {string} assetType
+     */
+    public async addAssetForEditExtensionDraft(
+        customHeaders: any,
+        contentStream: NodeJS.ReadableStream,
+        publisherName: string,
+        extensionName: string,
+        draftId: string,
+        assetType: string
+        ): Promise<GalleryInterfaces.ExtensionDraftAsset> {
+
+        return new Promise<GalleryInterfaces.ExtensionDraftAsset>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                draftId: draftId,
+                assetType: assetType
+            };
+
+            customHeaders = customHeaders || {};
+            customHeaders["Content-Type"] = "application/octet-stream";
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.1",
+                    "gallery",
+                    "f1db9c47-6619-4998-a7e5-d7f9f41a4617",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                                                                                verData.apiVersion);
+                options.additionalHeaders = customHeaders;
+
+                let res: restm.IRestResponse<GalleryInterfaces.ExtensionDraftAsset>;
+                res = await this.rest.uploadStream<GalleryInterfaces.ExtensionDraftAsset>("PUT", url, contentStream, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {NodeJS.ReadableStream} contentStream - Content to upload
+     * @param {string} publisherName
+     * @param {String} product - Header to pass the product type of the payload file
+     * @param {String} fileName - Header to pass the filename of the uploaded data
+     */
+    public async createDraftForNewExtension(
+        customHeaders: any,
+        contentStream: NodeJS.ReadableStream,
+        publisherName: string,
+        product: String,
+        fileName?: String
+        ): Promise<GalleryInterfaces.ExtensionDraft> {
+
+        return new Promise<GalleryInterfaces.ExtensionDraft>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName
+            };
+
+            customHeaders = customHeaders || {};
+            customHeaders["Content-Type"] = "application/octet-stream";
+            customHeaders["X-Market-UploadFileProduct"] = "product";
+            customHeaders["X-Market-UploadFileName"] = "fileName";
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.1",
+                    "gallery",
+                    "b3ab127d-ebb9-4d22-b611-4e09593c8d79",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                                                                                verData.apiVersion);
+                options.additionalHeaders = customHeaders;
+
+                let res: restm.IRestResponse<GalleryInterfaces.ExtensionDraft>;
+                res = await this.rest.uploadStream<GalleryInterfaces.ExtensionDraft>("POST", url, contentStream, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.ExtensionDraft,
+                                              false);
+
+                resolve(ret);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {GalleryInterfaces.ExtensionDraftPatch} draftPatch
+     * @param {string} publisherName
+     * @param {string} draftId
+     */
+    public async performNewExtensionDraftOperation(
+        draftPatch: GalleryInterfaces.ExtensionDraftPatch,
+        publisherName: string,
+        draftId: string
+        ): Promise<GalleryInterfaces.ExtensionDraft> {
+
+        return new Promise<GalleryInterfaces.ExtensionDraft>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                draftId: draftId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.1",
+                    "gallery",
+                    "b3ab127d-ebb9-4d22-b611-4e09593c8d79",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<GalleryInterfaces.ExtensionDraft>;
+                res = await this.rest.update<GalleryInterfaces.ExtensionDraft>(url, draftPatch, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.ExtensionDraft,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {NodeJS.ReadableStream} contentStream - Content to upload
+     * @param {string} publisherName
+     * @param {string} draftId
+     * @param {String} fileName - Header to pass the filename of the uploaded data
+     */
+    public async updatePayloadInDraftForNewExtension(
+        customHeaders: any,
+        contentStream: NodeJS.ReadableStream,
+        publisherName: string,
+        draftId: string,
+        fileName?: String
+        ): Promise<GalleryInterfaces.ExtensionDraft> {
+
+        return new Promise<GalleryInterfaces.ExtensionDraft>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                draftId: draftId
+            };
+
+            customHeaders = customHeaders || {};
+            customHeaders["Content-Type"] = "application/octet-stream";
+            customHeaders["X-Market-UploadFileName"] = "fileName";
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.1",
+                    "gallery",
+                    "b3ab127d-ebb9-4d22-b611-4e09593c8d79",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                                                                                verData.apiVersion);
+                options.additionalHeaders = customHeaders;
+
+                let res: restm.IRestResponse<GalleryInterfaces.ExtensionDraft>;
+                res = await this.rest.uploadStream<GalleryInterfaces.ExtensionDraft>("PUT", url, contentStream, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.ExtensionDraft,
+                                              false);
+
+                resolve(ret);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {NodeJS.ReadableStream} contentStream - Content to upload
+     * @param {string} publisherName
+     * @param {string} draftId
+     * @param {string} assetType
+     */
+    public async addAssetForNewExtensionDraft(
+        customHeaders: any,
+        contentStream: NodeJS.ReadableStream,
+        publisherName: string,
+        draftId: string,
+        assetType: string
+        ): Promise<GalleryInterfaces.ExtensionDraftAsset> {
+
+        return new Promise<GalleryInterfaces.ExtensionDraftAsset>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                draftId: draftId,
+                assetType: assetType
+            };
+
+            customHeaders = customHeaders || {};
+            customHeaders["Content-Type"] = "application/octet-stream";
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.1",
+                    "gallery",
+                    "88c0b1c8-b4f1-498a-9b2a-8446ef9f32e7",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                                                                                verData.apiVersion);
+                options.additionalHeaders = customHeaders;
+
+                let res: restm.IRestResponse<GalleryInterfaces.ExtensionDraftAsset>;
+                res = await this.rest.uploadStream<GalleryInterfaces.ExtensionDraftAsset>("PUT", url, contentStream, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} publisherName
+     * @param {string} draftId
+     * @param {string} assetType
+     * @param {string} extensionName
+     */
+    public async getAssetFromEditExtensionDraft(
+        publisherName: string,
+        draftId: string,
+        assetType: string,
+        extensionName: string
+        ): Promise<NodeJS.ReadableStream> {
+
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                draftId: draftId,
+                assetType: assetType
+            };
+
+            let queryValues: any = {
+                extensionName: extensionName,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.1",
+                    "gallery",
+                    "88c0b1c8-b4f1-498a-9b2a-8446ef9f32e7",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} publisherName
+     * @param {string} draftId
+     * @param {string} assetType
+     */
+    public async getAssetFromNewExtensionDraft(
+        publisherName: string,
+        draftId: string,
+        assetType: string
+        ): Promise<NodeJS.ReadableStream> {
+
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                draftId: draftId,
+                assetType: assetType
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.1",
+                    "gallery",
+                    "88c0b1c8-b4f1-498a-9b2a-8446ef9f32e7",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get install/uninstall events of an extension. If both count and afterDate parameters are specified, count takes precedence.
      * 
      * @param {string} publisherName - Name of the publisher
      * @param {string} extensionName - Name of the extension
      * @param {number} count - Count of events to fetch, applies to each event type.
-     * @param {Date} afterDate - Fetch events that occured on or after this value
-     * @param {string} include - Filter options. Supported values: includeInstall, includeUninstall. Default is to fetch all types of events
+     * @param {Date} afterDate - Fetch events that occurred on or after this date
+     * @param {string} include - Filter options. Supported values: install, uninstall, review, acquisition, sales. Default is to fetch all types of events
+     * @param {string} includeProperty - Event properties to include. Currently only 'lastContactDetails' is supported for uninstall events
      */
     public async getExtensionEvents(
         publisherName: string,
         extensionName: string,
         count?: number,
         afterDate?: Date,
-        include?: string
-    ): Promise<GalleryInterfaces.ExtensionEvents> {
+        include?: string,
+        includeProperty?: string
+        ): Promise<GalleryInterfaces.ExtensionEvents> {
 
         return new Promise<GalleryInterfaces.ExtensionEvents>(async (resolve, reject) => {
             let routeValues: any = {
@@ -854,29 +1350,30 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 count: count,
                 afterDate: afterDate,
                 include: include,
+                includeProperty: includeProperty,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "3d13c499-2168-4d06-bef4-14aba185dcd5",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionEvents>;
                 res = await this.rest.get<GalleryInterfaces.ExtensionEvents>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.ExtensionEvents,
-                    false);
+                                              GalleryInterfaces.TypeInfo.ExtensionEvents,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -891,7 +1388,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
      */
     public async publishExtensionEvents(
         extensionEvents: GalleryInterfaces.ExtensionEvents[]
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -899,24 +1396,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "0bf2bd3a-70e0-4d5d-8bf7-bd4a9c2ab6e7",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, extensionEvents, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -931,7 +1428,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     public async queryExtensions(
         extensionQuery: GalleryInterfaces.ExtensionQuery,
         accountToken?: string
-    ): Promise<GalleryInterfaces.ExtensionQueryResult> {
+        ): Promise<GalleryInterfaces.ExtensionQueryResult> {
 
         return new Promise<GalleryInterfaces.ExtensionQueryResult>(async (resolve, reject) => {
             let routeValues: any = {
@@ -940,28 +1437,28 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             let queryValues: any = {
                 accountToken: accountToken,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "eb9d5ee1-6d43-456b-b80e-8a96fbc014b6",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionQueryResult>;
                 res = await this.rest.create<GalleryInterfaces.ExtensionQueryResult>(url, extensionQuery, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.ExtensionQueryResult,
-                    false);
+                                              GalleryInterfaces.TypeInfo.ExtensionQueryResult,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -975,7 +1472,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     public async createExtension(
         customHeaders: any,
         contentStream: NodeJS.ReadableStream
-    ): Promise<GalleryInterfaces.PublishedExtension> {
+        ): Promise<GalleryInterfaces.PublishedExtension> {
 
         return new Promise<GalleryInterfaces.PublishedExtension>(async (resolve, reject) => {
             let routeValues: any = {
@@ -986,23 +1483,23 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
+                    "4.1-preview.2",
                     "gallery",
                     "a41192c8-9525-4b58-bc86-179fa549d80d",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-
+                
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                                                                                verData.apiVersion);
                 options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.uploadStream<GalleryInterfaces.PublishedExtension>("POST", url, contentStream, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.PublishedExtension,
-                    false);
+                                              GalleryInterfaces.TypeInfo.PublishedExtension,
+                                              false);
 
                 resolve(ret);
             }
@@ -1019,7 +1516,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     public async deleteExtensionById(
         extensionId: string,
         version?: string
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1029,28 +1526,28 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             let queryValues: any = {
                 version: version,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
+                    "4.1-preview.2",
                     "gallery",
                     "a41192c8-9525-4b58-bc86-179fa549d80d",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1067,7 +1564,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         extensionId: string,
         version?: string,
         flags?: GalleryInterfaces.ExtensionQueryFlags
-    ): Promise<GalleryInterfaces.PublishedExtension> {
+        ): Promise<GalleryInterfaces.PublishedExtension> {
 
         return new Promise<GalleryInterfaces.PublishedExtension>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1078,28 +1575,28 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 version: version,
                 flags: flags,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
+                    "4.1-preview.2",
                     "gallery",
                     "a41192c8-9525-4b58-bc86-179fa549d80d",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.get<GalleryInterfaces.PublishedExtension>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.PublishedExtension,
-                    false);
+                                              GalleryInterfaces.TypeInfo.PublishedExtension,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1112,7 +1609,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
      */
     public async updateExtensionById(
         extensionId: string
-    ): Promise<GalleryInterfaces.PublishedExtension> {
+        ): Promise<GalleryInterfaces.PublishedExtension> {
 
         return new Promise<GalleryInterfaces.PublishedExtension>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1121,24 +1618,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
+                    "4.1-preview.2",
                     "gallery",
                     "a41192c8-9525-4b58-bc86-179fa549d80d",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.replace<GalleryInterfaces.PublishedExtension>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.PublishedExtension,
-                    false);
+                                              GalleryInterfaces.TypeInfo.PublishedExtension,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1154,7 +1651,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         customHeaders: any,
         contentStream: NodeJS.ReadableStream,
         publisherName: string
-    ): Promise<GalleryInterfaces.PublishedExtension> {
+        ): Promise<GalleryInterfaces.PublishedExtension> {
 
         return new Promise<GalleryInterfaces.PublishedExtension>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1166,23 +1663,23 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
+                    "4.1-preview.2",
                     "gallery",
                     "e11ea35a-16fe-4b80-ab11-c4cab88a0966",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-
+                
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                                                                                verData.apiVersion);
                 options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.uploadStream<GalleryInterfaces.PublishedExtension>("POST", url, contentStream, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.PublishedExtension,
-                    false);
+                                              GalleryInterfaces.TypeInfo.PublishedExtension,
+                                              false);
 
                 resolve(ret);
             }
@@ -1201,7 +1698,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         publisherName: string,
         extensionName: string,
         version?: string
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1212,28 +1709,28 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             let queryValues: any = {
                 version: version,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
+                    "4.1-preview.2",
                     "gallery",
                     "e11ea35a-16fe-4b80-ab11-c4cab88a0966",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1254,7 +1751,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         version?: string,
         flags?: GalleryInterfaces.ExtensionQueryFlags,
         accountToken?: string
-    ): Promise<GalleryInterfaces.PublishedExtension> {
+        ): Promise<GalleryInterfaces.PublishedExtension> {
 
         return new Promise<GalleryInterfaces.PublishedExtension>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1267,28 +1764,28 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 flags: flags,
                 accountToken: accountToken,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
+                    "4.1-preview.2",
                     "gallery",
                     "e11ea35a-16fe-4b80-ab11-c4cab88a0966",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.get<GalleryInterfaces.PublishedExtension>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.PublishedExtension,
-                    false);
+                                              GalleryInterfaces.TypeInfo.PublishedExtension,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1306,7 +1803,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         contentStream: NodeJS.ReadableStream,
         publisherName: string,
         extensionName: string
-    ): Promise<GalleryInterfaces.PublishedExtension> {
+        ): Promise<GalleryInterfaces.PublishedExtension> {
 
         return new Promise<GalleryInterfaces.PublishedExtension>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1319,23 +1816,23 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
+                    "4.1-preview.2",
                     "gallery",
                     "e11ea35a-16fe-4b80-ab11-c4cab88a0966",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-
+                
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                                                                                verData.apiVersion);
                 options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.uploadStream<GalleryInterfaces.PublishedExtension>("PUT", url, contentStream, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.PublishedExtension,
-                    false);
+                                              GalleryInterfaces.TypeInfo.PublishedExtension,
+                                              false);
 
                 resolve(ret);
             }
@@ -1354,7 +1851,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         publisherName: string,
         extensionName: string,
         flags: GalleryInterfaces.PublishedExtensionFlags
-    ): Promise<GalleryInterfaces.PublishedExtension> {
+        ): Promise<GalleryInterfaces.PublishedExtension> {
 
         return new Promise<GalleryInterfaces.PublishedExtension>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1365,28 +1862,28 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             let queryValues: any = {
                 flags: flags,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.2",
+                    "4.1-preview.2",
                     "gallery",
                     "e11ea35a-16fe-4b80-ab11-c4cab88a0966",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.update<GalleryInterfaces.PublishedExtension>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.PublishedExtension,
-                    false);
+                                              GalleryInterfaces.TypeInfo.PublishedExtension,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1399,7 +1896,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
      */
     public async extensionValidator(
         azureRestApiRequestModel: GalleryInterfaces.AzureRestApiRequestModel
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1407,24 +1904,64 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "05e8a5e1-8c59-4c2c-8856-0ff087d1a844",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, azureRestApiRequestModel, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
+    /**
+     * Send Notification
+     * 
+     * @param {GalleryInterfaces.NotificationsData} notificationData - Denoting the data needed to send notification
+     */
+    public async sendNotifications(
+        notificationData: GalleryInterfaces.NotificationsData
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.1",
+                    "gallery",
+                    "eab39817-413c-4602-a49f-07ad00844980",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.create<void>(url, notificationData, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
             }
             catch (err) {
                 reject(err);
@@ -1445,7 +1982,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         version: string,
         accountToken?: string,
         acceptDefault?: boolean
-    ): Promise<NodeJS.ReadableStream> {
+        ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1458,17 +1995,17 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 accountToken: accountToken,
                 acceptDefault: acceptDefault,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "7cb576f8-1cae-4c4b-b7b1-e4af5759e965",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-
+                
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -1496,7 +2033,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         assetToken?: string,
         accountToken?: string,
         acceptDefault?: boolean
-    ): Promise<NodeJS.ReadableStream> {
+        ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1511,17 +2048,17 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 accountToken: accountToken,
                 acceptDefault: acceptDefault,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "364415a1-0077-4a41-a7a0-06edd4497492",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-
+                
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -1537,7 +2074,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
      */
     public async queryPublishers(
         publisherQuery: GalleryInterfaces.PublisherQuery
-    ): Promise<GalleryInterfaces.PublisherQueryResult> {
+        ): Promise<GalleryInterfaces.PublisherQueryResult> {
 
         return new Promise<GalleryInterfaces.PublisherQueryResult>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1545,24 +2082,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "2ad6ee0a-b53f-4034-9d1d-d009fda1212e",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.PublisherQueryResult>;
                 res = await this.rest.create<GalleryInterfaces.PublisherQueryResult>(url, publisherQuery, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.PublisherQueryResult,
-                    false);
+                                              GalleryInterfaces.TypeInfo.PublisherQueryResult,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1575,7 +2112,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
      */
     public async createPublisher(
         publisher: GalleryInterfaces.Publisher
-    ): Promise<GalleryInterfaces.Publisher> {
+        ): Promise<GalleryInterfaces.Publisher> {
 
         return new Promise<GalleryInterfaces.Publisher>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1583,24 +2120,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.Publisher>;
                 res = await this.rest.create<GalleryInterfaces.Publisher>(url, publisher, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.Publisher,
-                    false);
+                                              GalleryInterfaces.TypeInfo.Publisher,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1613,7 +2150,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
      */
     public async deletePublisher(
         publisherName: string
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1622,24 +2159,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1654,7 +2191,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     public async getPublisher(
         publisherName: string,
         flags?: number
-    ): Promise<GalleryInterfaces.Publisher> {
+        ): Promise<GalleryInterfaces.Publisher> {
 
         return new Promise<GalleryInterfaces.Publisher>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1664,28 +2201,28 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             let queryValues: any = {
                 flags: flags,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.Publisher>;
                 res = await this.rest.get<GalleryInterfaces.Publisher>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.Publisher,
-                    false);
+                                              GalleryInterfaces.TypeInfo.Publisher,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1700,7 +2237,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     public async updatePublisher(
         publisher: GalleryInterfaces.Publisher,
         publisherName: string
-    ): Promise<GalleryInterfaces.Publisher> {
+        ): Promise<GalleryInterfaces.Publisher> {
 
         return new Promise<GalleryInterfaces.Publisher>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1709,24 +2246,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.Publisher>;
                 res = await this.rest.replace<GalleryInterfaces.Publisher>(url, publisher, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.Publisher,
-                    false);
+                                              GalleryInterfaces.TypeInfo.Publisher,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1741,13 +2278,15 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
      * @param {string} extensionName - Name of the extension.
      * @param {number} count - Number of questions to retrieve (defaults to 10).
      * @param {number} page - Page number from which set of questions are to be retrieved.
+     * @param {Date} afterDate - If provided, results questions are returned which were posted after this date
      */
     public async getQuestions(
         publisherName: string,
         extensionName: string,
         count?: number,
-        page?: number
-    ): Promise<GalleryInterfaces.QuestionsResult> {
+        page?: number,
+        afterDate?: Date
+        ): Promise<GalleryInterfaces.QuestionsResult> {
 
         return new Promise<GalleryInterfaces.QuestionsResult>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1758,29 +2297,30 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             let queryValues: any = {
                 count: count,
                 page: page,
+                afterDate: afterDate,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "c010d03d-812c-4ade-ae07-c1862475eda5",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.QuestionsResult>;
                 res = await this.rest.get<GalleryInterfaces.QuestionsResult>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.QuestionsResult,
-                    false);
+                                              GalleryInterfaces.TypeInfo.QuestionsResult,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1801,7 +2341,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         pubName: string,
         extName: string,
         questionId: number
-    ): Promise<GalleryInterfaces.Concern> {
+        ): Promise<GalleryInterfaces.Concern> {
 
         return new Promise<GalleryInterfaces.Concern>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1812,24 +2352,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "784910cd-254a-494d-898b-0728549b2f10",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.Concern>;
                 res = await this.rest.create<GalleryInterfaces.Concern>(url, concern, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.Concern,
-                    false);
+                                              GalleryInterfaces.TypeInfo.Concern,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1848,7 +2388,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         question: GalleryInterfaces.Question,
         publisherName: string,
         extensionName: string
-    ): Promise<GalleryInterfaces.Question> {
+        ): Promise<GalleryInterfaces.Question> {
 
         return new Promise<GalleryInterfaces.Question>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1858,24 +2398,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "6d1d9741-eca8-4701-a3a5-235afc82dfa4",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.Question>;
                 res = await this.rest.create<GalleryInterfaces.Question>(url, question, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.Question,
-                    false);
+                                              GalleryInterfaces.TypeInfo.Question,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1894,7 +2434,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         publisherName: string,
         extensionName: string,
         questionId: number
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1905,24 +2445,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "6d1d9741-eca8-4701-a3a5-235afc82dfa4",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1943,7 +2483,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         publisherName: string,
         extensionName: string,
         questionId: number
-    ): Promise<GalleryInterfaces.Question> {
+        ): Promise<GalleryInterfaces.Question> {
 
         return new Promise<GalleryInterfaces.Question>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1954,24 +2494,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "6d1d9741-eca8-4701-a3a5-235afc82dfa4",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.Question>;
                 res = await this.rest.update<GalleryInterfaces.Question>(url, question, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.Question,
-                    false);
+                                              GalleryInterfaces.TypeInfo.Question,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1992,7 +2532,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         publisherName: string,
         extensionName: string,
         questionId: number
-    ): Promise<GalleryInterfaces.Response> {
+        ): Promise<GalleryInterfaces.Response> {
 
         return new Promise<GalleryInterfaces.Response>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2003,24 +2543,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "7f8ae5e0-46b0-438f-b2e8-13e8513517bd",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.Response>;
                 res = await this.rest.create<GalleryInterfaces.Response>(url, response, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.Response,
-                    false);
+                                              GalleryInterfaces.TypeInfo.Response,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2041,7 +2581,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         extensionName: string,
         questionId: number,
         responseId: number
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2053,24 +2593,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "7f8ae5e0-46b0-438f-b2e8-13e8513517bd",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2093,7 +2633,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         extensionName: string,
         questionId: number,
         responseId: number
-    ): Promise<GalleryInterfaces.Response> {
+        ): Promise<GalleryInterfaces.Response> {
 
         return new Promise<GalleryInterfaces.Response>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2105,24 +2645,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "7f8ae5e0-46b0-438f-b2e8-13e8513517bd",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.Response>;
                 res = await this.rest.update<GalleryInterfaces.Response>(url, response, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.Response,
-                    false);
+                                              GalleryInterfaces.TypeInfo.Response,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2135,7 +2675,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
      * 
      * @param {string} publisherName - Name of the publisher who published the extension
      * @param {string} extensionName - Name of the extension
-     * @param {number} days - Last n days report
+     * @param {number} days - Last n days report. If afterDate and days are specified, days will take priority
      * @param {number} count - Number of events to be returned
      * @param {Date} afterDate - Use if you want to fetch events newer than the specified date
      */
@@ -2145,7 +2685,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         days?: number,
         count?: number,
         afterDate?: Date
-    ): Promise<any> {
+        ): Promise<any> {
 
         return new Promise<any>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2158,28 +2698,28 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 count: count,
                 afterDate: afterDate,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "79e0c74f-157f-437e-845f-74fbb4121d4c",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<any>;
                 res = await this.rest.get<any>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2204,7 +2744,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         filterOptions?: GalleryInterfaces.ReviewFilterOptions,
         beforeDate?: Date,
         afterDate?: Date
-    ): Promise<GalleryInterfaces.ReviewsResult> {
+        ): Promise<GalleryInterfaces.ReviewsResult> {
 
         return new Promise<GalleryInterfaces.ReviewsResult>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2218,28 +2758,28 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 beforeDate: beforeDate,
                 afterDate: afterDate,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "5b3f819f-f247-42ad-8c00-dd9ab9ab246d",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.ReviewsResult>;
                 res = await this.rest.get<GalleryInterfaces.ReviewsResult>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.ReviewsResult,
-                    false);
+                                              GalleryInterfaces.TypeInfo.ReviewsResult,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2260,7 +2800,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         extName: string,
         beforeDate?: Date,
         afterDate?: Date
-    ): Promise<GalleryInterfaces.ReviewSummary> {
+        ): Promise<GalleryInterfaces.ReviewSummary> {
 
         return new Promise<GalleryInterfaces.ReviewSummary>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2272,28 +2812,28 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 beforeDate: beforeDate,
                 afterDate: afterDate,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "b7b44e21-209e-48f0-ae78-04727fc37d77",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.ReviewSummary>;
                 res = await this.rest.get<GalleryInterfaces.ReviewSummary>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2312,7 +2852,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         review: GalleryInterfaces.Review,
         pubName: string,
         extName: string
-    ): Promise<GalleryInterfaces.Review> {
+        ): Promise<GalleryInterfaces.Review> {
 
         return new Promise<GalleryInterfaces.Review>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2322,24 +2862,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "e6e85b9d-aa70-40e6-aa28-d0fbf40b91a3",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.Review>;
                 res = await this.rest.create<GalleryInterfaces.Review>(url, review, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.Review,
-                    false);
+                                              GalleryInterfaces.TypeInfo.Review,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2358,7 +2898,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         pubName: string,
         extName: string,
         reviewId: number
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2369,24 +2909,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "e6e85b9d-aa70-40e6-aa28-d0fbf40b91a3",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2407,7 +2947,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         pubName: string,
         extName: string,
         reviewId: number
-    ): Promise<GalleryInterfaces.ReviewPatch> {
+        ): Promise<GalleryInterfaces.ReviewPatch> {
 
         return new Promise<GalleryInterfaces.ReviewPatch>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2418,24 +2958,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "e6e85b9d-aa70-40e6-aa28-d0fbf40b91a3",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.ReviewPatch>;
                 res = await this.rest.update<GalleryInterfaces.ReviewPatch>(url, reviewPatch, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.ReviewPatch,
-                    false);
+                                              GalleryInterfaces.TypeInfo.ReviewPatch,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2448,7 +2988,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
      */
     public async createCategory(
         category: GalleryInterfaces.ExtensionCategory
-    ): Promise<GalleryInterfaces.ExtensionCategory> {
+        ): Promise<GalleryInterfaces.ExtensionCategory> {
 
         return new Promise<GalleryInterfaces.ExtensionCategory>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2456,24 +2996,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "476531a3-7024-4516-a76a-ed64d3008ad6",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionCategory>;
                 res = await this.rest.create<GalleryInterfaces.ExtensionCategory>(url, category, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2490,9 +3030,9 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     public async getGalleryUserSettings(
         userScope: string,
         key?: string
-    ): Promise<{ [key: string]: any; }> {
+        ): Promise<{ [key: string] : any; }> {
 
-        return new Promise<{ [key: string]: any; }>(async (resolve, reject) => {
+        return new Promise<{ [key: string] : any; }>(async (resolve, reject) => {
             let routeValues: any = {
                 userScope: userScope,
                 key: key
@@ -2500,24 +3040,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "9b75ece3-7960-401c-848b-148ac01ca350",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
-                let res: restm.IRestResponse<{ [key: string]: any; }>;
-                res = await this.rest.get<{ [key: string]: any; }>(url, options);
+                let res: restm.IRestResponse<{ [key: string] : any; }>;
+                res = await this.rest.get<{ [key: string] : any; }>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2532,9 +3072,9 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
      * @param {string} userScope - User-Scope at which to get the value. Should be "me" for the current user or "host" for all users.
      */
     public async setGalleryUserSettings(
-        entries: { [key: string]: any; },
+        entries: { [key: string] : any; },
         userScope: string
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2543,24 +3083,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "9b75ece3-7960-401c-848b-148ac01ca350",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, entries, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2575,7 +3115,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     public async generateKey(
         keyType: string,
         expireCurrentSeconds?: number
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2585,28 +3125,28 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             let queryValues: any = {
                 expireCurrentSeconds: expireCurrentSeconds,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "92ed5cf4-c38b-465a-9059-2f2fb7c624b5",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2619,7 +3159,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
      */
     public async getSigningKey(
         keyType: string
-    ): Promise<string> {
+        ): Promise<string> {
 
         return new Promise<string>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2628,24 +3168,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "92ed5cf4-c38b-465a-9059-2f2fb7c624b5",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.get<string>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2662,7 +3202,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         extensionStatisticsUpdate: GalleryInterfaces.ExtensionStatisticUpdate,
         publisherName: string,
         extensionName: string
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2672,24 +3212,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "a0ea3204-11e9-422d-a9ca-45851cc41400",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, extensionStatisticsUpdate, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2702,13 +3242,15 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
      * @param {string} extensionName
      * @param {number} days
      * @param {GalleryInterfaces.ExtensionStatsAggregateType} aggregate
+     * @param {Date} afterDate
      */
     public async getExtensionDailyStats(
         publisherName: string,
         extensionName: string,
         days?: number,
-        aggregate?: GalleryInterfaces.ExtensionStatsAggregateType
-    ): Promise<GalleryInterfaces.ExtensionDailyStats> {
+        aggregate?: GalleryInterfaces.ExtensionStatsAggregateType,
+        afterDate?: Date
+        ): Promise<GalleryInterfaces.ExtensionDailyStats> {
 
         return new Promise<GalleryInterfaces.ExtensionDailyStats>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2719,29 +3261,30 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             let queryValues: any = {
                 days: days,
                 aggregate: aggregate,
+                afterDate: afterDate,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "ae06047e-51c5-4fb4-ab65-7be488544416",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionDailyStats>;
                 res = await this.rest.get<GalleryInterfaces.ExtensionDailyStats>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.ExtensionDailyStats,
-                    false);
+                                              GalleryInterfaces.TypeInfo.ExtensionDailyStats,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2760,7 +3303,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         publisherName: string,
         extensionName: string,
         version: string
-    ): Promise<GalleryInterfaces.ExtensionDailyStats> {
+        ): Promise<GalleryInterfaces.ExtensionDailyStats> {
 
         return new Promise<GalleryInterfaces.ExtensionDailyStats>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2771,24 +3314,24 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "4fa7adb6-ca65-4075-a232-5f28323288ea",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionDailyStats>;
                 res = await this.rest.get<GalleryInterfaces.ExtensionDailyStats>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    GalleryInterfaces.TypeInfo.ExtensionDailyStats,
-                    false);
+                                              GalleryInterfaces.TypeInfo.ExtensionDailyStats,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2797,17 +3340,19 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-     * @param {string} publisherName
-     * @param {string} extensionName
-     * @param {string} version
-     * @param {string} statType
+     * Increments a daily statistic associated with the extension
+     * 
+     * @param {string} publisherName - Name of the publisher
+     * @param {string} extensionName - Name of the extension
+     * @param {string} version - Version of the extension
+     * @param {string} statType - Type of stat to increment
      */
     public async incrementExtensionDailyStat(
         publisherName: string,
         extensionName: string,
         version: string,
         statType: string
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2819,28 +3364,65 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             let queryValues: any = {
                 statType: statType,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "gallery",
                     "4fa7adb6-ca65-4075-a232-5f28323288ea",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
+    /**
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} version
+     */
+    public async getVerificationLog(
+        publisherName: string,
+        extensionName: string,
+        version: string
+        ): Promise<NodeJS.ReadableStream> {
+
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName,
+                version: version
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.1",
+                    "gallery",
+                    "c5523abe-b843-437f-875b-5833064efe4d",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
             }
             catch (err) {
                 reject(err);

@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -12,6 +12,83 @@
 
 import GalleryInterfaces = require("../interfaces/GalleryInterfaces");
 
+
+/**
+ * Representaion of a ContributionNode that can be used for serialized to clients.
+ */
+export interface ClientContribution {
+    /**
+     * Description of the contribution/type
+     */
+    description: string;
+    /**
+     * Fully qualified identifier of the contribution/type
+     */
+    id: string;
+    /**
+     * Includes is a set of contributions that should have this contribution included in their targets list.
+     */
+    includes: string[];
+    /**
+     * Properties/attributes of this contribution
+     */
+    properties: any;
+    /**
+     * The ids of the contribution(s) that this contribution targets. (parent contributions)
+     */
+    targets: string[];
+    /**
+     * Id of the Contribution Type
+     */
+    type: string;
+}
+
+/**
+ * Representaion of a ContributionNode that can be used for serialized to clients.
+ */
+export interface ClientContributionNode {
+    /**
+     * List of ids for contributions which are children to the current contribution.
+     */
+    children: string[];
+    /**
+     * Contribution associated with this node.
+     */
+    contribution: ClientContribution;
+    /**
+     * List of ids for contributions which are parents to the current contribution.
+     */
+    parents: string[];
+}
+
+export interface ClientContributionProviderDetails {
+    /**
+     * Friendly name for the provider.
+     */
+    displayName: string;
+    /**
+     * Unique identifier for this provider. The provider name can be used to cache the contribution data and refer back to it when looking for changes
+     */
+    name: string;
+    /**
+     * Properties associated with the provider
+     */
+    properties: { [key: string] : string; };
+    /**
+     * Version of contributions assoicated with this contribution provider.
+     */
+    version: string;
+}
+
+/**
+ * A client data provider are the details needed to make the data provider request from the client.
+ */
+export interface ClientDataProviderQuery extends DataProviderQuery {
+    /**
+     * The Id of the service instance type that should be communicated with in order to resolve the data providers from the client given the query values.
+     */
+    queryServiceInstanceType: string;
+}
 
 /**
  * An individual contribution made by an extension
@@ -29,6 +106,10 @@ export interface Contribution extends ContributionBase {
      * Properties/attributes of this contribution
      */
     properties: any;
+    /**
+     * List of demanded claims in order for the user to see this contribution (like anonymous, public, member...).
+     */
+    restrictedTo: string[];
     /**
      * The ids of the contribution(s) that this contribution targets. (parent contributions)
      */
@@ -66,11 +147,15 @@ export interface ContributionConstraint {
      */
     group: number;
     /**
+     * Fully qualified identifier of a shared constraint
+     */
+    id: string;
+    /**
      * If true, negate the result of the filter (include the contribution if the applied filter returns false instead of true)
      */
     inverse: boolean;
     /**
-     * Name of the IContributionFilter class
+     * Name of the IContributionFilter plugin
      */
     name: string;
     /**
@@ -83,6 +168,9 @@ export interface ContributionConstraint {
     relationships: string[];
 }
 
+/**
+ * Represents different ways of including contributions based on licensing
+ */
 export enum ContributionLicensingBehaviorType {
     /**
      * Default value - only include the contribution if the user is licensed for the extension
@@ -123,11 +211,11 @@ export interface ContributionNodeQueryResult {
     /**
      * Map of contribution ids to corresponding node.
      */
-    nodes: { [key: string] : SerializedContributionNode; };
+    nodes: { [key: string] : ClientContributionNode; };
     /**
      * Map of provder ids to the corresponding provider details object.
      */
-    providerDetails: { [key: string] : ContributionProviderDetails; };
+    providerDetails: { [key: string] : ClientContributionProviderDetails; };
 }
 
 /**
@@ -152,6 +240,9 @@ export interface ContributionPropertyDescription {
     type: ContributionPropertyType;
 }
 
+/**
+ * The type of value used for a property
+ */
 export enum ContributionPropertyType {
     /**
      * Contribution type is unknown (value may be anything)
@@ -199,25 +290,9 @@ export enum ContributionPropertyType {
     Object = 512,
 }
 
-export interface ContributionProviderDetails {
-    /**
-     * Friendly name for the provider.
-     */
-    displayName: string;
-    /**
-     * Unique identifier for this provider. The provider name can be used to cache the contribution data and refer back to it when looking for changes
-     */
-    name: string;
-    /**
-     * Properties associated with the provider
-     */
-    properties: { [key: string] : string; };
-    /**
-     * Version of contributions assoicated with this contribution provider.
-     */
-    version: string;
-}
-
+/**
+ * Options that control the contributions to include in a query
+ */
 export enum ContributionQueryOptions {
     None = 0,
     /**
@@ -270,6 +345,21 @@ export interface DataProviderContext {
     properties: { [key: string] : any; };
 }
 
+export interface DataProviderExceptionDetails {
+    /**
+     * The type of the exception that was thrown.
+     */
+    exceptionType: string;
+    /**
+     * Message that is associated with the exception.
+     */
+    message: string;
+    /**
+     * The StackTrace from the exception turned into a string.
+     */
+    stackTrace: string;
+}
+
 /**
  * A query that can be issued for data provider data
  */
@@ -289,13 +379,33 @@ export interface DataProviderQuery {
  */
 export interface DataProviderResult {
     /**
+     * This is the set of data providers that were requested, but either they were defined as client providers, or as remote providers that failed and may be retried by the client.
+     */
+    clientProviders: { [key: string] : ClientDataProviderQuery; };
+    /**
      * Property bag of data keyed off of the data provider contribution id
      */
     data: { [key: string] : any; };
     /**
+     * Set of exceptions that occurred resolving the data providers.
+     */
+    exceptions: { [key: string] : DataProviderExceptionDetails; };
+    /**
      * List of data providers resolved in the data-provider query
      */
     resolvedProviders: ResolvedDataProvider[];
+    /**
+     * Scope name applied to this data provider result.
+     */
+    scopeName: string;
+    /**
+     * Scope value applied to this data provider result.
+     */
+    scopeValue: string;
+    /**
+     * Property bag of shared data that was contributed to by any of the individual data providers
+     */
+    sharedData: { [key: string] : any; };
 }
 
 /**
@@ -342,6 +452,9 @@ export interface ExtensionEventCallbackCollection {
     versionCheck: ExtensionEventCallback;
 }
 
+/**
+ * Set of flags applied to extensions that are relevant to contribution consumers
+ */
 export enum ExtensionFlags {
     /**
      * A built-in extension is installed for all VSTS accounts by default
@@ -371,6 +484,10 @@ export interface ExtensionManifest {
      * Uri used as base for other relative uri's defined in extension
      */
     baseUri: string;
+    /**
+     * List of shared constraints defined by this extension
+     */
+    constraints: ContributionConstraint[];
     /**
      * List of contributions made by this extension
      */
@@ -404,6 +521,10 @@ export interface ExtensionManifest {
      */
     manifestVersion: number;
     /**
+     * Default user claims applied to all contributions (except the ones which have been speficied restrictedTo explicitly) to control the visibility of a contribution.
+     */
+    restrictedTo: string[];
+    /**
      * List of all oauth scopes required by this extension
      */
     scopes: string[];
@@ -413,6 +534,9 @@ export interface ExtensionManifest {
     serviceInstanceType: string;
 }
 
+/**
+ * States of an extension Note:  If you add value to this enum, you need to do 2 other things.  First add the back compat enum in value src\Vssf\Sdk\Server\Contributions\InstalledExtensionMessage.cs.  Second, you can not send the new value on the message bus.  You need to remove it from the message bus event prior to being sent.
+ */
 export enum ExtensionStateFlags {
     /**
      * No flags set
@@ -542,6 +666,9 @@ export interface InstalledExtensionStateIssue {
     type: InstalledExtensionStateIssueType;
 }
 
+/**
+ * Installation issue type (Warning, Error)
+ */
 export enum InstalledExtensionStateIssueType {
     /**
      * Represents an installation warning, for example an implicit demand not supported
@@ -577,24 +704,6 @@ export interface ResolvedDataProvider {
     duration: number;
     error: string;
     id: string;
-}
-
-/**
- * Representaion of a ContributionNode that can be used for serialized to clients.
- */
-export interface SerializedContributionNode {
-    /**
-     * List of ids for contributions which are children to the current contribution.
-     */
-    children: string[];
-    /**
-     * Contribution associated with this node.
-     */
-    contribution: Contribution;
-    /**
-     * List of ids for contributions which are parents to the current contribution.
-     */
-    parents: string[];
 }
 
 export var TypeInfo = {
@@ -680,27 +789,27 @@ export var TypeInfo = {
 TypeInfo.ContributionNodeQuery.fields = {
     queryOptions: {
         enumType: TypeInfo.ContributionQueryOptions
-    },
+    }
 };
 
 TypeInfo.ContributionPropertyDescription.fields = {
     type: {
         enumType: TypeInfo.ContributionPropertyType
-    },
+    }
 };
 
 TypeInfo.ContributionType.fields = {
     properties: {
         isDictionary: true,
         dictionaryValueTypeInfo: TypeInfo.ContributionPropertyDescription
-    },
+    }
 };
 
 TypeInfo.ExtensionLicensing.fields = {
     overrides: {
         isArray: true,
         typeInfo: TypeInfo.LicensingOverride
-    },
+    }
 };
 
 TypeInfo.ExtensionManifest.fields = {
@@ -710,7 +819,7 @@ TypeInfo.ExtensionManifest.fields = {
     },
     licensing: {
         typeInfo: TypeInfo.ExtensionLicensing
-    },
+    }
 };
 
 TypeInfo.InstalledExtension.fields = {
@@ -729,7 +838,7 @@ TypeInfo.InstalledExtension.fields = {
     },
     licensing: {
         typeInfo: TypeInfo.ExtensionLicensing
-    },
+    }
 };
 
 TypeInfo.InstalledExtensionState.fields = {
@@ -742,17 +851,17 @@ TypeInfo.InstalledExtensionState.fields = {
     },
     lastUpdated: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.InstalledExtensionStateIssue.fields = {
     type: {
         enumType: TypeInfo.InstalledExtensionStateIssueType
-    },
+    }
 };
 
 TypeInfo.LicensingOverride.fields = {
     behavior: {
         enumType: TypeInfo.ContributionLicensingBehaviorType
-    },
+    }
 };

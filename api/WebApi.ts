@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
+import accountm = require('./AccountsApi');
 import basem = require('./ClientApiBases');
 import buildm = require('./BuildApi');
 import chatm = require('./ChatApi');
@@ -20,6 +21,7 @@ import notificationm = require('./NotificationApi');
 import organizationm = require('./OrganizationApi');
 import policym = require('./PolicyApi');
 import profilem = require('./ProfileApi');
+import projectm = require('./ProjectAnalysisApi');
 import releasem = require('./ReleaseApi');
 import securityrolesm = require('./SecurityRolesApi');
 import servicehooksm = require('./ServiceHooksApi');
@@ -77,11 +79,13 @@ export function getHandlerFromToken(token: string): VsoBaseInterfaces.IRequestHa
 //----------------------------------------------------------------------------
 export class WebApi {
 
-    serverUrl: string;
-    authHandler: VsoBaseInterfaces.IRequestHandler;
-    rest: rm.RestClient;
-    vsoClient: vsom.VsoClient;
-    options: VsoBaseInterfaces.IRequestOptions;
+    public serverUrl: string;
+    public authHandler: VsoBaseInterfaces.IRequestHandler;
+    public rest: rm.RestClient;
+    public vsoClient: vsom.VsoClient;
+    public options: VsoBaseInterfaces.IRequestOptions;
+
+    private _resourceAreas: lim.ResourceAreaInfo[];
 
     /*
      * Factory to return client apis and handlers
@@ -153,12 +157,19 @@ export class WebApi {
         });
     }
 
+    public async getAccountsApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<accountm.IAccountsApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "0d55247a-1c47-4462-9b1f-5e2125590ee6");
+        handlers = handlers || [this.authHandler];
+        return new accountm.AccountsApi(serverUrl, handlers, this.options);
+    }
+
     /**
      * Each factory method can take a serverUrl and a list of handlers
      * if these aren't provided, the default url and auth handler given to the constructor for this class will be used
      */
-    public getBuildApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): buildm.IBuildApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getBuildApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<buildm.IBuildApi> {
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, buildm.BuildApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new buildm.BuildApi(serverUrl, handlers, this.options);
     }
@@ -166,155 +177,226 @@ export class WebApi {
     /**
      * Each API has a method here to create the client.
      */
-
-    public getChatApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): chatm.IChatApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getChatApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<chatm.IChatApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "1e984811-4250-48bd-9c57-fe40eab4a630");
         handlers = handlers || [this.authHandler];
         return new chatm.ChatApi(serverUrl, handlers, this.options);
     }
 
-    public getCoreApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): corem.ICoreApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getCoreApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<corem.ICoreApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "79134c72-4a58-4b42-976c-04e7115f32bf");
         handlers = handlers || [this.authHandler];
         return new corem.CoreApi(serverUrl, handlers, this.options);
     }
 
-    public getContributionsApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): contributionsm.IContributionsApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getContributionsApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<contributionsm.IContributionsApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "8477aec9-a4c7-4bd4-a456-ba4c53c989cb");
         handlers = handlers || [this.authHandler];
         return new contributionsm.ContributionsApi(serverUrl, handlers, this.options);
     }
 
-    public getDashboardApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): dashboardm.IDashboardApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getDashboardApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<dashboardm.IDashboardApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "31c84e0a-3ece-48fd-a29d-100849af99ba");
         handlers = handlers || [this.authHandler];
         return new dashboardm.DashboardApi(serverUrl, handlers, this.options);
     }
 
-    public getDelegatedAuthorizationApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): delegatedauthorizationm.IDelegatedAuthorizationApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getDelegatedAuthorizationApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<delegatedauthorizationm.IDelegatedAuthorizationApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "");
         handlers = handlers || [this.authHandler];
         return new delegatedauthorizationm.DelegatedAuthorizationApi(serverUrl, handlers, this.options);
     }
 
-    public getExtensionManagementApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): extmgmtm.IExtensionManagementApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getExtensionManagementApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<extmgmtm.IExtensionManagementApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "6c2b0933-3600-42ae-bf8b-93d4f7e83594");
         handlers = handlers || [this.authHandler];
         return new extmgmtm.ExtensionManagementApi(serverUrl, handlers, this.options);
     }
 
-    public getFeatureManagementApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): featuremgmtm.IFeatureManagementApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getFeatureManagementApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<featuremgmtm.IFeatureManagementApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "");
         handlers = handlers || [this.authHandler];
         return new featuremgmtm.FeatureManagementApi(serverUrl, handlers, this.options);
     }
 
-    public getFileContainerApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): filecontainerm.IFileContainerApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getFileContainerApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<filecontainerm.IFileContainerApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "");
         handlers = handlers || [this.authHandler];
         return new filecontainerm.FileContainerApi(serverUrl, handlers, this.options);
     }
 
-    public getGalleryApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): gallerym.IGalleryApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getGalleryApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<gallerym.IGalleryApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "69d21c00-f135-441b-b5ce-3626378e0819");
         handlers = handlers || [this.authHandler];
         return new gallerym.GalleryApi(serverUrl, handlers, this.options);
     }
 
-    public getGitApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): gitm.IGitApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getGitApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<gitm.IGitApi> {
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, gitm.GitApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new gitm.GitApi(serverUrl, handlers, this.options);
     }
 
-    public getIdentitiesApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): identitiesm.IIdentitiesApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getIdentitiesApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<identitiesm.IIdentitiesApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "8a3d49b8-91f0-46ef-b33d-dda338c25db3");
         handlers = handlers || [this.authHandler];
         return new identitiesm.IdentitiesApi(serverUrl, handlers, this.options);
     }
 
-    public getLocationsApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): locationsm.ILocationsApi {
-        serverUrl = serverUrl || this.serverUrl;
+    // TODO: Don't call resource area here? Will cause infinite loop?
+    public async getLocationsApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<locationsm.ILocationsApi> {
+        serverUrl = await serverUrl || this.serverUrl;
         handlers = handlers || [this.authHandler];
         return new locationsm.LocationsApi(serverUrl, handlers, this.options);
     }
 
-    public getNotificationApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): notificationm.INotificationApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getNotificationApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<notificationm.INotificationApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "");
         handlers = handlers || [this.authHandler];
         return new notificationm.NotificationApi(serverUrl, handlers, this.options);
     }
 
-    public getOrganizationApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): organizationm.IOrganizationApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getOrganizationApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<organizationm.IOrganizationApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "");
         handlers = handlers || [this.authHandler];
         return new organizationm.OrganizationApi(serverUrl, handlers, this.options);
     }
 
-    public getPolicyApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): policym.IPolicyApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getPolicyApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<policym.IPolicyApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "fb13a388-40dd-4a04-b530-013a739c72ef");
         handlers = handlers || [this.authHandler];
         return new policym.PolicyApi(serverUrl, handlers, this.options);
     }
 
-    public getProfileApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): profilem.IProfileApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getProfileApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<profilem.IProfileApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "8ccfef3d-2b87-4e99-8ccb-66e343d2daa8");
         handlers = handlers || [this.authHandler];
         return new profilem.ProfileApi(serverUrl, handlers, this.options);
     }
 
-    public getSecurityRolesApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): securityrolesm.ISecurityRolesApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getProjectAnalysisApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<projectm.IProjectAnalysisApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "7658fa33-b1bf-4580-990f-fac5896773d3");
+        handlers = handlers || [this.authHandler];
+        return new projectm.ProjectAnalysisApi(serverUrl, handlers, this.options);
+    }
+
+    public async getSecurityRolesApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<securityrolesm.ISecurityRolesApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "");
         handlers = handlers || [this.authHandler];
         return new securityrolesm.SecurityRolesApi(serverUrl, handlers, this.options);
     }
 
-    public getServiceHooksApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): servicehooksm.IServiceHooksApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getServiceHooksApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<servicehooksm.IServiceHooksApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "");
         handlers = handlers || [this.authHandler];
         return new servicehooksm.ServiceHooksApi(serverUrl, handlers, this.options);
     }
 
-    public getReleaseApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): releasem.IReleaseApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getReleaseApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<releasem.IReleaseApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "efc2f575-36ef-48e9-b672-0c6fb4a48ac5");
         handlers = handlers || [this.authHandler];
         return new releasem.ReleaseApi(serverUrl, handlers, this.options);
     }
 
-    public getTaskApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): taskm.ITaskApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getTaskApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<taskm.ITaskApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "");
         handlers = handlers || [this.authHandler];
         return new taskm.TaskApi(serverUrl, handlers, this.options);
     }
 
-    public getTaskAgentApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): taskagentm.ITaskAgentApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getTaskAgentApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<taskagentm.ITaskAgentApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "a85b8835-c1a1-4aac-ae97-1c3d0ba72dbd");
         handlers = handlers || [this.authHandler];
         return new taskagentm.TaskAgentApi(serverUrl, handlers, this.options);
     }
 
-    public getTestApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): testm.ITestApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getTestApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<testm.ITestApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "c2aa639c-3ccc-4740-b3b6-ce2a1e1d984e");
         handlers = handlers || [this.authHandler];
         return new testm.TestApi(serverUrl, handlers, this.options);
     }
 
-    public getTfvcApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): tfvcm.ITfvcApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getTfvcApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<tfvcm.ITfvcApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "8aa40520-446d-40e6-89f6-9c9f9ce44c48");
         handlers = handlers || [this.authHandler];
         return new tfvcm.TfvcApi(serverUrl, handlers, this.options);
     }
 
-    public getWorkApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): workm.IWorkApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getTokenApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<tokenm.ITokenApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "");
+        handlers = handlers || [this.authHandler];
+        return new tokenm.TokenApi(serverUrl, handlers, this.options);
+    }
+
+    public async getWorkApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<workm.IWorkApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "1d4f49f9-02b9-4e26-b826-2cdb6195f2a9");
         handlers = handlers || [this.authHandler];
         return new workm.WorkApi(serverUrl, handlers, this.options);
     }
 
-    public getWorkItemTrackingApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): workitemtrackingm.IWorkItemTrackingApi {
-        serverUrl = serverUrl || this.serverUrl;
+    public async getWorkItemTrackingApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<workitemtrackingm.IWorkItemTrackingApi> {
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, workitemtrackingm.WorkItemTrackingApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new workitemtrackingm.WorkItemTrackingApi(serverUrl, handlers, this.options);
+    }
+
+    private async _getResourceAreaUrl(serverUrl: string, resourceId: string): Promise<string>
+    {
+        if (!resourceId) {
+            return serverUrl;
+        }
+
+        const resourceAreas: lim.ResourceAreaInfo[] = await this._getResourceAreas();
+
+        if (resourceAreas === undefined) {
+            throw new Error((`Failed to retrieve resource areas ' + 'from server: ${serverUrl}`));
+        }
+
+        if (resourceAreas.length === 0) {
+            // For on prem environments we get an empty list
+            return serverUrl;
+        }
+
+        for (var resourceArea of resourceAreas) {
+            if (resourceArea.id.toLowerCase() === resourceId.toLowerCase()) {
+                return resourceArea.locationUrl;
+            }
+        }
+
+        throw new Error((`Could not find information for resource area ${resourceId} ' + 'from server: ${serverUrl}`));
+    }
+
+    private async _getResourceAreas(): Promise<lim.ResourceAreaInfo[]> {
+        if (!this._resourceAreas) {
+            const locationClient: locationsm.ILocationsApi = await this.getLocationsApi();
+            this._resourceAreas = await locationClient.getResourceAreas();
+        }
+
+        return this._resourceAreas;
     }
 
     private _readTaskLibSecrets(lookupKey: string): string {

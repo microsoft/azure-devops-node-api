@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -48,8 +48,15 @@ export interface ContributedFeature {
      * The scopes/levels at which settings can set the enabled/disabled state of this feature
      */
     scopes: ContributedFeatureSettingScope[];
+    /**
+     * The service instance id of the service that owns this feature
+     */
+    serviceInstanceType: string;
 }
 
+/**
+ * The current state of a feature within a given scope
+ */
 export enum ContributedFeatureEnabledValue {
     /**
      * The state of the feature is not set for the specified scope
@@ -87,6 +94,14 @@ export interface ContributedFeatureState {
      * The full contribution id of the feature
      */
     featureId: string;
+    /**
+     * True if the effective state was set by an override rule (indicating that the state cannot be managed by the end user)
+     */
+    overridden: boolean;
+    /**
+     * Reason that the state was set (by a plugin/rule).
+     */
+    reason: string;
     /**
      * The scope at which this state applies
      */
@@ -146,12 +161,12 @@ export var TypeInfo = {
 TypeInfo.ContributedFeatureState.fields = {
     state: {
         enumType: TypeInfo.ContributedFeatureEnabledValue
-    },
+    }
 };
 
 TypeInfo.ContributedFeatureStateQuery.fields = {
     featureStates: {
         isDictionary: true,
         dictionaryValueTypeInfo: TypeInfo.ContributedFeatureState
-    },
+    }
 };

@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -10,6 +10,7 @@
 
 "use strict";
 
+import DistributedTaskCommonInterfaces = require("../interfaces/DistributedTaskCommonInterfaces");
 import FormInputInterfaces = require("../interfaces/common/FormInputInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
@@ -45,11 +46,42 @@ export interface AgentDeploymentInput extends DeploymentInput {
     parallelExecution: ExecutionInput;
 }
 
+export enum ApprovalExecutionOrder {
+    BeforeGates = 1,
+    AfterSuccessfulGates = 2,
+    AfterGatesAlways = 4,
+}
+
+export enum ApprovalFilters {
+    /**
+     * No approvals or approval snapshots
+     */
+    None = 0,
+    /**
+     * Manual approval steps but no approval snapshots (Use with ApprovalSnapshots for snapshots)
+     */
+    ManualApprovals = 1,
+    /**
+     * Automated approval steps but no approval snapshots (Use with ApprovalSnapshots for snapshots)
+     */
+    AutomatedApprovals = 2,
+    /**
+     * No approval steps, but approval snapshots (Use with either ManualApprovals or AutomatedApprovals for approval steps)
+     */
+    ApprovalSnapshots = 4,
+    /**
+     * All approval steps and approval snapshots
+     */
+    All = 7,
+}
+
 export interface ApprovalOptions {
     autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped: boolean;
     enforceIdentityRevalidation: boolean;
+    executionOrder: ApprovalExecutionOrder;
     releaseCreatorCanBeApprover: boolean;
     requiredApproverCount: number;
+    timeoutInMinutes: number;
 }
 
 export enum ApprovalStatus {
@@ -70,10 +102,22 @@ export enum ApprovalType {
 }
 
 export interface Artifact {
+    /**
+     * Gets or sets alias.
+     */
     alias: string;
+    /**
+     * Gets or sets definition reference. e.g. {"project":{"id":"fed755ea-49c5-4399-acea-fd5b5aa90a6c","name":"myProject"},"definition":{"id":"1","name":"mybuildDefinition"},"connection":{"id":"1","name":"myConnection"}}
+     */
     definitionReference: { [key: string] : ArtifactSourceReference; };
+    /**
+     * Gets or sets as artifact is primary or not.
+     */
     isPrimary: boolean;
     sourceId: string;
+    /**
+     * Gets or sets type. It can have value as 'Build', 'Jenkins', 'GitHub', 'Nuget', 'Team Build (external)', 'ExternalTFSBuild', 'Git', 'TFVC', 'ExternalTfsXamlBuild'.
+     */
     type: string;
 }
 
@@ -90,9 +134,16 @@ export interface ArtifactContributionDefinition {
     uniqueSourceIdentifier: string;
 }
 
+export interface ArtifactDownloadInputBase {
+    alias: string;
+    artifactDownloadMode: string;
+    artifactType: string;
+}
+
 export interface ArtifactFilter {
     sourceBranch: string;
     tags: string[];
+    useBuildDefinitionBranch: boolean;
 }
 
 export interface ArtifactInstanceData {
@@ -103,7 +154,13 @@ export interface ArtifactInstanceData {
 }
 
 export interface ArtifactMetadata {
+    /**
+     * Sets alias of artifact.
+     */
     alias: string;
+    /**
+     * Sets instance reference of artifact. e.g. for build artifact it is build number.
+     */
     instanceReference: BuildVersion;
 }
 
@@ -112,6 +169,10 @@ export interface ArtifactProvider {
     name: string;
     sourceUri: string;
     version: string;
+}
+
+export interface ArtifactsDownloadInput {
+    downloadInputs: ArtifactDownloadInputBase[];
 }
 
 export interface ArtifactSourceId {
@@ -159,6 +220,7 @@ export enum AuditAction {
     Add = 1,
     Update = 2,
     Delete = 3,
+    Undelete = 4,
 }
 
 export enum AuthorizationHeaderFor {
@@ -166,21 +228,55 @@ export enum AuthorizationHeaderFor {
     OnBehalfOf = 1,
 }
 
-export interface AutoTriggerIssue extends ReleaseIssue {
-    buildId: number;
-    issueMessage: string;
+export interface AutoTriggerIssue {
+    issue: Issue;
     issueSource: IssueSource;
+    project: ProjectReference;
     releaseDefinitionReference: ReleaseDefinitionShallowReference;
+    releaseTriggerType: ReleaseTriggerType;
+}
+
+export interface AzureKeyVaultVariableGroupProviderData extends VariableGroupProviderData {
+    lastRefreshedOn: Date;
+    serviceEndpointId: string;
+    vault: string;
+}
+
+export interface AzureKeyVaultVariableValue extends VariableValue {
+    contentType: string;
+    enabled: boolean;
+    expires: Date;
 }
 
 export interface BaseDeploymentInput {
-    shareOutputVariables: boolean;
+    condition: string;
+    /**
+     * Gets or sets the job cancel timeout in minutes for deployment which are cancelled by user for this release environment
+     */
+    jobCancelTimeoutInMinutes: number;
+    overrideInputs: { [key: string] : string; };
+    /**
+     * Gets or sets the job execution timeout in minutes for deployment which are queued against this release environment
+     */
+    timeoutInMinutes: number;
+}
+
+export interface BuildArtifactDownloadInput extends ArtifactDownloadInputBase {
+    artifactItems: string[];
 }
 
 export interface BuildVersion {
+    commitMessage: string;
     id: string;
     name: string;
     sourceBranch: string;
+    /**
+     * PullRequestId or Commit Id for the Pull Request for which the release will publish status
+     */
+    sourcePullRequestId: string;
+    sourceRepositoryId: string;
+    sourceRepositoryType: string;
+    sourceVersion: string;
 }
 
 /**
@@ -212,26 +308,57 @@ export interface Change {
      */
     message: string;
     /**
+     * The person or process that pushed the change.
+     */
+    pusher: string;
+    /**
      * A timestamp for the change.
      */
     timestamp: Date;
 }
 
 export interface Condition {
+    /**
+     * Gets or sets the condition type.
+     */
     conditionType: ConditionType;
+    /**
+     * Gets or sets the name of the condition. e.g. 'ReleaseStarted'.
+     */
     name: string;
+    /**
+     * Gets or set value of the condition.
+     */
     value: string;
 }
 
 export enum ConditionType {
+    /**
+     * The condition type is undefined.
+     */
     Undefined = 0,
+    /**
+     * The condition type is event.
+     */
     Event = 1,
+    /**
+     * The condition type is environment state.
+     */
     EnvironmentState = 2,
+    /**
+     * The condition type is artifact.
+     */
     Artifact = 4,
 }
 
 export interface ConfigurationVariableValue {
+    /**
+     * Gets or sets as variable is secret or not.
+     */
     isSecret: boolean;
+    /**
+     * Gets or sets value of the configuration variable.
+     */
     value: string;
 }
 
@@ -240,56 +367,23 @@ export interface Consumer {
     consumerName: string;
 }
 
-export interface ContinuousDeploymentAppServicePlanConfiguration {
-    appServicePlan: string;
-    appServicePlanName: string;
-    appServicePricingTier: string;
+export interface ContainerImageTrigger extends ReleaseTriggerBase {
+    alias: string;
 }
 
-export interface ContinuousDeploymentSetupData {
-    branch: string;
-    environmentName: string;
-    projectId: string;
-    repoId: string;
-    resourceGroup: string;
-    slotConfiguration: ContinuousDeploymentSlotConfiguration;
-    sourceConfiguration: ContinuousDeploymentSourceConfiguration;
-    subscriptionId: string;
-    subscriptionName: string;
-    tenantId: string;
-    testWebAppConfiguration: ContinuousDeploymentTestWebAppConfiguration;
-    webAppName: string;
-    webAppProjectType: ContinuousDeploymentWebAppProjectType;
-}
-
-export interface ContinuousDeploymentSlotConfiguration {
-    slotName: string;
-    webAppLocation: string;
-}
-
-export interface ContinuousDeploymentSourceConfiguration {
-    branch: string;
-    sourceRepository: SourceRepository;
-}
-
-export interface ContinuousDeploymentTestWebAppConfiguration {
-    appServicePlanConfiguration: ContinuousDeploymentAppServicePlanConfiguration;
-    environmentName: string;
-    testWebAppLocation: string;
-    testWebAppName: string;
-}
-
-export enum ContinuousDeploymentWebAppProjectType {
-    AspNetWap = 0,
-    AspNetCore = 1,
-    NodeJSWithGulp = 2,
-    NodeJSWithGrunt = 3,
+export interface ContinuousDeploymentTriggerIssue extends AutoTriggerIssue {
+    artifactType: string;
+    artifactVersionId: string;
+    sourceId: string;
 }
 
 export interface ControlOptions {
     alwaysRun: boolean;
     continueOnError: boolean;
     enabled: boolean;
+}
+
+export interface CustomArtifactDownloadInput extends ArtifactDownloadInputBase {
 }
 
 export interface DataSourceBinding {
@@ -310,25 +404,89 @@ export interface DefinitionEnvironmentReference {
 }
 
 export interface Deployment {
+    /**
+     * Gets links to access the deployment.
+     */
     _links: any;
+    /**
+     * Gets attempt number.
+     */
     attempt: number;
+    /**
+     * Gets the date on which deployment is complete.
+     */
+    completedOn: Date;
+    /**
+     * Gets the list of condition associated with deployment.
+     */
     conditions: Condition[];
+    /**
+     * Gets release definition environment id.
+     */
     definitionEnvironmentId: number;
+    /**
+     * Gets status of the deployment.
+     */
     deploymentStatus: DeploymentStatus;
+    /**
+     * Gets the unique identifier for deployment.
+     */
     id: number;
+    /**
+     * Gets the identity who last modified the deployment.
+     */
     lastModifiedBy: VSSInterfaces.IdentityRef;
+    /**
+     * Gets the date on which deployment is last modified.
+     */
     lastModifiedOn: Date;
+    /**
+     * Gets operation status of deployment.
+     */
     operationStatus: DeploymentOperationStatus;
+    /**
+     * Gets list of PostDeployApprovals.
+     */
     postDeployApprovals: ReleaseApproval[];
+    /**
+     * Gets list of PreDeployApprovals.
+     */
     preDeployApprovals: ReleaseApproval[];
+    /**
+     * Gets the date on which deployment is queued.
+     */
     queuedOn: Date;
+    /**
+     * Gets reason of deployment.
+     */
     reason: DeploymentReason;
+    /**
+     * Gets the reference of release.
+     */
     release: ReleaseReference;
+    /**
+     * Gets releaseDefinitionReference which specifies the reference of the release definition to which the deployment is associated.
+     */
     releaseDefinition: ReleaseDefinitionShallowReference;
+    /**
+     * Gets releaseEnvironmentReference which specifies the reference of the release environment to which the deployment is associated.
+     */
     releaseEnvironment: ReleaseEnvironmentShallowReference;
+    /**
+     * Gets the identity who requested.
+     */
     requestedBy: VSSInterfaces.IdentityRef;
+    /**
+     * Gets the identity for whom deployment is requested.
+     */
     requestedFor: VSSInterfaces.IdentityRef;
+    /**
+     * Gets the date on which deployment is scheduled.
+     */
     scheduledDeploymentTime: Date;
+    /**
+     * Gets the date on which deployment is started.
+     */
     startedOn: Date;
 }
 
@@ -358,14 +516,20 @@ export interface DeploymentAttempt {
      */
     errorLog: string;
     /**
-     * The time at which the deployment started, and null if it has not been deployed yet
+     * Specifies whether deployment has started or not
      */
     hasStarted: boolean;
     id: number;
+    /**
+     * All the issues related to the deployment
+     */
+    issues: Issue[];
     job: ReleaseTask;
     lastModifiedBy: VSSInterfaces.IdentityRef;
     lastModifiedOn: Date;
     operationStatus: DeploymentOperationStatus;
+    postDeploymentGates: ReleaseGates;
+    preDeploymentGates: ReleaseGates;
     queuedOn: Date;
     reason: DeploymentReason;
     releaseDeployPhases: ReleaseDeployPhase[];
@@ -397,12 +561,19 @@ export interface DeploymentCompletedEvent {
     project: ProjectReference;
 }
 
+export enum DeploymentExpands {
+    All = 0,
+    DeploymentOnly = 1,
+    Approvals = 2,
+    Artifacts = 4,
+}
+
 export interface DeploymentInput extends BaseDeploymentInput {
+    artifactsDownloadInput: ArtifactsDownloadInput;
     demands: any[];
     enableAccessToken: boolean;
     queueId: number;
     skipArtifactsDownload: boolean;
-    timeoutInMinutes: number;
 }
 
 export interface DeploymentJob {
@@ -420,30 +591,96 @@ export interface DeploymentManualInterventionPendingEvent {
 }
 
 export enum DeploymentOperationStatus {
+    /**
+     * The deployment operation status is undefined.
+     */
     Undefined = 0,
+    /**
+     * The deployment operation status is queued.
+     */
     Queued = 1,
+    /**
+     * The deployment operation status is scheduled.
+     */
     Scheduled = 2,
+    /**
+     * The deployment operation status is pending.
+     */
     Pending = 4,
+    /**
+     * The deployment operation status is approved.
+     */
     Approved = 8,
+    /**
+     * The deployment operation status is rejected.
+     */
     Rejected = 16,
+    /**
+     * The deployment operation status is deferred.
+     */
     Deferred = 32,
+    /**
+     * The deployment operation status is queued for agent.
+     */
     QueuedForAgent = 64,
+    /**
+     * The deployment operation status is phase inprogress.
+     */
     PhaseInProgress = 128,
+    /**
+     * The deployment operation status is phase succeeded.
+     */
     PhaseSucceeded = 256,
+    /**
+     * The deployment operation status is phase partially succeeded.
+     */
     PhasePartiallySucceeded = 512,
+    /**
+     * The deployment operation status is phase failed.
+     */
     PhaseFailed = 1024,
+    /**
+     * The deployment operation status is canceled.
+     */
     Canceled = 2048,
+    /**
+     * The deployment operation status is phase canceled.
+     */
     PhaseCanceled = 4096,
+    /**
+     * The deployment operation status is manualintervention pending.
+     */
     ManualInterventionPending = 8192,
+    /**
+     * The deployment operation status is queued for pipeline.
+     */
     QueuedForPipeline = 16384,
+    /**
+     * The deployment operation status is cancelling.
+     */
+    Cancelling = 32768,
+    /**
+     * The deployment operation status is EvaluatingGates.
+     */
+    EvaluatingGates = 65536,
+    /**
+     * The deployment operation status is GateFailed.
+     */
+    GateFailed = 131072,
+    /**
+     * The deployment operation status is all.
+     */
+    All = 258047,
 }
 
 export interface DeploymentQueryParameters {
     artifactSourceId: string;
     artifactTypeId: string;
     artifactVersions: string[];
+    deploymentsPerEnvironment: number;
     deploymentStatus: DeploymentStatus;
     environments: DefinitionEnvironmentReference[];
+    expands: DeploymentExpands;
     isDeleted: boolean;
     latestDeploymentsOnly: boolean;
     maxDeploymentsPerEnvironment: number;
@@ -451,13 +688,32 @@ export interface DeploymentQueryParameters {
     minModifiedTime: Date;
     operationStatus: DeploymentOperationStatus;
     queryOrder: ReleaseQueryOrder;
+    queryType: DeploymentsQueryType;
+    sourceBranch: string;
 }
 
 export enum DeploymentReason {
+    /**
+     * The deployment reason is none.
+     */
     None = 0,
+    /**
+     * The deployment reason is manual.
+     */
     Manual = 1,
+    /**
+     * The deployment reason is automated.
+     */
     Automated = 2,
+    /**
+     * The deployment reason is scheduled.
+     */
     Scheduled = 4,
+}
+
+export enum DeploymentsQueryType {
+    Regular = 1,
+    FailingSince = 2,
 }
 
 export interface DeploymentStartedEvent {
@@ -467,12 +723,34 @@ export interface DeploymentStartedEvent {
 }
 
 export enum DeploymentStatus {
+    /**
+     * The deployment status is undefined.
+     */
     Undefined = 0,
+    /**
+     * The deployment status is not deployed.
+     */
     NotDeployed = 1,
+    /**
+     * The deployment status is inprogress.
+     */
     InProgress = 2,
+    /**
+     * The deployment status is succeeded.
+     */
     Succeeded = 4,
+    /**
+     * The deployment status is partiallysucceeded.
+     */
     PartiallySucceeded = 8,
+    /**
+     * The deployment status is failed.
+     */
     Failed = 16,
+    /**
+     * The deployment status is all.
+     */
+    All = 31,
 }
 
 export interface DeployPhase {
@@ -491,6 +769,7 @@ export enum DeployPhaseStatus {
     Failed = 16,
     Canceled = 32,
     Skipped = 64,
+    Cancelling = 128,
 }
 
 export enum DeployPhaseTypes {
@@ -520,9 +799,12 @@ export interface EnvironmentExecutionPolicy {
 }
 
 export interface EnvironmentOptions {
+    autoLinkWorkItems: boolean;
+    badgeEnabled: boolean;
     emailNotificationType: string;
     emailRecipients: string;
     enableAccessToken: boolean;
+    publishDeploymentStatus: boolean;
     skipArtifactsDownload: boolean;
     timeoutInMinutes: number;
 }
@@ -595,6 +877,20 @@ export enum FolderPathQueryOrder {
     Descending = 2,
 }
 
+export enum GateStatus {
+    None = 0,
+    Pending = 1,
+    InProgress = 2,
+    Succeeded = 4,
+    Failed = 8,
+}
+
+export interface GitArtifactDownloadInput extends ArtifactDownloadInputBase {
+}
+
+export interface GitHubArtifactDownloadInput extends ArtifactDownloadInputBase {
+}
+
 export interface Issue {
     issueType: string;
     message: string;
@@ -604,6 +900,10 @@ export enum IssueSource {
     None = 0,
     User = 1,
     System = 2,
+}
+
+export interface JenkinsArtifactDownloadInput extends ArtifactDownloadInputBase {
+    artifactItems: string[];
 }
 
 export interface MachineGroupBasedDeployPhase extends DeployPhase {
@@ -639,31 +939,94 @@ export enum MailSectionType {
 }
 
 export interface ManualIntervention {
+    /**
+     * Gets or sets the identity who should approve.
+     */
     approver: VSSInterfaces.IdentityRef;
+    /**
+     * Gets or sets comments for approval.
+     */
     comments: string;
+    /**
+     * Gets date on which it got created.
+     */
     createdOn: Date;
+    /**
+     * Gets the unique identifier for manual intervention.
+     */
     id: number;
+    /**
+     * Gets or sets instructions for approval.
+     */
     instructions: string;
+    /**
+     * Gets date on which it got modified.
+     */
     modifiedOn: Date;
+    /**
+     * Gets or sets the name.
+     */
     name: string;
+    /**
+     * Gets releaseReference for manual intervention.
+     */
     release: ReleaseShallowReference;
+    /**
+     * Gets releaseDefinitionReference for manual intervention.
+     */
     releaseDefinition: ReleaseDefinitionShallowReference;
+    /**
+     * Gets releaseEnvironmentReference for manual intervention.
+     */
     releaseEnvironment: ReleaseEnvironmentShallowReference;
+    /**
+     * Gets or sets the status of the manual intervention.
+     */
     status: ManualInterventionStatus;
+    /**
+     * Get task instance identifier.
+     */
     taskInstanceId: string;
+    /**
+     * Gets url to access the manual intervention.
+     */
     url: string;
 }
 
+/**
+ * Describes manual intervention status
+ */
 export enum ManualInterventionStatus {
+    /**
+     * The manual intervention does not have the status set.
+     */
     Unknown = 0,
+    /**
+     * The manual intervention is pending.
+     */
     Pending = 1,
+    /**
+     * The manual intervention is rejected.
+     */
     Rejected = 2,
+    /**
+     * The manual intervention is approved.
+     */
     Approved = 4,
+    /**
+     * The manual intervention is canceled.
+     */
     Canceled = 8,
 }
 
 export interface ManualInterventionUpdateMetadata {
+    /**
+     * Sets the comment for manual intervention update.
+     */
     comment: string;
+    /**
+     * Sets the status of the manual intervention.
+     */
     status: ManualInterventionStatus;
 }
 
@@ -683,6 +1046,10 @@ export interface MultiConfigInput extends ParallelExecutionInputBase {
 export interface MultiMachineInput extends ParallelExecutionInputBase {
 }
 
+export interface PackageTrigger extends ReleaseTriggerBase {
+    alias: string;
+}
+
 export interface ParallelExecutionInputBase extends ExecutionInput {
     continueOnError: boolean;
     maxNumberOfAgents: number;
@@ -694,8 +1061,23 @@ export enum ParallelExecutionTypes {
     MultiMachine = 2,
 }
 
+export interface PipelineProcess {
+    type: PipelineProcessTypes;
+}
+
+export enum PipelineProcessTypes {
+    Designer = 1,
+    Yaml = 2,
+}
+
 export interface ProjectReference {
+    /**
+     * Gets the unique identifier of this field.
+     */
     id: string;
+    /**
+     * Gets name of project.
+     */
     name: string;
 }
 
@@ -721,30 +1103,100 @@ export interface RealtimeReleaseEvent {
 }
 
 export interface Release {
+    /**
+     * Gets links to access the release.
+     */
     _links: any;
+    /**
+     * Gets or sets the list of artifacts.
+     */
     artifacts: Artifact[];
+    /**
+     * Gets or sets comment.
+     */
     comment: string;
+    /**
+     * Gets or sets the identity who created.
+     */
     createdBy: VSSInterfaces.IdentityRef;
+    /**
+     * Gets date on which it got created.
+     */
     createdOn: Date;
+    /**
+     * Gets revision number of definition snapshot.
+     */
     definitionSnapshotRevision: number;
+    /**
+     * Gets or sets description of release.
+     */
     description: string;
+    /**
+     * Gets list of environments.
+     */
     environments: ReleaseEnvironment[];
+    /**
+     * Gets the unique identifier of this field.
+     */
     id: number;
+    /**
+     * Whether to exclude the release from retention policies.
+     */
     keepForever: boolean;
+    /**
+     * Gets logs container url.
+     */
     logsContainerUrl: string;
+    /**
+     * Gets or sets the identity who modified.
+     */
     modifiedBy: VSSInterfaces.IdentityRef;
+    /**
+     * Gets date on which it got modified.
+     */
     modifiedOn: Date;
+    /**
+     * Gets name.
+     */
     name: string;
+    /**
+     * Gets pool name.
+     */
     poolName: string;
+    /**
+     * Gets or sets project reference.
+     */
     projectReference: ProjectReference;
     properties: any;
+    /**
+     * Gets reason of release.
+     */
     reason: ReleaseReason;
+    /**
+     * Gets releaseDefinitionReference which specifies the reference of the release definition to which this release is associated.
+     */
     releaseDefinition: ReleaseDefinitionShallowReference;
+    /**
+     * Gets release name format.
+     */
     releaseNameFormat: string;
+    /**
+     * Gets status.
+     */
     status: ReleaseStatus;
+    /**
+     * Gets or sets list of tags.
+     */
     tags: string[];
+    triggeringArtifactAlias: string;
     url: string;
+    /**
+     * Gets the list of variable groups.
+     */
     variableGroups: VariableGroup[];
+    /**
+     * Gets or sets the dictionary of variables.
+     */
     variables: { [key: string] : ConfigurationVariableValue; };
 }
 
@@ -754,24 +1206,75 @@ export interface ReleaseAbandonedEvent {
 }
 
 export interface ReleaseApproval {
+    /**
+     * Gets or sets the type of approval.
+     */
     approvalType: ApprovalType;
+    /**
+     * Gets the identity who approved.
+     */
     approvedBy: VSSInterfaces.IdentityRef;
+    /**
+     * Gets or sets the identity who should approve.
+     */
     approver: VSSInterfaces.IdentityRef;
+    /**
+     * Gets or sets attempt which specifies as which deployment attempt it belongs.
+     */
     attempt: number;
+    /**
+     * Gets or sets comments for approval.
+     */
     comments: string;
+    /**
+     * Gets date on which it got created.
+     */
     createdOn: Date;
+    /**
+     * Gets history which specifies all approvals associated with this approval.
+     */
     history: ReleaseApprovalHistory[];
+    /**
+     * Gets the unique identifier of this field.
+     */
     id: number;
+    /**
+     * Gets or sets as approval is automated or not.
+     */
     isAutomated: boolean;
     isNotificationOn: boolean;
+    /**
+     * Gets date on which it got modified.
+     */
     modifiedOn: Date;
+    /**
+     * Gets or sets rank which specifies the order of the approval. e.g. Same rank denotes parallel approval.
+     */
     rank: number;
+    /**
+     * Gets releaseReference which specifies the reference of the release to which this approval is associated.
+     */
     release: ReleaseShallowReference;
+    /**
+     * Gets releaseDefinitionReference which specifies the reference of the release definition to which this approval is associated.
+     */
     releaseDefinition: ReleaseDefinitionShallowReference;
+    /**
+     * Gets releaseEnvironmentReference which specifies the reference of the release environment to which this approval is associated.
+     */
     releaseEnvironment: ReleaseEnvironmentShallowReference;
+    /**
+     * Gets the revision number.
+     */
     revision: number;
+    /**
+     * Gets or sets the status of the approval.
+     */
     status: ApprovalStatus;
     trialNumber: number;
+    /**
+     * Gets url to access the approval.
+     */
     url: string;
 }
 
@@ -812,33 +1315,112 @@ export interface ReleaseArtifact {
     releaseId: number;
 }
 
+export interface ReleaseCondition extends Condition {
+    result: boolean;
+}
+
 export interface ReleaseCreatedEvent {
     project: ProjectReference;
     release: Release;
 }
 
 export interface ReleaseDefinition {
+    /**
+     * Gets links to access the release definition.
+     */
     _links: any;
+    /**
+     * Gets or sets the list of artifacts.
+     */
     artifacts: Artifact[];
+    /**
+     * Gets or sets comment.
+     */
     comment: string;
+    /**
+     * Gets or sets the identity who created.
+     */
     createdBy: VSSInterfaces.IdentityRef;
+    /**
+     * Gets date on which it got created.
+     */
     createdOn: Date;
+    /**
+     * Gets or sets the description.
+     */
+    description: string;
+    /**
+     * Gets or sets the list of environments.
+     */
     environments: ReleaseDefinitionEnvironment[];
+    /**
+     * Gets the unique identifier of this field.
+     */
     id: number;
+    /**
+     * Whether release definition is deleted.
+     */
+    isDeleted: boolean;
+    /**
+     * Gets the reference of last release.
+     */
     lastRelease: ReleaseReference;
+    /**
+     * Gets or sets the identity who modified.
+     */
     modifiedBy: VSSInterfaces.IdentityRef;
+    /**
+     * Gets date on which it got modified.
+     */
     modifiedOn: Date;
+    /**
+     * Gets or sets the name.
+     */
     name: string;
+    /**
+     * Gets or sets the path.
+     */
     path: string;
+    /**
+     * Gets or sets pipeline process.
+     */
+    pipelineProcess: PipelineProcess;
+    /**
+     * Gets or sets properties.
+     */
     properties: any;
+    /**
+     * Gets or sets the release name format.
+     */
     releaseNameFormat: string;
     retentionPolicy: RetentionPolicy;
+    /**
+     * Gets the revision number.
+     */
     revision: number;
+    /**
+     * Gets or sets source of release definition.
+     */
     source: ReleaseDefinitionSource;
+    /**
+     * Gets or sets list of tags.
+     */
     tags: string[];
+    /**
+     * Gets or sets the list of triggers.
+     */
     triggers: ReleaseTriggerBase[];
+    /**
+     * Gets url to access the release definition.
+     */
     url: string;
+    /**
+     * Gets or sets the list of variable groups.
+     */
     variableGroups: number[];
+    /**
+     * Gets or sets the dictionary of variables.
+     */
     variables: { [key: string] : ConfigurationVariableValue; };
 }
 
@@ -862,6 +1444,7 @@ export interface ReleaseDefinitionDeployStep extends ReleaseDefinitionEnvironmen
 }
 
 export interface ReleaseDefinitionEnvironment {
+    badgeUrl: string;
     conditions: Condition[];
     demands: any[];
     deployPhases: DeployPhase[];
@@ -872,12 +1455,17 @@ export interface ReleaseDefinitionEnvironment {
     name: string;
     owner: VSSInterfaces.IdentityRef;
     postDeployApprovals: ReleaseDefinitionApprovals;
+    postDeploymentGates: ReleaseDefinitionGatesStep;
     preDeployApprovals: ReleaseDefinitionApprovals;
+    preDeploymentGates: ReleaseDefinitionGatesStep;
+    processParameters: DistributedTaskCommonInterfaces.ProcessParameters;
+    properties: any;
     queueId: number;
     rank: number;
     retentionPolicy: EnvironmentRetentionPolicy;
     runOptions: { [key: string] : string; };
     schedules: ReleaseSchedule[];
+    variableGroups: number[];
     variables: { [key: string] : ConfigurationVariableValue; };
 }
 
@@ -899,6 +1487,7 @@ export interface ReleaseDefinitionEnvironmentTemplate {
     iconTaskId: string;
     iconUri: string;
     id: string;
+    isDeleted: boolean;
     name: string;
 }
 
@@ -909,6 +1498,24 @@ export enum ReleaseDefinitionExpands {
     Triggers = 8,
     Variables = 16,
     Tags = 32,
+    LastRelease = 64,
+}
+
+export interface ReleaseDefinitionGate {
+    tasks: WorkflowTask[];
+}
+
+export interface ReleaseDefinitionGatesOptions {
+    isEnabled: boolean;
+    samplingInterval: number;
+    stabilizationTime: number;
+    timeout: number;
+}
+
+export interface ReleaseDefinitionGatesStep {
+    gates: ReleaseDefinitionGate[];
+    gatesOptions: ReleaseDefinitionGatesOptions;
+    id: number;
 }
 
 export enum ReleaseDefinitionQueryOrder {
@@ -919,19 +1526,56 @@ export enum ReleaseDefinitionQueryOrder {
 }
 
 export interface ReleaseDefinitionRevision {
+    /**
+     * Gets api-version for revision object.
+     */
+    apiVersion: string;
+    /**
+     * Gets the identity who did change.
+     */
     changedBy: VSSInterfaces.IdentityRef;
+    /**
+     * Gets date on which it got changed.
+     */
     changedDate: Date;
+    /**
+     * Gets type of change.
+     */
     changeType: AuditAction;
+    /**
+     * Gets comments for revision.
+     */
     comment: string;
+    /**
+     * Get id of the definition.
+     */
     definitionId: number;
+    /**
+     * Gets definition url.
+     */
     definitionUrl: string;
+    /**
+     * Get revision number of the definition.
+     */
     revision: number;
 }
 
 export interface ReleaseDefinitionShallowReference {
+    /**
+     * Gets the links to related resources, APIs, and views for the release definition.
+     */
     _links: any;
+    /**
+     * Gets the unique identifier of release definition.
+     */
     id: number;
+    /**
+     * Gets or sets the name of the release definition.
+     */
     name: string;
+    /**
+     * Gets the REST API url to access the release definition.
+     */
     url: string;
 }
 
@@ -949,11 +1593,20 @@ export interface ReleaseDefinitionSummary {
     releases: Release[];
 }
 
+export interface ReleaseDefinitionUndeleteParameter {
+    /**
+     * Gets or sets comment.
+     */
+    comment: string;
+}
+
 export interface ReleaseDeployPhase {
     deploymentJobs: DeploymentJob[];
     errorLog: string;
     id: number;
     manualInterventions: ManualIntervention[];
+    name: string;
+    phaseId: string;
     phaseType: DeployPhaseTypes;
     rank: number;
     runPlanId: string;
@@ -961,40 +1614,139 @@ export interface ReleaseDeployPhase {
 }
 
 export interface ReleaseEnvironment {
-    conditions: Condition[];
+    /**
+     * Gets list of conditions.
+     */
+    conditions: ReleaseCondition[];
+    /**
+     * Gets date on which it got created.
+     */
     createdOn: Date;
+    /**
+     * Gets definition environment id.
+     */
     definitionEnvironmentId: number;
+    /**
+     * Gets demands.
+     */
     demands: any[];
+    /**
+     * Gets list of deploy phases snapshot.
+     */
     deployPhasesSnapshot: DeployPhase[];
+    /**
+     * Gets deploy steps.
+     */
     deploySteps: DeploymentAttempt[];
+    /**
+     * Gets environment options.
+     */
     environmentOptions: EnvironmentOptions;
+    /**
+     * Gets the unique identifier of this field.
+     */
     id: number;
+    /**
+     * Gets date on which it got modified.
+     */
     modifiedOn: Date;
+    /**
+     * Gets name.
+     */
     name: string;
+    /**
+     * Gets next scheduled UTC time.
+     */
     nextScheduledUtcTime: Date;
+    /**
+     * Gets the identity who is owner for release environment.
+     */
     owner: VSSInterfaces.IdentityRef;
+    /**
+     * Gets list of post deploy approvals snapshot.
+     */
     postApprovalsSnapshot: ReleaseDefinitionApprovals;
+    /**
+     * Gets list of post deploy approvals.
+     */
     postDeployApprovals: ReleaseApproval[];
+    postDeploymentGatesSnapshot: ReleaseDefinitionGatesStep;
+    /**
+     * Gets list of pre deploy approvals snapshot.
+     */
     preApprovalsSnapshot: ReleaseDefinitionApprovals;
+    /**
+     * Gets list of pre deploy approvals.
+     */
     preDeployApprovals: ReleaseApproval[];
+    preDeploymentGatesSnapshot: ReleaseDefinitionGatesStep;
+    /**
+     * Gets process parameters.
+     */
+    processParameters: DistributedTaskCommonInterfaces.ProcessParameters;
+    /**
+     * Gets queue id.
+     */
     queueId: number;
+    /**
+     * Gets rank.
+     */
     rank: number;
+    /**
+     * Gets release reference which specifies the reference of the release to which this release environment is associated.
+     */
     release: ReleaseShallowReference;
+    /**
+     * Gets the identity who created release.
+     */
     releaseCreatedBy: VSSInterfaces.IdentityRef;
+    /**
+     * Gets releaseDefinitionReference which specifies the reference of the release definition to which this release environment is associated.
+     */
     releaseDefinition: ReleaseDefinitionShallowReference;
+    /**
+     * Gets release description.
+     */
     releaseDescription: string;
+    /**
+     * Gets release id.
+     */
     releaseId: number;
+    /**
+     * Gets schedule deployment time of release environment.
+     */
     scheduledDeploymentTime: Date;
+    /**
+     * Gets list of schedules.
+     */
     schedules: ReleaseSchedule[];
+    /**
+     * Gets environment status.
+     */
     status: EnvironmentStatus;
+    /**
+     * Gets time to deploy.
+     */
     timeToDeploy: number;
+    /**
+     * Gets trigger reason.
+     */
     triggerReason: string;
+    /**
+     * Gets the list of variable groups.
+     */
+    variableGroups: VariableGroup[];
+    /**
+     * Gets the dictionary of variables.
+     */
     variables: { [key: string] : ConfigurationVariableValue; };
+    /**
+     * Gets list of workflow tasks.
+     */
     workflowTasks: WorkflowTask[];
 }
 
 export interface ReleaseEnvironmentCompletedEvent {
-    conditions: Condition[];
     createdByName: string;
     definitionId: number;
     definitionName: string;
@@ -1011,15 +1763,36 @@ export interface ReleaseEnvironmentCompletedEvent {
 }
 
 export interface ReleaseEnvironmentShallowReference {
+    /**
+     * Gets the links to related resources, APIs, and views for the release environment.
+     */
     _links: any;
+    /**
+     * Gets the unique identifier of release environment.
+     */
     id: number;
+    /**
+     * Gets or sets the name of the release environment.
+     */
     name: string;
+    /**
+     * Gets the REST API url to access the release environment.
+     */
     url: string;
 }
 
 export interface ReleaseEnvironmentUpdateMetadata {
+    /**
+     * Gets or sets comment.
+     */
     comment: string;
+    /**
+     * Gets or sets scheduled deployment time.
+     */
     scheduledDeploymentTime: Date;
+    /**
+     * Gets or sets status of environment.
+     */
     status: EnvironmentStatus;
 }
 
@@ -1033,14 +1806,14 @@ export enum ReleaseExpands {
     Tags = 64,
 }
 
-export interface ReleaseIssue {
-    issue: Issue;
-    issueType: ReleaseIssueType;
-}
-
-export enum ReleaseIssueType {
-    None = 0,
-    AutoTrigger = 1,
+export interface ReleaseGates {
+    deploymentJobs: DeploymentJob[];
+    id: number;
+    lastModifiedOn: Date;
+    runPlanId: string;
+    stabilizationCompletedOn: Date;
+    startedOn: Date;
+    status: GateStatus;
 }
 
 export enum ReleaseQueryOrder {
@@ -1053,20 +1826,48 @@ export enum ReleaseReason {
     Manual = 1,
     ContinuousIntegration = 2,
     Schedule = 3,
-    IndividualCI = 4,
-    BatchedCI = 5,
 }
 
 export interface ReleaseReference {
+    /**
+     * Gets links to access the release.
+     */
     _links: any;
+    /**
+     * Gets list of artifacts.
+     */
     artifacts: Artifact[];
+    /**
+     * Gets the identity who created.
+     */
     createdBy: VSSInterfaces.IdentityRef;
+    /**
+     * Gets date on which it got created.
+     */
     createdOn: Date;
+    /**
+     * Gets description.
+     */
     description: string;
+    /**
+     * Gets the unique identifier of this field.
+     */
     id: number;
+    /**
+     * Gets the identity who modified.
+     */
     modifiedBy: VSSInterfaces.IdentityRef;
+    /**
+     * Gets name of release.
+     */
     name: string;
+    /**
+     * Gets reason for release.
+     */
     reason: ReleaseReason;
+    /**
+     * Gets release definition shallow reference.
+     */
     releaseDefinition: ReleaseDefinitionShallowReference;
     url: string;
     webAccessUri: string;
@@ -1110,19 +1911,49 @@ export interface ReleaseSettings {
 }
 
 export interface ReleaseShallowReference {
+    /**
+     * Gets the links to related resources, APIs, and views for the release.
+     */
     _links: any;
+    /**
+     * Gets the unique identifier of release.
+     */
     id: number;
+    /**
+     * Gets or sets the name of the release.
+     */
     name: string;
+    /**
+     * Gets the REST API url to access the release.
+     */
     url: string;
 }
 
 export interface ReleaseStartMetadata {
+    /**
+     * Sets list of artifact to create a release.
+     */
     artifacts: ArtifactMetadata[];
+    /**
+     * Sets definition Id to create a release.
+     */
     definitionId: number;
+    /**
+     * Sets description to create a release.
+     */
     description: string;
+    /**
+     * Sets 'true' to create release in draft mode, 'false' otherwise.
+     */
     isDraft: boolean;
+    /**
+     * Sets list of environments to manual as condition.
+     */
     manualEnvironments: string[];
     properties: any;
+    /**
+     * Sets reason to create a release.
+     */
     reason: ReleaseReason;
 }
 
@@ -1143,11 +1974,23 @@ export interface ReleaseTask {
     lineCount: number;
     logUrl: string;
     name: string;
+    percentComplete: number;
     rank: number;
     startTime: Date;
     status: TaskStatus;
     task: WorkflowTaskReference;
     timelineRecordId: string;
+}
+
+export interface ReleaseTaskAttachment {
+    _links: any;
+    createdOn: Date;
+    modifiedBy: string;
+    modifiedOn: Date;
+    name: string;
+    recordId: string;
+    timelineId: string;
+    type: string;
 }
 
 export interface ReleaseTaskLogUpdatedEvent extends RealtimeReleaseEvent {
@@ -1172,6 +2015,10 @@ export enum ReleaseTriggerType {
     Undefined = 0,
     ArtifactSource = 1,
     Schedule = 2,
+    SourceRepo = 3,
+    ContainerImage = 4,
+    Package = 5,
+    PullRequest = 6,
 }
 
 export interface ReleaseUpdatedEvent extends RealtimeReleaseEvent {
@@ -1179,14 +2026,30 @@ export interface ReleaseUpdatedEvent extends RealtimeReleaseEvent {
 }
 
 export interface ReleaseUpdateMetadata {
+    /**
+     * Sets comment for release.
+     */
     comment: string;
+    /**
+     * Set 'true' to exclude the release from retention policies.
+     */
     keepForever: boolean;
+    /**
+     * Sets list of manual environments.
+     */
     manualEnvironments: string[];
+    /**
+     * Sets status of the release.
+     */
     status: ReleaseStatus;
 }
 
 export interface ReleaseWorkItemRef {
+    assignee: string;
     id: string;
+    state: string;
+    title: string;
+    type: string;
     url: string;
 }
 
@@ -1201,6 +2064,7 @@ export interface RetentionSettings {
 }
 
 export interface RunOnServerDeployPhase extends DeployPhase {
+    deploymentInput: ServerDeploymentInput;
 }
 
 export enum ScheduleDays {
@@ -1227,21 +2091,18 @@ export enum SenderType {
     RequestingUser = 2,
 }
 
+export interface ServerDeploymentInput extends BaseDeploymentInput {
+    parallelExecution: ExecutionInput;
+}
+
 export interface SourceIdInput {
     id: string;
     name: string;
 }
 
-export interface SourceRepository {
-    endpointIdentifier: string;
-    identifier: string;
-    repositoryType: SourceRepositoryType;
-}
-
-export enum SourceRepositoryType {
-    Invalid = 0,
-    VstsGit = 1,
-    GitHub = 2,
+export interface SourceRepoTrigger extends ReleaseTriggerBase {
+    alias: string;
+    branchFilters: string[];
 }
 
 export interface SummaryMailSection {
@@ -1273,6 +2134,9 @@ export enum TaskStatus {
     PartiallySucceeded = 9,
 }
 
+export interface TfvcArtifactDownloadInput extends ArtifactDownloadInputBase {
+}
+
 export interface TimeZone {
     displayName: string;
     id: string;
@@ -1284,13 +2148,42 @@ export interface TimeZoneList {
 }
 
 export interface VariableGroup {
+    /**
+     * Gets or sets the identity who created.
+     */
     createdBy: VSSInterfaces.IdentityRef;
+    /**
+     * Gets date on which it got created.
+     */
     createdOn: Date;
+    /**
+     * Gets or sets description.
+     */
     description: string;
+    /**
+     * Gets the unique identifier of this field.
+     */
     id: number;
+    /**
+     * Gets or sets the identity who modified.
+     */
     modifiedBy: VSSInterfaces.IdentityRef;
+    /**
+     * Gets date on which it got modified.
+     */
     modifiedOn: Date;
+    /**
+     * Gets or sets name.
+     */
     name: string;
+    /**
+     * Gets or sets provider data.
+     */
+    providerData: VariableGroupProviderData;
+    /**
+     * Gets or sets type.
+     */
+    type: string;
     variables: { [key: string] : VariableValue; };
 }
 
@@ -1300,6 +2193,9 @@ export enum VariableGroupActionFilter {
     Use = 16,
 }
 
+export interface VariableGroupProviderData {
+}
+
 export interface VariableValue {
     isSecret: boolean;
     value: string;
@@ -1307,11 +2203,14 @@ export interface VariableValue {
 
 export interface WorkflowTask {
     alwaysRun: boolean;
+    condition: string;
     continueOnError: boolean;
     definitionType: string;
     enabled: boolean;
     inputs: { [key: string] : string; };
     name: string;
+    overrideInputs: { [key: string] : string; };
+    refName: string;
     taskId: string;
     timeoutInMinutes: number;
     version: string;
@@ -1345,6 +2244,24 @@ export var TypeInfo = {
     },
     AgentDeploymentInput: <any>{
     },
+    ApprovalExecutionOrder: {
+        enumValues: {
+            "beforeGates": 1,
+            "afterSuccessfulGates": 2,
+            "afterGatesAlways": 4
+        }
+    },
+    ApprovalFilters: {
+        enumValues: {
+            "none": 0,
+            "manualApprovals": 1,
+            "automatedApprovals": 2,
+            "approvalSnapshots": 4,
+            "all": 7
+        }
+    },
+    ApprovalOptions: <any>{
+    },
     ApprovalStatus: {
         enumValues: {
             "undefined": 0,
@@ -1374,7 +2291,8 @@ export var TypeInfo = {
         enumValues: {
             "add": 1,
             "update": 2,
-            "delete": 3
+            "delete": 3,
+            "undelete": 4
         }
     },
     AuthorizationHeaderFor: {
@@ -1384,6 +2302,10 @@ export var TypeInfo = {
         }
     },
     AutoTriggerIssue: <any>{
+    },
+    AzureKeyVaultVariableGroupProviderData: <any>{
+    },
+    AzureKeyVaultVariableValue: <any>{
     },
     Change: <any>{
     },
@@ -1397,17 +2319,9 @@ export var TypeInfo = {
             "artifact": 4
         }
     },
-    ContinuousDeploymentSetupData: <any>{
+    ContainerImageTrigger: <any>{
     },
-    ContinuousDeploymentSourceConfiguration: <any>{
-    },
-    ContinuousDeploymentWebAppProjectType: {
-        enumValues: {
-            "aspNetWap": 0,
-            "aspNetCore": 1,
-            "nodeJSWithGulp": 2,
-            "nodeJSWithGrunt": 3
-        }
+    ContinuousDeploymentTriggerIssue: <any>{
     },
     Deployment: <any>{
     },
@@ -1427,6 +2341,14 @@ export var TypeInfo = {
         }
     },
     DeploymentCompletedEvent: <any>{
+    },
+    DeploymentExpands: {
+        enumValues: {
+            "all": 0,
+            "deploymentOnly": 1,
+            "approvals": 2,
+            "artifacts": 4
+        }
     },
     DeploymentJob: <any>{
     },
@@ -1449,7 +2371,11 @@ export var TypeInfo = {
             "canceled": 2048,
             "phaseCanceled": 4096,
             "manualInterventionPending": 8192,
-            "queuedForPipeline": 16384
+            "queuedForPipeline": 16384,
+            "cancelling": 32768,
+            "evaluatingGates": 65536,
+            "gateFailed": 131072,
+            "all": 258047
         }
     },
     DeploymentQueryParameters: <any>{
@@ -1462,6 +2388,12 @@ export var TypeInfo = {
             "scheduled": 4
         }
     },
+    DeploymentsQueryType: {
+        enumValues: {
+            "regular": 1,
+            "failingSince": 2
+        }
+    },
     DeploymentStartedEvent: <any>{
     },
     DeploymentStatus: {
@@ -1471,7 +2403,8 @@ export var TypeInfo = {
             "inProgress": 2,
             "succeeded": 4,
             "partiallySucceeded": 8,
-            "failed": 16
+            "failed": 16,
+            "all": 31
         }
     },
     DeployPhase: <any>{
@@ -1485,7 +2418,8 @@ export var TypeInfo = {
             "succeeded": 8,
             "failed": 16,
             "canceled": 32,
-            "skipped": 64
+            "skipped": 64,
+            "cancelling": 128
         }
     },
     DeployPhaseTypes: {
@@ -1518,6 +2452,15 @@ export var TypeInfo = {
             "none": 0,
             "ascending": 1,
             "descending": 2
+        }
+    },
+    GateStatus: {
+        enumValues: {
+            "none": 0,
+            "pending": 1,
+            "inProgress": 2,
+            "succeeded": 4,
+            "failed": 8
         }
     },
     IssueSource: {
@@ -1558,6 +2501,8 @@ export var TypeInfo = {
     },
     MultiMachineInput: <any>{
     },
+    PackageTrigger: <any>{
+    },
     ParallelExecutionInputBase: <any>{
     },
     ParallelExecutionTypes: {
@@ -1565,6 +2510,14 @@ export var TypeInfo = {
             "none": 0,
             "multiConfiguration": 1,
             "multiMachine": 2
+        }
+    },
+    PipelineProcess: <any>{
+    },
+    PipelineProcessTypes: {
+        enumValues: {
+            "designer": 1,
+            "yaml": 2
         }
     },
     PropertySelector: <any>{
@@ -1585,9 +2538,13 @@ export var TypeInfo = {
     },
     ReleaseApprovalPendingEvent: <any>{
     },
+    ReleaseCondition: <any>{
+    },
     ReleaseCreatedEvent: <any>{
     },
     ReleaseDefinition: <any>{
+    },
+    ReleaseDefinitionApprovals: <any>{
     },
     ReleaseDefinitionEnvironment: <any>{
     },
@@ -1600,7 +2557,8 @@ export var TypeInfo = {
             "artifacts": 4,
             "triggers": 8,
             "variables": 16,
-            "tags": 32
+            "tags": 32,
+            "lastRelease": 64
         }
     },
     ReleaseDefinitionQueryOrder: {
@@ -1643,13 +2601,7 @@ export var TypeInfo = {
             "tags": 64
         }
     },
-    ReleaseIssue: <any>{
-    },
-    ReleaseIssueType: {
-        enumValues: {
-            "none": 0,
-            "autoTrigger": 1
-        }
+    ReleaseGates: <any>{
     },
     ReleaseQueryOrder: {
         enumValues: {
@@ -1662,9 +2614,7 @@ export var TypeInfo = {
             "none": 0,
             "manual": 1,
             "continuousIntegration": 2,
-            "schedule": 3,
-            "individualCI": 4,
-            "batchedCI": 5
+            "schedule": 3
         }
     },
     ReleaseReference: <any>{
@@ -1685,6 +2635,8 @@ export var TypeInfo = {
     },
     ReleaseTask: <any>{
     },
+    ReleaseTaskAttachment: <any>{
+    },
     ReleaseTasksUpdatedEvent: <any>{
     },
     ReleaseTriggerBase: <any>{
@@ -1693,7 +2645,11 @@ export var TypeInfo = {
         enumValues: {
             "undefined": 0,
             "artifactSource": 1,
-            "schedule": 2
+            "schedule": 2,
+            "sourceRepo": 3,
+            "containerImage": 4,
+            "package": 5,
+            "pullRequest": 6
         }
     },
     ReleaseUpdatedEvent: <any>{
@@ -1723,14 +2679,9 @@ export var TypeInfo = {
             "requestingUser": 2
         }
     },
-    SourceRepository: <any>{
+    ServerDeploymentInput: <any>{
     },
-    SourceRepositoryType: {
-        enumValues: {
-            "invalid": 0,
-            "vstsGit": 1,
-            "gitHub": 2
-        }
+    SourceRepoTrigger: <any>{
     },
     SummaryMailSection: <any>{
     },
@@ -1762,7 +2713,7 @@ export var TypeInfo = {
 TypeInfo.AgentArtifactDefinition.fields = {
     artifactType: {
         enumType: TypeInfo.AgentArtifactType
-    },
+    }
 };
 
 TypeInfo.AgentBasedDeployPhase.fields = {
@@ -1771,72 +2722,93 @@ TypeInfo.AgentBasedDeployPhase.fields = {
     },
     phaseType: {
         enumType: TypeInfo.DeployPhaseTypes
-    },
+    }
 };
 
 TypeInfo.AgentDeploymentInput.fields = {
     parallelExecution: {
         typeInfo: TypeInfo.ExecutionInput
-    },
+    }
+};
+
+TypeInfo.ApprovalOptions.fields = {
+    executionOrder: {
+        enumType: TypeInfo.ApprovalExecutionOrder
+    }
 };
 
 TypeInfo.ArtifactContributionDefinition.fields = {
     inputDescriptors: {
         isArray: true,
         typeInfo: FormInputInterfaces.TypeInfo.InputDescriptor
-    },
+    }
 };
 
 TypeInfo.ArtifactSourceTrigger.fields = {
     triggerType: {
         enumType: TypeInfo.ReleaseTriggerType
-    },
+    }
 };
 
 TypeInfo.ArtifactTypeDefinition.fields = {
     inputDescriptors: {
         isArray: true,
         typeInfo: FormInputInterfaces.TypeInfo.InputDescriptor
-    },
+    }
 };
 
 TypeInfo.AutoTriggerIssue.fields = {
     issueSource: {
         enumType: TypeInfo.IssueSource
     },
-    issueType: {
-        enumType: TypeInfo.ReleaseIssueType
-    },
+    releaseTriggerType: {
+        enumType: TypeInfo.ReleaseTriggerType
+    }
+};
+
+TypeInfo.AzureKeyVaultVariableGroupProviderData.fields = {
+    lastRefreshedOn: {
+        isDate: true,
+    }
+};
+
+TypeInfo.AzureKeyVaultVariableValue.fields = {
+    expires: {
+        isDate: true,
+    }
 };
 
 TypeInfo.Change.fields = {
     timestamp: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.Condition.fields = {
     conditionType: {
         enumType: TypeInfo.ConditionType
-    },
+    }
 };
 
-TypeInfo.ContinuousDeploymentSetupData.fields = {
-    sourceConfiguration: {
-        typeInfo: TypeInfo.ContinuousDeploymentSourceConfiguration
-    },
-    webAppProjectType: {
-        enumType: TypeInfo.ContinuousDeploymentWebAppProjectType
-    },
+TypeInfo.ContainerImageTrigger.fields = {
+    triggerType: {
+        enumType: TypeInfo.ReleaseTriggerType
+    }
 };
 
-TypeInfo.ContinuousDeploymentSourceConfiguration.fields = {
-    sourceRepository: {
-        typeInfo: TypeInfo.SourceRepository
+TypeInfo.ContinuousDeploymentTriggerIssue.fields = {
+    issueSource: {
+        enumType: TypeInfo.IssueSource
     },
+    releaseTriggerType: {
+        enumType: TypeInfo.ReleaseTriggerType
+    }
 };
 
 TypeInfo.Deployment.fields = {
+    completedOn: {
+        isDate: true,
+    },
     conditions: {
         isArray: true,
         typeInfo: TypeInfo.Condition
@@ -1872,7 +2844,7 @@ TypeInfo.Deployment.fields = {
     },
     startedOn: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.DeploymentApprovalCompletedEvent.fields = {
@@ -1881,12 +2853,15 @@ TypeInfo.DeploymentApprovalCompletedEvent.fields = {
     },
     release: {
         typeInfo: TypeInfo.Release
-    },
+    }
 };
 
 TypeInfo.DeploymentApprovalPendingEvent.fields = {
     approval: {
         typeInfo: TypeInfo.ReleaseApproval
+    },
+    approvalOptions: {
+        typeInfo: TypeInfo.ApprovalOptions
     },
     completedApprovals: {
         isArray: true,
@@ -1901,7 +2876,7 @@ TypeInfo.DeploymentApprovalPendingEvent.fields = {
     },
     release: {
         typeInfo: TypeInfo.Release
-    },
+    }
 };
 
 TypeInfo.DeploymentAttempt.fields = {
@@ -1913,6 +2888,12 @@ TypeInfo.DeploymentAttempt.fields = {
     },
     operationStatus: {
         enumType: TypeInfo.DeploymentOperationStatus
+    },
+    postDeploymentGates: {
+        typeInfo: TypeInfo.ReleaseGates
+    },
+    preDeploymentGates: {
+        typeInfo: TypeInfo.ReleaseGates
     },
     queuedOn: {
         isDate: true,
@@ -1930,13 +2911,13 @@ TypeInfo.DeploymentAttempt.fields = {
     tasks: {
         isArray: true,
         typeInfo: TypeInfo.ReleaseTask
-    },
+    }
 };
 
 TypeInfo.DeploymentAuthorizationInfo.fields = {
     authorizationHeaderFor: {
         enumType: TypeInfo.AuthorizationHeaderFor
-    },
+    }
 };
 
 TypeInfo.DeploymentCompletedEvent.fields = {
@@ -1945,7 +2926,7 @@ TypeInfo.DeploymentCompletedEvent.fields = {
     },
     environment: {
         typeInfo: TypeInfo.ReleaseEnvironment
-    },
+    }
 };
 
 TypeInfo.DeploymentJob.fields = {
@@ -1955,7 +2936,7 @@ TypeInfo.DeploymentJob.fields = {
     tasks: {
         isArray: true,
         typeInfo: TypeInfo.ReleaseTask
-    },
+    }
 };
 
 TypeInfo.DeploymentManualInterventionPendingEvent.fields = {
@@ -1967,12 +2948,15 @@ TypeInfo.DeploymentManualInterventionPendingEvent.fields = {
     },
     release: {
         typeInfo: TypeInfo.Release
-    },
+    }
 };
 
 TypeInfo.DeploymentQueryParameters.fields = {
     deploymentStatus: {
         enumType: TypeInfo.DeploymentStatus
+    },
+    expands: {
+        enumType: TypeInfo.DeploymentExpands
     },
     maxModifiedTime: {
         isDate: true,
@@ -1986,6 +2970,9 @@ TypeInfo.DeploymentQueryParameters.fields = {
     queryOrder: {
         enumType: TypeInfo.ReleaseQueryOrder
     },
+    queryType: {
+        enumType: TypeInfo.DeploymentsQueryType
+    }
 };
 
 TypeInfo.DeploymentStartedEvent.fields = {
@@ -1994,19 +2981,19 @@ TypeInfo.DeploymentStartedEvent.fields = {
     },
     release: {
         typeInfo: TypeInfo.Release
-    },
+    }
 };
 
 TypeInfo.DeployPhase.fields = {
     phaseType: {
         enumType: TypeInfo.DeployPhaseTypes
-    },
+    }
 };
 
 TypeInfo.ExecutionInput.fields = {
     parallelExecutionType: {
         enumType: TypeInfo.ParallelExecutionTypes
-    },
+    }
 };
 
 TypeInfo.Folder.fields = {
@@ -2015,13 +3002,13 @@ TypeInfo.Folder.fields = {
     },
     lastChangedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.MachineGroupBasedDeployPhase.fields = {
     phaseType: {
         enumType: TypeInfo.DeployPhaseTypes
-    },
+    }
 };
 
 TypeInfo.MailMessage.fields = {
@@ -2034,7 +3021,7 @@ TypeInfo.MailMessage.fields = {
     },
     senderType: {
         enumType: TypeInfo.SenderType
-    },
+    }
 };
 
 TypeInfo.ManualIntervention.fields = {
@@ -2046,37 +3033,49 @@ TypeInfo.ManualIntervention.fields = {
     },
     status: {
         enumType: TypeInfo.ManualInterventionStatus
-    },
+    }
 };
 
 TypeInfo.ManualInterventionUpdateMetadata.fields = {
     status: {
         enumType: TypeInfo.ManualInterventionStatus
-    },
+    }
 };
 
 TypeInfo.MultiConfigInput.fields = {
     parallelExecutionType: {
         enumType: TypeInfo.ParallelExecutionTypes
-    },
+    }
 };
 
 TypeInfo.MultiMachineInput.fields = {
     parallelExecutionType: {
         enumType: TypeInfo.ParallelExecutionTypes
-    },
+    }
+};
+
+TypeInfo.PackageTrigger.fields = {
+    triggerType: {
+        enumType: TypeInfo.ReleaseTriggerType
+    }
 };
 
 TypeInfo.ParallelExecutionInputBase.fields = {
     parallelExecutionType: {
         enumType: TypeInfo.ParallelExecutionTypes
-    },
+    }
+};
+
+TypeInfo.PipelineProcess.fields = {
+    type: {
+        enumType: TypeInfo.PipelineProcessTypes
+    }
 };
 
 TypeInfo.PropertySelector.fields = {
     selectorType: {
         enumType: TypeInfo.PropertySelectorType
-    },
+    }
 };
 
 TypeInfo.Release.fields = {
@@ -2099,13 +3098,13 @@ TypeInfo.Release.fields = {
     variableGroups: {
         isArray: true,
         typeInfo: TypeInfo.VariableGroup
-    },
+    }
 };
 
 TypeInfo.ReleaseAbandonedEvent.fields = {
     release: {
         typeInfo: TypeInfo.Release
-    },
+    }
 };
 
 TypeInfo.ReleaseApproval.fields = {
@@ -2124,7 +3123,7 @@ TypeInfo.ReleaseApproval.fields = {
     },
     status: {
         enumType: TypeInfo.ApprovalStatus
-    },
+    }
 };
 
 TypeInfo.ReleaseApprovalHistory.fields = {
@@ -2133,12 +3132,15 @@ TypeInfo.ReleaseApprovalHistory.fields = {
     },
     modifiedOn: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.ReleaseApprovalPendingEvent.fields = {
     approval: {
         typeInfo: TypeInfo.ReleaseApproval
+    },
+    approvalOptions: {
+        typeInfo: TypeInfo.ApprovalOptions
     },
     completedApprovals: {
         isArray: true,
@@ -2154,13 +3156,19 @@ TypeInfo.ReleaseApprovalPendingEvent.fields = {
     pendingApprovals: {
         isArray: true,
         typeInfo: TypeInfo.ReleaseApproval
-    },
+    }
+};
+
+TypeInfo.ReleaseCondition.fields = {
+    conditionType: {
+        enumType: TypeInfo.ConditionType
+    }
 };
 
 TypeInfo.ReleaseCreatedEvent.fields = {
     release: {
         typeInfo: TypeInfo.Release
-    },
+    }
 };
 
 TypeInfo.ReleaseDefinition.fields = {
@@ -2177,13 +3185,22 @@ TypeInfo.ReleaseDefinition.fields = {
     modifiedOn: {
         isDate: true,
     },
+    pipelineProcess: {
+        typeInfo: TypeInfo.PipelineProcess
+    },
     source: {
         enumType: TypeInfo.ReleaseDefinitionSource
     },
     triggers: {
         isArray: true,
         typeInfo: TypeInfo.ReleaseTriggerBase
-    },
+    }
+};
+
+TypeInfo.ReleaseDefinitionApprovals.fields = {
+    approvalOptions: {
+        typeInfo: TypeInfo.ApprovalOptions
+    }
 };
 
 TypeInfo.ReleaseDefinitionEnvironment.fields = {
@@ -2195,16 +3212,22 @@ TypeInfo.ReleaseDefinitionEnvironment.fields = {
         isArray: true,
         typeInfo: TypeInfo.DeployPhase
     },
+    postDeployApprovals: {
+        typeInfo: TypeInfo.ReleaseDefinitionApprovals
+    },
+    preDeployApprovals: {
+        typeInfo: TypeInfo.ReleaseDefinitionApprovals
+    },
     schedules: {
         isArray: true,
         typeInfo: TypeInfo.ReleaseSchedule
-    },
+    }
 };
 
 TypeInfo.ReleaseDefinitionEnvironmentTemplate.fields = {
     environment: {
         typeInfo: TypeInfo.ReleaseDefinitionEnvironment
-    },
+    }
 };
 
 TypeInfo.ReleaseDefinitionRevision.fields = {
@@ -2213,14 +3236,14 @@ TypeInfo.ReleaseDefinitionRevision.fields = {
     },
     changeType: {
         enumType: TypeInfo.AuditAction
-    },
+    }
 };
 
 TypeInfo.ReleaseDefinitionSummary.fields = {
     releases: {
         isArray: true,
         typeInfo: TypeInfo.Release
-    },
+    }
 };
 
 TypeInfo.ReleaseDeployPhase.fields = {
@@ -2237,13 +3260,13 @@ TypeInfo.ReleaseDeployPhase.fields = {
     },
     status: {
         enumType: TypeInfo.DeployPhaseStatus
-    },
+    }
 };
 
 TypeInfo.ReleaseEnvironment.fields = {
     conditions: {
         isArray: true,
-        typeInfo: TypeInfo.Condition
+        typeInfo: TypeInfo.ReleaseCondition
     },
     createdOn: {
         isDate: true,
@@ -2262,9 +3285,15 @@ TypeInfo.ReleaseEnvironment.fields = {
     nextScheduledUtcTime: {
         isDate: true,
     },
+    postApprovalsSnapshot: {
+        typeInfo: TypeInfo.ReleaseDefinitionApprovals
+    },
     postDeployApprovals: {
         isArray: true,
         typeInfo: TypeInfo.ReleaseApproval
+    },
+    preApprovalsSnapshot: {
+        typeInfo: TypeInfo.ReleaseDefinitionApprovals
     },
     preDeployApprovals: {
         isArray: true,
@@ -2280,19 +3309,19 @@ TypeInfo.ReleaseEnvironment.fields = {
     status: {
         enumType: TypeInfo.EnvironmentStatus
     },
+    variableGroups: {
+        isArray: true,
+        typeInfo: TypeInfo.VariableGroup
+    }
 };
 
 TypeInfo.ReleaseEnvironmentCompletedEvent.fields = {
-    conditions: {
-        isArray: true,
-        typeInfo: TypeInfo.Condition
-    },
     environment: {
         typeInfo: TypeInfo.ReleaseEnvironment
     },
     reason: {
         enumType: TypeInfo.DeploymentReason
-    },
+    }
 };
 
 TypeInfo.ReleaseEnvironmentUpdateMetadata.fields = {
@@ -2301,13 +3330,26 @@ TypeInfo.ReleaseEnvironmentUpdateMetadata.fields = {
     },
     status: {
         enumType: TypeInfo.EnvironmentStatus
-    },
+    }
 };
 
-TypeInfo.ReleaseIssue.fields = {
-    issueType: {
-        enumType: TypeInfo.ReleaseIssueType
+TypeInfo.ReleaseGates.fields = {
+    deploymentJobs: {
+        isArray: true,
+        typeInfo: TypeInfo.DeploymentJob
     },
+    lastModifiedOn: {
+        isDate: true,
+    },
+    stabilizationCompletedOn: {
+        isDate: true,
+    },
+    startedOn: {
+        isDate: true,
+    },
+    status: {
+        enumType: TypeInfo.GateStatus
+    }
 };
 
 TypeInfo.ReleaseReference.fields = {
@@ -2316,25 +3358,25 @@ TypeInfo.ReleaseReference.fields = {
     },
     reason: {
         enumType: TypeInfo.ReleaseReason
-    },
+    }
 };
 
 TypeInfo.ReleaseRevision.fields = {
     changedDate: {
         isDate: true,
-    },
+    }
 };
 
 TypeInfo.ReleaseSchedule.fields = {
     daysToRelease: {
         enumType: TypeInfo.ScheduleDays
-    },
+    }
 };
 
 TypeInfo.ReleaseStartMetadata.fields = {
     reason: {
         enumType: TypeInfo.ReleaseReason
-    },
+    }
 };
 
 TypeInfo.ReleaseTask.fields = {
@@ -2352,7 +3394,16 @@ TypeInfo.ReleaseTask.fields = {
     },
     status: {
         enumType: TypeInfo.TaskStatus
+    }
+};
+
+TypeInfo.ReleaseTaskAttachment.fields = {
+    createdOn: {
+        isDate: true,
     },
+    modifiedOn: {
+        isDate: true,
+    }
 };
 
 TypeInfo.ReleaseTasksUpdatedEvent.fields = {
@@ -2362,31 +3413,34 @@ TypeInfo.ReleaseTasksUpdatedEvent.fields = {
     tasks: {
         isArray: true,
         typeInfo: TypeInfo.ReleaseTask
-    },
+    }
 };
 
 TypeInfo.ReleaseTriggerBase.fields = {
     triggerType: {
         enumType: TypeInfo.ReleaseTriggerType
-    },
+    }
 };
 
 TypeInfo.ReleaseUpdatedEvent.fields = {
     release: {
         typeInfo: TypeInfo.Release
-    },
+    }
 };
 
 TypeInfo.ReleaseUpdateMetadata.fields = {
     status: {
         enumType: TypeInfo.ReleaseStatus
-    },
+    }
 };
 
 TypeInfo.RunOnServerDeployPhase.fields = {
+    deploymentInput: {
+        typeInfo: TypeInfo.ServerDeploymentInput
+    },
     phaseType: {
         enumType: TypeInfo.DeployPhaseTypes
-    },
+    }
 };
 
 TypeInfo.ScheduledReleaseTrigger.fields = {
@@ -2395,19 +3449,25 @@ TypeInfo.ScheduledReleaseTrigger.fields = {
     },
     triggerType: {
         enumType: TypeInfo.ReleaseTriggerType
-    },
+    }
 };
 
-TypeInfo.SourceRepository.fields = {
-    repositoryType: {
-        enumType: TypeInfo.SourceRepositoryType
-    },
+TypeInfo.ServerDeploymentInput.fields = {
+    parallelExecution: {
+        typeInfo: TypeInfo.ExecutionInput
+    }
+};
+
+TypeInfo.SourceRepoTrigger.fields = {
+    triggerType: {
+        enumType: TypeInfo.ReleaseTriggerType
+    }
 };
 
 TypeInfo.SummaryMailSection.fields = {
     sectionType: {
         enumType: TypeInfo.MailSectionType
-    },
+    }
 };
 
 TypeInfo.VariableGroup.fields = {
@@ -2416,5 +3476,5 @@ TypeInfo.VariableGroup.fields = {
     },
     modifiedOn: {
         isDate: true,
-    },
+    }
 };

@@ -12,7 +12,7 @@ export async function run() {
     try
     {
         let vsts: vm.WebApi = await cm.getWebApi();
-        let fileContainerApi = vsts.getFileContainerApi();
+        let fileContainerApi = await vsts.getFileContainerApi();
 
         let containers = await fileContainerApi.getContainers(null, null);
         if (containers.length > 0) {

@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -20,7 +20,7 @@ import ContributionsInterfaces = require("./interfaces/ContributionsInterfaces")
 
 export interface IContributionsApi extends basem.ClientApiBase {
     queryContributionNodes(query: ContributionsInterfaces.ContributionNodeQuery): Promise<ContributionsInterfaces.ContributionNodeQueryResult>;
-    queryDataProviders(query: ContributionsInterfaces.DataProviderQuery): Promise<ContributionsInterfaces.DataProviderResult>;
+    queryDataProviders(query: ContributionsInterfaces.DataProviderQuery, scopeName?: string, scopeValue?: string): Promise<ContributionsInterfaces.DataProviderResult>;
     getInstalledExtensions(contributionIds?: string[], includeDisabledApps?: boolean, assetTypes?: string[]): Promise<ContributionsInterfaces.InstalledExtension[]>;
     getInstalledExtensionByName(publisherName: string, extensionName: string, assetTypes?: string[]): Promise<ContributionsInterfaces.InstalledExtension>;
 }
@@ -30,6 +30,8 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
         super(baseUrl, handlers, 'node-Contributions-api', options);
     }
 
+    public static readonly RESOURCE_AREA_ID = "8477aec9-a4c7-4bd4-a456-ba4c53c989cb";
+
     /**
      * Query for contribution nodes and provider details according the parameters in the passed in query object.
      * 
@@ -37,7 +39,7 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
      */
     public async queryContributionNodes(
         query: ContributionsInterfaces.ContributionNodeQuery
-    ): Promise<ContributionsInterfaces.ContributionNodeQueryResult> {
+        ): Promise<ContributionsInterfaces.ContributionNodeQueryResult> {
 
         return new Promise<ContributionsInterfaces.ContributionNodeQueryResult>(async (resolve, reject) => {
             let routeValues: any = {
@@ -45,24 +47,24 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Contribution",
                     "db7f2146-2309-4cee-b39c-c767777a1c55",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ContributionsInterfaces.ContributionNodeQueryResult>;
                 res = await this.rest.create<ContributionsInterfaces.ContributionNodeQueryResult>(url, query, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -72,35 +74,41 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
 
     /**
      * @param {ContributionsInterfaces.DataProviderQuery} query
+     * @param {string} scopeName
+     * @param {string} scopeValue
      */
     public async queryDataProviders(
-        query: ContributionsInterfaces.DataProviderQuery
-    ): Promise<ContributionsInterfaces.DataProviderResult> {
+        query: ContributionsInterfaces.DataProviderQuery,
+        scopeName?: string,
+        scopeValue?: string
+        ): Promise<ContributionsInterfaces.DataProviderResult> {
 
         return new Promise<ContributionsInterfaces.DataProviderResult>(async (resolve, reject) => {
             let routeValues: any = {
+                scopeName: scopeName,
+                scopeValue: scopeValue
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Contribution",
                     "738368db-35ee-4b85-9f94-77ed34af2b0d",
                     routeValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ContributionsInterfaces.DataProviderResult>;
                 res = await this.rest.create<ContributionsInterfaces.DataProviderResult>(url, query, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -117,7 +125,7 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
         contributionIds?: string[],
         includeDisabledApps?: boolean,
         assetTypes?: string[]
-    ): Promise<ContributionsInterfaces.InstalledExtension[]> {
+        ): Promise<ContributionsInterfaces.InstalledExtension[]> {
 
         return new Promise<ContributionsInterfaces.InstalledExtension[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -128,28 +136,28 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
                 includeDisabledApps: includeDisabledApps,
                 assetTypes: assetTypes && assetTypes.join(":"),
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Contribution",
                     "2648442b-fd63-4b9a-902f-0c913510f139",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ContributionsInterfaces.InstalledExtension[]>;
                 res = await this.rest.get<ContributionsInterfaces.InstalledExtension[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ContributionsInterfaces.TypeInfo.InstalledExtension,
-                    true);
+                                              ContributionsInterfaces.TypeInfo.InstalledExtension,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -166,7 +174,7 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
         publisherName: string,
         extensionName: string,
         assetTypes?: string[]
-    ): Promise<ContributionsInterfaces.InstalledExtension> {
+        ): Promise<ContributionsInterfaces.InstalledExtension> {
 
         return new Promise<ContributionsInterfaces.InstalledExtension>(async (resolve, reject) => {
             let routeValues: any = {
@@ -177,28 +185,28 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
             let queryValues: any = {
                 assetTypes: assetTypes && assetTypes.join(":"),
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "3.2-preview.1",
+                    "4.1-preview.1",
                     "Contribution",
                     "3e2f6668-0798-4dcb-b592-bfe2fa57fde2",
                     routeValues,
                     queryValues);
 
                 let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<ContributionsInterfaces.InstalledExtension>;
                 res = await this.rest.get<ContributionsInterfaces.InstalledExtension>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    ContributionsInterfaces.TypeInfo.InstalledExtension,
-                    false);
+                                              ContributionsInterfaces.TypeInfo.InstalledExtension,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
