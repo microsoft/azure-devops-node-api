@@ -1,3 +1,24 @@
+# Building the Code
+
+## Pre-requisites
+
+To build and test you need LTS Node >= 6.12.0 and Npm 5.5.1 (we use lock files).  You can download from [nodejs.org](https://nodejs.org)
+
+## Build
+ 
+```
+$ npm install
+$ npm run build
+```
+
+## Test
+
+You should test with node 4.x, 6.x and 8.x LTS.  We recommend using nvm ([linux](https://github.com/creationix/nvm) / [windows](https://github.com/coreybutler/nvm-windows))
+
+```
+npm test
+```
+
 # How to contribute
 
 One of the best ways to contribute is to participate in discussions and request features you need. You can also contribute by submitting pull requests with code changes.
@@ -47,7 +68,33 @@ times in N different commits. If there was some accidental reformatting or white
 changes during the course of your commits, please rebase them away before submitting
 the PR.
 
+# Instructions for Logging Issues
+
+## 1. Search for Duplicates
+
+[Search the existing issues](https://github.com/Microsoft/vsts-node-api/issues) before logging a new one.
+
+## 2. Did you find a bug?
+
+When logging a bug, please be sure to include the following:
+ * What version are you using?
+ * If at all possible, an *isolated* way to reproduce the behavior
+ * The behavior you expect to see, and the actual behavior
+ * Ensure it doesn't reproduce on the latest version or master
+ * An http trace from fiddler or charles if possible (the relevant parts)
+
+## 5. Do you have a suggestion?
+
+We also accept suggestions in the issue tracker.
+
+In general, things we find useful when reviewing suggestions are:
+* A description of the problem you're trying to solve
+* An overview of the suggested solution
+* Examples of how the suggestion would work in various places
+  * Code examples showing e.g. "this would be an error, this wouldn't"
+  * Code examples showing the generated JavaScript (if applicable)
+* If relevant, precedent in other languages can be useful for establishing context and expected behavior
+
 ## Contributor license agreement
 
 You must sign a [Contributor License Agreement](https://cla.microsoft.com/) before submitting your pull request. To complete the Contributor License Agreement (CLA), you will need to submit a request via the [form](https://cla.microsoft.com/) and then electronically sign the CLA when you receive the email containing the link to the document. You need to sign the CLA only once to cover submission to any Microsoft OSS project. 
-
