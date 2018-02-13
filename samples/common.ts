@@ -1,5 +1,3 @@
-/// <reference path="typings/index.d.ts" />
-
 import * as vm from 'vso-node-api';
 import * as lim from 'vso-node-api/interfaces/LocationsInterfaces';
 

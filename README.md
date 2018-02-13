@@ -13,10 +13,6 @@ See [samples](./samples) for complete coding examples
 npm install vso-node-api --save
 ```
 
-### Typings
-
-Typings (.d.ts) are now distributed with the api, so intellisense and compile support just works from `tsc` and [vscode]()  
-
 ![Intellisense](docs/intellisense.png)  
 
 ### Create a connection

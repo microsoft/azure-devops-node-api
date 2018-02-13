@@ -27,7 +27,6 @@ target.build = function() {
     target.clean();
 
     run('tsc --outDir ' + buildPath);
-    cp(rp('dependencies/typings.json'), buildPath);
     cp('-Rf', rp('api/opensource'), buildPath);
     cp(rp('package.json'), buildPath);
     cp(rp('README.md'), buildPath);
