@@ -41,12 +41,14 @@ import { WorkItemField } from 'vso-node-api/interfaces/WorkItemTrackingInterface
 export async function run() {
     try
     {
-        let vsts: vsoNodeApi.WebApi = await common.getWebApi();
+        const vstsCollectionLevel: vsoNodeApi.WebApi = await common.getWebApi();
+        const vstsDeploymentLevel: vsoNodeApi.WebApi = await common.getDeploymentLevelWebApi();
 
         /********** Accounts **********/
-        // BROKEN
+        // Where does this fail?
+        // Empty array for endpoints
         // printSectionStart("Accounts");
-        // const accountsApi = await vsts.getAccountsApi();
+        // const accountsApi = await vstsDeploymentLevel.getAccountsApi();
         // const accountSettings: { [key: string] : string; } = await accountsApi.getAccountSettings();
 
         // if (accountSettings) {
@@ -54,18 +56,17 @@ export async function run() {
         // }
 
         /********** Build **********/
-        printSectionStart('Build');
-        const buildApi = await vsts.getBuildApi();
-        const builds: Build[] = await buildApi.getBuilds(common.getProject());
+        // printSectionStart('Build');
+        // const buildApi = await vstsCollectionLevel.getBuildApi();
+        // const builds: Build[] = await buildApi.getBuilds(common.getProject());
 
-        if (builds) {
-            console.log(`found ${builds.length} builds`);
-        }
+        // if (builds) {
+        //     console.log(`found ${builds.length} builds`);
+        // }
 
         /********** Chat **********/
-        // BROKEN
         // printSectionStart('Chat');
-        // const chatApi = await vsts.getChatApi();
+        // const chatApi = await vstsDeploymentLevel.getChatApi();
         // const rooms: Room[] = await chatApi.getAllRooms();
 
         // if (rooms) {
@@ -75,18 +76,18 @@ export async function run() {
         // }
 
         /********** Core **********/
-        printSectionStart('Core');
-        const coreApi = await vsts.getCoreApi();
-        const teams: WebApiTeam[] = await coreApi.getAllTeams();
+        // printSectionStart('Core');
+        // const coreApi = await vstsCollectionLevel.getCoreApi();
+        // const teams: WebApiTeam[] = await coreApi.getAllTeams();
 
-        if (teams) {
-            console.log(`found ${teams.length} teams`);
-        }
+        // if (teams) {
+        //     console.log(`found ${teams.length} teams`);
+        // }
 
         /********** Contributions **********/
-        // BROKEN
+        // NOT IN RESOURCE AREAS LIST.
         // printSectionStart('Contributions');
-        // const contributionsApi = await vsts.getContributionsApi();
+        // const contributionsApi = await vstsDeploymentLevel.getContributionsApi();
         // const installedExtensions: InstalledExtension[] = await contributionsApi.getInstalledExtensions();
 
         // if (installedExtensions) {
@@ -100,18 +101,19 @@ export async function run() {
 
 
         /********** Dashboard **********/
-        printSectionStart('Dashboard');
-        const dashboardApi = await vsts.getDashboardApi();
-        const widgetTypes: WidgetTypesResponse = await dashboardApi.getWidgetTypes(WidgetScope.Collection_User);
+        // printSectionStart('Dashboard');
+        // const dashboardApi = await vstsCollectionLevel.getDashboardApi();
+        // const widgetTypes: WidgetTypesResponse = await dashboardApi.getWidgetTypes(WidgetScope.Collection_User);
 
-        if (widgetTypes) {
-            console.log(`found ${widgetTypes.widgetTypes.length} widget types`);
-        }
+        // if (widgetTypes) {
+        //     console.log(`found ${widgetTypes.widgetTypes.length} widget types`);
+        // }
 
         /********** Delegated Authorization **********/
-        // // BROKEN
+        // Where does this fail?
+        // Still returns empty array even using deployment level url
         // printSectionStart('Delegated Authorization');
-        // const delegatedAuthorizationApi = await vsts.getDelegatedAuthorizationApi();
+        // const delegatedAuthorizationApi = await vstsDeploymentLevel.getDelegatedAuthorizationApi();
 
         // const registrations = await delegatedAuthorizationApi.list();
         // if (registrations) {
@@ -119,34 +121,34 @@ export async function run() {
         // }
 
         /********** Extension Management **********/
-        printSectionStart('Extension Management');
-        const extensionManagementApi = await vsts.getExtensionManagementApi();
-        const requests:RequestedExtension[] = await extensionManagementApi.getRequests();
+        // printSectionStart('Extension Management');
+        // const extensionManagementApi = await vstsCollectionLevel.getExtensionManagementApi();
+        // const requests:RequestedExtension[] = await extensionManagementApi.getRequests();
 
-        if (requests) {
-            console.log(`found ${requests.length} requests`);
-        }
+        // if (requests) {
+        //     console.log(`found ${requests.length} requests`);
+        // }
 
         /********** Feature Availability **********/
 
 
         /********** Feature Management **********/
-        printSectionStart('Feature Management');
-        const featureManagementApi = await vsts.getFeatureManagementApi();
-        const features: ContributedFeature[] = await featureManagementApi.getFeatures();
+        // printSectionStart('Feature Management');
+        // const featureManagementApi = await vstsCollectionLevel.getFeatureManagementApi();
+        // const features: ContributedFeature[] = await featureManagementApi.getFeatures();
 
-        if (features) {
-            console.log(`found ${features.length} features`);
-        }
+        // if (features) {
+        //     console.log(`found ${features.length} features`);
+        // }
 
         /********** File Container **********/
-        printSectionStart('File Container');
-        const fileContainerApi = await vsts.getFileContainerApi();
-        const containers: FileContainer[] = await fileContainerApi.getContainers();
+        // printSectionStart('File Container');
+        // const fileContainerApi = await vstsCollectionLevel.getFileContainerApi();
+        // const containers: FileContainer[] = await fileContainerApi.getContainers();
 
-        if (containers) {
-            console.log(`found ${containers.length} containers`);
-        }
+        // if (containers) {
+        //     console.log(`found ${containers.length} containers`);
+        // }
 
         /********** Gallery **********/
         // BROKEN
@@ -154,13 +156,13 @@ export async function run() {
         // const galleryApi = await vsts.getGalleryApi();
 
         /********** Git **********/
-        printSectionStart('Git');
-        const gitApi = await vsts.getGitApi();
-        const respositories: GitRepository[] = await gitApi.getRepositories();
+        // printSectionStart('Git');
+        // const gitApi = await vstsCollectionLevel.getGitApi();
+        // const respositories: GitRepository[] = await gitApi.getRepositories();
 
-        if (respositories) {
-            console.log(`found ${respositories.length} respositories`);
-        }
+        // if (respositories) {
+        //     console.log(`found ${respositories.length} respositories`);
+        // }
 
         /********** Identities **********/
         // BROKEN
@@ -178,27 +180,28 @@ export async function run() {
         // }
 
         /********** Locations **********/
-        printSectionStart('Locations');
-        const locationsApi = await vsts.getLocationsApi();
-        const resourceAreas: ResourceAreaInfo[] = await locationsApi.getResourceAreas();
+        // printSectionStart('Locations');
+        // const locationsApi = await vstsCollectionLevel.getLocationsApi();
+        // const resourceAreas: ResourceAreaInfo[] = await locationsApi.getResourceAreas();
 
-        if (resourceAreas) {
-            console.log(`found ${resourceAreas.length} resource areas`);
-        }
+        // if (resourceAreas) {
+        //     console.log(`found ${resourceAreas.length} resource areas`);
+        // }
 
-        /********** Notifications **********/
-        printSectionStart('Notifications');
-        const notificationsApi = await vsts.getNotificationApi();
-        const subscriptions = await notificationsApi.listSubscriptions();
+        // /********** Notifications **********/
+        // printSectionStart('Notifications');
+        // const notificationsApi = await vstsCollectionLevel.getNotificationApi();
+        // const subscriptions = await notificationsApi.listSubscriptions();
 
-        if (subscriptions) {
-            console.log(`found ${subscriptions.length} subscriptions`);
-        }
+        // if (subscriptions) {
+        //     console.log(`found ${subscriptions.length} subscriptions`);
+        // }
 
         /********** Organization **********/
-        // BROKEN
+        // Where does this fail?
+        // array of endpoints is empty
         // printSectionStart('Organization');
-        // const organizationApi = await vsts.getOrganizationApi();
+        // const organizationApi = await vstsDeploymentLevel.getOrganizationApi();
         // const collections: Collection[] = await organizationApi.getCollections();
 
         // if (collections) {
@@ -208,65 +211,66 @@ export async function run() {
         // }
 
         /********** Policy **********/
-        printSectionStart('Policy');
-        const policyApi = await vsts.getPolicyApi();
-        const policyTypes: PolicyType[] = await policyApi.getPolicyTypes(common.getProject());
+        // printSectionStart('Policy');
+        // const policyApi = await vstsCollectionLevel.getPolicyApi();
+        // const policyTypes: PolicyType[] = await policyApi.getPolicyTypes(common.getProject());
 
-        if (policyTypes) {
-            console.log(`found ${policyTypes.length} policy types`);
-        }
+        // if (policyTypes) {
+        //     console.log(`found ${policyTypes.length} policy types`);
+        // }
 
         /********** Profile **********/
-        printSectionStart('Profile');
-        const profileApi = await vsts.getProfileApi();
-        const regions: ProfileRegions = await profileApi.getRegions();
+        // printSectionStart('Profile');
+        // const profileApi = await vstsCollectionLevel.getProfileApi();
+        // const regions: ProfileRegions = await profileApi.getRegions();
 
-        if (regions && regions.regions) {
-            console.log(`found ${regions.regions.length} regions`);
-        }
+        // if (regions && regions.regions) {
+        //     console.log(`found ${regions.regions.length} regions`);
+        // }
 
         /********** Project Analysis **********/
-        printSectionStart('Project Analysis');
-        const projectAnalysisApi = await vsts.getProjectAnalysisApi();
-        const languageAnalytics: ProjectLanguageAnalytics = await projectAnalysisApi.getProjectLanguageAnalytics(common.getProject());
+        // printSectionStart('Project Analysis');
+        // const projectAnalysisApi = await vstsCollectionLevel.getProjectAnalysisApi();
+        // const languageAnalytics: ProjectLanguageAnalytics = await projectAnalysisApi.getProjectLanguageAnalytics(common.getProject());
 
-        if (languageAnalytics) {
-            console.log(`language analytics id ${languageAnalytics.id}`);
-        }
+        // if (languageAnalytics) {
+        //     console.log(`language analytics id ${languageAnalytics.id}`);
+        // }
 
         /********** Release **********/
-        printSectionStart('Release');
-        const releaseApi = await vsts.getReleaseApi();
-        const releases: Release[] = await releaseApi.getReleases();
+        // printSectionStart('Release');
+        // const releaseApi = await vstsCollectionLevel.getReleaseApi();
+        // const releases: Release[] = await releaseApi.getReleases();
 
-        if (releases) {
-            console.log(`found ${releases.length} releases`);
-        }
+        // if (releases) {
+        //     console.log(`found ${releases.length} releases`);
+        // }
 
         /********** Security **********/
-        printSectionStart('Security');
-        const securityApi = await vsts.getSecurityRolesApi();
-        const roleDefinitions: SecurityRole[] = await securityApi.getRoleDefinitions("");
+        // printSectionStart('Security');
+        // const securityApi = await vstsCollectionLevel.getSecurityRolesApi();
+        // const roleDefinitions: SecurityRole[] = await securityApi.getRoleDefinitions("");
 
-        if (roleDefinitions) {
-            console.log(`found ${roleDefinitions.length} role definitions`);
-        }
+        // if (roleDefinitions) {
+        //     console.log(`found ${roleDefinitions.length} role definitions`);
+        // }
 
         /********** Service Hooks **********/
-        // BROKEN
-        // printSectionStart('Service Hooks');
-        // const serviceHooksApi = await vsts.getServiceHooksApi();
-        // const consumers: Consumer[] = await serviceHooksApi.getConsumers();
+        // Where is this broken?
+        // 
+        printSectionStart('Service Hooks');
+        const serviceHooksApi = await vstsCollectionLevel.getServiceHooksApi();
+        const consumers: Consumer[] = await serviceHooksApi.getConsumers();
         
-        // if (consumers) {
-        //     for (var consumer of consumers) {
-        //         console.log(consumer.name);
-        //     }
-        // }
+        if (consumers) {
+            for (var consumer of consumers) {
+                console.log(consumer.name);
+            }
+        }
 
         /********** Task **********/
         printSectionStart('Task');
-        const taskApi = await vsts.getTaskApi();
+        const taskApi = await vstsCollectionLevel.getTaskApi();
         const timelines: TaskAgentTimeline[] = await taskApi.getTimelines("", "", "");
 
         if (timelines) {
@@ -275,7 +279,7 @@ export async function run() {
 
         /********** Task Agent **********/
         printSectionStart('Task Agent');
-        const taskAgentApi = await vsts.getTaskAgentApi();
+        const taskAgentApi = await vstsCollectionLevel.getTaskAgentApi();
         const agentPools: TaskAgentPool[] = await taskAgentApi.getAgentPools();
 
         if (agentPools) {
@@ -284,7 +288,7 @@ export async function run() {
 
         /********** Test **********/
         printSectionStart('Test');
-        const testApi = await vsts.getTestApi();
+        const testApi = await vstsCollectionLevel.getTestApi();
         const plans: TestPlan[] = await testApi.getPlans(common.getProject());
 
         if (plans) {
@@ -293,7 +297,7 @@ export async function run() {
 
         /********** Tfvc **********/
         printSectionStart('Tfvc');
-        const tfvcApi = await vsts.getTfvcApi();
+        const tfvcApi = await vstsCollectionLevel.getTfvcApi();
         const changesets: TfvcChangesetRef[] = await tfvcApi.getChangesets();
 
         if (changesets) {
@@ -312,7 +316,7 @@ export async function run() {
 
         /********** Work **********/
         printSectionStart('Work');
-        const workApi = await vsts.getWorkApi();
+        const workApi = await vstsCollectionLevel.getWorkApi();
         const workPlans: Plan[] = await workApi.getPlans(common.getProject());
 
         if (workPlans) {
@@ -321,7 +325,7 @@ export async function run() {
 
         /********** Work Item Tracking **********/
         printSectionStart('Work Item Tracking');
-        const workItemTrackingApi = await vsts.getWorkItemTrackingApi();
+        const workItemTrackingApi = await vstsCollectionLevel.getWorkItemTrackingApi();
         const workItemFields: WorkItemField[] = await workItemTrackingApi.getFields();
 
         if (workItemFields) {
