@@ -57,12 +57,12 @@ export async function run() {
 
         /********** Build **********/
         // printSectionStart('Build');
-        // const buildApi = await vstsCollectionLevel.getBuildApi();
-        // const builds: Build[] = await buildApi.getBuilds(common.getProject());
+        const buildApi = await vstsCollectionLevel.getBuildApi();
+        const builds: Build[] = await buildApi.getBuilds(common.getProject());
 
-        // if (builds) {
-        //     console.log(`found ${builds.length} builds`);
-        // }
+        if (builds) {
+            console.log(`found ${builds.length} builds`);
+        }
 
         /********** Chat **********/
         // printSectionStart('Chat');
@@ -258,15 +258,15 @@ export async function run() {
         /********** Service Hooks **********/
         // Where is this broken?
         // 
-        printSectionStart('Service Hooks');
-        const serviceHooksApi = await vstsCollectionLevel.getServiceHooksApi();
-        const consumers: Consumer[] = await serviceHooksApi.getConsumers();
+        // printSectionStart('Service Hooks');
+        // const serviceHooksApi = await vstsCollectionLevel.getServiceHooksApi();
+        // const consumers: Consumer[] = await serviceHooksApi.getConsumers();
         
-        if (consumers) {
-            for (var consumer of consumers) {
-                console.log(consumer.name);
-            }
-        }
+        // if (consumers) {
+        //     for (var consumer of consumers) {
+        //         console.log(consumer.name);
+        //     }
+        // }
 
         /********** Task **********/
         printSectionStart('Task');

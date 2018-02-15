@@ -13,8 +13,12 @@ function getEnv(name: string): string {
 export async function getWebApi(): Promise<vm.WebApi> {
     return new Promise<vm.WebApi>(async (resolve, reject) => {
         try {
-            let serverUrl = getEnv('API_URL');
-            let token = getEnv('API_TOKEN');
+
+            // let serverUrl = getEnv('API_URL');
+            // let token = getEnv('API_TOKEN');
+
+
+
             let authHandler = vm.getPersonalAccessTokenHandler(token);
 
             let option = undefined;
@@ -22,14 +26,14 @@ export async function getWebApi(): Promise<vm.WebApi> {
             // The following sample is for testing proxy
             // option = {
             //     proxy: {
-            //         proxyUrl: "http://127.0.0.1:8888",
-            //         proxyUsername: "1",
-            //         proxyPassword: "1",
-            //         proxyBypassHosts: [
-            //             "github\.com"
-            //         ],
+            //         proxyUrl: "http://127.0.0.1:8888"
+            //         // proxyUsername: "1",
+            //         // proxyPassword: "1",
+            //         // proxyBypassHosts: [
+            //         //     "github\.com"
+            //         // ],
             //     },
-            //     ignoreSslError: true
+            //     //ignoreSslError: true
             // };
 
             // The following sample is for testing cert
@@ -97,7 +101,9 @@ export async function getDeploymentLevelWebApi(): Promise<vm.WebApi> {
 }
 
 export function getProject(): string {
-    return getEnv('API_PROJECT');
+    return 'Test';
+
+    //return getEnv('API_PROJECT');
 }
 
 export function banner(title: string): void {
