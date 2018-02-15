@@ -370,13 +370,18 @@ export class WebApi {
             return serverUrl;
         }
 
-        const resourceAreas: lim.ResourceAreaInfo[] = await this._getResourceAreas();
+        // This must be of type any, see comment just below.
+        const resourceAreas: any = await this._getResourceAreas();
 
         if (resourceAreas === undefined) {
             throw new Error((`Failed to retrieve resource areas ' + 'from server: ${serverUrl}`));
         }
 
-        if (resourceAreas.length === 0) {
+        // The response type differs based on whether or not there are resource areas. When we are on prem we get:
+        // {"count":0,"value":null} and when we are on VSTS we get an array of resource areas.
+        // Due to this strangeness the type of resourceAreas needs to be any and we need to check .count
+        // When going against vsts count will be undefined. On prem it will be 0
+        if (!resourceAreas || resourceAreas.length === 0 || resourceAreas.count === 0) {
             // For on prem environments we get an empty list
             return serverUrl;
         }
