@@ -10,7 +10,7 @@ See [samples](./samples) for complete coding examples
 
 ### Install the library
 ```
-npm install vso-node-api --save
+npm install vsts-node-api-helaili --save
 ```
 
 ### Typings
@@ -27,9 +27,9 @@ let vsts = require('vso-node-api');
 let collectionUrl = "https://fabrikam.visualstudio.com/defaultcollection";
 
 // ideally from config
-let token: string = "cbdeb34vzyuk5l4gxc4qfczn3lko3avfkfqyb47etahq6axpcqha"; 
+let token: string = "cbdeb34vzyuk5l4gxc4qfczn3lko3avfkfqyb47etahq6axpcqha";
 
-let authHandler = vsts.getPersonalAccessTokenHandler(token); 
+let authHandler = vsts.getPersonalAccessTokenHandler(token);
 let connect = new vsts.WebApi(collectionUrl, authHandler);    
 ```
 
@@ -76,7 +76,7 @@ These clients are available in the new 6.x preview API (`npm install vso-node-ap
 * WorkItemTracking
 
 ### Use the client
- 
+
 Coding is easy using linear coding with async/await in typescript
 
 ```javascript

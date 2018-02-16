@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -60,8 +60,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
-                    "hookssvc",
-                    "6a1f0102-a266-4ca8-bfe9-f126df266a37",
+                    "hooks",
+                    "c3428e90-7a69-4194-8ed8-0f153185ee0d",
                     routeValues);
 
                 let url: string = verData.requestUrl;
@@ -99,8 +99,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
-                    "hookssvc",
-                    "6a1f0102-a266-4ca8-bfe9-f126df266a37",
+                    "hooks",
+                    "c3428e90-7a69-4194-8ed8-0f153185ee0d",
                     routeValues);
 
                 let url: string = verData.requestUrl;
@@ -138,8 +138,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
-                    "hookssvc",
-                    "5f431332-1a18-43d9-ba45-109ec52c71c7",
+                    "hooks",
+                    "4301c514-5f34-4f5d-a145-f0ea7b5b7d19",
                     routeValues);
 
                 let url: string = verData.requestUrl;
@@ -174,8 +174,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
-                    "hookssvc",
-                    "5f431332-1a18-43d9-ba45-109ec52c71c7",
+                    "hooks",
+                    "4301c514-5f34-4f5d-a145-f0ea7b5b7d19",
                     routeValues);
 
                 let url: string = verData.requestUrl;
@@ -212,8 +212,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
-                    "hookssvc",
-                    "46f7c4d2-97a1-48e6-85f3-5083742752fd",
+                    "hooks",
+                    "e0e0a1c9-beeb-4fb7-a8c8-b18e3161a50e",
                     routeValues);
 
                 let url: string = verData.requestUrl;
@@ -250,7 +250,7 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
-                    "hookssvc",
+                    "hooks",
                     "95784519-7b74-4625-8888-49b294fe46b3",
                     routeValues);
 
@@ -292,7 +292,7 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
-                    "hookssvc",
+                    "hooks",
                     "a8dbbb75-c3cf-4d7b-a61d-c95f5a97ca55",
                     routeValues);
 
@@ -343,7 +343,7 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
-                    "hookssvc",
+                    "hooks",
                     "a8dbbb75-c3cf-4d7b-a61d-c95f5a97ca55",
                     routeValues,
                     queryValues);
@@ -382,7 +382,7 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
-                    "hookssvc",
+                    "hooks",
                     "e5e555f6-94ad-475b-ac98-7f011b48dcd5",
                     routeValues);
 
@@ -420,8 +420,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
-                    "hookssvc",
-                    "4431ee3f-13e3-4b41-b62e-47289e90d3dc",
+                    "hooks",
+                    "fc50d02a-849f-41fb-8af1-0a5216103269",
                     routeValues);
 
                 let url: string = verData.requestUrl;
@@ -459,8 +459,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
-                    "hookssvc",
-                    "4431ee3f-13e3-4b41-b62e-47289e90d3dc",
+                    "hooks",
+                    "fc50d02a-849f-41fb-8af1-0a5216103269",
                     routeValues);
 
                 let url: string = verData.requestUrl;
@@ -498,8 +498,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
-                    "hookssvc",
-                    "4431ee3f-13e3-4b41-b62e-47289e90d3dc",
+                    "hooks",
+                    "fc50d02a-849f-41fb-8af1-0a5216103269",
                     routeValues);
 
                 let url: string = verData.requestUrl;
@@ -549,8 +549,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
-                    "hookssvc",
-                    "4431ee3f-13e3-4b41-b62e-47289e90d3dc",
+                    "hooks",
+                    "fc50d02a-849f-41fb-8af1-0a5216103269",
                     routeValues,
                     queryValues);
 
@@ -588,8 +588,8 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
-                    "hookssvc",
-                    "4431ee3f-13e3-4b41-b62e-47289e90d3dc",
+                    "hooks",
+                    "fc50d02a-849f-41fb-8af1-0a5216103269",
                     routeValues);
 
                 let url: string = verData.requestUrl;
@@ -626,7 +626,7 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
-                    "hookssvc",
+                    "hooks",
                     "d4a77d7b-9be6-4060-b53d-1211f34de619",
                     routeValues);
 
@@ -664,7 +664,7 @@ export class ServiceHooksApi extends basem.ClientApiBase implements IServiceHook
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "3.2-preview.1",
-                    "hookssvc",
+                    "hooks",
                     "b906cedb-0a8e-4e3c-b1b1-2f3d680f035e",
                     routeValues);
 
