@@ -2,16 +2,22 @@
 
 Integrate with Visual Studio Team Services from your Node.js apps.
 
+### Install the library
+```
+npm install vso-node-api --save
+```
+
+## News
+
+6.3.2 has been released and is out of preview.  This release contains the latest generated 4.0 VSTS/TFS api contracts.  It also consumes the typed-rest-client with ntlm added back, redirect, proxy and client cert support.
+
+Note: as of released 6.3.2 version, the web api create methods need to be async so you must use await.  For example, note the `await` [in this sample](https://github.com/Microsoft/vsts-node-api/blob/master/samples/build.ts#L11) 
+
 ## Get started
 
 ### Samples
 
 See [samples](./samples) for complete coding examples
-
-### Install the library
-```
-npm install vso-node-api --save
-```
 
 ### Typings
 
