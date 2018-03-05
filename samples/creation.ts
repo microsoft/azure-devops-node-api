@@ -43,16 +43,6 @@ export async function run() {
     {
         let vsts: vsoNodeApi.WebApi = await common.getWebApi();
 
-        /********** Accounts **********/
-        // BROKEN
-        // printSectionStart("Accounts");
-        // const accountsApi = await vsts.getAccountsApi();
-        // const accountSettings: { [key: string] : string; } = await accountsApi.getAccountSettings();
-
-        // if (accountSettings) {
-        //     console.log(`found ${Object.keys(accountSettings).length} account settings`);
-        // }
-
         /********** Build **********/
         printSectionStart('Build');
         const buildApi = await vsts.getBuildApi();
@@ -61,18 +51,6 @@ export async function run() {
         if (builds) {
             console.log(`found ${builds.length} builds`);
         }
-
-        /********** Chat **********/
-        // BROKEN
-        // printSectionStart('Chat');
-        // const chatApi = await vsts.getChatApi();
-        // const rooms: Room[] = await chatApi.getAllRooms();
-
-        // if (rooms) {
-        //     for (var room of rooms) {
-        //         console.log(room.name);
-        //     }
-        // }
 
         /********** Core **********/
         printSectionStart('Core');
@@ -83,22 +61,6 @@ export async function run() {
             console.log(`found ${teams.length} teams`);
         }
 
-        /********** Contributions **********/
-        // BROKEN
-        // printSectionStart('Contributions');
-        // const contributionsApi = await vsts.getContributionsApi();
-        // const installedExtensions: InstalledExtension[] = await contributionsApi.getInstalledExtensions();
-
-        // if (installedExtensions) {
-        //     for (var installedExtension of installedExtensions) {
-        //         console.log(installedExtension.extensionName);
-        //     }
-        // }
-
-        /********** Customer Intelligence **********/
-
-
-
         /********** Dashboard **********/
         printSectionStart('Dashboard');
         const dashboardApi = await vsts.getDashboardApi();
@@ -108,16 +70,6 @@ export async function run() {
             console.log(`found ${widgetTypes.widgetTypes.length} widget types`);
         }
 
-        /********** Delegated Authorization **********/
-        // // BROKEN
-        // printSectionStart('Delegated Authorization');
-        // const delegatedAuthorizationApi = await vsts.getDelegatedAuthorizationApi();
-
-        // const registrations = await delegatedAuthorizationApi.list();
-        // if (registrations) {
-        //     console.log(`found ${registrations.length} registrations`);
-        // }
-
         /********** Extension Management **********/
         printSectionStart('Extension Management');
         const extensionManagementApi = await vsts.getExtensionManagementApi();
@@ -126,9 +78,6 @@ export async function run() {
         if (requests) {
             console.log(`found ${requests.length} requests`);
         }
-
-        /********** Feature Availability **********/
-
 
         /********** Feature Management **********/
         printSectionStart('Feature Management');
@@ -148,11 +97,6 @@ export async function run() {
             console.log(`found ${containers.length} containers`);
         }
 
-        /********** Gallery **********/
-        // BROKEN
-        // printSectionStart('Gallery');
-        // const galleryApi = await vsts.getGalleryApi();
-
         /********** Git **********/
         printSectionStart('Git');
         const gitApi = await vsts.getGitApi();
@@ -161,21 +105,6 @@ export async function run() {
         if (respositories) {
             console.log(`found ${respositories.length} respositories`);
         }
-
-        /********** Identities **********/
-        // BROKEN
-        // printSectionStart('Identities');
-        // const identitiesApi = await vsts.getIdentitiesApi();
-
-        // const identityGroups = await identitiesApi.listGroups();
-        // if (identityGroups) {
-        //     console.log(`found ${identityGroups.length} identity groups`);
-        // }
-
-        // const self: IdentitySelf = await identitiesApi.getSelf();
-        // if (self) {
-        //     console.log(self.displayName);
-        // }
 
         /********** Locations **********/
         printSectionStart('Locations');
@@ -194,18 +123,6 @@ export async function run() {
         if (subscriptions) {
             console.log(`found ${subscriptions.length} subscriptions`);
         }
-
-        /********** Organization **********/
-        // BROKEN
-        // printSectionStart('Organization');
-        // const organizationApi = await vsts.getOrganizationApi();
-        // const collections: Collection[] = await organizationApi.getCollections();
-
-        // if (collections) {
-        //     for (var collection of collections) {
-        //         console.log(collection.name);
-        //     }
-        // }
 
         /********** Policy **********/
         printSectionStart('Policy');
@@ -252,18 +169,6 @@ export async function run() {
             console.log(`found ${roleDefinitions.length} role definitions`);
         }
 
-        /********** Service Hooks **********/
-        // BROKEN
-        // printSectionStart('Service Hooks');
-        // const serviceHooksApi = await vsts.getServiceHooksApi();
-        // const consumers: Consumer[] = await serviceHooksApi.getConsumers();
-        
-        // if (consumers) {
-        //     for (var consumer of consumers) {
-        //         console.log(consumer.name);
-        //     }
-        // }
-
         /********** Task **********/
         printSectionStart('Task');
         const taskApi = await vsts.getTaskApi();
@@ -299,16 +204,6 @@ export async function run() {
         if (changesets) {
             console.log(`found ${changesets.length} changesets`);
         }
-
-        /********** Token **********/
-        // BROKEN
-        // printSectionStart('Token');
-        // const tokenApi = await vsts.getTokenApi();
-        // const tokenList: TokenRegistration[] = await tokenApi.list();
-
-        // if (tokenList) {
-        //     console.log(`found ${tokenList.length} token registrations`);
-        // }
 
         /********** Work **********/
         printSectionStart('Work');
