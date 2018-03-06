@@ -8,11 +8,6 @@ import * as vm from 'vso-node-api';
 import * as ta from 'vso-node-api/FileContainerApi';
 import * as ti from 'vso-node-api/interfaces/FileContainerInterfaces';
 
-//
-import * as wi2 from 'vso-node-api/WorkItemTrackingApi';
-import * as wi from 'vso-node-api/interfaces/WorkItemTrackingInterfaces';
-//
-
 export async function run() {
     try
     {
