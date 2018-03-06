@@ -44,17 +44,6 @@ export async function run() {
         const vstsCollectionLevel: vsoNodeApi.WebApi = await common.getWebApi();
         const vstsDeploymentLevel: vsoNodeApi.WebApi = await common.getDeploymentLevelWebApi();
 
-        /********** Accounts **********/
-        // Where does this fail?
-        // Empty array for endpoints
-        // printSectionStart("Accounts");
-        // const accountsApi = await vstsDeploymentLevel.getAccountsApi();
-        // const accountSettings: { [key: string] : string; } = await accountsApi.getAccountSettings();
-
-        // if (accountSettings) {
-        //     console.log(`found ${Object.keys(accountSettings).length} account settings`);
-        // }
-
         /********** Build **********/
         // printSectionStart('Build');
         const buildApi = await vstsCollectionLevel.getBuildApi();
@@ -64,209 +53,122 @@ export async function run() {
             console.log(`found ${builds.length} builds`);
         }
 
-        /********** Chat **********/
-        // printSectionStart('Chat');
-        // const chatApi = await vstsDeploymentLevel.getChatApi();
-        // const rooms: Room[] = await chatApi.getAllRooms();
-
-        // if (rooms) {
-        //     for (var room of rooms) {
-        //         console.log(room.name);
-        //     }
-        // }
-
         /********** Core **********/
-        // printSectionStart('Core');
-        // const coreApi = await vstsCollectionLevel.getCoreApi();
-        // const teams: WebApiTeam[] = await coreApi.getAllTeams();
+        printSectionStart('Core');
+        const coreApi = await vstsCollectionLevel.getCoreApi();
+        const teams: WebApiTeam[] = await coreApi.getAllTeams();
 
-        // if (teams) {
-        //     console.log(`found ${teams.length} teams`);
-        // }
-
-        /********** Contributions **********/
-        // NOT IN RESOURCE AREAS LIST.
-        // printSectionStart('Contributions');
-        // const contributionsApi = await vstsDeploymentLevel.getContributionsApi();
-        // const installedExtensions: InstalledExtension[] = await contributionsApi.getInstalledExtensions();
-
-        // if (installedExtensions) {
-        //     for (var installedExtension of installedExtensions) {
-        //         console.log(installedExtension.extensionName);
-        //     }
-        // }
-
-        /********** Customer Intelligence **********/
-
-
+        if (teams) {
+            console.log(`found ${teams.length} teams`);
+        }
 
         /********** Dashboard **********/
-        // printSectionStart('Dashboard');
-        // const dashboardApi = await vstsCollectionLevel.getDashboardApi();
-        // const widgetTypes: WidgetTypesResponse = await dashboardApi.getWidgetTypes(WidgetScope.Collection_User);
+        printSectionStart('Dashboard');
+        const dashboardApi = await vstsCollectionLevel.getDashboardApi();
+        const widgetTypes: WidgetTypesResponse = await dashboardApi.getWidgetTypes(WidgetScope.Collection_User);
 
-        // if (widgetTypes) {
-        //     console.log(`found ${widgetTypes.widgetTypes.length} widget types`);
-        // }
-
-        /********** Delegated Authorization **********/
-        // Where does this fail?
-        // Still returns empty array even using deployment level url
-        // printSectionStart('Delegated Authorization');
-        // const delegatedAuthorizationApi = await vstsDeploymentLevel.getDelegatedAuthorizationApi();
-
-        // const registrations = await delegatedAuthorizationApi.list();
-        // if (registrations) {
-        //     console.log(`found ${registrations.length} registrations`);
-        // }
+        if (widgetTypes) {
+            console.log(`found ${widgetTypes.widgetTypes.length} widget types`);
+        }
 
         /********** Extension Management **********/
-        // printSectionStart('Extension Management');
-        // const extensionManagementApi = await vstsCollectionLevel.getExtensionManagementApi();
-        // const requests:RequestedExtension[] = await extensionManagementApi.getRequests();
+        printSectionStart('Extension Management');
+        const extensionManagementApi = await vstsCollectionLevel.getExtensionManagementApi();
+        const requests:RequestedExtension[] = await extensionManagementApi.getRequests();
 
-        // if (requests) {
-        //     console.log(`found ${requests.length} requests`);
-        // }
-
-        /********** Feature Availability **********/
-
+        if (requests) {
+            console.log(`found ${requests.length} requests`);
+        }
 
         /********** Feature Management **********/
-        // printSectionStart('Feature Management');
-        // const featureManagementApi = await vstsCollectionLevel.getFeatureManagementApi();
-        // const features: ContributedFeature[] = await featureManagementApi.getFeatures();
+        printSectionStart('Feature Management');
+        const featureManagementApi = await vstsCollectionLevel.getFeatureManagementApi();
+        const features: ContributedFeature[] = await featureManagementApi.getFeatures();
 
-        // if (features) {
-        //     console.log(`found ${features.length} features`);
-        // }
+        if (features) {
+            console.log(`found ${features.length} features`);
+        }
 
         /********** File Container **********/
-        // printSectionStart('File Container');
-        // const fileContainerApi = await vstsCollectionLevel.getFileContainerApi();
-        // const containers: FileContainer[] = await fileContainerApi.getContainers();
+        printSectionStart('File Container');
+        const fileContainerApi = await vstsCollectionLevel.getFileContainerApi();
+        const containers: FileContainer[] = await fileContainerApi.getContainers();
 
-        // if (containers) {
-        //     console.log(`found ${containers.length} containers`);
-        // }
-
-        /********** Gallery **********/
-        // BROKEN
-        // printSectionStart('Gallery');
-        // const galleryApi = await vsts.getGalleryApi();
+        if (containers) {
+            console.log(`found ${containers.length} containers`);
+        }
 
         /********** Git **********/
-        // printSectionStart('Git');
-        // const gitApi = await vstsCollectionLevel.getGitApi();
-        // const respositories: GitRepository[] = await gitApi.getRepositories();
+        printSectionStart('Git');
+        const gitApi = await vstsCollectionLevel.getGitApi();
+        const respositories: GitRepository[] = await gitApi.getRepositories();
 
-        // if (respositories) {
-        //     console.log(`found ${respositories.length} respositories`);
-        // }
-
-        /********** Identities **********/
-        // BROKEN
-        // printSectionStart('Identities');
-        // const identitiesApi = await vsts.getIdentitiesApi();
-
-        // const identityGroups = await identitiesApi.listGroups();
-        // if (identityGroups) {
-        //     console.log(`found ${identityGroups.length} identity groups`);
-        // }
-
-        // const self: IdentitySelf = await identitiesApi.getSelf();
-        // if (self) {
-        //     console.log(self.displayName);
-        // }
+        if (respositories) {
+            console.log(`found ${respositories.length} respositories`);
+        }
 
         /********** Locations **********/
-        // printSectionStart('Locations');
-        // const locationsApi = await vstsCollectionLevel.getLocationsApi();
-        // const resourceAreas: ResourceAreaInfo[] = await locationsApi.getResourceAreas();
+        printSectionStart('Locations');
+        const locationsApi = await vstsCollectionLevel.getLocationsApi();
+        const resourceAreas: ResourceAreaInfo[] = await locationsApi.getResourceAreas();
 
-        // if (resourceAreas) {
-        //     console.log(`found ${resourceAreas.length} resource areas`);
-        // }
+        if (resourceAreas) {
+            console.log(`found ${resourceAreas.length} resource areas`);
+        }
 
-        // /********** Notifications **********/
-        // printSectionStart('Notifications');
-        // const notificationsApi = await vstsCollectionLevel.getNotificationApi();
-        // const subscriptions = await notificationsApi.listSubscriptions();
+        /********** Notifications **********/
+        printSectionStart('Notifications');
+        const notificationsApi = await vstsCollectionLevel.getNotificationApi();
+        const subscriptions = await notificationsApi.listSubscriptions();
 
-        // if (subscriptions) {
-        //     console.log(`found ${subscriptions.length} subscriptions`);
-        // }
-
-        /********** Organization **********/
-        // Where does this fail?
-        // array of endpoints is empty
-        // printSectionStart('Organization');
-        // const organizationApi = await vstsDeploymentLevel.getOrganizationApi();
-        // const collections: Collection[] = await organizationApi.getCollections();
-
-        // if (collections) {
-        //     for (var collection of collections) {
-        //         console.log(collection.name);
-        //     }
-        // }
+        if (subscriptions) {
+            console.log(`found ${subscriptions.length} subscriptions`);
+        }
 
         /********** Policy **********/
-        // printSectionStart('Policy');
-        // const policyApi = await vstsCollectionLevel.getPolicyApi();
-        // const policyTypes: PolicyType[] = await policyApi.getPolicyTypes(common.getProject());
+        printSectionStart('Policy');
+        const policyApi = await vstsCollectionLevel.getPolicyApi();
+        const policyTypes: PolicyType[] = await policyApi.getPolicyTypes(common.getProject());
 
-        // if (policyTypes) {
-        //     console.log(`found ${policyTypes.length} policy types`);
-        // }
+        if (policyTypes) {
+            console.log(`found ${policyTypes.length} policy types`);
+        }
 
         /********** Profile **********/
-        // printSectionStart('Profile');
-        // const profileApi = await vstsCollectionLevel.getProfileApi();
-        // const regions: ProfileRegions = await profileApi.getRegions();
+        printSectionStart('Profile');
+        const profileApi = await vstsCollectionLevel.getProfileApi();
+        const regions: ProfileRegions = await profileApi.getRegions();
 
-        // if (regions && regions.regions) {
-        //     console.log(`found ${regions.regions.length} regions`);
-        // }
+        if (regions && regions.regions) {
+            console.log(`found ${regions.regions.length} regions`);
+        }
 
         /********** Project Analysis **********/
-        // printSectionStart('Project Analysis');
-        // const projectAnalysisApi = await vstsCollectionLevel.getProjectAnalysisApi();
-        // const languageAnalytics: ProjectLanguageAnalytics = await projectAnalysisApi.getProjectLanguageAnalytics(common.getProject());
+        printSectionStart('Project Analysis');
+        const projectAnalysisApi = await vstsCollectionLevel.getProjectAnalysisApi();
+        const languageAnalytics: ProjectLanguageAnalytics = await projectAnalysisApi.getProjectLanguageAnalytics(common.getProject());
 
-        // if (languageAnalytics) {
-        //     console.log(`language analytics id ${languageAnalytics.id}`);
-        // }
+        if (languageAnalytics) {
+            console.log(`language analytics id ${languageAnalytics.id}`);
+        }
 
         /********** Release **********/
-        // printSectionStart('Release');
-        // const releaseApi = await vstsCollectionLevel.getReleaseApi();
-        // const releases: Release[] = await releaseApi.getReleases();
+        printSectionStart('Release');
+        const releaseApi = await vstsCollectionLevel.getReleaseApi();
+        const releases: Release[] = await releaseApi.getReleases();
 
-        // if (releases) {
-        //     console.log(`found ${releases.length} releases`);
-        // }
+        if (releases) {
+            console.log(`found ${releases.length} releases`);
+        }
 
         /********** Security **********/
-        // printSectionStart('Security');
-        // const securityApi = await vstsCollectionLevel.getSecurityRolesApi();
-        // const roleDefinitions: SecurityRole[] = await securityApi.getRoleDefinitions("");
+        printSectionStart('Security');
+        const securityApi = await vstsCollectionLevel.getSecurityRolesApi();
+        const roleDefinitions: SecurityRole[] = await securityApi.getRoleDefinitions("");
 
-        // if (roleDefinitions) {
-        //     console.log(`found ${roleDefinitions.length} role definitions`);
-        // }
-
-        /********** Service Hooks **********/
-        // Where is this broken?
-        // 
-        // printSectionStart('Service Hooks');
-        // const serviceHooksApi = await vstsCollectionLevel.getServiceHooksApi();
-        // const consumers: Consumer[] = await serviceHooksApi.getConsumers();
-        
-        // if (consumers) {
-        //     for (var consumer of consumers) {
-        //         console.log(consumer.name);
-        //     }
-        // }
+        if (roleDefinitions) {
+            console.log(`found ${roleDefinitions.length} role definitions`);
+        }
 
         /********** Task **********/
         printSectionStart('Task');
@@ -303,16 +205,6 @@ export async function run() {
         if (changesets) {
             console.log(`found ${changesets.length} changesets`);
         }
-
-        /********** Token **********/
-        // BROKEN
-        // printSectionStart('Token');
-        // const tokenApi = await vsts.getTokenApi();
-        // const tokenList: TokenRegistration[] = await tokenApi.list();
-
-        // if (tokenList) {
-        //     console.log(`found ${tokenList.length} token registrations`);
-        // }
 
         /********** Work **********/
         printSectionStart('Work');
