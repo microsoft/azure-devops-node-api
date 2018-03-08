@@ -2430,7 +2430,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
-                res = await this.rest.replace<string[]>(url, options);
+                res = await this.rest.replace<string[]>(url, null, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
@@ -2614,7 +2614,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
-                res = await this.rest.replace<string[]>(url, options);
+                res = await this.rest.replace<string[]>(url, null, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
