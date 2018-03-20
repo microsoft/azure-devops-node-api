@@ -51,7 +51,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "FeatureManagement",
                     "c4209f25-7a27-41dd-9f04-06080c7b6afd",
                     routeValues);
@@ -95,7 +95,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "FeatureManagement",
                     "c4209f25-7a27-41dd-9f04-06080c7b6afd",
                     routeValues,
@@ -140,7 +140,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "FeatureManagement",
                     "98911314-3f9b-4eaf-80e8-83900d8e85d9",
                     routeValues);
@@ -195,7 +195,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "FeatureManagement",
                     "98911314-3f9b-4eaf-80e8-83900d8e85d9",
                     routeValues,
@@ -246,7 +246,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "FeatureManagement",
                     "dd291e43-aa9f-4cee-8465-a93c78e414a4",
                     routeValues);
@@ -307,7 +307,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "FeatureManagement",
                     "dd291e43-aa9f-4cee-8465-a93c78e414a4",
                     routeValues,
@@ -348,7 +348,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "FeatureManagement",
                     "2b4486ad-122b-400c-ae65-17b6672c1f9d",
                     routeValues);
@@ -391,7 +391,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "FeatureManagement",
                     "3f810f28-03e2-4239-b0bc-788add3005e5",
                     routeValues);
@@ -440,7 +440,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "FeatureManagement",
                     "f29e997b-c2da-4d15-8380-765788a1a74c",
                     routeValues);

@@ -33,6 +33,10 @@ export interface ContributedFeature {
      */
     description: string;
     /**
+     * Handler for listening to setter calls on feature value. These listeners are only invoked after a successful set has occured
+     */
+    featureStateChangedListeners: ContributedFeatureListener[];
+    /**
      * The full contribution id of the feature
      */
     id: string;
@@ -70,6 +74,23 @@ export enum ContributedFeatureEnabledValue {
      * The feature is enabled at the specified scope
      */
     Enabled = 1,
+}
+
+export interface ContributedFeatureHandlerSettings {
+    /**
+     * Name of the handler to run
+     */
+    name: string;
+    /**
+     * Properties to feed to the handler
+     */
+    properties: { [key: string] : any; };
+}
+
+/**
+ * An identifier and properties used to pass into a handler for a listener or plugin
+ */
+export interface ContributedFeatureListener extends ContributedFeatureHandlerSettings {
 }
 
 /**
@@ -133,15 +154,7 @@ export interface ContributedFeatureStateQuery {
 /**
  * A rule for dynamically getting the enabled/disabled state of a feature
  */
-export interface ContributedFeatureValueRule {
-    /**
-     * Name of the IContributedFeatureValuePlugin to run
-     */
-    name: string;
-    /**
-     * Properties to feed to the IContributedFeatureValuePlugin
-     */
-    properties: { [key: string] : any; };
+export interface ContributedFeatureValueRule extends ContributedFeatureHandlerSettings {
 }
 
 export var TypeInfo = {

@@ -47,7 +47,7 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Contribution",
                     "db7f2146-2309-4cee-b39c-c767777a1c55",
                     routeValues);
@@ -91,7 +91,7 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Contribution",
                     "738368db-35ee-4b85-9f94-77ed34af2b0d",
                     routeValues);
@@ -139,7 +139,7 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Contribution",
                     "2648442b-fd63-4b9a-902f-0c913510f139",
                     routeValues,
@@ -188,7 +188,7 @@ export class ContributionsApi extends basem.ClientApiBase implements IContributi
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Contribution",
                     "3e2f6668-0798-4dcb-b592-bfe2fa57fde2",
                     routeValues,

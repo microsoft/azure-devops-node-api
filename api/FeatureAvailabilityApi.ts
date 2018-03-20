@@ -50,7 +50,7 @@ export class FeatureAvailabilityApi extends basem.ClientApiBase implements IFeat
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "FeatureAvailability",
                     "3e2b80f8-9e6f-441e-8393-005610692d9c",
                     routeValues,
@@ -92,7 +92,7 @@ export class FeatureAvailabilityApi extends basem.ClientApiBase implements IFeat
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "FeatureAvailability",
                     "3e2b80f8-9e6f-441e-8393-005610692d9c",
                     routeValues);
@@ -139,7 +139,7 @@ export class FeatureAvailabilityApi extends basem.ClientApiBase implements IFeat
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "FeatureAvailability",
                     "3e2b80f8-9e6f-441e-8393-005610692d9c",
                     routeValues,
@@ -187,7 +187,7 @@ export class FeatureAvailabilityApi extends basem.ClientApiBase implements IFeat
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "FeatureAvailability",
                     "3e2b80f8-9e6f-441e-8393-005610692d9c",
                     routeValues,
@@ -243,7 +243,7 @@ export class FeatureAvailabilityApi extends basem.ClientApiBase implements IFeat
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "FeatureAvailability",
                     "3e2b80f8-9e6f-441e-8393-005610692d9c",
                     routeValues,

@@ -608,6 +608,10 @@ export enum GitAsyncRefOperationFailureStatus {
      * Unexpected failure
      */
     Other = 9,
+    /**
+     * Initiator of async operation has signature with empty name or email
+     */
+    EmptyCommitterSignature = 10,
 }
 
 /**
@@ -1720,6 +1724,7 @@ export interface GitPullRequestIterationChanges {
  * The options which are used when a pull request merge is created.
  */
 export interface GitPullRequestMergeOptions {
+    detectRenameFalsePositives: boolean;
     /**
      * If true, rename detection will not be performed during the merge.
      */
@@ -1963,8 +1968,16 @@ export interface GitQueryRefsCriteria {
     searchType: GitRefSearchType;
 }
 
+export interface GitRecycleBinRepositoryDetails {
+    /**
+     * Setting to false will undo earlier deletion and restore the repository.
+     */
+    deleted: boolean;
+}
+
 export interface GitRef {
     _links: any;
+    creator: VSSInterfaces.IdentityRef;
     isLocked: boolean;
     isLockedBy: VSSInterfaces.IdentityRef;
     name: string;
@@ -2171,9 +2184,6 @@ export interface GitRepositoryStats {
     repositoryId: string;
 }
 
-export interface GitResolution {
-}
-
 /**
  * The type of a merge conflict.
  */
@@ -2208,7 +2218,7 @@ export enum GitResolutionError {
     OtherError = 255,
 }
 
-export interface GitResolutionMergeContent extends GitResolution {
+export interface GitResolutionMergeContent {
     mergeType: GitResolutionMergeType;
     userMergedBlob: GitBlobRef;
     userMergedContent: number[];
@@ -2222,7 +2232,7 @@ export enum GitResolutionMergeType {
     UserMerged = 4,
 }
 
-export interface GitResolutionPathConflict extends GitResolution {
+export interface GitResolutionPathConflict {
     action: GitResolutionPathConflictAction;
     renamePath: string;
 }
@@ -2235,7 +2245,7 @@ export enum GitResolutionPathConflictAction {
     KeepTargetDeleteSource = 4,
 }
 
-export interface GitResolutionPickOneAction extends GitResolution {
+export interface GitResolutionPickOneAction {
     action: GitResolutionWhichAction;
 }
 
@@ -2505,6 +2515,10 @@ export interface GitUserDate {
      */
     email: string;
     /**
+     * Url for the user's avatar.
+     */
+    imageUrl: string;
+    /**
      * Name of the user performing the Git operation.
      */
     name: string;
@@ -2559,12 +2573,6 @@ export enum GitVersionType {
      * Interpret the version as a commit ID (SHA1)
      */
     Commit = 2,
-}
-
-/**
- * Reference to a workitem from a Git/PullRequest context.
- */
-export interface GitWorkItemRef extends VSSInterfaces.ResourceRef {
 }
 
 /**
@@ -2662,6 +2670,7 @@ export interface ItemDetailsOptions {
 
 export interface ItemModel {
     _links: any;
+    content: string;
     contentMetadata: FileContentMetadata;
     isFolder: boolean;
     isSymLink: boolean;
@@ -3155,6 +3164,13 @@ export interface TfvcItemDescriptor {
     versionType: TfvcVersionType;
 }
 
+export interface TfvcItemPreviousHash extends TfvcItem {
+    /**
+     * MD5 hash as a base 64 string, applies to files only.
+     */
+    previousHashValue: string;
+}
+
 export interface TfvcItemRequestData {
     /**
      * If true, include metadata about the file type
@@ -3419,7 +3435,8 @@ export var TypeInfo = {
             "gitObjectTooLarge": 6,
             "operationIndentityNotFound": 7,
             "asyncOperationNotFound": 8,
-            "other": 9
+            "other": 9,
+            "emptyCommitterSignature": 10
         }
     },
     GitAsyncRefOperationParameters: <any>{
@@ -3844,6 +3861,8 @@ export var TypeInfo = {
     TfvcItem: <any>{
     },
     TfvcItemDescriptor: <any>{
+    },
+    TfvcItemPreviousHash: <any>{
     },
     TfvcItemRequestData: <any>{
     },
@@ -5078,6 +5097,12 @@ TypeInfo.TfvcItemDescriptor.fields = {
     },
     versionType: {
         enumType: TypeInfo.TfvcVersionType
+    }
+};
+
+TypeInfo.TfvcItemPreviousHash.fields = {
+    changeDate: {
+        isDate: true,
     }
 };
 

@@ -139,6 +139,14 @@ export interface AttachmentReference {
     url: string;
 }
 
+/**
+ * Flag to control error policy in a batch classification nodes get request.
+ */
+export enum ClassificationNodesErrorPolicy {
+    Fail = 1,
+    Omit = 2,
+}
+
 export enum CommentSortOrder {
     Asc = 1,
     Desc = 2,
@@ -438,7 +446,7 @@ export interface QueryHierarchyItem extends WorkItemTrackingResource {
      */
     id: string;
     /**
-     * Indicates if this query item is deleted.
+     * Indicates if this query item is deleted. Setting this to false on a deleted query item will undelete it. Undeleting a query or folder will not bring back the permission changes that were previously applied to it.
      */
     isDeleted: boolean;
     /**
@@ -745,17 +753,32 @@ export interface WorkItemClassificationNode extends WorkItemTrackingResource {
     structureType: TreeNodeStructureType;
 }
 
+/**
+ * Comment on Work Item
+ */
 export interface WorkItemComment extends WorkItemTrackingResource {
+    /**
+     * Identity of user who added the comment.
+     */
     revisedBy: IdentityReference;
+    /**
+     * The date of comment.
+     */
     revisedDate: Date;
+    /**
+     * The work item revision number.
+     */
     revision: number;
+    /**
+     * The text of the comment.
+     */
     text: string;
 }
 
 /**
- * Comment results container.
+ * Collection of comments
  */
-export interface WorkItemComments {
+export interface WorkItemComments extends WorkItemTrackingResource {
     /**
      * Comments collection.
      */
@@ -820,6 +843,20 @@ export interface WorkItemDeleteReference {
      * Type of work item.
      */
     type: string;
+    /**
+     * REST API URL of the resource
+     */
+    url: string;
+}
+
+/**
+ * Shallow Reference to a deleted work item.
+ */
+export interface WorkItemDeleteShallowReference {
+    /**
+     * Work item ID.
+     */
+    id: number;
     /**
      * REST API URL of the resource
      */
@@ -1344,11 +1381,21 @@ export interface WorkItemTypeColorAndIcon {
 /**
  * Field instance of a work item type.
  */
-export interface WorkItemTypeFieldInstance extends WorkItemFieldReference {
+export interface WorkItemTypeFieldInstance extends WorkItemTypeFieldInstanceBase {
     /**
      * The list of field allowed values.
      */
     allowedValues: string[];
+    /**
+     * Represents the default value of the field.
+     */
+    defaultValue: string;
+}
+
+/**
+ * Base field instance for workItemType fields.
+ */
+export interface WorkItemTypeFieldInstanceBase extends WorkItemFieldReference {
     /**
      * Indicates whether field value is always required.
      */
@@ -1383,6 +1430,20 @@ export enum WorkItemTypeFieldsExpandLevel {
      * Includes allowed values and dependent fields of the field.
      */
     All = 3,
+}
+
+/**
+ * Field Instance of a workItemype with detailed references.
+ */
+export interface WorkItemTypeFieldWithReferences extends WorkItemTypeFieldInstanceBase {
+    /**
+     * The list of field allowed values.
+     */
+    allowedValues: any[];
+    /**
+     * Represents the default value of the field.
+     */
+    defaultValue: any;
 }
 
 /**
@@ -1483,6 +1544,12 @@ export var TypeInfo = {
     AccountRecentMentionWorkItemModel: <any>{
     },
     AccountWorkWorkItemModel: <any>{
+    },
+    ClassificationNodesErrorPolicy: {
+        enumValues: {
+            "fail": 1,
+            "omit": 2
+        }
     },
     CommentSortOrder: {
         enumValues: {

@@ -30,6 +30,8 @@ export class ProjectAnalysisApi extends basem.ClientApiBase implements IProjectA
         super(baseUrl, handlers, 'node-ProjectAnalysis-api', options);
     }
 
+    public static readonly RESOURCE_AREA_ID = "7658fa33-b1bf-4580-990f-fac5896773d3";
+
     /**
      * @param {string} project - Project ID or project name
      */
@@ -44,7 +46,7 @@ export class ProjectAnalysisApi extends basem.ClientApiBase implements IProjectA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "projectanalysis",
                     "5b02a779-1867-433f-90b7-d23ed5e33e57",
                     routeValues);
@@ -92,7 +94,7 @@ export class ProjectAnalysisApi extends basem.ClientApiBase implements IProjectA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "projectanalysis",
                     "e40ae584-9ea6-4f06-a7c7-6284651b466b",
                     routeValues,
@@ -149,7 +151,7 @@ export class ProjectAnalysisApi extends basem.ClientApiBase implements IProjectA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "projectanalysis",
                     "df7fbbca-630a-40e3-8aa3-7a3faf66947e",
                     routeValues,
@@ -201,7 +203,7 @@ export class ProjectAnalysisApi extends basem.ClientApiBase implements IProjectA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "projectanalysis",
                     "df7fbbca-630a-40e3-8aa3-7a3faf66947e",
                     routeValues,

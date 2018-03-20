@@ -415,6 +415,8 @@ export interface WebApiTeam extends WebApiTeamRef {
      * Identity REST API Url to this team
      */
     identityUrl: string;
+    projectId: string;
+    projectName: string;
 }
 
 export interface WebApiTeamRef {

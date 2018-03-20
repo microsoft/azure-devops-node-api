@@ -114,6 +114,7 @@ export enum ItemContentType {
 
 export interface ItemModel {
     _links: any;
+    content: string;
     contentMetadata: FileContentMetadata;
     isFolder: boolean;
     isSymLink: boolean;
