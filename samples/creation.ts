@@ -226,6 +226,7 @@ export async function run() {
         }
         
         /********** Work Item Tracking Process **********/
+        printSectionStart('Work Item Tracking Process');
         const workItemTrackingProcessApi = vsts.getWorkItemTrackingProcessApi();
         const processes: ProcessModel[] = await workItemTrackingProcessApi.getWorkItemTypes();
 
@@ -234,6 +235,7 @@ export async function run() {
         }
 
         /********** Work Item Tracking Process Definitions **********/
+        printSectionStart('Work Item Tracking Process Definitions');
         const workItemTrackingProcessDefinitionApi = vsts.getWorkItemTrackingProcessDefinitionApi();
         const workItemTypes: WorkItemTypeModel[] = await workItemTrackingProcessDefinitionApi.getWorkItemTypes();
 
