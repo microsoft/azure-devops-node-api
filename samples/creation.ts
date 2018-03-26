@@ -5,24 +5,18 @@ import * as stream from 'stream';
 import * as vsoNodeApi from 'vso-node-api';
 
 import { Build, Timeline } from 'vso-node-api/interfaces/BuildInterfaces';
-import { Collection } from 'vso-node-api/interfaces/OrganizationInterfaces';
-import { Consumer } from 'vso-node-api/interfaces/ServiceHooksInterfaces';
 import { ContributedFeature } from 'vso-node-api/interfaces/FeatureManagementInterfaces';
 import { FileContainer } from 'vso-node-api/interfaces/FileContainerInterfaces';
 import { GitRepository, TfvcChangesetRef } from 'vso-node-api/interfaces/TfvcInterfaces';
 import { Identity, IdentitySelf } from 'vso-node-api/interfaces/IdentitiesInterfaces';
-import { InstalledExtension } from 'vso-node-api/interfaces/ContributionsInterfaces';
 import { Plan } from 'vso-node-api/interfaces/WorkInterfaces';
 import { PolicyType } from 'vso-node-api/interfaces/PolicyInterfaces';
 import { ProfileRegions } from 'vso-node-api/interfaces/ProfileInterfaces';
 import { ProjectLanguageAnalytics } from 'vso-node-api/interfaces/ProjectAnalysisInterfaces';
-import { Registration as TokenRegistration } from 'vso-node-api/interfaces/TokenInterfaces';
 import { Release } from 'vso-node-api/interfaces/ReleaseInterfaces';
 import { ResourceAreaInfo } from 'vso-node-api/interfaces/LocationsInterfaces';
 import { RequestedExtension } from 'vso-node-api/interfaces/ExtensionManagementInterfaces';
-import { Room } from 'vso-node-api/interfaces/ChatInterfaces';
 import { SecurityRole } from 'vso-node-api/interfaces/SecurityRolesInterfaces';
-import { ServiceHooksApi } from 'vso-node-api/ServiceHooksApi';
 import { TaskAgentPool } from 'vso-node-api/interfaces/TaskAgentInterfaces';
 import { TestPlan } from 'vso-node-api/interfaces/TestInterfaces';
 import { Timeline as TaskAgentTimeline } from "vso-node-api/interfaces/TaskAgentInterfaces";
@@ -44,10 +38,9 @@ export async function run() {
     try
     {
         const vstsCollectionLevel: vsoNodeApi.WebApi = await common.getWebApi();
-        const vstsDeploymentLevel: vsoNodeApi.WebApi = await common.getDeploymentLevelWebApi();
 
         /********** Build **********/
-        // printSectionStart('Build');
+        printSectionStart('Build');
         const buildApi = await vstsCollectionLevel.getBuildApi();
         const builds: Build[] = await buildApi.getBuilds(common.getProject());
 
