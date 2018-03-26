@@ -30,7 +30,7 @@ import { WebApiTeam } from 'vso-node-api/interfaces/CoreInterfaces';
 import { WidgetScope, WidgetTypesResponse } from 'vso-node-api/interfaces/DashboardInterfaces';
 import { WorkItemField } from 'vso-node-api/interfaces/WorkItemTrackingInterfaces';
 import { ProcessModel } from 'vso-node-api/interfaces/WorkItemTrackingProcessInterfaces';
-import { WorkItemTypeModel } from 'vso-node-api/interfaces/WorkItemTrackingProcessDefinitionsInterfaces';
+import { WorkItemTypeModel, PickListMetadataModel } from 'vso-node-api/interfaces/WorkItemTrackingProcessDefinitionsInterfaces';
 
 // In order for this to run you will need to set the following environment variables:
 // 
@@ -227,8 +227,8 @@ export async function run() {
         
         /********** Work Item Tracking Process **********/
         printSectionStart('Work Item Tracking Process');
-        const workItemTrackingProcessApi = vsts.getWorkItemTrackingProcessApi();
-        const processes: ProcessModel[] = await workItemTrackingProcessApi.getWorkItemTypes();
+        const workItemTrackingProcessApi = await vsts.getWorkItemTrackingProcessApi();
+        const processes: ProcessModel[] = await workItemTrackingProcessApi.getProcesses();
 
         if (processes) {
             console.log(`found ${processes.length} processes`);
@@ -236,11 +236,11 @@ export async function run() {
 
         /********** Work Item Tracking Process Definitions **********/
         printSectionStart('Work Item Tracking Process Definitions');
-        const workItemTrackingProcessDefinitionApi = vsts.getWorkItemTrackingProcessDefinitionApi();
-        const workItemTypes: WorkItemTypeModel[] = await workItemTrackingProcessDefinitionApi.getWorkItemTypes();
+        const workItemTrackingProcessDefinitionApi = await vsts.getWorkItemTrackingProcessDefinitionApi();
+        const listsMetadata: PickListMetadataModel[] = await workItemTrackingProcessDefinitionApi.getListsMetadata();
 
-        if (workItemTypes) {
-            console.log(`found ${workItemTypes.length} work items`);
+        if (listsMetadata) {
+            console.log(`found ${listsMetadata.length} work items`);
         }
     }
     catch (err) {
