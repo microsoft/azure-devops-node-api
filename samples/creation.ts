@@ -29,6 +29,8 @@ import { Timeline as TaskAgentTimeline } from "vso-node-api/interfaces/TaskAgent
 import { WebApiTeam } from 'vso-node-api/interfaces/CoreInterfaces';
 import { WidgetScope, WidgetTypesResponse } from 'vso-node-api/interfaces/DashboardInterfaces';
 import { WorkItemField } from 'vso-node-api/interfaces/WorkItemTrackingInterfaces';
+import { ProcessModel } from 'vso-node-api/interfaces/WorkItemTrackingProcessInterfaces';
+import { PickListMetadataModel } from 'vso-node-api/interfaces/WorkItemTrackingProcessDefinitionsInterfaces';
 
 // In order for this to run you will need to set the following environment variables:
 // 
@@ -168,6 +170,8 @@ export async function run() {
 
         if (roleDefinitions) {
             console.log(`found ${roleDefinitions.length} role definitions`);
+        } else {
+            console.log('role definitions is null');
         }
 
         /********** Task **********/
@@ -177,6 +181,8 @@ export async function run() {
 
         if (timelines) {
             console.log(`found ${timelines.length} timelines`);
+        } else {
+            console.log('timelines is null');
         }
 
         /********** Task Agent **********/
@@ -213,6 +219,8 @@ export async function run() {
 
         if (workPlans) {
             console.log(`found ${workPlans.length} work plans`);
+        } else {
+            console.log('work plans is null');
         }
 
         /********** Work Item Tracking **********/
@@ -221,7 +229,25 @@ export async function run() {
         const workItemFields: WorkItemField[] = await workItemTrackingApi.getFields();
 
         if (workItemFields) {
-            console.log(`found ${workItemFields.length} work items`);
+            console.log(`found ${workItemFields.length} work item fields`);
+        }
+        
+        /********** Work Item Tracking Process **********/
+        printSectionStart('Work Item Tracking Process');
+        const workItemTrackingProcessApi = await vsts.getWorkItemTrackingProcessApi();
+        const processes: ProcessModel[] = await workItemTrackingProcessApi.getProcesses();
+
+        if (processes) {
+            console.log(`found ${processes.length} processes`);
+        }
+
+        /********** Work Item Tracking Process Definitions **********/
+        printSectionStart('Work Item Tracking Process Definitions');
+        const workItemTrackingProcessDefinitionApi = await vsts.getWorkItemTrackingProcessDefinitionApi();
+        const listsMetadata: PickListMetadataModel[] = await workItemTrackingProcessDefinitionApi.getListsMetadata();
+
+        if (listsMetadata) {
+            console.log(`found ${listsMetadata.length} work items`);
         }
     }
     catch (err) {
