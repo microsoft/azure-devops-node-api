@@ -18,7 +18,7 @@ import serm = require('./Serialization');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import WorkItemTrackingProcessDefinitionsInterfaces = require("./interfaces/WorkItemTrackingProcessDefinitionsInterfaces");
 
-export interface IWorkItemTrackingApi extends basem.ClientApiBase {
+export interface IWorkItemTrackingProcessDefinitionsApi extends basem.ClientApiBase {
     createBehavior(behavior: WorkItemTrackingProcessDefinitionsInterfaces.BehaviorCreateModel, processId: string): Promise<WorkItemTrackingProcessDefinitionsInterfaces.BehaviorModel>;
     deleteBehavior(processId: string, behaviorId: string): Promise<void>;
     getBehavior(processId: string, behaviorId: string): Promise<WorkItemTrackingProcessDefinitionsInterfaces.BehaviorModel>;
@@ -66,7 +66,7 @@ export interface IWorkItemTrackingApi extends basem.ClientApiBase {
     removeFieldFromWorkItemType(processId: string, witRefNameForFields: string, fieldRefName: string): Promise<void>;
 }
 
-export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkItemTrackingApi {
+export class WorkItemTrackingProcessDefinitionsApi extends basem.ClientApiBase implements IWorkItemTrackingProcessDefinitionsApi {
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
         super(baseUrl, handlers, 'node-WorkItemTracking-api', options);
     }
