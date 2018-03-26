@@ -19,9 +19,10 @@ Note: as of released 6.3.2 version, the web api create methods need to be async 
 
 See [samples](./samples) for complete coding examples
 
-### Typings
-
-Typings (.d.ts) are now distributed with the api, so intellisense and compile support just works from `tsc` and [vscode]()  
+### Install the library
+```
+npm install vso-node-api --save
+```
 
 ![Intellisense](docs/intellisense.png)  
 

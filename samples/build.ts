@@ -98,7 +98,10 @@ export async function run() {
                 console.log("type", lastDef.type);
                 newDef.type = lastDef.type;
 
-                console.log("creating");
+                console.log("process", lastDef.process);
+                newDef.process = lastDef.process;
+
+                console.log("creating");                
                 let createdDef: bi.BuildDefinition = await vstsBuild.createDefinition(newDef, project);
                 console.log("created", createdDef.name);
 

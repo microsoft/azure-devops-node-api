@@ -43,11 +43,12 @@ import { PickListMetadataModel } from 'vso-node-api/interfaces/WorkItemTrackingP
 export async function run() {
     try
     {
-        let vsts: vsoNodeApi.WebApi = await common.getWebApi();
+        const vstsCollectionLevel: vsoNodeApi.WebApi = await common.getWebApi();
+        const vstsDeploymentLevel: vsoNodeApi.WebApi = await common.getDeploymentLevelWebApi();
 
         /********** Build **********/
-        printSectionStart('Build');
-        const buildApi = await vsts.getBuildApi();
+        // printSectionStart('Build');
+        const buildApi = await vstsCollectionLevel.getBuildApi();
         const builds: Build[] = await buildApi.getBuilds(common.getProject());
 
         if (builds) {
@@ -56,7 +57,7 @@ export async function run() {
 
         /********** Core **********/
         printSectionStart('Core');
-        const coreApi = await vsts.getCoreApi();
+        const coreApi = await vstsCollectionLevel.getCoreApi();
         const teams: WebApiTeam[] = await coreApi.getAllTeams();
 
         if (teams) {
@@ -65,7 +66,7 @@ export async function run() {
 
         /********** Dashboard **********/
         printSectionStart('Dashboard');
-        const dashboardApi = await vsts.getDashboardApi();
+        const dashboardApi = await vstsCollectionLevel.getDashboardApi();
         const widgetTypes: WidgetTypesResponse = await dashboardApi.getWidgetTypes(WidgetScope.Collection_User);
 
         if (widgetTypes) {
@@ -74,7 +75,7 @@ export async function run() {
 
         /********** Extension Management **********/
         printSectionStart('Extension Management');
-        const extensionManagementApi = await vsts.getExtensionManagementApi();
+        const extensionManagementApi = await vstsCollectionLevel.getExtensionManagementApi();
         const requests:RequestedExtension[] = await extensionManagementApi.getRequests();
 
         if (requests) {
@@ -83,7 +84,7 @@ export async function run() {
 
         /********** Feature Management **********/
         printSectionStart('Feature Management');
-        const featureManagementApi = await vsts.getFeatureManagementApi();
+        const featureManagementApi = await vstsCollectionLevel.getFeatureManagementApi();
         const features: ContributedFeature[] = await featureManagementApi.getFeatures();
 
         if (features) {
@@ -92,7 +93,7 @@ export async function run() {
 
         /********** File Container **********/
         printSectionStart('File Container');
-        const fileContainerApi = await vsts.getFileContainerApi();
+        const fileContainerApi = await vstsCollectionLevel.getFileContainerApi();
         const containers: FileContainer[] = await fileContainerApi.getContainers();
 
         if (containers) {
@@ -101,7 +102,7 @@ export async function run() {
 
         /********** Git **********/
         printSectionStart('Git');
-        const gitApi = await vsts.getGitApi();
+        const gitApi = await vstsCollectionLevel.getGitApi();
         const respositories: GitRepository[] = await gitApi.getRepositories();
 
         if (respositories) {
@@ -110,7 +111,7 @@ export async function run() {
 
         /********** Locations **********/
         printSectionStart('Locations');
-        const locationsApi = await vsts.getLocationsApi();
+        const locationsApi = await vstsCollectionLevel.getLocationsApi();
         const resourceAreas: ResourceAreaInfo[] = await locationsApi.getResourceAreas();
 
         if (resourceAreas) {
@@ -119,7 +120,7 @@ export async function run() {
 
         /********** Notifications **********/
         printSectionStart('Notifications');
-        const notificationsApi = await vsts.getNotificationApi();
+        const notificationsApi = await vstsCollectionLevel.getNotificationApi();
         const subscriptions = await notificationsApi.listSubscriptions();
 
         if (subscriptions) {
@@ -128,7 +129,7 @@ export async function run() {
 
         /********** Policy **********/
         printSectionStart('Policy');
-        const policyApi = await vsts.getPolicyApi();
+        const policyApi = await vstsCollectionLevel.getPolicyApi();
         const policyTypes: PolicyType[] = await policyApi.getPolicyTypes(common.getProject());
 
         if (policyTypes) {
@@ -137,7 +138,7 @@ export async function run() {
 
         /********** Profile **********/
         printSectionStart('Profile');
-        const profileApi = await vsts.getProfileApi();
+        const profileApi = await vstsCollectionLevel.getProfileApi();
         const regions: ProfileRegions = await profileApi.getRegions();
 
         if (regions && regions.regions) {
@@ -146,7 +147,7 @@ export async function run() {
 
         /********** Project Analysis **********/
         printSectionStart('Project Analysis');
-        const projectAnalysisApi = await vsts.getProjectAnalysisApi();
+        const projectAnalysisApi = await vstsCollectionLevel.getProjectAnalysisApi();
         const languageAnalytics: ProjectLanguageAnalytics = await projectAnalysisApi.getProjectLanguageAnalytics(common.getProject());
 
         if (languageAnalytics) {
@@ -155,7 +156,7 @@ export async function run() {
 
         /********** Release **********/
         printSectionStart('Release');
-        const releaseApi = await vsts.getReleaseApi();
+        const releaseApi = await vstsCollectionLevel.getReleaseApi();
         const releases: Release[] = await releaseApi.getReleases();
 
         if (releases) {
@@ -164,7 +165,7 @@ export async function run() {
 
         /********** Security **********/
         printSectionStart('Security');
-        const securityApi = await vsts.getSecurityRolesApi();
+        const securityApi = await vstsCollectionLevel.getSecurityRolesApi();
         const roleDefinitions: SecurityRole[] = await securityApi.getRoleDefinitions("");
 
         if (roleDefinitions) {
@@ -175,7 +176,7 @@ export async function run() {
 
         /********** Task **********/
         printSectionStart('Task');
-        const taskApi = await vsts.getTaskApi();
+        const taskApi = await vstsCollectionLevel.getTaskApi();
         const timelines: TaskAgentTimeline[] = await taskApi.getTimelines("", "", "");
 
         if (timelines) {
@@ -186,7 +187,7 @@ export async function run() {
 
         /********** Task Agent **********/
         printSectionStart('Task Agent');
-        const taskAgentApi = await vsts.getTaskAgentApi();
+        const taskAgentApi = await vstsCollectionLevel.getTaskAgentApi();
         const agentPools: TaskAgentPool[] = await taskAgentApi.getAgentPools();
 
         if (agentPools) {
@@ -195,7 +196,7 @@ export async function run() {
 
         /********** Test **********/
         printSectionStart('Test');
-        const testApi = await vsts.getTestApi();
+        const testApi = await vstsCollectionLevel.getTestApi();
         const plans: TestPlan[] = await testApi.getPlans(common.getProject());
 
         if (plans) {
@@ -204,7 +205,7 @@ export async function run() {
 
         /********** Tfvc **********/
         printSectionStart('Tfvc');
-        const tfvcApi = await vsts.getTfvcApi();
+        const tfvcApi = await vstsCollectionLevel.getTfvcApi();
         const changesets: TfvcChangesetRef[] = await tfvcApi.getChangesets();
 
         if (changesets) {
@@ -213,7 +214,7 @@ export async function run() {
 
         /********** Work **********/
         printSectionStart('Work');
-        const workApi = await vsts.getWorkApi();
+        const workApi = await vstsCollectionLevel.getWorkApi();
         const workPlans: Plan[] = await workApi.getPlans(common.getProject());
 
         if (workPlans) {
@@ -224,7 +225,7 @@ export async function run() {
 
         /********** Work Item Tracking **********/
         printSectionStart('Work Item Tracking');
-        const workItemTrackingApi = await vsts.getWorkItemTrackingApi();
+        const workItemTrackingApi = await vstsCollectionLevel.getWorkItemTrackingApi();
         const workItemFields: WorkItemField[] = await workItemTrackingApi.getFields();
 
         if (workItemFields) {
@@ -233,7 +234,7 @@ export async function run() {
         
         /********** Work Item Tracking Process **********/
         printSectionStart('Work Item Tracking Process');
-        const workItemTrackingProcessApi = await vsts.getWorkItemTrackingProcessApi();
+        const workItemTrackingProcessApi = await vstsCollectionLevel.getWorkItemTrackingProcessApi();
         const processes: ProcessModel[] = await workItemTrackingProcessApi.getProcesses();
 
         if (processes) {
@@ -242,7 +243,7 @@ export async function run() {
 
         /********** Work Item Tracking Process Definitions **********/
         printSectionStart('Work Item Tracking Process Definitions');
-        const workItemTrackingProcessDefinitionApi = await vsts.getWorkItemTrackingProcessDefinitionApi();
+        const workItemTrackingProcessDefinitionApi = await vstsCollectionLevel.getWorkItemTrackingProcessDefinitionApi();
         const listsMetadata: PickListMetadataModel[] = await workItemTrackingProcessDefinitionApi.getListsMetadata();
 
         if (listsMetadata) {
