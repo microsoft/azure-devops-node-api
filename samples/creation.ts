@@ -29,6 +29,8 @@ import { Timeline as TaskAgentTimeline } from "vso-node-api/interfaces/TaskAgent
 import { WebApiTeam } from 'vso-node-api/interfaces/CoreInterfaces';
 import { WidgetScope, WidgetTypesResponse } from 'vso-node-api/interfaces/DashboardInterfaces';
 import { WorkItemField } from 'vso-node-api/interfaces/WorkItemTrackingInterfaces';
+import { ProcessModel } from 'vso-node-api/interfaces/WorkItemTrackingProcessInterfaces';
+import { WorkItemTypeModel } from 'vso-node-api/interfaces/WorkItemTrackingProcessDefinitionsInterfaces';
 
 // In order for this to run you will need to set the following environment variables:
 // 
@@ -220,7 +222,25 @@ export async function run() {
         const workItemFields: WorkItemField[] = await workItemTrackingApi.getFields();
 
         if (workItemFields) {
-            console.log(`found ${workItemFields.length} work items`);
+            console.log(`found ${workItemFields.length} work item fields`);
+        }
+        
+        /********** Work Item Tracking Process **********/
+        printSectionStart('Work Item Tracking Process');
+        const workItemTrackingProcessApi = vsts.getWorkItemTrackingProcessApi();
+        const processes: ProcessModel[] = await workItemTrackingProcessApi.getWorkItemTypes();
+
+        if (processes) {
+            console.log(`found ${processes.length} processes`);
+        }
+
+        /********** Work Item Tracking Process Definitions **********/
+        printSectionStart('Work Item Tracking Process Definitions');
+        const workItemTrackingProcessDefinitionApi = vsts.getWorkItemTrackingProcessDefinitionApi();
+        const workItemTypes: WorkItemTypeModel[] = await workItemTrackingProcessDefinitionApi.getWorkItemTypes();
+
+        if (workItemTypes) {
+            console.log(`found ${workItemTypes.length} work items`);
         }
     }
     catch (err) {

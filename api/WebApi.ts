@@ -32,6 +32,8 @@ import tfvcm = require('./TfvcApi');
 import tokenm = require('./TokenApi');
 import workm = require('./WorkApi');
 import workitemtrackingm = require('./WorkItemTrackingApi');
+import workitemtrackingprocessm = require('./WorkItemTrackingProcessApi');
+import workitemtrackingprocessdefinitionm = require('./WorkItemTrackingProcessDefinitionsApi');
 import basicm = require('./handlers/basiccreds');
 import bearm = require('./handlers/bearertoken');
 import ntlmm = require('./handlers/ntlm');
@@ -364,8 +366,7 @@ export class WebApi {
         return new workitemtrackingm.WorkItemTrackingApi(serverUrl, handlers, this.options);
     }
 
-    private async _getResourceAreaUrl(serverUrl: string, resourceId: string): Promise<string>
-    {
+    private async _getResourceAreaUrl(serverUrl: string, resourceId: string): Promise<string> {
         if (!resourceId) {
             return serverUrl;
         }
@@ -423,4 +424,19 @@ export class WebApi {
             return decryptedContent;
         }
     }
+
+    public async getWorkItemTrackingProcessDefinitionApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<workitemtrackingprocessdefinitionm.IWorkItemTrackingApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "5264459e-e5e0-4bd8-b118-0985e68a4ec5");
+        handlers = handlers || [this.authHandler];
+        return new workitemtrackingprocessdefinitionm.WorkItemTrackingApi(serverUrl, handlers, this.options);
+    }
+
+    public async getWorkItemTrackingProcessApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<workitemtrackingprocessm.IWorkItemTrackingApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "5264459e-e5e0-4bd8-b118-0985e68a4ec5");
+        handlers = handlers || [this.authHandler];
+        return new workitemtrackingprocessm.WorkItemTrackingApi(serverUrl, handlers, this.options);
+    }
+
 }
