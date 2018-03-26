@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as stream from 'stream';
+import * as sh from 'shelljs';
 
 import * as cm from './common';
 import * as vm from 'vso-node-api';
@@ -52,6 +53,9 @@ export async function run() {
         // delete it
         await vstsTask.deleteSecureFile(project, secureFile.id);
         console.log(`deleted secure file ${secureFile.name}`);
+
+        // delete generated file
+        sh.rm(sampleFilePath);
     }
     catch (err) {
         console.error('Error: ' + err.stack);
