@@ -30,7 +30,7 @@ import { WebApiTeam } from 'vso-node-api/interfaces/CoreInterfaces';
 import { WidgetScope, WidgetTypesResponse } from 'vso-node-api/interfaces/DashboardInterfaces';
 import { WorkItemField } from 'vso-node-api/interfaces/WorkItemTrackingInterfaces';
 import { ProcessModel } from 'vso-node-api/interfaces/WorkItemTrackingProcessInterfaces';
-import { WorkItemTypeModel, PickListMetadataModel } from 'vso-node-api/interfaces/WorkItemTrackingProcessDefinitionsInterfaces';
+import { PickListMetadataModel } from 'vso-node-api/interfaces/WorkItemTrackingProcessDefinitionsInterfaces';
 
 // In order for this to run you will need to set the following environment variables:
 // 
@@ -169,6 +169,8 @@ export async function run() {
 
         if (roleDefinitions) {
             console.log(`found ${roleDefinitions.length} role definitions`);
+        } else {
+            console.log('role definitions is null');
         }
 
         /********** Task **********/
@@ -178,6 +180,8 @@ export async function run() {
 
         if (timelines) {
             console.log(`found ${timelines.length} timelines`);
+        } else {
+            console.log('timelines is null');
         }
 
         /********** Task Agent **********/
@@ -214,6 +218,8 @@ export async function run() {
 
         if (workPlans) {
             console.log(`found ${workPlans.length} work plans`);
+        } else {
+            console.log('work plans is null');
         }
 
         /********** Work Item Tracking **********/
