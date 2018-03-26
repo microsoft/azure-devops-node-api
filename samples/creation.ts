@@ -234,7 +234,7 @@ export async function run() {
         
         /********** Work Item Tracking Process **********/
         printSectionStart('Work Item Tracking Process');
-        const workItemTrackingProcessApi = await vsts.getWorkItemTrackingProcessApi();
+        const workItemTrackingProcessApi = await vstsCollectionLevel.getWorkItemTrackingProcessApi();
         const processes: ProcessModel[] = await workItemTrackingProcessApi.getProcesses();
 
         if (processes) {
@@ -243,7 +243,7 @@ export async function run() {
 
         /********** Work Item Tracking Process Definitions **********/
         printSectionStart('Work Item Tracking Process Definitions');
-        const workItemTrackingProcessDefinitionApi = await vsts.getWorkItemTrackingProcessDefinitionApi();
+        const workItemTrackingProcessDefinitionApi = await vstsCollectionLevel.getWorkItemTrackingProcessDefinitionApi();
         const listsMetadata: PickListMetadataModel[] = await workItemTrackingProcessDefinitionApi.getListsMetadata();
 
         if (listsMetadata) {

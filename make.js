@@ -30,7 +30,6 @@ target.build = function() {
 
     cp('-Rf', rp('api/opensource'), buildPath);
     
-    cp(rp('dependencies/typings.json'), buildPath);
     cp(rp('LICENSE'), buildPath);
     cp(rp('package.json'), buildPath);
     cp(rp('package-lock.json'), buildPath);
