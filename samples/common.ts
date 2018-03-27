@@ -1,5 +1,3 @@
-/// <reference path="typings/index.d.ts" />
-
 import * as vm from 'vso-node-api';
 import * as lim from 'vso-node-api/interfaces/LocationsInterfaces';
 
@@ -13,23 +11,31 @@ function getEnv(name: string): string {
 }
 
 export async function getWebApi(): Promise<vm.WebApi> {
+    let serverUrl = getEnv('API_URL');
+    return await this.getApi(serverUrl);
+}
+
+export async function getDeploymentLevelWebApi(): Promise<vm.WebApi> {
+    let serverUrl = getEnv('API_DEPLOYMENT_URL');
+    return await this.getApi(serverUrl);
+}
+
+export async function getApi(serverUrl: string): Promise<vm.WebApi> {
     return new Promise<vm.WebApi>(async (resolve, reject) => {
         try {
-            let serverUrl = getEnv('API_URL');
             let token = getEnv('API_TOKEN');
             let authHandler = vm.getPersonalAccessTokenHandler(token);
-
             let option = undefined;
 
             // The following sample is for testing proxy
             // option = {
             //     proxy: {
-            //         proxyUrl: "http://127.0.0.1:8888",
-            //         proxyUsername: "1",
-            //         proxyPassword: "1",
-            //         proxyBypassHosts: [
-            //             "github\.com"
-            //         ],
+            //         proxyUrl: "http://127.0.0.1:8888"
+            //         // proxyUsername: "1",
+            //         // proxyPassword: "1",
+            //         // proxyBypassHosts: [
+            //         //     "github\.com"
+            //         // ],
             //     },
             //     ignoreSslError: true
             // };
