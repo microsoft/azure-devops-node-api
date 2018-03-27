@@ -69,7 +69,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "processes",
                     "d1800200-f184-4e75-a5f2-ad0b04b4373e",
                     routeValues,
@@ -117,7 +117,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "processes",
                     "d1800200-f184-4e75-a5f2-ad0b04b4373e",
                     routeValues,
@@ -159,7 +159,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "processes",
                     "7a0e7a1a-0b34-4ae0-9744-0aaffb7d0ed1",
                     routeValues);
@@ -203,7 +203,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "processes",
                     "bc0ad8dc-e3f3-46b0-b06c-5bf861793196",
                     routeValues);
@@ -243,7 +243,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "processes",
                     "02cc6a73-5cfb-427d-8c8e-b49fb086e8af",
                     routeValues);
@@ -284,7 +284,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "processes",
                     "02cc6a73-5cfb-427d-8c8e-b49fb086e8af",
                     routeValues);
@@ -331,7 +331,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "processes",
                     "02cc6a73-5cfb-427d-8c8e-b49fb086e8af",
                     routeValues,
@@ -376,7 +376,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "processes",
                     "02cc6a73-5cfb-427d-8c8e-b49fb086e8af",
                     routeValues,
@@ -420,7 +420,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "processes",
                     "02cc6a73-5cfb-427d-8c8e-b49fb086e8af",
                     routeValues);
@@ -466,7 +466,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "processes",
                     "76fe3432-d825-479d-a5f6-983bbb78b4f3",
                     routeValues);
@@ -513,7 +513,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "processes",
                     "76fe3432-d825-479d-a5f6-983bbb78b4f3",
                     routeValues);
@@ -560,7 +560,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "processes",
                     "76fe3432-d825-479d-a5f6-983bbb78b4f3",
                     routeValues);
@@ -604,7 +604,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "processes",
                     "76fe3432-d825-479d-a5f6-983bbb78b4f3",
                     routeValues);
@@ -653,7 +653,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "processes",
                     "76fe3432-d825-479d-a5f6-983bbb78b4f3",
                     routeValues);
@@ -700,7 +700,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "processes",
                     "31015d57-2dff-4a46-adb3-2fb4ee3dcec9",
                     routeValues);
@@ -744,7 +744,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "processes",
                     "31015d57-2dff-4a46-adb3-2fb4ee3dcec9",
                     routeValues);
@@ -794,7 +794,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "processes",
                     "e2e9d1a6-432d-4062-8870-bfcb8c324ad7",
                     routeValues,
@@ -842,7 +842,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "processes",
                     "e2e9d1a6-432d-4062-8870-bfcb8c324ad7",
                     routeValues,

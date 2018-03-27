@@ -317,7 +317,7 @@ export interface Change {
 }
 
 export interface CodeRepositoryReference {
-    repositoryReference: { [key: string] : FormInputInterfaces.InputValue; };
+    repositoryReference: { [key: string] : ReleaseManagementInputValue; };
     /**
      * It can have value as ‘GitHub’, ‘Vsts’.
      */
@@ -1123,10 +1123,6 @@ export enum PropertySelectorType {
 export interface PullRequestConfiguration {
     codeRepositoryReference: CodeRepositoryReference;
     /**
-     * List of environmentNames participating in deciding PR status
-     */
-    environmentNames: string[];
-    /**
      * In case of Source based artifacts, Code reference will be present in Artifact details.
      */
     useArtifactReference: boolean;
@@ -1878,6 +1874,17 @@ export interface ReleaseGates {
     stabilizationCompletedOn: Date;
     startedOn: Date;
     status: GateStatus;
+}
+
+export interface ReleaseManagementInputValue {
+    /**
+     * The text to show for the display of this value
+     */
+    displayValue: string;
+    /**
+     * The value to store for this input
+     */
+    value: string;
 }
 
 export enum ReleaseQueryOrder {
