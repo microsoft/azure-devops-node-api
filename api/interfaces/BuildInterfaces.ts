@@ -11,8 +11,6 @@
 "use strict";
 
 import DistributedTaskCommonInterfaces = require("../interfaces/DistributedTaskCommonInterfaces");
-import TFS_SourceControl_Contracts = require("../TFS/VersionControl/Contracts");
-import TFS_TestManagement_Contracts = require("../TFS/TestManagement/Contracts");
 import TfsCoreInterfaces = require("../interfaces/CoreInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
@@ -101,10 +99,6 @@ export interface ArtifactResource {
      */
     data: string;
     /**
-     * A secret that can be sent in a request header to retrieve an artifact anonymously. Valid for a limited amount of time. Optional.
-     */
-    downloadTicket: string;
-    /**
      * A link to download the resource.
      */
     downloadUrl: string;
@@ -120,17 +114,6 @@ export interface ArtifactResource {
      * The full http link to the resource.
      */
     url: string;
-}
-
-/**
- * Represents an attachment to a build.
- */
-export interface Attachment {
-    _links: any;
-    /**
-     * The name of the attachment.
-     */
-    name: string;
 }
 
 export enum AuditAction {
@@ -287,10 +270,6 @@ export interface Build {
     status: BuildStatus;
     tags: string[];
     /**
-     * The build that triggered this build via a Build completion trigger.
-     */
-    triggeredByBuild: Build;
-    /**
      * Sourceprovider-specific information about what triggered the build
      */
     triggerInfo: { [key: string] : string; };
@@ -356,6 +335,10 @@ export interface BuildArtifact {
     resource: ArtifactResource;
 }
 
+export interface BuildArtifactAddedEvent extends BuildUpdatedEvent {
+    artifact: BuildArtifact;
+}
+
 /**
  * Represents the desired scope of authorization for a build.
  */
@@ -384,35 +367,23 @@ export interface BuildBadge {
     imageUrl: string;
 }
 
+export interface BuildChangesCalculatedEvent extends BuildUpdatedEvent {
+    changes: Change[];
+}
+
 export interface BuildCompletedEvent extends BuildUpdatedEvent {
+    /**
+     * errors associated with a build used for build notifications
+     */
+    buildErrors: BuildRequestValidationResult[];
+    /**
+     * warnings associated with a build used for build notifications
+     */
+    buildWarnings: BuildRequestValidationResult[];
     /**
      * Changes associated with a build used for build notifications
      */
     changes: Change[];
-    /**
-     * Test results associated with a build used for build notifications
-     */
-    testResults: TFS_TestManagement_Contracts.AggregatedResultsAnalysis;
-    /**
-     * Timeline records associated with a build used for build notifications
-     */
-    timelineRecords: TimelineRecord[];
-    /**
-     * Work items associated with a build used for build notifications
-     */
-    workItems: TFS_SourceControl_Contracts.AssociatedWorkItem[];
-}
-
-/**
- * Represents a build completion trigger.
- */
-export interface BuildCompletionTrigger extends BuildTrigger {
-    branchFilters: string[];
-    /**
-     * A reference to the definition that should trigger builds for this definition.
-     */
-    definition: DefinitionReference;
-    requiresSuccessfulBuild: boolean;
 }
 
 export interface BuildController extends XamlBuildControllerReference {
@@ -459,7 +430,6 @@ export interface BuildDefinition extends BuildDefinitionReference {
      * A save-time comment for the definition.
      */
     comment: string;
-    counters: { [key: string] : BuildDefinitionCounter; };
     demands: any[];
     /**
      * The description.
@@ -558,22 +528,15 @@ export interface BuildDefinition3_2 extends BuildDefinitionReference3_2 {
     variables: { [key: string] : BuildDefinitionVariable; };
 }
 
-/**
- * Represents a variable that increases in value with each build.
- */
-export interface BuildDefinitionCounter {
-    /**
-     * The unique Id of the Counter.
-     */
-    id: number;
-    /**
-     * This is the original counter value.
-     */
-    seed: number;
-    /**
-     * This is the current counter value.
-     */
-    value: number;
+export interface BuildDefinitionChangedEvent {
+    changeType: AuditAction;
+    definition: BuildDefinition;
+}
+
+export interface BuildDefinitionChangingEvent {
+    changeType: AuditAction;
+    newDefinition: BuildDefinition;
+    originalDefinition: BuildDefinition;
 }
 
 /**
@@ -748,10 +711,6 @@ export interface BuildDefinitionTemplate {
      */
     category: string;
     /**
-     * An optional hosted agent queue for the template to use by default.
-     */
-    defaultHostedQueue: string;
-    /**
      * A description of the template.
      */
     description: string;
@@ -780,7 +739,6 @@ export interface BuildDefinitionTemplate {
 export interface BuildDefinitionTemplate3_2 {
     canDelete: boolean;
     category: string;
-    defaultHostedQueue: string;
     description: string;
     icons: { [key: string] : string; };
     iconTaskId: string;
@@ -816,9 +774,8 @@ export interface BuildDeployment {
     sourceBuild: XamlBuildReference;
 }
 
-export interface BuildEvent {
-    data: string[];
-    identifier: string;
+export interface BuildDestroyedEvent extends RealtimeBuildEvent {
+    build: Build;
 }
 
 /**
@@ -1009,6 +966,9 @@ export enum BuildPhaseStatus {
     Succeeded = 2,
 }
 
+export interface BuildPollingSummaryEvent {
+}
+
 /**
  * Represents a build process.
  */
@@ -1071,6 +1031,9 @@ export enum BuildQueryOrder {
     StartTimeAscending = 7,
 }
 
+export interface BuildQueuedEvent extends BuildUpdatedEvent {
+}
+
 export enum BuildReason {
     /**
      * No reason. This value should not be used.
@@ -1109,17 +1072,13 @@ export enum BuildReason {
      */
     PullRequest = 256,
     /**
-     * The build was started when another build completed.
-     */
-    BuildCompletion = 512,
-    /**
      * The build was triggered for retention policy purposes.
      */
-    Triggered = 943,
+    Triggered = 431,
     /**
      * All reasons.
      */
-    All = 1007,
+    All = 495,
 }
 
 /**
@@ -1284,21 +1243,6 @@ export enum BuildResult {
     Canceled = 32,
 }
 
-export interface BuildsDeletedEvent extends BuildsDeletedEvent1 {
-}
-
-export interface BuildsDeletedEvent1 {
-    buildIds: number[];
-    /**
-     * The ID of the definition.
-     */
-    definitionId: number;
-    /**
-     * The ID of the project.
-     */
-    projectId: string;
-}
-
 export interface BuildServer {
     agents: BuildAgentReference[];
     controller: XamlBuildControllerReference;
@@ -1330,6 +1274,9 @@ export interface BuildSettings {
      * The maximum retention policy.
      */
     maximumRetentionPolicy: RetentionPolicy;
+}
+
+export interface BuildStartedEvent extends BuildUpdatedEvent {
 }
 
 export enum BuildStatus {
@@ -1372,11 +1319,6 @@ export interface BuildSummary {
     requestedFor: VSSInterfaces.IdentityRef;
     startTime: Date;
     status: BuildStatus;
-}
-
-export interface BuildTagsAddedEvent extends BuildUpdatedEvent {
-    allTags: string[];
-    newTags: string[];
 }
 
 /**
@@ -1489,7 +1431,6 @@ export interface ContinuousIntegrationTrigger extends BuildTrigger {
      * The ID of the job used to poll an external repository.
      */
     pollingJobId: string;
-    settingsSourceType: number;
 }
 
 export enum ControllerStatus {
@@ -1629,13 +1570,9 @@ export enum DefinitionTriggerType {
      */
     PullRequest = 64,
     /**
-     * A build should be triggered when another build completes.
-     */
-    BuildCompletion = 128,
-    /**
      * All types.
      */
-    All = 255,
+    All = 127,
 }
 
 export enum DefinitionType {
@@ -1930,10 +1867,6 @@ export interface Phase {
      * The name of the phase.
      */
     name: string;
-    /**
-     * The unique ref name of the phase.
-     */
-    refName: string;
     steps: BuildDefinitionStep[];
     /**
      * The target (agent, server, etc.) for this phase.
@@ -2028,6 +1961,11 @@ export interface RealtimeBuildEvent {
     buildId: number;
 }
 
+export interface RecreateSubscriptionResult {
+    eventType: string;
+    repositoryType: string;
+}
+
 export enum RepositoryCleanOptions {
     Source = 0,
     SourceAndOutputDir = 1,
@@ -2049,7 +1987,10 @@ export interface RepositoryWebhook {
      * The friendly name of the repository.
      */
     name: string;
-    types: DefinitionTriggerType[];
+    /**
+     * The type of the webhook.
+     */
+    type: string;
     /**
      * The URL of the repository.
      */
@@ -2064,17 +2005,6 @@ export interface ResourceReference {
      * An alias to be used when referencing the resource.
      */
     alias: string;
-}
-
-export enum ResultSet {
-    /**
-     * Include all repositories
-     */
-    All = 0,
-    /**
-     * Include most relevant repositories for user
-     */
-    Top = 1,
 }
 
 /**
@@ -2258,28 +2188,6 @@ export enum SourceProviderAvailability {
 }
 
 /**
- * A set of repositories returned from the source provider.
- */
-export interface SourceRepositories {
-    /**
-     * A token used to continue this paged request; 'null' if the request is complete
-     */
-    continuationToken: string;
-    /**
-     * The number of repositories requested for each page
-     */
-    pageLength: number;
-    /**
-     * A list of repositories
-     */
-    repositories: SourceRepository[];
-    /**
-     * The total number of pages, or '-1' if unknown
-     */
-    totalPageCount: number;
-}
-
-/**
  * Represents a repository returned from a source provider.
  */
 export interface SourceRepository {
@@ -2306,28 +2214,6 @@ export interface SourceRepository {
     sourceProviderName: string;
     /**
      * The URL of the repository.
-     */
-    url: string;
-}
-
-/**
- * Represents an item in a repository from a source provider.
- */
-export interface SourceRepositoryItem {
-    /**
-     * Whether the item is able to have sub-items (e.g., is a folder).
-     */
-    isContainer: boolean;
-    /**
-     * The full path of the item, relative to the root of the repository.
-     */
-    path: string;
-    /**
-     * The type of the item (folder, file, etc).
-     */
-    type: string;
-    /**
-     * The URL of the item.
      */
     url: string;
 }
@@ -2397,6 +2283,12 @@ export interface SvnMappingDetails {
  */
 export interface SvnWorkspace {
     mappings: SvnMappingDetails[];
+}
+
+export interface SyncBuildCompletedEvent extends BuildUpdatedEvent {
+}
+
+export interface SyncBuildStartedEvent extends BuildUpdatedEvent {
 }
 
 /**
@@ -2897,21 +2789,27 @@ export var TypeInfo = {
     },
     BuildAgent: <any>{
     },
+    BuildArtifactAddedEvent: <any>{
+    },
     BuildAuthorizationScope: {
         enumValues: {
             "projectCollection": 1,
             "project": 2
         }
     },
-    BuildCompletedEvent: <any>{
+    BuildChangesCalculatedEvent: <any>{
     },
-    BuildCompletionTrigger: <any>{
+    BuildCompletedEvent: <any>{
     },
     BuildController: <any>{
     },
     BuildDefinition: <any>{
     },
     BuildDefinition3_2: <any>{
+    },
+    BuildDefinitionChangedEvent: <any>{
+    },
+    BuildDefinitionChangingEvent: <any>{
     },
     BuildDefinitionReference: <any>{
     },
@@ -2928,6 +2826,8 @@ export var TypeInfo = {
     BuildDeletedEvent: <any>{
     },
     BuildDeployment: <any>{
+    },
+    BuildDestroyedEvent: <any>{
     },
     BuildLog: <any>{
     },
@@ -2967,6 +2867,8 @@ export var TypeInfo = {
             "startTimeAscending": 7
         }
     },
+    BuildQueuedEvent: <any>{
+    },
     BuildReason: {
         enumValues: {
             "none": 0,
@@ -2978,9 +2880,8 @@ export var TypeInfo = {
             "validateShelveset": 64,
             "checkInShelveset": 128,
             "pullRequest": 256,
-            "buildCompletion": 512,
-            "triggered": 943,
-            "all": 1007
+            "triggered": 431,
+            "all": 495
         }
     },
     BuildReference: <any>{
@@ -2998,6 +2899,8 @@ export var TypeInfo = {
     },
     BuildServer: <any>{
     },
+    BuildStartedEvent: <any>{
+    },
     BuildStatus: {
         enumValues: {
             "none": 0,
@@ -3010,8 +2913,6 @@ export var TypeInfo = {
         }
     },
     BuildSummary: <any>{
-    },
-    BuildTagsAddedEvent: <any>{
     },
     BuildTrigger: <any>{
     },
@@ -3063,8 +2964,7 @@ export var TypeInfo = {
             "gatedCheckIn": 16,
             "batchedGatedCheckIn": 32,
             "pullRequest": 64,
-            "buildCompletion": 128,
-            "all": 255
+            "all": 127
         }
     },
     DefinitionType: {
@@ -3155,14 +3055,6 @@ export var TypeInfo = {
             "allBuildDir": 3
         }
     },
-    RepositoryWebhook: <any>{
-    },
-    ResultSet: {
-        enumValues: {
-            "all": 0,
-            "top": 1
-        }
-    },
     Schedule: <any>{
     },
     ScheduleDays: {
@@ -3203,6 +3095,10 @@ export var TypeInfo = {
             "supported": 1,
             "required": 2
         }
+    },
+    SyncBuildCompletedEvent: <any>{
+    },
+    SyncBuildStartedEvent: <any>{
     },
     TaskResult: {
         enumValues: {
@@ -3288,9 +3184,6 @@ TypeInfo.Build.fields = {
     status: {
         enumType: TypeInfo.BuildStatus
     },
-    triggeredByBuild: {
-        typeInfo: TypeInfo.Build
-    },
     validationResults: {
         isArray: true,
         typeInfo: TypeInfo.BuildRequestValidationResult
@@ -3309,29 +3202,37 @@ TypeInfo.BuildAgent.fields = {
     }
 };
 
-TypeInfo.BuildCompletedEvent.fields = {
+TypeInfo.BuildArtifactAddedEvent.fields = {
+    build: {
+        typeInfo: TypeInfo.Build
+    }
+};
+
+TypeInfo.BuildChangesCalculatedEvent.fields = {
     build: {
         typeInfo: TypeInfo.Build
     },
     changes: {
         isArray: true,
         typeInfo: TypeInfo.Change
-    },
-    testResults: {
-        typeInfo: TFS_TestManagement_Contracts.TypeInfo.AggregatedResultsAnalysis
-    },
-    timelineRecords: {
-        isArray: true,
-        typeInfo: TypeInfo.TimelineRecord
     }
 };
 
-TypeInfo.BuildCompletionTrigger.fields = {
-    definition: {
-        typeInfo: TypeInfo.DefinitionReference
+TypeInfo.BuildCompletedEvent.fields = {
+    build: {
+        typeInfo: TypeInfo.Build
     },
-    triggerType: {
-        enumType: TypeInfo.DefinitionTriggerType
+    buildErrors: {
+        isArray: true,
+        typeInfo: TypeInfo.BuildRequestValidationResult
+    },
+    buildWarnings: {
+        isArray: true,
+        typeInfo: TypeInfo.BuildRequestValidationResult
+    },
+    changes: {
+        isArray: true,
+        typeInfo: TypeInfo.Change
     }
 };
 
@@ -3428,6 +3329,27 @@ TypeInfo.BuildDefinition3_2.fields = {
     },
     type: {
         enumType: TypeInfo.DefinitionType
+    }
+};
+
+TypeInfo.BuildDefinitionChangedEvent.fields = {
+    changeType: {
+        enumType: TypeInfo.AuditAction
+    },
+    definition: {
+        typeInfo: TypeInfo.BuildDefinition
+    }
+};
+
+TypeInfo.BuildDefinitionChangingEvent.fields = {
+    changeType: {
+        enumType: TypeInfo.AuditAction
+    },
+    newDefinition: {
+        typeInfo: TypeInfo.BuildDefinition
+    },
+    originalDefinition: {
+        typeInfo: TypeInfo.BuildDefinition
     }
 };
 
@@ -3537,6 +3459,12 @@ TypeInfo.BuildDeployment.fields = {
     }
 };
 
+TypeInfo.BuildDestroyedEvent.fields = {
+    build: {
+        typeInfo: TypeInfo.Build
+    }
+};
+
 TypeInfo.BuildLog.fields = {
     createdOn: {
         isDate: true,
@@ -3574,6 +3502,12 @@ TypeInfo.BuildProcessTemplate.fields = {
     }
 };
 
+TypeInfo.BuildQueuedEvent.fields = {
+    build: {
+        typeInfo: TypeInfo.Build
+    }
+};
+
 TypeInfo.BuildReference.fields = {
     finishTime: {
         isDate: true,
@@ -3607,6 +3541,12 @@ TypeInfo.BuildServer.fields = {
     }
 };
 
+TypeInfo.BuildStartedEvent.fields = {
+    build: {
+        typeInfo: TypeInfo.Build
+    }
+};
+
 TypeInfo.BuildSummary.fields = {
     finishTime: {
         isDate: true,
@@ -3619,12 +3559,6 @@ TypeInfo.BuildSummary.fields = {
     },
     status: {
         enumType: TypeInfo.BuildStatus
-    }
-};
-
-TypeInfo.BuildTagsAddedEvent.fields = {
-    build: {
-        typeInfo: TypeInfo.Build
     }
 };
 
@@ -3722,13 +3656,6 @@ TypeInfo.PullRequestTrigger.fields = {
     }
 };
 
-TypeInfo.RepositoryWebhook.fields = {
-    types: {
-        isArray: true,
-        enumType: TypeInfo.DefinitionTriggerType
-    }
-};
-
 TypeInfo.Schedule.fields = {
     daysToBuild: {
         enumType: TypeInfo.ScheduleDays
@@ -3759,6 +3686,18 @@ TypeInfo.SupportedTrigger.fields = {
     },
     type: {
         enumType: TypeInfo.DefinitionTriggerType
+    }
+};
+
+TypeInfo.SyncBuildCompletedEvent.fields = {
+    build: {
+        typeInfo: TypeInfo.Build
+    }
+};
+
+TypeInfo.SyncBuildStartedEvent.fields = {
+    build: {
+        typeInfo: TypeInfo.Build
     }
 };
 

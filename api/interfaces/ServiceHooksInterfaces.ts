@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- *
+ * 
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -14,9 +14,6 @@ import FormInputInterfaces = require("../interfaces/common/FormInputInterfaces")
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
-/**
- * Enumerates consumer authentication types.
- */
 export enum AuthenticationType {
     /**
      * No authentication is required.
@@ -169,43 +166,40 @@ export interface Event {
      */
     resourceVersion: string;
     /**
+     * Gets or sets the scope for this event.
+     */
+    scope: EventScope;
+    /**
      * Gets or sets the Session Token that can be used in further interactions
      */
     sessionToken: SessionToken;
 }
 
-/**
- * Describes a type of event
- */
-export interface EventTypeDescriptor {
+export enum EventScope {
     /**
-     * A localized description of the event type
+     * No input scope specified.
      */
-    description: string;
+    All = 0,
     /**
-     * A unique id for the event type
+     * Team Project scope.
      */
-    id: string;
+    Project = 1,
     /**
-     * Event-specific inputs
+     * Team scope.
      */
-    inputDescriptors: FormInputInterfaces.InputDescriptor[];
+    Team = 2,
     /**
-     * A localized friendly name for the event type
+     * Collection scope.
      */
-    name: string;
+    Collection = 3,
     /**
-     * A unique id for the publisher of this event type
+     * Account scope.
      */
-    publisherId: string;
+    Account = 4,
     /**
-     * Supported versions for the event's resource payloads.
+     * Deployment scope.
      */
-    supportedResourceVersions: string[];
-    /**
-     * The url for this resource
-     */
-    url: string;
+    Deployment = 5,
 }
 
 /**
@@ -220,10 +214,6 @@ export interface ExternalConfigurationDescriptor {
      * The name of an input property that contains the URL to edit a subscription.
      */
     editSubscriptionPropertyName: string;
-    /**
-     * True if the external configuration applies only to hosted.
-     */
-    hostedOnly: boolean;
 }
 
 /**
@@ -360,9 +350,6 @@ export interface NotificationDetails {
     response: string;
 }
 
-/**
- * Enumerates possible result types of a notification.
- */
 export enum NotificationResult {
     /**
      * The notification has not yet completed
@@ -446,9 +433,6 @@ export interface NotificationsQuery {
     summary: NotificationSummary[];
 }
 
-/**
- * Enumerates possible status' of a notification.
- */
 export enum NotificationStatus {
     /**
      * The notification has been queued
@@ -483,55 +467,17 @@ export interface NotificationSummary {
 }
 
 /**
- * Defines the data contract of an event publisher.
- */
-export interface Publisher {
-    /**
-     * Reference Links
-     */
-    _links: any;
-    /**
-     * Gets this publisher's localized description.
-     */
-    description: string;
-    /**
-     * Gets this publisher's identifier.
-     */
-    id: string;
-    /**
-     * Publisher-specific inputs
-     */
-    inputDescriptors: FormInputInterfaces.InputDescriptor[];
-    /**
-     * Gets this publisher's localized name.
-     */
-    name: string;
-    /**
-     * The service instance type of the first party publisher.
-     */
-    serviceInstanceType: string;
-    /**
-     * Gets this publisher's supported event types.
-     */
-    supportedEvents: EventTypeDescriptor[];
-    /**
-     * The url for this resource
-     */
-    url: string;
-}
-
-/**
  * Wrapper around an event which is being published
  */
 export interface PublisherEvent {
     /**
-     * Add key/value pairs which will be stored with a published notification in the SH service DB.  This key/value pairs are for diagnostic purposes only and will have not effect on the delivery of a notificaton.
-     */
-    diagnostics: { [key: string] : string; };
-    /**
      * The event being published
      */
     event: Event;
+    /**
+     * Gets or sets the id of the notification.
+     */
+    notificationId: number;
     /**
      * Gets or sets the array of older supported resource versions.
      */
@@ -540,28 +486,10 @@ export interface PublisherEvent {
      * Optional publisher-input filters which restricts the set of subscriptions which are triggered by the event
      */
     publisherInputFilters: FormInputInterfaces.InputFilter[];
-    /**
-     * Gets or sets matchd hooks subscription which caused this event.
-     */
-    subscription: Subscription;
 }
 
-/**
- * Defines a query for service hook publishers.
- */
-export interface PublishersQuery {
-    /**
-     * Optional list of publisher ids to restrict the results to
-     */
-    publisherIds: string[];
-    /**
-     * Filter for publisher inputs
-     */
-    publisherInputs: { [key: string] : string; };
-    /**
-     * Results from the query
-     */
-    results: Publisher[];
+export interface PublishEventsRequestData {
+    events: PublisherEvent[];
 }
 
 /**
@@ -633,9 +561,39 @@ export interface Subscription {
      */
     publisherInputs: { [key: string] : string; };
     resourceVersion: string;
+    scope: EventScope;
     status: SubscriptionStatus;
     subscriber: VSSInterfaces.IdentityRef;
     url: string;
+}
+
+export enum SubscriptionInputScope {
+    /**
+     * An input defined and consumed by a Publisher or Publisher Event Type
+     */
+    Publisher = 10,
+    /**
+     * An input defined and consumed by a Consumer or Consumer Action
+     */
+    Consumer = 20,
+}
+
+/**
+ * Query for obtaining information about the possible/allowed values for one or more subscription inputs
+ */
+export interface SubscriptionInputValuesQuery {
+    /**
+     * The input values to return on input, and the result from the consumer on output.
+     */
+    inputValues: FormInputInterfaces.InputValues[];
+    /**
+     * The scope at which the properties to query belong
+     */
+    scope: SubscriptionInputScope;
+    /**
+     * Subscription containing information about the publisher/consumer and the current input values
+     */
+    subscription: Subscription;
 }
 
 /**
@@ -671,14 +629,15 @@ export interface SubscriptionsQuery {
      */
     results: Subscription[];
     /**
+     * Optional scope - default scope is 'project'
+     */
+    scope: EventScope;
+    /**
      * Optional subscriber filter.
      */
     subscriberId: string;
 }
 
-/**
- * Enumerates possible states of a subscription.
- */
 export enum SubscriptionStatus {
     /**
      * The subscription is enabled.
@@ -696,10 +655,6 @@ export enum SubscriptionStatus {
      * The subscription is disabled by the system.
      */
     DisabledBySystem = 30,
-    /**
-     * The subscription is disabled because the owner is inactive.
-     */
-    DisabledByInactiveIdentity = 40,
 }
 
 /**
@@ -734,7 +689,15 @@ export var TypeInfo = {
     },
     Event: <any>{
     },
-    EventTypeDescriptor: <any>{
+    EventScope: {
+        enumValues: {
+            "all": 0,
+            "project": 1,
+            "team": 2,
+            "collection": 3,
+            "account": 4,
+            "deployment": 5
+        }
     },
     Notification: <any>{
     },
@@ -761,15 +724,21 @@ export var TypeInfo = {
     },
     NotificationSummary: <any>{
     },
-    Publisher: <any>{
-    },
     PublisherEvent: <any>{
     },
-    PublishersQuery: <any>{
+    PublishEventsRequestData: <any>{
     },
     SessionToken: <any>{
     },
     Subscription: <any>{
+    },
+    SubscriptionInputScope: {
+        enumValues: {
+            "publisher": 10,
+            "consumer": 20
+        }
+    },
+    SubscriptionInputValuesQuery: <any>{
     },
     SubscriptionsQuery: <any>{
     },
@@ -778,8 +747,7 @@ export var TypeInfo = {
             "enabled": 0,
             "onProbation": 10,
             "disabledByUser": 20,
-            "disabledBySystem": 30,
-            "disabledByInactiveIdentity": 40
+            "disabledBySystem": 30
         }
     },
 };
@@ -795,30 +763,26 @@ TypeInfo.Consumer.fields = {
     inputDescriptors: {
         isArray: true,
         typeInfo: FormInputInterfaces.TypeInfo.InputDescriptor
-    }
+    },
 };
 
 TypeInfo.ConsumerAction.fields = {
     inputDescriptors: {
         isArray: true,
         typeInfo: FormInputInterfaces.TypeInfo.InputDescriptor
-    }
+    },
 };
 
 TypeInfo.Event.fields = {
     createdDate: {
         isDate: true,
     },
+    scope: {
+        enumType: TypeInfo.EventScope
+    },
     sessionToken: {
         typeInfo: TypeInfo.SessionToken
-    }
-};
-
-TypeInfo.EventTypeDescriptor.fields = {
-    inputDescriptors: {
-        isArray: true,
-        typeInfo: FormInputInterfaces.TypeInfo.InputDescriptor
-    }
+    },
 };
 
 TypeInfo.Notification.fields = {
@@ -836,7 +800,7 @@ TypeInfo.Notification.fields = {
     },
     status: {
         enumType: TypeInfo.NotificationStatus
-    }
+    },
 };
 
 TypeInfo.NotificationDetails.fields = {
@@ -854,13 +818,13 @@ TypeInfo.NotificationDetails.fields = {
     },
     queuedDate: {
         isDate: true,
-    }
+    },
 };
 
 TypeInfo.NotificationResultsSummaryDetail.fields = {
     result: {
         enumType: TypeInfo.NotificationResult
-    }
+    },
 };
 
 TypeInfo.NotificationsQuery.fields = {
@@ -887,25 +851,14 @@ TypeInfo.NotificationsQuery.fields = {
     summary: {
         isArray: true,
         typeInfo: TypeInfo.NotificationSummary
-    }
+    },
 };
 
 TypeInfo.NotificationSummary.fields = {
     results: {
         isArray: true,
         typeInfo: TypeInfo.NotificationResultsSummaryDetail
-    }
-};
-
-TypeInfo.Publisher.fields = {
-    inputDescriptors: {
-        isArray: true,
-        typeInfo: FormInputInterfaces.TypeInfo.InputDescriptor
     },
-    supportedEvents: {
-        isArray: true,
-        typeInfo: TypeInfo.EventTypeDescriptor
-    }
 };
 
 TypeInfo.PublisherEvent.fields = {
@@ -916,22 +869,19 @@ TypeInfo.PublisherEvent.fields = {
         isArray: true,
         typeInfo: FormInputInterfaces.TypeInfo.InputFilter
     },
-    subscription: {
-        typeInfo: TypeInfo.Subscription
-    }
 };
 
-TypeInfo.PublishersQuery.fields = {
-    results: {
+TypeInfo.PublishEventsRequestData.fields = {
+    events: {
         isArray: true,
-        typeInfo: TypeInfo.Publisher
-    }
+        typeInfo: TypeInfo.PublisherEvent
+    },
 };
 
 TypeInfo.SessionToken.fields = {
     validTo: {
         isDate: true,
-    }
+    },
 };
 
 TypeInfo.Subscription.fields = {
@@ -941,9 +891,21 @@ TypeInfo.Subscription.fields = {
     modifiedDate: {
         isDate: true,
     },
+    scope: {
+        enumType: TypeInfo.EventScope
+    },
     status: {
         enumType: TypeInfo.SubscriptionStatus
-    }
+    },
+};
+
+TypeInfo.SubscriptionInputValuesQuery.fields = {
+    scope: {
+        enumType: TypeInfo.SubscriptionInputScope
+    },
+    subscription: {
+        typeInfo: TypeInfo.Subscription
+    },
 };
 
 TypeInfo.SubscriptionsQuery.fields = {
@@ -958,5 +920,8 @@ TypeInfo.SubscriptionsQuery.fields = {
     results: {
         isArray: true,
         typeInfo: TypeInfo.Subscription
-    }
+    },
+    scope: {
+        enumType: TypeInfo.EventScope
+    },
 };
