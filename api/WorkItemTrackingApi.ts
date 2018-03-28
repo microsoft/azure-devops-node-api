@@ -25,18 +25,17 @@ export interface IWorkItemTrackingApi extends basem.ClientApiBase {
     getRecentActivityData(): Promise<WorkItemTrackingInterfaces.AccountRecentActivityWorkItemModel[]>;
     getRecentMentions(): Promise<WorkItemTrackingInterfaces.AccountRecentMentionWorkItemModel[]>;
     getWorkArtifactLinkTypes(): Promise<WorkItemTrackingInterfaces.WorkArtifactLink[]>;
-    queryWorkItemsForArtifactUris(artifactUriQuery: WorkItemTrackingInterfaces.ArtifactUriQuery, project?: string): Promise<WorkItemTrackingInterfaces.ArtifactUriQueryResult>;
-    createAttachment(customHeaders: any, contentStream: NodeJS.ReadableStream, fileName?: string, uploadType?: string, project?: string, areaPath?: string): Promise<WorkItemTrackingInterfaces.AttachmentReference>;
-    getAttachmentContent(id: string, fileName?: string, project?: string, download?: boolean): Promise<NodeJS.ReadableStream>;
-    getAttachmentZip(id: string, fileName?: string, project?: string, download?: boolean): Promise<NodeJS.ReadableStream>;
-    getClassificationNodes(project: string, ids: number[], depth?: number, errorPolicy?: WorkItemTrackingInterfaces.ClassificationNodesErrorPolicy): Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode[]>;
+    queryWorkItemsForArtifactUris(artifactUriQuery: WorkItemTrackingInterfaces.ArtifactUriQuery): Promise<WorkItemTrackingInterfaces.ArtifactUriQueryResult>;
+    createAttachment(customHeaders: any, contentStream: NodeJS.ReadableStream, fileName?: string, uploadType?: string, areaPath?: string): Promise<WorkItemTrackingInterfaces.AttachmentReference>;
+    getAttachmentContent(id: string, fileName?: string): Promise<NodeJS.ReadableStream>;
+    getAttachmentZip(id: string, fileName?: string): Promise<NodeJS.ReadableStream>;
     getRootNodes(project: string, depth?: number): Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode[]>;
     createOrUpdateClassificationNode(postedNode: WorkItemTrackingInterfaces.WorkItemClassificationNode, project: string, structureGroup: WorkItemTrackingInterfaces.TreeStructureGroup, path?: string): Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode>;
     deleteClassificationNode(project: string, structureGroup: WorkItemTrackingInterfaces.TreeStructureGroup, path?: string, reclassifyId?: number): Promise<void>;
     getClassificationNode(project: string, structureGroup: WorkItemTrackingInterfaces.TreeStructureGroup, path?: string, depth?: number): Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode>;
     updateClassificationNode(postedNode: WorkItemTrackingInterfaces.WorkItemClassificationNode, project: string, structureGroup: WorkItemTrackingInterfaces.TreeStructureGroup, path?: string): Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode>;
-    getComment(id: number, revision: number, project?: string): Promise<WorkItemTrackingInterfaces.WorkItemComment>;
-    getComments(id: number, fromRevision?: number, top?: number, order?: WorkItemTrackingInterfaces.CommentSortOrder, project?: string): Promise<WorkItemTrackingInterfaces.WorkItemComments>;
+    getComment(id: number, revision: number): Promise<WorkItemTrackingInterfaces.WorkItemComment>;
+    getComments(id: number, fromRevision?: number, top?: number, order?: WorkItemTrackingInterfaces.CommentSortOrder): Promise<WorkItemTrackingInterfaces.WorkItemComments>;
     deleteField(fieldNameOrRefName: string, project?: string): Promise<void>;
     getField(fieldNameOrRefName: string, project?: string): Promise<WorkItemTrackingInterfaces.WorkItemField>;
     getFields(project?: string, expand?: WorkItemTrackingInterfaces.GetFieldsExpand): Promise<WorkItemTrackingInterfaces.WorkItemField[]>;
@@ -49,8 +48,8 @@ export interface IWorkItemTrackingApi extends basem.ClientApiBase {
     updateQuery(queryUpdate: WorkItemTrackingInterfaces.QueryHierarchyItem, project: string, query: string, undeleteDescendants?: boolean): Promise<WorkItemTrackingInterfaces.QueryHierarchyItem>;
     destroyWorkItem(id: number, project?: string): Promise<void>;
     getDeletedWorkItem(id: number, project?: string): Promise<WorkItemTrackingInterfaces.WorkItemDelete>;
+    getDeletedWorkItemReferences(project?: string): Promise<WorkItemTrackingInterfaces.WorkItemReference[]>;
     getDeletedWorkItems(ids: number[], project?: string): Promise<WorkItemTrackingInterfaces.WorkItemDeleteReference[]>;
-    getDeletedWorkItemShallowReferences(project?: string): Promise<WorkItemTrackingInterfaces.WorkItemDeleteShallowReference[]>;
     restoreWorkItem(payload: WorkItemTrackingInterfaces.WorkItemDeleteUpdate, id: number, project?: string): Promise<WorkItemTrackingInterfaces.WorkItemDelete>;
     getRevision(id: number, revisionNumber: number, expand?: WorkItemTrackingInterfaces.WorkItemExpand): Promise<WorkItemTrackingInterfaces.WorkItem>;
     getRevisions(id: number, top?: number, skip?: number, expand?: WorkItemTrackingInterfaces.WorkItemExpand): Promise<WorkItemTrackingInterfaces.WorkItem[]>;
@@ -63,22 +62,21 @@ export interface IWorkItemTrackingApi extends basem.ClientApiBase {
     getUpdate(id: number, updateNumber: number): Promise<WorkItemTrackingInterfaces.WorkItemUpdate>;
     getUpdates(id: number, top?: number, skip?: number): Promise<WorkItemTrackingInterfaces.WorkItemUpdate[]>;
     queryByWiql(wiql: WorkItemTrackingInterfaces.Wiql, teamContext?: TfsCoreInterfaces.TeamContext, timePrecision?: boolean, top?: number): Promise<WorkItemTrackingInterfaces.WorkItemQueryResult>;
-    getQueryResultCount(id: string, teamContext?: TfsCoreInterfaces.TeamContext, timePrecision?: boolean): Promise<number>;
     queryById(id: string, teamContext?: TfsCoreInterfaces.TeamContext, timePrecision?: boolean): Promise<WorkItemTrackingInterfaces.WorkItemQueryResult>;
     getWorkItemIconJson(icon: string, color?: string, v?: number): Promise<WorkItemTrackingInterfaces.WorkItemIcon>;
     getWorkItemIcons(): Promise<WorkItemTrackingInterfaces.WorkItemIcon[]>;
     getWorkItemIconSvg(icon: string, color?: string, v?: number): Promise<NodeJS.ReadableStream>;
-    getReportingLinksByLinkType(project?: string, linkTypes?: string[], types?: string[], continuationToken?: string, startDateTime?: Date): Promise<WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch>;
+    getReportingLinks(project?: string, types?: string[], continuationToken?: string, startDateTime?: Date): Promise<WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch>;
     getRelationType(relation: string): Promise<WorkItemTrackingInterfaces.WorkItemRelationType>;
     getRelationTypes(): Promise<WorkItemTrackingInterfaces.WorkItemRelationType[]>;
     readReportingRevisionsGet(project?: string, fields?: string[], types?: string[], continuationToken?: string, startDateTime?: Date, includeIdentityRef?: boolean, includeDeleted?: boolean, includeTagRef?: boolean, includeLatestOnly?: boolean, expand?: WorkItemTrackingInterfaces.ReportingRevisionsExpand, includeDiscussionChangesOnly?: boolean, maxPageSize?: number): Promise<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>;
     readReportingRevisionsPost(filter: WorkItemTrackingInterfaces.ReportingWorkItemRevisionsFilter, project?: string, continuationToken?: string, startDateTime?: Date, expand?: WorkItemTrackingInterfaces.ReportingRevisionsExpand): Promise<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>;
+    deleteWorkItem(id: number, destroy?: boolean): Promise<WorkItemTrackingInterfaces.WorkItemDelete>;
+    getWorkItem(id: number, fields?: string[], asOf?: Date, expand?: WorkItemTrackingInterfaces.WorkItemExpand): Promise<WorkItemTrackingInterfaces.WorkItem>;
+    getWorkItems(ids: number[], fields?: string[], asOf?: Date, expand?: WorkItemTrackingInterfaces.WorkItemExpand, errorPolicy?: WorkItemTrackingInterfaces.WorkItemErrorPolicy): Promise<WorkItemTrackingInterfaces.WorkItem[]>;
+    updateWorkItem(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, id: number, validateOnly?: boolean, bypassRules?: boolean, suppressNotifications?: boolean): Promise<WorkItemTrackingInterfaces.WorkItem>;
     createWorkItem(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, project: string, type: string, validateOnly?: boolean, bypassRules?: boolean, suppressNotifications?: boolean): Promise<WorkItemTrackingInterfaces.WorkItem>;
     getWorkItemTemplate(project: string, type: string, fields?: string, asOf?: Date, expand?: WorkItemTrackingInterfaces.WorkItemExpand): Promise<WorkItemTrackingInterfaces.WorkItem>;
-    deleteWorkItem(id: number, project?: string, destroy?: boolean): Promise<WorkItemTrackingInterfaces.WorkItemDelete>;
-    getWorkItem(id: number, fields?: string[], asOf?: Date, expand?: WorkItemTrackingInterfaces.WorkItemExpand, project?: string): Promise<WorkItemTrackingInterfaces.WorkItem>;
-    getWorkItems(ids: number[], fields?: string[], asOf?: Date, expand?: WorkItemTrackingInterfaces.WorkItemExpand, errorPolicy?: WorkItemTrackingInterfaces.WorkItemErrorPolicy, project?: string): Promise<WorkItemTrackingInterfaces.WorkItem[]>;
-    updateWorkItem(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, id: number, project?: string, validateOnly?: boolean, bypassRules?: boolean, suppressNotifications?: boolean): Promise<WorkItemTrackingInterfaces.WorkItem>;
     getWorkItemStateColors(projectNames: string[]): Promise<WorkItemTrackingInterfaces.ProjectWorkItemStateColors[]>;
     getWorkItemNextStatesOnCheckinAction(ids: number[], action?: string): Promise<WorkItemTrackingInterfaces.WorkItemNextStateOnTransition[]>;
     getWorkItemTypeCategories(project: string): Promise<WorkItemTrackingInterfaces.WorkItemTypeCategory[]>;
@@ -87,8 +85,8 @@ export interface IWorkItemTrackingApi extends basem.ClientApiBase {
     getWorkItemTypeColorAndIcons(projectNames: string[]): Promise<{ key: string; value: WorkItemTrackingInterfaces.WorkItemTypeColorAndIcon[] }[]>;
     getWorkItemType(project: string, type: string): Promise<WorkItemTrackingInterfaces.WorkItemType>;
     getWorkItemTypes(project: string): Promise<WorkItemTrackingInterfaces.WorkItemType[]>;
-    getWorkItemTypeFieldsWithReferences(project: string, type: string, expand?: WorkItemTrackingInterfaces.WorkItemTypeFieldsExpandLevel): Promise<WorkItemTrackingInterfaces.WorkItemTypeFieldWithReferences[]>;
-    getWorkItemTypeFieldWithReferences(project: string, type: string, field: string, expand?: WorkItemTrackingInterfaces.WorkItemTypeFieldsExpandLevel): Promise<WorkItemTrackingInterfaces.WorkItemTypeFieldWithReferences>;
+    getWorkItemTypeField(project: string, type: string, field: string, expand?: WorkItemTrackingInterfaces.WorkItemTypeFieldsExpandLevel): Promise<WorkItemTrackingInterfaces.WorkItemTypeFieldInstance>;
+    getWorkItemTypeFields(project: string, type: string, expand?: WorkItemTrackingInterfaces.WorkItemTypeFieldsExpandLevel): Promise<WorkItemTrackingInterfaces.WorkItemTypeFieldInstance[]>;
     getWorkItemTypeStates(project: string, type: string): Promise<WorkItemTrackingInterfaces.WorkItemStateColor[]>;
     exportWorkItemTypeDefinition(project?: string, type?: string, exportGlobalLists?: boolean): Promise<WorkItemTrackingInterfaces.WorkItemTypeTemplate>;
     updateWorkItemTypeDefinition(updateModel: WorkItemTrackingInterfaces.WorkItemTypeTemplateUpdateModel, project?: string): Promise<WorkItemTrackingInterfaces.ProvisioningResult>;
@@ -120,7 +118,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "4.1-preview.1",
                     "wit",
                     "def3d688-ddf5-4096-9024-69beea15cdbd",
                     routeValues,
@@ -159,7 +157,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "4.1-preview.1",
                     "wit",
                     "1bc988f4-c15f-4072-ad35-497c87e3a909",
                     routeValues);
@@ -197,7 +195,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "4.1-preview.1",
                     "wit",
                     "d60eeb6e-e18c-4478-9e94-a0094e28f41c",
                     routeValues);
@@ -235,7 +233,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "4.1-preview.1",
                     "wit",
                     "1a31de40-e318-41cd-a6c6-881077df52e3",
                     routeValues);
@@ -264,21 +262,18 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      * Queries work items linked to a given list of artifact URI.
      * 
      * @param {WorkItemTrackingInterfaces.ArtifactUriQuery} artifactUriQuery - Defines a list of artifact URI for querying work items.
-     * @param {string} project - Project ID or project name
      */
     public async queryWorkItemsForArtifactUris(
-        artifactUriQuery: WorkItemTrackingInterfaces.ArtifactUriQuery,
-        project?: string
+        artifactUriQuery: WorkItemTrackingInterfaces.ArtifactUriQuery
         ): Promise<WorkItemTrackingInterfaces.ArtifactUriQueryResult> {
 
         return new Promise<WorkItemTrackingInterfaces.ArtifactUriQueryResult>(async (resolve, reject) => {
             let routeValues: any = {
-                project: project
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "4.1-preview.1",
                     "wit",
                     "a9a9aa7a-8c09-44d3-ad1b-46e855c1e3d3",
                     routeValues);
@@ -309,7 +304,6 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      * @param {NodeJS.ReadableStream} contentStream - Content to upload
      * @param {string} fileName - The name of the file
      * @param {string} uploadType - Attachment upload type: Simple or Chunked
-     * @param {string} project - Project ID or project name
      * @param {string} areaPath - Target project Area Path
      */
     public async createAttachment(
@@ -317,13 +311,11 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         contentStream: NodeJS.ReadableStream,
         fileName?: string,
         uploadType?: string,
-        project?: string,
         areaPath?: string
         ): Promise<WorkItemTrackingInterfaces.AttachmentReference> {
 
         return new Promise<WorkItemTrackingInterfaces.AttachmentReference>(async (resolve, reject) => {
             let routeValues: any = {
-                project: project
             };
 
             let queryValues: any = {
@@ -337,7 +329,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
+                    "4.1-preview.2",
                     "wit",
                     "e07b5fa4-1499-494d-a496-64b860fd64ff",
                     routeValues,
@@ -369,30 +361,24 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      * 
      * @param {string} id - Attachment ID
      * @param {string} fileName - Name of the file
-     * @param {string} project - Project ID or project name
-     * @param {boolean} download - If set to <c>true</c> always download attachment
      */
     public async getAttachmentContent(
         id: string,
-        fileName?: string,
-        project?: string,
-        download?: boolean
+        fileName?: string
         ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
-                project: project,
                 id: id
             };
 
             let queryValues: any = {
                 fileName: fileName,
-                download: download,
             };
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
+                    "4.1-preview.2",
                     "wit",
                     "e07b5fa4-1499-494d-a496-64b860fd64ff",
                     routeValues,
@@ -415,30 +401,24 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      * 
      * @param {string} id - Attachment ID
      * @param {string} fileName - Name of the file
-     * @param {string} project - Project ID or project name
-     * @param {boolean} download - If set to <c>true</c> always download attachment
      */
     public async getAttachmentZip(
         id: string,
-        fileName?: string,
-        project?: string,
-        download?: boolean
+        fileName?: string
         ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
-                project: project,
                 id: id
             };
 
             let queryValues: any = {
                 fileName: fileName,
-                download: download,
             };
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
+                    "4.1-preview.2",
                     "wit",
                     "e07b5fa4-1499-494d-a496-64b860fd64ff",
                     routeValues,
@@ -449,60 +429,6 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Gets root classification nodes or list of classification nodes for a given list of nodes ids, for a given project. In case ids parameter is supplied you will  get list of classification nodes for those ids. Otherwise you will get root classification nodes for this project.
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number[]} ids - Comma seperated integer classification nodes ids. It's not required, if you want root nodes.
-     * @param {number} depth - Depth of children to fetch.
-     * @param {WorkItemTrackingInterfaces.ClassificationNodesErrorPolicy} errorPolicy - Flag to handle errors in getting some nodes. Possible options are Fail and Omit.
-     */
-    public async getClassificationNodes(
-        project: string,
-        ids: number[],
-        depth?: number,
-        errorPolicy?: WorkItemTrackingInterfaces.ClassificationNodesErrorPolicy
-        ): Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode[]> {
-
-        return new Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode[]>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project
-            };
-
-            let queryValues: any = {
-                ids: ids && ids.join(","),
-                '$depth': depth,
-                errorPolicy: errorPolicy,
-            };
-            
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
-                    "wit",
-                    "a70579d1-f53a-48ee-a5be-7be8659023b9",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemClassificationNode[]>;
-                res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemClassificationNode[]>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode,
-                                              true);
-
-                resolve(ret);
-                
             }
             catch (err) {
                 reject(err);
@@ -532,7 +458,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "a70579d1-f53a-48ee-a5be-7be8659023b9",
                     routeValues,
@@ -582,7 +508,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "5a172953-1b41-49d3-840a-33f79c3ce89f",
                     routeValues);
@@ -635,7 +561,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "5a172953-1b41-49d3-840a-33f79c3ce89f",
                     routeValues,
@@ -689,7 +615,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "5a172953-1b41-49d3-840a-33f79c3ce89f",
                     routeValues,
@@ -739,7 +665,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "5a172953-1b41-49d3-840a-33f79c3ce89f",
                     routeValues);
@@ -769,24 +695,21 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      * 
      * @param {number} id - Work item id
      * @param {number} revision - Revision for which the comment need to be fetched
-     * @param {string} project - Project ID or project name
      */
     public async getComment(
         id: number,
-        revision: number,
-        project?: string
+        revision: number
         ): Promise<WorkItemTrackingInterfaces.WorkItemComment> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemComment>(async (resolve, reject) => {
             let routeValues: any = {
-                project: project,
                 id: id,
                 revision: revision
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.1",
                     "wit",
                     "19335ae7-22f7-4308-93d8-261f9384b7cf",
                     routeValues);
@@ -815,22 +738,19 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      * Gets the specified number of comments for a work item from the specified revision.
      * 
      * @param {number} id - Work item id
-     * @param {number} fromRevision - Revision from which comments are to be fetched (default is 1)
-     * @param {number} top - The number of comments to return (default is 200)
-     * @param {WorkItemTrackingInterfaces.CommentSortOrder} order - Ascending or descending by revision id (default is ascending)
-     * @param {string} project - Project ID or project name
+     * @param {number} fromRevision - Revision from which comments are to be fetched
+     * @param {number} top - The number of comments to return
+     * @param {WorkItemTrackingInterfaces.CommentSortOrder} order - Ascending or descending by revision id
      */
     public async getComments(
         id: number,
         fromRevision?: number,
         top?: number,
-        order?: WorkItemTrackingInterfaces.CommentSortOrder,
-        project?: string
+        order?: WorkItemTrackingInterfaces.CommentSortOrder
         ): Promise<WorkItemTrackingInterfaces.WorkItemComments> {
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemComments>(async (resolve, reject) => {
             let routeValues: any = {
-                project: project,
                 id: id
             };
 
@@ -842,7 +762,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.1",
                     "wit",
                     "19335ae7-22f7-4308-93d8-261f9384b7cf",
                     routeValues,
@@ -887,7 +807,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "b51fd764-e5c2-4b9b-aaf7-3395cf4bdd94",
                     routeValues);
@@ -931,7 +851,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "b51fd764-e5c2-4b9b-aaf7-3395cf4bdd94",
                     routeValues);
@@ -978,7 +898,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "b51fd764-e5c2-4b9b-aaf7-3395cf4bdd94",
                     routeValues,
@@ -1025,7 +945,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "b51fd764-e5c2-4b9b-aaf7-3395cf4bdd94",
                     routeValues);
@@ -1071,7 +991,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "a67d190c-c41f-424b-814d-0e906f659301",
                     routeValues);
@@ -1097,7 +1017,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-     * Delete a query or a folder. This deletes any permission change on the deleted query or folder and any of its descendants if it is a folder. It is important to note that the deleted permission changes cannot be recovered upon undeleting the query or folder.
+     * Delete a query or a folder
      * 
      * @param {string} project - Project ID or project name
      * @param {string} query - ID or path of the query or folder to delete.
@@ -1115,7 +1035,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "a67d190c-c41f-424b-814d-0e906f659301",
                     routeValues);
@@ -1168,7 +1088,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "a67d190c-c41f-424b-814d-0e906f659301",
                     routeValues,
@@ -1225,7 +1145,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "a67d190c-c41f-424b-814d-0e906f659301",
                     routeValues,
@@ -1282,7 +1202,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "a67d190c-c41f-424b-814d-0e906f659301",
                     routeValues,
@@ -1314,7 +1234,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      * @param {WorkItemTrackingInterfaces.QueryHierarchyItem} queryUpdate - The query to update.
      * @param {string} project - Project ID or project name
      * @param {string} query - The path for the query to update.
-     * @param {boolean} undeleteDescendants - Undelete the children of this folder. It is important to note that this will not bring back the permission changes that were previously applied to the descendants.
+     * @param {boolean} undeleteDescendants - Undelete the children of this folder.
      */
     public async updateQuery(
         queryUpdate: WorkItemTrackingInterfaces.QueryHierarchyItem,
@@ -1335,7 +1255,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "a67d190c-c41f-424b-814d-0e906f659301",
                     routeValues,
@@ -1380,7 +1300,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.1",
                     "wit",
                     "b70d8d39-926c-465e-b927-b1bf0e5ca0e0",
                     routeValues);
@@ -1424,7 +1344,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.1",
                     "wit",
                     "b70d8d39-926c-465e-b927-b1bf0e5ca0e0",
                     routeValues);
@@ -1439,6 +1359,47 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let ret = this.formatResponse(res.result,
                                               null,
                                               false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Gets a list of the IDs and the URLs of the deleted the work items in the Recycle Bin.
+     * 
+     * @param {string} project - Project ID or project name
+     */
+    public async getDeletedWorkItemReferences(
+        project?: string
+        ): Promise<WorkItemTrackingInterfaces.WorkItemReference[]> {
+
+        return new Promise<WorkItemTrackingInterfaces.WorkItemReference[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.1",
+                    "wit",
+                    "b70d8d39-926c-465e-b927-b1bf0e5ca0e0",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemReference[]>;
+                res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemReference[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
 
                 resolve(ret);
                 
@@ -1471,7 +1432,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.1",
                     "wit",
                     "b70d8d39-926c-465e-b927-b1bf0e5ca0e0",
                     routeValues,
@@ -1483,47 +1444,6 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemDeleteReference[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemDeleteReference[]>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Gets a list of the IDs and the URLs of the deleted the work items in the Recycle Bin.
-     * 
-     * @param {string} project - Project ID or project name
-     */
-    public async getDeletedWorkItemShallowReferences(
-        project?: string
-        ): Promise<WorkItemTrackingInterfaces.WorkItemDeleteShallowReference[]> {
-
-        return new Promise<WorkItemTrackingInterfaces.WorkItemDeleteShallowReference[]>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
-                    "wit",
-                    "b70d8d39-926c-465e-b927-b1bf0e5ca0e0",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemDeleteShallowReference[]>;
-                res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemDeleteShallowReference[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
@@ -1559,7 +1479,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.1",
                     "wit",
                     "b70d8d39-926c-465e-b927-b1bf0e5ca0e0",
                     routeValues);
@@ -1609,7 +1529,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
+                    "4.1-preview.2",
                     "wit",
                     "a00c85a5-80fa-4565-99c3-bcd2181434bb",
                     routeValues,
@@ -1663,7 +1583,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
+                    "4.1-preview.2",
                     "wit",
                     "a00c85a5-80fa-4565-99c3-bcd2181434bb",
                     routeValues,
@@ -1704,7 +1624,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "1a3a1536-dca6-4509-b9c3-dd9bb2981506",
                     routeValues);
@@ -1751,7 +1671,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "4.1-preview.1",
                     "wit",
                     "6a90345f-a676-4969-afce-8e163e1d5642",
                     routeValues);
@@ -1802,7 +1722,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "4.1-preview.1",
                     "wit",
                     "6a90345f-a676-4969-afce-8e163e1d5642",
                     routeValues,
@@ -1851,7 +1771,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "4.1-preview.1",
                     "wit",
                     "fb10264a-8836-48a0-8033-1b0ccd2748d5",
                     routeValues);
@@ -1899,7 +1819,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "4.1-preview.1",
                     "wit",
                     "fb10264a-8836-48a0-8033-1b0ccd2748d5",
                     routeValues);
@@ -1949,7 +1869,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "4.1-preview.1",
                     "wit",
                     "fb10264a-8836-48a0-8033-1b0ccd2748d5",
                     routeValues);
@@ -1993,7 +1913,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
+                    "4.1-preview.2",
                     "wit",
                     "6570bf97-d02c-4a91-8d93-3abe9895b1a9",
                     routeValues);
@@ -2043,7 +1963,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
+                    "4.1-preview.2",
                     "wit",
                     "6570bf97-d02c-4a91-8d93-3abe9895b1a9",
                     routeValues,
@@ -2100,7 +2020,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "1a9c53f7-f243-4447-b110-35ef023636e4",
                     routeValues,
@@ -2115,61 +2035,6 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let ret = this.formatResponse(res.result,
                                               WorkItemTrackingInterfaces.TypeInfo.WorkItemQueryResult,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Gets the results of the query given the query ID.
-     * 
-     * @param {string} id - The query ID.
-     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
-     * @param {boolean} timePrecision - Whether or not to use time precision.
-     */
-    public async getQueryResultCount(
-        id: string,
-        teamContext?: TfsCoreInterfaces.TeamContext,
-        timePrecision?: boolean
-        ): Promise<number> {
-
-        return new Promise<number>(async (resolve, reject) => {
-            let project = teamContext.projectId || teamContext.project;
-            let team = teamContext.teamId || teamContext.team;
-
-            let routeValues: any = {
-                project: project,
-                team: team,
-                id: id
-            };
-
-            let queryValues: any = {
-                timePrecision: timePrecision,
-            };
-            
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
-                    "wit",
-                    "a02355f5-5f8a-4671-8e32-369d23aac83d",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<number>;
-                res = await this.rest.head<number>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
                                               false);
 
                 resolve(ret);
@@ -2210,7 +2075,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "a02355f5-5f8a-4671-8e32-369d23aac83d",
                     routeValues,
@@ -2261,7 +2126,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "4.1-preview.1",
                     "wit",
                     "4e1eb4a5-1970-4228-a682-ec48eb2dca30",
                     routeValues,
@@ -2300,7 +2165,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "4.1-preview.1",
                     "wit",
                     "4e1eb4a5-1970-4228-a682-ec48eb2dca30",
                     routeValues);
@@ -2350,7 +2215,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "4.1-preview.1",
                     "wit",
                     "4e1eb4a5-1970-4228-a682-ec48eb2dca30",
                     routeValues,
@@ -2372,14 +2237,12 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      * Get a batch of work item links
      * 
      * @param {string} project - Project ID or project name
-     * @param {string[]} linkTypes - A list of types to filter the results to specific link types. Omit this parameter to get work item links of all link types.
      * @param {string[]} types - A list of types to filter the results to specific work item types. Omit this parameter to get work item links of all work item types.
      * @param {string} continuationToken - Specifies the continuationToken to start the batch from. Omit this parameter to get the first batch of links.
      * @param {Date} startDateTime - Date/time to use as a starting point for link changes. Only link changes that occurred after that date/time will be returned. Cannot be used in conjunction with 'watermark' parameter.
      */
-    public async getReportingLinksByLinkType(
+    public async getReportingLinks(
         project?: string,
-        linkTypes?: string[],
         types?: string[],
         continuationToken?: string,
         startDateTime?: Date
@@ -2391,7 +2254,6 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             };
 
             let queryValues: any = {
-                linkTypes: linkTypes && linkTypes.join(","),
                 types: types && types.join(","),
                 continuationToken: continuationToken,
                 startDateTime: startDateTime,
@@ -2399,7 +2261,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "b5b5b6d0-0308-40a1-b3f4-b9bb3c66878f",
                     routeValues,
@@ -2441,7 +2303,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "f5d33bc9-5b49-4a3c-a9bd-f3cd46dd2165",
                     routeValues);
@@ -2479,7 +2341,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "f5d33bc9-5b49-4a3c-a9bd-f3cd46dd2165",
                     routeValues);
@@ -2556,7 +2418,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "f828fe59-dd87-495d-a17c-7a8d6211ca6c",
                     routeValues,
@@ -2612,7 +2474,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "f828fe59-dd87-495d-a17c-7a8d6211ca6c",
                     routeValues,
@@ -2624,6 +2486,226 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>(url, filter, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Deletes the specified work item and sends it to the Recycle Bin, so that it can be restored back, if required. Optionally, if the destroy parameter has been set to true, it destroys the work item permanently.
+     * 
+     * @param {number} id - ID of the work item to be deleted
+     * @param {boolean} destroy - Optional parameter, if set to true, the work item is deleted permanently
+     */
+    public async deleteWorkItem(
+        id: number,
+        destroy?: boolean
+        ): Promise<WorkItemTrackingInterfaces.WorkItemDelete> {
+
+        return new Promise<WorkItemTrackingInterfaces.WorkItemDelete>(async (resolve, reject) => {
+            let routeValues: any = {
+                id: id
+            };
+
+            let queryValues: any = {
+                destroy: destroy,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.2",
+                    "wit",
+                    "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemDelete>;
+                res = await this.rest.del<WorkItemTrackingInterfaces.WorkItemDelete>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Returns a single work item.
+     * 
+     * @param {number} id - The work item id
+     * @param {string[]} fields - Comma-separated list of requested fields
+     * @param {Date} asOf - AsOf UTC date time string
+     * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand - The expand parameters for work item attributes
+     */
+    public async getWorkItem(
+        id: number,
+        fields?: string[],
+        asOf?: Date,
+        expand?: WorkItemTrackingInterfaces.WorkItemExpand
+        ): Promise<WorkItemTrackingInterfaces.WorkItem> {
+
+        return new Promise<WorkItemTrackingInterfaces.WorkItem>(async (resolve, reject) => {
+            let routeValues: any = {
+                id: id
+            };
+
+            let queryValues: any = {
+                fields: fields && fields.join(","),
+                asOf: asOf,
+                '$expand': expand,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.2",
+                    "wit",
+                    "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem>;
+                res = await this.rest.get<WorkItemTrackingInterfaces.WorkItem>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Returns a list of work items.
+     * 
+     * @param {number[]} ids - The comma-separated list of requested work item ids
+     * @param {string[]} fields - Comma-separated list of requested fields
+     * @param {Date} asOf - AsOf UTC date time string
+     * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand - The expand parameters for work item attributes
+     * @param {WorkItemTrackingInterfaces.WorkItemErrorPolicy} errorPolicy - The flag to control error policy in a bulk get work items request
+     */
+    public async getWorkItems(
+        ids: number[],
+        fields?: string[],
+        asOf?: Date,
+        expand?: WorkItemTrackingInterfaces.WorkItemExpand,
+        errorPolicy?: WorkItemTrackingInterfaces.WorkItemErrorPolicy
+        ): Promise<WorkItemTrackingInterfaces.WorkItem[]> {
+
+        return new Promise<WorkItemTrackingInterfaces.WorkItem[]>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
+
+            let queryValues: any = {
+                ids: ids && ids.join(","),
+                fields: fields && fields.join(","),
+                asOf: asOf,
+                '$expand': expand,
+                errorPolicy: errorPolicy,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.2",
+                    "wit",
+                    "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem[]>;
+                res = await this.rest.get<WorkItemTrackingInterfaces.WorkItem[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Updates a single work item.
+     * 
+     * @param {VSSInterfaces.JsonPatchDocument} document - The JSON Patch document representing the update
+     * @param {number} id - The id of the work item to update
+     * @param {boolean} validateOnly - Indicate if you only want to validate the changes without saving the work item
+     * @param {boolean} bypassRules - Do not enforce the work item type rules on this update
+     * @param {boolean} suppressNotifications - Do not fire any notifications for this change
+     */
+    public async updateWorkItem(
+        customHeaders: any,
+        document: VSSInterfaces.JsonPatchDocument,
+        id: number,
+        validateOnly?: boolean,
+        bypassRules?: boolean,
+        suppressNotifications?: boolean
+        ): Promise<WorkItemTrackingInterfaces.WorkItem> {
+
+        return new Promise<WorkItemTrackingInterfaces.WorkItem>(async (resolve, reject) => {
+            let routeValues: any = {
+                id: id
+            };
+
+            let queryValues: any = {
+                validateOnly: validateOnly,
+                bypassRules: bypassRules,
+                suppressNotifications: suppressNotifications,
+            };
+            
+            customHeaders = customHeaders || {};
+            customHeaders["Content-Type"] = "application/json-patch+json";
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.2",
+                    "wit",
+                    "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+                options.additionalHeaders = customHeaders;
+
+                let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem>;
+                res = await this.rest.update<WorkItemTrackingInterfaces.WorkItem>(url, document, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
@@ -2675,7 +2757,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
+                    "4.1-preview.2",
                     "wit",
                     "62d3d110-0047-428c-ad3c-4fe872c91c74",
                     routeValues,
@@ -2709,7 +2791,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      * @param {string} type - The work item type name
      * @param {string} fields - Comma-separated list of requested fields
      * @param {Date} asOf - AsOf UTC date time string
-     * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand - The expand parameters for work item attributes. Possible options are { None, Relations, Fields, Links, All }.
+     * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand - The expand parameters for work item attributes
      */
     public async getWorkItemTemplate(
         project: string,
@@ -2733,7 +2815,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
+                    "4.1-preview.2",
                     "wit",
                     "62d3d110-0047-428c-ad3c-4fe872c91c74",
                     routeValues,
@@ -2745,238 +2827,6 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItem>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Deletes the specified work item and sends it to the Recycle Bin, so that it can be restored back, if required. Optionally, if the destroy parameter has been set to true, it destroys the work item permanently.
-     * 
-     * @param {number} id - ID of the work item to be deleted
-     * @param {string} project - Project ID or project name
-     * @param {boolean} destroy - Optional parameter, if set to true, the work item is deleted permanently
-     */
-    public async deleteWorkItem(
-        id: number,
-        project?: string,
-        destroy?: boolean
-        ): Promise<WorkItemTrackingInterfaces.WorkItemDelete> {
-
-        return new Promise<WorkItemTrackingInterfaces.WorkItemDelete>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                id: id
-            };
-
-            let queryValues: any = {
-                destroy: destroy,
-            };
-            
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
-                    "wit",
-                    "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemDelete>;
-                res = await this.rest.del<WorkItemTrackingInterfaces.WorkItemDelete>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Returns a single work item.
-     * 
-     * @param {number} id - The work item id
-     * @param {string[]} fields - Comma-separated list of requested fields
-     * @param {Date} asOf - AsOf UTC date time string
-     * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand - The expand parameters for work item attributes. Possible options are { None, Relations, Fields, Links, All }.
-     * @param {string} project - Project ID or project name
-     */
-    public async getWorkItem(
-        id: number,
-        fields?: string[],
-        asOf?: Date,
-        expand?: WorkItemTrackingInterfaces.WorkItemExpand,
-        project?: string
-        ): Promise<WorkItemTrackingInterfaces.WorkItem> {
-
-        return new Promise<WorkItemTrackingInterfaces.WorkItem>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                id: id
-            };
-
-            let queryValues: any = {
-                fields: fields && fields.join(","),
-                asOf: asOf,
-                '$expand': expand,
-            };
-            
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
-                    "wit",
-                    "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem>;
-                res = await this.rest.get<WorkItemTrackingInterfaces.WorkItem>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Returns a list of work items.
-     * 
-     * @param {number[]} ids - The comma-separated list of requested work item ids
-     * @param {string[]} fields - Comma-separated list of requested fields
-     * @param {Date} asOf - AsOf UTC date time string
-     * @param {WorkItemTrackingInterfaces.WorkItemExpand} expand - The expand parameters for work item attributes. Possible options are { None, Relations, Fields, Links, All }.
-     * @param {WorkItemTrackingInterfaces.WorkItemErrorPolicy} errorPolicy - The flag to control error policy in a bulk get work items request. Possible options are {Fail, Omit}.
-     * @param {string} project - Project ID or project name
-     */
-    public async getWorkItems(
-        ids: number[],
-        fields?: string[],
-        asOf?: Date,
-        expand?: WorkItemTrackingInterfaces.WorkItemExpand,
-        errorPolicy?: WorkItemTrackingInterfaces.WorkItemErrorPolicy,
-        project?: string
-        ): Promise<WorkItemTrackingInterfaces.WorkItem[]> {
-
-        return new Promise<WorkItemTrackingInterfaces.WorkItem[]>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project
-            };
-
-            let queryValues: any = {
-                ids: ids && ids.join(","),
-                fields: fields && fields.join(","),
-                asOf: asOf,
-                '$expand': expand,
-                errorPolicy: errorPolicy,
-            };
-            
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
-                    "wit",
-                    "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem[]>;
-                res = await this.rest.get<WorkItemTrackingInterfaces.WorkItem[]>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Updates a single work item.
-     * 
-     * @param {VSSInterfaces.JsonPatchDocument} document - The JSON Patch document representing the update
-     * @param {number} id - The id of the work item to update
-     * @param {string} project - Project ID or project name
-     * @param {boolean} validateOnly - Indicate if you only want to validate the changes without saving the work item
-     * @param {boolean} bypassRules - Do not enforce the work item type rules on this update
-     * @param {boolean} suppressNotifications - Do not fire any notifications for this change
-     */
-    public async updateWorkItem(
-        customHeaders: any,
-        document: VSSInterfaces.JsonPatchDocument,
-        id: number,
-        project?: string,
-        validateOnly?: boolean,
-        bypassRules?: boolean,
-        suppressNotifications?: boolean
-        ): Promise<WorkItemTrackingInterfaces.WorkItem> {
-
-        return new Promise<WorkItemTrackingInterfaces.WorkItem>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                id: id
-            };
-
-            let queryValues: any = {
-                validateOnly: validateOnly,
-                bypassRules: bypassRules,
-                suppressNotifications: suppressNotifications,
-            };
-            
-            customHeaders = customHeaders || {};
-            customHeaders["Content-Type"] = "application/json-patch+json";
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
-                    "wit",
-                    "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-                options.additionalHeaders = customHeaders;
-
-                let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem>;
-                res = await this.rest.update<WorkItemTrackingInterfaces.WorkItem>(url, document, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
@@ -3006,7 +2856,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "4.1-preview.1",
                     "wit",
                     "0b83df8a-3496-4ddb-ba44-63634f4cda61",
                     routeValues);
@@ -3053,7 +2903,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "4.1-preview.1",
                     "wit",
                     "afae844b-e2f6-44c2-8053-17b3bb936a40",
                     routeValues,
@@ -3080,7 +2930,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-     * Get all work item type categories.
+     * Returns a the deltas between work item revisions.
      * 
      * @param {string} project - Project ID or project name
      */
@@ -3095,7 +2945,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "9b9f5734-36c8-415e-ba67-f83b45c31408",
                     routeValues);
@@ -3121,7 +2971,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-     * Get specific work item type category by name.
+     * Returns a the deltas between work item revisions.
      * 
      * @param {string} project - Project ID or project name
      * @param {string} category - The category name
@@ -3139,7 +2989,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "9b9f5734-36c8-415e-ba67-f83b45c31408",
                     routeValues);
@@ -3179,7 +3029,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "4.1-preview.1",
                     "wit",
                     "958fde80-115e-43fb-bd65-749c48057faf",
                     routeValues);
@@ -3219,7 +3069,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "4.1-preview.1",
                     "wit",
                     "f0f8dc62-3975-48ce-8051-f636b68b52e3",
                     routeValues);
@@ -3263,7 +3113,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "7c8d7a76-4a09-43e8-b5df-bd792f4ac6aa",
                     routeValues);
@@ -3304,7 +3154,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "4.1-preview.2",
                     "wit",
                     "7c8d7a76-4a09-43e8-b5df-bd792f4ac6aa",
                     routeValues);
@@ -3330,72 +3180,21 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
     }
 
     /**
-     * Get a list of fields for a work item type with detailed references.
+     * Get field of a work item type.
      * 
      * @param {string} project - Project ID or project name
-     * @param {string} type - Work item type.
-     * @param {WorkItemTrackingInterfaces.WorkItemTypeFieldsExpandLevel} expand - Expand level for the API response. Properties: to include allowedvalues, default value, isRequired etc. as a part of response; None: to skip these properties.
-     */
-    public async getWorkItemTypeFieldsWithReferences(
-        project: string,
-        type: string,
-        expand?: WorkItemTrackingInterfaces.WorkItemTypeFieldsExpandLevel
-        ): Promise<WorkItemTrackingInterfaces.WorkItemTypeFieldWithReferences[]> {
-
-        return new Promise<WorkItemTrackingInterfaces.WorkItemTypeFieldWithReferences[]>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                type: type
-            };
-
-            let queryValues: any = {
-                '$expand': expand,
-            };
-            
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
-                    "wit",
-                    "bd293ce5-3d25-4192-8e67-e8092e879efb",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTypeFieldWithReferences[]>;
-                res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTypeFieldWithReferences[]>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Get a field for a work item type with detailed references.
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {string} type - Work item type.
+     * @param {string} type - Work item type
      * @param {string} field
      * @param {WorkItemTrackingInterfaces.WorkItemTypeFieldsExpandLevel} expand - Expand level for the API response. Properties: to include allowedvalues, default value, isRequired etc. as a part of response; None: to skip these properties.
      */
-    public async getWorkItemTypeFieldWithReferences(
+    public async getWorkItemTypeField(
         project: string,
         type: string,
         field: string,
         expand?: WorkItemTrackingInterfaces.WorkItemTypeFieldsExpandLevel
-        ): Promise<WorkItemTrackingInterfaces.WorkItemTypeFieldWithReferences> {
+        ): Promise<WorkItemTrackingInterfaces.WorkItemTypeFieldInstance> {
 
-        return new Promise<WorkItemTrackingInterfaces.WorkItemTypeFieldWithReferences>(async (resolve, reject) => {
+        return new Promise<WorkItemTrackingInterfaces.WorkItemTypeFieldInstance>(async (resolve, reject) => {
             let routeValues: any = {
                 project: project,
                 type: type,
@@ -3408,7 +3207,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
+                    "4.1-preview.2",
                     "wit",
                     "bd293ce5-3d25-4192-8e67-e8092e879efb",
                     routeValues,
@@ -3418,12 +3217,63 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
-                let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTypeFieldWithReferences>;
-                res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTypeFieldWithReferences>(url, options);
+                let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTypeFieldInstance>;
+                res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTypeFieldInstance>(url, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
                                               false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get a list of fields for a work Item type.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} type - Work item type.
+     * @param {WorkItemTrackingInterfaces.WorkItemTypeFieldsExpandLevel} expand - Expand level for the API response. Properties: to include allowedvalues, default value, isRequired etc. as a part of response; None: to skip these properties.
+     */
+    public async getWorkItemTypeFields(
+        project: string,
+        type: string,
+        expand?: WorkItemTrackingInterfaces.WorkItemTypeFieldsExpandLevel
+        ): Promise<WorkItemTrackingInterfaces.WorkItemTypeFieldInstance[]> {
+
+        return new Promise<WorkItemTrackingInterfaces.WorkItemTypeFieldInstance[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                type: type
+            };
+
+            let queryValues: any = {
+                '$expand': expand,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "4.1-preview.2",
+                    "wit",
+                    "bd293ce5-3d25-4192-8e67-e8092e879efb",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTypeFieldInstance[]>;
+                res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTypeFieldInstance[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
 
                 resolve(ret);
                 
@@ -3453,7 +3303,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "4.1-preview.1",
                     "wit",
                     "7c9d7a76-4a09-43e8-b5df-bd792f4ac6aa",
                     routeValues);
@@ -3503,7 +3353,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "4.1-preview.1",
                     "wit",
                     "8637ac8b-5eb6-4f90-b3f7-4f2ff576a459",
                     routeValues,
@@ -3547,7 +3397,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "4.1-preview.1",
                     "wit",
                     "8637ac8b-5eb6-4f90-b3f7-4f2ff576a459",
                     routeValues);
