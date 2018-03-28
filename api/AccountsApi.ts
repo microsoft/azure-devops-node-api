@@ -30,6 +30,8 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
         super(baseUrl, handlers, 'node-Accounts-api', options);
     }
 
+    public static readonly RESOURCE_AREA_ID = "0d55247a-1c47-4462-9b1f-5e2125590ee6";
+
     /**
      * @param {AccountsInterfaces.AccountCreateInfoInternal} info
      * @param {boolean} usePrecreated
@@ -49,7 +51,7 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Account",
                     "229a6a53-b428-4ffb-a835-e8f36b5b4b1e",
                     routeValues,
@@ -89,7 +91,7 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Account",
                     "229a6a53-b428-4ffb-a835-e8f36b5b4b1e",
                     routeValues);
@@ -139,7 +141,7 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Account",
                     "229a6a53-b428-4ffb-a835-e8f36b5b4b1e",
                     routeValues,
@@ -176,7 +178,7 @@ export class AccountsApi extends basem.ClientApiBase implements IAccountsApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Account",
                     "4e012dd4-f8e1-485d-9bb3-c50d83c5b71b",
                     routeValues);

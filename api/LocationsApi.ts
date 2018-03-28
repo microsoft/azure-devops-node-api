@@ -61,7 +61,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Location",
                     "00d9565f-ed9c-4a06-9a50-00e7896ccab4",
                     routeValues,
@@ -110,7 +110,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Location",
                     "e81700f7-3be2-46de-8624-2eb35882fcaa",
                     routeValues,
@@ -156,7 +156,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Location",
                     "e81700f7-3be2-46de-8624-2eb35882fcaa",
                     routeValues,
@@ -202,7 +202,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Location",
                     "e81700f7-3be2-46de-8624-2eb35882fcaa",
                     routeValues,
@@ -245,7 +245,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Location",
                     "e81700f7-3be2-46de-8624-2eb35882fcaa",
                     routeValues,
@@ -288,7 +288,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Location",
                     "d810a47d-f4f4-4a62-a03f-fa1860585c4c",
                     routeValues);
@@ -341,7 +341,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Location",
                     "d810a47d-f4f4-4a62-a03f-fa1860585c4c",
                     routeValues,
@@ -381,7 +381,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Location",
                     "d810a47d-f4f4-4a62-a03f-fa1860585c4c",
                     routeValues);
@@ -419,7 +419,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Location",
                     "d810a47d-f4f4-4a62-a03f-fa1860585c4c",
                     routeValues);

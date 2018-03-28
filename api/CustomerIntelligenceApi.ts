@@ -40,7 +40,7 @@ export class CustomerIntelligenceApi extends basem.ClientApiBase implements ICus
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "customerintelligence",
                     "b5cc35c2-ff2b-491d-a085-24b6e9f396fd",
                     routeValues);

@@ -20,6 +20,7 @@ export interface AggregatedDataForResultTrend {
      */
     duration: any;
     resultsByOutcome: { [key: number] : AggregatedResultsByOutcome; };
+    runSummaryByState: { [key: number] : AggregatedRunsByState; };
     testResultsContext: TestResultsContext;
     totalTests: number;
 }
@@ -30,6 +31,7 @@ export interface AggregatedResultsAnalysis {
     previousContext: TestResultsContext;
     resultsByOutcome: { [key: number] : AggregatedResultsByOutcome; };
     resultsDifference: AggregatedResultsDifference;
+    runSummaryByState: { [key: number] : AggregatedRunsByState; };
     totalTests: number;
 }
 
@@ -48,6 +50,12 @@ export interface AggregatedResultsDifference {
     increaseInOtherTests: number;
     increaseInPassedTests: number;
     increaseInTotalTests: number;
+}
+
+export interface AggregatedRunsByState {
+    resultsByOutcome: { [key: number] : AggregatedResultsByOutcome; };
+    runsCount: number;
+    state: TestRunState;
 }
 
 /**
@@ -490,6 +498,15 @@ export enum ResultDetails {
     None = 0,
     Iterations = 1,
     WorkItems = 2,
+    SubResults = 4,
+}
+
+export enum ResultGroupType {
+    None = 0,
+    Rerun = 1,
+    DataDriven = 2,
+    OrderedTest = 3,
+    Generic = 4,
 }
 
 /**
@@ -630,6 +647,18 @@ export interface ShallowReference {
     url: string;
 }
 
+export interface ShallowTestCaseResult {
+    automatedTestStorage: string;
+    id: number;
+    isReRun: boolean;
+    outcome: string;
+    owner: string;
+    priority: number;
+    refId: number;
+    runId: number;
+    testCaseTitle: string;
+}
+
 export interface SharedStepModel {
     id: number;
     revision: number;
@@ -676,6 +705,17 @@ export interface SuiteEntryUpdateModel {
     testCaseId: number;
 }
 
+export enum SuiteExpand {
+    /**
+     * Include children in response.
+     */
+    Children = 1,
+    /**
+     * Include default testers in response.
+     */
+    DefaultTesters = 2,
+}
+
 export interface SuiteTestCase {
     pointAssignments: PointAssignment[];
     testCase: WorkItemReference;
@@ -707,6 +747,7 @@ export interface TestAttachment {
     createdDate: Date;
     fileName: string;
     id: number;
+    size: number;
     url: string;
 }
 
@@ -756,11 +797,13 @@ export interface TestCaseResult {
     resetCount: number;
     resolutionState: string;
     resolutionStateId: number;
+    resultGroupType: ResultGroupType;
     revision: number;
     runBy: VSSInterfaces.IdentityRef;
     stackTrace: string;
     startedDate: Date;
     state: string;
+    subResults: TestSubResult[];
     testCase: ShallowReference;
     testCaseReferenceId: number;
     testCaseTitle: string;
@@ -885,6 +928,12 @@ export interface TestFailuresAnalysis {
     fixedTests: TestFailureDetails;
     newFailures: TestFailureDetails;
     previousContext: TestResultsContext;
+}
+
+export interface TestFailureType {
+    id: number;
+    name: string;
+    project: ShallowReference;
 }
 
 export interface TestIterationDetailsModel {
@@ -1271,11 +1320,21 @@ export interface TestRun {
     webAccessUrl: string;
 }
 
+export interface TestRunCanceledEvent extends TestRunEvent {
+}
+
 export interface TestRunCoverage {
     lastError: string;
     modules: ModuleCoverage[];
     state: string;
     testRun: ShallowReference;
+}
+
+export interface TestRunCreatedEvent extends TestRunEvent {
+}
+
+export interface TestRunEvent {
+    testRun: TestRun;
 }
 
 /**
@@ -1294,6 +1353,9 @@ export enum TestRunPublishContext {
      * Run is published for any Context.
      */
     All = 3,
+}
+
+export interface TestRunStartedEvent extends TestRunEvent {
 }
 
 /**
@@ -1537,6 +1599,66 @@ export interface TestSettings {
     testSettingsName: string;
 }
 
+/**
+ * Represents the test settings of the run. Used to create test settings and fetch test settings
+ */
+export interface TestSettings2 {
+    /**
+     * Area path required to create test settings
+     */
+    areaPath: string;
+    createdBy: VSSInterfaces.IdentityRef;
+    createdDate: Date;
+    /**
+     * Description of the test settings. Used in create test settings.
+     */
+    description: string;
+    /**
+     * Indicates if the tests settings is public or private.Used in create test settings.
+     */
+    isPublic: boolean;
+    lastUpdatedBy: VSSInterfaces.IdentityRef;
+    lastUpdatedDate: Date;
+    /**
+     * Xml string of machine roles. Used in create test settings.
+     */
+    machineRoles: string;
+    /**
+     * Test settings content.
+     */
+    testSettingsContent: string;
+    /**
+     * Test settings id.
+     */
+    testSettingsId: number;
+    /**
+     * Test settings name.
+     */
+    testSettingsName: string;
+}
+
+export interface TestSubResult {
+    comment: string;
+    completedDate: Date;
+    computerName: string;
+    configuration: ShallowReference;
+    customFields: CustomTestField[];
+    displayName: string;
+    durationInMs: number;
+    errorMessage: string;
+    id: number;
+    lastUpdatedDate: Date;
+    outcome: string;
+    parentId: number;
+    resultGroupType: ResultGroupType;
+    sequenceId: number;
+    stackTrace: string;
+    startedDate: Date;
+    subResults: TestSubResult[];
+    testResult: TestCaseResultIdentifier;
+    url: string;
+}
+
 export interface TestSuite {
     areaUri: string;
     children: TestSuite[];
@@ -1631,6 +1753,8 @@ export var TypeInfo = {
     },
     AggregatedResultsByOutcome: <any>{
     },
+    AggregatedRunsByState: <any>{
+    },
     AttachmentType: {
         enumValues: {
             "generalAttachment": 0,
@@ -1697,7 +1821,17 @@ export var TypeInfo = {
         enumValues: {
             "none": 0,
             "iterations": 1,
-            "workItems": 2
+            "workItems": 2,
+            "subResults": 4
+        }
+    },
+    ResultGroupType: {
+        enumValues: {
+            "none": 0,
+            "rerun": 1,
+            "dataDriven": 2,
+            "orderedTest": 3,
+            "generic": 4
         }
     },
     ResultObjectType: {
@@ -1713,6 +1847,12 @@ export var TypeInfo = {
     ResultUpdateRequestModel: <any>{
     },
     RunUpdateModel: <any>{
+    },
+    SuiteExpand: {
+        enumValues: {
+            "children": 1,
+            "defaultTesters": 2
+        }
     },
     TestActionResultModel: <any>{
     },
@@ -1792,12 +1932,20 @@ export var TypeInfo = {
     },
     TestRun: <any>{
     },
+    TestRunCanceledEvent: <any>{
+    },
+    TestRunCreatedEvent: <any>{
+    },
+    TestRunEvent: <any>{
+    },
     TestRunPublishContext: {
         enumValues: {
             "build": 1,
             "release": 2,
             "all": 3
         }
+    },
+    TestRunStartedEvent: <any>{
     },
     TestRunState: {
         enumValues: {
@@ -1848,6 +1996,10 @@ export var TypeInfo = {
             "declined": 5
         }
     },
+    TestSettings2: <any>{
+    },
+    TestSubResult: <any>{
+    },
     TestSuite: <any>{
     },
     TestSummaryForWorkItem: <any>{
@@ -1859,6 +2011,11 @@ TypeInfo.AggregatedDataForResultTrend.fields = {
         isDictionary: true,
         dictionaryKeyEnumType: TypeInfo.TestOutcome,
         dictionaryValueTypeInfo: TypeInfo.AggregatedResultsByOutcome
+    },
+    runSummaryByState: {
+        isDictionary: true,
+        dictionaryKeyEnumType: TypeInfo.TestRunState,
+        dictionaryValueTypeInfo: TypeInfo.AggregatedRunsByState
     },
     testResultsContext: {
         typeInfo: TypeInfo.TestResultsContext
@@ -1878,12 +2035,28 @@ TypeInfo.AggregatedResultsAnalysis.fields = {
         isDictionary: true,
         dictionaryKeyEnumType: TypeInfo.TestOutcome,
         dictionaryValueTypeInfo: TypeInfo.AggregatedResultsByOutcome
+    },
+    runSummaryByState: {
+        isDictionary: true,
+        dictionaryKeyEnumType: TypeInfo.TestRunState,
+        dictionaryValueTypeInfo: TypeInfo.AggregatedRunsByState
     }
 };
 
 TypeInfo.AggregatedResultsByOutcome.fields = {
     outcome: {
         enumType: TypeInfo.TestOutcome
+    }
+};
+
+TypeInfo.AggregatedRunsByState.fields = {
+    resultsByOutcome: {
+        isDictionary: true,
+        dictionaryKeyEnumType: TypeInfo.TestOutcome,
+        dictionaryValueTypeInfo: TypeInfo.AggregatedResultsByOutcome
+    },
+    state: {
+        enumType: TypeInfo.TestRunState
     }
 };
 
@@ -2004,8 +2177,15 @@ TypeInfo.TestCaseResult.fields = {
     lastUpdatedDate: {
         isDate: true,
     },
+    resultGroupType: {
+        enumType: TypeInfo.ResultGroupType
+    },
     startedDate: {
         isDate: true,
+    },
+    subResults: {
+        isArray: true,
+        typeInfo: TypeInfo.TestSubResult
     }
 };
 
@@ -2197,6 +2377,30 @@ TypeInfo.TestRun.fields = {
     }
 };
 
+TypeInfo.TestRunCanceledEvent.fields = {
+    testRun: {
+        typeInfo: TypeInfo.TestRun
+    }
+};
+
+TypeInfo.TestRunCreatedEvent.fields = {
+    testRun: {
+        typeInfo: TypeInfo.TestRun
+    }
+};
+
+TypeInfo.TestRunEvent.fields = {
+    testRun: {
+        typeInfo: TypeInfo.TestRun
+    }
+};
+
+TypeInfo.TestRunStartedEvent.fields = {
+    testRun: {
+        typeInfo: TypeInfo.TestRun
+    }
+};
+
 TypeInfo.TestSession.fields = {
     endDate: {
         isDate: true,
@@ -2221,6 +2425,34 @@ TypeInfo.TestSessionExploredWorkItemReference.fields = {
     },
     startTime: {
         isDate: true,
+    }
+};
+
+TypeInfo.TestSettings2.fields = {
+    createdDate: {
+        isDate: true,
+    },
+    lastUpdatedDate: {
+        isDate: true,
+    }
+};
+
+TypeInfo.TestSubResult.fields = {
+    completedDate: {
+        isDate: true,
+    },
+    lastUpdatedDate: {
+        isDate: true,
+    },
+    resultGroupType: {
+        enumType: TypeInfo.ResultGroupType
+    },
+    startedDate: {
+        isDate: true,
+    },
+    subResults: {
+        isArray: true,
+        typeInfo: TypeInfo.TestSubResult
     }
 };
 

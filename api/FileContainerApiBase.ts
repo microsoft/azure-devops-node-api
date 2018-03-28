@@ -55,7 +55,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.4",
+                    "5.0-preview.4",
                     "Container",
                     "e4f5c81e-e250-447b-9fef-bd48471bea5e",
                     routeValues,
@@ -106,7 +106,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.4",
+                    "5.0-preview.4",
                     "Container",
                     "e4f5c81e-e250-447b-9fef-bd48471bea5e",
                     routeValues,
@@ -154,7 +154,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.4",
+                    "5.0-preview.4",
                     "Container",
                     "e4f5c81e-e250-447b-9fef-bd48471bea5e",
                     routeValues,
@@ -218,7 +218,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.4",
+                    "5.0-preview.4",
                     "Container",
                     "e4f5c81e-e250-447b-9fef-bd48471bea5e",
                     routeValues,

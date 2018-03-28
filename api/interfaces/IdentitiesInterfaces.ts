@@ -76,7 +76,13 @@ export enum GroupScopeType {
     TeamProject = 2,
 }
 
-export interface Identity {
+export interface Identity extends IdentityBase {
+}
+
+/**
+ * Base Identity class to allow "trimmed" identity class in the GetConnectionData API Makes sure that on-the-wire representations of the derived classes are compatible with each other (e.g. Server responds with PublicIdentity object while client deserializes it as Identity object) Derived classes should not have additional [DataMember] properties
+ */
+export interface IdentityBase {
     /**
      * The custom display name for the identity (if any). Setting this property to an empty string will clear the existing custom display name. Setting this property to null will not affect the existing persisted value (since null values do not get sent over the wire or to the database)
      */

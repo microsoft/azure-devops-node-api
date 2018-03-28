@@ -10,10 +10,7 @@
 
 "use strict";
 
-
-
-export interface AnonymousObject {
-}
+import GraphInterfaces = require('../GraphInterfaces');
 
 /**
  * Information about the location of a REST API resource
@@ -129,9 +126,8 @@ export interface EventScope {
     type: string;
 }
 
-export interface IdentityRef {
+export interface IdentityRef extends GraphInterfaces.GraphSubjectBase {
     directoryAlias: string;
-    displayName: string;
     id: string;
     imageUrl: string;
     inactive: boolean;
@@ -139,7 +135,6 @@ export interface IdentityRef {
     isContainer: boolean;
     profileUrl: string;
     uniqueName: string;
-    url: string;
 }
 
 export interface IdentityRefWithEmail extends IdentityRef {
@@ -255,6 +250,42 @@ export interface ServiceEvent {
 export interface TeamMember {
     identity: IdentityRef;
     isTeamAdmin: boolean;
+}
+
+/**
+ * A single secured timing consisting of a duration and start time
+ */
+export interface TimingEntry {
+    /**
+     * Duration of the entry in ticks
+     */
+    elapsedTicks: number;
+    /**
+     * Properties to distinguish timings within the same group or to provide data to send with telemetry
+     */
+    properties: { [key: string] : any; };
+    /**
+     * Offset from Server Request Context start time in microseconds
+     */
+    startOffset: number;
+}
+
+/**
+ * A set of secured performance timings all keyed off of the same string
+ */
+export interface TimingGroup {
+    /**
+     * The total number of timing entries associated with this group
+     */
+    count: number;
+    /**
+     * Overall duration of all entries in this group in ticks
+     */
+    elapsedTicks: number;
+    /**
+     * A list of timing entries in this group. Only the first few entries in each group are collected.
+     */
+    timings: TimingEntry[];
 }
 
 export interface VssJsonCollectionWrapper extends VssJsonCollectionWrapperBase {

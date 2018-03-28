@@ -160,8 +160,7 @@ export class WebApi {
     }
 
     public async getAccountsApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<accountm.IAccountsApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "0d55247a-1c47-4462-9b1f-5e2125590ee6");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, accountm.AccountsApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new accountm.AccountsApi(serverUrl, handlers, this.options);
     }
@@ -201,8 +200,7 @@ export class WebApi {
     }
 
     public async getDashboardApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<dashboardm.IDashboardApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "31c84e0a-3ece-48fd-a29d-100849af99ba");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, dashboardm.DashboardApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new dashboardm.DashboardApi(serverUrl, handlers, this.options);
     }
@@ -291,8 +289,7 @@ export class WebApi {
     }
 
     public async getProjectAnalysisApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<projectm.IProjectAnalysisApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "7658fa33-b1bf-4580-990f-fac5896773d3");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, projectm.ProjectAnalysisApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new projectm.ProjectAnalysisApi(serverUrl, handlers, this.options);
     }
@@ -326,22 +323,19 @@ export class WebApi {
     }
 
     public async getTaskAgentApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<taskagentm.ITaskAgentApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "a85b8835-c1a1-4aac-ae97-1c3d0ba72dbd");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, taskagentm.TaskAgentApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new taskagentm.TaskAgentApi(serverUrl, handlers, this.options);
     }
 
     public async getTestApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<testm.ITestApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "c2aa639c-3ccc-4740-b3b6-ce2a1e1d984e");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, testm.TestApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new testm.TestApi(serverUrl, handlers, this.options);
     }
 
     public async getTfvcApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<tfvcm.ITfvcApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "8aa40520-446d-40e6-89f6-9c9f9ce44c48");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, tfvcm.TfvcApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new tfvcm.TfvcApi(serverUrl, handlers, this.options);
     }
@@ -354,8 +348,7 @@ export class WebApi {
     }
 
     public async getWorkApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<workm.IWorkApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "1d4f49f9-02b9-4e26-b826-2cdb6195f2a9");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, workm.WorkApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new workm.WorkApi(serverUrl, handlers, this.options);
     }

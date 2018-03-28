@@ -157,6 +157,10 @@ export interface Widget {
      */
     allowedSizes: WidgetSize[];
     /**
+     * Read-Only Property from Dashboard Service. Indicates if settings are blocked for the current user.
+     */
+    areSettingsBlockedForUser: boolean;
+    /**
      * Refers to unique identifier of a feature artifact. Used for pinning+unpinning a specific artifact.
      */
     artifactId: string;

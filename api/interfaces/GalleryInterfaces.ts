@@ -691,6 +691,14 @@ export enum ExtensionQueryFilterType {
      * Filter type for specifying metadata key and value to be used for filtering.
      */
     VsixMetadata = 17,
+    /**
+     * Filter to get extensions published by a publisher having supplied internal name
+     */
+    PublisherName = 18,
+    /**
+     * Filter to get extensions published by all publishers having supplied display name
+     */
+    PublisherDisplayName = 19,
 }
 
 /**
@@ -714,7 +722,7 @@ export enum ExtensionQueryFlags {
      */
     IncludeCategoryAndTags = 4,
     /**
-     * Include the details about which accounts the extension has been shared with if the extesion is a private extension.
+     * Include the details about which accounts the extension has been shared with if the extension is a private extension.
      */
     IncludeSharedAccounts = 8,
     /**
@@ -847,13 +855,6 @@ export interface FilterCriteria {
 export interface InstallationTarget {
     target: string;
     targetVersion: string;
-}
-
-/**
- * Provides link details
- */
-export interface Link {
-    href: string;
 }
 
 /**
@@ -1034,17 +1035,24 @@ export enum PublishedExtensionFlags {
     Locked = 16384,
 }
 
-export interface Publisher {
+export interface Publisher extends PublisherBase {
+    _links: any;
+}
+
+/**
+ * Keeping base class separate since publisher DB model class and publisher contract class share these common properties
+ */
+export interface PublisherBase {
     displayName: string;
     emailAddress: string[];
     extensions: PublishedExtension[];
     flags: PublisherFlags;
     lastUpdated: Date;
-    links: PublisherLinks;
     longDescription: string;
     publisherId: string;
     publisherName: string;
     shortDescription: string;
+    state: PublisherState;
 }
 
 /**
@@ -1085,44 +1093,13 @@ export enum PublisherFlags {
      */
     Verified = 2,
     /**
+     * A Certified publisher is one that is Microsoft verified and in addition meets a set of requirements for its published extensions. The requirements to become a certified publisher are not listed here.  They can be found in public documentation (TBD).
+     */
+    Certified = 4,
+    /**
      * This is the set of flags that can't be supplied by the developer and is managed by the service itself.
      */
-    ServiceFlags = 3,
-}
-
-export interface PublisherLinks {
-    /**
-     * URL for company website
-     */
-    company: Link;
-    /**
-     * URL for publisher logo if CDN is down
-     */
-    fallbackLogo: Link;
-    /**
-     * URL for publisher LinkedIn profile
-     */
-    linkedIn: Link;
-    /**
-     * CDN URL for publisher logo
-     */
-    logo: Link;
-    /**
-     * URL for publisher public profile page
-     */
-    profile: Link;
-    /**
-     * URL for source code repo
-     */
-    sourceCode: Link;
-    /**
-     * URL or email id for support
-     */
-    support: Link;
-    /**
-     * URL for Twitter handle of publisher company
-     */
-    twitter: Link;
+    ServiceFlags = 7,
 }
 
 export enum PublisherPermissions {
@@ -1216,6 +1193,29 @@ export interface PublisherQueryResult {
      * For each filter supplied in the query, a filter result will be returned in the query result.
      */
     results: PublisherFilterResult[];
+}
+
+export enum PublisherState {
+    /**
+     * No state exists for this publisher.
+     */
+    None = 0,
+    /**
+     * This state indicates that publisher has applied for Marketplace verification (via UI) and still not been certified. This state would be reset once the publisher is verified.
+     */
+    VerificationPending = 1,
+    /**
+     * This state indicates that publisher has applied for Marketplace certification (via UI) and still not been certified. This state would be reset once the publisher is certified.
+     */
+    CertificationPending = 2,
+    /**
+     * This state indicates that publisher had applied for Marketplace certification (via UI) but his/her certification got rejected. This state would be reset if and when the publisher is certified.
+     */
+    CertificationRejected = 4,
+    /**
+     * This state indicates that publisher was certified on the Marketplace, but his/her certification got revoked. This state would never be reset, even after publisher gets re-certified. It would indicate that the publisher certification was revoked at least once.
+     */
+    CertificationRevoked = 8,
 }
 
 /**
@@ -1911,7 +1911,9 @@ export var TypeInfo = {
             "lcid": 14,
             "installationTargetVersion": 15,
             "installationTargetVersionRange": 16,
-            "vsixMetadata": 17
+            "vsixMetadata": 17,
+            "publisherName": 18,
+            "publisherDisplayName": 19
         }
     },
     ExtensionQueryFlags: {
@@ -1997,6 +1999,8 @@ export var TypeInfo = {
     },
     Publisher: <any>{
     },
+    PublisherBase: <any>{
+    },
     PublisherFacts: <any>{
     },
     PublisherFilterResult: <any>{
@@ -2007,7 +2011,8 @@ export var TypeInfo = {
             "none": 0,
             "disabled": 1,
             "verified": 2,
-            "serviceFlags": 3
+            "certified": 4,
+            "serviceFlags": 7
         }
     },
     PublisherPermissions: {
@@ -2036,6 +2041,15 @@ export var TypeInfo = {
         }
     },
     PublisherQueryResult: <any>{
+    },
+    PublisherState: {
+        enumValues: {
+            "none": 0,
+            "verificationPending": 1,
+            "certificationPending": 2,
+            "certificationRejected": 4,
+            "certificationRevoked": 8
+        }
     },
     QnAItem: <any>{
     },
@@ -2335,6 +2349,25 @@ TypeInfo.Publisher.fields = {
     },
     lastUpdated: {
         isDate: true,
+    },
+    state: {
+        enumType: TypeInfo.PublisherState
+    }
+};
+
+TypeInfo.PublisherBase.fields = {
+    extensions: {
+        isArray: true,
+        typeInfo: TypeInfo.PublishedExtension
+    },
+    flags: {
+        enumType: TypeInfo.PublisherFlags
+    },
+    lastUpdated: {
+        isDate: true,
+    },
+    state: {
+        enumType: TypeInfo.PublisherState
     }
 };
 
