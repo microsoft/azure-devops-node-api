@@ -341,7 +341,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<PolicyInterfaces.PolicyEvaluationRecord>;
-                res = await this.rest.update<PolicyInterfaces.PolicyEvaluationRecord>(url, options);
+                res = await this.rest.update<PolicyInterfaces.PolicyEvaluationRecord>(url, null, options);
 
                 let ret = this.formatResponse(res.result,
                                               PolicyInterfaces.TypeInfo.PolicyEvaluationRecord,
