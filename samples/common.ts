@@ -15,11 +15,6 @@ export async function getWebApi(): Promise<vm.WebApi> {
     return await this.getApi(serverUrl);
 }
 
-export async function getDeploymentLevelWebApi(): Promise<vm.WebApi> {
-    let serverUrl = getEnv('API_DEPLOYMENT_URL');
-    return await this.getApi(serverUrl);
-}
-
 export async function getApi(serverUrl: string): Promise<vm.WebApi> {
     return new Promise<vm.WebApi>(async (resolve, reject) => {
         try {
