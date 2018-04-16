@@ -5,6 +5,7 @@
 // API Client Interfaces
 //----------------------------------------------------------------------------
 
+import http = require("http");
 import Serialization = require('../../Serialization');
 
 /**
@@ -53,9 +54,9 @@ export interface IBasicCredentials {
 }
 
 export interface IRequestHandler {
-    prepareRequest(options: any): void;
-    canHandleAuthentication(res: IHttpResponse): boolean;
-    handleAuthentication(httpClient, protocol, options, objs, finalCallback): void;
+    prepareRequest(options: http.RequestOptions): void;
+    canHandleAuthentication(response: IHttpClientResponse): boolean;
+    handleAuthentication(httpClient: IHttpClient, requestInfo: IRequestInfo, objs): Promise<IHttpClientResponse>;
 }
 
 export interface IHttpResponse {

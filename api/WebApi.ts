@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import basem = require('./ClientApiBases');
 import buildm = require('./BuildApi');
 import corem = require('./CoreApi');
@@ -10,6 +9,8 @@ import extmgmtm = require("./ExtensionManagementApi");
 import featuremgmtm = require("./FeatureManagementApi");
 import filecontainerm = require('./FileContainerApi');
 import gitm = require('./GitApi');
+import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
+import lim = require("./interfaces/LocationsInterfaces");
 import locationsm = require('./LocationsApi');
 import notificationm = require('./NotificationApi');
 import policym = require('./PolicyApi');
@@ -21,40 +22,37 @@ import taskagentm = require('./TaskAgentApi');
 import taskm = require('./TaskApi');
 import testm = require('./TestApi');
 import tfvcm = require('./TfvcApi');
+import vsom = require('./VsoClient');
 import workm = require('./WorkApi');
 import workitemtrackingm = require('./WorkItemTrackingApi');
 import workitemtrackingprocessm = require('./WorkItemTrackingProcessApi');
 import workitemtrackingprocessdefinitionm = require('./WorkItemTrackingProcessDefinitionsApi');
-import basicm = require('./handlers/basiccreds');
-import bearm = require('./handlers/bearertoken');
-import ntlmm = require('./handlers/ntlm');
-import patm = require('./handlers/personalaccesstoken');
 
+import * as trch from 'typed-rest-client/handlers';
 import * as rm from 'typed-rest-client/RestClient';
-import vsom = require('./VsoClient');
-import lim = require("./interfaces/LocationsInterfaces");
 
-import fs = require('fs');
 import crypto = require('crypto');
+import fs = require('fs');
 
 /**
  * Methods to return handler objects (see handlers folder)
  */
 
 export function getBasicHandler(username: string, password: string): VsoBaseInterfaces.IRequestHandler {
-    return new basicm.BasicCredentialHandler(username, password);
+    return new trch.BasicCredentialHandler(username, password);
 }
+// TODO: Add samples/tests for each of these authentication handlers, comment them out.
 
 export function getNtlmHandler(username: string, password: string, workstation?: string, domain?: string): VsoBaseInterfaces.IRequestHandler {
-    return new ntlmm.NtlmCredentialHandler(username, password, workstation, domain);
+    return new trch.NtlmCredentialHandler(username, password, workstation, domain);
 }
 
 export function getBearerHandler(token: string): VsoBaseInterfaces.IRequestHandler {
-    return new bearm.BearerCredentialHandler(token);
+    return new trch.BearerCredentialHandler(token);
 }
 
 export function getPersonalAccessTokenHandler(token: string): VsoBaseInterfaces.IRequestHandler {
-    return new patm.PersonalAccessTokenCredentialHandler(token);
+    return new trch.PersonalAccessTokenCredentialHandler(token);
 }
 
 export function getHandlerFromToken(token: string): VsoBaseInterfaces.IRequestHandler {
