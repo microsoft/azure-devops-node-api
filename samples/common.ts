@@ -10,16 +10,38 @@ function getEnv(name: string): string {
     return val;
 }
 
-export async function getWebApi(): Promise<vm.WebApi> {
-    let serverUrl = getEnv('API_URL');
-    return await this.getApi(serverUrl);
+function getAuthenticationHandler(): vm.IRequestHandler {
+    // PAT
+    // const token = getEnv('API_TOKEN');
+    // return vm.getPersonalAccessTokenHandler(token);
+
+    // Basic
+    // const username = getEnv('API_USERNAME');
+    // const password = getEnv('API_PASSWORD');
+    // return vm.getBasicHandler(username, password);
+
+    // Bearer
+    // const bearerToken = getEnv('API_BEARER_TOKEN');
+    // return vm.getBearerHandler(bearerToken);
+
+    // NTLM
+    // const username = getEnv('API_USERNAME');
+    // const password = getEnv('API_PASSWORD');
+
+    var username = "stfrance";
+    var password = process.env["PW"];
+    var workstation = "STEPHENMICHAELF";
+    var domain = "NORTHAMERICA";
+    //var url = "http://stephenmichaelf:8080/tfs/DefaultCollection/_projects?_a=new";
+
+    return vm.getNtlmHandler(username, password, workstation, domain);
 }
 
 export async function getApi(serverUrl: string): Promise<vm.WebApi> {
     return new Promise<vm.WebApi>(async (resolve, reject) => {
         try {
-            let token = getEnv('API_TOKEN');
-            let authHandler = vm.getPersonalAccessTokenHandler(token);
+            const token = getEnv('API_TOKEN');
+            const authHandler: vm.IRequestHandler = getAuthenticationHandler();
             let option = undefined;
 
             // The following sample is for testing proxy
@@ -45,15 +67,25 @@ export async function getApi(serverUrl: string): Promise<vm.WebApi> {
             //     },
             // };
 
-            let vsts: vm.WebApi = new vm.WebApi(serverUrl, authHandler, option);
-            let connData: lim.ConnectionData = await vsts.connect();
+            console.log("1");
+            const vsts: vm.WebApi = new vm.WebApi(serverUrl, authHandler, option);
+            console.log("1.5");
+            const connData: lim.ConnectionData = await vsts.connect();
+            console.log("2");
             console.log('Hello ' + connData.authenticatedUser.providerDisplayName);
+            console.log("3");
             resolve(vsts);
         }
         catch (err) {
+            console.log('error: ' + JSON.stringify(err));
             reject(err);
         }
     });
+}
+
+export async function getWebApi(): Promise<vm.WebApi> {
+    const serverUrl: string = getEnv('API_URL');
+    return await this.getApi(serverUrl);
 }
 
 export function getProject(): string {

@@ -7,6 +7,7 @@
 
 import http = require("http");
 import Serialization = require('../../Serialization');
+import url = require("url");
 
 /**
  * Information about the location of a REST API resource
@@ -57,6 +58,30 @@ export interface IRequestHandler {
     prepareRequest(options: http.RequestOptions): void;
     canHandleAuthentication(response: IHttpClientResponse): boolean;
     handleAuthentication(httpClient: IHttpClient, requestInfo: IRequestInfo, objs): Promise<IHttpClientResponse>;
+}
+
+export interface IHttpClient {
+    options(requestUrl: string, additionalHeaders?: IHeaders): Promise<IHttpClientResponse>;
+    get(requestUrl: string, additionalHeaders?: IHeaders): Promise<IHttpClientResponse>;
+    del(requestUrl: string, additionalHeaders?: IHeaders): Promise<IHttpClientResponse>;
+    post(requestUrl: string, data: string, additionalHeaders?: IHeaders): Promise<IHttpClientResponse>;
+    patch(requestUrl: string, data: string, additionalHeaders?: IHeaders): Promise<IHttpClientResponse>;
+    put(requestUrl: string, data: string, additionalHeaders?: IHeaders): Promise<IHttpClientResponse>;        
+    sendStream(verb: string, requestUrl: string, stream: NodeJS.ReadableStream, additionalHeaders?: IHeaders): Promise<IHttpClientResponse>;
+    request(verb: string, requestUrl: string, data: string | NodeJS.ReadableStream, headers: IHeaders): Promise<IHttpClientResponse>;
+    requestRaw(info: IRequestInfo, data: string | NodeJS.ReadableStream): Promise<IHttpClientResponse>;
+    requestRawWithCallback(info: IRequestInfo, data: string | NodeJS.ReadableStream, onResult: (err: any, res: IHttpClientResponse) => void): void;
+}
+
+export interface IRequestInfo {
+    options: http.RequestOptions;
+    parsedUrl: url.Url;
+    httpModule: any;
+}
+
+export interface IHttpClientResponse {
+    message: http.IncomingMessage;
+    readBody(): Promise<string>;
 }
 
 export interface IHttpResponse {

@@ -46,202 +46,205 @@ export async function run() {
 
         if (builds) {
             console.log(`found ${builds.length} builds`);
+        } else 
+        {
+            console.log("builds is empty");
         }
 
         /********** Core **********/
-        printSectionStart('Core');
-        const coreApi = await vstsCollectionLevel.getCoreApi();
-        const teams: WebApiTeam[] = await coreApi.getAllTeams();
+        // printSectionStart('Core');
+        // const coreApi = await vstsCollectionLevel.getCoreApi();
+        // const teams: WebApiTeam[] = await coreApi.getAllTeams();
 
-        if (teams) {
-            console.log(`found ${teams.length} teams`);
-        }
+        // if (teams) {
+        //     console.log(`found ${teams.length} teams`);
+        // }
 
-        /********** Dashboard **********/
-        printSectionStart('Dashboard');
-        const dashboardApi = await vstsCollectionLevel.getDashboardApi();
-        const widgetTypes: WidgetTypesResponse = await dashboardApi.getWidgetTypes(WidgetScope.Collection_User);
+        // /********** Dashboard **********/
+        // printSectionStart('Dashboard');
+        // const dashboardApi = await vstsCollectionLevel.getDashboardApi();
+        // const widgetTypes: WidgetTypesResponse = await dashboardApi.getWidgetTypes(WidgetScope.Collection_User);
 
-        if (widgetTypes) {
-            console.log(`found ${widgetTypes.widgetTypes.length} widget types`);
-        }
+        // if (widgetTypes) {
+        //     console.log(`found ${widgetTypes.widgetTypes.length} widget types`);
+        // }
 
-        /********** Extension Management **********/
-        printSectionStart('Extension Management');
-        const extensionManagementApi = await vstsCollectionLevel.getExtensionManagementApi();
-        const requests:RequestedExtension[] = await extensionManagementApi.getRequests();
+        // /********** Extension Management **********/
+        // printSectionStart('Extension Management');
+        // const extensionManagementApi = await vstsCollectionLevel.getExtensionManagementApi();
+        // const requests:RequestedExtension[] = await extensionManagementApi.getRequests();
 
-        if (requests) {
-            console.log(`found ${requests.length} requests`);
-        }
+        // if (requests) {
+        //     console.log(`found ${requests.length} requests`);
+        // }
 
-        /********** Feature Management **********/
-        printSectionStart('Feature Management');
-        const featureManagementApi = await vstsCollectionLevel.getFeatureManagementApi();
-        const features: ContributedFeature[] = await featureManagementApi.getFeatures();
+        // /********** Feature Management **********/
+        // printSectionStart('Feature Management');
+        // const featureManagementApi = await vstsCollectionLevel.getFeatureManagementApi();
+        // const features: ContributedFeature[] = await featureManagementApi.getFeatures();
 
-        if (features) {
-            console.log(`found ${features.length} features`);
-        }
+        // if (features) {
+        //     console.log(`found ${features.length} features`);
+        // }
 
-        /********** File Container **********/
-        printSectionStart('File Container');
-        const fileContainerApi = await vstsCollectionLevel.getFileContainerApi();
-        const containers: FileContainer[] = await fileContainerApi.getContainers();
+        // /********** File Container **********/
+        // printSectionStart('File Container');
+        // const fileContainerApi = await vstsCollectionLevel.getFileContainerApi();
+        // const containers: FileContainer[] = await fileContainerApi.getContainers();
 
-        if (containers) {
-            console.log(`found ${containers.length} containers`);
-        }
+        // if (containers) {
+        //     console.log(`found ${containers.length} containers`);
+        // }
 
-        /********** Git **********/
-        printSectionStart('Git');
-        const gitApi = await vstsCollectionLevel.getGitApi();
-        const respositories: GitRepository[] = await gitApi.getRepositories();
+        // /********** Git **********/
+        // printSectionStart('Git');
+        // const gitApi = await vstsCollectionLevel.getGitApi();
+        // const respositories: GitRepository[] = await gitApi.getRepositories();
 
-        if (respositories) {
-            console.log(`found ${respositories.length} respositories`);
-        }
+        // if (respositories) {
+        //     console.log(`found ${respositories.length} respositories`);
+        // }
 
-        /********** Locations **********/
-        printSectionStart('Locations');
-        const locationsApi = await vstsCollectionLevel.getLocationsApi();
-        const resourceAreas: ResourceAreaInfo[] = await locationsApi.getResourceAreas();
+        // /********** Locations **********/
+        // printSectionStart('Locations');
+        // const locationsApi = await vstsCollectionLevel.getLocationsApi();
+        // const resourceAreas: ResourceAreaInfo[] = await locationsApi.getResourceAreas();
 
-        if (resourceAreas) {
-            console.log(`found ${resourceAreas.length} resource areas`);
-        }
+        // if (resourceAreas) {
+        //     console.log(`found ${resourceAreas.length} resource areas`);
+        // }
 
-        /********** Notifications **********/
-        printSectionStart('Notifications');
-        const notificationsApi = await vstsCollectionLevel.getNotificationApi();
-        const subscriptions = await notificationsApi.listSubscriptions();
+        // /********** Notifications **********/
+        // printSectionStart('Notifications');
+        // const notificationsApi = await vstsCollectionLevel.getNotificationApi();
+        // const subscriptions = await notificationsApi.listSubscriptions();
 
-        if (subscriptions) {
-            console.log(`found ${subscriptions.length} subscriptions`);
-        }
+        // if (subscriptions) {
+        //     console.log(`found ${subscriptions.length} subscriptions`);
+        // }
 
-        /********** Policy **********/
-        printSectionStart('Policy');
-        const policyApi = await vstsCollectionLevel.getPolicyApi();
-        const policyTypes: PolicyType[] = await policyApi.getPolicyTypes(common.getProject());
+        // /********** Policy **********/
+        // printSectionStart('Policy');
+        // const policyApi = await vstsCollectionLevel.getPolicyApi();
+        // const policyTypes: PolicyType[] = await policyApi.getPolicyTypes(common.getProject());
 
-        if (policyTypes) {
-            console.log(`found ${policyTypes.length} policy types`);
-        }
+        // if (policyTypes) {
+        //     console.log(`found ${policyTypes.length} policy types`);
+        // }
 
-        /********** Profile **********/
-        printSectionStart('Profile');
-        const profileApi = await vstsCollectionLevel.getProfileApi();
-        const regions: ProfileRegions = await profileApi.getRegions();
+        // /********** Profile **********/
+        // printSectionStart('Profile');
+        // const profileApi = await vstsCollectionLevel.getProfileApi();
+        // const regions: ProfileRegions = await profileApi.getRegions();
 
-        if (regions && regions.regions) {
-            console.log(`found ${regions.regions.length} regions`);
-        }
+        // if (regions && regions.regions) {
+        //     console.log(`found ${regions.regions.length} regions`);
+        // }
 
-        /********** Project Analysis **********/
-        printSectionStart('Project Analysis');
-        const projectAnalysisApi = await vstsCollectionLevel.getProjectAnalysisApi();
-        const languageAnalytics: ProjectLanguageAnalytics = await projectAnalysisApi.getProjectLanguageAnalytics(common.getProject());
+        // /********** Project Analysis **********/
+        // printSectionStart('Project Analysis');
+        // const projectAnalysisApi = await vstsCollectionLevel.getProjectAnalysisApi();
+        // const languageAnalytics: ProjectLanguageAnalytics = await projectAnalysisApi.getProjectLanguageAnalytics(common.getProject());
 
-        if (languageAnalytics) {
-            console.log(`language analytics id ${languageAnalytics.id}`);
-        }
+        // if (languageAnalytics) {
+        //     console.log(`language analytics id ${languageAnalytics.id}`);
+        // }
 
-        /********** Release **********/
-        printSectionStart('Release');
-        const releaseApi = await vstsCollectionLevel.getReleaseApi();
-        const releases: Release[] = await releaseApi.getReleases();
+        // /********** Release **********/
+        // printSectionStart('Release');
+        // const releaseApi = await vstsCollectionLevel.getReleaseApi();
+        // const releases: Release[] = await releaseApi.getReleases();
 
-        if (releases) {
-            console.log(`found ${releases.length} releases`);
-        }
+        // if (releases) {
+        //     console.log(`found ${releases.length} releases`);
+        // }
 
-        /********** Security **********/
-        printSectionStart('Security');
-        const securityApi = await vstsCollectionLevel.getSecurityRolesApi();
-        const roleDefinitions: SecurityRole[] = await securityApi.getRoleDefinitions("");
+        // /********** Security **********/
+        // printSectionStart('Security');
+        // const securityApi = await vstsCollectionLevel.getSecurityRolesApi();
+        // const roleDefinitions: SecurityRole[] = await securityApi.getRoleDefinitions("");
 
-        if (roleDefinitions) {
-            console.log(`found ${roleDefinitions.length} role definitions`);
-        } else {
-            console.log('role definitions is null');
-        }
+        // if (roleDefinitions) {
+        //     console.log(`found ${roleDefinitions.length} role definitions`);
+        // } else {
+        //     console.log('role definitions is null');
+        // }
 
-        /********** Task **********/
-        printSectionStart('Task');
-        const taskApi = await vstsCollectionLevel.getTaskApi();
-        const timelines: TaskAgentTimeline[] = await taskApi.getTimelines("", "", "");
+        // /********** Task **********/
+        // printSectionStart('Task');
+        // const taskApi = await vstsCollectionLevel.getTaskApi();
+        // const timelines: TaskAgentTimeline[] = await taskApi.getTimelines("", "", "");
 
-        if (timelines) {
-            console.log(`found ${timelines.length} timelines`);
-        } else {
-            console.log('timelines is null');
-        }
+        // if (timelines) {
+        //     console.log(`found ${timelines.length} timelines`);
+        // } else {
+        //     console.log('timelines is null');
+        // }
 
-        /********** Task Agent **********/
-        printSectionStart('Task Agent');
-        const taskAgentApi = await vstsCollectionLevel.getTaskAgentApi();
-        const agentPools: TaskAgentPool[] = await taskAgentApi.getAgentPools();
+        // /********** Task Agent **********/
+        // printSectionStart('Task Agent');
+        // const taskAgentApi = await vstsCollectionLevel.getTaskAgentApi();
+        // const agentPools: TaskAgentPool[] = await taskAgentApi.getAgentPools();
 
-        if (agentPools) {
-            console.log(`found ${agentPools.length} agent pools`);
-        }
+        // if (agentPools) {
+        //     console.log(`found ${agentPools.length} agent pools`);
+        // }
 
-        /********** Test **********/
-        printSectionStart('Test');
-        const testApi = await vstsCollectionLevel.getTestApi();
-        const plans: TestPlan[] = await testApi.getPlans(common.getProject());
+        // /********** Test **********/
+        // printSectionStart('Test');
+        // const testApi = await vstsCollectionLevel.getTestApi();
+        // const plans: TestPlan[] = await testApi.getPlans(common.getProject());
 
-        if (plans) {
-            console.log(`found ${plans.length} plans`);
-        }
+        // if (plans) {
+        //     console.log(`found ${plans.length} plans`);
+        // }
 
-        /********** Tfvc **********/
-        printSectionStart('Tfvc');
-        const tfvcApi = await vstsCollectionLevel.getTfvcApi();
-        const changesets: TfvcChangesetRef[] = await tfvcApi.getChangesets();
+        // /********** Tfvc **********/
+        // printSectionStart('Tfvc');
+        // const tfvcApi = await vstsCollectionLevel.getTfvcApi();
+        // const changesets: TfvcChangesetRef[] = await tfvcApi.getChangesets();
 
-        if (changesets) {
-            console.log(`found ${changesets.length} changesets`);
-        }
+        // if (changesets) {
+        //     console.log(`found ${changesets.length} changesets`);
+        // }
 
-        /********** Work **********/
-        printSectionStart('Work');
-        const workApi = await vstsCollectionLevel.getWorkApi();
-        const workPlans: Plan[] = await workApi.getPlans(common.getProject());
+        // /********** Work **********/
+        // printSectionStart('Work');
+        // const workApi = await vstsCollectionLevel.getWorkApi();
+        // const workPlans: Plan[] = await workApi.getPlans(common.getProject());
 
-        if (workPlans) {
-            console.log(`found ${workPlans.length} work plans`);
-        } else {
-            console.log('work plans is null');
-        }
+        // if (workPlans) {
+        //     console.log(`found ${workPlans.length} work plans`);
+        // } else {
+        //     console.log('work plans is null');
+        // }
 
-        /********** Work Item Tracking **********/
-        printSectionStart('Work Item Tracking');
-        const workItemTrackingApi = await vstsCollectionLevel.getWorkItemTrackingApi();
-        const workItemFields: WorkItemField[] = await workItemTrackingApi.getFields();
+        // /********** Work Item Tracking **********/
+        // printSectionStart('Work Item Tracking');
+        // const workItemTrackingApi = await vstsCollectionLevel.getWorkItemTrackingApi();
+        // const workItemFields: WorkItemField[] = await workItemTrackingApi.getFields();
 
-        if (workItemFields) {
-            console.log(`found ${workItemFields.length} work item fields`);
-        }
+        // if (workItemFields) {
+        //     console.log(`found ${workItemFields.length} work item fields`);
+        // }
         
-        /********** Work Item Tracking Process **********/
-        printSectionStart('Work Item Tracking Process');
-        const workItemTrackingProcessApi = await vstsCollectionLevel.getWorkItemTrackingProcessApi();
-        const processes: ProcessModel[] = await workItemTrackingProcessApi.getProcesses();
+        // /********** Work Item Tracking Process **********/
+        // printSectionStart('Work Item Tracking Process');
+        // const workItemTrackingProcessApi = await vstsCollectionLevel.getWorkItemTrackingProcessApi();
+        // const processes: ProcessModel[] = await workItemTrackingProcessApi.getProcesses();
 
-        if (processes) {
-            console.log(`found ${processes.length} processes`);
-        }
+        // if (processes) {
+        //     console.log(`found ${processes.length} processes`);
+        // }
 
-        /********** Work Item Tracking Process Definitions **********/
-        printSectionStart('Work Item Tracking Process Definitions');
-        const workItemTrackingProcessDefinitionApi = await vstsCollectionLevel.getWorkItemTrackingProcessDefinitionApi();
-        const listsMetadata: PickListMetadataModel[] = await workItemTrackingProcessDefinitionApi.getListsMetadata();
+        // /********** Work Item Tracking Process Definitions **********/
+        // printSectionStart('Work Item Tracking Process Definitions');
+        // const workItemTrackingProcessDefinitionApi = await vstsCollectionLevel.getWorkItemTrackingProcessDefinitionApi();
+        // const listsMetadata: PickListMetadataModel[] = await workItemTrackingProcessDefinitionApi.getListsMetadata();
 
-        if (listsMetadata) {
-            console.log(`found ${listsMetadata.length} work items`);
-        }
+        // if (listsMetadata) {
+        //     console.log(`found ${listsMetadata.length} work items`);
+        // }
     }
     catch (err) {
         console.error('Error: ' + err.stack);

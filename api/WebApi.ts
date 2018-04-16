@@ -121,7 +121,9 @@ export class WebApi {
             this.options.ignoreSslError = !!global['_vsts_task_lib_skip_cert_validation'];
         }
 
-        this.rest = new rm.RestClient('vsts-node-api', null, [this.authHandler], this.options);
+        console.log(JSON.stringify(this.authHandler));
+        //this.rest = new rm.RestClient('vsts-node-api', null, [this.authHandler], this.options);
+        this.rest = new rm.RestClient('vsts-node-api', null, [this.authHandler]);
         this.vsoClient = new vsom.VsoClient(defaultUrl, this.rest);
     }
 
@@ -138,11 +140,16 @@ export class WebApi {
     public async connect(): Promise<lim.ConnectionData> {
         return new Promise<lim.ConnectionData>(async (resolve, reject) => {
             try {
+                console.log("9");
                 let res: rm.IRestResponse<lim.ConnectionData>;
+                console.log("9.1");
+                console.log("url: " + this.vsoClient.resolveUrl('/_apis/connectionData'));
                 res = await this.rest.get<lim.ConnectionData>(this.vsoClient.resolveUrl('/_apis/connectionData'));
+                console.log("9.2");
                 resolve(res.result);
             }
             catch (err) {
+                console.log(JSON.stringify(err));
                 reject(err);
             }
         });
