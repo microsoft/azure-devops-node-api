@@ -140,12 +140,12 @@ export class WebApi {
     public async connect(): Promise<lim.ConnectionData> {
         return new Promise<lim.ConnectionData>(async (resolve, reject) => {
             try {
-                console.log("9");
+                //console.log("9");
                 let res: rm.IRestResponse<lim.ConnectionData>;
-                console.log("9.1");
-                console.log("url: " + this.vsoClient.resolveUrl('/_apis/connectionData'));
+                //console.log("9.1");
+                //console.log("url: " + this.vsoClient.resolveUrl('/_apis/connectionData'));
                 res = await this.rest.get<lim.ConnectionData>(this.vsoClient.resolveUrl('/_apis/connectionData'));
-                console.log("9.2");
+                //console.log("9.2");
                 resolve(res.result);
             }
             catch (err) {
