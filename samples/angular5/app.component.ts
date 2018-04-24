@@ -37,8 +37,8 @@ export class AppComponent implements OnInit {
 
   async ngOnInit() {
 
-    const collectionUrl = "http://prd-tfsfpv01:8080/tfs/collection01/";
-    const personalAccessToken = "5qvngtumaiwfjgwuxmdmemdupcionnmxqqd2k6cu772lasjczcma";
+    const collectionUrl = "https://fabrikam.visualstudio.com/defaultcollection";
+    const personalAccessToken = "cbdeb34vzyuk5l4gxc4qfczn3lko3avfkfqyb47etahq6axpcqha";
 
     // Get the personal access token string and craft the basic header with PAT
     const authHandler = vstsApi.getPersonalAccessTokenHandler(personalAccessToken);
