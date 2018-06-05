@@ -30,14 +30,14 @@ npm install vso-node-api --save
 ```javascript
 let vsts = require('vso-node-api');
 
-// your collection url
-let collectionUrl = "https://fabrikam.visualstudio.com/defaultcollection";
+// your account url
+let accountUrl = "https://fabrikam.visualstudio.com/";
 
 // ideally from config
 let token: string = "cbdeb34vzyuk5l4gxc4qfczn3lko3avfkfqyb47etahq6axpcqha"; 
 
 let authHandler = vsts.getPersonalAccessTokenHandler(token); 
-let connect = new vsts.WebApi(collectionUrl, authHandler);    
+let connect = new vsts.WebApi(accountUrl, authHandler);    
 ```
 
 ### Get an instance of a client
