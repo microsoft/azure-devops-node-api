@@ -70,6 +70,7 @@ These clients are available in the new 6.x preview API (`npm install vso-node-ap
 * Task
 * Test
 * Tfvc
+* Wiki
 * Work
 * WorkItemTracking
 * WorkItemTrackingProcess
