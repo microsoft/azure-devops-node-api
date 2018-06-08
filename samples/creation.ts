@@ -25,6 +25,7 @@ import { WidgetScope, WidgetTypesResponse } from 'vso-node-api/interfaces/Dashbo
 import { WorkItemField } from 'vso-node-api/interfaces/WorkItemTrackingInterfaces';
 import { ProcessModel } from 'vso-node-api/interfaces/WorkItemTrackingProcessInterfaces';
 import { PickListMetadataModel } from 'vso-node-api/interfaces/WorkItemTrackingProcessDefinitionsInterfaces';
+import { Wiki } from 'vso-node-api/interfaces/WikiInterfaces';
 
 // In order for this to run you will need to set the following environment variables:
 // 
@@ -203,6 +204,15 @@ export async function run() {
 
         if (changesets) {
             console.log(`found ${changesets.length} changesets`);
+        }
+
+        /********** Wiki **********/
+        printSectionStart('Wiki');
+        const wikiApi = await vstsCollectionLevel.getWikiApi();
+        const wikis: Wiki[] = await wikiApi.getAllWikis();
+
+        if (wikis) {
+            console.log(`found ${wikis.length} wikis`);
         }
 
         /********** Work **********/
