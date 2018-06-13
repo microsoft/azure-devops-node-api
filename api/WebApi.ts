@@ -21,6 +21,7 @@ import taskagentm = require('./TaskAgentApi');
 import taskm = require('./TaskApi');
 import testm = require('./TestApi');
 import tfvcm = require('./TfvcApi');
+import wikim = require('./WikiApi');
 import workm = require('./WorkApi');
 import workitemtrackingm = require('./WorkItemTrackingApi');
 import workitemtrackingprocessm = require('./WorkItemTrackingProcessApi');
@@ -276,6 +277,13 @@ export class WebApi {
         serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "8aa40520-446d-40e6-89f6-9c9f9ce44c48");
         handlers = handlers || [this.authHandler];
         return new tfvcm.TfvcApi(serverUrl, handlers, this.options);
+    }
+
+    public async getWikiApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<wikim.IWikiApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "bf7d82a0-8aa5-4613-94ef-6172a5ea01f3");
+        handlers = handlers || [this.authHandler];
+        return new wikim.WikiApi(serverUrl, handlers, this.options);
     }
 
     public async getWorkApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<workm.IWorkApi> {
