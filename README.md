@@ -28,7 +28,7 @@ npm install vso-node-api --save
 
 ### Create a connection
 ```javascript
-let vsts = require('vso-node-api');
+import * as vsts from 'vso-node-api';
 
 // your collection url
 let collectionUrl = "https://fabrikam.visualstudio.com/defaultcollection";
