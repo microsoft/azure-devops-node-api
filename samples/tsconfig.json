@@ -5,8 +5,9 @@
         "moduleResolution": "node"
     },
     "files": [
-        "run.ts", 
+        "run.ts",
         "build.ts",
+        "buildArtifact.ts",
         "creation.ts",
         "task.ts",
         "filecontainer.ts"
