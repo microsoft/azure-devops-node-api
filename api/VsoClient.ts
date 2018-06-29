@@ -117,25 +117,20 @@ export class VsoClient {
     public getVersioningData(apiVersion: string, area: string, locationId: string, routeValues: any, queryParams?: any): Promise<ClientVersioningData> {
         let requestUrl;
 
-        return new Promise<ClientVersioningData>((resolve, reject) => {
-            this.beginGetLocation(area, locationId)
-                .then((location: ifm.ApiResourceLocation) => {
-                    if (!location) { 
-                        throw new Error("Failed to find api location for area: " + area + " id: " + locationId);
-                    }
+        return this.beginGetLocation(area, locationId)
+            .then((location: ifm.ApiResourceLocation): ClientVersioningData => {
+                if (!location) { 
+                    throw new Error("Failed to find api location for area: " + area + " id: " + locationId);
+                }
 
-                    apiVersion = this.autoNegotiateApiVersion(location, apiVersion);
-                    requestUrl = this.getRequestUrl(location.routeTemplate, location.area, location.resourceName, routeValues, queryParams);
+                apiVersion = this.autoNegotiateApiVersion(location, apiVersion);
+                requestUrl = this.getRequestUrl(location.routeTemplate, location.area, location.resourceName, routeValues, queryParams);
 
-                    let versionData = {
-                        apiVersion: apiVersion,
-                        requestUrl: requestUrl
-                    };
-                    resolve(versionData);
-                }, (err) => {
-                    reject(err);
-                });
-        });
+                return {
+                    apiVersion: apiVersion,
+                    requestUrl: requestUrl
+                };
+            });
     }
     
     /**
@@ -165,26 +160,18 @@ export class VsoClient {
     private beginGetAreaLocations(area: string): Promise<VssApiResourceLocationLookup> {
         let areaLocationsPromise = this._locationsByAreaPromises[area];
         if (!areaLocationsPromise) {
-
-            areaLocationsPromise = new Promise<VssApiResourceLocationLookup>((resolve, reject) => {
-                let requestUrl = this.resolveUrl(VsoClient.APIS_RELATIVE_PATH + "/" + area);
-                this.restClient.options<any>(requestUrl)
+            let requestUrl = this.resolveUrl(VsoClient.APIS_RELATIVE_PATH + "/" + area);
+            areaLocationsPromise = this.restClient.options<any>(requestUrl)
                 .then((res:restm.IRestResponse<any>) => {                    
                     let locationsLookup: VssApiResourceLocationLookup = {};
                     let resourceLocations: ifm.ApiResourceLocation[] = res.result.value;
-
                     let i;
                     for (i = 0; i < resourceLocations.length; i++) {
                         let resourceLocation = resourceLocations[i];
                         locationsLookup[resourceLocation.id.toLowerCase()] = resourceLocation;
                     }
-
-                    resolve(locationsLookup);
-                })
-                .catch((err) => {
-                    reject(err);
+                    return locationsLookup;
                 });
-            });
 
             this._locationsByAreaPromises[area] = areaLocationsPromise;
         }
