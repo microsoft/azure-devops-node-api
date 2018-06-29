@@ -37,7 +37,7 @@ let collectionUrl = "https://fabrikam.visualstudio.com/defaultcollection";
 let token: string = "cbdeb34vzyuk5l4gxc4qfczn3lko3avfkfqyb47etahq6axpcqha"; 
 
 let authHandler = vsts.getPersonalAccessTokenHandler(token); 
-let connect = new vsts.WebApi(collectionUrl, authHandler);    
+let connection = new vsts.WebApi(collectionUrl, authHandler);    
 ```
 
 ### Get an instance of a client
@@ -45,7 +45,7 @@ let connect = new vsts.WebApi(collectionUrl, authHandler);
 ```javascript
 import * as ba from 'vso-node-api/BuildApi';
 
-let vstsBuild: ba.IBuildApi = connection.getBuildApi();
+let vstsBuild: ba.IBuildApi = await connection.getBuildApi();
 ```
 
 #### Available clients
