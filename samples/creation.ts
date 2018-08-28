@@ -39,25 +39,7 @@ export async function run() {
     try
     {
         const vstsCollectionLevel: vsoNodeApi.WebApi = await common.getWebApi();
-
-
-
-
-
-        /********** Gallery **********/
-        printSectionStart('Gallery');
-        const galleryApi = await vstsCollectionLevel.getGalleryApi();
-        const categories: string[] = await galleryApi.getCategories();
-
-        if (categories) {
-            console.log(`found ${categories.length} categories`);
-        }
-
-
-
-
-
-
+        
         /********** Build **********/
         printSectionStart('Build');
         const buildApi = await vstsCollectionLevel.getBuildApi();
@@ -110,6 +92,15 @@ export async function run() {
 
         if (containers) {
             console.log(`found ${containers.length} containers`);
+        }
+
+        /********** Gallery **********/
+        printSectionStart('Gallery - Deployment Level');
+        const galleryApi = await vstsCollectionLevel.getGalleryApi();
+        const categories: string[] = await galleryApi.getCategories();
+
+        if (categories) {
+            console.log(`found ${categories.length} categories`);
         }
 
         /********** Git **********/

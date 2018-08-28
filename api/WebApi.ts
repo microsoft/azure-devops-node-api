@@ -352,18 +352,8 @@ export class WebApi {
 
     private async _getResourceAreas(): Promise<lim.ResourceAreaInfo[]> {
         if (!this._resourceAreas) {
-            // Don't go through the locations api to get resource areas, go to it directly
-            // await this.rest.get<lim.ConnectionData>(this.vsoClient.resolveUrl('/_apis/connectionData'));
-
-            // const stuff = await this.rest.options<any>(this.vsoClient.resolveUrl('/_apis'));
-            // console.log(JSON.stringify(stuff));
-
-
-            //console.log('1');
             const locationClient: locationsm.ILocationsApi = await this.getLocationsApi();
-            //console.log('2');
             this._resourceAreas = await locationClient.getResourceAreas();
-            //console.log('3');
         }
 
         return this._resourceAreas;
