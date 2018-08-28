@@ -11,7 +11,9 @@ function getEnv(name: string): string {
 }
 
 export async function getWebApi(): Promise<vm.WebApi> {
-    let serverUrl = getEnv('API_URL');
+    //let serverUrl = getEnv('API_URL');
+    //let serverUrl = 'https://marketplace.visualstudio.com';
+    let serverUrl = 'https://app.vssps.visualstudio.com'
     return await this.getApi(serverUrl);
 }
 
@@ -23,17 +25,17 @@ export async function getApi(serverUrl: string): Promise<vm.WebApi> {
             let option = undefined;
 
             // The following sample is for testing proxy
-            // option = {
-            //     proxy: {
-            //         proxyUrl: "http://127.0.0.1:8888"
-            //         // proxyUsername: "1",
-            //         // proxyPassword: "1",
-            //         // proxyBypassHosts: [
-            //         //     "github\.com"
-            //         // ],
-            //     },
-            //     ignoreSslError: true
-            // };
+            option = {
+                proxy: {
+                    proxyUrl: "http://127.0.0.1:8888"
+                    // proxyUsername: "1",
+                    // proxyPassword: "1",
+                    // proxyBypassHosts: [
+                    //     "github\.com"
+                    // ],
+                },
+                ignoreSslError: true
+            };
 
             // The following sample is for testing cert
             // option = {

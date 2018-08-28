@@ -9,6 +9,7 @@ import dashboardm = require('./DashboardApi');
 import extmgmtm = require("./ExtensionManagementApi");
 import featuremgmtm = require("./FeatureManagementApi");
 import filecontainerm = require('./FileContainerApi');
+import gallerym = require('./GalleryApi');
 import gitm = require('./GitApi');
 import locationsm = require('./LocationsApi');
 import notificationm = require('./NotificationApi');
@@ -196,6 +197,12 @@ export class WebApi {
         return new filecontainerm.FileContainerApi(serverUrl, handlers, this.options);
     }
 
+    public async getGalleryApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<gallerym.IGalleryApi> {
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, gallerym.GalleryApi.RESOURCE_AREA_ID);
+        handlers = handlers || [this.authHandler];
+        return new gallerym.GalleryApi(serverUrl, handlers, this.options);
+    }
+
     public async getGitApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<gitm.IGitApi> {
         serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, gitm.GitApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
@@ -345,8 +352,18 @@ export class WebApi {
 
     private async _getResourceAreas(): Promise<lim.ResourceAreaInfo[]> {
         if (!this._resourceAreas) {
+            // Don't go through the locations api to get resource areas, go to it directly
+            // await this.rest.get<lim.ConnectionData>(this.vsoClient.resolveUrl('/_apis/connectionData'));
+
+            // const stuff = await this.rest.options<any>(this.vsoClient.resolveUrl('/_apis'));
+            // console.log(JSON.stringify(stuff));
+
+
+            //console.log('1');
             const locationClient: locationsm.ILocationsApi = await this.getLocationsApi();
+            //console.log('2');
             this._resourceAreas = await locationClient.getResourceAreas();
+            //console.log('3');
         }
 
         return this._resourceAreas;

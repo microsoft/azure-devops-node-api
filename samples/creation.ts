@@ -40,6 +40,24 @@ export async function run() {
     {
         const vstsCollectionLevel: vsoNodeApi.WebApi = await common.getWebApi();
 
+
+
+
+
+        /********** Gallery **********/
+        printSectionStart('Gallery');
+        const galleryApi = await vstsCollectionLevel.getGalleryApi();
+        const categories: string[] = await galleryApi.getCategories();
+
+        if (categories) {
+            console.log(`found ${categories.length} categories`);
+        }
+
+
+
+
+
+
         /********** Build **********/
         printSectionStart('Build');
         const buildApi = await vstsCollectionLevel.getBuildApi();
