@@ -183,7 +183,7 @@ export class VsoClient {
         return url.resolve(this.baseUrl, path.join(this.basePath, relativeUrl));
     }
 
-    private getSerializedObject(object: any): string {
+    private getSerializedObject(queryValue: any, object: any): string {
         let value:string = "";
         let first:boolean = true;
 
@@ -197,6 +197,10 @@ export class VsoClient {
                     value += "&" + property +"=" + encodeURIComponent(prop);
                 }
             }
+        }
+
+        if (value == ""){
+            value += queryValue + "=" + object.toString();
         }
 
         return value;
@@ -223,7 +227,7 @@ export class VsoClient {
                 let value = queryParams[queryValue];
                 let valueString = null;
                 if (typeof(value) === 'object') {
-                    valueString = this.getSerializedObject(value);
+                    valueString = this.getSerializedObject(queryValue, value);
                 } else {
                     valueString = queryValue + "=" + encodeURIComponent(queryParams[queryValue]);
                 }
