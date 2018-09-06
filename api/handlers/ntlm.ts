@@ -55,7 +55,6 @@ export class NtlmCredentialHandler implements VsoBaseInterfaces.IRequestHandler 
 
     // The following method is an adaptation of code found at https://github.com/SamDecrock/node-http-ntlm/blob/master/httpntlm.js
     handleAuthentication(httpClient: VsoBaseInterfaces.IHttpClient, requestInfo: VsoBaseInterfaces.IRequestInfo, objs): Promise<VsoBaseInterfaces.IHttpClientResponse> {
-    //handleAuthentication(httpClient, protocol, options, objs, finalCallback): void {
         // Set up the headers for NTLM authentication
         var ntlmOptions = _.extend(requestInfo.options, {
             username: this.username,
@@ -64,7 +63,7 @@ export class NtlmCredentialHandler implements VsoBaseInterfaces.IRequestHandler 
             workstation: this.workstation || ''
         });
         var keepaliveAgent;
-        if(requestInfo.options.protocol == "https") {
+        if(requestInfo.httpModule == https) {
             keepaliveAgent = new https.Agent({});
         } else {
             keepaliveAgent = new http.Agent({ keepAlive: true });
@@ -73,17 +72,15 @@ export class NtlmCredentialHandler implements VsoBaseInterfaces.IRequestHandler 
         // The following pattern of sending the type1 message following immediately (in a setImmediate) is
         // critical for the NTLM exchange to happen.  If we removed setImmediate (or call in a different manner)
         // the NTLM exchange will always fail with a 401.
-        this.sendType1Message(httpClient, requestInfo.options.protocol, ntlmOptions, objs, keepaliveAgent, function (err, res) {
+        this.sendType1Message(httpClient, requestInfo.parsedUrl.protocol, ntlmOptions, objs, keepaliveAgent, function (err, res) {
             if (err) {
-                return objs.finalCallback(err, null, null);
+                throw err;
             }
             setImmediate(function () {
-                self.sendType3Message(httpClient, requestInfo.options.protocol, ntlmOptions, objs, keepaliveAgent, res, objs.finalCallback);
+                self.sendType3Message(httpClient, requestInfo.parsedUrl.protocol, ntlmOptions, objs, keepaliveAgent, res);
             });
         });
-        return new Promise<VsoBaseInterfaces.IHttpClientResponse>(async (resolve, reject) => {
-            resolve(null);
-        });
+        return null;
     }
 
     // The following method is an adaptation of code found at https://github.com/SamDecrock/node-http-ntlm/blob/master/httpntlm.js
@@ -104,9 +101,9 @@ export class NtlmCredentialHandler implements VsoBaseInterfaces.IRequestHandler 
     }
 
     // The following method is an adaptation of code found at https://github.com/SamDecrock/node-http-ntlm/blob/master/httpntlm.js
-    private sendType3Message(httpClient, protocol, options, objs, keepaliveAgent, res, callback): void {
+    private sendType3Message(httpClient, protocol, options, objs, keepaliveAgent, res): void {
         if (!res.headers['www-authenticate']) {
-            return callback(new Error('www-authenticate not found on response of second request'));
+            throw new Error('www-authenticate not found on response of second request');
         }
         // parse type2 message from server:
         var type2msg = ntlm.parseType2Message(res.headers['www-authenticate']);
@@ -124,6 +121,6 @@ export class NtlmCredentialHandler implements VsoBaseInterfaces.IRequestHandler 
         type3options.headers = _.extend(type3options.headers, options.headers);
         type3options = _.extend(type3options, _.omit(options, 'headers'));
         // send type3 message to server:
-        httpClient.requestInternal(protocol, type3options, objs, callback);
+        httpClient.requestInternal(protocol, type3options, objs);
     }
 }

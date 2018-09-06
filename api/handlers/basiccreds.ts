@@ -25,8 +25,6 @@ export class BasicCredentialHandler implements VsoBaseInterfaces.IRequestHandler
     }
 
     handleAuthentication(httpClient: VsoBaseInterfaces.IHttpClient, requestInfo: VsoBaseInterfaces.IRequestInfo, objs): Promise<VsoBaseInterfaces.IHttpClientResponse> {
-        return new Promise<VsoBaseInterfaces.IHttpClientResponse>(async (resolve, reject) => {
-            resolve(null);
-        });
+        return null;
     }
 }
