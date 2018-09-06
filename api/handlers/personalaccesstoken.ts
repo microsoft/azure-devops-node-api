@@ -18,10 +18,13 @@ export class PersonalAccessTokenCredentialHandler implements VsoBaseInterfaces.I
     }
 
     // This handler cannot handle 401
-    canHandleAuthentication(res: VsoBaseInterfaces.IHttpResponse): boolean {
+    canHandleAuthentication(res: VsoBaseInterfaces.IHttpClientResponse): boolean {
         return false;
     }
 
-    handleAuthentication(httpClient, protocol, options, objs, finalCallback): void {
+    handleAuthentication(httpClient: VsoBaseInterfaces.IHttpClient, requestInfo: VsoBaseInterfaces.IRequestInfo, objs): Promise<VsoBaseInterfaces.IHttpClientResponse> {
+        return new Promise<VsoBaseInterfaces.IHttpClientResponse>(async (resolve, reject) => {
+            resolve(null);
+        });
     }
 }

@@ -33,11 +33,11 @@ export class NtlmCredentialHandler implements VsoBaseInterfaces.IRequestHandler 
         }
     }
 
-    canHandleAuthentication(res: VsoBaseInterfaces.IHttpResponse): boolean {
-        if (res && res.statusCode === 401) {
+    canHandleAuthentication(res: VsoBaseInterfaces.IHttpClientResponse): boolean {
+        if (res && res.message.statusCode === 401) {
             // Ensure that we're talking NTLM here
             // Once we have the www-authenticate header, split it so we can ensure we can talk NTLM
-            var wwwAuthenticate = res.headers['www-authenticate'];
+            var wwwAuthenticate = res.message.headers['www-authenticate'];
             if (wwwAuthenticate !== undefined) {
                 var mechanisms = wwwAuthenticate.split(', ');
                 var idx =  mechanisms.indexOf("NTLM");
@@ -54,16 +54,17 @@ export class NtlmCredentialHandler implements VsoBaseInterfaces.IRequestHandler 
     }
 
     // The following method is an adaptation of code found at https://github.com/SamDecrock/node-http-ntlm/blob/master/httpntlm.js
-    handleAuthentication(httpClient, protocol, options, objs, finalCallback): void {
+    handleAuthentication(httpClient: VsoBaseInterfaces.IHttpClient, requestInfo: VsoBaseInterfaces.IRequestInfo, objs): Promise<VsoBaseInterfaces.IHttpClientResponse> {
+    //handleAuthentication(httpClient, protocol, options, objs, finalCallback): void {
         // Set up the headers for NTLM authentication
-        var ntlmOptions = _.extend(options, {
+        var ntlmOptions = _.extend(requestInfo.options, {
             username: this.username,
             password: this.password,
             domain: this.domain || '',
             workstation: this.workstation || ''
         });
         var keepaliveAgent;
-        if (httpClient.isSsl === true) {
+        if(requestInfo.options.protocol == "https") {
             keepaliveAgent = new https.Agent({});
         } else {
             keepaliveAgent = new http.Agent({ keepAlive: true });
@@ -72,13 +73,16 @@ export class NtlmCredentialHandler implements VsoBaseInterfaces.IRequestHandler 
         // The following pattern of sending the type1 message following immediately (in a setImmediate) is
         // critical for the NTLM exchange to happen.  If we removed setImmediate (or call in a different manner)
         // the NTLM exchange will always fail with a 401.
-        this.sendType1Message(httpClient, protocol, ntlmOptions, objs, keepaliveAgent, function (err, res) {
+        this.sendType1Message(httpClient, requestInfo.options.protocol, ntlmOptions, objs, keepaliveAgent, function (err, res) {
             if (err) {
-                return finalCallback(err, null, null);
+                return objs.finalCallback(err, null, null);
             }
             setImmediate(function () {
-                self.sendType3Message(httpClient, protocol, ntlmOptions, objs, keepaliveAgent, res, finalCallback);
+                self.sendType3Message(httpClient, requestInfo.options.protocol, ntlmOptions, objs, keepaliveAgent, res, objs.finalCallback);
             });
+        });
+        return new Promise<VsoBaseInterfaces.IHttpClientResponse>(async (resolve, reject) => {
+            resolve(null);
         });
     }
 
