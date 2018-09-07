@@ -190,11 +190,12 @@ export class VsoClient {
         for (let property in object) {
             if (object.hasOwnProperty(property)) {
                 let prop = object[property];
+                let valueString = this.getValueString(property, prop);
                 if (first && prop !== undefined) {
-                    value += property + "=" + encodeURIComponent(prop);
+                    value += property + "=" + valueString;
                     first = false;
                 } else if (prop !== undefined) {
-                    value += "&" + property +"=" + encodeURIComponent(prop);
+                    value += "&" + property +"=" + valueString;
                 }
             }
         }
@@ -204,6 +205,16 @@ export class VsoClient {
         }
 
         return value;
+    }
+
+    protected getValueString(queryValue, value) {
+        let valueString = null;
+        if (typeof(value) === 'object') {
+            valueString = this.getSerializedObject(queryValue, value);
+        } else {
+            valueString = queryValue + "=" + encodeURIComponent(value);
+        }
+        return valueString;
     }
 
     protected getRequestUrl(routeTemplate: string, area: string, resource: string, routeValues: any, queryParams?: any): string {
@@ -225,12 +236,7 @@ export class VsoClient {
         for (let queryValue in queryParams) {
             if (queryParams[queryValue] != null) {
                 let value = queryParams[queryValue];
-                let valueString = null;
-                if (typeof(value) === 'object') {
-                    valueString = this.getSerializedObject(queryValue, value);
-                } else {
-                    valueString = queryValue + "=" + encodeURIComponent(queryParams[queryValue]);
-                }
+                let valueString = this.getValueString(queryValue, value);
                 if (first) {
                     relativeUrl += "?" + valueString;
                     first = false;
