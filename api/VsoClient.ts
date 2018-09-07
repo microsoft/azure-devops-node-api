@@ -192,10 +192,10 @@ export class VsoClient {
                 let prop = object[property];
                 let valueString = this.getValueString(property, prop);
                 if (first && prop !== undefined) {
-                    value += property + "=" + valueString;
+                    value += valueString;
                     first = false;
                 } else if (prop !== undefined) {
-                    value += "&" + property +"=" + valueString;
+                    value += "&" + valueString;
                 }
             }
         }
