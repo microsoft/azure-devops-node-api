@@ -207,7 +207,7 @@ export class VsoClient {
         return value;
     }
 
-    protected getValueString(queryValue, value) {
+    private getValueString(queryValue, value) {
         let valueString = null;
         if (typeof(value) === 'object') {
             valueString = this.getSerializedObject(queryValue, value);
