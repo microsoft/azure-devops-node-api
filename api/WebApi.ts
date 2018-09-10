@@ -26,11 +26,8 @@ import workm = require('./WorkApi');
 import workitemtrackingm = require('./WorkItemTrackingApi');
 import workitemtrackingprocessm = require('./WorkItemTrackingProcessApi');
 import workitemtrackingprocessdefinitionm = require('./WorkItemTrackingProcessDefinitionsApi');
-import basicm = require('./handlers/basiccreds');
-import bearm = require('./handlers/bearertoken');
-import ntlmm = require('./handlers/ntlm');
-import patm = require('./handlers/personalaccesstoken');
 
+import * as resthandlers from 'typed-rest-client/Handlers';
 import * as rm from 'typed-rest-client/RestClient';
 import vsom = require('./VsoClient');
 import lim = require("./interfaces/LocationsInterfaces");
@@ -43,19 +40,19 @@ import crypto = require('crypto');
  */
 
 export function getBasicHandler(username: string, password: string): VsoBaseInterfaces.IRequestHandler {
-    return new basicm.BasicCredentialHandler(username, password);
+    return new resthandlers.BasicCredentialHandler(username, password);
 }
 
 export function getNtlmHandler(username: string, password: string, workstation?: string, domain?: string): VsoBaseInterfaces.IRequestHandler {
-    return new ntlmm.NtlmCredentialHandler(username, password, workstation, domain);
+    return new resthandlers.NtlmCredentialHandler(username, password, workstation, domain);
 }
 
 export function getBearerHandler(token: string): VsoBaseInterfaces.IRequestHandler {
-    return new bearm.BearerCredentialHandler(token);
+    return new resthandlers.BearerCredentialHandler(token);
 }
 
 export function getPersonalAccessTokenHandler(token: string): VsoBaseInterfaces.IRequestHandler {
-    return new patm.PersonalAccessTokenCredentialHandler(token);
+    return new resthandlers.PersonalAccessTokenCredentialHandler(token);
 }
 
 export function getHandlerFromToken(token: string): VsoBaseInterfaces.IRequestHandler {
