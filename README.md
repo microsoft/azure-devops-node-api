@@ -1,4 +1,4 @@
-# Visual Studio Team Services Client for Node.js
+# Maintenance: Visual Studio Team Services Client for Node.js
 
 Integrate with Visual Studio Team Services from your Node.js apps.
 
