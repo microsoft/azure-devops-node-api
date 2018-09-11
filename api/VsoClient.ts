@@ -183,23 +183,38 @@ export class VsoClient {
         return url.resolve(this.baseUrl, path.join(this.basePath, relativeUrl));
     }
 
-    private getSerializedObject(object: any): string {
+    private getSerializedObject(queryValue: any, object: any): string {
         let value:string = "";
         let first:boolean = true;
 
         for (let property in object) {
             if (object.hasOwnProperty(property)) {
                 let prop = object[property];
+                let valueString = this.getValueString(property, prop);
                 if (first && prop !== undefined) {
-                    value += property + "=" + encodeURIComponent(prop);
+                    value += property + "=" + valueString;
                     first = false;
                 } else if (prop !== undefined) {
-                    value += "&" + property +"=" + encodeURIComponent(prop);
+                    value += "&" + property +"=" + valueString;
                 }
             }
         }
 
+        if (value == ""){
+            value += queryValue + "=" + object.toString();
+        }
+
         return value;
+    }
+
+    private getValueString(queryValue, value) {
+        let valueString = null;
+        if (typeof(value) === 'object') {
+            valueString = this.getSerializedObject(queryValue, value);
+        } else {
+            valueString = queryValue + "=" + encodeURIComponent(value);
+        }
+        return valueString;
     }
 
     protected getRequestUrl(routeTemplate: string, area: string, resource: string, routeValues: any, queryParams?: any): string {
@@ -221,12 +236,7 @@ export class VsoClient {
         for (let queryValue in queryParams) {
             if (queryParams[queryValue] != null) {
                 let value = queryParams[queryValue];
-                let valueString = null;
-                if (typeof(value) === 'object') {
-                    valueString = this.getSerializedObject(value);
-                } else {
-                    valueString = queryValue + "=" + encodeURIComponent(queryParams[queryValue]);
-                }
+                let valueString = this.getValueString(queryValue, value);
                 if (first) {
                     relativeUrl += "?" + valueString;
                     first = false;
