@@ -1,5 +1,6 @@
 # Visual Studio Team Services Client for Node.js
 
+New library split. 
 Integrate with Visual Studio Team Services from your Node.js apps.
 
 ### Install the library
