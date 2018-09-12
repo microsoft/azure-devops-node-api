@@ -1,10 +1,10 @@
 // A sample showing how to list VSTS build artifacts, and how to download a zip of a VSTS build artifact.
 import * as cm from './common';
-import * as vm from 'vso-node-api';
+import * as vm from 'azure-devops-node-api';
 import * as fs from 'fs';
 
-import * as ba from 'vso-node-api/BuildApi';
-import * as bi from 'vso-node-api/interfaces/BuildInterfaces';
+import * as ba from 'azure-devops-node-api/BuildApi';
+import * as bi from 'azure-devops-node-api/interfaces/BuildInterfaces';
 
 export async function run() {
     try

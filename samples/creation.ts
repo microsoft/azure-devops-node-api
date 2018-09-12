@@ -1,31 +1,27 @@
 import * as common from './common';
-import * as fs from 'fs';
-import * as path from 'path';
-import * as stream from 'stream';
-import * as vsoNodeApi from 'vso-node-api';
+import * as vsoNodeApi from 'azure-devops-node-api';
 
-import { Build, Timeline } from 'vso-node-api/interfaces/BuildInterfaces';
-import { ContributedFeature } from 'vso-node-api/interfaces/FeatureManagementInterfaces';
-import { FileContainer } from 'vso-node-api/interfaces/FileContainerInterfaces';
-import { GitRepository, TfvcChangesetRef } from 'vso-node-api/interfaces/TfvcInterfaces';
-import { Identity, IdentitySelf } from 'vso-node-api/interfaces/IdentitiesInterfaces';
-import { Plan } from 'vso-node-api/interfaces/WorkInterfaces';
-import { PolicyType } from 'vso-node-api/interfaces/PolicyInterfaces';
-import { ProfileRegions } from 'vso-node-api/interfaces/ProfileInterfaces';
-import { ProjectLanguageAnalytics } from 'vso-node-api/interfaces/ProjectAnalysisInterfaces';
-import { Release } from 'vso-node-api/interfaces/ReleaseInterfaces';
-import { ResourceAreaInfo } from 'vso-node-api/interfaces/LocationsInterfaces';
-import { RequestedExtension } from 'vso-node-api/interfaces/ExtensionManagementInterfaces';
-import { SecurityRole } from 'vso-node-api/interfaces/SecurityRolesInterfaces';
-import { TaskAgentPool } from 'vso-node-api/interfaces/TaskAgentInterfaces';
-import { TestPlan } from 'vso-node-api/interfaces/TestInterfaces';
-import { Timeline as TaskAgentTimeline } from "vso-node-api/interfaces/TaskAgentInterfaces";
-import { WebApiTeam } from 'vso-node-api/interfaces/CoreInterfaces';
-import { WidgetScope, WidgetTypesResponse } from 'vso-node-api/interfaces/DashboardInterfaces';
-import { WorkItemField } from 'vso-node-api/interfaces/WorkItemTrackingInterfaces';
-import { ProcessModel } from 'vso-node-api/interfaces/WorkItemTrackingProcessInterfaces';
-import { PickListMetadataModel } from 'vso-node-api/interfaces/WorkItemTrackingProcessDefinitionsInterfaces';
-import { WikiV2 } from 'vso-node-api/interfaces/WikiInterfaces';
+import { Build } from 'azure-devops-node-api/interfaces/BuildInterfaces';
+import { ContributedFeature } from 'azure-devops-node-api/interfaces/FeatureManagementInterfaces';
+import { FileContainer } from 'azure-devops-node-api/interfaces/FileContainerInterfaces';
+import { GitRepository, TfvcChangesetRef } from 'azure-devops-node-api/interfaces/TfvcInterfaces';
+import { Plan } from 'azure-devops-node-api/interfaces/WorkInterfaces';
+import { PolicyType } from 'azure-devops-node-api/interfaces/PolicyInterfaces';
+import { ProfileRegions } from 'azure-devops-node-api/interfaces/ProfileInterfaces';
+import { ProjectLanguageAnalytics } from 'azure-devops-node-api/interfaces/ProjectAnalysisInterfaces';
+import { Release } from 'azure-devops-node-api/interfaces/ReleaseInterfaces';
+import { ResourceAreaInfo } from 'azure-devops-node-api/interfaces/LocationsInterfaces';
+import { RequestedExtension } from 'azure-devops-node-api/interfaces/ExtensionManagementInterfaces';
+import { SecurityRole } from 'azure-devops-node-api/interfaces/SecurityRolesInterfaces';
+import { TaskAgentPool } from 'azure-devops-node-api/interfaces/TaskAgentInterfaces';
+import { TestPlan } from 'azure-devops-node-api/interfaces/TestInterfaces';
+import { Timeline as TaskAgentTimeline } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
+import { WebApiTeam } from 'azure-devops-node-api/interfaces/CoreInterfaces';
+import { WidgetScope, WidgetTypesResponse } from 'azure-devops-node-api/interfaces/DashboardInterfaces';
+import { WorkItemField } from 'azure-devops-node-api/interfaces/WorkItemTrackingInterfaces';
+import { ProcessModel } from 'azure-devops-node-api/interfaces/WorkItemTrackingProcessInterfaces';
+import { PickListMetadataModel } from 'azure-devops-node-api/interfaces/WorkItemTrackingProcessDefinitionsInterfaces';
+import { WikiV2 } from 'azure-devops-node-api/interfaces/WikiInterfaces';
 
 // In order for this to run you will need to set the following environment variables:
 // 

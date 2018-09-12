@@ -1,12 +1,6 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import * as stream from 'stream';
-
 import * as cm from './common';
-import * as vm from 'vso-node-api';
-
-import * as ta from 'vso-node-api/FileContainerApi';
-import * as ti from 'vso-node-api/interfaces/FileContainerInterfaces';
+import * as vm from 'azure-devops-node-api';
+import * as ti from 'azure-devops-node-api/interfaces/FileContainerInterfaces';
 
 export async function run() {
     try

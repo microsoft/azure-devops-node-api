@@ -1,8 +1,8 @@
 import * as cm from './common';
-import * as vm from 'vso-node-api';
+import * as vm from 'azure-devops-node-api';
 
-import * as ba from 'vso-node-api/BuildApi';
-import * as bi from 'vso-node-api/interfaces/BuildInterfaces';
+import * as ba from 'azure-devops-node-api/BuildApi';
+import * as bi from 'azure-devops-node-api/interfaces/BuildInterfaces';
 
 export async function run() {
     try
