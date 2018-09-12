@@ -1,7 +1,7 @@
 {
-    "name": "vso-node-api",
-    "description": "Node client for Visual Studio Online/TFS REST APIs",
-    "version": "6.5.3",
+    "name": "azure-devops-node-api",
+    "description": "Node client for Azure DevOps and TFS REST APIs",
+    "version": "6.6.0",
     "main": "./WebApi.js",
     "types": "./WebApi.d.ts",
     "scripts": {
@@ -11,12 +11,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/Microsoft/vso-node-api"
+        "url": "https://github.com/Microsoft/azure-devops-node-api"
     },
     "author": "Microsoft Corporation",
     "contributors": [
         "Bryan MacFarlane <bryanmac@microsoft.com>",
+        "Daniel McCormick<daniel.mccormick@microsoft.com>",
         "Scott Dallamura <scdallam@microsoft.com>",
+        "Stephen Franceschelli<stephen.franceschelli@microsoft.com>",
         "Teddy Ward <t-edward@microsoft.com>"
     ],
     "license": "MIT",
