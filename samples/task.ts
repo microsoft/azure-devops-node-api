@@ -4,10 +4,10 @@ import * as stream from 'stream';
 import * as sh from 'shelljs';
 
 import * as cm from './common';
-import * as vm from 'vso-node-api';
+import * as vm from 'azure-devops-node-api';
 
-import * as ta from 'vso-node-api/TaskAgentApi';
-import * as ti from 'vso-node-api/interfaces/TaskAgentInterfaces';
+import * as ta from 'azure-devops-node-api/TaskAgentApi';
+import * as ti from 'azure-devops-node-api/interfaces/TaskAgentInterfaces';
 
 let sampleFilePath: string = path.join(process.cwd(), 'taskdefinition.zip');
 

@@ -1,5 +1,5 @@
-import * as vm from 'vso-node-api';
-import * as lim from 'vso-node-api/interfaces/LocationsInterfaces';
+import * as vm from 'azure-devops-node-api';
+import * as lim from 'azure-devops-node-api/interfaces/LocationsInterfaces';
 
 function getEnv(name: string): string {
     let val = process.env[name];
