@@ -14,12 +14,64 @@ import TfsCoreInterfaces = require("../interfaces/CoreInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
+export interface AfnStrip {
+    /**
+     * Auxiliary Url to be consumed by MTM
+     */
+    auxiliaryUrl: string;
+    /**
+     * Creation date of the AfnStrip
+     */
+    creationDate: Date;
+    /**
+     * File name of the attachment created
+     */
+    fileName: string;
+    /**
+     * ID of AfnStrip. This is same as the attachment ID.
+     */
+    id: number;
+    /**
+     * Project identifier which contains AfnStrip
+     */
+    project: string;
+    /**
+     * Service in which this attachment is stored in
+     */
+    storedIn: string;
+    /**
+     * Afn strip stream.
+     */
+    stream: string;
+    /**
+     * ID of the testcase.
+     */
+    testCaseId: number;
+    /**
+     * Backing test result id.
+     */
+    testResultId: number;
+    /**
+     * Backing test run id.
+     */
+    testRunId: number;
+    /**
+     * Byte stream (uncompressed) length of Afn strip.
+     */
+    unCompressedStreamLength: number;
+    /**
+     * Url of the attachment created.
+     */
+    url: string;
+}
+
 export interface AggregatedDataForResultTrend {
     /**
      * This is tests execution duration.
      */
     duration: any;
     resultsByOutcome: { [key: number] : AggregatedResultsByOutcome; };
+    runSummaryByState: { [key: number] : AggregatedRunsByState; };
     testResultsContext: TestResultsContext;
     totalTests: number;
 }
@@ -30,6 +82,8 @@ export interface AggregatedResultsAnalysis {
     previousContext: TestResultsContext;
     resultsByOutcome: { [key: number] : AggregatedResultsByOutcome; };
     resultsDifference: AggregatedResultsDifference;
+    runSummaryByOutcome: { [key: number] : AggregatedRunsByOutcome; };
+    runSummaryByState: { [key: number] : AggregatedRunsByState; };
     totalTests: number;
 }
 
@@ -48,6 +102,17 @@ export interface AggregatedResultsDifference {
     increaseInOtherTests: number;
     increaseInPassedTests: number;
     increaseInTotalTests: number;
+}
+
+export interface AggregatedRunsByOutcome {
+    outcome: TestRunOutcome;
+    runsCount: number;
+}
+
+export interface AggregatedRunsByState {
+    resultsByOutcome: { [key: number] : AggregatedResultsByOutcome; };
+    runsCount: number;
+    state: TestRunState;
 }
 
 /**
@@ -77,35 +142,106 @@ export interface BatchResponse {
 export interface BuildConfiguration {
     branchName: string;
     buildDefinitionId: number;
+    buildSystem: string;
+    creationDate: Date;
     flavor: string;
     id: number;
     number: string;
     platform: string;
     project: ShallowReference;
+    repositoryGuid: string;
     repositoryId: number;
+    repositoryType: string;
     sourceVersion: string;
     uri: string;
 }
 
+/**
+ * Build Coverage Detail
+ */
 export interface BuildCoverage {
+    /**
+     * Code Coverage File Url
+     */
     codeCoverageFileUrl: string;
+    /**
+     * Build Configuration
+     */
     configuration: BuildConfiguration;
+    /**
+     * Last Error
+     */
     lastError: string;
+    /**
+     * List of Modules
+     */
     modules: ModuleCoverage[];
+    /**
+     * State
+     */
     state: string;
 }
 
+/**
+ * Reference to a build.
+ */
 export interface BuildReference {
+    /**
+     * Branch name.
+     */
     branchName: string;
+    /**
+     * Build system.
+     */
     buildSystem: string;
+    /**
+     * Build Definition ID.
+     */
     definitionId: number;
+    /**
+     * Build ID.
+     */
     id: number;
+    /**
+     * Build Number.
+     */
     number: string;
+    /**
+     * Repository ID.
+     */
     repositoryId: string;
+    /**
+     * Build URI.
+     */
     uri: string;
 }
 
+export interface BuildReference2 {
+    branchName: string;
+    buildConfigurationId: number;
+    buildDefinitionId: number;
+    buildDeleted: boolean;
+    buildFlavor: string;
+    buildId: number;
+    buildNumber: string;
+    buildPlatform: string;
+    buildSystem: string;
+    buildUri: string;
+    coverageId: number;
+    createdDate: Date;
+    projectId: string;
+    repoId: string;
+    repoType: string;
+    sourceVersion: string;
+}
+
+/**
+ * Detail About Clone Operation.
+ */
 export interface CloneOperationInformation {
+    /**
+     * Clone Statistics
+     */
     cloneStatistics: CloneStatistics;
     /**
      * If the operation is complete, the DateTime of completion. If operation is not complete, this is DateTime.MaxValue
@@ -161,10 +297,25 @@ export interface CloneOperationInformation {
     url: string;
 }
 
+/**
+ * Enum of type Clone Operation Type.
+ */
 export enum CloneOperationState {
+    /**
+     * value for Failed State
+     */
     Failed = 2,
+    /**
+     * value for Inprogress state
+     */
     InProgress = 1,
+    /**
+     * Value for Queued State
+     */
     Queued = 0,
+    /**
+     * value for Success state
+     */
     Succeeded = 3,
 }
 
@@ -284,6 +435,23 @@ export interface CodeCoverageSummary {
     deltaBuild: ShallowReference;
 }
 
+export interface CodeCoverageSummary2 {
+    buildConfigurationId: number;
+    covered: number;
+    label: string;
+    position: number;
+    projectId: string;
+    total: number;
+}
+
+export interface Coverage2 {
+    coverageId: number;
+    dateCreated: Date;
+    dateModified: Date;
+    lastError: string;
+    state: number;
+}
+
 /**
  * Used to choose which coverage data is returned by a QueryXXXCoverage() call.
  */
@@ -310,8 +478,17 @@ export interface CoverageStatistics {
     linesPartiallyCovered: number;
 }
 
+/**
+ * A custom field information.
+ */
 export interface CustomTestField {
+    /**
+     * Field Name.
+     */
     fieldName: string;
+    /**
+     * Field value.
+     */
     value: any;
 }
 
@@ -339,6 +516,11 @@ export enum CustomTestFieldType {
     Guid = 14,
 }
 
+export interface DatedTestFieldData {
+    date: Date;
+    value: TestFieldData;
+}
+
 /**
  * This is a temporary class to provide the details for the test run environment.
  */
@@ -348,9 +530,21 @@ export interface DtlEnvironmentDetails {
     subscriptionName: string;
 }
 
+/**
+ * Failing since information of a test result.
+ */
 export interface FailingSince {
+    /**
+     * Build reference since failing.
+     */
     build: BuildReference;
+    /**
+     * Time since failing.
+     */
     date: Date;
+    /**
+     * Release reference since failing.
+     */
     release: ReleaseReference;
 }
 
@@ -371,6 +565,21 @@ export interface FunctionCoverage {
     namespace: string;
     sourceFile: string;
     statistics: CoverageStatistics;
+}
+
+export interface FunctionCoverage2 {
+    blocksCovered: number;
+    blocksNotCovered: number;
+    class: string;
+    coverageId: number;
+    functionId: number;
+    linesCovered: number;
+    linesNotCovered: number;
+    linesPartiallyCovered: number;
+    moduleId: number;
+    name: string;
+    namespace: string;
+    sourceFile: string;
 }
 
 export interface LastResultDetails {
@@ -400,6 +609,10 @@ export interface LinkedWorkItemsQueryResult {
 export interface ModuleCoverage {
     blockCount: number;
     blockData: number[];
+    /**
+     * Code Coverage File Url
+     */
+    fileUrl: string;
     functions: FunctionCoverage[];
     name: string;
     signature: string;
@@ -407,49 +620,148 @@ export interface ModuleCoverage {
     statistics: CoverageStatistics;
 }
 
+export interface ModuleCoverage2 {
+    blockCount: number;
+    blockData: number[];
+    blockDataLength: number;
+    blocksCovered: number;
+    blocksNotCovered: number;
+    coverageFileUrl: string;
+    coverageId: number;
+    linesCovered: number;
+    linesNotCovered: number;
+    linesPartiallyCovered: number;
+    moduleId: number;
+    name: string;
+    signature: string;
+    signatureAge: number;
+}
+
 export interface NameValuePair {
     name: string;
     value: string;
 }
 
+/**
+ * A model class used for creating and updating test plans.
+ */
 export interface PlanUpdateModel {
+    /**
+     * Area path to which the test plan belongs. This should be set to area path of the team that works on this test plan.
+     */
     area: ShallowReference;
     automatedTestEnvironment: TestEnvironment;
     automatedTestSettings: TestSettings;
+    /**
+     * Build ID of the build whose quality is tested by the tests in this test plan. For automated testing, this build ID is used to find the test binaries that contain automated test methods.
+     */
     build: ShallowReference;
+    /**
+     * The Build Definition that generates a build associated with this test plan.
+     */
     buildDefinition: ShallowReference;
+    /**
+     * IDs of configurations to be applied when new test suites and test cases are added to the test plan.
+     */
     configurationIds: number[];
+    /**
+     * Description of the test plan.
+     */
     description: string;
+    /**
+     * End date for the test plan.
+     */
     endDate: string;
+    /**
+     * Iteration path assigned to the test plan. This indicates when the target iteration by which the testing in this plan is supposed to be complete and the product is ready to be released.
+     */
     iteration: string;
     manualTestEnvironment: TestEnvironment;
     manualTestSettings: TestSettings;
+    /**
+     * Name of the test plan.
+     */
     name: string;
+    /**
+     * Owner of the test plan.
+     */
     owner: VSSInterfaces.IdentityRef;
+    /**
+     * Release Environment to be used to deploy the build and run automated tests from this test plan.
+     */
     releaseEnvironmentDefinition: ReleaseEnvironmentDefinitionReference;
+    /**
+     * Start date for the test plan.
+     */
     startDate: string;
+    /**
+     * State of the test plan.
+     */
     state: string;
     status: string;
+    /**
+     * Test Outcome settings
+     */
+    testOutcomeSettings: TestOutcomeSettings;
 }
 
+/**
+ * Adding test cases to a suite creates one of more test points based on the default configurations and testers assigned to the test suite. PointAssignment is the list of test points that were created for each of the test cases that were added to the test suite.
+ */
 export interface PointAssignment {
+    /**
+     * Configuration that was assigned to the test case.
+     */
     configuration: ShallowReference;
+    /**
+     * Tester that was assigned to the test case
+     */
     tester: VSSInterfaces.IdentityRef;
 }
 
+/**
+ * Filter class for test point.
+ */
 export interface PointsFilter {
+    /**
+     * List of Configurations for filtering.
+     */
     configurationNames: string[];
+    /**
+     * List of test case id for filtering.
+     */
     testcaseIds: number[];
+    /**
+     * List of tester for filtering.
+     */
     testers: VSSInterfaces.IdentityRef[];
 }
 
+/**
+ * Model to update test point.
+ */
 export interface PointUpdateModel {
+    /**
+     * Outcome to update.
+     */
     outcome: string;
+    /**
+     * Reset test point to active.
+     */
     resetToActive: boolean;
+    /**
+     * Tester to update. Type IdentityRef.
+     */
     tester: VSSInterfaces.IdentityRef;
 }
 
+/**
+ * Test point workitem property.
+ */
 export interface PointWorkItemProperty {
+    /**
+     * key value pair of test point work item property.
+     */
     workItem: { key: string; value: any };
 }
 
@@ -464,19 +776,82 @@ export interface QueryModel {
     query: string;
 }
 
+/**
+ * Reference to release environment resource.
+ */
 export interface ReleaseEnvironmentDefinitionReference {
+    /**
+     * ID of the release definition that contains the release environment definition.
+     */
     definitionId: number;
+    /**
+     * ID of the release environment definition.
+     */
     environmentDefinitionId: number;
 }
 
+/**
+ * Reference to a release.
+ */
 export interface ReleaseReference {
+    attempt: number;
+    creationDate: Date;
+    /**
+     * Release definition ID.
+     */
     definitionId: number;
+    environmentCreationDate: Date;
+    /**
+     * Release environment definition ID.
+     */
     environmentDefinitionId: number;
+    /**
+     * Release environment definition name.
+     */
     environmentDefinitionName: string;
+    /**
+     * Release environment ID.
+     */
     environmentId: number;
+    /**
+     * Release environment name.
+     */
     environmentName: string;
+    /**
+     * Release ID.
+     */
     id: number;
+    /**
+     * Release name.
+     */
     name: string;
+}
+
+export interface ReleaseReference2 {
+    attempt: number;
+    environmentCreationDate: Date;
+    projectId: string;
+    releaseCreationDate: Date;
+    releaseDefId: number;
+    releaseEnvDefId: number;
+    releaseEnvId: number;
+    releaseEnvName: string;
+    releaseEnvUri: string;
+    releaseId: number;
+    releaseName: string;
+    releaseRefId: number;
+    releaseUri: string;
+}
+
+export interface RequirementsToTestsMapping2 {
+    createdBy: string;
+    creationDate: Date;
+    deletedBy: string;
+    deletionDate: Date;
+    isMigratedToWIT: boolean;
+    projectId: string;
+    testMetadataId: number;
+    workItemId: number;
 }
 
 export interface Response {
@@ -486,34 +861,105 @@ export interface Response {
     url: string;
 }
 
+/**
+ * Additional details with test result
+ */
 export enum ResultDetails {
+    /**
+     * Core fields of test result. Core fields includes State, Outcome, Priority, AutomatedTestName, AutomatedTestStorage, Comments, ErrorMessage etc.
+     */
     None = 0,
+    /**
+     * Test iteration details in a test result.
+     */
     Iterations = 1,
+    /**
+     * Workitems associated with a test result.
+     */
     WorkItems = 2,
+    /**
+     * Subresults in a test result.
+     */
+    SubResults = 4,
+    /**
+     * Point and plan detail in a test result.
+     */
+    Point = 8,
+}
+
+/**
+ * Hierarchy type of the result/subresults.
+ */
+export enum ResultGroupType {
+    /**
+     * Leaf node of test result.
+     */
+    None = 0,
+    /**
+     * Hierarchy type of test result.
+     */
+    Rerun = 1,
+    /**
+     * Hierarchy type of test result.
+     */
+    DataDriven = 2,
+    /**
+     * Hierarchy type of test result.
+     */
+    OrderedTest = 3,
+    /**
+     * Unknown hierarchy type.
+     */
+    Generic = 4,
 }
 
 /**
  * The top level entity that is being cloned as part of a Clone operation
  */
 export enum ResultObjectType {
+    /**
+     * Suite Clone
+     */
     TestSuite = 0,
+    /**
+     * Plan Clone
+     */
     TestPlan = 1,
 }
 
+/**
+ * Test result retention settings
+ */
 export interface ResultRetentionSettings {
+    /**
+     * Automated test result retention duration in days
+     */
     automatedResultsRetentionDuration: number;
+    /**
+     * Last Updated by identity
+     */
     lastUpdatedBy: VSSInterfaces.IdentityRef;
+    /**
+     * Last updated date
+     */
     lastUpdatedDate: Date;
+    /**
+     * Manual test result retention duration in days
+     */
     manualResultsRetentionDuration: number;
 }
 
 export interface ResultsFilter {
     automatedTestName: string;
     branch: string;
+    executedIn: Service;
     groupBy: string;
     maxCompleteDate: Date;
     resultsCount: number;
+    testCaseId: number;
     testCaseReferenceIds: number[];
+    testPlanId: number;
+    testPointIds: number[];
     testResultsContext: TestResultsContext;
     trendDays: number;
 }
@@ -530,36 +976,113 @@ export interface ResultUpdateResponseModel {
     revision: number;
 }
 
+/**
+ * Test run create details.
+ */
 export interface RunCreateModel {
+    /**
+     * true if test run is automated, false otherwise. By default it will be false.
+     */
     automated: boolean;
+    /**
+     * An abstracted reference to the build that it belongs.
+     */
     build: ShallowReference;
+    /**
+     * Drop location of the build used for test run.
+     */
     buildDropLocation: string;
+    /**
+     * Flavor of the build used for test run. (E.g: Release, Debug)
+     */
     buildFlavor: string;
+    /**
+     * Platform of the build used for test run. (E.g.: x86, amd64)
+     */
     buildPlatform: string;
+    buildReference: BuildConfiguration;
+    /**
+     * Comments entered by those analyzing the run.
+     */
     comment: string;
+    /**
+     * Completed date time of the run.
+     */
     completeDate: string;
+    /**
+     * IDs of the test configurations associated with the run.
+     */
     configurationIds: number[];
+    /**
+     * Name of the test controller used for automated run.
+     */
     controller: string;
     customTestFields: CustomTestField[];
+    /**
+     * An abstracted reference to DtlAutEnvironment.
+     */
     dtlAutEnvironment: ShallowReference;
+    /**
+     * An abstracted reference to DtlTestEnvironment.
+     */
     dtlTestEnvironment: ShallowReference;
+    /**
+     * Due date and time for test run.
+     */
     dueDate: string;
     environmentDetails: DtlEnvironmentDetails;
+    /**
+     * Error message associated with the run.
+     */
     errorMessage: string;
     filter: RunFilter;
+    /**
+     * The iteration in which to create the run. Root iteration of the team project will be default
+     */
     iteration: string;
+    /**
+     * Name of the test run.
+     */
     name: string;
+    /**
+     * Display name of the owner of the run.
+     */
     owner: VSSInterfaces.IdentityRef;
+    /**
+     * An abstracted reference to the plan that it belongs.
+     */
     plan: ShallowReference;
+    /**
+     * IDs of the test points to use in the run.
+     */
     pointIds: number[];
+    /**
+     * URI of release environment associated with the run.
+     */
     releaseEnvironmentUri: string;
+    releaseReference: ReleaseReference;
+    /**
+     * URI of release associated with the run.
+     */
     releaseUri: string;
     runTimeout: any;
     sourceWorkflow: string;
+    /**
+     * Start date time of the run.
+     */
     startDate: string;
+    /**
+     * The state of the run. Valid states - NotStarted, InProgress, Waiting
+     */
     state: string;
     testConfigurationsMapping: string;
+    /**
+     * ID of the test environment associated with the run.
+     */
     testEnvironmentId: string;
+    /**
+     * An abstracted reference to the test settings resource.
+     */
     testSettings: ShallowReference;
     type: string;
 }
@@ -578,38 +1101,95 @@ export interface RunFilter {
     testCaseFilter: string;
 }
 
+/**
+ * Test run statistics.
+ */
 export interface RunStatistic {
     count: number;
+    /**
+     * Test run outcome
+     */
     outcome: string;
     resolutionState: TestResolutionState;
+    /**
+     * State of the test run
+     */
     state: string;
 }
 
 export interface RunUpdateModel {
+    /**
+     * An abstracted reference to the build that it belongs.
+     */
     build: ShallowReference;
     buildDropLocation: string;
     buildFlavor: string;
     buildPlatform: string;
+    /**
+     * Comments entered by those analyzing the run.
+     */
     comment: string;
+    /**
+     * Completed date time of the run.
+     */
     completedDate: string;
+    /**
+     * Name of the test controller used for automated run.
+     */
     controller: string;
     deleteInProgressResults: boolean;
+    /**
+     * An abstracted reference to DtlAutEnvironment.
+     */
     dtlAutEnvironment: ShallowReference;
+    /**
+     * An abstracted reference to DtlEnvironment.
+     */
     dtlEnvironment: ShallowReference;
     dtlEnvironmentDetails: DtlEnvironmentDetails;
+    /**
+     * Due date and time for test run.
+     */
     dueDate: string;
+    /**
+     * Error message associated with the run.
+     */
     errorMessage: string;
+    /**
+     * The iteration in which to create the run.
+     */
     iteration: string;
+    /**
+     * Log entries associated with the run. Use a comma-separated list of multiple log entry objects. { logEntry }, { logEntry }, ...
+     */
     logEntries: TestMessageLogDetails[];
+    /**
+     * Name of the test run.
+     */
     name: string;
     releaseEnvironmentUri: string;
     releaseUri: string;
     sourceWorkflow: string;
+    /**
+     * Start date time of the run.
+     */
     startedDate: string;
+    /**
+     * The state of the test run Below are the valid values - NotStarted, InProgress, Completed, Aborted, Waiting
+     */
     state: string;
     substate: TestRunSubstate;
     testEnvironmentId: string;
+    /**
+     * An abstracted reference to test setting resource.
+     */
     testSettings: ShallowReference;
+}
+
+export enum Service {
+    Any = 0,
+    Tcm = 1,
+    Tfs = 2,
 }
 
 /**
@@ -617,7 +1197,7 @@ export interface RunUpdateModel {
  */
 export interface ShallowReference {
     /**
-     * Id of the resource
+     * ID of the resource
      */
     id: string;
     /**
@@ -630,157 +1210,552 @@ export interface ShallowReference {
     url: string;
 }
 
-export interface SharedStepModel {
+export interface ShallowTestCaseResult {
+    automatedTestStorage: string;
     id: number;
+    isReRun: boolean;
+    outcome: string;
+    owner: string;
+    priority: number;
+    refId: number;
+    runId: number;
+    testCaseTitle: string;
+}
+
+/**
+ * Reference to shared step workitem.
+ */
+export interface SharedStepModel {
+    /**
+     * WorkItem shared step ID.
+     */
+    id: number;
+    /**
+     * Shared step workitem revision.
+     */
     revision: number;
 }
 
+/**
+ * Suite create model
+ */
 export interface SuiteCreateModel {
+    /**
+     * Name of test suite.
+     */
     name: string;
+    /**
+     * For query based suites, query string that defines the suite.
+     */
     queryString: string;
+    /**
+     * For requirements test suites, the IDs of the requirements.
+     */
     requirementIds: number[];
+    /**
+     * Type of test suite to create. It can have value from DynamicTestSuite, StaticTestSuite and RequirementTestSuite.
+     */
     suiteType: string;
 }
 
+/**
+ * A suite entry defines properties for a test suite.
+ */
 export interface SuiteEntry {
     /**
-     * Id of child suite in a suite
+     * Id of child suite in the test suite.
      */
     childSuiteId: number;
     /**
-     * Sequence number for the test case or child suite in the suite
+     * Sequence number for the test case or child test suite in the test suite.
      */
     sequenceNumber: number;
     /**
-     * Id for the suite
+     * Id for the test suite.
      */
     suiteId: number;
     /**
-     * Id of a test case in a suite
+     * Id of a test case in the test suite.
      */
     testCaseId: number;
 }
 
+/**
+ * A model to define sequence of test suite entries in a test suite.
+ */
 export interface SuiteEntryUpdateModel {
     /**
-     * Id of child suite in a suite
+     * Id of the child suite in the test suite.
      */
     childSuiteId: number;
     /**
-     * Updated sequence number for the test case or child suite in the suite
+     * Updated sequence number for the test case or child test suite in the test suite.
      */
     sequenceNumber: number;
     /**
-     * Id of a test case in a suite
+     * Id of the test case in the test suite.
      */
     testCaseId: number;
 }
 
+/**
+ * Option to get details in response
+ */
+export enum SuiteExpand {
+    /**
+     * Include children in response.
+     */
+    Children = 1,
+    /**
+     * Include default testers in response.
+     */
+    DefaultTesters = 2,
+}
+
+/**
+ * Test case for the suite.
+ */
 export interface SuiteTestCase {
+    /**
+     * Point Assignment for test suite's test case.
+     */
     pointAssignments: PointAssignment[];
+    /**
+     * Test case workItem reference.
+     */
     testCase: WorkItemReference;
 }
 
+/**
+ * Test suite update model.
+ */
+export interface SuiteTestCaseUpdateModel {
+    /**
+     * Shallow reference of configurations for the test cases in the suite.
+     */
+    configurations: ShallowReference[];
+}
+
+/**
+ * Test suite update model.
+ */
 export interface SuiteUpdateModel {
+    /**
+     * Shallow reference of default configurations for the suite.
+     */
     defaultConfigurations: ShallowReference[];
+    /**
+     * Shallow reference of test suite.
+     */
     defaultTesters: ShallowReference[];
+    /**
+     * Specifies if the default configurations have to be inherited from the parent test suite in which the test suite is created.
+     */
     inheritDefaultConfigurations: boolean;
+    /**
+     * Test suite name
+     */
     name: string;
+    /**
+     * Shallow reference of the parent.
+     */
     parent: ShallowReference;
+    /**
+     * For query based suites, the new query string.
+     */
     queryString: string;
 }
 
-export interface TestActionResultModel extends TestResultModelBase {
+export interface TCMPropertyBag2 {
+    artifactId: number;
+    artifactType: number;
+    name: string;
+    value: string;
+}
+
+export interface TestActionResult2 {
     actionPath: string;
+    comment: string;
+    creationDate: Date;
+    dateCompleted: Date;
+    dateStarted: Date;
+    duration: number;
+    errorMessage: string;
     iterationId: number;
+    lastUpdated: Date;
+    outcome: number;
+    sharedStepId: number;
+    sharedStepRevision: number;
+    testResultId: number;
+    testRunId: number;
+}
+
+/**
+ * Represents a test step result.
+ */
+export interface TestActionResultModel extends TestResultModelBase {
+    /**
+     * Path identifier test step in test case workitem.
+     */
+    actionPath: string;
+    /**
+     * Iteration ID of test action result.
+     */
+    iterationId: number;
+    /**
+     * Reference to shared step workitem.
+     */
     sharedStepModel: SharedStepModel;
     /**
      * This is step Id of test case. For shared step, it is step Id of shared step in test case workitem; step Id in shared step. Example: TestCase workitem has two steps: 1) Normal step with Id = 1 2) Shared Step with Id = 2. Inside shared step: a) Normal Step with Id = 1 Value for StepIdentifier for First step: "1" Second step: "2;1"
      */
     stepIdentifier: string;
+    /**
+     * Url of test action result.
+     */
     url: string;
 }
 
 export interface TestAttachment {
+    /**
+     * Attachment type.
+     */
     attachmentType: AttachmentType;
+    /**
+     * Comment associated with attachment.
+     */
     comment: string;
+    /**
+     * Attachment created date.
+     */
     createdDate: Date;
+    /**
+     * Attachment file name
+     */
     fileName: string;
+    /**
+     * ID of the attachment.
+     */
     id: number;
+    /**
+     * Attachment size.
+     */
+    size: number;
+    /**
+     * Attachment Url.
+     */
     url: string;
 }
 
+/**
+ * Reference to test attachment.
+ */
 export interface TestAttachmentReference {
+    /**
+     * ID of the attachment.
+     */
     id: number;
+    /**
+     * Url to download the attachment.
+     */
     url: string;
 }
 
+/**
+ * Test attachment request model
+ */
 export interface TestAttachmentRequestModel {
+    /**
+     * Attachment type By Default it will be GeneralAttachment. It can be one of the following type. { GeneralAttachment, AfnStrip, BugFilingData, CodeCoverage, IntermediateCollectorData, RunConfig, TestImpactDetails, TmiTestRunDeploymentFiles, TmiTestRunReverseDeploymentFiles, TmiTestResultDetail, TmiTestRunSummary }
+     */
     attachmentType: string;
+    /**
+     * Comment associated with attachment
+     */
     comment: string;
+    /**
+     * Attachment filename
+     */
     fileName: string;
+    /**
+     * Base64 encoded file stream
+     */
     stream: string;
 }
 
-export interface TestCaseResult {
-    afnStripId: number;
-    area: ShallowReference;
-    associatedBugs: ShallowReference[];
+export interface TestAuthoringDetails {
+    configurationId: number;
+    pointId: number;
+    suiteId: number;
+    testerId: string;
+}
+
+export interface TestCaseMetadata2 {
+    container: string;
+    name: string;
+    projectId: string;
+    testMetadataId: number;
+}
+
+export interface TestCaseReference2 {
+    areaId: number;
     automatedTestId: string;
     automatedTestName: string;
+    automatedTestNameHash: number[];
     automatedTestStorage: string;
+    automatedTestStorageHash: number[];
+    automatedTestType: string;
+    configurationId: number;
+    createdBy: string;
+    creationDate: Date;
+    lastRefTestRunDate: Date;
+    owner: string;
+    priority: number;
+    projectId: string;
+    testCaseId: number;
+    testCaseRefId: number;
+    testCaseRevision: number;
+    testCaseTitle: string;
+    testPointId: number;
+}
+
+/**
+ * Represents a test result.
+ */
+export interface TestCaseResult {
+    /**
+     * Test attachment ID of action recording.
+     */
+    afnStripId: number;
+    /**
+     * Reference to area path of test.
+     */
+    area: ShallowReference;
+    /**
+     * Reference to bugs linked to test result.
+     */
+    associatedBugs: ShallowReference[];
+    /**
+     * ID representing test method in a dll.
+     */
+    automatedTestId: string;
+    /**
+     * Fully qualified name of test executed.
+     */
+    automatedTestName: string;
+    /**
+     * Container to which test belongs.
+     */
+    automatedTestStorage: string;
+    /**
+     * Type of automated test.
+     */
     automatedTestType: string;
     automatedTestTypeId: string;
+    /**
+     * Shallow reference to build associated with test result.
+     */
     build: ShallowReference;
+    /**
+     * Reference to build associated with test result.
+     */
     buildReference: BuildReference;
+    /**
+     * Comment in a test result.
+     */
     comment: string;
+    /**
+     * Time when test execution completed.
+     */
     completedDate: Date;
+    /**
+     * Machine name where test executed.
+     */
     computerName: string;
+    /**
+     * Test configuration of a test result.
+     */
     configuration: ShallowReference;
+    /**
+     * Timestamp when test result created.
+     */
     createdDate: Date;
+    /**
+     * Additional properties of test result.
+     */
     customFields: CustomTestField[];
+    /**
+     * Duration of test execution in milliseconds.
+     */
     durationInMs: number;
+    /**
+     * Error message in test execution.
+     */
     errorMessage: string;
+    /**
+     * Information when test results started failing.
+     */
     failingSince: FailingSince;
+    /**
+     * Failure type of test result.
+     */
     failureType: string;
+    /**
+     * ID of a test result.
+     */
     id: number;
+    /**
+     * Test result details of test iterations.
+     */
     iterationDetails: TestIterationDetailsModel[];
+    /**
+     * Reference to identity last updated test result.
+     */
     lastUpdatedBy: VSSInterfaces.IdentityRef;
+    /**
+     * Last updated datetime of test result.
+     */
     lastUpdatedDate: Date;
+    /**
+     * Test outcome of test result.
+     */
     outcome: string;
+    /**
+     * Reference to test owner.
+     */
     owner: VSSInterfaces.IdentityRef;
+    /**
+     * Priority of test executed.
+     */
     priority: number;
+    /**
+     * Reference to team project.
+     */
     project: ShallowReference;
+    /**
+     * Shallow reference to release associated with test result.
+     */
     release: ShallowReference;
+    /**
+     * Reference to release associated with test result.
+     */
     releaseReference: ReleaseReference;
     resetCount: number;
+    /**
+     * Resolution state of test result.
+     */
     resolutionState: string;
+    /**
+     * ID of resolution state.
+     */
     resolutionStateId: number;
+    /**
+     * Hierarchy type of the result, default value of None means its leaf node.
+     */
+    resultGroupType: ResultGroupType;
+    /**
+     * Revision number of test result.
+     */
     revision: number;
+    /**
+     * Reference to identity executed the test.
+     */
     runBy: VSSInterfaces.IdentityRef;
+    /**
+     * Stacktrace.
+     */
     stackTrace: string;
+    /**
+     * Time when test execution started.
+     */
     startedDate: Date;
+    /**
+     * State of test result.
+     */
     state: string;
+    /**
+     * List of sub results inside a test result, if ResultGroupType is not None, it holds corresponding type sub results.
+     */
+    subResults: TestSubResult[];
+    /**
+     * Reference to the test executed.
+     */
     testCase: ShallowReference;
+    /**
+     * Reference ID of test used by test result.
+     */
     testCaseReferenceId: number;
+    /**
+     * Name of test.
+     */
+    testCaseRevision: number;
+    /**
+     * Name of test.
+     */
     testCaseTitle: string;
+    /**
+     * Reference to test plan test case workitem is part of.
+     */
     testPlan: ShallowReference;
+    /**
+     * Reference to the test point executed.
+     */
     testPoint: ShallowReference;
+    /**
+     * Reference to test run.
+     */
     testRun: ShallowReference;
+    /**
+     * Reference to test suite test case workitem is part of.
+     */
     testSuite: ShallowReference;
+    /**
+     * Url of test result.
+     */
     url: string;
 }
 
+/**
+ * Test attachment information in a test iteration.
+ */
 export interface TestCaseResultAttachmentModel {
+    /**
+     * Path identifier test step in test case workitem.
+     */
+    actionPath: string;
+    /**
+     * Attachment ID.
+     */
     id: number;
+    /**
+     * Iteration ID.
+     */
     iterationId: number;
+    /**
+     * Name of attachment.
+     */
     name: string;
+    /**
+     * Attachment size.
+     */
     size: number;
+    /**
+     * Url to attachment.
+     */
     url: string;
 }
 
+/**
+ * Reference to a test result.
+ */
 export interface TestCaseResultIdentifier {
+    /**
+     * Test result ID.
+     */
     testResultId: number;
+    /**
+     * Test run ID.
+     */
     testRunId: number;
 }
 
@@ -805,6 +1780,9 @@ export interface TestCaseResultUpdateModel {
     testResult: ShallowReference;
 }
 
+/**
+ * Test configuration
+ */
 export interface TestConfiguration {
     /**
      * Area of the configuration
@@ -875,6 +1853,10 @@ export interface TestEnvironment {
     environmentName: string;
 }
 
+export interface TestExecutionReportData {
+    reportData: DatedTestFieldData[];
+}
+
 export interface TestFailureDetails {
     count: number;
     testResults: TestCaseResultIdentifier[];
@@ -887,18 +1869,135 @@ export interface TestFailuresAnalysis {
     previousContext: TestResultsContext;
 }
 
-export interface TestIterationDetailsModel {
-    actionResults: TestActionResultModel[];
-    attachments: TestCaseResultAttachmentModel[];
-    comment: string;
-    completedDate: Date;
-    durationInMs: number;
-    errorMessage: string;
+export interface TestFailureType {
     id: number;
+    name: string;
+    project: ShallowReference;
+}
+
+export interface TestFieldData {
+    dimensions: { [key: string] : any; };
+    measure: number;
+}
+
+export interface TestFieldsEx2 {
+    fieldId: number;
+    fieldName: string;
+    fieldType: number;
+    isResultScoped: boolean;
+    isRunScoped: boolean;
+    isSystemField: boolean;
+    projectId: string;
+}
+
+/**
+ * Filter to get TestCase result history.
+ */
+export interface TestHistoryQuery {
+    /**
+     * Automated test name of the TestCase.
+     */
+    automatedTestName: string;
+    /**
+     * Results to be get for a particular branches.
+     */
+    branch: string;
+    /**
+     * Get the results history only for this BuildDefinationId. This to get used in query GroupBy should be Branch. If this is provided, Branch will have no use.
+     */
+    buildDefinitionId: number;
+    /**
+     * It will be filled by server. If not null means there are some results still to be get, and we need to call this REST API with this ContinuousToken.
+     */
+    continuationToken: string;
+    /**
+     * Group the result on the basis of TestResultGroupBy. This can be Branch, Environment or null(if results are fetched by BuildDefinitionId)
+     */
+    groupBy: TestResultGroupBy;
+    /**
+     * History to get between time interval MaxCompleteDate and  (MaxCompleteDate - TrendDays). Default is current date time.
+     */
+    maxCompleteDate: Date;
+    /**
+     * Get the results history only for this ReleaseEnvDefinitionId. This to get used in query GroupBy should be Environment.
+     */
+    releaseEnvDefinitionId: number;
+    /**
+     * List of TestResultHistoryForGroup which are grouped by GroupBy
+     */
+    resultsForGroup: TestResultHistoryForGroup[];
+    /**
+     * Number of days for which history to collect. Maximum supported value is 7 days. Default is 7 days.
+     */
+    trendDays: number;
+}
+
+/**
+ * Represents a test iteration result.
+ */
+export interface TestIterationDetailsModel {
+    /**
+     * Test step results in an iteration.
+     */
+    actionResults: TestActionResultModel[];
+    /**
+     * Refence to attachments in test iteration result.
+     */
+    attachments: TestCaseResultAttachmentModel[];
+    /**
+     * Comment in test iteration result.
+     */
+    comment: string;
+    /**
+     * Time when execution completed.
+     */
+    completedDate: Date;
+    /**
+     * Duration of execution.
+     */
+    durationInMs: number;
+    /**
+     * Error message in test iteration result execution.
+     */
+    errorMessage: string;
+    /**
+     * ID of test iteration result.
+     */
+    id: number;
+    /**
+     * Test outcome if test iteration result.
+     */
     outcome: string;
+    /**
+     * Test parameters in an iteration.
+     */
     parameters: TestResultParameterModel[];
+    /**
+     * Time when execution started.
+     */
     startedDate: Date;
+    /**
+     * Url to test iteration result.
+     */
     url: string;
+}
+
+/**
+ * Represents Test Log store endpoint details.
+ */
+export interface TestLogStoreEndpointDetails {
+    /**
+     * Test log store connection Uri.
+     */
+    blobContainerSASUri: string;
+    /**
+     * Test Run Id.
+     */
+    runId: number;
+}
+
+export interface TestMessageLog2 {
+    testMessageLogId: number;
 }
 
 /**
@@ -917,6 +2016,15 @@ export interface TestMessageLogDetails {
      * Message of the resource
      */
     message: string;
+}
+
+export interface TestMessageLogEntry2 {
+    dateCreated: Date;
+    entryId: number;
+    logLevel: number;
+    logUser: string;
+    message: string;
+    testMessageLogId: number;
 }
 
 export interface TestMethod {
@@ -997,30 +2105,105 @@ export enum TestOutcome {
     MaxValue = 14,
 }
 
+export interface TestOutcomeSettings {
+    /**
+     * Value to configure how test outcomes for the same tests across suites are shown
+     */
+    syncOutcomeAcrossSuites: boolean;
+}
+
+export interface TestParameter2 {
+    actionPath: string;
+    actual: number[];
+    creationDate: Date;
+    dataType: number;
+    dateModified: Date;
+    expected: number[];
+    iterationId: number;
+    parameterName: string;
+    testResultId: number;
+    testRunId: number;
+}
+
+/**
+ * The test plan resource.
+ */
 export interface TestPlan {
+    /**
+     * Area of the test plan.
+     */
     area: ShallowReference;
     automatedTestEnvironment: TestEnvironment;
     automatedTestSettings: TestSettings;
+    /**
+     * Build to be tested.
+     */
     build: ShallowReference;
+    /**
+     * The Build Definition that generates a build associated with this test plan.
+     */
     buildDefinition: ShallowReference;
     clientUrl: string;
+    /**
+     * Description of the test plan.
+     */
     description: string;
+    /**
+     * End date for the test plan.
+     */
     endDate: Date;
+    /**
+     * ID of the test plan.
+     */
     id: number;
+    /**
+     * Iteration path of the test plan.
+     */
     iteration: string;
     manualTestEnvironment: TestEnvironment;
     manualTestSettings: TestSettings;
+    /**
+     * Name of the test plan.
+     */
     name: string;
+    /**
+     * Owner of the test plan.
+     */
     owner: VSSInterfaces.IdentityRef;
     previousBuild: ShallowReference;
+    /**
+     * Project which contains the test plan.
+     */
     project: ShallowReference;
+    /**
+     * Release Environment to be used to deploy the build and run automated tests from this test plan.
+     */
     releaseEnvironmentDefinition: ReleaseEnvironmentDefinitionReference;
+    /**
+     * Revision of the test plan.
+     */
     revision: number;
+    /**
+     * Root test suite of the test plan.
+     */
     rootSuite: ShallowReference;
+    /**
+     * Start date for the test plan.
+     */
     startDate: Date;
+    /**
+     * State of the test plan.
+     */
     state: string;
+    /**
+     * Value to configure how same tests across test suites under a test plan need to behave
+     */
+    testOutcomeSettings: TestOutcomeSettings;
     updatedBy: VSSInterfaces.IdentityRef;
     updatedDate: Date;
+    /**
+     * URL of the test plan resource.
+     */
     url: string;
 }
 
@@ -1044,42 +2227,186 @@ export interface TestPlansWithSelection {
     plans: TestPlan[];
 }
 
+/**
+ * Test point.
+ */
 export interface TestPoint {
+    /**
+     * AssignedTo. Type IdentityRef.
+     */
     assignedTo: VSSInterfaces.IdentityRef;
+    /**
+     * Automated.
+     */
     automated: boolean;
+    /**
+     * Comment associated with test point.
+     */
     comment: string;
+    /**
+     * Configuration. Type ShallowReference.
+     */
     configuration: ShallowReference;
+    /**
+     * Failure type of test point.
+     */
     failureType: string;
+    /**
+     * ID of the test point.
+     */
     id: number;
+    /**
+     * Last resolution state id of test point.
+     */
     lastResolutionStateId: number;
+    /**
+     * Last result of test point. Type ShallowReference.
+     */
     lastResult: ShallowReference;
+    /**
+     * Last result details of test point. Type LastResultDetails.
+     */
     lastResultDetails: LastResultDetails;
+    /**
+     * Last result state of test point.
+     */
     lastResultState: string;
+    /**
+     * LastRun build number of test point.
+     */
     lastRunBuildNumber: string;
+    /**
+     * Last testRun of test point. Type ShallowReference.
+     */
     lastTestRun: ShallowReference;
+    /**
+     * Test point last updated by. Type IdentityRef.
+     */
     lastUpdatedBy: VSSInterfaces.IdentityRef;
+    /**
+     * Last updated date of test point.
+     */
     lastUpdatedDate: Date;
+    /**
+     * Outcome of test point.
+     */
     outcome: string;
+    /**
+     * Revision number.
+     */
     revision: number;
+    /**
+     * State of test point.
+     */
     state: string;
+    /**
+     * Suite of test point. Type ShallowReference.
+     */
     suite: ShallowReference;
+    /**
+     * TestCase associated to test point. Type WorkItemReference.
+     */
     testCase: WorkItemReference;
+    /**
+     * TestPlan of test point. Type ShallowReference.
+     */
     testPlan: ShallowReference;
+    /**
+     * Test point Url.
+     */
     url: string;
+    /**
+     * Work item properties of test point.
+     */
     workItemProperties: any[];
 }
 
+export interface TestPointReference {
+    id: number;
+    state: TestPointState;
+}
+
+export interface TestPointsEvent {
+    projectName: string;
+    testPoints: TestPointReference[];
+}
+
+/**
+ * Test point query class.
+ */
 export interface TestPointsQuery {
+    /**
+     * Order by results.
+     */
     orderBy: string;
+    /**
+     * List of test points
+     */
     points: TestPoint[];
+    /**
+     * Filter
+     */
     pointsFilter: PointsFilter;
+    /**
+     * List of workitem fields to get.
+     */
     witFields: string[];
+}
+
+export enum TestPointState {
+    /**
+     * Default
+     */
+    None = 0,
+    /**
+     * The test point needs to be executed in order for the test pass to be considered complete.  Either the test has not been run before or the previous run failed.
+     */
+    Ready = 1,
+    /**
+     * The test has passed successfully and does not need to be re-run for the test pass to be considered complete.
+     */
+    Completed = 2,
+    /**
+     * The test point needs to be executed but is not able to.
+     */
+    NotReady = 3,
+    /**
+     * The test is being executed.
+     */
+    InProgress = 4,
+    MaxValue = 4,
+}
+
+export interface TestPointsUpdatedEvent extends TestPointsEvent {
 }
 
 export interface TestResolutionState {
     id: number;
     name: string;
     project: ShallowReference;
+}
+
+export interface TestResult2 {
+    afnStripId: number;
+    computerName: string;
+    creationDate: Date;
+    dateCompleted: Date;
+    dateStarted: Date;
+    effectivePointState: number;
+    failureType: number;
+    lastUpdated: Date;
+    lastUpdatedBy: string;
+    outcome: number;
+    owner: string;
+    projectId: string;
+    resetCount: number;
+    resolutionStateId: number;
+    revision: number;
+    runBy: string;
+    state: number;
+    testCaseRefId: number;
+    testResultId: number;
+    testRunId: number;
 }
 
 export interface TestResultCreateModel {
@@ -1116,6 +2443,20 @@ export interface TestResultDocument {
     payload: TestResultPayload;
 }
 
+/**
+ * Group by for results
+ */
+export enum TestResultGroupBy {
+    /**
+     * Group the results by branches
+     */
+    Branch = 1,
+    /**
+     * Group the results by environment
+     */
+    Environment = 2,
+}
+
 export interface TestResultHistory {
     groupByField: string;
     resultsForGroup: TestResultHistoryDetailsForGroup[];
@@ -1126,24 +2467,78 @@ export interface TestResultHistoryDetailsForGroup {
     latestResult: TestCaseResult;
 }
 
+/**
+ * List of test results filtered on the basis of GroupByValue
+ */
+export interface TestResultHistoryForGroup {
+    /**
+     * Display name of the group.
+     */
+    displayName: string;
+    /**
+     * Name or Id of the group identifier by which results are grouped together.
+     */
+    groupByValue: string;
+    /**
+     * List of results for GroupByValue
+     */
+    results: TestCaseResult[];
+}
+
 export interface TestResultModelBase {
+    /**
+     * Comment in result.
+     */
     comment: string;
+    /**
+     * Time when execution completed.
+     */
     completedDate: Date;
+    /**
+     * Duration of execution.
+     */
     durationInMs: number;
+    /**
+     * Error message in result.
+     */
     errorMessage: string;
+    /**
+     * Test outcome of result.
+     */
     outcome: string;
+    /**
+     * Time when execution started.
+     */
     startedDate: Date;
 }
 
+/**
+ * Test parameter information in a test iteration.
+ */
 export interface TestResultParameterModel {
+    /**
+     * Test step path where parameter is referenced.
+     */
     actionPath: string;
+    /**
+     * Iteration ID.
+     */
     iterationId: number;
+    /**
+     * Name of parameter.
+     */
     parameterName: string;
     /**
      * This is step Id of test case. For shared step, it is step Id of shared step in test case workitem; step Id in shared step. Example: TestCase workitem has two steps: 1) Normal step with Id = 1 2) Shared Step with Id = 2. Inside shared step: a) Normal Step with Id = 1 Value for StepIdentifier for First step: "1" Second step: "2;1"
      */
     stepIdentifier: string;
+    /**
+     * Url of test parameter.
+     */
     url: string;
+    /**
+     * Value of parameter.
+     */
     value: string;
 }
 
@@ -1151,6 +2546,16 @@ export interface TestResultPayload {
     comment: string;
     name: string;
     stream: string;
+}
+
+export interface TestResultReset2 {
+    auditIdentity: string;
+    dateModified: Date;
+    projectId: string;
+    revision: number;
+    testResultId: number;
+    testResultRV: number[];
+    testRunId: number;
 }
 
 export interface TestResultsContext {
@@ -1173,6 +2578,21 @@ export interface TestResultsDetailsForGroup {
     groupByValue: any;
     results: TestCaseResult[];
     resultsCountByOutcome: { [key: number] : AggregatedResultsByOutcome; };
+}
+
+export interface TestResultsEx2 {
+    bitValue: boolean;
+    creationDate: Date;
+    dateTimeValue: Date;
+    fieldId: number;
+    fieldName: string;
+    floatValue: number;
+    guidValue: string;
+    intValue: number;
+    projectId: string;
+    stringValue: string;
+    testResultId: number;
+    testRunId: number;
 }
 
 export interface TestResultsGroupsForBuild {
@@ -1225,10 +2645,25 @@ export interface TestResultTrendFilter {
     trendDays: number;
 }
 
+/**
+ * Test run details.
+ */
 export interface TestRun {
+    /**
+     * Build associated with this test run.
+     */
     build: ShallowReference;
+    /**
+     * Build configuration details associated with this test run.
+     */
     buildConfiguration: BuildConfiguration;
+    /**
+     * Comments entered by those analyzing the run.
+     */
     comment: string;
+    /**
+     * Completed date time of the run.
+     */
     completedDate: Date;
     controller: string;
     createdDate: Date;
@@ -1237,45 +2672,222 @@ export interface TestRun {
     dtlAutEnvironment: ShallowReference;
     dtlEnvironment: ShallowReference;
     dtlEnvironmentCreationDetails: DtlEnvironmentDetails;
+    /**
+     * Due date and time for test run.
+     */
     dueDate: Date;
+    /**
+     * Error message associated with the run.
+     */
     errorMessage: string;
     filter: RunFilter;
+    /**
+     * ID of the test run.
+     */
     id: number;
     incompleteTests: number;
+    /**
+     * true if test run is automated, false otherwise.
+     */
     isAutomated: boolean;
+    /**
+     * The iteration to which the run belongs.
+     */
     iteration: string;
+    /**
+     * Team foundation ID of the last updated the test run.
+     */
     lastUpdatedBy: VSSInterfaces.IdentityRef;
+    /**
+     * Last updated date and time
+     */
     lastUpdatedDate: Date;
+    /**
+     * Name of the test run.
+     */
     name: string;
     notApplicableTests: number;
+    /**
+     * Team Foundation ID of the owner of the runs.
+     */
     owner: VSSInterfaces.IdentityRef;
+    /**
+     * Number of passed tests in the run
+     */
     passedTests: number;
     phase: string;
+    /**
+     * Test plan associated with this test run.
+     */
     plan: ShallowReference;
     postProcessState: string;
+    /**
+     * Project associated with this run.
+     */
     project: ShallowReference;
     release: ReleaseReference;
     releaseEnvironmentUri: string;
     releaseUri: string;
     revision: number;
     runStatistics: RunStatistic[];
+    /**
+     * Start date time of the run.
+     */
     startedDate: Date;
+    /**
+     * The state of the run. { NotStarted, InProgress, Waiting }
+     */
     state: string;
     substate: TestRunSubstate;
+    /**
+     * Test environment associated with the run.
+     */
     testEnvironment: TestEnvironment;
     testMessageLogId: number;
     testSettings: ShallowReference;
+    /**
+     * Total tests in the run
+     */
     totalTests: number;
     unanalyzedTests: number;
+    /**
+     * Url of the test run
+     */
     url: string;
     webAccessUrl: string;
 }
 
+export interface TestRun2 {
+    buildConfigurationId: number;
+    buildNumber: string;
+    comment: string;
+    completeDate: Date;
+    controller: string;
+    coverageId: number;
+    creationDate: Date;
+    dropLocation: string;
+    dueDate: Date;
+    errorMessage: string;
+    incompleteTests: number;
+    isAutomated: boolean;
+    isBvt: boolean;
+    isMigrated: boolean;
+    iterationId: number;
+    lastUpdated: Date;
+    lastUpdatedBy: string;
+    legacySharePath: string;
+    maxReservedResultId: number;
+    notApplicableTests: number;
+    owner: string;
+    passedTests: number;
+    postProcessState: number;
+    projectId: string;
+    publicTestSettingsId: number;
+    releaseEnvironmentUri: string;
+    releaseUri: string;
+    revision: number;
+    startDate: Date;
+    state: number;
+    testEnvironmentId: string;
+    testMessageLogId: number;
+    testPlanId: number;
+    testRunContextId: number;
+    testRunId: number;
+    testSettingsId: number;
+    title: string;
+    totalTests: number;
+    type: number;
+    unanalyzedTests: number;
+    version: number;
+}
+
+export interface TestRunCanceledEvent extends TestRunEvent {
+}
+
+export interface TestRunContext2 {
+    buildRefId: number;
+    projectId: string;
+    releaseRefId: number;
+    sourceWorkflow: string;
+    testRunContextId: number;
+}
+
+/**
+ * Test Run Code Coverage Details
+ */
 export interface TestRunCoverage {
+    /**
+     * Last Error
+     */
     lastError: string;
+    /**
+     * List of Modules Coverage
+     */
     modules: ModuleCoverage[];
+    /**
+     * State
+     */
     state: string;
+    /**
+     * Reference of test Run.
+     */
     testRun: ShallowReference;
+}
+
+export interface TestRunCreatedEvent extends TestRunEvent {
+}
+
+export interface TestRunEvent {
+    testRun: TestRun;
+}
+
+export interface TestRunEx2 {
+    bitValue: boolean;
+    createdDate: Date;
+    dateTimeValue: Date;
+    fieldId: number;
+    fieldName: string;
+    floatValue: number;
+    guidValue: string;
+    intValue: number;
+    projectId: string;
+    stringValue: string;
+    testRunId: number;
+}
+
+export interface TestRunExtended2 {
+    autEnvironmentUrl: string;
+    csmContent: string;
+    csmParameters: string;
+    projectId: string;
+    sourceFilter: string;
+    subscriptionName: string;
+    substate: number;
+    testCaseFilter: string;
+    testEnvironmentUrl: string;
+    testRunId: number;
+}
+
+/**
+ * The types of outcomes for test run.
+ */
+export enum TestRunOutcome {
+    /**
+     * Run with zero failed tests and has atleast one impacted test
+     */
+    Passed = 0,
+    /**
+     * Run with at-least one failed test.
+     */
+    Failed = 1,
+    /**
+     * Run with no impacted tests.
+     */
+    NotImpacted = 2,
+    /**
+     * Runs with All tests in other category.
+     */
+    Others = 3,
 }
 
 /**
@@ -1294,6 +2906,9 @@ export enum TestRunPublishContext {
      * Run is published for any Context.
      */
     All = 3,
+}
+
+export interface TestRunStartedEvent extends TestRunEvent {
 }
 
 /**
@@ -1330,6 +2945,9 @@ export enum TestRunState {
     NeedsInvestigation = 6,
 }
 
+/**
+ * Test run statistics.
+ */
 export interface TestRunStatistic {
     run: ShallowReference;
     runStatistics: RunStatistic[];
@@ -1350,6 +2968,22 @@ export enum TestRunSubstate {
     CancellationInProgress = 8,
 }
 
+export interface TestRunSummary2 {
+    isRerun: boolean;
+    projectId: string;
+    resultCount: number;
+    resultDuration: number;
+    runDuration: number;
+    testOutcome: number;
+    testRunCompletedDate: Date;
+    testRunContextId: number;
+    testRunId: number;
+    testRunStatsId: number;
+}
+
+/**
+ * Test Session
+ */
 export interface TestSession {
     /**
      * Area path of the test session
@@ -1429,7 +3063,7 @@ export interface TestSessionExploredWorkItemReference extends TestSessionWorkIte
 }
 
 /**
- * Represents the state of the test session.
+ * Represents the source from which the test session was created
  */
 export enum TestSessionSource {
     /**
@@ -1537,36 +3171,243 @@ export interface TestSettings {
     testSettingsName: string;
 }
 
-export interface TestSuite {
-    areaUri: string;
-    children: TestSuite[];
-    defaultConfigurations: ShallowReference[];
-    defaultTesters: ShallowReference[];
-    id: number;
-    inheritDefaultConfigurations: boolean;
-    lastError: string;
-    lastPopulatedDate: Date;
+/**
+ * Represents the test settings of the run. Used to create test settings and fetch test settings
+ */
+export interface TestSettings2 {
+    /**
+     * Area path required to create test settings
+     */
+    areaPath: string;
+    createdBy: VSSInterfaces.IdentityRef;
+    createdDate: Date;
+    /**
+     * Description of the test settings. Used in create test settings.
+     */
+    description: string;
+    /**
+     * Indicates if the tests settings is public or private.Used in create test settings.
+     */
+    isPublic: boolean;
     lastUpdatedBy: VSSInterfaces.IdentityRef;
     lastUpdatedDate: Date;
-    name: string;
-    parent: ShallowReference;
-    plan: ShallowReference;
-    project: ShallowReference;
-    queryString: string;
-    requirementId: number;
-    revision: number;
-    state: string;
-    suites: ShallowReference[];
-    suiteType: string;
-    testCaseCount: number;
-    testCasesUrl: string;
-    text: string;
+    /**
+     * Xml string of machine roles. Used in create test settings.
+     */
+    machineRoles: string;
+    /**
+     * Test settings content.
+     */
+    testSettingsContent: string;
+    /**
+     * Test settings id.
+     */
+    testSettingsId: number;
+    /**
+     * Test settings name.
+     */
+    testSettingsName: string;
+}
+
+/**
+ * Represents a sub result of a test result.
+ */
+export interface TestSubResult {
+    /**
+     * Comment in sub result.
+     */
+    comment: string;
+    /**
+     * Time when test execution completed.
+     */
+    completedDate: Date;
+    /**
+     * Machine where test executed.
+     */
+    computerName: string;
+    /**
+     * Reference to test configuration.
+     */
+    configuration: ShallowReference;
+    /**
+     * Additional properties of sub result.
+     */
+    customFields: CustomTestField[];
+    /**
+     * Name of sub result.
+     */
+    displayName: string;
+    /**
+     * Duration of test execution.
+     */
+    durationInMs: number;
+    /**
+     * Error message in sub result.
+     */
+    errorMessage: string;
+    /**
+     * ID of sub result.
+     */
+    id: number;
+    /**
+     * Time when result last updated.
+     */
+    lastUpdatedDate: Date;
+    /**
+     * Outcome of sub result.
+     */
+    outcome: string;
+    /**
+     * Immediate parent ID of sub result.
+     */
+    parentId: number;
+    /**
+     * Hierarchy type of the result, default value of None means its leaf node.
+     */
+    resultGroupType: ResultGroupType;
+    /**
+     * Index number of sub result.
+     */
+    sequenceId: number;
+    /**
+     * Stacktrace.
+     */
+    stackTrace: string;
+    /**
+     * Time when test execution started.
+     */
+    startedDate: Date;
+    /**
+     * List of sub results inside a sub result, if ResultGroupType is not None, it holds corresponding type sub results.
+     */
+    subResults: TestSubResult[];
+    /**
+     * Reference to test result.
+     */
+    testResult: TestCaseResultIdentifier;
+    /**
+     * Url of sub result.
+     */
     url: string;
 }
 
+/**
+ * Test suite
+ */
+export interface TestSuite {
+    /**
+     * Area uri of the test suite.
+     */
+    areaUri: string;
+    /**
+     * Child test suites of current test suite.
+     */
+    children: TestSuite[];
+    /**
+     * Test suite default configuration.
+     */
+    defaultConfigurations: ShallowReference[];
+    /**
+     * Test suite default testers.
+     */
+    defaultTesters: ShallowReference[];
+    /**
+     * Id of test suite.
+     */
+    id: number;
+    /**
+     * Default configuration was inherited or not.
+     */
+    inheritDefaultConfigurations: boolean;
+    /**
+     * Last error for test suite.
+     */
+    lastError: string;
+    /**
+     * Last populated date.
+     */
+    lastPopulatedDate: Date;
+    /**
+     * IdentityRef of user who has updated test suite recently.
+     */
+    lastUpdatedBy: VSSInterfaces.IdentityRef;
+    /**
+     * Last update date.
+     */
+    lastUpdatedDate: Date;
+    /**
+     * Name of test suite.
+     */
+    name: string;
+    /**
+     * Test suite parent shallow reference.
+     */
+    parent: ShallowReference;
+    /**
+     * Test plan to which the test suite belongs.
+     */
+    plan: ShallowReference;
+    /**
+     * Test suite project shallow reference.
+     */
+    project: ShallowReference;
+    /**
+     * Test suite query string, for dynamic suites.
+     */
+    queryString: string;
+    /**
+     * Test suite requirement id.
+     */
+    requirementId: number;
+    /**
+     * Test suite revision.
+     */
+    revision: number;
+    /**
+     * State of test suite.
+     */
+    state: string;
+    /**
+     * List of shallow reference of suites.
+     */
+    suites: ShallowReference[];
+    /**
+     * Test suite type.
+     */
+    suiteType: string;
+    /**
+     * Test cases count.
+     */
+    testCaseCount: number;
+    /**
+     * Test case url.
+     */
+    testCasesUrl: string;
+    /**
+     * Used in tree view. If test suite is root suite then, it is name of plan otherwise title of the suite.
+     */
+    text: string;
+    /**
+     * Url of test suite.
+     */
+    url: string;
+}
+
+/**
+ * Test suite clone request
+ */
 export interface TestSuiteCloneRequest {
+    /**
+     * Clone options for cloning the test suite.
+     */
     cloneOptions: CloneOptions;
+    /**
+     * Suite id under which, we have to clone the suite.
+     */
     destinationSuiteId: number;
+    /**
+     * Destination suite project name.
+     */
     destinationSuiteProjectName: string;
 }
 
@@ -1620,16 +3461,23 @@ export interface WorkItemReference {
 }
 
 export interface WorkItemToTestLinks {
+    executedIn: Service;
     tests: TestMethod[];
     workItem: WorkItemReference;
 }
 
 export var TypeInfo = {
+    AfnStrip: <any>{
+    },
     AggregatedDataForResultTrend: <any>{
     },
     AggregatedResultsAnalysis: <any>{
     },
     AggregatedResultsByOutcome: <any>{
+    },
+    AggregatedRunsByOutcome: <any>{
+    },
+    AggregatedRunsByState: <any>{
     },
     AttachmentType: {
         enumValues: {
@@ -1649,6 +3497,12 @@ export var TypeInfo = {
     },
     BatchResponse: <any>{
     },
+    BuildConfiguration: <any>{
+    },
+    BuildCoverage: <any>{
+    },
+    BuildReference2: <any>{
+    },
     CloneOperationInformation: <any>{
     },
     CloneOperationState: {
@@ -1658,6 +3512,8 @@ export var TypeInfo = {
             "queued": 0,
             "succeeded": 3
         }
+    },
+    Coverage2: <any>{
     },
     CoverageQueryFlags: {
         enumValues: {
@@ -1687,9 +3543,17 @@ export var TypeInfo = {
             "guid": 14
         }
     },
+    DatedTestFieldData: <any>{
+    },
     FailingSince: <any>{
     },
     LastResultDetails: <any>{
+    },
+    ReleaseReference: <any>{
+    },
+    ReleaseReference2: <any>{
+    },
+    RequirementsToTestsMapping2: <any>{
     },
     Response: <any>{
     },
@@ -1697,7 +3561,18 @@ export var TypeInfo = {
         enumValues: {
             "none": 0,
             "iterations": 1,
-            "workItems": 2
+            "workItems": 2,
+            "subResults": 4,
+            "point": 8
+        }
+    },
+    ResultGroupType: {
+        enumValues: {
+            "none": 0,
+            "rerun": 1,
+            "dataDriven": 2,
+            "orderedTest": 3,
+            "generic": 4
         }
     },
     ResultObjectType: {
@@ -1712,11 +3587,30 @@ export var TypeInfo = {
     },
     ResultUpdateRequestModel: <any>{
     },
+    RunCreateModel: <any>{
+    },
     RunUpdateModel: <any>{
+    },
+    Service: {
+        enumValues: {
+            "any": 0,
+            "tcm": 1,
+            "tfs": 2
+        }
+    },
+    SuiteExpand: {
+        enumValues: {
+            "children": 1,
+            "defaultTesters": 2
+        }
+    },
+    TestActionResult2: <any>{
     },
     TestActionResultModel: <any>{
     },
     TestAttachment: <any>{
+    },
+    TestCaseReference2: <any>{
     },
     TestCaseResult: <any>{
     },
@@ -1728,11 +3622,17 @@ export var TypeInfo = {
             "inactive": 2
         }
     },
+    TestExecutionReportData: <any>{
+    },
     TestFailuresAnalysis: <any>{
+    },
+    TestHistoryQuery: <any>{
     },
     TestIterationDetailsModel: <any>{
     },
     TestMessageLogDetails: <any>{
+    },
+    TestMessageLogEntry2: <any>{
     },
     TestOutcome: {
         enumValues: {
@@ -1754,6 +3654,8 @@ export var TypeInfo = {
             "maxValue": 14
         }
     },
+    TestParameter2: <any>{
+    },
     TestPlan: <any>{
     },
     TestPlanCloneRequest: <any>{
@@ -1764,13 +3666,41 @@ export var TypeInfo = {
     },
     TestPoint: <any>{
     },
+    TestPointReference: <any>{
+    },
+    TestPointsEvent: <any>{
+    },
     TestPointsQuery: <any>{
+    },
+    TestPointState: {
+        enumValues: {
+            "none": 0,
+            "ready": 1,
+            "completed": 2,
+            "notReady": 3,
+            "inProgress": 4,
+            "maxValue": 4
+        }
+    },
+    TestPointsUpdatedEvent: <any>{
+    },
+    TestResult2: <any>{
+    },
+    TestResultGroupBy: {
+        enumValues: {
+            "branch": 1,
+            "environment": 2
+        }
     },
     TestResultHistory: <any>{
     },
     TestResultHistoryDetailsForGroup: <any>{
     },
+    TestResultHistoryForGroup: <any>{
+    },
     TestResultModelBase: <any>{
+    },
+    TestResultReset2: <any>{
     },
     TestResultsContext: <any>{
     },
@@ -1784,6 +3714,8 @@ export var TypeInfo = {
     },
     TestResultsDetailsForGroup: <any>{
     },
+    TestResultsEx2: <any>{
+    },
     TestResultsQuery: <any>{
     },
     TestResultSummary: <any>{
@@ -1792,12 +3724,32 @@ export var TypeInfo = {
     },
     TestRun: <any>{
     },
+    TestRun2: <any>{
+    },
+    TestRunCanceledEvent: <any>{
+    },
+    TestRunCreatedEvent: <any>{
+    },
+    TestRunEvent: <any>{
+    },
+    TestRunEx2: <any>{
+    },
+    TestRunOutcome: {
+        enumValues: {
+            "passed": 0,
+            "failed": 1,
+            "notImpacted": 2,
+            "others": 3
+        }
+    },
     TestRunPublishContext: {
         enumValues: {
             "build": 1,
             "release": 2,
             "all": 3
         }
+    },
+    TestRunStartedEvent: <any>{
     },
     TestRunState: {
         enumValues: {
@@ -1822,6 +3774,8 @@ export var TypeInfo = {
             "analyzed": 7,
             "cancellationInProgress": 8
         }
+    },
+    TestRunSummary2: <any>{
     },
     TestSession: <any>{
     },
@@ -1848,10 +3802,22 @@ export var TypeInfo = {
             "declined": 5
         }
     },
+    TestSettings2: <any>{
+    },
+    TestSubResult: <any>{
+    },
     TestSuite: <any>{
     },
     TestSummaryForWorkItem: <any>{
     },
+    WorkItemToTestLinks: <any>{
+    },
+};
+
+TypeInfo.AfnStrip.fields = {
+    creationDate: {
+        isDate: true,
+    }
 };
 
 TypeInfo.AggregatedDataForResultTrend.fields = {
@@ -1859,6 +3825,11 @@ TypeInfo.AggregatedDataForResultTrend.fields = {
         isDictionary: true,
         dictionaryKeyEnumType: TypeInfo.TestOutcome,
         dictionaryValueTypeInfo: TypeInfo.AggregatedResultsByOutcome
+    },
+    runSummaryByState: {
+        isDictionary: true,
+        dictionaryKeyEnumType: TypeInfo.TestRunState,
+        dictionaryValueTypeInfo: TypeInfo.AggregatedRunsByState
     },
     testResultsContext: {
         typeInfo: TypeInfo.TestResultsContext
@@ -1878,6 +3849,16 @@ TypeInfo.AggregatedResultsAnalysis.fields = {
         isDictionary: true,
         dictionaryKeyEnumType: TypeInfo.TestOutcome,
         dictionaryValueTypeInfo: TypeInfo.AggregatedResultsByOutcome
+    },
+    runSummaryByOutcome: {
+        isDictionary: true,
+        dictionaryKeyEnumType: TypeInfo.TestRunOutcome,
+        dictionaryValueTypeInfo: TypeInfo.AggregatedRunsByOutcome
+    },
+    runSummaryByState: {
+        isDictionary: true,
+        dictionaryKeyEnumType: TypeInfo.TestRunState,
+        dictionaryValueTypeInfo: TypeInfo.AggregatedRunsByState
     }
 };
 
@@ -1887,11 +3868,46 @@ TypeInfo.AggregatedResultsByOutcome.fields = {
     }
 };
 
+TypeInfo.AggregatedRunsByOutcome.fields = {
+    outcome: {
+        enumType: TypeInfo.TestRunOutcome
+    }
+};
+
+TypeInfo.AggregatedRunsByState.fields = {
+    resultsByOutcome: {
+        isDictionary: true,
+        dictionaryKeyEnumType: TypeInfo.TestOutcome,
+        dictionaryValueTypeInfo: TypeInfo.AggregatedResultsByOutcome
+    },
+    state: {
+        enumType: TypeInfo.TestRunState
+    }
+};
+
 TypeInfo.BatchResponse.fields = {
     responses: {
         isArray: true,
         typeInfo: TypeInfo.Response
     },
+};
+
+TypeInfo.BuildConfiguration.fields = {
+    creationDate: {
+        isDate: true,
+    }
+};
+
+TypeInfo.BuildCoverage.fields = {
+    configuration: {
+        typeInfo: TypeInfo.BuildConfiguration
+    }
+};
+
+TypeInfo.BuildReference2.fields = {
+    createdDate: {
+        isDate: true,
+    }
 };
 
 TypeInfo.CloneOperationInformation.fields = {
@@ -1909,6 +3925,15 @@ TypeInfo.CloneOperationInformation.fields = {
     }
 };
 
+TypeInfo.Coverage2.fields = {
+    dateCreated: {
+        isDate: true,
+    },
+    dateModified: {
+        isDate: true,
+    }
+};
+
 TypeInfo.CustomTestFieldDefinition.fields = {
     fieldType: {
         enumType: TypeInfo.CustomTestFieldType
@@ -1918,14 +3943,50 @@ TypeInfo.CustomTestFieldDefinition.fields = {
     }
 };
 
-TypeInfo.FailingSince.fields = {
+TypeInfo.DatedTestFieldData.fields = {
     date: {
         isDate: true,
     }
 };
 
+TypeInfo.FailingSince.fields = {
+    date: {
+        isDate: true,
+    },
+    release: {
+        typeInfo: TypeInfo.ReleaseReference
+    }
+};
+
 TypeInfo.LastResultDetails.fields = {
     dateCompleted: {
+        isDate: true,
+    }
+};
+
+TypeInfo.ReleaseReference.fields = {
+    creationDate: {
+        isDate: true,
+    },
+    environmentCreationDate: {
+        isDate: true,
+    }
+};
+
+TypeInfo.ReleaseReference2.fields = {
+    environmentCreationDate: {
+        isDate: true,
+    },
+    releaseCreationDate: {
+        isDate: true,
+    }
+};
+
+TypeInfo.RequirementsToTestsMapping2.fields = {
+    creationDate: {
+        isDate: true,
+    },
+    deletionDate: {
         isDate: true,
     }
 };
@@ -1940,6 +4001,9 @@ TypeInfo.ResultRetentionSettings.fields = {
 };
 
 TypeInfo.ResultsFilter.fields = {
+    executedIn: {
+        enumType: TypeInfo.Service
+    },
     maxCompleteDate: {
         isDate: true,
     },
@@ -1959,6 +4023,15 @@ TypeInfo.ResultUpdateRequestModel.fields = {
     }
 };
 
+TypeInfo.RunCreateModel.fields = {
+    buildReference: {
+        typeInfo: TypeInfo.BuildConfiguration
+    },
+    releaseReference: {
+        typeInfo: TypeInfo.ReleaseReference
+    }
+};
+
 TypeInfo.RunUpdateModel.fields = {
     logEntries: {
         isArray: true,
@@ -1966,6 +4039,21 @@ TypeInfo.RunUpdateModel.fields = {
     },
     substate: {
         enumType: TypeInfo.TestRunSubstate
+    }
+};
+
+TypeInfo.TestActionResult2.fields = {
+    creationDate: {
+        isDate: true,
+    },
+    dateCompleted: {
+        isDate: true,
+    },
+    dateStarted: {
+        isDate: true,
+    },
+    lastUpdated: {
+        isDate: true,
     }
 };
 
@@ -1987,6 +4075,15 @@ TypeInfo.TestAttachment.fields = {
     }
 };
 
+TypeInfo.TestCaseReference2.fields = {
+    creationDate: {
+        isDate: true,
+    },
+    lastRefTestRunDate: {
+        isDate: true,
+    }
+};
+
 TypeInfo.TestCaseResult.fields = {
     completedDate: {
         isDate: true,
@@ -2004,8 +4101,18 @@ TypeInfo.TestCaseResult.fields = {
     lastUpdatedDate: {
         isDate: true,
     },
+    releaseReference: {
+        typeInfo: TypeInfo.ReleaseReference
+    },
+    resultGroupType: {
+        enumType: TypeInfo.ResultGroupType
+    },
     startedDate: {
         isDate: true,
+    },
+    subResults: {
+        isArray: true,
+        typeInfo: TypeInfo.TestSubResult
     }
 };
 
@@ -2018,9 +4125,29 @@ TypeInfo.TestConfiguration.fields = {
     }
 };
 
+TypeInfo.TestExecutionReportData.fields = {
+    reportData: {
+        isArray: true,
+        typeInfo: TypeInfo.DatedTestFieldData
+    }
+};
+
 TypeInfo.TestFailuresAnalysis.fields = {
     previousContext: {
         typeInfo: TypeInfo.TestResultsContext
+    }
+};
+
+TypeInfo.TestHistoryQuery.fields = {
+    groupBy: {
+        enumType: TypeInfo.TestResultGroupBy
+    },
+    maxCompleteDate: {
+        isDate: true,
+    },
+    resultsForGroup: {
+        isArray: true,
+        typeInfo: TypeInfo.TestResultHistoryForGroup
     }
 };
 
@@ -2039,6 +4166,21 @@ TypeInfo.TestIterationDetailsModel.fields = {
 
 TypeInfo.TestMessageLogDetails.fields = {
     dateCreated: {
+        isDate: true,
+    }
+};
+
+TypeInfo.TestMessageLogEntry2.fields = {
+    dateCreated: {
+        isDate: true,
+    }
+};
+
+TypeInfo.TestParameter2.fields = {
+    creationDate: {
+        isDate: true,
+    },
+    dateModified: {
         isDate: true,
     }
 };
@@ -2091,10 +4233,45 @@ TypeInfo.TestPoint.fields = {
     }
 };
 
+TypeInfo.TestPointReference.fields = {
+    state: {
+        enumType: TypeInfo.TestPointState
+    }
+};
+
+TypeInfo.TestPointsEvent.fields = {
+    testPoints: {
+        isArray: true,
+        typeInfo: TypeInfo.TestPointReference
+    }
+};
+
 TypeInfo.TestPointsQuery.fields = {
     points: {
         isArray: true,
         typeInfo: TypeInfo.TestPoint
+    }
+};
+
+TypeInfo.TestPointsUpdatedEvent.fields = {
+    testPoints: {
+        isArray: true,
+        typeInfo: TypeInfo.TestPointReference
+    }
+};
+
+TypeInfo.TestResult2.fields = {
+    creationDate: {
+        isDate: true,
+    },
+    dateCompleted: {
+        isDate: true,
+    },
+    dateStarted: {
+        isDate: true,
+    },
+    lastUpdated: {
+        isDate: true,
     }
 };
 
@@ -2111,6 +4288,13 @@ TypeInfo.TestResultHistoryDetailsForGroup.fields = {
     }
 };
 
+TypeInfo.TestResultHistoryForGroup.fields = {
+    results: {
+        isArray: true,
+        typeInfo: TypeInfo.TestCaseResult
+    }
+};
+
 TypeInfo.TestResultModelBase.fields = {
     completedDate: {
         isDate: true,
@@ -2120,9 +4304,18 @@ TypeInfo.TestResultModelBase.fields = {
     }
 };
 
+TypeInfo.TestResultReset2.fields = {
+    dateModified: {
+        isDate: true,
+    }
+};
+
 TypeInfo.TestResultsContext.fields = {
     contextType: {
         enumType: TypeInfo.TestResultsContextType
+    },
+    release: {
+        typeInfo: TypeInfo.ReleaseReference
     }
 };
 
@@ -2142,6 +4335,15 @@ TypeInfo.TestResultsDetailsForGroup.fields = {
         isDictionary: true,
         dictionaryKeyEnumType: TypeInfo.TestOutcome,
         dictionaryValueTypeInfo: TypeInfo.AggregatedResultsByOutcome
+    }
+};
+
+TypeInfo.TestResultsEx2.fields = {
+    creationDate: {
+        isDate: true,
+    },
+    dateTimeValue: {
+        isDate: true,
     }
 };
 
@@ -2177,6 +4379,9 @@ TypeInfo.TestResultTrendFilter.fields = {
 };
 
 TypeInfo.TestRun.fields = {
+    buildConfiguration: {
+        typeInfo: TypeInfo.BuildConfiguration
+    },
     completedDate: {
         isDate: true,
     },
@@ -2189,11 +4394,71 @@ TypeInfo.TestRun.fields = {
     lastUpdatedDate: {
         isDate: true,
     },
+    release: {
+        typeInfo: TypeInfo.ReleaseReference
+    },
     startedDate: {
         isDate: true,
     },
     substate: {
         enumType: TypeInfo.TestRunSubstate
+    }
+};
+
+TypeInfo.TestRun2.fields = {
+    completeDate: {
+        isDate: true,
+    },
+    creationDate: {
+        isDate: true,
+    },
+    dueDate: {
+        isDate: true,
+    },
+    lastUpdated: {
+        isDate: true,
+    },
+    startDate: {
+        isDate: true,
+    }
+};
+
+TypeInfo.TestRunCanceledEvent.fields = {
+    testRun: {
+        typeInfo: TypeInfo.TestRun
+    }
+};
+
+TypeInfo.TestRunCreatedEvent.fields = {
+    testRun: {
+        typeInfo: TypeInfo.TestRun
+    }
+};
+
+TypeInfo.TestRunEvent.fields = {
+    testRun: {
+        typeInfo: TypeInfo.TestRun
+    }
+};
+
+TypeInfo.TestRunEx2.fields = {
+    createdDate: {
+        isDate: true,
+    },
+    dateTimeValue: {
+        isDate: true,
+    }
+};
+
+TypeInfo.TestRunStartedEvent.fields = {
+    testRun: {
+        typeInfo: TypeInfo.TestRun
+    }
+};
+
+TypeInfo.TestRunSummary2.fields = {
+    testRunCompletedDate: {
+        isDate: true,
     }
 };
 
@@ -2224,6 +4489,34 @@ TypeInfo.TestSessionExploredWorkItemReference.fields = {
     }
 };
 
+TypeInfo.TestSettings2.fields = {
+    createdDate: {
+        isDate: true,
+    },
+    lastUpdatedDate: {
+        isDate: true,
+    }
+};
+
+TypeInfo.TestSubResult.fields = {
+    completedDate: {
+        isDate: true,
+    },
+    lastUpdatedDate: {
+        isDate: true,
+    },
+    resultGroupType: {
+        enumType: TypeInfo.ResultGroupType
+    },
+    startedDate: {
+        isDate: true,
+    },
+    subResults: {
+        isArray: true,
+        typeInfo: TypeInfo.TestSubResult
+    }
+};
+
 TypeInfo.TestSuite.fields = {
     children: {
         isArray: true,
@@ -2240,5 +4533,11 @@ TypeInfo.TestSuite.fields = {
 TypeInfo.TestSummaryForWorkItem.fields = {
     summary: {
         typeInfo: TypeInfo.AggregatedDataForResultTrend
+    }
+};
+
+TypeInfo.WorkItemToTestLinks.fields = {
+    executedIn: {
+        enumType: TypeInfo.Service
     }
 };

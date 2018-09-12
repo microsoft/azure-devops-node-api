@@ -80,6 +80,10 @@ export interface GitRepository {
     parentRepository: GitRepositoryRef;
     project: TfsCoreInterfaces.TeamProjectReference;
     remoteUrl: string;
+    /**
+     * Compressed size (bytes) of the repository.
+     */
+    size: number;
     sshUrl: string;
     url: string;
     validRemoteUrls: string[];
@@ -114,6 +118,7 @@ export enum ItemContentType {
 
 export interface ItemModel {
     _links: any;
+    content: string;
     contentMetadata: FileContentMetadata;
     isFolder: boolean;
     isSymLink: boolean;
@@ -291,6 +296,7 @@ export interface TfvcChangesetSearchCriteria {
      * Path of item to search under
      */
     itemPath: string;
+    mappings: TfvcMappingFilter[];
     /**
      * If provided, only include changesets created before this date (string) Think of a better name for this.
      */
@@ -319,6 +325,10 @@ export interface TfvcChangesetsRequestData {
 export interface TfvcItem extends ItemModel {
     changeDate: Date;
     deletionId: number;
+    /**
+     * File encoding from database, -1 represents binary.
+     */
+    encoding: number;
     /**
      * MD5 hash as a base 64 string, applies to files only.
      */
@@ -380,6 +390,11 @@ export interface TfvcLabelRequestData {
     maxItemCount: number;
     name: string;
     owner: string;
+}
+
+export interface TfvcMappingFilter {
+    exclude: boolean;
+    serverPath: string;
 }
 
 export interface TfvcMergeSource {
@@ -471,6 +486,17 @@ export interface TfvcShelvesetRequestData {
      * Owner's ID. Could be a name or a guid.
      */
     owner: string;
+}
+
+export interface TfvcStatistics {
+    /**
+     * Id of the last changeset the stats are based on.
+     */
+    changesetId: number;
+    /**
+     * Count of files at the requested scope.
+     */
+    fileCountTotal: number;
 }
 
 export interface TfvcVersionDescriptor {

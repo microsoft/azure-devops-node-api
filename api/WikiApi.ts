@@ -35,6 +35,8 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
         super(baseUrl, handlers, 'node-Wiki-api', options);
     }
 
+    public static readonly RESOURCE_AREA_ID = "bf7d82a0-8aa5-4613-94ef-6172a5ea01f3";
+
     /**
      * Gets metadata or content of the wiki page for the provided path. Content negotiation is done based on the `Accept` header sent in the request.
      * 
