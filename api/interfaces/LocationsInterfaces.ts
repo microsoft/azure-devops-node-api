@@ -11,6 +11,7 @@
 "use strict";
 
 import IdentitiesInterfaces = require("../interfaces/IdentitiesInterfaces");
+import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
 export interface AccessMapping {
@@ -43,6 +44,10 @@ export interface ConnectionData {
      * The id for the server.
      */
     deploymentId: string;
+    /**
+     * The type for the server Hosted/OnPremises.
+     */
+    deploymentType: VSSInterfaces.DeploymentFlags;
     /**
      * The instance id for this host.
      */
@@ -199,6 +204,9 @@ export var TypeInfo = {
 };
 
 TypeInfo.ConnectionData.fields = {
+    deploymentType: {
+        enumType: VSSInterfaces.TypeInfo.DeploymentFlags
+    },
     lastUserAccess: {
         isDate: true,
     },
