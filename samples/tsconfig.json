@@ -11,6 +11,7 @@
         "creation.ts",
         "task.ts",
         "filecontainer.ts",
-        "git.ts"
+        "git.ts",
+        "wiki.ts"
     ]
 }
