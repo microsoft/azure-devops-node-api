@@ -43,7 +43,7 @@ let connection = new azdev.WebApi(orgUrl, authHandler);
 ```javascript
 import * as ba from 'azure-devops-node-api/BuildApi';
 
-let vstsBuild: ba.IBuildApi = await connection.getBuildApi();
+let build: ba.IBuildApi = await connection.getBuildApi();
 ```
 
 #### Available clients
@@ -83,7 +83,7 @@ import * as bi from 'azure-devops-node-api/interfaces/BuildInterfaces';
 
 async function run() {
     let project: string = 'myProject';
-    let defs: bi.DefinitionReference[] = await vstsBuild.getDefinitions(project);
+    let defs: bi.DefinitionReference[] = await build.getDefinitions(project);
 
     defs.forEach((defRef: bi.DefinitionReference) => {
         console.log(defRef.name + ' (' + defRef.id + ')');
@@ -95,7 +95,7 @@ run();
 
 ## APIs
 
-To see what APIs are available, see the appropriate client interface. For example, [GitApi.ts](https://github.com/Microsoft/vsts-node-api/blob/master/api/GitApi.ts)
+To see what APIs are available, see the appropriate client interface. For example, [GitApi.ts](https://github.com/Microsoft/azure-pipelines-node-api/blob/master/api/GitApi.ts)
 
 ## Running Samples
 
