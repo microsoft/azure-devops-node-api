@@ -18,6 +18,10 @@ export interface BehaviorCreateModel {
      */
     color: string;
     /**
+     * Optional - Id
+     */
+    id: string;
+    /**
      * Parent behavior id
      */
     inherits: string;
@@ -474,6 +478,21 @@ export interface WorkItemTypeFieldModel {
     url: string;
 }
 
+/**
+ * New version of WorkItemTypeFieldModel supporting defaultValue as object (such as IdentityRef)
+ */
+export interface WorkItemTypeFieldModel2 {
+    allowGroups: boolean;
+    defaultValue: any;
+    name: string;
+    pickList: PickListMetadataModel;
+    readOnly: boolean;
+    referenceName: string;
+    required: boolean;
+    type: FieldType;
+    url: string;
+}
+
 export interface WorkItemTypeModel {
     /**
      * Behaviors of the work item type
@@ -594,6 +613,8 @@ export var TypeInfo = {
     },
     WorkItemTypeFieldModel: <any>{
     },
+    WorkItemTypeFieldModel2: <any>{
+    },
     WorkItemTypeModel: <any>{
     },
 };
@@ -618,6 +639,12 @@ TypeInfo.Page.fields = {
 };
 
 TypeInfo.WorkItemTypeFieldModel.fields = {
+    type: {
+        enumType: TypeInfo.FieldType
+    }
+};
+
+TypeInfo.WorkItemTypeFieldModel2.fields = {
     type: {
         enumType: TypeInfo.FieldType
     }

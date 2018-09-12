@@ -111,6 +111,10 @@ export interface BacklogLevelConfiguration {
      */
     id: string;
     /**
+     * Indicates whether the backlog level is hidden
+     */
+    isHidden: boolean;
+    /**
      * Backlog Name
      */
     name: string;
@@ -119,6 +123,10 @@ export interface BacklogLevelConfiguration {
      */
     rank: number;
     /**
+     * The type of this backlog level
+     */
+    type: BacklogType;
+    /**
      * Max number of work items to show in the given backlog
      */
     workItemCountLimit: number;
@@ -126,6 +134,34 @@ export interface BacklogLevelConfiguration {
      * Work Item types participating in this backlog as known by the project/Process, can be overridden by team settings for bugs
      */
     workItemTypes: WorkItemTrackingInterfaces.WorkItemTypeReference[];
+}
+
+/**
+ * Represents work items in a backlog level
+ */
+export interface BacklogLevelWorkItems {
+    /**
+     * A list of work items within a backlog level
+     */
+    workItems: WorkItemTrackingInterfaces.WorkItemLink[];
+}
+
+/**
+ * Definition of the type of backlog level
+ */
+export enum BacklogType {
+    /**
+     * Portfolio backlog level
+     */
+    Portfolio = 0,
+    /**
+     * Requirement backlog level
+     */
+    Requirement = 1,
+    /**
+     * Task backlog level
+     */
+    Task = 2,
 }
 
 export interface Board extends BoardReference {
@@ -363,7 +399,7 @@ export interface DeliveryViewData extends PlanViewData {
 /**
  * Collection of properties, specific to the DeliveryTimelineView
  */
-export interface DeliveryViewPropertyCollection extends PlanPropertyCollection {
+export interface DeliveryViewPropertyCollection {
     /**
      * Card settings
      */
@@ -461,6 +497,16 @@ export enum IdentityDisplayFormat {
      * Display Avatar and Full name
      */
     AvatarAndFullName = 2,
+}
+
+/**
+ * Represents work items in an iteration backlog
+ */
+export interface IterationWorkItems extends TeamSettingsDataContractBase {
+    /**
+     * Work item relations
+     */
+    workItemRelations: WorkItemTrackingInterfaces.WorkItemLink[];
 }
 
 /**
@@ -572,12 +618,6 @@ export interface PlanMetadata {
 }
 
 /**
- * Base class for properties of a scaled agile plan
- */
-export interface PlanPropertyCollection {
-}
-
-/**
  * Enum for the various types of plans
  */
 export enum PlanType {
@@ -620,6 +660,36 @@ export enum PlanUserPermissions {
 export interface PlanViewData {
     id: string;
     revision: number;
+}
+
+/**
+ * Represents a single pre-defined query.
+ */
+export interface PredefinedQuery {
+    /**
+     * Whether or not the query returned the complete set of data or if the data was truncated.
+     */
+    hasMore: boolean;
+    /**
+     * Id of the query
+     */
+    id: string;
+    /**
+     * Localized name of the query
+     */
+    name: string;
+    /**
+     * The results of the query.  This will be a set of WorkItem objects with only the 'id' set.  The client is responsible for paging in the data as needed.
+     */
+    results: WorkItemTrackingInterfaces.WorkItem[];
+    /**
+     * REST API Url to use to retrieve results for this query
+     */
+    url: string;
+    /**
+     * Url to use to display a page in the browser with the results of this query
+     */
+    webUrl: string;
 }
 
 /**
@@ -1023,6 +1093,15 @@ export interface WorkItemTypeStateInfo {
 export var TypeInfo = {
     BacklogConfiguration: <any>{
     },
+    BacklogLevelConfiguration: <any>{
+    },
+    BacklogType: {
+        enumValues: {
+            "portfolio": 0,
+            "requirement": 1,
+            "task": 2
+        }
+    },
     Board: <any>{
     },
     BoardColumn: <any>{
@@ -1158,6 +1237,22 @@ export var TypeInfo = {
 TypeInfo.BacklogConfiguration.fields = {
     bugsBehavior: {
         enumType: TypeInfo.BugsBehavior
+    },
+    portfolioBacklogs: {
+        isArray: true,
+        typeInfo: TypeInfo.BacklogLevelConfiguration
+    },
+    requirementBacklog: {
+        typeInfo: TypeInfo.BacklogLevelConfiguration
+    },
+    taskBacklog: {
+        typeInfo: TypeInfo.BacklogLevelConfiguration
+    }
+};
+
+TypeInfo.BacklogLevelConfiguration.fields = {
+    type: {
+        enumType: TypeInfo.BacklogType
     }
 };
 
