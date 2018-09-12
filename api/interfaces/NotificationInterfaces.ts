@@ -21,6 +21,9 @@ export interface ActorNotificationReason extends NotificationReason {
     matchedRoles: string[];
 }
 
+/**
+ * Artifact filter options. Used in "follow" subscriptions.
+ */
 export interface ArtifactFilter extends BaseSubscriptionFilter {
     artifactId: string;
     artifactType: string;
@@ -43,6 +46,36 @@ export interface BlockFilter extends RoleBasedFilter {
 
 export interface BlockSubscriptionChannel {
     type: string;
+}
+
+/**
+ * Default delivery preference for group subscribers. Indicates how the subscriber should be notified.
+ */
+export enum DefaultGroupDeliveryPreference {
+    NoDelivery = -1,
+    EachMember = 2,
+}
+
+export interface DiagnosticIdentity {
+    displayName: string;
+    emailAddress: string;
+    id: string;
+}
+
+export interface DiagnosticNotification {
+    eventId: number;
+    eventType: string;
+    id: number;
+    messages: NotificationDiagnosticLogMessage[];
+    recipients: { [key: string] : DiagnosticRecipient; };
+    result: string;
+    stats: { [key: string] : number; };
+    subscriptionId: string;
+}
+
+export interface DiagnosticRecipient {
+    recipient: DiagnosticIdentity;
+    status: string;
 }
 
 export interface EmailHtmlSubscriptionChannel extends SubscriptionChannelWithAddress {
@@ -92,10 +125,33 @@ export enum EvaluationOperationStatus {
 }
 
 export interface EventBacklogStatus {
-    maxUnprocessedEventAgeMs: number;
+    captureTime: Date;
+    jobId: string;
+    lastEventBatchStartTime: Date;
+    lastEventProcessedTime: Date;
+    lastJobBatchStartTime: Date;
+    lastJobProcessedTime: Date;
+    oldestPendingEventTime: Date;
     publisher: string;
-    timeSinceLastProcessedEventMs: number;
     unprocessedEvents: number;
+}
+
+export interface EventBatch {
+    endTime: any;
+    eventCounts: { [key: string] : number; };
+    eventIds: string;
+    notificationCounts: { [key: string] : number; };
+    preProcessEndTime: any;
+    preProcessStartTime: any;
+    processEndTime: any;
+    processStartTime: any;
+    startTime: any;
+    subscriptionCounts: { [key: string] : number; };
+}
+
+export interface EventProcessingLog extends NotificationJobDiagnosticLog {
+    batches: EventBatch[];
+    matcherResults: MatcherResult[];
 }
 
 /**
@@ -121,6 +177,42 @@ export interface EventsEvaluationResult {
      * Count of matched events.
      */
     matchedCount: number;
+}
+
+/**
+ * A transform request specify the properties of a notification event to be transformed.
+ */
+export interface EventTransformRequest {
+    /**
+     * Event payload.
+     */
+    eventPayload: string;
+    /**
+     * Event type.
+     */
+    eventType: string;
+    /**
+     * System inputs.
+     */
+    systemInputs: { [key: string] : string; };
+}
+
+/**
+ * Result of transforming a notification event.
+ */
+export interface EventTransformResult {
+    /**
+     * Transformed html content.
+     */
+    content: string;
+    /**
+     * Calculated data.
+     */
+    data: any;
+    /**
+     * Calculated system inputs.
+     */
+    systemInputs: { [key: string] : string; };
 }
 
 /**
@@ -198,8 +290,27 @@ export interface FieldValuesQuery extends FormInputInterfaces.InputValuesQuery {
     scope: string;
 }
 
+export interface GeneratedNotification {
+    recipients: DiagnosticIdentity[];
+}
+
 export interface GroupSubscriptionChannel extends SubscriptionChannelWithAddress {
     type: string;
+}
+
+/**
+ * Abstraction interface for the diagnostic log.  Primarily for deserialization.
+ */
+export interface INotificationDiagnosticLog {
+    activityId: string;
+    description: string;
+    endTime: Date;
+    id: string;
+    logType: string;
+    messages: NotificationDiagnosticLogMessage[];
+    properties: { [key: string] : string; };
+    source: string;
+    startTime: Date;
 }
 
 export interface ISubscriptionChannel {
@@ -211,16 +322,88 @@ export interface ISubscriptionFilter {
     type: string;
 }
 
+export interface MatcherResult {
+    matcher: string;
+    stats: { [key: string] : { [key: string] : number; }; };
+}
+
 export interface MessageQueueSubscriptionChannel {
     type: string;
 }
 
+export interface NotificationAdminSettings {
+    /**
+     * The default group delivery preference for groups in this collection
+     */
+    defaultGroupDeliveryPreference: DefaultGroupDeliveryPreference;
+}
+
+export interface NotificationAdminSettingsUpdateParameters {
+    defaultGroupDeliveryPreference: DefaultGroupDeliveryPreference;
+}
+
 export interface NotificationBacklogStatus {
+    captureTime: Date;
     channel: string;
-    maxUnprocessedNotificationAgeMs: number;
+    jobId: string;
+    lastJobBatchStartTime: Date;
+    lastJobProcessedTime: Date;
+    lastNotificationBatchStartTime: Date;
+    lastNotificationProcessedTime: Date;
+    oldestPendingNotificationTime: Date;
     publisher: string;
-    timeSinceLastProcessedNotificationMs: number;
+    /**
+     * Null status is unprocessed
+     */
+    status: string;
     unprocessedNotifications: number;
+}
+
+export interface NotificationBatch {
+    endTime: any;
+    notificationCount: number;
+    notificationIds: string;
+    problematicNotifications: DiagnosticNotification[];
+    startTime: any;
+}
+
+export interface NotificationDeliveryLog extends NotificationJobDiagnosticLog {
+    batches: NotificationBatch[];
+}
+
+/**
+ * Abstract base class for all of the diagnostic logs.
+ */
+export interface NotificationDiagnosticLog {
+    /**
+     * Identifier used for correlating to other diagnostics that may have been recorded elsewhere.
+     */
+    activityId: string;
+    description: string;
+    endTime: Date;
+    errors: number;
+    /**
+     * Unique instance identifier.
+     */
+    id: string;
+    logType: string;
+    messages: NotificationDiagnosticLogMessage[];
+    properties: { [key: string] : string; };
+    /**
+     * This identifier depends on the logType.  For notification jobs, this will be the job Id. For subscription tracing, this will be a special root Guid with the subscription Id encoded.
+     */
+    source: string;
+    startTime: Date;
+    warnings: number;
+}
+
+export interface NotificationDiagnosticLogMessage {
+    /**
+     * Corresponds to .Net TraceLevel enumeration
+     */
+    level: number;
+    message: string;
+    time: any;
 }
 
 export interface NotificationEventBacklogStatus {
@@ -365,6 +548,11 @@ export interface NotificationEventTypeCategory {
     name: string;
 }
 
+export interface NotificationJobDiagnosticLog extends NotificationDiagnosticLog {
+    result: string;
+    stats: { [key: string] : { [key: string] : number; }; };
+}
+
 export enum NotificationOperation {
     None = 0,
     SuspendUnprocessed = 1,
@@ -483,14 +671,13 @@ export interface NotificationSubscriber {
  * Delivery preference for a subscriber. Indicates how the subscriber should be notified.
  */
 export enum NotificationSubscriberDeliveryPreference {
-    None = 0,
+    NoDelivery = -1,
     /**
      * Deliver notifications to the subscriber's preferred email address.
      */
     PreferredEmailAddress = 1,
     EachMember = 2,
-    NoDelivery = -1,
-    NotSet = -2147483648,
+    UseDefault = 3,
 }
 
 /**
@@ -657,29 +844,6 @@ export interface NotificationSubscriptionUpdateParameters {
     userSettings: SubscriptionUserSettings;
 }
 
-export interface NotificationTracing extends NotificationTracingSetParameters {
-    /**
-     * Trace until the specified end date.
-     */
-    endDate: Date;
-    /**
-     * The maximum number of result details to trace.
-     */
-    maxTracedEntries: number;
-    /**
-     * The date and time tracing started.
-     */
-    startDate: Date;
-    /**
-     * Trace until remaining count reaches 0.
-     */
-    tracedEntries: number;
-}
-
-export interface NotificationTracingSetParameters {
-    enabled: boolean;
-}
-
 /**
  * Encapsulates the properties of an operator constraint. An operator constraint defines if some operator is available only for specific scope like a project scope.
  */
@@ -689,6 +853,45 @@ export interface OperatorConstraint {
      * Gets or sets the list of scopes that this type supports.
      */
     supportedScopes: string[];
+}
+
+export interface ProcessedEvent {
+    /**
+     * All of the users that were associtated with this event and their role.
+     */
+    actors: VSSInterfaces.EventActor[];
+    allowedChannels: string;
+    artifactUri: string;
+    deliveryIdentities: ProcessingIdentities;
+    /**
+     * Evaluations for each user
+     */
+    evaluations: { [key: string] : SubscriptionEvaluation; };
+    eventId: number;
+    /**
+     * Which members were excluded from evaluation (only applies to ActorMatcher subscriptions)
+     */
+    exclusions: VSSInterfaces.EventActor[];
+    /**
+     * Which members were included for evaluation (only applies to ActorMatcher subscriptions)
+     */
+    inclusions: VSSInterfaces.EventActor[];
+    notifications: GeneratedNotification[];
+}
+
+export interface ProcessingDiagnosticIdentity extends DiagnosticIdentity {
+    deliveryPreference: string;
+    isActive: boolean;
+    isGroup: boolean;
+    message: string;
+}
+
+export interface ProcessingIdentities {
+    excludedIdentities: { [key: string] : ProcessingDiagnosticIdentity; };
+    includedIdentities: { [key: string] : ProcessingDiagnosticIdentity; };
+    messages: NotificationDiagnosticLogMessage[];
+    missingIdentities: string[];
+    properties: { [key: string] : string; };
 }
 
 export interface RoleBasedFilter extends ExpressionFilter {
@@ -757,10 +960,20 @@ export interface SubscriptionChannelWithAddress {
 }
 
 export interface SubscriptionDiagnostics {
-    /**
-     * Optional. Contol the tracing
-     */
-    notificationTracing: NotificationTracing;
+    deliveryResults: SubscriptionTracing;
+    deliveryTracing: SubscriptionTracing;
+    evaluationTracing: SubscriptionTracing;
+}
+
+export interface SubscriptionEvaluation {
+    clauses: SubscriptionEvaluationClause[];
+    user: DiagnosticIdentity;
+}
+
+export interface SubscriptionEvaluationClause {
+    clause: string;
+    order: number;
+    result: boolean;
 }
 
 /**
@@ -977,9 +1190,17 @@ export enum SubscriptionStatus {
      */
     PendingDeletion = -100,
     /**
+     * Subscription is disabled because the project is invalid
+     */
+    DisabledProjectInvalid = -11,
+    /**
+     * Subscription is disabled because the identity does not have the appropriate permissions
+     */
+    DisabledMissingPermissions = -10,
+    /**
      * Subscription is disabled service due to failures.
      */
-    DisabledBySystem = -9,
+    DisabledFromProbation = -9,
     /**
      * Subscription is disabled because the identity is no longer active
      */
@@ -1052,6 +1273,52 @@ export enum SubscriptionTemplateType {
     None = 3,
 }
 
+export interface SubscriptionTraceDiagnosticLog extends NotificationDiagnosticLog {
+    /**
+     * Indicates the job Id that processed or delivered this subscription
+     */
+    jobId: string;
+    /**
+     * Indicates unique instance identifier for the job that processed or delivered this subscription
+     */
+    jobInstanceId: string;
+    subscriptionId: string;
+}
+
+export interface SubscriptionTraceEventProcessingLog extends SubscriptionTraceDiagnosticLog {
+    channel: string;
+    evaluationIdentities: ProcessingIdentities;
+    /**
+     * Which members opted out from receiving notifications from this subscription
+     */
+    optedOut: DiagnosticIdentity[];
+    processedEvents: { [key: number] : ProcessedEvent; };
+}
+
+export interface SubscriptionTraceNotificationDeliveryLog extends SubscriptionTraceDiagnosticLog {
+    notifications: DiagnosticNotification[];
+}
+
+export interface SubscriptionTracing {
+    enabled: boolean;
+    /**
+     * Trace until the specified end date.
+     */
+    endDate: Date;
+    /**
+     * The maximum number of result details to trace.
+     */
+    maxTracedEntries: number;
+    /**
+     * The date and time tracing started.
+     */
+    startDate: Date;
+    /**
+     * Trace until remaining count reaches 0.
+     */
+    tracedEntries: number;
+}
+
 /**
  * User-managed settings for a group subscription.
  */
@@ -1068,6 +1335,16 @@ export interface UnsupportedFilter extends BaseSubscriptionFilter {
 
 export interface UnsupportedSubscriptionChannel {
     type: string;
+}
+
+export interface UpdateSubscripitonDiagnosticsParameters {
+    deliveryResults: UpdateSubscripitonTracingParameters;
+    deliveryTracing: UpdateSubscripitonTracingParameters;
+    evaluationTracing: UpdateSubscripitonTracingParameters;
+}
+
+export interface UpdateSubscripitonTracingParameters {
+    enabled: boolean;
 }
 
 export interface UserSubscriptionChannel extends SubscriptionChannelWithAddress {
@@ -1101,6 +1378,12 @@ export var TypeInfo = {
     },
     BatchNotificationOperation: <any>{
     },
+    DefaultGroupDeliveryPreference: {
+        enumValues: {
+            "noDelivery": -1,
+            "eachMember": 2
+        }
+    },
     EvaluationOperationStatus: {
         enumValues: {
             "notSet": 0,
@@ -1112,6 +1395,10 @@ export var TypeInfo = {
             "timedOut": 6,
             "notFound": 7
         }
+    },
+    EventBacklogStatus: <any>{
+    },
+    EventProcessingLog: <any>{
     },
     EventPublisherQueryFlags: {
         enumValues: {
@@ -1125,11 +1412,27 @@ export var TypeInfo = {
             "includeFields": 1
         }
     },
+    INotificationDiagnosticLog: <any>{
+    },
+    NotificationAdminSettings: <any>{
+    },
+    NotificationAdminSettingsUpdateParameters: <any>{
+    },
+    NotificationBacklogStatus: <any>{
+    },
+    NotificationDeliveryLog: <any>{
+    },
+    NotificationDiagnosticLog: <any>{
+    },
+    NotificationEventBacklogStatus: <any>{
+    },
     NotificationEventField: <any>{
     },
     NotificationEventFieldType: <any>{
     },
     NotificationEventType: <any>{
+    },
+    NotificationJobDiagnosticLog: <any>{
     },
     NotificationOperation: {
         enumValues: {
@@ -1198,11 +1501,10 @@ export var TypeInfo = {
     },
     NotificationSubscriberDeliveryPreference: {
         enumValues: {
-            "none": 0,
+            "noDelivery": -1,
             "preferredEmailAddress": 1,
             "eachMember": 2,
-            "noDelivery": -1,
-            "notSet": -2147483648
+            "useDefault": 3
         }
     },
     NotificationSubscriberUpdateParameters: <any>{
@@ -1212,8 +1514,6 @@ export var TypeInfo = {
     NotificationSubscriptionTemplate: <any>{
     },
     NotificationSubscriptionUpdateParameters: <any>{
-    },
-    NotificationTracing: <any>{
     },
     SubscriberFlags: {
         enumValues: {
@@ -1286,7 +1586,9 @@ export var TypeInfo = {
         enumValues: {
             "jailedByNotificationsVolume": -200,
             "pendingDeletion": -100,
-            "disabledBySystem": -9,
+            "disabledProjectInvalid": -11,
+            "disabledMissingPermissions": -10,
+            "disabledFromProbation": -9,
             "disabledInactiveIdentity": -8,
             "disabledMessageQueueNotSupported": -7,
             "disabledMissingIdentity": -6,
@@ -1316,6 +1618,14 @@ export var TypeInfo = {
             "none": 3
         }
     },
+    SubscriptionTraceDiagnosticLog: <any>{
+    },
+    SubscriptionTraceEventProcessingLog: <any>{
+    },
+    SubscriptionTraceNotificationDeliveryLog: <any>{
+    },
+    SubscriptionTracing: <any>{
+    },
 };
 
 TypeInfo.ActorNotificationReason.fields = {
@@ -1327,6 +1637,107 @@ TypeInfo.ActorNotificationReason.fields = {
 TypeInfo.BatchNotificationOperation.fields = {
     notificationOperation: {
         enumType: TypeInfo.NotificationOperation
+    }
+};
+
+TypeInfo.EventBacklogStatus.fields = {
+    captureTime: {
+        isDate: true,
+    },
+    lastEventBatchStartTime: {
+        isDate: true,
+    },
+    lastEventProcessedTime: {
+        isDate: true,
+    },
+    lastJobBatchStartTime: {
+        isDate: true,
+    },
+    lastJobProcessedTime: {
+        isDate: true,
+    },
+    oldestPendingEventTime: {
+        isDate: true,
+    }
+};
+
+TypeInfo.EventProcessingLog.fields = {
+    endTime: {
+        isDate: true,
+    },
+    startTime: {
+        isDate: true,
+    }
+};
+
+TypeInfo.INotificationDiagnosticLog.fields = {
+    endTime: {
+        isDate: true,
+    },
+    startTime: {
+        isDate: true,
+    }
+};
+
+TypeInfo.NotificationAdminSettings.fields = {
+    defaultGroupDeliveryPreference: {
+        enumType: TypeInfo.DefaultGroupDeliveryPreference
+    }
+};
+
+TypeInfo.NotificationAdminSettingsUpdateParameters.fields = {
+    defaultGroupDeliveryPreference: {
+        enumType: TypeInfo.DefaultGroupDeliveryPreference
+    }
+};
+
+TypeInfo.NotificationBacklogStatus.fields = {
+    captureTime: {
+        isDate: true,
+    },
+    lastJobBatchStartTime: {
+        isDate: true,
+    },
+    lastJobProcessedTime: {
+        isDate: true,
+    },
+    lastNotificationBatchStartTime: {
+        isDate: true,
+    },
+    lastNotificationProcessedTime: {
+        isDate: true,
+    },
+    oldestPendingNotificationTime: {
+        isDate: true,
+    }
+};
+
+TypeInfo.NotificationDeliveryLog.fields = {
+    endTime: {
+        isDate: true,
+    },
+    startTime: {
+        isDate: true,
+    }
+};
+
+TypeInfo.NotificationDiagnosticLog.fields = {
+    endTime: {
+        isDate: true,
+    },
+    startTime: {
+        isDate: true,
+    }
+};
+
+TypeInfo.NotificationEventBacklogStatus.fields = {
+    eventBacklogStatus: {
+        isArray: true,
+        typeInfo: TypeInfo.EventBacklogStatus
+    },
+    notificationBacklogStatus: {
+        isArray: true,
+        typeInfo: TypeInfo.NotificationBacklogStatus
     }
 };
 
@@ -1346,6 +1757,15 @@ TypeInfo.NotificationEventType.fields = {
     fields: {
         isDictionary: true,
         dictionaryValueTypeInfo: TypeInfo.NotificationEventField
+    }
+};
+
+TypeInfo.NotificationJobDiagnosticLog.fields = {
+    endTime: {
+        isDate: true,
+    },
+    startTime: {
+        isDate: true,
     }
 };
 
@@ -1431,18 +1851,15 @@ TypeInfo.NotificationSubscriptionUpdateParameters.fields = {
     }
 };
 
-TypeInfo.NotificationTracing.fields = {
-    endDate: {
-        isDate: true,
-    },
-    startDate: {
-        isDate: true,
-    }
-};
-
 TypeInfo.SubscriptionDiagnostics.fields = {
-    notificationTracing: {
-        typeInfo: TypeInfo.NotificationTracing
+    deliveryResults: {
+        typeInfo: TypeInfo.SubscriptionTracing
+    },
+    deliveryTracing: {
+        typeInfo: TypeInfo.SubscriptionTracing
+    },
+    evaluationTracing: {
+        typeInfo: TypeInfo.SubscriptionTracing
     }
 };
 
@@ -1471,5 +1888,41 @@ TypeInfo.SubscriptionQuery.fields = {
 TypeInfo.SubscriptionQueryCondition.fields = {
     flags: {
         enumType: TypeInfo.SubscriptionFlags
+    }
+};
+
+TypeInfo.SubscriptionTraceDiagnosticLog.fields = {
+    endTime: {
+        isDate: true,
+    },
+    startTime: {
+        isDate: true,
+    }
+};
+
+TypeInfo.SubscriptionTraceEventProcessingLog.fields = {
+    endTime: {
+        isDate: true,
+    },
+    startTime: {
+        isDate: true,
+    }
+};
+
+TypeInfo.SubscriptionTraceNotificationDeliveryLog.fields = {
+    endTime: {
+        isDate: true,
+    },
+    startTime: {
+        isDate: true,
+    }
+};
+
+TypeInfo.SubscriptionTracing.fields = {
+    endDate: {
+        isDate: true,
+    },
+    startDate: {
+        isDate: true,
     }
 };

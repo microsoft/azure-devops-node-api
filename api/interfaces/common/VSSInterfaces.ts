@@ -10,10 +10,9 @@
 
 "use strict";
 
+//import GraphInterfaces = require("../interfaces/GraphInterfaces");
+import GraphInterfaces = require('../GraphInterfaces');
 
-
-export interface AnonymousObject {
-}
 
 /**
  * Information about the location of a REST API resource
@@ -71,6 +70,87 @@ export interface ApiResourceVersion {
     resourceVersion: number;
 }
 
+export interface AuditLogEntry {
+    /**
+     * The action if for the event, i.e Git.CreateRepo, Project.RenameProject
+     */
+    actionId: string;
+    /**
+     * ActivityId
+     */
+    activityId: string;
+    /**
+     * The Actor's CUID
+     */
+    actorCUID: string;
+    /**
+     * The Actor's User Id
+     */
+    actorUserId: string;
+    /**
+     * Type of authentication used by the author
+     */
+    authenticationMechanism: string;
+    /**
+     * This allows us to group things together, like one user action that caused a cascade of event entries (project creation).
+     */
+    correlationId: string;
+    /**
+     * External data such as CUIDs, item names, etc.
+     */
+    data: { [key: string] : any; };
+    /**
+     * EventId, might be empty before it has been written
+     */
+    id: string;
+    /**
+     * IP Address where the event was originated
+     */
+    iPAddress: string;
+    /**
+     * The org, collection or project Id
+     */
+    scopeId: string;
+    /**
+     * The type of the scope, collection, org, project, etc.
+     */
+    scopeType: AuditScopeType;
+    /**
+     * The time when the event occurred in UTC
+     */
+    timestamp: Date;
+    /**
+     * The user agent from the request
+     */
+    userAgent: string;
+}
+
+/**
+ * The type of scope from where the event is originated
+ */
+export enum AuditScopeType {
+    /**
+     * The scope is not known or has not been set
+     */
+    Unknown = 0,
+    /**
+     * Deployment
+     */
+    Deployment = 1,
+    /**
+     * Organization
+     */
+    Organization = 2,
+    /**
+     * Collection
+     */
+    Collection = 4,
+    /**
+     * Project
+     */
+    Project = 8,
+}
+
 /**
  * Enumeration of the options that can be passed in on Connect.
  */
@@ -95,6 +175,12 @@ export enum ConnectOptions {
      * When true will only return non inherited definitions. Only valid at non-deployment host.
      */
     IncludeNonInheritedDefinitionsOnly = 8,
+}
+
+export enum DeploymentFlags {
+    None = 0,
+    Hosted = 1,
+    OnPremises = 2,
 }
 
 /**
@@ -129,9 +215,8 @@ export interface EventScope {
     type: string;
 }
 
-export interface IdentityRef {
+export interface IdentityRef extends GraphInterfaces.GraphSubjectBase {
     directoryAlias: string;
-    displayName: string;
     id: string;
     imageUrl: string;
     inactive: boolean;
@@ -139,7 +224,6 @@ export interface IdentityRef {
     isContainer: boolean;
     profileUrl: string;
     uniqueName: string;
-    url: string;
 }
 
 export interface IdentityRefWithEmail extends IdentityRef {
@@ -257,6 +341,69 @@ export interface TeamMember {
     isTeamAdmin: boolean;
 }
 
+/**
+ * A single secured timing consisting of a duration and start time
+ */
+export interface TimingEntry {
+    /**
+     * Duration of the entry in ticks
+     */
+    elapsedTicks: number;
+    /**
+     * Properties to distinguish timings within the same group or to provide data to send with telemetry
+     */
+    properties: { [key: string] : any; };
+    /**
+     * Offset from Server Request Context start time in microseconds
+     */
+    startOffset: number;
+}
+
+/**
+ * A set of secured performance timings all keyed off of the same string
+ */
+export interface TimingGroup {
+    /**
+     * The total number of timing entries associated with this group
+     */
+    count: number;
+    /**
+     * Overall duration of all entries in this group in ticks
+     */
+    elapsedTicks: number;
+    /**
+     * A list of timing entries in this group. Only the first few entries in each group are collected.
+     */
+    timings: TimingEntry[];
+}
+
+/**
+ * This class describes a trace filter, i.e. a set of criteria on whether or not a trace event should be emitted
+ */
+export interface TraceFilter {
+    area: string;
+    exceptionType: string;
+    isEnabled: boolean;
+    layer: string;
+    level: number;
+    method: string;
+    /**
+     * Used to serialize additional identity information (display name, etc) to clients. Not set by default. Server-side callers should use OwnerId.
+     */
+    owner: IdentityRef;
+    ownerId: string;
+    path: string;
+    processName: string;
+    service: string;
+    serviceHost: string;
+    timeCreated: Date;
+    traceId: string;
+    tracepoint: number;
+    uri: string;
+    userAgent: string;
+    userLogin: string;
+}
+
 export interface VssJsonCollectionWrapper extends VssJsonCollectionWrapperBase {
     value: any[];
 }
@@ -293,9 +440,25 @@ export interface VssNotificationEvent {
      */
     eventType: string;
     /**
+     * How long before the event expires and will be cleaned up.  The default is to use the system default.
+     */
+    expiresIn: any;
+    /**
+     * The id of the item, artifact, extension, project, etc.
+     */
+    itemId: string;
+    /**
+     * How long to wait before processing this event.  The default is to process immediately.
+     */
+    processDelay: any;
+    /**
      * Optional: A list of scopes which are are relevant to the event.
      */
     scopes: EventScope[];
+    /**
+     * This is the time the original source event for this VssNotificationEvent was created.  For example, for something like a build completion notification SourceEventCreatedTime should be the time the build finished not the time this event was raised.
+     */
+    sourceEventCreatedTime: Date;
 }
 
 export interface WrappedException {
@@ -311,6 +474,17 @@ export interface WrappedException {
 }
 
 export var TypeInfo = {
+    AuditLogEntry: <any>{
+    },
+    AuditScopeType: {
+        enumValues: {
+            "unknown": 0,
+            "deployment": 1,
+            "organization": 2,
+            "collection": 4,
+            "project": 8
+        }
+    },
     ConnectOptions: {
         enumValues: {
             "none": 0,
@@ -318,6 +492,13 @@ export var TypeInfo = {
             "includeLastUserAccess": 2,
             "includeInheritedDefinitionsOnly": 4,
             "includeNonInheritedDefinitionsOnly": 8
+        }
+    },
+    DeploymentFlags: {
+        enumValues: {
+            "none": 0,
+            "hosted": 1,
+            "onPremises": 2
         }
     },
     JsonPatchOperation: <any>{
@@ -339,10 +520,35 @@ export var TypeInfo = {
             "test": 5
         }
     },
+    TraceFilter: <any>{
+    },
+    VssNotificationEvent: <any>{
+    },
+};
+
+TypeInfo.AuditLogEntry.fields = {
+    scopeType: {
+        enumType: TypeInfo.AuditScopeType
+    },
+    timestamp: {
+        isDate: true,
+    }
 };
 
 TypeInfo.JsonPatchOperation.fields = {
     op: {
         enumType: TypeInfo.Operation
+    }
+};
+
+TypeInfo.TraceFilter.fields = {
+    timeCreated: {
+        isDate: true,
+    }
+};
+
+TypeInfo.VssNotificationEvent.fields = {
+    sourceEventCreatedTime: {
+        isDate: true,
     }
 };

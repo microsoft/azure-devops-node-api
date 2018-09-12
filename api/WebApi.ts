@@ -10,6 +10,7 @@ import extmgmtm = require("./ExtensionManagementApi");
 import featuremgmtm = require("./FeatureManagementApi");
 import filecontainerm = require('./FileContainerApi');
 import gitm = require('./GitApi');
+//import graphm = require('./GraphApi');
 import locationsm = require('./LocationsApi');
 import notificationm = require('./NotificationApi');
 import policym = require('./PolicyApi');
