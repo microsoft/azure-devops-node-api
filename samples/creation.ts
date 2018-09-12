@@ -19,7 +19,7 @@ import { Timeline as TaskAgentTimeline } from "azure-devops-node-api/interfaces/
 import { WebApiTeam } from 'azure-devops-node-api/interfaces/CoreInterfaces';
 import { WidgetScope, WidgetTypesResponse } from 'azure-devops-node-api/interfaces/DashboardInterfaces';
 import { WorkItemField } from 'azure-devops-node-api/interfaces/WorkItemTrackingInterfaces';
-import { ProcessModel } from 'azure-devops-node-api/interfaces/WorkItemTrackingProcessInterfaces';
+import { ProcessModel, ProcessInfo } from 'azure-devops-node-api/interfaces/WorkItemTrackingProcessInterfaces';
 import { PickListMetadataModel } from 'azure-devops-node-api/interfaces/WorkItemTrackingProcessDefinitionsInterfaces';
 import { WikiV2 } from 'azure-devops-node-api/interfaces/WikiInterfaces';
 
@@ -234,7 +234,7 @@ export async function run() {
         /********** Work Item Tracking Process **********/
         printSectionStart('Work Item Tracking Process');
         const workItemTrackingProcessApi = await vstsCollectionLevel.getWorkItemTrackingProcessApi();
-        const processes: ProcessModel[] = await workItemTrackingProcessApi.getProcesses();
+        const processes: ProcessInfo[] = await workItemTrackingProcessApi.getListOfProcesses();
 
         if (processes) {
             console.log(`found ${processes.length} processes`);
