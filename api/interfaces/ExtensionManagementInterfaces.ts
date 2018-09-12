@@ -316,6 +316,10 @@ export interface ContributionNodeQuery {
      */
     contributionIds: string[];
     /**
+     * Contextual information that can be leveraged by contribution constraints
+     */
+    dataProviderContext: DataProviderContext;
+    /**
      * Indicator if contribution provider details should be included in the result.
      */
     includeProviderDetails: boolean;

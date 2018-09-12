@@ -94,6 +94,7 @@ export interface ProjectProperty {
 }
 
 export enum ProjectVisibility {
+    SystemPrivate = -2,
     Unchanged = -1,
     Private = 0,
     Organization = 1,
@@ -198,6 +199,10 @@ export interface TeamProjectCollection extends TeamProjectCollectionReference {
      * Project collection description.
      */
     description: string;
+    /**
+     * True if collection supports inherited process customization model.
+     */
+    enableInheritedProcessCustomization: boolean;
     /**
      * Project collection state.
      */
@@ -415,6 +420,8 @@ export interface WebApiTeam extends WebApiTeamRef {
      * Identity REST API Url to this team
      */
     identityUrl: string;
+    projectId: string;
+    projectName: string;
 }
 
 export interface WebApiTeamRef {
@@ -463,7 +470,6 @@ export var TypeInfo = {
     },
     ProjectVisibility: {
         enumValues: {
-            "unchanged": -1,
             "private": 0,
             "organization": 1,
             "public": 2
