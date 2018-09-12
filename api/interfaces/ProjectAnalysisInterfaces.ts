@@ -31,7 +31,13 @@ export interface CodeChangeTrendItem {
     value: number;
 }
 
-export interface LanguageStatistics {
+export interface LanguageMetricsSecuredObject {
+    namespaceId: string;
+    projectId: string;
+    requiredPermissions: number;
+}
+
+export interface LanguageStatistics extends LanguageMetricsSecuredObject {
     bytes: number;
     files: number;
     filesPercentage: number;
@@ -48,7 +54,7 @@ export interface ProjectActivityMetrics {
     pullRequestsCreatedCount: number;
 }
 
-export interface ProjectLanguageAnalytics {
+export interface ProjectLanguageAnalytics extends LanguageMetricsSecuredObject {
     id: string;
     languageBreakdown: LanguageStatistics[];
     repositoryLanguageAnalytics: RepositoryLanguageAnalytics[];
@@ -62,7 +68,7 @@ export interface RepositoryActivityMetrics {
     repositoryId: string;
 }
 
-export interface RepositoryLanguageAnalytics {
+export interface RepositoryLanguageAnalytics extends LanguageMetricsSecuredObject {
     id: string;
     languageBreakdown: LanguageStatistics[];
     name: string;

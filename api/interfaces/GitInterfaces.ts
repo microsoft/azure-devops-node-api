@@ -309,6 +309,10 @@ export interface CommentThread {
      */
     id: number;
     /**
+     * Set of identities related to this thread
+     */
+    identities: { [key: string] : VSSInterfaces.IdentityRef; };
+    /**
      * Specify if the thread is deleted which happens when all comments are deleted.
      */
     isDeleted: boolean;
@@ -608,6 +612,10 @@ export enum GitAsyncRefOperationFailureStatus {
      * Unexpected failure
      */
     Other = 9,
+    /**
+     * Initiator of async operation has signature with empty name or email
+     */
+    EmptyCommitterSignature = 10,
 }
 
 /**
@@ -723,7 +731,6 @@ export interface GitCherryPick extends GitAsyncRefOperation {
 }
 
 export interface GitCommit extends GitCommitRef {
-    push: GitPushRef;
     treeId: string;
 }
 
@@ -783,6 +790,10 @@ export interface GitCommitRef {
      * An enumeration of the parent commit IDs for this commit.
      */
     parents: string[];
+    /**
+     * The push associated with this commit.
+     */
+    push: GitPushRef;
     /**
      * Remote URL path to the commit.
      */
@@ -1146,6 +1157,9 @@ export interface GitForkSyncRequestParameters {
      * If supplied, the set of ref mappings to use when performing a "sync" or create. If missing, all refs will be synchronized.
      */
     sourceToTargetRefs: SourceToTargetRef[];
+}
+
+export interface GitForkTeamProjectReference extends TfsCoreInterfaces.TeamProjectReference {
 }
 
 /**
@@ -1677,6 +1691,10 @@ export interface GitPullRequestIteration {
      */
     id: number;
     /**
+     * If the iteration reason is Retarget, this is the refName of the new target
+     */
+    newTargetRefName: string;
+    /**
      * The Git push information associated with this pull request iteration.
      */
     push: GitPushRef;
@@ -1720,6 +1738,7 @@ export interface GitPullRequestIterationChanges {
  * The options which are used when a pull request merge is created.
  */
 export interface GitPullRequestMergeOptions {
+    detectRenameFalsePositives: boolean;
     /**
      * If true, rename detection will not be performed during the merge.
      */
@@ -1818,7 +1837,7 @@ export interface GitPullRequestSearchCriteria {
      */
     sourceRepositoryId: string;
     /**
-     * If set, search for pull requests that are in this state.
+     * If set, search for pull requests that are in this state. Defaults to Active if unset.
      */
     status: PullRequestStatus;
     /**
@@ -1899,7 +1918,7 @@ export interface GitQueryCommitsCriteria {
      */
     compareVersion: GitVersionDescriptor;
     /**
-     * If true, don't include delete history entries
+     * Only applies when an itemPath is specified. This determines whether to exclude delete entries of the specified path.
      */
     excludeDeletes: boolean;
     /**
@@ -1911,7 +1930,7 @@ export interface GitQueryCommitsCriteria {
      */
     fromDate: string;
     /**
-     * What Git history mode should be used. This only applies to the search criteria when Ids = null.
+     * What Git history mode should be used. This only applies to the search criteria when Ids = null and an itemPath is specified.
      */
     historyMode: GitHistoryMode;
     /**
@@ -1922,6 +1941,14 @@ export interface GitQueryCommitsCriteria {
      * Whether to include the _links field on the shallow references
      */
     includeLinks: boolean;
+    /**
+     * Whether to include the push information
+     */
+    includePushData: boolean;
+    /**
+     * Whether to include the image Url for committers and authors
+     */
+    includeUserImageUrl: boolean;
     /**
      * Whether to include linked work items
      */
@@ -1963,8 +1990,16 @@ export interface GitQueryRefsCriteria {
     searchType: GitRefSearchType;
 }
 
+export interface GitRecycleBinRepositoryDetails {
+    /**
+     * Setting to false will undo earlier deletion and restore the repository.
+     */
+    deleted: boolean;
+}
+
 export interface GitRef {
     _links: any;
+    creator: VSSInterfaces.IdentityRef;
     isLocked: boolean;
     isLockedBy: VSSInterfaces.IdentityRef;
     name: string;
@@ -2136,6 +2171,10 @@ export interface GitRepository {
     parentRepository: GitRepositoryRef;
     project: TfsCoreInterfaces.TeamProjectReference;
     remoteUrl: string;
+    /**
+     * Compressed size (bytes) of the repository.
+     */
+    size: number;
     sshUrl: string;
     url: string;
     validRemoteUrls: string[];
@@ -2169,9 +2208,6 @@ export interface GitRepositoryStats {
     branchesCount: number;
     commitsCount: number;
     repositoryId: string;
-}
-
-export interface GitResolution {
 }
 
 /**
@@ -2208,7 +2244,7 @@ export enum GitResolutionError {
     OtherError = 255,
 }
 
-export interface GitResolutionMergeContent extends GitResolution {
+export interface GitResolutionMergeContent {
     mergeType: GitResolutionMergeType;
     userMergedBlob: GitBlobRef;
     userMergedContent: number[];
@@ -2222,7 +2258,7 @@ export enum GitResolutionMergeType {
     UserMerged = 4,
 }
 
-export interface GitResolutionPathConflict extends GitResolution {
+export interface GitResolutionPathConflict {
     action: GitResolutionPathConflictAction;
     renamePath: string;
 }
@@ -2235,7 +2271,7 @@ export enum GitResolutionPathConflictAction {
     KeepTargetDeleteSource = 4,
 }
 
-export interface GitResolutionPickOneAction extends GitResolution {
+export interface GitResolutionPickOneAction {
     action: GitResolutionWhichAction;
 }
 
@@ -2505,6 +2541,10 @@ export interface GitUserDate {
      */
     email: string;
     /**
+     * Url for the user's avatar.
+     */
+    imageUrl: string;
+    /**
      * Name of the user performing the Git operation.
      */
     name: string;
@@ -2559,12 +2599,6 @@ export enum GitVersionType {
      * Interpret the version as a commit ID (SHA1)
      */
     Commit = 2,
-}
-
-/**
- * Reference to a workitem from a Git/PullRequest context.
- */
-export interface GitWorkItemRef extends VSSInterfaces.ResourceRef {
 }
 
 /**
@@ -2662,6 +2696,7 @@ export interface ItemDetailsOptions {
 
 export interface ItemModel {
     _links: any;
+    content: string;
     contentMetadata: FileContentMetadata;
     isFolder: boolean;
     isSymLink: boolean;
@@ -2678,6 +2713,7 @@ export enum IterationReason {
     Create = 2,
     Rebase = 4,
     Unknown = 8,
+    Retarget = 16,
 }
 
 /**
@@ -2811,6 +2847,12 @@ export enum RefFavoriteType {
 }
 
 /**
+ * Real time event (SignalR) for when the target branch of a pull request is changed
+ */
+export interface RetargetEvent extends RealTimePullRequestEvent {
+}
+
+/**
  * Real time event (SignalR) for an update to reviewers on a pull request
  */
 export interface ReviewersUpdatedEvent extends RealTimePullRequestEvent {
@@ -2914,6 +2956,7 @@ export enum SupportedIdeType {
     RubyMine = 9,
     Tower = 10,
     VisualStudio = 11,
+    VSCode = 14,
     WebStorm = 12,
 }
 
@@ -3087,6 +3130,7 @@ export interface TfvcChangesetSearchCriteria {
      * Path of item to search under
      */
     itemPath: string;
+    mappings: TfvcMappingFilter[];
     /**
      * If provided, only include changesets created before this date (string) Think of a better name for this.
      */
@@ -3132,6 +3176,10 @@ export interface TfvcItem extends ItemModel {
     changeDate: Date;
     deletionId: number;
     /**
+     * File encoding from database, -1 represents binary.
+     */
+    encoding: number;
+    /**
      * MD5 hash as a base 64 string, applies to files only.
      */
     hashValue: string;
@@ -3153,6 +3201,13 @@ export interface TfvcItemDescriptor {
     version: string;
     versionOption: TfvcVersionOption;
     versionType: TfvcVersionType;
+}
+
+export interface TfvcItemPreviousHash extends TfvcItem {
+    /**
+     * MD5 hash as a base 64 string, applies to files only.
+     */
+    previousHashValue: string;
 }
 
 export interface TfvcItemRequestData {
@@ -3192,6 +3247,11 @@ export interface TfvcLabelRequestData {
     maxItemCount: number;
     name: string;
     owner: string;
+}
+
+export interface TfvcMappingFilter {
+    exclude: boolean;
+    serverPath: string;
 }
 
 export interface TfvcMergeSource {
@@ -3283,6 +3343,17 @@ export interface TfvcShelvesetRequestData {
      * Owner's ID. Could be a name or a guid.
      */
     owner: string;
+}
+
+export interface TfvcStatistics {
+    /**
+     * Id of the last changeset the stats are based on.
+     */
+    changesetId: number;
+    /**
+     * Count of files at the requested scope.
+     */
+    fileCountTotal: number;
 }
 
 export interface TfvcVersionDescriptor {
@@ -3419,7 +3490,8 @@ export var TypeInfo = {
             "gitObjectTooLarge": 6,
             "operationIndentityNotFound": 7,
             "asyncOperationNotFound": 8,
-            "other": 9
+            "other": 9,
+            "emptyCommitterSignature": 10
         }
     },
     GitAsyncRefOperationParameters: <any>{
@@ -3507,6 +3579,8 @@ export var TypeInfo = {
     GitForkRef: <any>{
     },
     GitForkSyncRequest: <any>{
+    },
+    GitForkTeamProjectReference: <any>{
     },
     GitHistoryMode: {
         enumValues: {
@@ -3770,7 +3844,8 @@ export var TypeInfo = {
             "forcePush": 1,
             "create": 2,
             "rebase": 4,
-            "unknown": 8
+            "unknown": 8,
+            "retarget": 16
         }
     },
     PullRequestAsyncStatus: {
@@ -3824,6 +3899,7 @@ export var TypeInfo = {
             "rubyMine": 9,
             "tower": 10,
             "visualStudio": 11,
+            "vSCode": 14,
             "webStorm": 12
         }
     },
@@ -3844,6 +3920,8 @@ export var TypeInfo = {
     TfvcItem: <any>{
     },
     TfvcItemDescriptor: <any>{
+    },
+    TfvcItemPreviousHash: <any>{
     },
     TfvcItemRequestData: <any>{
     },
@@ -4101,6 +4179,9 @@ TypeInfo.GitCommitRef.fields = {
     },
     committer: {
         typeInfo: TypeInfo.GitUserDate
+    },
+    push: {
+        typeInfo: TypeInfo.GitPushRef
     },
     statuses: {
         isArray: true,
@@ -4533,6 +4614,12 @@ TypeInfo.GitForkRef.fields = {
 TypeInfo.GitForkSyncRequest.fields = {
     status: {
         enumType: TypeInfo.GitAsyncOperationStatus
+    }
+};
+
+TypeInfo.GitForkTeamProjectReference.fields = {
+    visibility: {
+        enumType: TfsCoreInterfaces.TypeInfo.ProjectVisibility
     }
 };
 
@@ -5078,6 +5165,12 @@ TypeInfo.TfvcItemDescriptor.fields = {
     },
     versionType: {
         enumType: TypeInfo.TfvcVersionType
+    }
+};
+
+TypeInfo.TfvcItemPreviousHash.fields = {
+    changeDate: {
+        isDate: true,
     }
 };
 
