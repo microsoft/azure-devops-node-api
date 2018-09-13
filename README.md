@@ -95,7 +95,7 @@ run();
 
 ## APIs
 
-To see what APIs are available, see the appropriate client interface. For example, [GitApi.ts](https://github.com/Microsoft/azure-pipelines-node-api/blob/master/api/GitApi.ts)
+To see what APIs are available, see the appropriate client interface. For example, [GitApi.ts](https://github.com/Microsoft/azure-devops-node-api/blob/master/api/GitApi.ts)
 
 ## Running Samples
 
