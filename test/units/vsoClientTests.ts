@@ -92,7 +92,6 @@ describe('VSOClient Units', function () {
         const queryParams = {status: 2};
         const res = await vsoClient.getVersioningData('1', 'testArea4', 'testLocation', {'testKey': 'testValue'}, queryParams);
         assert(res.apiVersion === '1');
-        console.log(res.requestUrl);
         assert(res.requestUrl === 'https://dev.azure.com/testTemplate?status=2');
     });
 
@@ -109,7 +108,6 @@ describe('VSOClient Units', function () {
         const queryParams = {status: {innerstatus: 2}};
         const res = await vsoClient.getVersioningData('1', 'testArea5', 'testLocation', {'testKey': 'testValue'}, queryParams);
         assert(res.apiVersion === '1');
-        console.log(res.requestUrl);
         assert(res.requestUrl === 'https://dev.azure.com/testTemplate?innerstatus=2');
     });
 
