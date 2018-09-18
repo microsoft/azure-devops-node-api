@@ -152,11 +152,10 @@ describe('VSOClient Units', function () {
         });
 
         //Act
-        vsoClient._setInitializationPromise(new Promise(() => {
+        vsoClient._setInitializationPromise(new Promise(resolve => {
             vsoClient.baseUrl = 'https://newbase.com';
             resolve();
         }));
-        vsoClient._setInitializationPromise(Promise.resolve());
         const res: vsom.ClientVersioningData = await vsoClient.getVersioningData('1', 'testArea6', 'testLocation', {'testKey': 'testValue'}, null);
 
         //Assert
