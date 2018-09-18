@@ -24,12 +24,16 @@ describe('VSOClient Units', function () {
     });
 
     it('constructs', () => {
+        //Arrange
         this.timeout(1000);
         const baseUrl = 'https://dev.azure.com/';
         const userAgent: string = "testAgent";
         const rest: rm.RestClient = new rm.RestClient(userAgent, null, []);
+
+        //Act
         const vso: vsom.VsoClient = new vsom.VsoClient('https://microsoft.com', rest);
 
+        //Assert
         assert(vso, 'VsoClient should not be null');
     });
 
