@@ -13,7 +13,9 @@ $ npm run build
 
 ## Test
 
-You should test with node 4.x, 6.x and 8.x LTS.  We recommend using nvm ([linux](https://github.com/creationix/nvm) / [windows](https://github.com/coreybutler/nvm-windows)). To run units:
+You should test with node 4.x, 6.x and 8.x LTS.  We recommend using nvm ([linux](https://github.com/creationix/nvm) / [windows](https://github.com/coreybutler/nvm-windows)).
+
+To run units:
 
 ```
 npm units

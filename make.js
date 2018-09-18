@@ -42,7 +42,7 @@ target.build = function() {
 
 
 target.units = function() {
-    pushd('test')
+    pushd('test');
     run('npm install ../_build');
     popd();
 
@@ -52,17 +52,7 @@ target.units = function() {
 }
 
 target.test = function() {
-    pushd('test')
-    run('npm install ../_build');
-    popd();
-
-    console.log("-------Unit Tests-------");
-    run('tsc -p ./test/units');
-    run('mocha test/units');
-
-    console.log("-------Other Tests-------");
-    run('tsc -p ./test/tests');
-    run('mocha test/tests');
+    target.units();
 }
 
 target.samples = function() {
