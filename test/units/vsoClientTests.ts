@@ -9,6 +9,7 @@ describe('VSOClient Units', function () {
     let rest: rm.RestClient;
     let vsoClient: vsom.VsoClient
     const baseUrl: string = 'https://dev.azure.com/';
+    
     before(() => {
         const userAgent: string = "testAgent";
         rest = new rm.RestClient(userAgent, null, []);
