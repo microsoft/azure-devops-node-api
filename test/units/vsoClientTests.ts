@@ -137,7 +137,7 @@ describe('VSOClient Units', function () {
 
         //Assert
         assert(res.apiVersion === '1');
-        assert(res.requestUrl === 'https://dev.azure.com/testTemplate?innerstatus=2');
+        assert(res.requestUrl === 'https://dev.azure.com/testTemplate?status.innerstatus=2');
     });
 
     it('gets versioning data after an initialization promise', async () => {
