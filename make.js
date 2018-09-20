@@ -40,8 +40,22 @@ target.build = function() {
     rm(path.join(buildPath, 'index.*'));
 }
 
-// test is just building samples
+
+target.units = function() {
+    pushd('test');
+    run('npm install ../_build');
+    popd();
+
+    console.log("-------Unit Tests-------");
+    run('tsc -p ./test/units');
+    run('mocha test/units');
+}
+
 target.test = function() {
+    target.units();
+}
+
+target.samples = function() {
     target.build();
 
     var modPath = path.join(__dirname, 'samples', 'node_modules');
@@ -51,10 +65,6 @@ target.test = function() {
     run('npm install ../_build');
     popd();
     run('tsc -p samples');
-}
-
-target.samples = function() {
-    target.test();
 
     pushd('samples');
     run('node run.js');

@@ -6,8 +6,9 @@
     "types": "./WebApi.d.ts",
     "scripts": {
         "build": "node make.js build",
+        "samples": "node make.js samples && node samples/run.js",
         "test": "node make.js test",
-        "samples": "node make.js test && node samples/run.js"
+        "units": "node make.js units"
     },
     "repository": {
         "type": "git",
@@ -28,7 +29,10 @@
         "underscore": "1.8.3"
     },
     "devDependencies": {
+        "@types/mocha": "^2.2.44",
         "@types/shelljs": "0.7.8",
+        "mocha": "^3.5.3",
+        "nock": "9.6.1",
         "shelljs": "0.7.8",
         "typescript": "2.4.2",
         "@types/node": "8.9.2"
