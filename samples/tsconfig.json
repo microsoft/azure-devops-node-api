@@ -10,6 +10,8 @@
         "buildArtifact.ts",
         "creation.ts",
         "task.ts",
-        "filecontainer.ts"
+        "filecontainer.ts",
+        "git.ts",
+        "wiki.ts"
     ]
 }
