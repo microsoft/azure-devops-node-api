@@ -185,28 +185,20 @@ describe('VSOClient Units', function () {
 });
 
 describe('WebApi Units', function () {
-    const osName = os.platform(); 
-    const osVersion = os.release();
-
-    before(() => {
-    });
-
-    after(() => {
-    });
-
-    afterEach(() => {
-    });
+    const osName: string = os.platform(); 
+    const osVersion: string = os.release();
 
     it('sets the user agent correctly when request settings are specified', async () => {
         const myWebApi: WebApi.WebApi = new WebApi.WebApi('microsoft.com', WebApi.getBasicHandler('user', 'password'),
                                                           undefined, {productName: 'name', productVersion: 'version'});
-        const userAgent: string = 'name/version (vsts-node-api 6.6.1; ' + osName + ' ' + osVersion + ')';
+        const userAgent: string = 'name/version (azure-devops-node-api 6.6.1; ' + osName + ' ' + osVersion + ')';
+        console.log(myWebApi.rest.client.userAgent);
         assert(userAgent === myWebApi.rest.client.userAgent, 'User agent should be: ' + userAgent);
     });
 
     it('sets the user agent correctly when request settings are not specified', async () => {
         const myWebApi: WebApi.WebApi = new WebApi.WebApi('microsoft.com', WebApi.getBasicHandler('user', 'password'), undefined);
-        const userAgent: string = 'vsts-node-api/6.6.1 (' + osName + ' ' + osVersion + ')';
+        const userAgent: string = 'azure-devops-node-api/6.6.1 (' + osName + ' ' + osVersion + ')';
         assert(userAgent === myWebApi.rest.client.userAgent, 'User agent should be: ' + userAgent);
     });
 });

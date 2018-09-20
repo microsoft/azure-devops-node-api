@@ -131,17 +131,17 @@ export class WebApi {
         }
 
         let userAgent: string;
-        const vstsNodeApiVersion = JSON.parse(fs.readFileSync('package.json', 'utf8')).version;
-        const osName = os.platform();
-        const osVersion = os.release();
+        const nodeApiName: string = 'azure-devops-node-api';
+        const nodeApiVersion: string = JSON.parse(fs.readFileSync('package.json', 'utf8')).version;
+        const osName: string = os.platform();
+        const osVersion: string = os.release();
 
         if(requestSettings) {
-            userAgent = requestSettings.productName + '/' + requestSettings.productVersion + ' (vsts-node-api ' + vstsNodeApiVersion + '; ' + osName + ' ' + osVersion + ')';
+            userAgent = `${requestSettings.productName}/${requestSettings.productVersion} (${nodeApiName} ${nodeApiVersion}; ${osName} ${osVersion})`;
         }
         else {
-            userAgent = 'vsts-node-api/' + vstsNodeApiVersion + ' (' + osName + ' ' + osVersion + ')';
+            userAgent = `${nodeApiName}/${nodeApiVersion} (${osName} ${osVersion})`;
         }
-
         this.rest = new rm.RestClient(userAgent, null, [this.authHandler], this.options);
         this.vsoClient = new vsom.VsoClient(defaultUrl, this.rest);
     }
