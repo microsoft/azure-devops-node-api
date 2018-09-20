@@ -3,5 +3,7 @@
     "buildArtifact",
     "creation",
     "task",
-    "filecontainer"
+    "filecontainer",
+    "git",
+    "wiki"
 ]

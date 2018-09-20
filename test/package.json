@@ -1,0 +1,23 @@
+{
+  "name": "azure-devops-node-api-tests",
+  "version": "1.0.0",
+  "description": "Tests for azure-devops-node-api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/azure-devops-node-api.git"
+  },
+  "author": "Microsoft Corporation",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Microsoft/azure-devops-node-api/issues"
+  },
+  "homepage": "https://github.com/Microsoft/azure-devops-node-api#readme",
+  "dependencies": {
+    "azure-devops-node-api": "file:../_build",
+    "typed-rest-client": "file:../_build"
+  }
+}
