@@ -140,6 +140,27 @@ describe('VSOClient Units', function () {
         assert(res.requestUrl === 'https://dev.azure.com/testTemplate?status.innerstatus=2');
     });
 
+    it('gets versioning data with complex nested query params', async () => {
+        //Arrange
+        nock('https://dev.azure.com/_apis/testArea5', {
+            reqheaders: {
+                'accept': 'application/json',
+                'user-agent': 'testAgent'
+            }})
+            .options('')
+            .reply(200, {
+                value: [{id: 'testLocation', maxVersion: '1', releasedVersion: '1', routeTemplate: 'testTemplate', area: 'testArea5', resourceName: 'testName', resourceVersion: '1'}]
+        });
+
+        //Act
+        const queryParams = {status: {innerstatus: 2}, version: '1', nestedObject: {nestedField: 'value', innerNestedObject: {key: 'val2'}}};
+        const res: vsom.ClientVersioningData = await vsoClient.getVersioningData('1', 'testArea5', 'testLocation', {'testKey': 'testValue'}, queryParams);
+
+        //Assert
+        assert(res.apiVersion === '1');
+        assert(res.requestUrl === 'https://dev.azure.com/testTemplate?status.innerstatus=2&version=1&nestedObject.nestedField=value&nestedObject.innerNestedObject.key=val2');
+    });
+
     it('gets versioning data after an initialization promise', async () => {
         //Arrange
         nock('https://newbase.com/_apis/testArea6', {

@@ -184,37 +184,36 @@ export class VsoClient {
     }
 
     private queryParamsToStringHelper(queryParams: any, prefix: string): string {
-        if (queryParams == undefined) {
+        if (queryParams === undefined) {
             return '';
         }
         let queryString: string = '';
 
-        if(typeof(queryParams) != 'string'){
+        if(typeof(queryParams) !== 'string'){
             for (let property in queryParams) {
                 if (queryParams.hasOwnProperty(property)){
-                    let prop = queryParams[property];
-                    let newPrefix = prefix + encodeURIComponent(property.toString()) + '.';
+                    const prop = queryParams[property];
+                    const newPrefix = prefix + encodeURIComponent(property.toString()) + '.';
                     queryString += this.queryParamsToStringHelper(prop, newPrefix);
                 }
             }
         }
 
-        if(queryString == '' && prefix.length > 0){
-            //Will always need to chop period off of end of prefix
+        if(queryString === '' && prefix.length > 0){
+            // Will always need to chop period off of end of prefix
             queryString = prefix.slice(0,-1) + '=' + encodeURIComponent(queryParams.toString()) + '&';
         }
         return queryString;
     }
 
     private queryParamsToString(queryParams: any): string {
-        let queryString: string = '?' + this.queryParamsToStringHelper(queryParams, '');
+        const queryString: string = '?' + this.queryParamsToStringHelper(queryParams, '');
 
-        //Will always need to slice either a ? or & off of the end
+        // Will always need to slice either a ? or & off of the end
         return queryString.slice(0,-1);
     }
 
     protected getRequestUrl(routeTemplate: string, area: string, resource: string, routeValues: any, queryParams?: any): string {
-        console.log("PARAMS", queryParams);
         // Add area/resource route values (based on the location)
         routeValues = routeValues || {};
         if (!routeValues.area) {
@@ -227,12 +226,12 @@ export class VsoClient {
         // Replace templated route values
         let relativeUrl = this.replaceRouteValues(routeTemplate, routeValues);
 
-        //append query parameters to the end
+        // Append query parameters to the end
         if (queryParams) {
             relativeUrl += this.queryParamsToString(queryParams);
         }
-        console.log('Out', url.resolve(this.baseUrl, path.join(this.basePath, relativeUrl)));
-        //resolve the relative url with the base
+
+        // Resolve the relative url with the base
         return url.resolve(this.baseUrl, path.join(this.basePath, relativeUrl));
     }
 
