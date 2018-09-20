@@ -1,4 +1,5 @@
 import assert = require('assert');
+import fs = require('fs');
 import nock = require('nock');
 import os = require('os');
 import vsom = require('../../api/VsoClient');
@@ -187,18 +188,20 @@ describe('VSOClient Units', function () {
 describe('WebApi Units', function () {
     const osName: string = os.platform(); 
     const osVersion: string = os.release();
+    const nodeApiName: string = 'azure-devops-node-api';
+    const nodeApiVersion: string = JSON.parse(fs.readFileSync('package.json', 'utf8')).version;
 
     it('sets the user agent correctly when request settings are specified', async () => {
         const myWebApi: WebApi.WebApi = new WebApi.WebApi('microsoft.com', WebApi.getBasicHandler('user', 'password'),
-                                                          undefined, {productName: 'name', productVersion: 'version'});
-        const userAgent: string = 'name/version (azure-devops-node-api 6.6.1; ' + osName + ' ' + osVersion + ')';
+                                                          undefined, {productName: 'name', productVersion: '1.2.3'});
+        const userAgent: string = `name/1.2.3 (${nodeApiName} ${nodeApiVersion}; ${osName} ${osVersion})`;
         console.log(myWebApi.rest.client.userAgent);
         assert(userAgent === myWebApi.rest.client.userAgent, 'User agent should be: ' + userAgent);
     });
 
     it('sets the user agent correctly when request settings are not specified', async () => {
         const myWebApi: WebApi.WebApi = new WebApi.WebApi('microsoft.com', WebApi.getBasicHandler('user', 'password'), undefined);
-        const userAgent: string = 'azure-devops-node-api/6.6.1 (' + osName + ' ' + osVersion + ')';
+        const userAgent: string = `${nodeApiName}/${nodeApiVersion} (${osName} ${osVersion})`;
         assert(userAgent === myWebApi.rest.client.userAgent, 'User agent should be: ' + userAgent);
     });
 });
