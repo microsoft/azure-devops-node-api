@@ -189,9 +189,9 @@ export class VsoClient {
         }
         let queryString: string = '';
 
-        if(typeof(queryParams) !== 'string'){
+        if(typeof(queryParams) !== 'string') {
             for (let property in queryParams) {
-                if (queryParams.hasOwnProperty(property)){
+                if (queryParams.hasOwnProperty(property)) {
                     const prop = queryParams[property];
                     const newPrefix = prefix + encodeURIComponent(property.toString()) + '.';
                     queryString += this.queryParamsToStringHelper(prop, newPrefix);

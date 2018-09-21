@@ -157,8 +157,8 @@ describe('VSOClient Units', function () {
         const res: vsom.ClientVersioningData = await vsoClient.getVersioningData('1', 'testArea5', 'testLocation', {'testKey': 'testValue'}, queryParams);
 
         //Assert
-        assert(res.apiVersion === '1');
-        assert(res.requestUrl === 'https://dev.azure.com/testTemplate?status.innerstatus=2&version=1&nestedObject.nestedField=value&nestedObject.innerNestedObject.key=val2');
+        assert.equal(res.apiVersion, '1');
+        assert.equal(res.requestUrl, 'https://dev.azure.com/testTemplate?status.innerstatus=2&version=1&nestedObject.nestedField=value&nestedObject.innerNestedObject.key=val2');
     });
 
     it('gets versioning data after an initialization promise', async () => {
