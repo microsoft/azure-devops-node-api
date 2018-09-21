@@ -170,10 +170,11 @@ export class VsoClient {
                         let resourceLocation = resourceLocations[i];
                         locationsLookup[resourceLocation.id.toLowerCase()] = resourceLocation;
                     }
+                    // If we have completed successfully, cache the response.
+                    this._locationsByAreaPromises[area] = areaLocationsPromise;
+
                     return locationsLookup;
                 });
-
-            this._locationsByAreaPromises[area] = areaLocationsPromise;
         }
 
         return areaLocationsPromise;
