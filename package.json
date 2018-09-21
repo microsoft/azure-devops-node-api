@@ -24,6 +24,7 @@
     ],
     "license": "MIT",
     "dependencies": {
+        "node": "^10.10.0",
         "os": "0.1.1",
         "tunnel": "0.0.4",
         "typed-rest-client": "1.0.9",
