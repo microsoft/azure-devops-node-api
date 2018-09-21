@@ -2,10 +2,10 @@ import assert = require('assert');
 import fs = require('fs');
 import nock = require('nock');
 import os = require('os');
-import vsom = require('../../api/VsoClient');
-import WebApi = require('../../api/WebApi');
-import * as rm from 'typed-rest-client/RestClient';
-import { ApiResourceLocation } from '../../api/interfaces/common/VsoBaseInterfaces';
+import vsom = require('../../_build/VsoClient');
+import WebApi = require('../../_build/WebApi');
+import * as rm from '../../_build/node_modules/typed-rest-client/RestClient';
+import { ApiResourceLocation } from '../../_build/interfaces/common/VsoBaseInterfaces';
 
 describe('VSOClient Units', function () {
     let rest: rm.RestClient;
