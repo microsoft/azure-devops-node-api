@@ -2,6 +2,7 @@ import assert = require('assert');
 import fs = require('fs');
 import nock = require('nock');
 import os = require('os');
+import lim = require("../../api/interfaces/LocationsInterfaces");
 import vsom = require('../../api/VsoClient');
 import WebApi = require('../../api/WebApi');
 import * as rm from 'typed-rest-client/RestClient';
@@ -195,7 +196,6 @@ describe('WebApi Units', function () {
         const myWebApi: WebApi.WebApi = new WebApi.WebApi('microsoft.com', WebApi.getBasicHandler('user', 'password'),
                                                           undefined, {productName: 'name', productVersion: '1.2.3'});
         const userAgent: string = `name/1.2.3 (${nodeApiName} ${nodeApiVersion}; ${osName} ${osVersion})`;
-        console.log(myWebApi.rest.client.userAgent);
         assert(userAgent === myWebApi.rest.client.userAgent, 'User agent should be: ' + userAgent);
     });
 
@@ -203,5 +203,50 @@ describe('WebApi Units', function () {
         const myWebApi: WebApi.WebApi = new WebApi.WebApi('microsoft.com', WebApi.getBasicHandler('user', 'password'), undefined);
         const userAgent: string = `${nodeApiName}/${nodeApiVersion} (${osName} ${osVersion})`;
         assert(userAgent === myWebApi.rest.client.userAgent, 'User agent should be: ' + userAgent);
+    });
+
+    it('connects to the server with the correct user agent when request settings are specified', async () => {
+        const myWebApi: WebApi.WebApi = new WebApi.WebApi('https://dev.azure.com/', WebApi.getBasicHandler('user', 'password'),
+                                                          undefined, {productName: 'name', productVersion: '1.2.3'});
+        const userAgent: string = `name/1.2.3 (${nodeApiName} ${nodeApiVersion}; ${osName} ${osVersion})`;
+        nock('https://dev.azure.com/_apis/testArea', {
+            reqheaders: {
+                'accept': 'application/json',
+                'user-agent': userAgent
+            }})
+            .options('')
+            .reply(200, {
+                value: [{id: 'testLocation', maxVersion: '1', releasedVersion: '1', routeTemplate: 'testTemplate', area: 'testArea', resourceName: 'testName', resourceVersion: '1'}]
+        });
+
+        // Act
+        const res: vsom.ClientVersioningData = await myWebApi.vsoClient.getVersioningData('1', 'testArea', 'testLocation', {'testKey': 'testValue'}, null);
+
+        // Assert
+        assert(res.apiVersion === '1');
+        assert(res.requestUrl === 'https://dev.azure.com/testTemplate');
+        
+    });
+
+    it('connects to the server with the correct user agent when request settings are not specified', async () => {
+        // Arrange
+        const myWebApi: WebApi.WebApi = new WebApi.WebApi('https://dev.azure.com/', WebApi.getBasicHandler('user', 'password'), null);
+        const userAgent: string = `${nodeApiName}/${nodeApiVersion} (${osName} ${osVersion})`;
+        nock('https://dev.azure.com/_apis/testArea', {
+            reqheaders: {
+                'accept': 'application/json',
+                'user-agent': userAgent
+            }})
+            .options('')
+            .reply(200, {
+                value: [{id: 'testLocation', maxVersion: '1', releasedVersion: '1', routeTemplate: 'testTemplate', area: 'testArea', resourceName: 'testName', resourceVersion: '1'}]
+        });
+
+        // Act
+        const res: vsom.ClientVersioningData = await myWebApi.vsoClient.getVersioningData('1', 'testArea', 'testLocation', {'testKey': 'testValue'}, null);
+
+        // Assert
+        assert(res.apiVersion === '1');
+        assert(res.requestUrl === 'https://dev.azure.com/testTemplate');
     });
 });
