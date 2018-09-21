@@ -57,4 +57,7 @@ export async function run(projectId: string) {
     if (deletedConfiguration.isDeleted) {
         console.log('Policy configuration successfully deleted');
     }
+    else {
+        console.log('Unable to delete policy');
+    }
 }

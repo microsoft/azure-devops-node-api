@@ -5,10 +5,12 @@
 // export API_PROJECT=test
 import * as cm from './common';
 import * as nodeApi from 'azure-devops-node-api';
-import * as coreApi from 'azure-devops-node-api/CoreApi';
+import * as cApi from 'azure-devops-node-api/CoreApi';
 import * as coreInterfaces from 'azure-devops-node-api/interfaces/CoreInterfaces'
 
 let samples: string[] = require('./samples.json');
+let coreApi: cApi.ICoreApi;
+const maxLoops: number = 500;
 
 let selection: string = process.argv[2];
 if (selection) {
@@ -20,9 +22,12 @@ if (selection) {
     samples = [selection];
 }
 
-async function createProject(projectId: string, coreApiObject: coreApi.ICoreApi) : Promise<void> {
+async function createProject(projectId: string): Promise<boolean> {
     console.log('Cleaning up from last run');
-    await destroyProject(projectId, coreApiObject);
+    if (!(await deleteProject(projectId))) {
+        console.log('Failed to delete previous project');
+        return false;
+    }
 
     const projectToCreate: coreInterfaces.TeamProject = {name: projectId,
                                                          description: 'sample project created automatically by azure-devops-node-api.',
@@ -36,40 +41,56 @@ async function createProject(projectId: string, coreApiObject: coreApi.ICoreApi)
                                                          revision: null,
                                                          state: null,
                                                          url: null};
-    await coreApiObject.queueCreateProject(projectToCreate);
+    await coreApi.queueCreateProject(projectToCreate);
 
     //Poll until project exists
-    let projIfExists: coreInterfaces.TeamProject = null;
+    let project: coreInterfaces.TeamProject = null;
     console.log('Waiting for project to spin up');
-    while (!projIfExists) {
-        projIfExists = await coreApiObject.getProject(projectId);
+    let numLoops = 0;
+    while (numLoops < maxLoops) {
+        project = await coreApi.getProject(projectId);
+        numLoops += 1;
+        if (project) {
+            return true;
+        }
     }
+    return false;
 }
 
-async function destroyProject(projectId: string, coreApiObject: coreApi.ICoreApi){
-    let projIfExists: coreInterfaces.TeamProject = await coreApiObject.getProject(projectId);
-    if (!projIfExists) {
+async function deleteProject(projectId: string): Promise<boolean> {
+    let project: coreInterfaces.TeamProject = await coreApi.getProject(projectId);
+    if (!project) {
         //If no project to clean up, just return
         return;
     }
-    let abc = coreApiObject.queueDeleteProject(projIfExists.id);
-    abc.catch((err) => console.log(err));
+    await coreApi.queueDeleteProject(project.id);
 
     //Poll until project no longer exists
     console.log('Waiting for project to be deleted');
-    while (projIfExists) {
-        projIfExists = await coreApiObject.getProject(projectId);
+    let numLoops = 0;
+    while (project && numLoops < maxLoops) {
+        project = await coreApi.getProject(projectId);
+        numLoops += 1;
+        if (!project) {
+            return true;
+        }
     }
+    return false;
 }
 
 async function runSamples(selected?: string) {
     const webApi: nodeApi.WebApi = await cm.getWebApi();
-    const coreApiObject: coreApi.ICoreApi = await webApi.getCoreApi();
+    coreApi = await webApi.getCoreApi();
     const projectId: string = 'azureDevopsNodeSampleProject';
 
     cm.heading('Creating example project');
-    await createProject(projectId, coreApiObject);
-    console.log('Project created');
+    if (await createProject(projectId)) {
+        console.log('Project created');
+    }
+    else {
+        console.log('Failed to create project, exiting');
+        return;
+    }
     
     for (let i: number = 0; i < samples.length; i++) {
         let sample: string = samples[i];
@@ -80,12 +101,16 @@ async function runSamples(selected?: string) {
 
         cm.banner('Sample ' + sample);
         var sm = require('./' + sample + '.js');
-        await sm.run();
+        await sm.run(projectId);
     }
 
     cm.heading('Cleaning up project');
-    await destroyProject(projectId, coreApiObject);
-    console.log('Done');
+    if (await deleteProject(projectId)) {
+        console.log('Done');
+    }
+    else {
+        console.log('Failed to delete project');
+    }
 }
 
 function run() {
