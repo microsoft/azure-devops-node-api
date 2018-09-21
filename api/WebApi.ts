@@ -31,6 +31,7 @@ import bearm = require('./handlers/bearertoken');
 import ntlmm = require('./handlers/ntlm');
 import patm = require('./handlers/personalaccesstoken');
 
+import * as httpm from 'typed-rest-client//HttpClient';
 import * as rm from 'typed-rest-client/RestClient';
 import vsom = require('./VsoClient');
 import lim = require("./interfaces/LocationsInterfaces");
@@ -70,7 +71,6 @@ export function getHandlerFromToken(token: string): VsoBaseInterfaces.IRequestHa
 
 /**
  * Given an Organization name, get the URL for that Organization.
- * @param organizationName
  */
 export async function getOrganizationUrlByOrgName(organizationName: string): Promise<string> {
     return getOrgLocationUrl(`accountName=${organizationName}`);
@@ -78,7 +78,6 @@ export async function getOrganizationUrlByOrgName(organizationName: string): Pro
 
 /**
  * Given an Organization id, get the URL for that Organization.
- * @param organizationId 
  */
 export async function getOrganizationUrlByOrgId(organizationId: string): Promise<string> {
     return getOrgLocationUrl(`hostId=${organizationId}`);
@@ -95,12 +94,11 @@ export async function getOrganizationUrlByOrgId(organizationId: string): Promise
  */
 async function getOrgLocationUrl(param: string): Promise<string> {
     const url: string = `https://dev.azure.com/_apis/resourceAreas/79134C72-4A58-4B42-976C-04E7115F32BF?${param}&api-version=5.0-preview.1`;
-
     const restClient: rm.RestClient = new rm.RestClient(defaultUserAgent);
     const orgUrlResponse = await restClient.get<IOrganizationUrlResponse>(url);
 
     if (orgUrlResponse 
-        && orgUrlResponse.statusCode === 200 
+        && orgUrlResponse.statusCode === httpm.HttpCodes.OK 
         && orgUrlResponse.result) {
         return orgUrlResponse.result.locationUrl;
     }
@@ -113,8 +111,6 @@ interface IOrganizationUrlResponse {
     name: string,
     locationUrl: string
 }
-
-// TODO: Unit tests for both using Nock.
 
 export interface IWebApiRequestSettings {
     productName: string,
@@ -444,7 +440,6 @@ export class WebApi {
 /**
  * Helpers.
  */
-
 const nodeApiName: string = 'azure-devops-node-api';
 const nodeApiVersion: string = JSON.parse(fs.readFileSync('package.json', 'utf8')).version;
 const osName: string = os.platform();
