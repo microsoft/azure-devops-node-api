@@ -17,9 +17,9 @@
     "author": "Microsoft Corporation",
     "contributors": [
         "Bryan MacFarlane <bryanmac@microsoft.com>",
-        "Daniel McCormick<daniel.mccormick@microsoft.com>",
+        "Daniel McCormick <daniel.mccormick@microsoft.com>",
         "Scott Dallamura <scdallam@microsoft.com>",
-        "Stephen Franceschelli<stephen.franceschelli@microsoft.com>",
+        "Stephen Franceschelli <stephen.franceschelli@microsoft.com>",
         "Teddy Ward <t-edward@microsoft.com>"
     ],
     "license": "MIT",
@@ -32,10 +32,10 @@
     "devDependencies": {
         "@types/mocha": "^2.2.44",
         "@types/shelljs": "0.7.8",
+        "@types/node": "8.9.2",
         "mocha": "^3.5.3",
         "nock": "9.6.1",
         "shelljs": "0.7.8",
-        "typescript": "2.4.2",
-        "@types/node": "8.9.2"
+        "typescript": "2.4.2"
     }
 }
