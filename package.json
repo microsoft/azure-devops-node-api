@@ -24,6 +24,7 @@
     ],
     "license": "MIT",
     "dependencies": {
+        "os": "0.1.1",
         "tunnel": "0.0.4",
         "typed-rest-client": "1.0.9",
         "underscore": "1.8.3"
