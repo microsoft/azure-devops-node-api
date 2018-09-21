@@ -248,4 +248,42 @@ describe('WebApi Units', function () {
         assert.equal(res.apiVersion, '1');
         assert.equal(res.requestUrl, 'https://dev.azure.com/testTemplate');
     });
+
+    it ('gets organization url by organization name', async () => {
+        // Arrange
+        const orgName: string = 'myorgname';
+        nock('https://dev.azure.com/_apis/resourceAreas', 
+             { reqheaders: { "accept": "application/json", "user-agent": /\/.*/ }})
+            .get(`/79134C72-4A58-4B42-976C-04E7115F32BF?accountName=${orgName}&api-version=5.0-preview.1`)
+            .reply(200, {
+                "id": "79134c72-4a58-4b42-976c-04e7115f32bf",
+                "name": "core",
+                "locationUrl": "https://dev.azure.com/myorgname"
+            });
+
+        // Act
+        const orgLocationUrl: string = await WebApi.getOrganizationUrlByOrgName(orgName);
+
+        // Assert
+        assert.equal(orgLocationUrl, 'https://dev.azure.com/myorgname');
+    });
+
+    it ('gets organization url by organization id', async () => {
+        // Arrange
+        const orgId: string = '6c12d405-344a-4364-88c4-7623dd0ca0dc';
+        nock('https://dev.azure.com/_apis/resourceAreas', 
+             { reqheaders: { "accept": "application/json", "user-agent": /\/.*/ }})
+            .get(`/79134C72-4A58-4B42-976C-04E7115F32BF?hostId=${orgId}&api-version=5.0-preview.1`)
+            .reply(200, {
+                "id": orgId,
+                "name": "core",
+                "locationUrl": "https://dev.azure.com/myorgname"
+            });
+
+        // Act
+        const orgLocationUrl: string = await WebApi.getOrganizationUrlByOrgId(orgId);
+
+        // Assert
+        assert.equal(orgLocationUrl, 'https://dev.azure.com/myorgname');
+    });
 });

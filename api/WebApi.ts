@@ -68,6 +68,54 @@ export function getHandlerFromToken(token: string): VsoBaseInterfaces.IRequestHa
     }
 }
 
+/**
+ * Given an Organization name, get the URL for that Organization.
+ * @param organizationName
+ */
+export async function getOrganizationUrlByOrgName(organizationName: string): Promise<string> {
+    return getOrgLocationUrl(`accountName=${organizationName}`);
+}
+
+/**
+ * Given an Organization id, get the URL for that Organization.
+ * @param organizationId 
+ */
+export async function getOrganizationUrlByOrgId(organizationId: string): Promise<string> {
+    return getOrgLocationUrl(`hostId=${organizationId}`);
+}
+
+/**
+ * Get LocationUrl for an organization.
+ * 
+ * Examples:
+ * https://dev.azure.com/_apis/resourceAreas/79134C72-4A58-4B42-976C-04E7115F32BF?accountName={organizationName}&api-version=5.0-preview.1
+ * https://dev.azure.com/_apis/resourceAreas/79134C72-4A58-4B42-976C-04E7115F32BF?hostId={organizationId}&api-version=5.0-preview.1
+ * 
+ * @param param 
+ */
+async function getOrgLocationUrl(param: string): Promise<string> {
+    const url: string = `https://dev.azure.com/_apis/resourceAreas/79134C72-4A58-4B42-976C-04E7115F32BF?${param}&api-version=5.0-preview.1`;
+
+    const restClient: rm.RestClient = new rm.RestClient(defaultUserAgent);
+    const orgUrlResponse = await restClient.get<IOrganizationUrlResponse>(url);
+
+    if (orgUrlResponse 
+        && orgUrlResponse.statusCode === 200 
+        && orgUrlResponse.result) {
+        return orgUrlResponse.result.locationUrl;
+    }
+
+    throw new Error('Organization not found.');
+}
+
+interface IOrganizationUrlResponse {
+    id: string,
+    name: string,
+    locationUrl: string
+}
+
+// TODO: Unit tests for both using Nock.
+
 export interface IWebApiRequestSettings {
     productName: string,
     productVersion: string
@@ -140,7 +188,7 @@ export class WebApi {
             userAgent = `${requestSettings.productName}/${requestSettings.productVersion} (${nodeApiName} ${nodeApiVersion}; ${osName} ${osVersion})`;
         }
         else {
-            userAgent = `${nodeApiName}/${nodeApiVersion} (${osName} ${osVersion})`;
+            userAgent = defaultUserAgent;
         }
         this.rest = new rm.RestClient(userAgent, null, [this.authHandler], this.options);
         this.vsoClient = new vsom.VsoClient(defaultUrl, this.rest);
@@ -389,4 +437,16 @@ export class WebApi {
             return decryptedContent;
         }
     }
+
+    
 }
+
+/**
+ * Helpers.
+ */
+
+const nodeApiName: string = 'azure-devops-node-api';
+const nodeApiVersion: string = JSON.parse(fs.readFileSync('package.json', 'utf8')).version;
+const osName: string = os.platform();
+const osVersion: string = os.release();
+const defaultUserAgent: string = `${nodeApiName}/${nodeApiVersion} (${osName} ${osVersion})`;
