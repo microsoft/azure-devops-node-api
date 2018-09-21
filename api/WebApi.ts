@@ -175,10 +175,6 @@ export class WebApi {
         }
 
         let userAgent: string;
-        const nodeApiName: string = 'azure-devops-node-api';
-        const nodeApiVersion: string = JSON.parse(fs.readFileSync('package.json', 'utf8')).version;
-        const osName: string = os.platform();
-        const osVersion: string = os.release();
 
         if(requestSettings) {
             userAgent = `${requestSettings.productName}/${requestSettings.productVersion} (${nodeApiName} ${nodeApiVersion}; ${osName} ${osVersion})`;
