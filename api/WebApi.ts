@@ -35,8 +35,9 @@ import * as rm from 'typed-rest-client/RestClient';
 import vsom = require('./VsoClient');
 import lim = require("./interfaces/LocationsInterfaces");
 
-import fs = require('fs');
 import crypto = require('crypto');
+import fs = require('fs');
+import os = require('os');
 
 /**
  * Methods to return handler objects (see handlers folder)
@@ -67,6 +68,11 @@ export function getHandlerFromToken(token: string): VsoBaseInterfaces.IRequestHa
     }
 }
 
+export interface IWebApiRequestSettings {
+    productName: string,
+    productVersion: string
+};
+
 // ---------------------------------------------------------------------------
 // Factory to return client apis
 // When new APIs are added, a method must be added here to instantiate the API
@@ -86,7 +92,7 @@ export class WebApi {
      * @param defaultUrl default server url to use when creating new apis from factory methods
      * @param authHandler default authentication credentials to use when creating new apis from factory methods
      */
-    constructor(defaultUrl: string, authHandler: VsoBaseInterfaces.IRequestHandler, options?: VsoBaseInterfaces.IRequestOptions) {
+    constructor(defaultUrl: string, authHandler: VsoBaseInterfaces.IRequestHandler, options?: VsoBaseInterfaces.IRequestOptions, requestSettings?: IWebApiRequestSettings) {
         this.serverUrl = defaultUrl;
         this.authHandler = authHandler;
         this.options = options || {};
@@ -124,7 +130,19 @@ export class WebApi {
             this.options.ignoreSslError = !!global['_vsts_task_lib_skip_cert_validation'];
         }
 
-        this.rest = new rm.RestClient('vsts-node-api', null, [this.authHandler], this.options);
+        let userAgent: string;
+        const nodeApiName: string = 'azure-devops-node-api';
+        const nodeApiVersion: string = JSON.parse(fs.readFileSync('package.json', 'utf8')).version;
+        const osName: string = os.platform();
+        const osVersion: string = os.release();
+
+        if(requestSettings) {
+            userAgent = `${requestSettings.productName}/${requestSettings.productVersion} (${nodeApiName} ${nodeApiVersion}; ${osName} ${osVersion})`;
+        }
+        else {
+            userAgent = `${nodeApiName}/${nodeApiVersion} (${osName} ${osVersion})`;
+        }
+        this.rest = new rm.RestClient(userAgent, null, [this.authHandler], this.options);
         this.vsoClient = new vsom.VsoClient(defaultUrl, this.rest);
     }
 
