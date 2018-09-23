@@ -38,6 +38,7 @@ import lim = require("./interfaces/LocationsInterfaces");
 import crypto = require('crypto');
 import fs = require('fs');
 import os = require('os');
+import url = require('url');
 
 /**
  * Methods to return handler objects (see handlers folder)
@@ -97,17 +98,19 @@ export class WebApi {
         this.authHandler = authHandler;
         this.options = options || {};
 
-        // try get proxy setting from environment variable set by VSTS-Task-Lib if there is no proxy setting in the options
-        if (!this.options.proxy || !this.options.proxy.proxyUrl) {
-            if (global['_vsts_task_lib_proxy']) {
-                let proxyFromEnv: VsoBaseInterfaces.IProxyConfiguration = {
-                    proxyUrl: global['_vsts_task_lib_proxy_url'],
-                    proxyUsername: global['_vsts_task_lib_proxy_username'],
-                    proxyPassword: this._readTaskLibSecrets(global['_vsts_task_lib_proxy_password']),
-                    proxyBypassHosts: JSON.parse(global['_vsts_task_lib_proxy_bypass'] || "[]"),
-                };
+        if (!this.isNoProxyHost(this.serverUrl)) {
+            // try to get proxy setting from environment variable set by VSTS-Task-Lib if there is no proxy setting in the options
+            if (!this.options.proxy || !this.options.proxy.proxyUrl) {
+                if (global['_vsts_task_lib_proxy']) {
+                    let proxyFromEnv: VsoBaseInterfaces.IProxyConfiguration = {
+                        proxyUrl: global['_vsts_task_lib_proxy_url'],
+                        proxyUsername: global['_vsts_task_lib_proxy_username'],
+                        proxyPassword: this._readTaskLibSecrets(global['_vsts_task_lib_proxy_password']),
+                        proxyBypassHosts: JSON.parse(global['_vsts_task_lib_proxy_bypass'] || "[]"),
+                    };
 
-                this.options.proxy = proxyFromEnv;
+                    this.options.proxy = proxyFromEnv;
+                }
             }
         }
 
@@ -136,7 +139,7 @@ export class WebApi {
         const osName: string = os.platform();
         const osVersion: string = os.release();
 
-        if(requestSettings) {
+        if (requestSettings) {
             userAgent = `${requestSettings.productName}/${requestSettings.productVersion} (${nodeApiName} ${nodeApiVersion}; ${osName} ${osVersion})`;
         }
         else {
@@ -329,6 +332,19 @@ export class WebApi {
         serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "5264459e-e5e0-4bd8-b118-0985e68a4ec5");
         handlers = handlers || [this.authHandler];
         return new workitemtrackingprocessdefinitionm.WorkItemTrackingProcessDefinitionsApi(serverUrl, handlers, this.options);
+    }
+
+    /**
+     * Determines if the domain is exluded for proxy via the no_proxy env var
+     * @param url: the server url
+     */
+    public isNoProxyHost = function(_url: string) {
+        const noProxyDomains = (process.env.no_proxy || '')
+        .split(',')
+        .map(v => v.toLowerCase());
+        const serverUrl = url.parse(_url).host.toLowerCase();
+        // return true if the no_proxy includes the host
+        return noProxyDomains.indexOf(serverUrl) !== -1;
     }
 
     private async _getResourceAreaUrl(serverUrl: string, resourceId: string): Promise<string> {
