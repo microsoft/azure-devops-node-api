@@ -31,7 +31,7 @@ import bearm = require('./handlers/bearertoken');
 import ntlmm = require('./handlers/ntlm');
 import patm = require('./handlers/personalaccesstoken');
 
-import * as httpm from 'typed-rest-client//HttpClient';
+import * as httpm from 'typed-rest-client/HttpClient';
 import * as rm from 'typed-rest-client/RestClient';
 import vsom = require('./VsoClient');
 import lim = require("./interfaces/LocationsInterfaces");
@@ -95,7 +95,7 @@ export async function getOrganizationUrlByOrgId(organizationId: string): Promise
 async function getOrgLocationUrl(param: string): Promise<string> {
     const url: string = `https://dev.azure.com/_apis/resourceAreas/79134C72-4A58-4B42-976C-04E7115F32BF?${param}&api-version=5.0-preview.1`;
     const restClient: rm.RestClient = new rm.RestClient(defaultUserAgent);
-    const orgUrlResponse = await restClient.get<IOrganizationUrlResponse>(url);
+    const orgUrlResponse = await restClient.get<lim.ResourceAreaInfo>(url);
 
     if (orgUrlResponse 
         && orgUrlResponse.statusCode === httpm.HttpCodes.OK 
@@ -104,12 +104,6 @@ async function getOrgLocationUrl(param: string): Promise<string> {
     }
 
     throw new Error('Organization not found.');
-}
-
-interface IOrganizationUrlResponse {
-    id: string,
-    name: string,
-    locationUrl: string
 }
 
 export interface IWebApiRequestSettings {
