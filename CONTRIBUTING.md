@@ -41,7 +41,7 @@ Create a [new issue](https://github.com/Microsoft/vsts-node-api/issues/new).
 
 ## General contribution guide
 
-> Keep in mind: most of the code in this repository is auto-generated, but you can contribute to the non-generated aspects of the library. 
+> Keep in mind: most of the code in this repository is auto-generated, but you can contribute to the non-generated aspects of the library.
 
 1. Unless it is a trivial change, make sure that there is a corresponding issue for your change first. If there is none, create one.
 2. Create a fork in GitHub
@@ -52,6 +52,15 @@ Create a [new issue](https://github.com/Microsoft/vsts-node-api/issues/new).
 Before submitting a feature or substantial code contribution, please discuss it with the team and ensure it follows the product roadmap. 
 
 You might also read these two blogs posts on contributing code: [Open Source Contribution Etiquette](http://tirania.org/blog/archive/2010/Dec-31.html) by Miguel de Icaza and [Don't "Push" Your Pull Requests](http://www.igvita.com/2011/12/19/dont-push-your-pull-requests/) by Ilya Grigorik.
+
+### Generated Code
+
+Most of library is auto-generated and we will usually not accept pull requests on these files, but you can contribute to the non-generated aspects of the library. Right now, that includes:
+ * ./Api/VsoClient.ts
+ * ./Api/WebApi.ts
+ * ./Api/Interfaces/common/VsoBaseInterfaces.ts
+ * ./Api/handlers/*
+ * anything outside of ./Api
 
 ### Commits
 
@@ -91,7 +100,7 @@ When logging a bug, please be sure to include the following:
  * Ensure it doesn't reproduce on the latest version or master
  * An http trace from fiddler or charles if possible (the relevant parts)
 
-## 5. Do you have a suggestion?
+## 3. Do you have a suggestion?
 
 We also accept suggestions in the issue tracker.
 
