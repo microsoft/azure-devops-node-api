@@ -61,7 +61,8 @@ async function deleteProject(projectId: string): Promise<boolean> {
     let project: coreInterfaces.TeamProject = await coreApi.getProject(projectId);
     if (!project) {
         //If no project to clean up, just return
-        return;
+        console.log("Nothing to clean up");
+        return true;
     }
     await coreApi.queueDeleteProject(project.id);
 
