@@ -31,7 +31,7 @@ async function createProject(projectId: string): Promise<boolean> {
 
     const projectToCreate: coreInterfaces.TeamProject = {name: projectId,
                                                          description: 'sample project created automatically by azure-devops-node-api.',
-                                                         visibility: coreInterfaces.ProjectVisibility.Public,
+                                                         visibility: coreInterfaces.ProjectVisibility.Private,
                                                          capabilities: {versioncontrol: {sourceControlType: 'Git'}, 
                                                                         processTemplate: {templateTypeId: '6b724908-ef14-45cf-84f8-768b5384da45'}},
                                                          _links: null,
