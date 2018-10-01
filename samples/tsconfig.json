@@ -10,6 +10,7 @@
         "buildArtifact.ts",
         "creation.ts",
         "policy.ts",
+        "profile.ts",
         "task.ts",
         "filecontainer.ts",
         "git.ts",
