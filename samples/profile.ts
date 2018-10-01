@@ -5,8 +5,8 @@ import * as ProfileApi from 'azure-devops-node-api/ProfileApi';
 import * as ProfileInterfaces from 'azure-devops-node-api/interfaces/ProfileInterfaces';
 
 export async function run(projectId: string) {
-    let webApi: nodeApi.WebApi = await common.getWebApi();
-    let profileApiObject: ProfileApi.IProfileApi = await webApi.getProfileApi();
+    const webApi: nodeApi.WebApi = await common.getWebApi();
+    const profileApiObject: ProfileApi.IProfileApi = await webApi.getProfileApi();
     common.banner('Profile Samples');
 
     common.heading('Create a profile');
