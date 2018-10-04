@@ -7,7 +7,6 @@ var rp = function(relPath) {
 }
 
 var buildPath = path.join(__dirname, '_build');
-var testPath = path.join(__dirname, '_test');
 
 var run = function(cl) {
     console.log('> ' + cl);
@@ -20,7 +19,6 @@ var run = function(cl) {
 
 target.clean = function() {
     rm('-Rf', buildPath);
-    rm('-Rf', testPath);
 };
 
 target.build = function() {
