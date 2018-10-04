@@ -1,0 +1,14 @@
+<div>
+  <span>There are({{projects.length}}) projects in your collection</span>
+  <br/>
+  <br/> Project:
+  <select [(ngModel)]="selectedProjectId" (change)="onProjectSelected()">
+    <option *ngFor="let project of projects" [value]="project.id">{{project.name}}</option>
+  </select> with {{selectedProjectRepositories.length}} repo(s)
+  <select [(ngModel)]="selectedRepoId" (change)="onRepoSelected()">
+    <option *ngFor="let repo of selectedProjectRepositories" [value]="repo.id">{{repo.name}}</option>
+  </select>
+
+  This repo has {{selectedRepoPullRequests.length}} issued Pull requests. {{pullRequestReporter.CompletedPullRequests.length}}
+  completed. avrg completion time: {{pullRequestReporter.AverageCompletionTime}} hours
+</div>
