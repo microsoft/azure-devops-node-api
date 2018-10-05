@@ -189,7 +189,7 @@ export class VsoClient {
         }
         let queryString: string = '';
 
-        if(typeof(queryParams) !== 'string') {
+        if (typeof(queryParams) !== 'string') {
             for (let property in queryParams) {
                 if (queryParams.hasOwnProperty(property)) {
                     const prop = queryParams[property];
@@ -199,9 +199,13 @@ export class VsoClient {
             }
         }
 
-        if(queryString === '' && prefix.length > 0){
+        if (queryString === '' && prefix.length > 0){
             // Will always need to chop period off of end of prefix
-            queryString = prefix.slice(0,-1) + '=' + encodeURIComponent(queryParams.toString()) + '&';
+            let queryValue: string = queryParams.toString();
+            if (queryParams instanceof Date) {
+                queryValue = queryParams.toISOString();
+            }
+            queryString = prefix.slice(0,-1) + '=' + encodeURIComponent(queryValue) + '&';
         }
         return queryString;
     }
