@@ -14,7 +14,7 @@ export async function run() {
     const coreApiObject: CoreApi.CoreApi = await webApi.getCoreApi();
     const project: CoreInterfaces.TeamProject = await coreApiObject.getProject(projectName);
     const projectAnalysisApiObject: ProjectAnalysisApi.IProjectAnalysisApi = await webApi.getProjectAnalysisApi();
-    let gitApiObject: GitApi.IGitApi = await webApi.getGitApi();
+    const gitApiObject: GitApi.IGitApi = await webApi.getGitApi();
 
     common.banner('Project Analytics Samples');
 
