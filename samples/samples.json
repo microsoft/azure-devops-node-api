@@ -2,10 +2,11 @@
     "build",
     "buildArtifact",
     "creation",
+    "dashboard",
+    "filecontainer",
+    "git",
     "policy",
     "profile",
     "task",
-    "filecontainer",
-    "git",
     "wiki"
 ]
