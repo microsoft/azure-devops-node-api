@@ -269,4 +269,12 @@ describe('WebApi Units', function () {
         assert.equal(res.apiVersion, '1');
         assert.equal(res.requestUrl, 'https://dev.azure.com/testTemplate');
     });
+
+    it('supports no_proxy environment variable', async() => {
+        const myWebApi: WebApi.WebApi = new WebApi.WebApi('https://dev.azure.com/', WebApi.getBasicHandler('user', 'password'), null);
+        process.env.no_proxy='dev.azure.com,my-tfs-instance.host'
+        assert.equal(myWebApi.isNoProxyHost('https://dev.azure.com/myproject'), true); 
+        assert.equal(myWebApi.isNoProxyHost('https://my-tfs-instance.host/myproject'), true); 
+        assert.equal(myWebApi.isNoProxyHost('https://my-other-tfs-instance.host/myproject'), false);
+    });
 });
