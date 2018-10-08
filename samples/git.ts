@@ -17,9 +17,16 @@ export async function run() {
     console.log("There are", repos.length, "repositories in this project");
 
     common.heading("Create a repository");
-    const createOptions: GitInterfaces.GitRepositoryCreateOptions = <GitInterfaces.GitRepositoryCreateOptions>{name: 'new repo'};
-    let newRepo: GitInterfaces.GitRepository = await gitApiObject.createRepository(createOptions, project);
-    console.log("New repo:", newRepo.name);
+    let newRepo: GitInterfaces.GitRepository = await gitApiObject.getRepository('new repo', project);
+    console.log('TEST', newRepo);
+    if (newRepo) {
+        console.log('Repository already exists');
+    }
+    else {
+        const createOptions: GitInterfaces.GitRepositoryCreateOptions = <GitInterfaces.GitRepositoryCreateOptions>{name: 'new repo'};
+        newRepo = await gitApiObject.createRepository(createOptions, project);
+        console.log("New repo:", newRepo.name);
+    }
 
     common.heading("Delete repository");
     await gitApiObject.deleteRepository(newRepo.id);
