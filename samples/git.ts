@@ -18,7 +18,6 @@ export async function run() {
 
     common.heading("Create a repository");
     let newRepo: GitInterfaces.GitRepository = await gitApiObject.getRepository('new repo', project);
-    console.log('TEST', newRepo);
     if (newRepo) {
         console.log('Repository already exists');
     }
