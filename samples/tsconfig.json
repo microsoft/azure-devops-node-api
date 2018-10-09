@@ -16,6 +16,7 @@
         "profile.ts",
         "projectAnalysis.ts",
         "task.ts",
+        "test.ts",
         "wiki.ts",
         "workItemTracking.ts"
     ]
