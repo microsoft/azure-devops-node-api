@@ -21,17 +21,6 @@ export async function run(projectId: string) {
     let profile: ProfileInterfaces.Profile = await profileApiObject.createProfile(createProfileContext, false);
     console.log('Profile created for', profile.coreAttributes.DisplayName.value);
 
-    common.heading('Update the profile');
-    const email = profile.coreAttributes.UnconfirmedEmailAddress.value;
-    profile.coreAttributes.UnconfirmedEmailAddress.value = 'Changed@microsoft.com';
-    await profileApiObject.updateProfile(profile, profile.id);
-    profile = await profileApiObject.getProfile(profile.id, true, true);
-    console.log('Profile now has email', profile.coreAttributes.UnconfirmedEmailAddress.value);
-    console.log('Reverting name');
-    profile.coreAttributes.UnconfirmedEmailAddress.value = email;
-    await profileApiObject.updateProfile(profile, profile.id);
-    console.log('Profile email reverted to', profile.coreAttributes.UnconfirmedEmailAddress.value);
-
     common.heading('Get the avatar');
     const avatar: ProfileInterfaces.Avatar = await profileApiObject.getAvatar(profile.id);
     console.log("Avatar value:", avatar.value);
