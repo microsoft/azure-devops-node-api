@@ -18,6 +18,7 @@
         "task.ts",
         "test.ts",
         "wiki.ts",
+        "work.ts",
         "workItemTracking.ts"
     ]
 }
