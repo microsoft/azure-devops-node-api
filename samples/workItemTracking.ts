@@ -37,14 +37,14 @@ export async function run() {
     console.log('Example field');
 
     common.heading('Create Template');
-    let templateToCreate: WorkItemTrackingInterfaces.WorkItemTemplate = {fields: {},
+    const templateToCreate: WorkItemTrackingInterfaces.WorkItemTemplate = {fields: {},
                                                                  description: 'a template',
                                                                  id: null,
                                                                  name: 'myTemplate',
                                                                  workItemTypeName: 'Bug',
                                                                  _links: null,
                                                                  url: null};
-    let returnedTemplate: WorkItemTrackingInterfaces.WorkItemTemplate = await witApi.createTemplate(templateToCreate, teamContext);
+    const returnedTemplate: WorkItemTrackingInterfaces.WorkItemTemplate = await witApi.createTemplate(templateToCreate, teamContext);
     console.log('Created template', returnedTemplate);
 
     common.heading('Get templates');
@@ -53,8 +53,7 @@ export async function run() {
     common.heading('Delete Template');
     await witApi.deleteTemplate(teamContext, returnedTemplate.id);
     try {
-        returnedTemplate = await witApi.getTemplate(teamContext, returnedTemplate.id);
-        if (returnedTemplate) {
+        if (await witApi.getTemplate(teamContext, returnedTemplate.id)) {
             console.log('ERROR template was found after deletion');
         }
     }
