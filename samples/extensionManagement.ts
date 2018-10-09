@@ -4,7 +4,7 @@ import * as nodeApi from 'azure-devops-node-api';
 import * as ExtensionManagementApi from 'azure-devops-node-api/ExtensionManagementApi';
 import * as ExtensionManagementInterfaces from 'azure-devops-node-api/interfaces/ExtensionManagementInterfaces';
 
-export async function run(projectId: string) {
+export async function run() {
     const webApi: nodeApi.WebApi = await common.getWebApi();
     const extensionManagementApiObject: ExtensionManagementApi.IExtensionManagementApi = await webApi.getExtensionManagementApi();
 
@@ -16,9 +16,9 @@ export async function run(projectId: string) {
     const extensionName = 'vss-releaseartifact';
     const version = '0.1.35';
     let alreadyInstalled = false;
-    let installedExtension: ExtensionManagementInterfaces.InstalledExtension = null;
     if (await extensionManagementApiObject.getInstalledExtensionByName(publisherName, extensionName)) {
         console.log('Extension has already been installed');
+        alreadyInstalled = true;
     }
     else {
         common.heading('Install an extension');
@@ -26,7 +26,7 @@ export async function run(projectId: string) {
     }
     
     // Verify extension was actually created
-    installedExtension = await extensionManagementApiObject.getInstalledExtensionByName(publisherName, extensionName);
+    let installedExtension: ExtensionManagementInterfaces.InstalledExtension = await extensionManagementApiObject.getInstalledExtensionByName(publisherName, extensionName);
     console.log('The following extension was installed', installedExtension);
 
     if(!alreadyInstalled){
