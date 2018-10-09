@@ -3,6 +3,7 @@
     "buildArtifact",
     "creation",
     "dashboard",
+    "extensionManagement",
     "filecontainer",
     "git",
     "policy",

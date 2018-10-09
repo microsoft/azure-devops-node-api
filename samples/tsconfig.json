@@ -10,6 +10,7 @@
         "buildArtifact.ts",
         "creation.ts",
         "dashboard.ts",
+        "extensionManagement.ts",
         "filecontainer.ts",
         "git.ts",
         "policy.ts",
