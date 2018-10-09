@@ -48,7 +48,7 @@ export async function run(createdProjectId: string) {
     console.log('Created plan', testPlan.name);
 
     common.heading('Create test suite');
-    const suiteId = 1
+    const suiteId = 1;
     const testSuiteModel: TestInterfaces.SuiteCreateModel = {name: 'myTestSuite', queryString: 'myTestSuite', requirementIds: [], suiteType: 'StaticTestSuite'};
     const testSuite: TestInterfaces.TestSuite[] = await testApiObject.createTestSuite(testSuiteModel, createdProjectId, testPlan.id, suiteId);
     console.log('Empty suite created, should be null:', testSuite);
