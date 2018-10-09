@@ -15,6 +15,7 @@
         "policy.ts",
         "profile.ts",
         "projectAnalysis.ts",
+        "release.ts",
         "task.ts",
         "test.ts",
         "wiki.ts",
