@@ -3,7 +3,7 @@ import * as nodeApi from 'azure-devops-node-api';
 
 import * as BuildApi from 'azure-devops-node-api/BuildApi';
 import * as CoreApi from 'azure-devops-node-api/CoreApi';
-import * as testApi from 'azure-devops-node-api/testApi';
+import * as TestApi from 'azure-devops-node-api/TestApi';
 import * as BuildInterfaces from 'azure-devops-node-api/interfaces/BuildInterfaces';
 import * as CoreInterfaces from 'azure-devops-node-api/interfaces/CoreInterfaces';
 import * as TestInterfaces from 'azure-devops-node-api/interfaces/TestInterfaces';
@@ -11,7 +11,7 @@ import * as TestInterfaces from 'azure-devops-node-api/interfaces/TestInterfaces
 export async function run(createdProjectId: string) {
     const projectId: string = common.getProject();
     const webApi: nodeApi.WebApi = await common.getWebApi();
-    const testApiObject: testApi.ITestApi = await webApi.getTestApi();
+    const testApiObject: TestApi.ITestApi = await webApi.getTestApi();
     const coreApiObject: CoreApi.CoreApi = await webApi.getCoreApi();
     const project: CoreInterfaces.TeamProject = await coreApiObject.getProject(projectId);
     
