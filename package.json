@@ -6,7 +6,7 @@
     "types": "./WebApi.d.ts",
     "scripts": {
         "build": "node make.js build",
-        "samples": "node make.js samples && node samples/run.js",
+        "samples": "node make.js samples",
         "test": "node make.js test",
         "units": "node make.js units"
     },
