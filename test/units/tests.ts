@@ -213,10 +213,8 @@ describe('WebApi Units', function () {
     const nodeApiVersion: string = JSON.parse(fs.readFileSync('package.json', 'utf8')).version;
 
     it('sets the user agent correctly when request settings are specified', async () => {
-        console.log('TEST');
         const myWebApi: WebApi.WebApi = new WebApi.WebApi('microsoft.com', WebApi.getBasicHandler('user', 'password'),
                                                           undefined, {productName: 'name', productVersion: '1.2.3'});
-                                                          console.log('TEST');
         const userAgent: string = `name/1.2.3 (${nodeApiName} ${nodeApiVersion}; ${osName} ${osVersion})`;
         assert.equal(userAgent, myWebApi.rest.client.userAgent, 'User agent should be: ' + userAgent);
     });
