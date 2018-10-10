@@ -40,6 +40,8 @@ target.build = function() {
 
 
 target.units = function() {
+    target.build();
+
     pushd('test');
     run('npm install ../_build');
     popd();

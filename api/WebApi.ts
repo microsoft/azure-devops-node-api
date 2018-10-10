@@ -339,6 +339,9 @@ export class WebApi {
      * @param url: the server url
      */
     public isNoProxyHost = function(_url: string) {
+        if (!process.env.no_proxy) {
+            return false;
+        }
         const noProxyDomains = (process.env.no_proxy || '')
         .split(',')
         .map(v => v.toLowerCase());
