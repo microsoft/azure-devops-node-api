@@ -170,10 +170,11 @@ export class VsoClient {
                         let resourceLocation = resourceLocations[i];
                         locationsLookup[resourceLocation.id.toLowerCase()] = resourceLocation;
                     }
+                    // If we have completed successfully, cache the response.
+                    this._locationsByAreaPromises[area] = areaLocationsPromise;
+
                     return locationsLookup;
                 });
-
-            this._locationsByAreaPromises[area] = areaLocationsPromise;
         }
 
         return areaLocationsPromise;
@@ -183,42 +184,37 @@ export class VsoClient {
         return url.resolve(this.baseUrl, path.join(this.basePath, relativeUrl));
     }
 
-    private getSerializedObject(queryValue: any, object: any): string {
-        let value:string = "";
-        let first:boolean = true;
+    private queryParamsToStringHelper(queryParams: any, prefix: string): string {
+        if (!queryParams) {
+            return '';
+        }
+        let queryString: string = '';
 
-        for (let property in object) {
-            if (object.hasOwnProperty(property)) {
-                let prop = object[property];
-                let valueString = this.getValueString(property, prop);
-                if (first && prop !== undefined) {
-                    value += property + "=" + valueString;
-                    first = false;
-                } else if (prop !== undefined) {
-                    value += "&" + property +"=" + valueString;
+        if(typeof(queryParams) !== 'string') {
+            for (let property in queryParams) {
+                if (queryParams.hasOwnProperty(property)) {
+                    const prop = queryParams[property];
+                    const newPrefix = prefix + encodeURIComponent(property.toString()) + '.';
+                    queryString += this.queryParamsToStringHelper(prop, newPrefix);
                 }
             }
         }
 
-        if (value == ""){
-            value += queryValue + "=" + object.toString();
+        if(queryString === '' && prefix.length > 0){
+            // Will always need to chop period off of end of prefix
+            queryString = prefix.slice(0,-1) + '=' + encodeURIComponent(queryParams.toString()) + '&';
         }
-
-        return value;
+        return queryString;
     }
 
-    private getValueString(queryValue, value) {
-        let valueString = null;
-        if (typeof(value) === 'object') {
-            valueString = this.getSerializedObject(queryValue, value);
-        } else {
-            valueString = queryValue + "=" + encodeURIComponent(value);
-        }
-        return valueString;
+    private queryParamsToString(queryParams: any): string {
+        const queryString: string = '?' + this.queryParamsToStringHelper(queryParams, '');
+
+        // Will always need to slice either a ? or & off of the end
+        return queryString.slice(0,-1);
     }
 
     protected getRequestUrl(routeTemplate: string, area: string, resource: string, routeValues: any, queryParams?: any): string {
-
         // Add area/resource route values (based on the location)
         routeValues = routeValues || {};
         if (!routeValues.area) {
@@ -231,22 +227,12 @@ export class VsoClient {
         // Replace templated route values
         let relativeUrl = this.replaceRouteValues(routeTemplate, routeValues);
 
-        //append query parameters to the end
-        let first = true;
-        for (let queryValue in queryParams) {
-            if (queryParams[queryValue] != null) {
-                let value = queryParams[queryValue];
-                let valueString = this.getValueString(queryValue, value);
-                if (first) {
-                    relativeUrl += "?" + valueString;
-                    first = false;
-                } else {
-                    relativeUrl += "&" + valueString;
-                }
-            }
+        // Append query parameters to the end
+        if (queryParams) {
+            relativeUrl += this.queryParamsToString(queryParams);
         }
 
-        //resolve the relative url with the base
+        // Resolve the relative url with the base
         return url.resolve(this.baseUrl, path.join(this.basePath, relativeUrl));
     }
 

@@ -34,7 +34,7 @@ let orgUrl = "https://dev.azure.com/yourorgname";
 // ideally from config
 let token: string = "cbdeb34vzyuk5l4gxc4qfczn3lko3avfkfqyb47etahq6axpcqha"; 
 
-let authHandler = vsts.getPersonalAccessTokenHandler(token); 
+let authHandler = azdev.getPersonalAccessTokenHandler(token); 
 let connection = new azdev.WebApi(orgUrl, authHandler);    
 ```
 
@@ -95,7 +95,9 @@ run();
 
 ## APIs
 
-To see what APIs are available, see the appropriate client interface. For example, [GitApi.ts](https://github.com/Microsoft/azure-pipelines-node-api/blob/master/api/GitApi.ts)
+To see what APIs are available, see the appropriate client interface. For example, [GitApi.ts](https://github.com/Microsoft/azure-devops-node-api/blob/master/api/GitApi.ts)
+
+More detailed information for the endpoints of each API can be found at https://docs.microsoft.com/en-us/rest/api/vsts/?view=vsts-rest-4.1
 
 ## Running Samples
 
@@ -125,6 +127,18 @@ Run a specific sample:
 ```bash
 $ npm run samples -- http
 ```
+
+## API and TFS Mapping
+
+Below you'll find a quick mapping of azure-devops-node-api versions and their corresponding TFS releases. All API versions will work on the server version mentioned as well as later versions.
+
+ |**TFS Version** | **Node API VERSION**|
+ |-------------------|------------------|
+ |TFS 2018 Update 2  |  6.6.2|
+ |TFS 2017 Update 2  |  6.2.8-preview|
+ |TFS 2017 Update 1  |  5.1.2|
+ |TFS 2017 RTW       |  5.0.0|
+ |TFS 2015 Update 2  |  0.7.0|
 
 ## Contributing
 
