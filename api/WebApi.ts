@@ -39,6 +39,7 @@ import crypto = require('crypto');
 import fs = require('fs');
 import os = require('os');
 import url = require('url');
+import path = require('path');
 
 /**
  * Methods to return handler objects (see handlers folder)
@@ -135,7 +136,7 @@ export class WebApi {
 
         let userAgent: string;
         const nodeApiName: string = 'azure-devops-node-api';
-        const nodeApiVersion: string = JSON.parse(fs.readFileSync('package.json', 'utf8')).version;
+        const nodeApiVersion: string = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json'), 'utf8')).version;
         const osName: string = os.platform();
         const osVersion: string = os.release();
 
