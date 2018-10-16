@@ -155,6 +155,12 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
         path: string,
         oldPath?: string
         ): Promise<WikiInterfaces.WikiPageViewStats> {
+        if (wikiVersion == null) {
+            throw new TypeError('wikiVersion can not be null or undefined');
+        }
+        if (path == null) {
+            throw new TypeError('path can not be null or undefined');
+        }
 
         return new Promise<WikiInterfaces.WikiPageViewStats>(async (resolve, reject) => {
             let routeValues: any = {

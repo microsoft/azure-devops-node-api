@@ -295,6 +295,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         iterationId: number,
         actionPath?: string
         ): Promise<TestInterfaces.TestAttachmentReference> {
+        if (iterationId == null) {
+            throw new TypeError('iterationId can not be null or undefined');
+        }
 
         return new Promise<TestInterfaces.TestAttachmentReference>(async (resolve, reject) => {
             let routeValues: any = {
@@ -401,6 +404,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         testCaseResultId: number,
         testSubResultId: number
         ): Promise<TestInterfaces.TestAttachmentReference> {
+        if (testSubResultId == null) {
+            throw new TypeError('testSubResultId can not be null or undefined');
+        }
 
         return new Promise<TestInterfaces.TestAttachmentReference>(async (resolve, reject) => {
             let routeValues: any = {
@@ -588,6 +594,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         attachmentId: number,
         testSubResultId: number
         ): Promise<NodeJS.ReadableStream> {
+        if (testSubResultId == null) {
+            throw new TypeError('testSubResultId can not be null or undefined');
+        }
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -635,6 +644,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         testCaseResultId: number,
         testSubResultId: number
         ): Promise<TestInterfaces.TestAttachment[]> {
+        if (testSubResultId == null) {
+            throw new TypeError('testSubResultId can not be null or undefined');
+        }
 
         return new Promise<TestInterfaces.TestAttachment[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -691,6 +703,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         attachmentId: number,
         testSubResultId: number
         ): Promise<NodeJS.ReadableStream> {
+        if (testSubResultId == null) {
+            throw new TypeError('testSubResultId can not be null or undefined');
+        }
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1095,6 +1110,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         buildId: number,
         flags: number
         ): Promise<TestInterfaces.BuildCoverage[]> {
+        if (buildId == null) {
+            throw new TypeError('buildId can not be null or undefined');
+        }
+        if (flags == null) {
+            throw new TypeError('flags can not be null or undefined');
+        }
 
         return new Promise<TestInterfaces.BuildCoverage[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1146,6 +1167,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         buildId: number,
         deltaBuildId?: number
         ): Promise<TestInterfaces.CodeCoverageSummary> {
+        if (buildId == null) {
+            throw new TypeError('buildId can not be null or undefined');
+        }
 
         return new Promise<TestInterfaces.CodeCoverageSummary>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1197,6 +1221,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         project: string,
         buildId: number
         ): Promise<void> {
+        if (buildId == null) {
+            throw new TypeError('buildId can not be null or undefined');
+        }
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1247,6 +1274,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         runId: number,
         flags: number
         ): Promise<TestInterfaces.TestRunCoverage[]> {
+        if (flags == null) {
+            throw new TypeError('flags can not be null or undefined');
+        }
 
         return new Promise<TestInterfaces.TestRunCoverage[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1569,6 +1599,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         project: string,
         scopeFilter: TestInterfaces.CustomTestFieldScope
         ): Promise<TestInterfaces.CustomTestFieldDefinition[]> {
+        if (scopeFilter == null) {
+            throw new TypeError('scopeFilter can not be null or undefined');
+        }
 
         return new Promise<TestInterfaces.CustomTestFieldDefinition[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2392,6 +2425,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         shouldIncludeResults?: boolean,
         queryRunSummaryForInProgress?: boolean
         ): Promise<TestInterfaces.TestResultsDetails> {
+        if (buildId == null) {
+            throw new TypeError('buildId can not be null or undefined');
+        }
 
         return new Promise<TestInterfaces.TestResultsDetails>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2458,6 +2494,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         shouldIncludeResults?: boolean,
         queryRunSummaryForInProgress?: boolean
         ): Promise<TestInterfaces.TestResultsDetails> {
+        if (releaseId == null) {
+            throw new TypeError('releaseId can not be null or undefined');
+        }
+        if (releaseEnvId == null) {
+            throw new TypeError('releaseEnvId can not be null or undefined');
+        }
 
         return new Promise<TestInterfaces.TestResultsDetails>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2561,6 +2603,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         fields?: string[],
         continuationToken?: string
         ): Promise<TestInterfaces.FieldDetailsForTestResults[]> {
+        if (buildId == null) {
+            throw new TypeError('buildId can not be null or undefined');
+        }
+        if (publishContext == null) {
+            throw new TypeError('publishContext can not be null or undefined');
+        }
 
         return new Promise<TestInterfaces.FieldDetailsForTestResults[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2618,6 +2666,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         fields?: string[],
         continuationToken?: string
         ): Promise<TestInterfaces.FieldDetailsForTestResults[]> {
+        if (releaseId == null) {
+            throw new TypeError('releaseId can not be null or undefined');
+        }
+        if (publishContext == null) {
+            throw new TypeError('publishContext can not be null or undefined');
+        }
 
         return new Promise<TestInterfaces.FieldDetailsForTestResults[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2670,6 +2724,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         project: string,
         testReferenceIds: number[]
         ): Promise<TestInterfaces.TestResultMetaData[]> {
+        if (testReferenceIds == null) {
+            throw new TypeError('testReferenceIds can not be null or undefined');
+        }
 
         return new Promise<TestInterfaces.TestResultMetaData[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3055,6 +3112,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         top?: number,
         continuationToken?: string
         ): Promise<TestInterfaces.ShallowTestCaseResult[]> {
+        if (buildId == null) {
+            throw new TypeError('buildId can not be null or undefined');
+        }
 
         return new Promise<TestInterfaces.ShallowTestCaseResult[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3115,6 +3175,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         top?: number,
         continuationToken?: string
         ): Promise<TestInterfaces.ShallowTestCaseResult[]> {
+        if (releaseId == null) {
+            throw new TypeError('releaseId can not be null or undefined');
+        }
 
         return new Promise<TestInterfaces.ShallowTestCaseResult[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3172,6 +3235,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         includeFailureDetails?: boolean,
         buildToCompare?: TestInterfaces.BuildReference
         ): Promise<TestInterfaces.TestResultSummary> {
+        if (buildId == null) {
+            throw new TypeError('buildId can not be null or undefined');
+        }
 
         return new Promise<TestInterfaces.TestResultSummary>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3229,6 +3295,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         includeFailureDetails?: boolean,
         releaseToCompare?: TestInterfaces.ReleaseReference
         ): Promise<TestInterfaces.TestResultSummary> {
+        if (releaseId == null) {
+            throw new TypeError('releaseId can not be null or undefined');
+        }
+        if (releaseEnvId == null) {
+            throw new TypeError('releaseEnvId can not be null or undefined');
+        }
 
         return new Promise<TestInterfaces.TestResultSummary>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3733,6 +3805,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         top?: number,
         continuationToken?: string
         ): Promise<TestInterfaces.TestRun[]> {
+        if (minLastUpdatedDate == null) {
+            throw new TypeError('minLastUpdatedDate can not be null or undefined');
+        }
+        if (maxLastUpdatedDate == null) {
+            throw new TypeError('maxLastUpdatedDate can not be null or undefined');
+        }
 
         return new Promise<TestInterfaces.TestRun[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4697,6 +4775,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     public async getSuitesByTestCaseId(
         testCaseId: number
         ): Promise<TestInterfaces.TestSuite[]> {
+        if (testCaseId == null) {
+            throw new TypeError('testCaseId can not be null or undefined');
+        }
 
         return new Promise<TestInterfaces.TestSuite[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5225,6 +5306,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         testName: string,
         workItemId: number
         ): Promise<boolean> {
+        if (testName == null) {
+            throw new TypeError('testName can not be null or undefined');
+        }
+        if (workItemId == null) {
+            throw new TypeError('workItemId can not be null or undefined');
+        }
 
         return new Promise<boolean>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5272,6 +5359,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         project: string,
         testName: string
         ): Promise<TestInterfaces.TestToWorkItemLinks> {
+        if (testName == null) {
+            throw new TypeError('testName can not be null or undefined');
+        }
 
         return new Promise<TestInterfaces.TestToWorkItemLinks>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5328,6 +5418,9 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
         days?: number,
         workItemCount?: number
         ): Promise<TestInterfaces.WorkItemReference[]> {
+        if (workItemCategory == null) {
+            throw new TypeError('workItemCategory can not be null or undefined');
+        }
 
         return new Promise<TestInterfaces.WorkItemReference[]>(async (resolve, reject) => {
             let routeValues: any = {

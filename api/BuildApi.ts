@@ -166,6 +166,9 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         artifactName: string,
         project?: string
         ): Promise<BuildInterfaces.BuildArtifact> {
+        if (artifactName == null) {
+            throw new TypeError('artifactName can not be null or undefined');
+        }
 
         return new Promise<BuildInterfaces.BuildArtifact>(async (resolve, reject) => {
             let routeValues: any = {
@@ -217,6 +220,9 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         artifactName: string,
         project?: string
         ): Promise<NodeJS.ReadableStream> {
+        if (artifactName == null) {
+            throw new TypeError('artifactName can not be null or undefined');
+        }
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -308,6 +314,15 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         fileName: string,
         project?: string
         ): Promise<NodeJS.ReadableStream> {
+        if (artifactName == null) {
+            throw new TypeError('artifactName can not be null or undefined');
+        }
+        if (fileId == null) {
+            throw new TypeError('fileId can not be null or undefined');
+        }
+        if (fileName == null) {
+            throw new TypeError('fileName can not be null or undefined');
+        }
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1460,6 +1475,9 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         deleted: boolean,
         project?: string
         ): Promise<BuildInterfaces.BuildDefinition> {
+        if (deleted == null) {
+            throw new TypeError('deleted can not be null or undefined');
+        }
 
         return new Promise<BuildInterfaces.BuildDefinition>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2562,6 +2580,9 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         serviceEndpointId?: string,
         top?: number
         ): Promise<BuildInterfaces.SourceRelatedWorkItem[]> {
+        if (commits == null) {
+            throw new TypeError('commits can not be null or undefined');
+        }
 
         return new Promise<BuildInterfaces.SourceRelatedWorkItem[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2622,6 +2643,9 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         serviceEndpointId?: string,
         top?: number
         ): Promise<BuildInterfaces.SourceRelatedWorkItem[]> {
+        if (pullRequestId == null) {
+            throw new TypeError('pullRequestId can not be null or undefined');
+        }
 
         return new Promise<BuildInterfaces.SourceRelatedWorkItem[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3783,6 +3807,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         artifactName: string,
         downloadTicket: String
         ): Promise<NodeJS.ReadableStream> {
+        if (projectId == null) {
+            throw new TypeError('projectId can not be null or undefined');
+        }
+        if (artifactName == null) {
+            throw new TypeError('artifactName can not be null or undefined');
+        }
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3830,6 +3860,9 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         projectId: string,
         downloadTicket: String
         ): Promise<NodeJS.ReadableStream> {
+        if (projectId == null) {
+            throw new TypeError('projectId can not be null or undefined');
+        }
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4148,6 +4181,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         toBuildId: number,
         top?: number
         ): Promise<VSSInterfaces.ResourceRef[]> {
+        if (fromBuildId == null) {
+            throw new TypeError('fromBuildId can not be null or undefined');
+        }
+        if (toBuildId == null) {
+            throw new TypeError('toBuildId can not be null or undefined');
+        }
 
         return new Promise<VSSInterfaces.ResourceRef[]>(async (resolve, reject) => {
             let routeValues: any = {

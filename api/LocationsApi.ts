@@ -142,6 +142,9 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
         areaId: string,
         hostId: string
         ): Promise<LocationsInterfaces.ResourceAreaInfo> {
+        if (hostId == null) {
+            throw new TypeError('hostId can not be null or undefined');
+        }
 
         return new Promise<LocationsInterfaces.ResourceAreaInfo>(async (resolve, reject) => {
             let routeValues: any = {
@@ -232,6 +235,9 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
     public async getResourceAreasByHost(
         hostId: string
         ): Promise<LocationsInterfaces.ResourceAreaInfo[]> {
+        if (hostId == null) {
+            throw new TypeError('hostId can not be null or undefined');
+        }
 
         return new Promise<LocationsInterfaces.ResourceAreaInfo[]>(async (resolve, reject) => {
             let routeValues: any = {

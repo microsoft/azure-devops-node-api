@@ -69,6 +69,9 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
         isConnectedServer?: boolean,
         isBuyOperationValid?: boolean
         ): Promise<ExtensionManagementInterfaces.AcquisitionOptions> {
+        if (itemId == null) {
+            throw new TypeError('itemId can not be null or undefined');
+        }
 
         return new Promise<ExtensionManagementInterfaces.AcquisitionOptions>(async (resolve, reject) => {
             let routeValues: any = {
@@ -947,6 +950,9 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
         requesterId: string,
         state: ExtensionManagementInterfaces.ExtensionRequestState
         ): Promise<number> {
+        if (state == null) {
+            throw new TypeError('state can not be null or undefined');
+        }
 
         return new Promise<number>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1035,6 +1041,9 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
         extensionName: string,
         state: ExtensionManagementInterfaces.ExtensionRequestState
         ): Promise<number> {
+        if (state == null) {
+            throw new TypeError('state can not be null or undefined');
+        }
 
         return new Promise<number>(async (resolve, reject) => {
             let routeValues: any = {

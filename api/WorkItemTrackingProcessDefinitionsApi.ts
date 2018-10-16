@@ -767,6 +767,12 @@ export class WorkItemTrackingProcessDefinitionsApi extends basem.ClientApiBase i
         removeFromPageId: string,
         removeFromSectionId: string
         ): Promise<WorkItemTrackingProcessDefinitionsInterfaces.Group> {
+        if (removeFromPageId == null) {
+            throw new TypeError('removeFromPageId can not be null or undefined');
+        }
+        if (removeFromSectionId == null) {
+            throw new TypeError('removeFromSectionId can not be null or undefined');
+        }
 
         return new Promise<WorkItemTrackingProcessDefinitionsInterfaces.Group>(async (resolve, reject) => {
             let routeValues: any = {
@@ -830,6 +836,9 @@ export class WorkItemTrackingProcessDefinitionsApi extends basem.ClientApiBase i
         groupId: string,
         removeFromSectionId: string
         ): Promise<WorkItemTrackingProcessDefinitionsInterfaces.Group> {
+        if (removeFromSectionId == null) {
+            throw new TypeError('removeFromSectionId can not be null or undefined');
+        }
 
         return new Promise<WorkItemTrackingProcessDefinitionsInterfaces.Group>(async (resolve, reject) => {
             let routeValues: any = {

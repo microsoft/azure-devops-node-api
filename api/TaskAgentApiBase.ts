@@ -1122,6 +1122,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         machineId: number,
         completedRequestCount?: number
         ): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]> {
+        if (machineId == null) {
+            throw new TypeError('machineId can not be null or undefined');
+        }
 
         return new Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1359,6 +1362,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         targetId: number,
         completedRequestCount?: number
         ): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]> {
+        if (targetId == null) {
+            throw new TypeError('targetId can not be null or undefined');
+        }
 
         return new Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1773,6 +1779,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         lockToken: string,
         result?: TaskAgentInterfaces.TaskResult
         ): Promise<void> {
+        if (lockToken == null) {
+            throw new TypeError('lockToken can not be null or undefined');
+        }
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1865,6 +1874,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         agentId: number,
         completedRequestCount?: number
         ): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]> {
+        if (agentId == null) {
+            throw new TypeError('agentId can not be null or undefined');
+        }
 
         return new Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1963,6 +1975,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         planId: string,
         jobId?: string
         ): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]> {
+        if (planId == null) {
+            throw new TypeError('planId can not be null or undefined');
+        }
 
         return new Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2055,6 +2070,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         requestId: number,
         lockToken: string
         ): Promise<TaskAgentInterfaces.TaskAgentJobRequest> {
+        if (lockToken == null) {
+            throw new TypeError('lockToken can not be null or undefined');
+        }
 
         return new Promise<TaskAgentInterfaces.TaskAgentJobRequest>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3255,6 +3273,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         messageId: number,
         sessionId: string
         ): Promise<void> {
+        if (sessionId == null) {
+            throw new TypeError('sessionId can not be null or undefined');
+        }
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3304,6 +3325,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         sessionId: string,
         lastMessageId?: number
         ): Promise<TaskAgentInterfaces.TaskAgentMessage> {
+        if (sessionId == null) {
+            throw new TypeError('sessionId can not be null or undefined');
+        }
 
         return new Promise<TaskAgentInterfaces.TaskAgentMessage>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3351,6 +3375,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         poolId: number,
         agentId: number
         ): Promise<void> {
+        if (agentId == null) {
+            throw new TypeError('agentId can not be null or undefined');
+        }
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3438,6 +3465,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         poolId: number,
         requestId: number
         ): Promise<void> {
+        if (requestId == null) {
+            throw new TypeError('requestId can not be null or undefined');
+        }
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4050,6 +4080,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         project?: string,
         actionFilter?: TaskAgentInterfaces.TaskAgentQueueActionFilter
         ): Promise<TaskAgentInterfaces.TaskAgentQueue[]> {
+        if (queueIds == null) {
+            throw new TypeError('queueIds can not be null or undefined');
+        }
 
         return new Promise<TaskAgentInterfaces.TaskAgentQueue[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4099,6 +4132,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         project?: string,
         actionFilter?: TaskAgentInterfaces.TaskAgentQueueActionFilter
         ): Promise<TaskAgentInterfaces.TaskAgentQueue[]> {
+        if (queueNames == null) {
+            throw new TypeError('queueNames can not be null or undefined');
+        }
 
         return new Promise<TaskAgentInterfaces.TaskAgentQueue[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4362,6 +4398,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         ticket: string,
         download?: boolean
         ): Promise<NodeJS.ReadableStream> {
+        if (ticket == null) {
+            throw new TypeError('ticket can not be null or undefined');
+        }
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4516,6 +4555,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         includeDownloadTickets?: boolean,
         actionFilter?: TaskAgentInterfaces.SecureFileActionFilter
         ): Promise<TaskAgentInterfaces.SecureFile[]> {
+        if (secureFileIds == null) {
+            throw new TypeError('secureFileIds can not be null or undefined');
+        }
 
         return new Promise<TaskAgentInterfaces.SecureFile[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4570,6 +4612,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         includeDownloadTickets?: boolean,
         actionFilter?: TaskAgentInterfaces.SecureFileActionFilter
         ): Promise<TaskAgentInterfaces.SecureFile[]> {
+        if (secureFileNames == null) {
+            throw new TypeError('secureFileNames can not be null or undefined');
+        }
 
         return new Promise<TaskAgentInterfaces.SecureFile[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4762,6 +4807,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         project: string,
         name: string
         ): Promise<TaskAgentInterfaces.SecureFile> {
+        if (name == null) {
+            throw new TypeError('name can not be null or undefined');
+        }
 
         return new Promise<TaskAgentInterfaces.SecureFile>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4814,6 +4862,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         project: string,
         endpointId: string
         ): Promise<TaskAgentInterfaces.ServiceEndpointRequestResult> {
+        if (endpointId == null) {
+            throw new TypeError('endpointId can not be null or undefined');
+        }
 
         return new Promise<TaskAgentInterfaces.ServiceEndpointRequestResult>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5089,6 +5140,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         authSchemes?: string[],
         includeFailed?: boolean
         ): Promise<TaskAgentInterfaces.ServiceEndpoint[]> {
+        if (endpointNames == null) {
+            throw new TypeError('endpointNames can not be null or undefined');
+        }
 
         return new Promise<TaskAgentInterfaces.ServiceEndpoint[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5825,6 +5879,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         versionSpec: string,
         expand?: TaskAgentInterfaces.TaskGroupExpands
         ): Promise<TaskAgentInterfaces.TaskGroup> {
+        if (versionSpec == null) {
+            throw new TypeError('versionSpec can not be null or undefined');
+        }
 
         return new Promise<TaskAgentInterfaces.TaskGroup>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5875,6 +5932,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         taskGroupId: string,
         revision: number
         ): Promise<NodeJS.ReadableStream> {
+        if (revision == null) {
+            throw new TypeError('revision can not be null or undefined');
+        }
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6033,6 +6093,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         project: string,
         parentTaskGroupId: string
         ): Promise<TaskAgentInterfaces.TaskGroup[]> {
+        if (parentTaskGroupId == null) {
+            throw new TypeError('parentTaskGroupId can not be null or undefined');
+        }
 
         return new Promise<TaskAgentInterfaces.TaskGroup[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6352,6 +6415,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         agentId: number,
         currentState: string
         ): Promise<TaskAgentInterfaces.TaskAgent> {
+        if (currentState == null) {
+            throw new TypeError('currentState can not be null or undefined');
+        }
 
         return new Promise<TaskAgentInterfaces.TaskAgent>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6636,6 +6702,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         project: string,
         groupIds: number[]
         ): Promise<TaskAgentInterfaces.VariableGroup[]> {
+        if (groupIds == null) {
+            throw new TypeError('groupIds can not be null or undefined');
+        }
 
         return new Promise<TaskAgentInterfaces.VariableGroup[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6772,6 +6841,12 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         completeCallbackPayload?: string,
         completeCallbackByAuthCode?: boolean
         ): Promise<string> {
+        if (tenantId == null) {
+            throw new TypeError('tenantId can not be null or undefined');
+        }
+        if (redirectUri == null) {
+            throw new TypeError('redirectUri can not be null or undefined');
+        }
 
         return new Promise<string>(async (resolve, reject) => {
             let routeValues: any = {

@@ -681,6 +681,9 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
         scope: DashboardInterfaces.WidgetScope,
         project?: string
         ): Promise<DashboardInterfaces.WidgetTypesResponse> {
+        if (scope == null) {
+            throw new TypeError('scope can not be null or undefined');
+        }
 
         return new Promise<DashboardInterfaces.WidgetTypesResponse>(async (resolve, reject) => {
             let routeValues: any = {

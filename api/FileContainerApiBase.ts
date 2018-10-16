@@ -91,6 +91,9 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
         itemPath: string,
         scope?: string
         ): Promise<void> {
+        if (itemPath == null) {
+            throw new TypeError('itemPath can not be null or undefined');
+        }
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {

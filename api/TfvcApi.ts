@@ -64,6 +64,9 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         includeParent?: boolean,
         includeChildren?: boolean
         ): Promise<TfvcInterfaces.TfvcBranch> {
+        if (path == null) {
+            throw new TypeError('path can not be null or undefined');
+        }
 
         return new Promise<TfvcInterfaces.TfvcBranch>(async (resolve, reject) => {
             let routeValues: any = {
@@ -175,6 +178,9 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         includeDeleted?: boolean,
         includeLinks?: boolean
         ): Promise<TfvcInterfaces.TfvcBranchRef[]> {
+        if (scopePath == null) {
+            throw new TypeError('scopePath can not be null or undefined');
+        }
 
         return new Promise<TfvcInterfaces.TfvcBranchRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -625,6 +631,9 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor,
         includeContent?: boolean
         ): Promise<TfvcInterfaces.TfvcItem> {
+        if (path == null) {
+            throw new TypeError('path can not be null or undefined');
+        }
 
         return new Promise<TfvcInterfaces.TfvcItem>(async (resolve, reject) => {
             let routeValues: any = {
@@ -691,6 +700,9 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor,
         includeContent?: boolean
         ): Promise<NodeJS.ReadableStream> {
+        if (path == null) {
+            throw new TypeError('path can not be null or undefined');
+        }
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -806,6 +818,9 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor,
         includeContent?: boolean
         ): Promise<NodeJS.ReadableStream> {
+        if (path == null) {
+            throw new TypeError('path can not be null or undefined');
+        }
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -864,6 +879,9 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor,
         includeContent?: boolean
         ): Promise<NodeJS.ReadableStream> {
+        if (path == null) {
+            throw new TypeError('path can not be null or undefined');
+        }
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -963,6 +981,9 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         requestData: TfvcInterfaces.TfvcLabelRequestData,
         project?: string
         ): Promise<TfvcInterfaces.TfvcLabel> {
+        if (requestData == null) {
+            throw new TypeError('requestData can not be null or undefined');
+        }
 
         return new Promise<TfvcInterfaces.TfvcLabel>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1016,6 +1037,9 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         top?: number,
         skip?: number
         ): Promise<TfvcInterfaces.TfvcLabelRef[]> {
+        if (requestData == null) {
+            throw new TypeError('requestData can not be null or undefined');
+        }
 
         return new Promise<TfvcInterfaces.TfvcLabelRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1068,6 +1092,9 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         top?: number,
         skip?: number
         ): Promise<TfvcInterfaces.TfvcChange[]> {
+        if (shelvesetId == null) {
+            throw new TypeError('shelvesetId can not be null or undefined');
+        }
 
         return new Promise<TfvcInterfaces.TfvcChange[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1117,6 +1144,9 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         shelvesetId: string,
         requestData?: TfvcInterfaces.TfvcShelvesetRequestData
         ): Promise<TfvcInterfaces.TfvcShelveset> {
+        if (shelvesetId == null) {
+            throw new TypeError('shelvesetId can not be null or undefined');
+        }
 
         return new Promise<TfvcInterfaces.TfvcShelveset>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1214,6 +1244,9 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     public async getShelvesetWorkItems(
         shelvesetId: string
         ): Promise<TfvcInterfaces.AssociatedWorkItem[]> {
+        if (shelvesetId == null) {
+            throw new TypeError('shelvesetId can not be null or undefined');
+        }
 
         return new Promise<TfvcInterfaces.AssociatedWorkItem[]>(async (resolve, reject) => {
             let routeValues: any = {

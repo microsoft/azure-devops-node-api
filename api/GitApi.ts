@@ -463,6 +463,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project?: string,
         baseVersionDescriptor?: GitInterfaces.GitVersionDescriptor
         ): Promise<GitInterfaces.GitBranchStats> {
+        if (name == null) {
+            throw new TypeError('name can not be null or undefined');
+        }
 
         return new Promise<GitInterfaces.GitBranchStats>(async (resolve, reject) => {
             let routeValues: any = {
@@ -814,6 +817,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         refName: string
         ): Promise<GitInterfaces.GitCherryPick> {
+        if (refName == null) {
+            throw new TypeError('refName can not be null or undefined');
+        }
 
         return new Promise<GitInterfaces.GitCherryPick>(async (resolve, reject) => {
             let routeValues: any = {
@@ -986,6 +992,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         skip?: number,
         top?: number
         ): Promise<GitInterfaces.GitCommitRef[]> {
+        if (searchCriteria == null) {
+            throw new TypeError('searchCriteria can not be null or undefined');
+        }
 
         return new Promise<GitInterfaces.GitCommitRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1045,6 +1054,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         skip?: number,
         includeLinks?: boolean
         ): Promise<GitInterfaces.GitCommitRef[]> {
+        if (pushId == null) {
+            throw new TypeError('pushId can not be null or undefined');
+        }
 
         return new Promise<GitInterfaces.GitCommitRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1623,6 +1635,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         includeContent?: boolean,
         resolveLfs?: boolean
         ): Promise<GitInterfaces.GitItem> {
+        if (path == null) {
+            throw new TypeError('path can not be null or undefined');
+        }
 
         return new Promise<GitInterfaces.GitItem>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1698,6 +1713,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         includeContent?: boolean,
         resolveLfs?: boolean
         ): Promise<NodeJS.ReadableStream> {
+        if (path == null) {
+            throw new TypeError('path can not be null or undefined');
+        }
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1834,6 +1852,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         includeContent?: boolean,
         resolveLfs?: boolean
         ): Promise<NodeJS.ReadableStream> {
+        if (path == null) {
+            throw new TypeError('path can not be null or undefined');
+        }
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1901,6 +1922,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         includeContent?: boolean,
         resolveLfs?: boolean
         ): Promise<NodeJS.ReadableStream> {
+        if (path == null) {
+            throw new TypeError('path can not be null or undefined');
+        }
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2004,6 +2028,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         otherCollectionId?: string,
         otherRepositoryId?: string
         ): Promise<GitInterfaces.GitCommitRef[]> {
+        if (otherCommitId == null) {
+            throw new TypeError('otherCommitId can not be null or undefined');
+        }
 
         return new Promise<GitInterfaces.GitCommitRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3917,6 +3944,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         skip?: number,
         top?: number
         ): Promise<GitInterfaces.GitPullRequest[]> {
+        if (searchCriteria == null) {
+            throw new TypeError('searchCriteria can not be null or undefined');
+        }
 
         return new Promise<GitInterfaces.GitPullRequest[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4095,6 +4125,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         skip?: number,
         top?: number
         ): Promise<GitInterfaces.GitPullRequest[]> {
+        if (searchCriteria == null) {
+            throw new TypeError('searchCriteria can not be null or undefined');
+        }
 
         return new Promise<GitInterfaces.GitPullRequest[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5389,6 +5422,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project?: string,
         projectId?: string
         ): Promise<GitInterfaces.GitRef> {
+        if (filter == null) {
+            throw new TypeError('filter can not be null or undefined');
+        }
 
         return new Promise<GitInterfaces.GitRef>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5868,6 +5904,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         includeParent: boolean,
         project?: string
         ): Promise<GitInterfaces.GitRepository> {
+        if (includeParent == null) {
+            throw new TypeError('includeParent can not be null or undefined');
+        }
 
         return new Promise<GitInterfaces.GitRepository>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6058,6 +6097,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         refName: string
         ): Promise<GitInterfaces.GitRevert> {
+        if (refName == null) {
+            throw new TypeError('refName can not be null or undefined');
+        }
 
         return new Promise<GitInterfaces.GitRevert>(async (resolve, reject) => {
             let routeValues: any = {

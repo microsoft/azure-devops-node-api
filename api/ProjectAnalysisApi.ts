@@ -79,6 +79,12 @@ export class ProjectAnalysisApi extends basem.ClientApiBase implements IProjectA
         fromDate: Date,
         aggregationType: ProjectAnalysisInterfaces.AggregationType
         ): Promise<ProjectAnalysisInterfaces.ProjectActivityMetrics> {
+        if (fromDate == null) {
+            throw new TypeError('fromDate can not be null or undefined');
+        }
+        if (aggregationType == null) {
+            throw new TypeError('aggregationType can not be null or undefined');
+        }
 
         return new Promise<ProjectAnalysisInterfaces.ProjectActivityMetrics>(async (resolve, reject) => {
             let routeValues: any = {
@@ -134,6 +140,18 @@ export class ProjectAnalysisApi extends basem.ClientApiBase implements IProjectA
         skip: number,
         top: number
         ): Promise<ProjectAnalysisInterfaces.RepositoryActivityMetrics[]> {
+        if (fromDate == null) {
+            throw new TypeError('fromDate can not be null or undefined');
+        }
+        if (aggregationType == null) {
+            throw new TypeError('aggregationType can not be null or undefined');
+        }
+        if (skip == null) {
+            throw new TypeError('skip can not be null or undefined');
+        }
+        if (top == null) {
+            throw new TypeError('top can not be null or undefined');
+        }
 
         return new Promise<ProjectAnalysisInterfaces.RepositoryActivityMetrics[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -187,6 +205,12 @@ export class ProjectAnalysisApi extends basem.ClientApiBase implements IProjectA
         fromDate: Date,
         aggregationType: ProjectAnalysisInterfaces.AggregationType
         ): Promise<ProjectAnalysisInterfaces.RepositoryActivityMetrics> {
+        if (fromDate == null) {
+            throw new TypeError('fromDate can not be null or undefined');
+        }
+        if (aggregationType == null) {
+            throw new TypeError('aggregationType can not be null or undefined');
+        }
 
         return new Promise<ProjectAnalysisInterfaces.RepositoryActivityMetrics>(async (resolve, reject) => {
             let routeValues: any = {

@@ -633,6 +633,15 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         artifactVersionId: string,
         project?: string
         ): Promise<ReleaseInterfaces.AutoTriggerIssue[]> {
+        if (artifactType == null) {
+            throw new TypeError('artifactType can not be null or undefined');
+        }
+        if (sourceId == null) {
+            throw new TypeError('sourceId can not be null or undefined');
+        }
+        if (artifactVersionId == null) {
+            throw new TypeError('artifactVersionId can not be null or undefined');
+        }
 
         return new Promise<ReleaseInterfaces.AutoTriggerIssue[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -987,6 +996,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         definitionId: number,
         revision: number
         ): Promise<NodeJS.ReadableStream> {
+        if (revision == null) {
+            throw new TypeError('revision can not be null or undefined');
+        }
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1467,6 +1479,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         templateId: string
         ): Promise<void> {
+        if (templateId == null) {
+            throw new TypeError('templateId can not be null or undefined');
+        }
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1515,6 +1530,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         templateId: string
         ): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate> {
+        if (templateId == null) {
+            throw new TypeError('templateId can not be null or undefined');
+        }
 
         return new Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1611,6 +1629,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         templateId: string
         ): Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate> {
+        if (templateId == null) {
+            throw new TypeError('templateId can not be null or undefined');
+        }
 
         return new Promise<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2646,6 +2667,12 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         artifactType: string,
         artifactSourceId: string
         ): Promise<ReleaseInterfaces.ProjectReference[]> {
+        if (artifactType == null) {
+            throw new TypeError('artifactType can not be null or undefined');
+        }
+        if (artifactSourceId == null) {
+            throw new TypeError('artifactSourceId can not be null or undefined');
+        }
 
         return new Promise<ReleaseInterfaces.ProjectReference[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2959,6 +2986,12 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         includeArtifact?: boolean,
         definitionEnvironmentIdsFilter?: number[]
         ): Promise<ReleaseInterfaces.ReleaseDefinitionSummary> {
+        if (definitionId == null) {
+            throw new TypeError('definitionId can not be null or undefined');
+        }
+        if (releaseCount == null) {
+            throw new TypeError('releaseCount can not be null or undefined');
+        }
 
         return new Promise<ReleaseInterfaces.ReleaseDefinitionSummary>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3012,6 +3045,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         releaseId: number,
         definitionSnapshotRevision: number
         ): Promise<NodeJS.ReadableStream> {
+        if (definitionSnapshotRevision == null) {
+            throw new TypeError('definitionSnapshotRevision can not be null or undefined');
+        }
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3055,6 +3091,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         releaseId: number,
         comment: string
         ): Promise<void> {
+        if (comment == null) {
+            throw new TypeError('comment can not be null or undefined');
+        }
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4086,6 +4125,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         project: string,
         releaseDefinitionId: number
         ): Promise<ReleaseInterfaces.ArtifactVersionQueryResult> {
+        if (releaseDefinitionId == null) {
+            throw new TypeError('releaseDefinitionId can not be null or undefined');
+        }
 
         return new Promise<ReleaseInterfaces.ArtifactVersionQueryResult>(async (resolve, reject) => {
             let routeValues: any = {

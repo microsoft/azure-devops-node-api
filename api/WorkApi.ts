@@ -327,6 +327,12 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
         childBacklogContextCategoryRefName: string,
         workitemIds: number[]
         ): Promise<WorkInterfaces.ParentChildWIMap[]> {
+        if (childBacklogContextCategoryRefName == null) {
+            throw new TypeError('childBacklogContextCategoryRefName can not be null or undefined');
+        }
+        if (workitemIds == null) {
+            throw new TypeError('workitemIds can not be null or undefined');
+        }
 
         return new Promise<WorkInterfaces.ParentChildWIMap[]>(async (resolve, reject) => {
             let project = null;

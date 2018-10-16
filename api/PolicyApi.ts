@@ -373,6 +373,9 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
         top?: number,
         skip?: number
         ): Promise<PolicyInterfaces.PolicyEvaluationRecord[]> {
+        if (artifactId == null) {
+            throw new TypeError('artifactId can not be null or undefined');
+        }
 
         return new Promise<PolicyInterfaces.PolicyEvaluationRecord[]>(async (resolve, reject) => {
             let routeValues: any = {

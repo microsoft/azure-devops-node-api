@@ -469,6 +469,9 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         depth?: number,
         errorPolicy?: WorkItemTrackingInterfaces.ClassificationNodesErrorPolicy
         ): Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode[]> {
+        if (ids == null) {
+            throw new TypeError('ids can not be null or undefined');
+        }
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1263,6 +1266,9 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         expand?: WorkItemTrackingInterfaces.QueryExpand,
         includeDeleted?: boolean
         ): Promise<WorkItemTrackingInterfaces.QueryHierarchyItemsResult> {
+        if (filter == null) {
+            throw new TypeError('filter can not be null or undefined');
+        }
 
         return new Promise<WorkItemTrackingInterfaces.QueryHierarchyItemsResult>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1455,6 +1461,9 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         ids: number[],
         project?: string
         ): Promise<WorkItemTrackingInterfaces.WorkItemDeleteReference[]> {
+        if (ids == null) {
+            throw new TypeError('ids can not be null or undefined');
+        }
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemDeleteReference[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2909,6 +2918,9 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         errorPolicy?: WorkItemTrackingInterfaces.WorkItemErrorPolicy,
         project?: string
         ): Promise<WorkItemTrackingInterfaces.WorkItem[]> {
+        if (ids == null) {
+            throw new TypeError('ids can not be null or undefined');
+        }
 
         return new Promise<WorkItemTrackingInterfaces.WorkItem[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3108,6 +3120,9 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
         ids: number[],
         action?: string
         ): Promise<WorkItemTrackingInterfaces.WorkItemNextStateOnTransition[]> {
+        if (ids == null) {
+            throw new TypeError('ids can not be null or undefined');
+        }
 
         return new Promise<WorkItemTrackingInterfaces.WorkItemNextStateOnTransition[]>(async (resolve, reject) => {
             let routeValues: any = {

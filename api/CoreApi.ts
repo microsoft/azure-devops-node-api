@@ -984,6 +984,9 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         proxyUrl: string,
         site?: string
         ): Promise<void> {
+        if (proxyUrl == null) {
+            throw new TypeError('proxyUrl can not be null or undefined');
+        }
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
