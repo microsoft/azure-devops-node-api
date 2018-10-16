@@ -286,7 +286,7 @@ export interface FieldInputValues extends FormInputInterfaces.InputValues {
 }
 
 export interface FieldValuesQuery extends FormInputInterfaces.InputValuesQuery {
-    inputValues: FieldInputValues[];
+    inputValues?: FieldInputValues[];
     scope?: string;
 }
 
