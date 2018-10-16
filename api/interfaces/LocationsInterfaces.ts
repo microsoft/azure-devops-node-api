@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
@@ -11,20 +11,21 @@
 "use strict";
 
 import IdentitiesInterfaces = require("../interfaces/IdentitiesInterfaces");
+import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
 export interface AccessMapping {
-    accessPoint: string;
-    displayName: string;
-    moniker: string;
+    accessPoint?: string;
+    displayName?: string;
+    moniker?: string;
     /**
      * The service which owns this access mapping e.g. TFS, ELS, etc.
      */
-    serviceOwner: string;
+    serviceOwner?: string;
     /**
      * Part of the access mapping which applies context after the access point of the server.
      */
-    virtualDirectory: string;
+    virtualDirectory?: string;
 }
 
 /**
@@ -34,31 +35,35 @@ export interface ConnectionData {
     /**
      * The Id of the authenticated user who made this request. More information about the user can be obtained by passing this Id to the Identity service
      */
-    authenticatedUser: IdentitiesInterfaces.Identity;
+    authenticatedUser?: IdentitiesInterfaces.Identity;
     /**
      * The Id of the authorized user who made this request. More information about the user can be obtained by passing this Id to the Identity service
      */
-    authorizedUser: IdentitiesInterfaces.Identity;
+    authorizedUser?: IdentitiesInterfaces.Identity;
     /**
      * The id for the server.
      */
-    deploymentId: string;
+    deploymentId?: string;
+    /**
+     * The type for the server Hosted/OnPremises.
+     */
+    deploymentType?: VSSInterfaces.DeploymentFlags;
     /**
      * The instance id for this host.
      */
-    instanceId: string;
+    instanceId?: string;
     /**
      * The last user access for this instance.  Null if not requested specifically.
      */
-    lastUserAccess: Date;
+    lastUserAccess?: Date;
     /**
      * Data that the location service holds.
      */
-    locationServiceData: LocationServiceData;
+    locationServiceData?: LocationServiceData;
     /**
      * The virtual directory of the host we are talking to.
      */
-    webApplicationRelativeDirectory: string;
+    webApplicationRelativeDirectory?: string;
 }
 
 export enum InheritLevel {
@@ -70,8 +75,8 @@ export enum InheritLevel {
 }
 
 export interface LocationMapping {
-    accessMappingMoniker: string;
-    location: string;
+    accessMappingMoniker?: string;
+    location?: string;
 }
 
 /**
@@ -81,35 +86,35 @@ export interface LocationServiceData {
     /**
      * Data about the access mappings contained by this location service.
      */
-    accessMappings: AccessMapping[];
+    accessMappings?: AccessMapping[];
     /**
      * Data that the location service holds.
      */
-    clientCacheFresh: boolean;
+    clientCacheFresh?: boolean;
     /**
      * The time to live on the location service cache.
      */
-    clientCacheTimeToLive: number;
+    clientCacheTimeToLive?: number;
     /**
      * The default access mapping moniker for the server.
      */
-    defaultAccessMappingMoniker: string;
+    defaultAccessMappingMoniker?: string;
     /**
      * The obsolete id for the last change that took place on the server (use LastChangeId64).
      */
-    lastChangeId: number;
+    lastChangeId?: number;
     /**
      * The non-truncated 64-bit id for the last change that took place on the server.
      */
-    lastChangeId64: number;
+    lastChangeId64?: number;
     /**
      * Data about the service definitions contained by this location service.
      */
-    serviceDefinitions: ServiceDefinition[];
+    serviceDefinitions?: ServiceDefinition[];
     /**
      * The identifier of the deployment which is hosting this location data (e.g. SPS, TFS, ELS, Napa, etc.)
      */
-    serviceOwner: string;
+    serviceOwner?: string;
 }
 
 export enum RelativeToSetting {
@@ -119,45 +124,45 @@ export enum RelativeToSetting {
 }
 
 export interface ResourceAreaInfo {
-    id: string;
-    locationUrl: string;
-    name: string;
+    id?: string;
+    locationUrl?: string;
+    name?: string;
 }
 
 export interface ServiceDefinition {
-    description: string;
-    displayName: string;
-    identifier: string;
-    inheritLevel: InheritLevel;
-    locationMappings: LocationMapping[];
+    description?: string;
+    displayName?: string;
+    identifier?: string;
+    inheritLevel?: InheritLevel;
+    locationMappings?: LocationMapping[];
     /**
      * Maximum api version that this resource supports (current server version for this resource). Copied from <c>ApiResourceLocation</c>.
      */
-    maxVersion: string;
+    maxVersion?: string;
     /**
      * Minimum api version that this resource supports. Copied from <c>ApiResourceLocation</c>.
      */
-    minVersion: string;
-    parentIdentifier: string;
-    parentServiceType: string;
-    properties: any;
-    relativePath: string;
-    relativeToSetting: RelativeToSetting;
+    minVersion?: string;
+    parentIdentifier?: string;
+    parentServiceType?: string;
+    properties?: any;
+    relativePath?: string;
+    relativeToSetting?: RelativeToSetting;
     /**
      * The latest version of this resource location that is in "Release" (non-preview) mode. Copied from <c>ApiResourceLocation</c>.
      */
-    releasedVersion: string;
+    releasedVersion?: string;
     /**
      * The current resource version supported by this resource location. Copied from <c>ApiResourceLocation</c>.
      */
-    resourceVersion: number;
+    resourceVersion?: number;
     /**
      * The service which owns this definition e.g. TFS, ELS, etc.
      */
-    serviceOwner: string;
-    serviceType: string;
-    status: ServiceStatus;
-    toolId: string;
+    serviceOwner?: string;
+    serviceType?: string;
+    status?: ServiceStatus;
+    toolId?: string;
 }
 
 export enum ServiceStatus {
@@ -199,6 +204,9 @@ export var TypeInfo = {
 };
 
 TypeInfo.ConnectionData.fields = {
+    deploymentType: {
+        enumType: VSSInterfaces.TypeInfo.DeploymentFlags
+    },
     lastUserAccess: {
         isDate: true,
     },

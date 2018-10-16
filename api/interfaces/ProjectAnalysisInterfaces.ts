@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
@@ -18,56 +18,62 @@ export enum AggregationType {
 }
 
 export interface AnalyzerDescriptor {
-    description: string;
+    description?: string;
     id: string;
-    majorVersion: number;
-    minorVersion: number;
+    majorVersion?: number;
+    minorVersion?: number;
     name: string;
-    patchVersion: number;
+    patchVersion?: number;
 }
 
 export interface CodeChangeTrendItem {
-    time: Date;
-    value: number;
+    time?: Date;
+    value?: number;
 }
 
-export interface LanguageStatistics {
-    bytes: number;
-    files: number;
-    filesPercentage: number;
-    languagePercentage: number;
-    name: string;
+export interface LanguageMetricsSecuredObject {
+    namespaceId?: string;
+    projectId?: string;
+    requiredPermissions?: number;
+}
+
+export interface LanguageStatistics extends LanguageMetricsSecuredObject {
+    bytes?: number;
+    files?: number;
+    filesPercentage?: number;
+    languagePercentage?: number;
+    name?: string;
 }
 
 export interface ProjectActivityMetrics {
-    authorsCount: number;
-    codeChangesCount: number;
-    codeChangesTrend: CodeChangeTrendItem[];
-    projectId: string;
-    pullRequestsCompletedCount: number;
-    pullRequestsCreatedCount: number;
+    authorsCount?: number;
+    codeChangesCount?: number;
+    codeChangesTrend?: CodeChangeTrendItem[];
+    projectId?: string;
+    pullRequestsCompletedCount?: number;
+    pullRequestsCreatedCount?: number;
 }
 
-export interface ProjectLanguageAnalytics {
-    id: string;
-    languageBreakdown: LanguageStatistics[];
-    repositoryLanguageAnalytics: RepositoryLanguageAnalytics[];
-    resultPhase: ResultPhase;
-    url: string;
+export interface ProjectLanguageAnalytics extends LanguageMetricsSecuredObject {
+    id?: string;
+    languageBreakdown?: LanguageStatistics[];
+    repositoryLanguageAnalytics?: RepositoryLanguageAnalytics[];
+    resultPhase?: ResultPhase;
+    url?: string;
 }
 
 export interface RepositoryActivityMetrics {
-    codeChangesCount: number;
-    codeChangesTrend: CodeChangeTrendItem[];
-    repositoryId: string;
+    codeChangesCount?: number;
+    codeChangesTrend?: CodeChangeTrendItem[];
+    repositoryId?: string;
 }
 
-export interface RepositoryLanguageAnalytics {
-    id: string;
-    languageBreakdown: LanguageStatistics[];
-    name: string;
-    resultPhase: ResultPhase;
-    updatedTime: Date;
+export interface RepositoryLanguageAnalytics extends LanguageMetricsSecuredObject {
+    id?: string;
+    languageBreakdown?: LanguageStatistics[];
+    name?: string;
+    resultPhase?: ResultPhase;
+    updatedTime?: Date;
 }
 
 export enum ResultPhase {

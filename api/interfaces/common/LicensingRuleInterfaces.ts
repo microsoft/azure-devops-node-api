@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
@@ -23,22 +23,22 @@ export enum AccountLicenseType {
 }
 
 export interface AccountUserLicense {
-    license: number;
-    source: LicensingSource;
+    license?: number;
+    source?: LicensingSource;
 }
 
 export interface ApplicationStatus {
-    extensions: ExtensionApplicationStatus[];
-    isTruncated: boolean;
-    licenses: LicenseApplicationStatus[];
-    option: RuleOption;
-    status: OperationsInterfaces.OperationStatus;
+    extensions?: ExtensionApplicationStatus[];
+    isTruncated?: boolean;
+    licenses?: LicenseApplicationStatus[];
+    option?: RuleOption;
+    status?: OperationsInterfaces.OperationStatus;
 }
 
 export interface ExtensionApplicationStatus extends LicensingApplicationStatus {
-    extensionId: string;
-    incompatible: number;
-    unassigned: number;
+    extensionId?: string;
+    incompatible?: number;
+    unassigned?: number;
 }
 
 /**
@@ -48,19 +48,19 @@ export interface ExtensionRule {
     /**
      * Extension Id
      */
-    extensionId: string;
+    extensionId?: string;
     /**
      * Status of the group rule (applied, missing licenses, etc)
      */
-    status: GroupLicensingRuleStatus;
+    status?: GroupLicensingRuleStatus;
 }
 
 export interface GraphSubjectLookup {
-    lookupKeys: GraphSubjectLookupKey[];
+    lookupKeys?: GraphSubjectLookupKey[];
 }
 
 export interface GraphSubjectLookupKey {
-    descriptor: string;
+    descriptor?: string;
 }
 
 /**
@@ -70,15 +70,15 @@ export interface GroupLicensingRule {
     /**
      * Extension Rules
      */
-    extensionRules: ExtensionRule[];
+    extensionRules?: ExtensionRule[];
     /**
      * License Rule
      */
-    licenseRule: LicenseRule;
+    licenseRule?: LicenseRule;
     /**
      * SubjectDescriptor for the rule
      */
-    subjectDescriptor: string;
+    subjectDescriptor?: string;
 }
 
 export enum GroupLicensingRuleStatus {
@@ -107,19 +107,19 @@ export interface GroupLicensingRuleUpdate {
     /**
      * Extensions to Add
      */
-    extensionsToAdd: string[];
+    extensionsToAdd?: string[];
     /**
      * Extensions to Remove
      */
-    extensionsToRemove: string[];
+    extensionsToRemove?: string[];
     /**
      * New License
      */
-    license: License;
+    license?: License;
     /**
      * SubjectDescriptor for the rule
      */
-    subjectDescriptor: string;
+    subjectDescriptor?: string;
 }
 
 /**
@@ -129,12 +129,12 @@ export interface License {
     /**
      * Gets the source of the license
      */
-    source: LicensingSource;
+    source?: LicensingSource;
 }
 
 export interface LicenseApplicationStatus extends LicensingApplicationStatus {
-    accountUserLicense: AccountUserLicense;
-    license: License;
+    accountUserLicense?: AccountUserLicense;
+    license?: License;
 }
 
 /**
@@ -144,21 +144,21 @@ export interface LicenseRule {
     /**
      * The last time the rule was executed (regardless of whether any changes were made)
      */
-    lastExecuted: Date;
+    lastExecuted?: Date;
     /**
      * License
      */
-    license: License;
+    license?: License;
     /**
      * Status of the group rule (applied, missing licenses, etc)
      */
-    status: GroupLicensingRuleStatus;
+    status?: GroupLicensingRuleStatus;
 }
 
 export interface LicensingApplicationStatus {
-    assigned: number;
-    failed: number;
-    insufficientResources: number;
+    assigned?: number;
+    failed?: number;
+    insufficientResources?: number;
 }
 
 export enum LicensingSource {
