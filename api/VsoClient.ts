@@ -80,7 +80,7 @@ export class VsoClient {
                     if (regExExecArray[3]) {
                         // requesting preview
                         isPreview = true;
-                        if (regExExecArray[5]) { 
+                        if (regExExecArray[5]) {
                             // we have a resource version
                             resourceVersion = +regExExecArray[5];
                         }
@@ -119,7 +119,7 @@ export class VsoClient {
 
         return this.beginGetLocation(area, locationId)
             .then((location: ifm.ApiResourceLocation): ClientVersioningData => {
-                if (!location) { 
+                if (!location) {
                     throw new Error("Failed to find api location for area: " + area + " id: " + locationId);
                 }
 
@@ -132,7 +132,7 @@ export class VsoClient {
                 };
             });
     }
-    
+
     /**
      * Sets a promise that is waited on before any requests are issued. Can be used to asynchronously
      * set the request url and auth token manager.
@@ -142,10 +142,10 @@ export class VsoClient {
             this._initializationPromise = promise;
         }
     }
-    
+
     /**
      * Gets information about an API resource location (route template, supported versions, etc.)
-     * 
+     *
      * @param area resource area name
      * @param locationId Guid of the location to get
      */
@@ -162,7 +162,7 @@ export class VsoClient {
         if (!areaLocationsPromise) {
             let requestUrl = this.resolveUrl(VsoClient.APIS_RELATIVE_PATH + "/" + area);
             areaLocationsPromise = this.restClient.options<any>(requestUrl)
-                .then((res:restm.IRestResponse<any>) => {                    
+                .then((res:restm.IRestResponse<any>) => {
                     let locationsLookup: VssApiResourceLocationLookup = {};
                     let resourceLocations: ifm.ApiResourceLocation[] = res.result.value;
                     let i;
@@ -201,8 +201,12 @@ export class VsoClient {
         }
 
         if(queryString === '' && prefix.length > 0){
+            // Date.prototype.toString() returns a string that is not valid for the REST API.
+            // Need to specially call `toUTCString()` instead for such cases
+            const queryValue = typeof queryParams === 'object' && 'toUTCString' in queryParams ? (queryParams as Date).toUTCString() : queryParams.toString();
+
             // Will always need to chop period off of end of prefix
-            queryString = prefix.slice(0,-1) + '=' + encodeURIComponent(queryParams.toString()) + '&';
+            queryString = prefix.slice(0,-1) + '=' + encodeURIComponent(queryValue) + '&';
         }
         return queryString;
     }
