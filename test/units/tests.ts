@@ -11,7 +11,7 @@ describe('VSOClient Units', function () {
     let rest: rm.RestClient;
     let vsoClient: vsom.VsoClient
     const baseUrl: string = 'https://dev.azure.com/';
-    
+
     before(() => {
         const userAgent: string = "testAgent";
         rest = new rm.RestClient(userAgent, null, []);
@@ -162,6 +162,27 @@ describe('VSOClient Units', function () {
         assert.equal(res.requestUrl, 'https://dev.azure.com/testTemplate?status.innerstatus=2&version=1&nestedObject.nestedField=value&nestedObject.innerNestedObject.key=val2');
     });
 
+    it('gets versioning datafor dates', async () => {
+        //Arrange
+        nock('https://dev.azure.com/_apis/testArea5', {
+            reqheaders: {
+                'accept': 'application/json',
+                'user-agent': 'testAgent'
+            }})
+            .options('')
+            .reply(200, {
+                value: [{id: 'testLocation', maxVersion: '1', releasedVersion: '1', routeTemplate: 'testTemplate', area: 'testArea5', resourceName: 'testName', resourceVersion: '1'}]
+        });
+
+        //Act
+        const queryParams = {min: new Date(Date.UTC(208, 9, 19))};
+        const res: vsom.ClientVersioningData = await vsoClient.getVersioningData('1', 'testArea5', 'testLocation', {'testKey': 'testValue'}, queryParams);
+
+        //Assert
+        assert.equal(res.apiVersion, '1');
+        assert.equal(res.requestUrl, 'https://dev.azure.com/testTemplate?min=Wed%2C%2019%20Oct%200208%2000%3A00%3A00%20GMT');
+    });
+
     it('gets versioning data after an initialization promise', async () => {
         //Arrange
         nock('https://newbase.com/_apis/testArea6', {
@@ -207,7 +228,7 @@ describe('VSOClient Units', function () {
 });
 
 describe('WebApi Units', function () {
-    const osName: string = os.platform(); 
+    const osName: string = os.platform();
     const osVersion: string = os.release();
     const nodeApiName: string = 'azure-devops-node-api';
     const nodeApiVersion: string = JSON.parse(fs.readFileSync('package.json', 'utf8')).version;
@@ -245,7 +266,7 @@ describe('WebApi Units', function () {
         // Assert
         assert.equal(res.apiVersion, '1');
         assert.equal(res.requestUrl, 'https://dev.azure.com/testTemplate');
-        
+
     });
 
     it('connects to the server with the correct user agent when request settings are not specified', async () => {
@@ -273,8 +294,8 @@ describe('WebApi Units', function () {
     it('supports no_proxy environment variable', async() => {
         const myWebApi: WebApi.WebApi = new WebApi.WebApi('https://dev.azure.com/', WebApi.getBasicHandler('user', 'password'), null);
         process.env.no_proxy='dev.azure.com,my-tfs-instance.host'
-        assert.equal(myWebApi.isNoProxyHost('https://dev.azure.com/myproject'), true); 
-        assert.equal(myWebApi.isNoProxyHost('https://my-tfs-instance.host/myproject'), true); 
+        assert.equal(myWebApi.isNoProxyHost('https://dev.azure.com/myproject'), true);
+        assert.equal(myWebApi.isNoProxyHost('https://my-tfs-instance.host/myproject'), true);
         assert.equal(myWebApi.isNoProxyHost('https://my-other-tfs-instance.host/myproject'), false);
     });
 });
