@@ -76,7 +76,7 @@ These clients are available:
 
 ### Use the client
  
-Coding is easy using linear coding with async/await in typescript
+Coding is easy using linear coding with async/await in TypeScript
 
 ```javascript
 import * as bi from 'azure-devops-node-api/interfaces/BuildInterfaces';
@@ -86,7 +86,7 @@ async function run() {
     let defs: bi.DefinitionReference[] = await build.getDefinitions(project);
 
     defs.forEach((defRef: bi.DefinitionReference) => {
-        console.log(defRef.name + ' (' + defRef.id + ')');
+        console.log(`${defRef.name} (${defRef.id})`);
     });    
 }
 
