@@ -234,7 +234,7 @@ export async function run() {
         /********** Work Item Tracking Process **********/
         printSectionStart('Work Item Tracking Process');
         const workItemTrackingProcessApi = await vstsCollectionLevel.getWorkItemTrackingProcessApi();
-        const processes: ProcessModel[] = await workItemTrackingProcessApi.getProcesses();
+        const processes: ProcessModel[] = await workItemTrackingProcessApi.getListOfProcesses();
 
         if (processes) {
             console.log(`found ${processes.length} processes`);

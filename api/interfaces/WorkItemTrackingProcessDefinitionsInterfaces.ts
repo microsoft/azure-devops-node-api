@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
@@ -16,65 +16,69 @@ export interface BehaviorCreateModel {
     /**
      * Color
      */
-    color: string;
+    color?: string;
+    /**
+     * Optional - Id
+     */
+    id?: string;
     /**
      * Parent behavior id
      */
-    inherits: string;
+    inherits?: string;
     /**
      * Name of the behavior
      */
-    name: string;
+    name?: string;
 }
 
 export interface BehaviorModel {
     /**
      * Is the behavior abstract (i.e. can not be associated with any work item type)
      */
-    abstract: boolean;
+    abstract?: boolean;
     /**
      * Color
      */
-    color: string;
+    color?: string;
     /**
      * Description
      */
-    description: string;
+    description?: string;
     /**
      * Behavior Id
      */
-    id: string;
+    id?: string;
     /**
      * Parent behavior reference
      */
-    inherits: WorkItemBehaviorReference;
+    inherits?: WorkItemBehaviorReference;
     /**
      * Behavior Name
      */
-    name: string;
+    name?: string;
     /**
      * Is the behavior overrides a behavior from system process
      */
-    overridden: boolean;
+    overridden?: boolean;
     /**
      * Rank
      */
-    rank: number;
+    rank?: number;
     /**
      * Url of the behavior
      */
-    url: string;
+    url?: string;
 }
 
 export interface BehaviorReplaceModel {
     /**
      * Color
      */
-    color: string;
+    color?: string;
     /**
      * Behavior Name
      */
-    name: string;
+    name?: string;
 }
 
 /**
@@ -84,86 +88,86 @@ export interface Control {
     /**
      * Contribution for the control.
      */
-    contribution: WitContribution;
+    contribution?: WitContribution;
     /**
      * Type of the control.
      */
-    controlType: string;
+    controlType?: string;
     /**
      * Height of the control, for html controls.
      */
-    height: number;
+    height?: number;
     /**
      * The id for the layout node.
      */
-    id: string;
+    id?: string;
     /**
      * A value indicating whether this layout node has been inherited from a parent layout.  This is expected to only be only set by the combiner.
      */
-    inherited: boolean;
+    inherited?: boolean;
     /**
      * A value indicating if the layout node is contribution or not.
      */
-    isContribution: boolean;
+    isContribution?: boolean;
     /**
      * Label for the field
      */
-    label: string;
+    label?: string;
     /**
      * Inner text of the control.
      */
-    metadata: string;
-    order: number;
+    metadata?: string;
+    order?: number;
     /**
      * A value indicating whether this layout node has been overridden by a child layout.
      */
-    overridden: boolean;
+    overridden?: boolean;
     /**
      * A value indicating if the control is readonly.
      */
-    readOnly: boolean;
+    readOnly?: boolean;
     /**
      * A value indicating if the control should be hidden or not.
      */
-    visible: boolean;
+    visible?: boolean;
     /**
      * Watermark text for the textbox.
      */
-    watermark: string;
+    watermark?: string;
 }
 
 /**
  * Represents the extensions part of the layout
  */
 export interface Extension {
-    id: string;
+    id?: string;
 }
 
 export interface FieldModel {
     /**
      * Description about field
      */
-    description: string;
+    description?: string;
     /**
      * ID of the field
      */
-    id: string;
+    id?: string;
     /**
      * Name of the field
      */
-    name: string;
+    name?: string;
     /**
      * Reference to picklist in this field
      */
-    pickList: PickListMetadataModel;
+    pickList?: PickListMetadataModel;
     /**
      * Type of field
      */
-    type: FieldType;
+    type?: FieldType;
     /**
      * Url to the field
      */
-    url: string;
+    url?: string;
 }
 
 export enum FieldType {
@@ -184,23 +188,23 @@ export enum FieldType {
 }
 
 export interface FieldUpdate {
-    description: string;
-    id: string;
+    description?: string;
+    id?: string;
 }
 
 export interface FormLayout {
     /**
      * Gets and sets extensions list
      */
-    extensions: Extension[];
+    extensions?: Extension[];
     /**
      * Top level tabs of the layout.
      */
-    pages: Page[];
+    pages?: Page[];
     /**
      * Headers controls of the layout.
      */
-    systemControls: Control[];
+    systemControls?: Control[];
 }
 
 export enum GetWorkItemTypeExpand {
@@ -217,94 +221,94 @@ export interface Group {
     /**
      * Contribution for the group.
      */
-    contribution: WitContribution;
+    contribution?: WitContribution;
     /**
      * Controls to be put in the group.
      */
-    controls: Control[];
+    controls?: Control[];
     /**
      * The height for the contribution.
      */
-    height: number;
+    height?: number;
     /**
      * The id for the layout node.
      */
-    id: string;
+    id?: string;
     /**
      * A value indicating whether this layout node has been inherited from a parent layout.  This is expected to only be only set by the combiner.
      */
-    inherited: boolean;
+    inherited?: boolean;
     /**
      * A value indicating if the layout node is contribution are not.
      */
-    isContribution: boolean;
+    isContribution?: boolean;
     /**
      * Label for the group.
      */
-    label: string;
+    label?: string;
     /**
      * Order in which the group should appear in the section.
      */
-    order: number;
+    order?: number;
     /**
      * A value indicating whether this layout node has been overridden by a child layout.
      */
-    overridden: boolean;
+    overridden?: boolean;
     /**
      * A value indicating if the group should be hidden or not.
      */
-    visible: boolean;
+    visible?: boolean;
 }
 
 export interface HideStateModel {
-    hidden: boolean;
+    hidden?: boolean;
 }
 
 export interface Page {
     /**
      * Contribution for the page.
      */
-    contribution: WitContribution;
+    contribution?: WitContribution;
     /**
      * The id for the layout node.
      */
-    id: string;
+    id?: string;
     /**
      * A value indicating whether this layout node has been inherited from a parent layout.  This is expected to only be only set by the combiner.
      */
-    inherited: boolean;
+    inherited?: boolean;
     /**
      * A value indicating if the layout node is contribution are not.
      */
-    isContribution: boolean;
+    isContribution?: boolean;
     /**
      * The label for the page.
      */
-    label: string;
+    label?: string;
     /**
      * A value indicating whether any user operations are permitted on this page and the contents of this page
      */
-    locked: boolean;
+    locked?: boolean;
     /**
      * Order in which the page should appear in the layout.
      */
-    order: number;
+    order?: number;
     /**
      * A value indicating whether this layout node has been overridden by a child layout.
      */
-    overridden: boolean;
+    overridden?: boolean;
     /**
      * The icon for the page.
      */
-    pageType: PageType;
+    pageType?: PageType;
     /**
      * The sections of the page.
      */
-    sections: Section[];
+    sections?: Section[];
     /**
      * A value indicating if the page should be hidden or not.
      */
-    visible: boolean;
+    visible?: boolean;
 }
 
 /**
@@ -318,139 +322,139 @@ export enum PageType {
 }
 
 export interface PickListItemModel {
-    id: string;
-    value: string;
+    id?: string;
+    value?: string;
 }
 
 export interface PickListMetadataModel {
     /**
      * ID of the picklist
      */
-    id: string;
+    id?: string;
     /**
      * Is input values by user only limited to suggested values
      */
-    isSuggested: boolean;
+    isSuggested?: boolean;
     /**
      * Name of the picklist
      */
-    name: string;
+    name?: string;
     /**
      * Type of picklist
      */
-    type: string;
+    type?: string;
     /**
      * Url of the picklist
      */
-    url: string;
+    url?: string;
 }
 
 export interface PickListModel extends PickListMetadataModel {
     /**
      * A list of PicklistItemModel
      */
-    items: PickListItemModel[];
+    items?: PickListItemModel[];
 }
 
 /**
  * A layout node holding groups together in a page
  */
 export interface Section {
-    groups: Group[];
+    groups?: Group[];
     /**
      * The id for the layout node.
      */
-    id: string;
+    id?: string;
     /**
      * A value indicating whether this layout node has been overridden by a child layout.
      */
-    overridden: boolean;
+    overridden?: boolean;
 }
 
 export interface WitContribution {
     /**
      * The id for the contribution.
      */
-    contributionId: string;
+    contributionId?: string;
     /**
      * The height for the contribution.
      */
-    height: number;
+    height?: number;
     /**
      * A dictionary holding key value pairs for contribution inputs.
      */
-    inputs: { [key: string] : any; };
+    inputs?: { [key: string] : any; };
     /**
      * A value indicating if the contribution should be show on deleted workItem.
      */
-    showOnDeletedWorkItem: boolean;
+    showOnDeletedWorkItem?: boolean;
 }
 
 export interface WorkItemBehaviorReference {
     /**
      * The ID of the reference behavior
      */
-    id: string;
+    id?: string;
     /**
      * The url of the reference behavior
      */
-    url: string;
+    url?: string;
 }
 
 export interface WorkItemStateInputModel {
     /**
      * Color of the state
      */
-    color: string;
+    color?: string;
     /**
      * Name of the state
      */
-    name: string;
+    name?: string;
     /**
      * Order in which state should appear
      */
-    order: number;
+    order?: number;
     /**
      * Category of the state
      */
-    stateCategory: string;
+    stateCategory?: string;
 }
 
 export interface WorkItemStateResultModel {
     /**
      * Color of the state
      */
-    color: string;
+    color?: string;
     /**
      * Is the state hidden
      */
-    hidden: boolean;
+    hidden?: boolean;
     /**
      * The ID of the State
      */
-    id: string;
+    id?: string;
     /**
      * Name of the state
      */
-    name: string;
+    name?: string;
     /**
      * Order in which state should appear
      */
-    order: number;
+    order?: number;
     /**
      * Category of the state
      */
-    stateCategory: string;
+    stateCategory?: string;
     /**
      * Url of the state
      */
-    url: string;
+    url?: string;
 }
 
 export interface WorkItemTypeBehavior {
-    behavior: WorkItemBehaviorReference;
-    isDefault: boolean;
-    url: string;
+    behavior?: WorkItemBehaviorReference;
+    isDefault?: boolean;
+    url?: string;
 }
 
 /**
@@ -464,84 +468,99 @@ export enum WorkItemTypeClass {
 
 export interface WorkItemTypeFieldModel {
     allowGroups: boolean;
-    defaultValue: string;
-    name: string;
-    pickList: PickListMetadataModel;
-    readOnly: boolean;
-    referenceName: string;
-    required: boolean;
-    type: FieldType;
-    url: string;
+    defaultValue?: string;
+    name?: string;
+    pickList?: PickListMetadataModel;
+    readOnly?: boolean;
+    referenceName?: string;
+    required?: boolean;
+    type?: FieldType;
+    url?: string;
+}
+
+/**
+ * New version of WorkItemTypeFieldModel supporting defaultValue as object (such as IdentityRef)
+ */
+export interface WorkItemTypeFieldModel2 {
+    allowGroups: boolean;
+    defaultValue?: any;
+    name?: string;
+    pickList?: PickListMetadataModel;
+    readOnly?: boolean;
+    referenceName?: string;
+    required?: boolean;
+    type?: FieldType;
+    url?: string;
 }
 
 export interface WorkItemTypeModel {
     /**
      * Behaviors of the work item type
      */
-    behaviors: WorkItemTypeBehavior[];
+    behaviors?: WorkItemTypeBehavior[];
     /**
      * Class of the work item type
      */
-    class: WorkItemTypeClass;
+    class?: WorkItemTypeClass;
     /**
      * Color of the work item type
      */
-    color: string;
+    color?: string;
     /**
      * Description of the work item type
      */
-    description: string;
+    description?: string;
     /**
      * Icon of the work item type
      */
-    icon: string;
+    icon?: string;
     /**
      * The ID of the work item type
      */
-    id: string;
+    id?: string;
     /**
      * Parent WIT Id/Internal ReferenceName that it inherits from
      */
-    inherits: string;
+    inherits?: string;
     /**
      * Is work item type disabled
      */
-    isDisabled: boolean;
+    isDisabled?: boolean;
     /**
      * Layout of the work item type
      */
-    layout: FormLayout;
+    layout?: FormLayout;
     /**
      * Name of the work item type
      */
-    name: string;
+    name?: string;
     /**
      * States of the work item type
      */
-    states: WorkItemStateResultModel[];
+    states?: WorkItemStateResultModel[];
     /**
      * Url of the work item type
      */
-    url: string;
+    url?: string;
 }
 
 export interface WorkItemTypeUpdateModel {
     /**
      * Color of the work item type
      */
-    color: string;
+    color?: string;
     /**
      * Description of the work item type
      */
-    description: string;
+    description?: string;
     /**
      * Icon of the work item type
      */
-    icon: string;
+    icon?: string;
     /**
      * Is the workitem type to be disabled
      */
-    isDisabled: boolean;
+    isDisabled?: boolean;
 }
 
 export var TypeInfo = {
@@ -594,6 +613,8 @@ export var TypeInfo = {
     },
     WorkItemTypeFieldModel: <any>{
     },
+    WorkItemTypeFieldModel2: <any>{
+    },
     WorkItemTypeModel: <any>{
     },
 };
@@ -618,6 +639,12 @@ TypeInfo.Page.fields = {
 };
 
 TypeInfo.WorkItemTypeFieldModel.fields = {
+    type: {
+        enumType: TypeInfo.FieldType
+    }
+};
+
+TypeInfo.WorkItemTypeFieldModel2.fields = {
     type: {
         enumType: TypeInfo.FieldType
     }

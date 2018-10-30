@@ -244,7 +244,7 @@ export interface InputValuesQuery {
     /**
      * The input values to return on input, and the result from the consumer on output.
      */
-    inputValues: InputValues[];
+    inputValues?: InputValues[];
     /**
      * Subscription containing information about the publisher/consumer and the current input values
      */

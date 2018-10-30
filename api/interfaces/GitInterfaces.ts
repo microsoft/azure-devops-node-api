@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
@@ -15,31 +15,31 @@ import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
 export interface AssociatedWorkItem {
-    assignedTo: string;
+    assignedTo?: string;
     /**
      * Id of associated the work item.
      */
-    id: number;
-    state: string;
-    title: string;
+    id?: number;
+    state?: string;
+    title?: string;
     /**
      * REST Url of the work item.
      */
-    url: string;
-    webUrl: string;
-    workItemType: string;
+    url?: string;
+    webUrl?: string;
+    workItemType?: string;
 }
 
 export interface AsyncGitOperationNotification {
-    operationId: number;
+    operationId?: number;
 }
 
 export interface AsyncRefOperationCommitLevelEventNotification extends AsyncGitOperationNotification {
-    commitId: string;
+    commitId?: string;
 }
 
 export interface AsyncRefOperationCompletedNotification extends AsyncGitOperationNotification {
-    newRefName: string;
+    newRefName?: string;
 }
 
 export interface AsyncRefOperationConflictNotification extends AsyncRefOperationCommitLevelEventNotification {
@@ -49,7 +49,7 @@ export interface AsyncRefOperationGeneralFailureNotification extends AsyncGitOpe
 }
 
 export interface AsyncRefOperationProgressNotification extends AsyncRefOperationCommitLevelEventNotification {
-    progress: number;
+    progress?: number;
 }
 
 export interface AsyncRefOperationTimeoutNotification extends AsyncGitOperationNotification {
@@ -62,39 +62,39 @@ export interface Attachment {
     /**
      * Links to other related objects.
      */
-    _links: any;
+    _links?: any;
     /**
      * The person that uploaded this attachment.
      */
-    author: VSSInterfaces.IdentityRef;
+    author?: VSSInterfaces.IdentityRef;
     /**
      * Content hash of on-disk representation of file content. Its calculated by the server by using SHA1 hash function.
      */
-    contentHash: string;
+    contentHash?: string;
     /**
      * The time the attachment was uploaded.
      */
-    createdDate: Date;
+    createdDate?: Date;
     /**
      * The description of the attachment.
      */
-    description: string;
+    description?: string;
     /**
      * The display name of the attachment. Can't be null or empty.
      */
-    displayName: string;
+    displayName?: string;
     /**
      * Id of the attachment.
      */
-    id: number;
+    id?: number;
     /**
      * Extended properties.
      */
-    properties: any;
+    properties?: any;
     /**
      * The url to download the content of the attachment.
      */
-    url: string;
+    url?: string;
 }
 
 /**
@@ -110,48 +110,48 @@ export interface BranchUpdatedEvent extends RealTimePullRequestEvent {
     /**
      * If true, the source branch of the pull request was updated
      */
-    isSourceUpdate: boolean;
+    isSourceUpdate?: boolean;
 }
 
 export interface Change<T> {
     /**
      * The type of change that was made to the item.
      */
-    changeType: VersionControlChangeType;
+    changeType?: VersionControlChangeType;
     /**
      * Current version.
      */
-    item: T;
+    item?: T;
     /**
      * Content of the item after the change.
      */
-    newContent: ItemContent;
+    newContent?: ItemContent;
     /**
      * Path of the item on the server.
      */
-    sourceServerItem: string;
+    sourceServerItem?: string;
     /**
      * URL to retrieve the item.
      */
-    url: string;
+    url?: string;
 }
 
 export interface ChangeCountDictionary {
 }
 
 export interface ChangeList<T> {
-    allChangesIncluded: boolean;
-    changeCounts: { [key: number] : number; };
-    changes: Change<T>[];
-    comment: string;
-    commentTruncated: boolean;
-    creationDate: Date;
-    notes: CheckinNote[];
-    owner: string;
-    ownerDisplayName: string;
-    ownerId: string;
-    sortDate: Date;
-    version: string;
+    allChangesIncluded?: boolean;
+    changeCounts?: { [key: number] : number; };
+    changes?: Change<T>[];
+    comment?: string;
+    commentTruncated?: boolean;
+    creationDate?: Date;
+    notes?: CheckinNote[];
+    owner?: string;
+    ownerDisplayName?: string;
+    ownerId?: string;
+    sortDate?: Date;
+    version?: string;
 }
 
 /**
@@ -161,60 +161,60 @@ export interface ChangeListSearchCriteria {
     /**
      * If provided, a version descriptor to compare against base
      */
-    compareVersion: string;
+    compareVersion?: string;
     /**
      * If true, don't include delete history entries
      */
-    excludeDeletes: boolean;
+    excludeDeletes?: boolean;
     /**
      * Whether or not to follow renames for the given item being queried
      */
-    followRenames: boolean;
+    followRenames?: boolean;
     /**
      * If provided, only include history entries created after this date (string)
      */
-    fromDate: string;
+    fromDate?: string;
     /**
      * If provided, a version descriptor for the earliest change list to include
      */
-    fromVersion: string;
+    fromVersion?: string;
     /**
      * Path of item to search under. If the itemPaths memebr is used then it will take precedence over this.
      */
-    itemPath: string;
+    itemPath?: string;
     /**
      * List of item paths to search under. If this member is used then itemPath will be ignored.
      */
-    itemPaths: string[];
+    itemPaths?: string[];
     /**
      * Version of the items to search
      */
-    itemVersion: string;
+    itemVersion?: string;
     /**
      * Number of results to skip (used when clicking more...)
      */
-    skip: number;
+    skip?: number;
     /**
      * If provided, only include history entries created before this date (string)
      */
-    toDate: string;
+    toDate?: string;
     /**
      * If provided, the maximum number of history entries to return
      */
-    top: number;
+    top?: number;
     /**
      * If provided, a version descriptor for the latest change list to include
      */
-    toVersion: string;
+    toVersion?: string;
     /**
      * Alias or display name of user who made the changes
      */
-    user: string;
+    user?: string;
 }
 
 export interface CheckinNote {
-    name: string;
-    value: string;
+    name?: string;
+    value?: string;
 }
 
 /**
@@ -224,47 +224,47 @@ export interface Comment {
     /**
      * Links to other related objects.
      */
-    _links: any;
+    _links?: any;
     /**
      * The author of the comment.
      */
-    author: VSSInterfaces.IdentityRef;
+    author?: VSSInterfaces.IdentityRef;
     /**
      * The comment type at the time of creation.
      */
-    commentType: CommentType;
+    commentType?: CommentType;
     /**
      * The comment content.
      */
-    content: string;
+    content?: string;
     /**
      * The comment ID. IDs start at 1 and are unique to a pull request.
      */
-    id: number;
+    id?: number;
     /**
      * Whether or not this comment was soft-deleted.
      */
-    isDeleted: boolean;
+    isDeleted?: boolean;
     /**
      * The date the comment's content was last updated.
      */
-    lastContentUpdatedDate: Date;
+    lastContentUpdatedDate?: Date;
     /**
      * The date the comment was last updated.
      */
-    lastUpdatedDate: Date;
+    lastUpdatedDate?: Date;
     /**
      * The ID of the parent comment. This is used for replies.
      */
-    parentCommentId: number;
+    parentCommentId?: number;
     /**
      * The date the comment was first published.
      */
-    publishedDate: Date;
+    publishedDate?: Date;
     /**
      * A list of the users who have liked this comment.
      */
-    usersLiked: VSSInterfaces.IdentityRef[];
+    usersLiked?: VSSInterfaces.IdentityRef[];
 }
 
 /**
@@ -274,22 +274,22 @@ export interface CommentIterationContext {
     /**
      * The iteration of the file on the left side of the diff when the thread was created. If this value is equal to SecondComparingIteration, then this version is the common commit between the source and target branches of the pull request.
      */
-    firstComparingIteration: number;
+    firstComparingIteration?: number;
     /**
      * The iteration of the file on the right side of the diff when the thread was created.
      */
-    secondComparingIteration: number;
+    secondComparingIteration?: number;
 }
 
 export interface CommentPosition {
     /**
      * The line number of a thread's position. Starts at 1.
      */
-    line: number;
+    line?: number;
     /**
      * The character offset of a thread's position inside of a line. Starts at 0.
      */
-    offset: number;
+    offset?: number;
 }
 
 /**
@@ -299,62 +299,66 @@ export interface CommentThread {
     /**
      * Links to other related objects.
      */
-    _links: any;
+    _links?: any;
     /**
      * A list of the comments.
      */
-    comments: Comment[];
+    comments?: Comment[];
     /**
      * The comment thread id.
      */
-    id: number;
+    id?: number;
+    /**
+     * Set of identities related to this thread
+     */
+    identities?: { [key: string] : VSSInterfaces.IdentityRef; };
     /**
      * Specify if the thread is deleted which happens when all comments are deleted.
      */
-    isDeleted: boolean;
+    isDeleted?: boolean;
     /**
      * The time this thread was last updated.
      */
-    lastUpdatedDate: Date;
+    lastUpdatedDate?: Date;
     /**
      * Optional properties associated with the thread as a collection of key-value pairs.
      */
-    properties: any;
+    properties?: any;
     /**
      * The time this thread was published.
      */
-    publishedDate: Date;
+    publishedDate?: Date;
     /**
      * The status of the comment thread.
      */
-    status: CommentThreadStatus;
+    status?: CommentThreadStatus;
     /**
      * Specify thread context such as position in left/right file.
      */
-    threadContext: CommentThreadContext;
+    threadContext?: CommentThreadContext;
 }
 
 export interface CommentThreadContext {
     /**
      * File path relative to the root of the repository. It's up to the client to use any path format.
      */
-    filePath: string;
+    filePath?: string;
     /**
      * Position of last character of the thread's span in left file.
      */
-    leftFileEnd: CommentPosition;
+    leftFileEnd?: CommentPosition;
     /**
      * Position of first character of the thread's span in left file.
      */
-    leftFileStart: CommentPosition;
+    leftFileStart?: CommentPosition;
     /**
      * Position of last character of the thread's span in right file.
      */
-    rightFileEnd: CommentPosition;
+    rightFileEnd?: CommentPosition;
     /**
      * Position of first character of the thread's span in right file.
      */
-    rightFileStart: CommentPosition;
+    rightFileStart?: CommentPosition;
 }
 
 /**
@@ -398,31 +402,31 @@ export interface CommentTrackingCriteria {
     /**
      * The iteration of the file on the left side of the diff that the thread will be tracked to. Threads were tracked if this is greater than 0.
      */
-    firstComparingIteration: number;
+    firstComparingIteration?: number;
     /**
      * Original filepath the thread was created on before tracking. This will be different than the current thread filepath if the file in question was renamed in a later iteration.
      */
-    origFilePath: string;
+    origFilePath?: string;
     /**
      * Original position of last character of the thread's span in left file.
      */
-    origLeftFileEnd: CommentPosition;
+    origLeftFileEnd?: CommentPosition;
     /**
      * Original position of first character of the thread's span in left file.
      */
-    origLeftFileStart: CommentPosition;
+    origLeftFileStart?: CommentPosition;
     /**
      * Original position of last character of the thread's span in right file.
      */
-    origRightFileEnd: CommentPosition;
+    origRightFileEnd?: CommentPosition;
     /**
      * Original position of first character of the thread's span in right file.
      */
-    origRightFileStart: CommentPosition;
+    origRightFileStart?: CommentPosition;
     /**
      * The iteration of the file on the right side of the diff that the thread will be tracked to. Threads were tracked if this is greater than 0.
      */
-    secondComparingIteration: number;
+    secondComparingIteration?: number;
 }
 
 /**
@@ -454,7 +458,7 @@ export interface CompletionErrorsEvent extends RealTimePullRequestEvent {
     /**
      * The error message associated with the completion error
      */
-    errorMessage: string;
+    errorMessage?: string;
 }
 
 /**
@@ -464,13 +468,13 @@ export interface DiscussionsUpdatedEvent extends RealTimePullRequestEvent {
 }
 
 export interface FileContentMetadata {
-    contentType: string;
-    encoding: number;
-    extension: string;
-    fileName: string;
-    isBinary: boolean;
-    isImage: boolean;
-    vsLink: string;
+    contentType?: string;
+    encoding?: number;
+    extension?: string;
+    fileName?: string;
+    isBinary?: boolean;
+    isImage?: boolean;
+    vsLink?: string;
 }
 
 /**
@@ -480,24 +484,24 @@ export interface GitAnnotatedTag {
     /**
      * The tagging Message
      */
-    message: string;
+    message?: string;
     /**
      * The name of the annotated tag.
      */
-    name: string;
+    name?: string;
     /**
      * The objectId (Sha1Id) of the tag.
      */
-    objectId: string;
+    objectId?: string;
     /**
      * User info and date of tagging.
      */
-    taggedBy: GitUserDate;
+    taggedBy?: GitUserDate;
     /**
      * Tagged git object.
      */
-    taggedObject: GitObject;
-    url: string;
+    taggedObject?: GitObject;
+    url?: string;
 }
 
 /**
@@ -527,14 +531,14 @@ export enum GitAsyncOperationStatus {
 }
 
 export interface GitAsyncRefOperation {
-    _links: any;
-    detailedStatus: GitAsyncRefOperationDetail;
-    parameters: GitAsyncRefOperationParameters;
-    status: GitAsyncOperationStatus;
+    _links?: any;
+    detailedStatus?: GitAsyncRefOperationDetail;
+    parameters?: GitAsyncRefOperationParameters;
+    status?: GitAsyncOperationStatus;
     /**
      * A URL that can be used to make further requests for status about the operation
      */
-    url: string;
+    url?: string;
 }
 
 /**
@@ -544,27 +548,27 @@ export interface GitAsyncRefOperationDetail {
     /**
      * Indicates if there was a conflict generated when trying to cherry pick or revert the changes.
      */
-    conflict: boolean;
+    conflict?: boolean;
     /**
      * The current commit from the list of commits that are being cherry picked or reverted.
      */
-    currentCommitId: string;
+    currentCommitId?: string;
     /**
      * Detailed information about why the cherry pick or revert failed to complete.
      */
-    failureMessage: string;
+    failureMessage?: string;
     /**
      * A number between 0 and 1 indicating the percent complete of the operation.
      */
-    progress: number;
+    progress?: number;
     /**
      * Provides a status code that indicates the reason the cherry pick or revert failed.
      */
-    status: GitAsyncRefOperationFailureStatus;
+    status?: GitAsyncRefOperationFailureStatus;
     /**
      * Indicates if the operation went beyond the maximum time allowed for a cherry pick or revert operation.
      */
-    timedout: boolean;
+    timedout?: boolean;
 }
 
 export enum GitAsyncRefOperationFailureStatus {
@@ -608,6 +612,10 @@ export enum GitAsyncRefOperationFailureStatus {
      * Unexpected failure
      */
     Other = 9,
+    /**
+     * Initiator of async operation has signature with empty name or email
+     */
+    EmptyCommitterSignature = 10,
 }
 
 /**
@@ -617,19 +625,19 @@ export interface GitAsyncRefOperationParameters {
     /**
      * Proposed target branch name for the cherry pick or revert operation.
      */
-    generatedRefName: string;
+    generatedRefName?: string;
     /**
      * The target branch for the cherry pick or revert operation.
      */
-    ontoRefName: string;
+    ontoRefName?: string;
     /**
      * The git repository for the cherry pick or revert operation.
      */
-    repository: GitRepository;
+    repository?: GitRepository;
     /**
      * Details about the source of the cherry pick or revert operation (e.g. A pull request or a specific commit).
      */
-    source: GitAsyncRefOperationSource;
+    source?: GitAsyncRefOperationSource;
 }
 
 /**
@@ -639,39 +647,39 @@ export interface GitAsyncRefOperationSource {
     /**
      * A list of commits to cherry pick or revert
      */
-    commitList: GitCommitRef[];
+    commitList?: GitCommitRef[];
     /**
      * Id of the pull request to cherry pick or revert
      */
-    pullRequestId: number;
+    pullRequestId?: number;
 }
 
 export interface GitBaseVersionDescriptor extends GitVersionDescriptor {
     /**
      * Version string identifier (name of tag/branch, SHA1 of commit)
      */
-    baseVersion: string;
+    baseVersion?: string;
     /**
      * Version options - Specify additional modifiers to version (e.g Previous)
      */
-    baseVersionOptions: GitVersionOptions;
+    baseVersionOptions?: GitVersionOptions;
     /**
      * Version type (branch, tag, or commit). Determines how Id is interpreted
      */
-    baseVersionType: GitVersionType;
+    baseVersionType?: GitVersionType;
 }
 
 export interface GitBlobRef {
-    _links: any;
+    _links?: any;
     /**
      * SHA1 hash of git object
      */
-    objectId: string;
+    objectId?: string;
     /**
      * Size of blob content (in bytes)
      */
-    size: number;
-    url: string;
+    size?: number;
+    url?: string;
 }
 
 /**
@@ -681,66 +689,65 @@ export interface GitBranchStats {
     /**
      * Number of commits ahead.
      */
-    aheadCount: number;
+    aheadCount?: number;
     /**
      * Number of commits behind.
      */
-    behindCount: number;
+    behindCount?: number;
     /**
      * Current commit.
      */
-    commit: GitCommitRef;
+    commit?: GitCommitRef;
     /**
      * True if this is the result for the base version.
      */
-    isBaseVersion: boolean;
+    isBaseVersion?: boolean;
     /**
      * Name of the ref.
      */
-    name: string;
+    name?: string;
 }
 
 export interface GitChange extends Change<GitItem> {
     /**
      * ID of the change within the group of changes.
      */
-    changeId: number;
+    changeId?: number;
     /**
      * New Content template to be used when pushing new changes.
      */
-    newContentTemplate: GitTemplate;
+    newContentTemplate?: GitTemplate;
     /**
      * Original path of item if different from current path.
      */
-    originalPath: string;
+    originalPath?: string;
 }
 
 /**
  * This object is returned from Cherry Pick operations and provides the id and status of the operation
  */
 export interface GitCherryPick extends GitAsyncRefOperation {
-    cherryPickId: number;
+    cherryPickId?: number;
 }
 
 export interface GitCommit extends GitCommitRef {
-    push: GitPushRef;
-    treeId: string;
+    treeId?: string;
 }
 
 export interface GitCommitChanges {
-    changeCounts: ChangeCountDictionary;
-    changes: GitChange[];
+    changeCounts?: ChangeCountDictionary;
+    changes?: GitChange[];
 }
 
 export interface GitCommitDiffs {
-    aheadCount: number;
-    allChangesIncluded: boolean;
-    baseCommit: string;
-    behindCount: number;
-    changeCounts: { [key: number] : number; };
-    changes: GitChange[];
-    commonCommit: string;
-    targetCommit: string;
+    aheadCount?: number;
+    allChangesIncluded?: boolean;
+    baseCommit?: string;
+    behindCount?: number;
+    changeCounts?: { [key: number] : number; };
+    changes?: GitChange[];
+    commonCommit?: string;
+    targetCommit?: string;
 }
 
 /**
@@ -750,210 +757,214 @@ export interface GitCommitRef {
     /**
      * A collection of related REST reference links.
      */
-    _links: any;
+    _links?: any;
     /**
      * Author of the commit.
      */
-    author: GitUserDate;
+    author?: GitUserDate;
     /**
      * Counts of the types of changes (edits, deletes, etc.) included with the commit.
      */
-    changeCounts: ChangeCountDictionary;
+    changeCounts?: ChangeCountDictionary;
     /**
      * An enumeration of the changes included with the commit.
      */
-    changes: GitChange[];
+    changes?: GitChange[];
     /**
      * Comment or message of the commit.
      */
-    comment: string;
+    comment?: string;
     /**
      * Indicates if the comment is truncated from the full Git commit comment message.
      */
-    commentTruncated: boolean;
+    commentTruncated?: boolean;
     /**
      * ID (SHA-1) of the commit.
      */
-    commitId: string;
+    commitId?: string;
     /**
      * Committer of the commit.
      */
-    committer: GitUserDate;
+    committer?: GitUserDate;
     /**
      * An enumeration of the parent commit IDs for this commit.
      */
-    parents: string[];
+    parents?: string[];
+    /**
+     * The push associated with this commit.
+     */
+    push?: GitPushRef;
     /**
      * Remote URL path to the commit.
      */
-    remoteUrl: string;
+    remoteUrl?: string;
     /**
      * A list of status metadata from services and extensions that may associate additional information to the commit.
      */
-    statuses: GitStatus[];
+    statuses?: GitStatus[];
     /**
      * REST URL for this resource.
      */
-    url: string;
+    url?: string;
     /**
      * A list of workitems associated with this commit.
      */
-    workItems: VSSInterfaces.ResourceRef[];
+    workItems?: VSSInterfaces.ResourceRef[];
 }
 
 export interface GitCommitToCreate {
-    baseRef: GitRef;
-    comment: string;
-    pathActions: GitPathAction[];
+    baseRef?: GitRef;
+    comment?: string;
+    pathActions?: GitPathAction[];
 }
 
 export interface GitConflict {
-    _links: any;
-    conflictId: number;
-    conflictPath: string;
-    conflictType: GitConflictType;
-    mergeBaseCommit: GitCommitRef;
-    mergeOrigin: GitMergeOriginRef;
-    mergeSourceCommit: GitCommitRef;
-    mergeTargetCommit: GitCommitRef;
-    resolutionError: GitResolutionError;
-    resolutionStatus: GitResolutionStatus;
-    resolvedBy: VSSInterfaces.IdentityRef;
-    resolvedDate: Date;
-    url: string;
+    _links?: any;
+    conflictId?: number;
+    conflictPath?: string;
+    conflictType?: GitConflictType;
+    mergeBaseCommit?: GitCommitRef;
+    mergeOrigin?: GitMergeOriginRef;
+    mergeSourceCommit?: GitCommitRef;
+    mergeTargetCommit?: GitCommitRef;
+    resolutionError?: GitResolutionError;
+    resolutionStatus?: GitResolutionStatus;
+    resolvedBy?: VSSInterfaces.IdentityRef;
+    resolvedDate?: Date;
+    url?: string;
 }
 
 /**
  * Data object for AddAdd conflict
  */
 export interface GitConflictAddAdd extends GitConflict {
-    resolution: GitResolutionMergeContent;
-    sourceBlob: GitBlobRef;
-    targetBlob: GitBlobRef;
+    resolution?: GitResolutionMergeContent;
+    sourceBlob?: GitBlobRef;
+    targetBlob?: GitBlobRef;
 }
 
 /**
  * Data object for RenameAdd conflict
  */
 export interface GitConflictAddRename extends GitConflict {
-    baseBlob: GitBlobRef;
-    resolution: GitResolutionPathConflict;
-    sourceBlob: GitBlobRef;
-    targetBlob: GitBlobRef;
-    targetOriginalPath: string;
+    baseBlob?: GitBlobRef;
+    resolution?: GitResolutionPathConflict;
+    sourceBlob?: GitBlobRef;
+    targetBlob?: GitBlobRef;
+    targetOriginalPath?: string;
 }
 
 /**
  * Data object for EditDelete conflict
  */
 export interface GitConflictDeleteEdit extends GitConflict {
-    baseBlob: GitBlobRef;
-    resolution: GitResolutionPickOneAction;
-    targetBlob: GitBlobRef;
+    baseBlob?: GitBlobRef;
+    resolution?: GitResolutionPickOneAction;
+    targetBlob?: GitBlobRef;
 }
 
 /**
  * Data object for RenameDelete conflict
  */
 export interface GitConflictDeleteRename extends GitConflict {
-    baseBlob: GitBlobRef;
-    resolution: GitResolutionPickOneAction;
-    targetBlob: GitBlobRef;
-    targetNewPath: string;
+    baseBlob?: GitBlobRef;
+    resolution?: GitResolutionPickOneAction;
+    targetBlob?: GitBlobRef;
+    targetNewPath?: string;
 }
 
 /**
  * Data object for FileDirectory conflict
  */
 export interface GitConflictDirectoryFile extends GitConflict {
-    resolution: GitResolutionPathConflict;
-    sourceTree: GitTreeRef;
-    targetBlob: GitBlobRef;
+    resolution?: GitResolutionPathConflict;
+    sourceTree?: GitTreeRef;
+    targetBlob?: GitBlobRef;
 }
 
 /**
  * Data object for DeleteEdit conflict
  */
 export interface GitConflictEditDelete extends GitConflict {
-    baseBlob: GitBlobRef;
-    resolution: GitResolutionPickOneAction;
-    sourceBlob: GitBlobRef;
+    baseBlob?: GitBlobRef;
+    resolution?: GitResolutionPickOneAction;
+    sourceBlob?: GitBlobRef;
 }
 
 /**
  * Data object for EditEdit conflict
  */
 export interface GitConflictEditEdit extends GitConflict {
-    baseBlob: GitBlobRef;
-    resolution: GitResolutionMergeContent;
-    sourceBlob: GitBlobRef;
-    targetBlob: GitBlobRef;
+    baseBlob?: GitBlobRef;
+    resolution?: GitResolutionMergeContent;
+    sourceBlob?: GitBlobRef;
+    targetBlob?: GitBlobRef;
 }
 
 /**
  * Data object for DirectoryFile conflict
  */
 export interface GitConflictFileDirectory extends GitConflict {
-    resolution: GitResolutionPathConflict;
-    sourceBlob: GitBlobRef;
-    targetTree: GitTreeRef;
+    resolution?: GitResolutionPathConflict;
+    sourceBlob?: GitBlobRef;
+    targetTree?: GitTreeRef;
 }
 
 /**
  * Data object for Rename1to2 conflict
  */
 export interface GitConflictRename1to2 extends GitConflict {
-    baseBlob: GitBlobRef;
-    resolution: GitResolutionRename1to2;
-    sourceBlob: GitBlobRef;
-    sourceNewPath: string;
-    targetBlob: GitBlobRef;
-    targetNewPath: string;
+    baseBlob?: GitBlobRef;
+    resolution?: GitResolutionRename1to2;
+    sourceBlob?: GitBlobRef;
+    sourceNewPath?: string;
+    targetBlob?: GitBlobRef;
+    targetNewPath?: string;
 }
 
 /**
  * Data object for Rename2to1 conflict
  */
 export interface GitConflictRename2to1 extends GitConflict {
-    resolution: GitResolutionPathConflict;
-    sourceNewBlob: GitBlobRef;
-    sourceOriginalBlob: GitBlobRef;
-    sourceOriginalPath: string;
-    targetNewBlob: GitBlobRef;
-    targetOriginalBlob: GitBlobRef;
-    targetOriginalPath: string;
+    resolution?: GitResolutionPathConflict;
+    sourceNewBlob?: GitBlobRef;
+    sourceOriginalBlob?: GitBlobRef;
+    sourceOriginalPath?: string;
+    targetNewBlob?: GitBlobRef;
+    targetOriginalBlob?: GitBlobRef;
+    targetOriginalPath?: string;
 }
 
 /**
  * Data object for AddRename conflict
  */
 export interface GitConflictRenameAdd extends GitConflict {
-    baseBlob: GitBlobRef;
-    resolution: GitResolutionPathConflict;
-    sourceBlob: GitBlobRef;
-    sourceOriginalPath: string;
-    targetBlob: GitBlobRef;
+    baseBlob?: GitBlobRef;
+    resolution?: GitResolutionPathConflict;
+    sourceBlob?: GitBlobRef;
+    sourceOriginalPath?: string;
+    targetBlob?: GitBlobRef;
 }
 
 /**
  * Data object for DeleteRename conflict
  */
 export interface GitConflictRenameDelete extends GitConflict {
-    baseBlob: GitBlobRef;
-    resolution: GitResolutionPickOneAction;
-    sourceBlob: GitBlobRef;
-    sourceNewPath: string;
+    baseBlob?: GitBlobRef;
+    resolution?: GitResolutionPickOneAction;
+    sourceBlob?: GitBlobRef;
+    sourceNewPath?: string;
 }
 
 /**
  * Data object for RenameRename conflict
  */
 export interface GitConflictRenameRename extends GitConflict {
-    baseBlob: GitBlobRef;
-    originalPath: string;
-    resolution: GitResolutionMergeContent;
-    sourceBlob: GitBlobRef;
-    targetBlob: GitBlobRef;
+    baseBlob?: GitBlobRef;
+    originalPath?: string;
+    resolution?: GitResolutionMergeContent;
+    sourceBlob?: GitBlobRef;
+    targetBlob?: GitBlobRef;
 }
 
 /**
@@ -1026,19 +1037,19 @@ export interface GitConflictUpdateResult {
     /**
      * Conflict ID that was provided by input
      */
-    conflictId: number;
+    conflictId?: number;
     /**
      * Reason for failing
      */
-    customMessage: string;
+    customMessage?: string;
     /**
      * New state of the conflict after updating
      */
-    updatedConflict: GitConflict;
+    updatedConflict?: GitConflict;
     /**
      * Status of the update on the server
      */
-    updateStatus: GitConflictUpdateStatus;
+    updateStatus?: GitConflictUpdateStatus;
 }
 
 /**
@@ -1068,18 +1079,18 @@ export enum GitConflictUpdateStatus {
 }
 
 export interface GitDeletedRepository {
-    createdDate: Date;
-    deletedBy: VSSInterfaces.IdentityRef;
-    deletedDate: Date;
-    id: string;
-    name: string;
-    project: TfsCoreInterfaces.TeamProjectReference;
+    createdDate?: Date;
+    deletedBy?: VSSInterfaces.IdentityRef;
+    deletedDate?: Date;
+    id?: string;
+    name?: string;
+    project?: TfsCoreInterfaces.TeamProjectReference;
 }
 
 export interface GitFilePathsCollection {
-    commitId: string;
-    paths: string[];
-    url: string;
+    commitId?: string;
+    paths?: string[];
+    url?: string;
 }
 
 /**
@@ -1089,15 +1100,15 @@ export interface GitForkOperationStatusDetail {
     /**
      * All valid steps for the forking process
      */
-    allSteps: string[];
+    allSteps?: string[];
     /**
      * Index into AllSteps for the current step
      */
-    currentStep: number;
+    currentStep?: number;
     /**
      * Error message if the operation failed.
      */
-    errorMessage: string;
+    errorMessage?: string;
 }
 
 /**
@@ -1107,7 +1118,7 @@ export interface GitForkRef extends GitRef {
     /**
      * The repository ID of the fork.
      */
-    repository: GitRepository;
+    repository?: GitRepository;
 }
 
 /**
@@ -1117,12 +1128,12 @@ export interface GitForkSyncRequest {
     /**
      * Collection of related links
      */
-    _links: any;
-    detailedStatus: GitForkOperationStatusDetail;
+    _links?: any;
+    detailedStatus?: GitForkOperationStatusDetail;
     /**
      * Unique identifier for the operation.
      */
-    operationId: number;
+    operationId?: number;
     /**
      * Fully-qualified identifier for the source repository.
      */
@@ -1130,8 +1141,8 @@ export interface GitForkSyncRequest {
     /**
      * If supplied, the set of ref mappings to use when performing a "sync" or create. If missing, all refs will be synchronized.
      */
-    sourceToTargetRefs: SourceToTargetRef[];
-    status: GitAsyncOperationStatus;
+    sourceToTargetRefs?: SourceToTargetRef[];
+    status?: GitAsyncOperationStatus;
 }
 
 /**
@@ -1145,7 +1156,10 @@ export interface GitForkSyncRequestParameters {
     /**
      * If supplied, the set of ref mappings to use when performing a "sync" or create. If missing, all refs will be synchronized.
      */
-    sourceToTargetRefs: SourceToTargetRef[];
+    sourceToTargetRefs?: SourceToTargetRef[];
+}
+
+export interface GitForkTeamProjectReference extends TfsCoreInterfaces.TeamProjectReference {
 }
 
 /**
@@ -1171,8 +1185,8 @@ export enum GitHistoryMode {
 }
 
 export interface GitImportFailedEvent {
-    sourceRepositoryName: string;
-    targetRepository: GitRepository;
+    sourceRepositoryName?: string;
+    targetRepository?: GitRepository;
 }
 
 /**
@@ -1182,11 +1196,11 @@ export interface GitImportGitSource {
     /**
      * Tells if this is a sync request or not
      */
-    overwrite: boolean;
+    overwrite?: boolean;
     /**
      * Url for the source repo
      */
-    url: string;
+    url?: string;
 }
 
 /**
@@ -1196,31 +1210,31 @@ export interface GitImportRequest {
     /**
      * Links to related resources.
      */
-    _links: any;
+    _links?: any;
     /**
      * Detailed status of the import, including the current step and an error message, if applicable.
      */
-    detailedStatus: GitImportStatusDetail;
+    detailedStatus?: GitImportStatusDetail;
     /**
      * The unique identifier for this import request.
      */
-    importRequestId: number;
+    importRequestId?: number;
     /**
      * Parameters for creating the import request.
      */
-    parameters: GitImportRequestParameters;
+    parameters?: GitImportRequestParameters;
     /**
      * The target repository for this import.
      */
-    repository: GitRepository;
+    repository?: GitRepository;
     /**
      * Current status of the import.
      */
-    status: GitAsyncOperationStatus;
+    status?: GitAsyncOperationStatus;
     /**
      * A link back to this import request resource.
      */
-    url: string;
+    url?: string;
 }
 
 /**
@@ -1230,19 +1244,19 @@ export interface GitImportRequestParameters {
     /**
      * Option to delete service endpoint when import is done
      */
-    deleteServiceEndpointAfterImportIsDone: boolean;
+    deleteServiceEndpointAfterImportIsDone?: boolean;
     /**
      * Source for importing git repository
      */
-    gitSource: GitImportGitSource;
+    gitSource?: GitImportGitSource;
     /**
      * Service Endpoint for connection to external endpoint
      */
-    serviceEndpointId: string;
+    serviceEndpointId?: string;
     /**
      * Source for importing tfvc repository
      */
-    tfvcSource: GitImportTfvcSource;
+    tfvcSource?: GitImportTfvcSource;
 }
 
 /**
@@ -1252,20 +1266,20 @@ export interface GitImportStatusDetail {
     /**
      * All valid steps for the import process
      */
-    allSteps: string[];
+    allSteps?: string[];
     /**
      * Index into AllSteps for the current step
      */
-    currentStep: number;
+    currentStep?: number;
     /**
      * Error message if the operation failed.
      */
-    errorMessage: string;
+    errorMessage?: string;
 }
 
 export interface GitImportSucceededEvent {
-    sourceRepositoryName: string;
-    targetRepository: GitRepository;
+    sourceRepositoryName?: string;
+    targetRepository?: GitRepository;
 }
 
 /**
@@ -1275,110 +1289,110 @@ export interface GitImportTfvcSource {
     /**
      * Set true to import History, false otherwise
      */
-    importHistory: boolean;
+    importHistory?: boolean;
     /**
      * Get history for last n days (max allowed value is 180 days)
      */
-    importHistoryDurationInDays: number;
+    importHistoryDurationInDays?: number;
     /**
      * Path which we want to import (this can be copied from Path Control in Explorer)
      */
-    path: string;
+    path?: string;
 }
 
 export interface GitItem extends ItemModel {
     /**
      * SHA1 of commit item was fetched at
      */
-    commitId: string;
+    commitId?: string;
     /**
      * Type of object (Commit, Tree, Blob, Tag, ...)
      */
-    gitObjectType: GitObjectType;
+    gitObjectType?: GitObjectType;
     /**
      * Shallow ref to commit that last changed this item Only populated if latestProcessedChange is requested May not be accurate if latest change is not yet cached
      */
-    latestProcessedChange: GitCommitRef;
+    latestProcessedChange?: GitCommitRef;
     /**
      * Git object id
      */
-    objectId: string;
+    objectId?: string;
     /**
      * Git object id
      */
-    originalObjectId: string;
+    originalObjectId?: string;
 }
 
 export interface GitItemDescriptor {
     /**
      * Path to item
      */
-    path: string;
+    path?: string;
     /**
      * Specifies whether to include children (OneLevel), all descendants (Full), or None
      */
-    recursionLevel: VersionControlRecursionType;
+    recursionLevel?: VersionControlRecursionType;
     /**
      * Version string (interpretation based on VersionType defined in subclass
      */
-    version: string;
+    version?: string;
     /**
      * Version modifiers (e.g. previous)
      */
-    versionOptions: GitVersionOptions;
+    versionOptions?: GitVersionOptions;
     /**
      * How to interpret version (branch,tag,commit)
      */
-    versionType: GitVersionType;
+    versionType?: GitVersionType;
 }
 
 export interface GitItemRequestData {
     /**
      * Whether to include metadata for all items
      */
-    includeContentMetadata: boolean;
+    includeContentMetadata?: boolean;
     /**
      * Whether to include the _links field on the shallow references
      */
-    includeLinks: boolean;
+    includeLinks?: boolean;
     /**
      * Collection of items to fetch, including path, version, and recursion level
      */
-    itemDescriptors: GitItemDescriptor[];
+    itemDescriptors?: GitItemDescriptor[];
     /**
      * Whether to include shallow ref to commit that last changed each item
      */
-    latestProcessedChange: boolean;
+    latestProcessedChange?: boolean;
 }
 
 export interface GitLastChangeItem {
     /**
      * Gets or sets the commit Id this item was modified most recently for the provided version.
      */
-    commitId: string;
+    commitId?: string;
     /**
      * Gets or sets the path of the item.
      */
-    path: string;
+    path?: string;
 }
 
 export interface GitLastChangeTreeItems {
     /**
      * The list of commits referenced by Items, if they were requested.
      */
-    commits: GitCommitRef[];
+    commits?: GitCommitRef[];
     /**
      * The last change of items.
      */
-    items: GitLastChangeItem[];
+    items?: GitLastChangeItem[];
     /**
      * The last explored time, in case the result is not comprehensive. Null otherwise.
      */
-    lastExploredTime: Date;
+    lastExploredTime?: Date;
 }
 
 export interface GitMergeOriginRef {
-    pullRequestId: number;
+    pullRequestId?: number;
 }
 
 /**
@@ -1388,11 +1402,11 @@ export interface GitObject {
     /**
      * Object Id (Sha1Id).
      */
-    objectId: string;
+    objectId?: string;
     /**
      * Type of object (Commit, Tree, Blob, Tag)
      */
-    objectType: GitObjectType;
+    objectType?: GitObjectType;
 }
 
 export enum GitObjectType {
@@ -1407,11 +1421,11 @@ export enum GitObjectType {
 }
 
 export interface GitPathAction {
-    action: GitPathActions;
-    base64Content: string;
-    path: string;
-    rawTextContent: string;
-    targetPath: string;
+    action?: GitPathActions;
+    base64Content?: string;
+    path?: string;
+    rawTextContent?: string;
+    targetPath?: string;
 }
 
 export enum GitPathActions {
@@ -1423,7 +1437,7 @@ export enum GitPathActions {
 }
 
 export interface GitPathToItemsCollection {
-    items: { [key: string] : GitItem[]; };
+    items?: { [key: string] : GitItem[]; };
 }
 
 /**
@@ -1433,135 +1447,139 @@ export interface GitPullRequest {
     /**
      * Links to other related objects.
      */
-    _links: any;
+    _links?: any;
     /**
      * A string which uniquely identifies this pull request. To generate an artifact ID for a pull request, use this template: ```vstfs:///Git/PullRequestId/{projectId}/{repositoryId}/{pullRequestId}```
      */
-    artifactId: string;
+    artifactId?: string;
     /**
      * If set, auto-complete is enabled for this pull request and this is the identity that enabled it.
      */
-    autoCompleteSetBy: VSSInterfaces.IdentityRef;
+    autoCompleteSetBy?: VSSInterfaces.IdentityRef;
     /**
      * The user who closed the pull request.
      */
-    closedBy: VSSInterfaces.IdentityRef;
+    closedBy?: VSSInterfaces.IdentityRef;
     /**
      * The date when the pull request was closed (completed, abandoned, or merged externally).
      */
-    closedDate: Date;
+    closedDate?: Date;
     /**
      * The code review ID of the pull request. Used internally.
      */
-    codeReviewId: number;
+    codeReviewId?: number;
     /**
      * The commits contained in the pull request.
      */
-    commits: GitCommitRef[];
+    commits?: GitCommitRef[];
     /**
      * Options which affect how the pull request will be merged when it is completed.
      */
-    completionOptions: GitPullRequestCompletionOptions;
+    completionOptions?: GitPullRequestCompletionOptions;
     /**
      * The most recent date at which the pull request entered the queue to be completed. Used internally.
      */
-    completionQueueTime: Date;
+    completionQueueTime?: Date;
     /**
      * The identity of the user who created the pull request.
      */
-    createdBy: VSSInterfaces.IdentityRef;
+    createdBy?: VSSInterfaces.IdentityRef;
     /**
      * The date when the pull request was created.
      */
-    creationDate: Date;
+    creationDate?: Date;
     /**
      * The description of the pull request.
      */
-    description: string;
+    description?: string;
     /**
      * If this is a PR from a fork this will contain information about its source.
      */
-    forkSource: GitForkRef;
+    forkSource?: GitForkRef;
+    /**
+     * Draft / WIP pull request.
+     */
+    isDraft?: boolean;
     /**
      * The labels associated with the pull request.
      */
-    labels: TfsCoreInterfaces.WebApiTagDefinition[];
+    labels?: TfsCoreInterfaces.WebApiTagDefinition[];
     /**
      * The commit of the most recent pull request merge. If empty, the most recent merge is in progress or was unsuccessful.
      */
-    lastMergeCommit: GitCommitRef;
+    lastMergeCommit?: GitCommitRef;
     /**
      * The commit at the head of the source branch at the time of the last pull request merge.
      */
-    lastMergeSourceCommit: GitCommitRef;
+    lastMergeSourceCommit?: GitCommitRef;
     /**
      * The commit at the head of the target branch at the time of the last pull request merge.
      */
-    lastMergeTargetCommit: GitCommitRef;
+    lastMergeTargetCommit?: GitCommitRef;
     /**
      * If set, pull request merge failed for this reason.
      */
-    mergeFailureMessage: string;
+    mergeFailureMessage?: string;
     /**
      * The type of failure (if any) of the pull request merge.
      */
-    mergeFailureType: PullRequestMergeFailureType;
+    mergeFailureType?: PullRequestMergeFailureType;
     /**
      * The ID of the job used to run the pull request merge. Used internally.
      */
-    mergeId: string;
+    mergeId?: string;
     /**
      * Options used when the pull request merge runs. These are separate from completion options since completion happens only once and a new merge will run every time the source branch of the pull request changes.
      */
-    mergeOptions: GitPullRequestMergeOptions;
+    mergeOptions?: GitPullRequestMergeOptions;
     /**
      * The current status of the pull request merge.
      */
-    mergeStatus: PullRequestAsyncStatus;
+    mergeStatus?: PullRequestAsyncStatus;
     /**
      * The ID of the pull request.
      */
-    pullRequestId: number;
+    pullRequestId?: number;
     /**
      * Used internally.
      */
-    remoteUrl: string;
+    remoteUrl?: string;
     /**
      * The repository containing the target branch of the pull request.
      */
-    repository: GitRepository;
+    repository?: GitRepository;
     /**
      * A list of reviewers on the pull request along with the state of their votes.
      */
-    reviewers: IdentityRefWithVote[];
+    reviewers?: IdentityRefWithVote[];
     /**
      * The name of the source branch of the pull request.
      */
-    sourceRefName: string;
+    sourceRefName?: string;
     /**
      * The status of the pull request.
      */
-    status: PullRequestStatus;
+    status?: PullRequestStatus;
     /**
      * If true, this pull request supports multiple iterations. Iteration support means individual pushes to the source branch of the pull request can be reviewed and comments left in one iteration will be tracked across future iterations.
      */
-    supportsIterations: boolean;
+    supportsIterations?: boolean;
     /**
      * The name of the target branch of the pull request.
      */
-    targetRefName: string;
+    targetRefName?: string;
     /**
      * The title of the pull request.
      */
-    title: string;
+    title?: string;
     /**
      * Used internally.
      */
-    url: string;
+    url?: string;
     /**
      * Any work item references associated with this pull request.
      */
-    workItemRefs: VSSInterfaces.ResourceRef[];
+    workItemRefs?: VSSInterfaces.ResourceRef[];
 }
 
 /**
@@ -1571,7 +1589,7 @@ export interface GitPullRequestChange extends GitChange {
     /**
      * ID used to track files through multiple changes.
      */
-    changeTrackingId: number;
+    changeTrackingId?: number;
 }
 
 /**
@@ -1581,7 +1599,7 @@ export interface GitPullRequestCommentThread extends CommentThread {
     /**
      * Extended context information unique to pull requests
      */
-    pullRequestThreadContext: GitPullRequestCommentThreadContext;
+    pullRequestThreadContext?: GitPullRequestCommentThreadContext;
 }
 
 /**
@@ -1591,15 +1609,15 @@ export interface GitPullRequestCommentThreadContext {
     /**
      * Used to track a comment across iterations. This value can be found by looking at the iteration's changes list. Must be set for pull requests with iteration support. Otherwise, it's not required for 'legacy' pull requests.
      */
-    changeTrackingId: number;
+    changeTrackingId?: number;
     /**
      * The iteration context being viewed when the thread was created.
      */
-    iterationContext: CommentIterationContext;
+    iterationContext?: CommentIterationContext;
     /**
      * The criteria used to track this thread. If this property is filled out when the thread is returned, then the thread has been tracked from its original location using the given criteria.
      */
-    trackingCriteria: CommentTrackingCriteria;
+    trackingCriteria?: CommentTrackingCriteria;
 }
 
 /**
@@ -1609,31 +1627,31 @@ export interface GitPullRequestCompletionOptions {
     /**
      * If true, policies will be explicitly bypassed while the pull request is completed.
      */
-    bypassPolicy: boolean;
+    bypassPolicy?: boolean;
     /**
      * If policies are bypassed, this reason is stored as to why bypass was used.
      */
-    bypassReason: string;
+    bypassReason?: string;
     /**
      * If true, the source branch of the pull request will be deleted after completion.
      */
-    deleteSourceBranch: boolean;
+    deleteSourceBranch?: boolean;
     /**
      * If set, this will be used as the commit message of the merge commit.
      */
-    mergeCommitMessage: string;
+    mergeCommitMessage?: string;
     /**
      * If true, the commits in the pull request will be squash-merged into the specified target branch on completion.
      */
-    squashMerge: boolean;
+    squashMerge?: boolean;
     /**
      * If true, we will attempt to transition any work items linked to the pull request into the next logical state (i.e. Active -> Resolved)
      */
-    transitionWorkItems: boolean;
+    transitionWorkItems?: boolean;
     /**
      * If true, the current completion attempt was triggered via auto-complete. Used internally.
      */
-    triggeredByAutoComplete: boolean;
+    triggeredByAutoComplete?: boolean;
 }
 
 /**
@@ -1643,59 +1661,67 @@ export interface GitPullRequestIteration {
     /**
      * A collection of related REST reference links.
      */
-    _links: any;
+    _links?: any;
     /**
      * Author of the pull request iteration.
      */
-    author: VSSInterfaces.IdentityRef;
+    author?: VSSInterfaces.IdentityRef;
     /**
      * Changes included with the pull request iteration.
      */
-    changeList: GitPullRequestChange[];
+    changeList?: GitPullRequestChange[];
     /**
      * The commits included with the pull request iteration.
      */
-    commits: GitCommitRef[];
+    commits?: GitCommitRef[];
     /**
      * The first common Git commit of the source and target refs.
      */
-    commonRefCommit: GitCommitRef;
+    commonRefCommit?: GitCommitRef;
     /**
      * The creation date of the pull request iteration.
      */
-    createdDate: Date;
+    createdDate?: Date;
     /**
      * Description of the pull request iteration.
      */
-    description: string;
+    description?: string;
     /**
      * Indicates if the Commits property contains a truncated list of commits in this pull request iteration.
      */
-    hasMoreCommits: boolean;
+    hasMoreCommits?: boolean;
     /**
      * ID of the pull request iteration. Iterations are created as a result of creating and pushing updates to a pull request.
      */
-    id: number;
+    id?: number;
+    /**
+     * If the iteration reason is Retarget, this is the refName of the new target
+     */
+    newTargetRefName?: string;
+    /**
+     * If the iteration reason is Retarget, this is the original target refName
+     */
+    oldTargetRefName?: string;
     /**
      * The Git push information associated with this pull request iteration.
      */
-    push: GitPushRef;
+    push?: GitPushRef;
     /**
      * The reason for which the pull request iteration was created.
      */
-    reason: IterationReason;
+    reason?: IterationReason;
     /**
      * The source Git commit of this iteration.
      */
-    sourceRefCommit: GitCommitRef;
+    sourceRefCommit?: GitCommitRef;
     /**
      * The target Git commit of this iteration.
      */
-    targetRefCommit: GitCommitRef;
+    targetRefCommit?: GitCommitRef;
     /**
      * The updated date of the pull request iteration.
      */
-    updatedDate: Date;
+    updatedDate?: Date;
 }
 
 /**
@@ -1705,25 +1731,26 @@ export interface GitPullRequestIterationChanges {
     /**
      * Changes made in the iteration.
      */
-    changeEntries: GitPullRequestChange[];
+    changeEntries?: GitPullRequestChange[];
     /**
      * Value to specify as skip to get the next page of changes.  This will be zero if there are no more changes.
      */
-    nextSkip: number;
+    nextSkip?: number;
     /**
      * Value to specify as top to get the next page of changes.  This will be zero if there are no more changes.
      */
-    nextTop: number;
+    nextTop?: number;
 }
 
 /**
  * The options which are used when a pull request merge is created.
  */
 export interface GitPullRequestMergeOptions {
+    detectRenameFalsePositives?: boolean;
     /**
      * If true, rename detection will not be performed during the merge.
      */
-    disableRenames: boolean;
+    disableRenames?: boolean;
 }
 
 /**
@@ -1733,11 +1760,11 @@ export interface GitPullRequestQuery {
     /**
      * The queries to perform.
      */
-    queries: GitPullRequestQueryInput[];
+    queries?: GitPullRequestQueryInput[];
     /**
      * The results of the queries. This matches the QueryInputs list so Results[n] are the results of QueryInputs[n]. Each entry in the list is a dictionary of commit->pull requests.
      */
-    results: { [key: string] : GitPullRequest[]; }[];
+    results?: { [key: string] : GitPullRequest[]; }[];
 }
 
 /**
@@ -1747,11 +1774,11 @@ export interface GitPullRequestQueryInput {
     /**
      * The list of commit IDs to search for.
      */
-    items: string[];
+    items?: string[];
     /**
      * The type of query to perform.
      */
-    type: GitPullRequestQueryType;
+    type?: GitPullRequestQueryType;
 }
 
 /**
@@ -1767,21 +1794,21 @@ export enum GitPullRequestQueryType {
      */
     LastMergeCommit = 1,
     /**
-     * Search for pull requests that merged the suppliest commits.
+     * Search for pull requests that merged the supplied commits.
      */
     Commit = 2,
 }
 
 export interface GitPullRequestReviewFileContentInfo {
-    _links: any;
+    _links?: any;
     /**
      * The file change path.
      */
-    path: string;
+    path?: string;
     /**
      * Content hash of on-disk representation of file content. Its calculated by the client by using SHA1 hash function. Ensure that uploaded file has same encoding as in source control.
      */
-    sHA1Hash: string;
+    sHA1Hash?: string;
 }
 
 export enum GitPullRequestReviewFileType {
@@ -1796,35 +1823,35 @@ export interface GitPullRequestSearchCriteria {
     /**
      * If set, search for pull requests that were created by this identity.
      */
-    creatorId: string;
+    creatorId?: string;
     /**
      * Whether to include the _links field on the shallow references
      */
-    includeLinks: boolean;
+    includeLinks?: boolean;
     /**
      * If set, search for pull requests whose target branch is in this repository.
      */
-    repositoryId: string;
+    repositoryId?: string;
     /**
      * If set, search for pull requests that have this identity as a reviewer.
      */
-    reviewerId: string;
+    reviewerId?: string;
     /**
      * If set, search for pull requests from this branch.
      */
-    sourceRefName: string;
+    sourceRefName?: string;
     /**
      * If set, search for pull requests whose source branch is in this repository.
      */
-    sourceRepositoryId: string;
+    sourceRepositoryId?: string;
     /**
-     * If set, search for pull requests that are in this state.
+     * If set, search for pull requests that are in this state. Defaults to Active if unset.
      */
-    status: PullRequestStatus;
+    status?: PullRequestStatus;
     /**
      * If set, search for pull requests into this branch.
      */
-    targetRefName: string;
+    targetRefName?: string;
 }
 
 /**
@@ -1834,154 +1861,170 @@ export interface GitPullRequestStatus extends GitStatus {
     /**
      * ID of the iteration to associate status with. Minimum value is 1.
      */
-    iterationId: number;
+    iterationId?: number;
     /**
      * Custom properties of the status.
      */
-    properties: any;
+    properties?: any;
 }
 
 export interface GitPush extends GitPushRef {
-    commits: GitCommitRef[];
-    refUpdates: GitRefUpdate[];
-    repository: GitRepository;
+    commits?: GitCommitRef[];
+    refUpdates?: GitRefUpdate[];
+    repository?: GitRepository;
 }
 
 export interface GitPushEventData {
-    afterId: string;
-    beforeId: string;
-    branch: string;
-    commits: GitCommit[];
-    repository: GitRepository;
+    afterId?: string;
+    beforeId?: string;
+    branch?: string;
+    commits?: GitCommit[];
+    repository?: GitRepository;
 }
 
 export interface GitPushRef {
-    _links: any;
-    date: Date;
-    pushCorrelationId: string;
-    pushedBy: VSSInterfaces.IdentityRef;
-    pushId: number;
-    url: string;
+    _links?: any;
+    date?: Date;
+    pushCorrelationId?: string;
+    pushedBy?: VSSInterfaces.IdentityRef;
+    pushId?: number;
+    url?: string;
 }
 
 export interface GitPushSearchCriteria {
-    fromDate: Date;
+    fromDate?: Date;
     /**
      * Whether to include the _links field on the shallow references
      */
-    includeLinks: boolean;
-    includeRefUpdates: boolean;
-    pusherId: string;
-    refName: string;
-    toDate: Date;
+    includeLinks?: boolean;
+    includeRefUpdates?: boolean;
+    pusherId?: string;
+    refName?: string;
+    toDate?: Date;
 }
 
 export interface GitQueryBranchStatsCriteria {
-    baseCommit: GitVersionDescriptor;
-    targetCommits: GitVersionDescriptor[];
+    baseCommit?: GitVersionDescriptor;
+    targetCommits?: GitVersionDescriptor[];
 }
 
 export interface GitQueryCommitsCriteria {
     /**
      * Number of entries to skip
      */
-    $skip: number;
+    $skip?: number;
     /**
      * Maximum number of entries to retrieve
      */
-    $top: number;
+    $top?: number;
     /**
      * Alias or display name of the author
      */
-    author: string;
+    author?: string;
     /**
-     * If provided, the earliest commit in the graph to search
+     * Only applicable when ItemVersion specified. If provided, start walking history starting at this commit.
      */
-    compareVersion: GitVersionDescriptor;
+    compareVersion?: GitVersionDescriptor;
     /**
-     * If true, don't include delete history entries
+     * Only applies when an itemPath is specified. This determines whether to exclude delete entries of the specified path.
      */
-    excludeDeletes: boolean;
+    excludeDeletes?: boolean;
     /**
      * If provided, a lower bound for filtering commits alphabetically
      */
-    fromCommitId: string;
+    fromCommitId?: string;
     /**
      * If provided, only include history entries created after this date (string)
      */
-    fromDate: string;
+    fromDate?: string;
     /**
-     * What Git history mode should be used. This only applies to the search criteria when Ids = null.
+     * What Git history mode should be used. This only applies to the search criteria when Ids = null and an itemPath is specified.
      */
-    historyMode: GitHistoryMode;
+    historyMode?: GitHistoryMode;
     /**
      * If provided, specifies the exact commit ids of the commits to fetch. May not be combined with other parameters.
      */
-    ids: string[];
+    ids?: string[];
     /**
      * Whether to include the _links field on the shallow references
      */
-    includeLinks: boolean;
+    includeLinks?: boolean;
+    /**
+     * Whether to include the push information
+     */
+    includePushData?: boolean;
+    /**
+     * Whether to include the image Url for committers and authors
+     */
+    includeUserImageUrl?: boolean;
     /**
      * Whether to include linked work items
      */
-    includeWorkItems: boolean;
+    includeWorkItems?: boolean;
     /**
      * Path of item to search under
      */
-    itemPath: string;
+    itemPath?: string;
     /**
      * If provided, identifies the commit or branch to search
      */
-    itemVersion: GitVersionDescriptor;
+    itemVersion?: GitVersionDescriptor;
     /**
      * If provided, an upper bound for filtering commits alphabetically
      */
-    toCommitId: string;
+    toCommitId?: string;
     /**
      * If provided, only include history entries created before this date (string)
      */
-    toDate: string;
+    toDate?: string;
     /**
      * Alias or display name of the committer
      */
-    user: string;
+    user?: string;
 }
 
 export interface GitQueryRefsCriteria {
     /**
      * List of commit Ids to be searched
      */
-    commitIds: string[];
+    commitIds?: string[];
     /**
      * List of complete or partial names for refs to be searched
      */
-    refNames: string[];
+    refNames?: string[];
     /**
      * Type of search on refNames, if provided
      */
-    searchType: GitRefSearchType;
+    searchType?: GitRefSearchType;
+}
+
+export interface GitRecycleBinRepositoryDetails {
+    /**
+     * Setting to false will undo earlier deletion and restore the repository.
+     */
+    deleted?: boolean;
 }
 
 export interface GitRef {
-    _links: any;
-    isLocked: boolean;
-    isLockedBy: VSSInterfaces.IdentityRef;
-    name: string;
-    objectId: string;
-    peeledObjectId: string;
-    statuses: GitStatus[];
-    url: string;
+    _links?: any;
+    creator?: VSSInterfaces.IdentityRef;
+    isLocked?: boolean;
+    isLockedBy?: VSSInterfaces.IdentityRef;
+    name?: string;
+    objectId?: string;
+    peeledObjectId?: string;
+    statuses?: GitStatus[];
+    url?: string;
 }
 
 export interface GitRefFavorite {
-    _links: any;
-    id: number;
-    identityId: string;
-    name: string;
-    repositoryId: string;
-    type: RefFavoriteType;
-    url: string;
+    _links?: any;
+    id?: number;
+    identityId?: string;
+    name?: string;
+    repositoryId?: string;
+    type?: RefFavoriteType;
+    url?: string;
 }
 
 /**
@@ -1994,11 +2037,11 @@ export enum GitRefSearchType {
 }
 
 export interface GitRefUpdate {
-    isLocked: boolean;
-    name: string;
-    newObjectId: string;
-    oldObjectId: string;
-    repositoryId: string;
+    isLocked?: boolean;
+    name?: string;
+    newObjectId?: string;
+    oldObjectId?: string;
+    repositoryId?: string;
 }
 
 /**
@@ -2019,39 +2062,39 @@ export interface GitRefUpdateResult {
     /**
      * Custom message for the result object For instance, Reason for failing.
      */
-    customMessage: string;
+    customMessage?: string;
     /**
      * Whether the ref is locked or not
      */
-    isLocked: boolean;
+    isLocked?: boolean;
     /**
      * Ref name
      */
-    name: string;
+    name?: string;
     /**
      * New object ID
      */
-    newObjectId: string;
+    newObjectId?: string;
     /**
      * Old object ID
      */
-    oldObjectId: string;
+    oldObjectId?: string;
     /**
      * Name of the plugin that rejected the updated.
      */
-    rejectedBy: string;
+    rejectedBy?: string;
     /**
      * Repository ID
      */
-    repositoryId: string;
+    repositoryId?: string;
     /**
      * True if the ref update succeeded, false otherwise
      */
-    success: boolean;
+    success?: boolean;
     /**
      * Status of the update from the TFS server.
      */
-    updateStatus: GitRefUpdateStatus;
+    updateStatus?: GitRefUpdateStatus;
 }
 
 /**
@@ -2125,53 +2168,54 @@ export enum GitRefUpdateStatus {
 }
 
 export interface GitRepository {
-    _links: any;
-    defaultBranch: string;
-    id: string;
+    _links?: any;
+    defaultBranch?: string;
+    id?: string;
     /**
      * True if the repository was created as a fork
      */
-    isFork: boolean;
-    name: string;
-    parentRepository: GitRepositoryRef;
-    project: TfsCoreInterfaces.TeamProjectReference;
-    remoteUrl: string;
-    sshUrl: string;
-    url: string;
-    validRemoteUrls: string[];
+    isFork?: boolean;
+    name?: string;
+    parentRepository?: GitRepositoryRef;
+    project?: TfsCoreInterfaces.TeamProjectReference;
+    remoteUrl?: string;
+    /**
+     * Compressed size (bytes) of the repository.
+     */
+    size?: number;
+    sshUrl?: string;
+    url?: string;
+    validRemoteUrls?: string[];
 }
 
 export interface GitRepositoryCreateOptions {
-    name: string;
-    parentRepository: GitRepositoryRef;
-    project: TfsCoreInterfaces.TeamProjectReference;
+    name?: string;
+    parentRepository?: GitRepositoryRef;
+    project?: TfsCoreInterfaces.TeamProjectReference;
 }
 
 export interface GitRepositoryRef {
     /**
      * Team Project Collection where this Fork resides
      */
-    collection: TfsCoreInterfaces.TeamProjectCollectionReference;
-    id: string;
+    collection?: TfsCoreInterfaces.TeamProjectCollectionReference;
+    id?: string;
     /**
      * True if the repository was created as a fork
      */
-    isFork: boolean;
-    name: string;
-    project: TfsCoreInterfaces.TeamProjectReference;
-    remoteUrl: string;
-    sshUrl: string;
-    url: string;
+    isFork?: boolean;
+    name?: string;
+    project?: TfsCoreInterfaces.TeamProjectReference;
+    remoteUrl?: string;
+    sshUrl?: string;
+    url?: string;
 }
 
 export interface GitRepositoryStats {
-    activePullRequestsCount: number;
-    branchesCount: number;
-    commitsCount: number;
-    repositoryId: string;
-}
-
-export interface GitResolution {
+    activePullRequestsCount?: number;
+    branchesCount?: number;
+    commitsCount?: number;
+    repositoryId?: string;
 }
 
 /**
@@ -2208,10 +2252,10 @@ export enum GitResolutionError {
     OtherError = 255,
 }
 
-export interface GitResolutionMergeContent extends GitResolution {
-    mergeType: GitResolutionMergeType;
-    userMergedBlob: GitBlobRef;
-    userMergedContent: number[];
+export interface GitResolutionMergeContent {
+    mergeType?: GitResolutionMergeType;
+    userMergedBlob?: GitBlobRef;
+    userMergedContent?: number[];
 }
 
 export enum GitResolutionMergeType {
@@ -2222,9 +2266,9 @@ export enum GitResolutionMergeType {
     UserMerged = 4,
 }
 
-export interface GitResolutionPathConflict extends GitResolution {
-    action: GitResolutionPathConflictAction;
-    renamePath: string;
+export interface GitResolutionPathConflict {
+    action?: GitResolutionPathConflictAction;
+    renamePath?: string;
 }
 
 export enum GitResolutionPathConflictAction {
@@ -2235,12 +2279,12 @@ export enum GitResolutionPathConflictAction {
     KeepTargetDeleteSource = 4,
 }
 
-export interface GitResolutionPickOneAction extends GitResolution {
-    action: GitResolutionWhichAction;
+export interface GitResolutionPickOneAction {
+    action?: GitResolutionWhichAction;
 }
 
 export interface GitResolutionRename1to2 extends GitResolutionMergeContent {
-    action: GitResolutionRename1to2Action;
+    action?: GitResolutionRename1to2Action;
 }
 
 export enum GitResolutionRename1to2Action {
@@ -2266,7 +2310,7 @@ export enum GitResolutionWhichAction {
 }
 
 export interface GitRevert extends GitAsyncRefOperation {
-    revertId: number;
+    revertId?: number;
 }
 
 /**
@@ -2276,39 +2320,39 @@ export interface GitStatus {
     /**
      * Reference links.
      */
-    _links: any;
+    _links?: any;
     /**
      * Context of the status.
      */
-    context: GitStatusContext;
+    context?: GitStatusContext;
     /**
      * Identity that created the status.
      */
-    createdBy: VSSInterfaces.IdentityRef;
+    createdBy?: VSSInterfaces.IdentityRef;
     /**
      * Creation date and time of the status.
      */
-    creationDate: Date;
+    creationDate?: Date;
     /**
      * Status description. Typically describes current state of the status.
      */
-    description: string;
+    description?: string;
     /**
      * Status identifier.
      */
-    id: number;
+    id?: number;
     /**
      * State of the status.
      */
-    state: GitStatusState;
+    state?: GitStatusState;
     /**
      * URL with status details.
      */
-    targetUrl: string;
+    targetUrl?: string;
     /**
      * Last update date and time of the status.
      */
-    updatedDate: Date;
+    updatedDate?: Date;
 }
 
 /**
@@ -2318,11 +2362,11 @@ export interface GitStatusContext {
     /**
      * Genre of the status. Typically name of the service/tool generating the status, can be empty.
      */
-    genre: string;
+    genre?: string;
     /**
      * Name identifier of the status, cannot be null or empty.
      */
-    name: string;
+    name?: string;
 }
 
 /**
@@ -2362,134 +2406,134 @@ export interface GitSuggestion {
     /**
      * Specific properties describing the suggestion.
      */
-    properties: { [key: string] : any; };
+    properties?: { [key: string] : any; };
     /**
      * The type of suggestion (e.g. pull request).
      */
-    type: string;
+    type?: string;
 }
 
 export interface GitTargetVersionDescriptor extends GitVersionDescriptor {
     /**
      * Version string identifier (name of tag/branch, SHA1 of commit)
      */
-    targetVersion: string;
+    targetVersion?: string;
     /**
      * Version options - Specify additional modifiers to version (e.g Previous)
      */
-    targetVersionOptions: GitVersionOptions;
+    targetVersionOptions?: GitVersionOptions;
     /**
      * Version type (branch, tag, or commit). Determines how Id is interpreted
      */
-    targetVersionType: GitVersionType;
+    targetVersionType?: GitVersionType;
 }
 
 export interface GitTemplate {
     /**
      * Name of the Template
      */
-    name: string;
+    name?: string;
     /**
      * Type of the Template
      */
-    type: string;
+    type?: string;
 }
 
 export interface GitTreeDiff {
     /**
      * ObjectId of the base tree of this diff.
      */
-    baseTreeId: string;
+    baseTreeId?: string;
     /**
      * List of tree entries that differ between the base and target tree.  Renames and object type changes are returned as a delete for the old object and add for the new object.  If a continuation token is returned in the response header, some tree entries are yet to be processed and may yeild more diff entries. If the continuation token is not returned all the diff entries have been included in this response.
      */
-    diffEntries: GitTreeDiffEntry[];
+    diffEntries?: GitTreeDiffEntry[];
     /**
      * ObjectId of the target tree of this diff.
      */
-    targetTreeId: string;
+    targetTreeId?: string;
     /**
      * REST Url to this resource.
      */
-    url: string;
+    url?: string;
 }
 
 export interface GitTreeDiffEntry {
     /**
      * SHA1 hash of the object in the base tree, if it exists. Will be null in case of adds.
      */
-    baseObjectId: string;
+    baseObjectId?: string;
     /**
      * Type of change that affected this entry.
      */
-    changeType: VersionControlChangeType;
+    changeType?: VersionControlChangeType;
     /**
      * Object type of the tree entry. Blob, Tree or Commit("submodule")
      */
-    objectType: GitObjectType;
+    objectType?: GitObjectType;
     /**
      * Relative path in base and target trees.
      */
-    path: string;
+    path?: string;
     /**
      * SHA1 hash of the object in the target tree, if it exists. Will be null in case of deletes.
      */
-    targetObjectId: string;
+    targetObjectId?: string;
 }
 
 export interface GitTreeDiffResponse {
     /**
      * The HTTP client methods find the continuation token header in the response and populate this field.
      */
-    continuationToken: string[];
-    treeDiff: GitTreeDiff;
+    continuationToken?: string[];
+    treeDiff?: GitTreeDiff;
 }
 
 export interface GitTreeEntryRef {
     /**
      * Blob or tree
      */
-    gitObjectType: GitObjectType;
+    gitObjectType?: GitObjectType;
     /**
      * Mode represented as octal string
      */
-    mode: string;
+    mode?: string;
     /**
      * SHA1 hash of git object
      */
-    objectId: string;
+    objectId?: string;
     /**
      * Path relative to parent tree object
      */
-    relativePath: string;
+    relativePath?: string;
     /**
      * Size of content
      */
-    size: number;
+    size?: number;
     /**
      * url to retrieve tree or blob
      */
-    url: string;
+    url?: string;
 }
 
 export interface GitTreeRef {
-    _links: any;
+    _links?: any;
     /**
      * SHA1 hash of git object
      */
-    objectId: string;
+    objectId?: string;
     /**
      * Sum of sizes of all children
      */
-    size: number;
+    size?: number;
     /**
      * Blobs and trees under this tree
      */
-    treeEntries: GitTreeEntryRef[];
+    treeEntries?: GitTreeEntryRef[];
     /**
      * Url to tree
      */
-    url: string;
+    url?: string;
 }
 
 /**
@@ -2499,30 +2543,34 @@ export interface GitUserDate {
     /**
      * Date of the Git operation.
      */
-    date: Date;
+    date?: Date;
     /**
      * Email address of the user performing the Git operation.
      */
-    email: string;
+    email?: string;
+    /**
+     * Url for the user's avatar.
+     */
+    imageUrl?: string;
     /**
      * Name of the user performing the Git operation.
      */
-    name: string;
+    name?: string;
 }
 
 export interface GitVersionDescriptor {
     /**
      * Version string identifier (name of tag/branch, SHA1 of commit)
      */
-    version: string;
+    version?: string;
     /**
      * Version options - Specify additional modifiers to version (e.g Previous)
      */
-    versionOptions: GitVersionOptions;
+    versionOptions?: GitVersionOptions;
     /**
      * Version type (branch, tag, or commit). Determines how Id is interpreted
      */
-    versionType: GitVersionType;
+    versionType?: GitVersionType;
 }
 
 /**
@@ -2562,19 +2610,13 @@ export enum GitVersionType {
 }
 
 /**
- * Reference to a workitem from a Git/PullRequest context.
- */
-export interface GitWorkItemRef extends VSSInterfaces.ResourceRef {
-}
-
-/**
  * Globally unique key for a repository.
  */
 export interface GlobalGitRepositoryKey {
     /**
      * Team Project Collection ID of the collection for the repository.
      */
-    collectionId: string;
+    collectionId?: string;
     /**
      * Team Project ID of the project for the repository.
      */
@@ -2589,15 +2631,15 @@ export interface HistoryEntry<T> {
     /**
      * The Change list (changeset/commit/shelveset) for this point in history
      */
-    changeList: ChangeList<T>;
+    changeList?: ChangeList<T>;
     /**
      * The change made to the item from this change list (only relevant for File history, not folders)
      */
-    itemChangeType: VersionControlChangeType;
+    itemChangeType?: VersionControlChangeType;
     /**
      * The path of the item at this point in history (only relevant for File history, not folders)
      */
-    serverItem: string;
+    serverItem?: string;
 }
 
 /**
@@ -2607,38 +2649,44 @@ export interface IdentityRefWithVote extends VSSInterfaces.IdentityRef {
     /**
      * Indicates if this is a required reviewer for this pull request. <br /> Branches can have policies that require particular reviewers are required for pull requests.
      */
-    isRequired: boolean;
+    isRequired?: boolean;
     /**
      * URL to retrieve information about this identity
      */
-    reviewerUrl: string;
+    reviewerUrl?: string;
     /**
      * Vote on a pull request:<br /> 10 - approved 5 - approved with suggestions 0 - no vote -5 - waiting for author -10 - rejected
      */
-    vote: number;
+    vote?: number;
     /**
      * Groups or teams that that this reviewer contributed to. <br /> Groups and teams can be reviewers on pull requests but can not vote directly.  When a member of the group or team votes, that vote is rolled up into the group or team vote.  VotedFor is a list of such votes.
      */
-    votedFor: IdentityRefWithVote[];
+    votedFor?: IdentityRefWithVote[];
 }
 
 export interface ImportRepositoryValidation {
-    gitSource: GitImportGitSource;
-    password: string;
-    tfvcSource: GitImportTfvcSource;
-    username: string;
+    gitSource?: GitImportGitSource;
+    password?: string;
+    tfvcSource?: GitImportTfvcSource;
+    username?: string;
 }
 
 export interface IncludedGitCommit {
-    commitId: string;
-    commitTime: Date;
-    parentCommitIds: string[];
-    repositoryId: string;
+    commitId?: string;
+    commitTime?: Date;
+    parentCommitIds?: string[];
+    repositoryId?: string;
+}
+
+/**
+ * Real time event (SignalR) for IsDraft update on a pull request
+ */
+export interface IsDraftUpdatedEvent extends RealTimePullRequestEvent {
 }
 
 export interface ItemContent {
-    content: string;
-    contentType: ItemContentType;
+    content?: string;
+    contentType?: ItemContentType;
 }
 
 export enum ItemContentType {
@@ -2653,20 +2701,21 @@ export interface ItemDetailsOptions {
     /**
      * If true, include metadata about the file type
      */
-    includeContentMetadata: boolean;
+    includeContentMetadata?: boolean;
     /**
      * Specifies whether to include children (OneLevel), all descendants (Full) or None for folder items
      */
-    recursionLevel: VersionControlRecursionType;
+    recursionLevel?: VersionControlRecursionType;
 }
 
 export interface ItemModel {
-    _links: any;
-    contentMetadata: FileContentMetadata;
-    isFolder: boolean;
-    isSymLink: boolean;
-    path: string;
-    url: string;
+    _links?: any;
+    content?: string;
+    contentMetadata?: FileContentMetadata;
+    isFolder?: boolean;
+    isSymLink?: boolean;
+    path?: string;
+    url?: string;
 }
 
 /**
@@ -2678,6 +2727,7 @@ export enum IterationReason {
     Create = 2,
     Rebase = 4,
     Unknown = 8,
+    Retarget = 16,
 }
 
 /**
@@ -2786,8 +2836,8 @@ export enum PullRequestStatus {
  * Initial config contract sent to extensions creating tabs on the pull request page
  */
 export interface PullRequestTabExtensionConfig {
-    pullRequestId: number;
-    repositoryId: string;
+    pullRequestId?: number;
+    repositoryId?: string;
 }
 
 /**
@@ -2797,17 +2847,23 @@ export interface RealTimePullRequestEvent {
     /**
      * The id of this event. Can be used to track send/receive state between client and server.
      */
-    eventId: string;
+    eventId?: string;
     /**
      * The id of the pull request this event was generated for.
      */
-    pullRequestId: number;
+    pullRequestId?: number;
 }
 
 export enum RefFavoriteType {
     Invalid = 0,
     Folder = 1,
     Ref = 2,
+}
+
+/**
+ * Real time event (SignalR) for when the target branch of a pull request is changed
+ */
+export interface RetargetEvent extends RealTimePullRequestEvent {
 }
 
 /**
@@ -2835,22 +2891,22 @@ export interface ShareNotificationContext {
     /**
      * Optional user note or message.
      */
-    message: string;
+    message?: string;
     /**
      * Identities of users who will receive a share notification.
      */
-    receivers: VSSInterfaces.IdentityRef[];
+    receivers?: VSSInterfaces.IdentityRef[];
 }
 
 export interface SourceToTargetRef {
     /**
      * The source ref to copy. For example, refs/heads/master.
      */
-    sourceRef: string;
+    sourceRef?: string;
     /**
      * The target ref to update. For example, refs/heads/master.
      */
-    targetRef: string;
+    targetRef?: string;
 }
 
 /**
@@ -2878,23 +2934,23 @@ export interface SupportedIde {
     /**
      * The download URL for the IDE.
      */
-    downloadUrl: string;
+    downloadUrl?: string;
     /**
      * The type of the IDE.
      */
-    ideType: SupportedIdeType;
+    ideType?: SupportedIdeType;
     /**
      * The name of the IDE.
      */
-    name: string;
+    name?: string;
     /**
      * The URL to open the protocol handler for the IDE.
      */
-    protocolHandlerUrl: string;
+    protocolHandlerUrl?: string;
     /**
      * A list of SupportedPlatforms.
      */
-    supportedPlatforms: string[];
+    supportedPlatforms?: string[];
 }
 
 /**
@@ -2914,6 +2970,7 @@ export enum SupportedIdeType {
     RubyMine = 9,
     Tower = 10,
     VisualStudio = 11,
+    VSCode = 14,
     WebStorm = 12,
 }
 
@@ -2921,142 +2978,142 @@ export interface TfvcBranch extends TfvcBranchRef {
     /**
      * List of children for the branch.
      */
-    children: TfvcBranch[];
+    children?: TfvcBranch[];
     /**
      * List of branch mappings.
      */
-    mappings: TfvcBranchMapping[];
+    mappings?: TfvcBranchMapping[];
     /**
      * Path of the branch's parent.
      */
-    parent: TfvcShallowBranchRef;
+    parent?: TfvcShallowBranchRef;
     /**
      * List of paths of the related branches.
      */
-    relatedBranches: TfvcShallowBranchRef[];
+    relatedBranches?: TfvcShallowBranchRef[];
 }
 
 export interface TfvcBranchMapping {
     /**
      * Depth of the branch.
      */
-    depth: string;
+    depth?: string;
     /**
      * Server item for the branch.
      */
-    serverItem: string;
+    serverItem?: string;
     /**
      * Type of the branch.
      */
-    type: string;
+    type?: string;
 }
 
 export interface TfvcBranchRef extends TfvcShallowBranchRef {
     /**
      * A collection of REST reference links.
      */
-    _links: any;
+    _links?: any;
     /**
      * Creation date of the branch.
      */
-    createdDate: Date;
+    createdDate?: Date;
     /**
      * Description of the branch.
      */
-    description: string;
+    description?: string;
     /**
      * Is the branch deleted?
      */
-    isDeleted: boolean;
+    isDeleted?: boolean;
     /**
      * Alias or display name of user
      */
-    owner: VSSInterfaces.IdentityRef;
+    owner?: VSSInterfaces.IdentityRef;
     /**
      * URL to retrieve the item.
      */
-    url: string;
+    url?: string;
 }
 
 export interface TfvcChange extends Change<TfvcItem> {
     /**
      * List of merge sources in case of rename or branch creation.
      */
-    mergeSources: TfvcMergeSource[];
+    mergeSources?: TfvcMergeSource[];
     /**
      * Version at which a (shelved) change was pended against
      */
-    pendingVersion: number;
+    pendingVersion?: number;
 }
 
 export interface TfvcChangeset extends TfvcChangesetRef {
     /**
      * Account Id of the changeset.
      */
-    accountId: string;
+    accountId?: string;
     /**
      * List of associated changes.
      */
-    changes: TfvcChange[];
+    changes?: TfvcChange[];
     /**
      * Checkin Notes for the changeset.
      */
-    checkinNotes: CheckinNote[];
+    checkinNotes?: CheckinNote[];
     /**
      * Collection Id of the changeset.
      */
-    collectionId: string;
+    collectionId?: string;
     /**
      * Are more changes available.
      */
-    hasMoreChanges: boolean;
+    hasMoreChanges?: boolean;
     /**
      * Policy Override for the changeset.
      */
-    policyOverride: TfvcPolicyOverrideInfo;
+    policyOverride?: TfvcPolicyOverrideInfo;
     /**
      * Team Project Ids for the changeset.
      */
-    teamProjectIds: string[];
+    teamProjectIds?: string[];
     /**
      * List of work items associated with the changeset.
      */
-    workItems: AssociatedWorkItem[];
+    workItems?: AssociatedWorkItem[];
 }
 
 export interface TfvcChangesetRef {
     /**
      * A collection of REST reference links.
      */
-    _links: any;
+    _links?: any;
     /**
      * Alias or display name of user
      */
-    author: VSSInterfaces.IdentityRef;
+    author?: VSSInterfaces.IdentityRef;
     /**
      * Id of the changeset.
      */
-    changesetId: number;
+    changesetId?: number;
     /**
      * Alias or display name of user
      */
-    checkedInBy: VSSInterfaces.IdentityRef;
+    checkedInBy?: VSSInterfaces.IdentityRef;
     /**
      * Comment for the changeset.
      */
-    comment: string;
+    comment?: string;
     /**
      * Was the Comment result truncated?
      */
-    commentTruncated: boolean;
+    commentTruncated?: boolean;
     /**
      * Creation date of the changeset.
      */
-    createdDate: Date;
+    createdDate?: Date;
     /**
      * URL to retrieve the item.
      */
-    url: string;
+    url?: string;
 }
 
 /**
@@ -3066,229 +3123,257 @@ export interface TfvcChangesetSearchCriteria {
     /**
      * Alias or display name of user who made the changes
      */
-    author: string;
+    author?: string;
     /**
      * Whether or not to follow renames for the given item being queried
      */
-    followRenames: boolean;
+    followRenames?: boolean;
     /**
      * If provided, only include changesets created after this date (string) Think of a better name for this.
      */
-    fromDate: string;
+    fromDate?: string;
     /**
      * If provided, only include changesets after this changesetID
      */
-    fromId: number;
+    fromId?: number;
     /**
      * Whether to include the _links field on the shallow references
      */
-    includeLinks: boolean;
+    includeLinks?: boolean;
     /**
      * Path of item to search under
      */
-    itemPath: string;
+    itemPath?: string;
+    mappings?: TfvcMappingFilter[];
     /**
      * If provided, only include changesets created before this date (string) Think of a better name for this.
      */
-    toDate: string;
+    toDate?: string;
     /**
      * If provided, a version descriptor for the latest change list to include
      */
-    toId: number;
+    toId?: number;
 }
 
 export interface TfvcChangesetsRequestData {
     /**
      * List of changeset Ids.
      */
-    changesetIds: number[];
+    changesetIds?: number[];
     /**
      * Length of the comment.
      */
-    commentLength: number;
+    commentLength?: number;
     /**
      * Whether to include the _links field on the shallow references
      */
-    includeLinks: boolean;
+    includeLinks?: boolean;
 }
 
 export interface TfvcCheckinEventData {
-    changeset: TfvcChangeset;
-    project: TfsCoreInterfaces.TeamProjectReference;
+    changeset?: TfvcChangeset;
+    project?: TfsCoreInterfaces.TeamProjectReference;
 }
 
 export interface TfvcHistoryEntry extends HistoryEntry<TfvcItem> {
     /**
      * The encoding of the item at this point in history (only relevant for File history, not folders)
      */
-    encoding: number;
+    encoding?: number;
     /**
      * The file id of the item at this point in history (only relevant for File history, not folders)
      */
-    fileId: number;
+    fileId?: number;
 }
 
 export interface TfvcItem extends ItemModel {
-    changeDate: Date;
-    deletionId: number;
+    changeDate?: Date;
+    deletionId?: number;
+    /**
+     * File encoding from database, -1 represents binary.
+     */
+    encoding?: number;
     /**
      * MD5 hash as a base 64 string, applies to files only.
      */
-    hashValue: string;
-    isBranch: boolean;
-    isPendingChange: boolean;
+    hashValue?: string;
+    isBranch?: boolean;
+    isPendingChange?: boolean;
     /**
      * The size of the file, if applicable.
      */
-    size: number;
-    version: number;
+    size?: number;
+    version?: number;
 }
 
 /**
  * Item path and Version descriptor properties
  */
 export interface TfvcItemDescriptor {
-    path: string;
-    recursionLevel: VersionControlRecursionType;
-    version: string;
-    versionOption: TfvcVersionOption;
-    versionType: TfvcVersionType;
+    path?: string;
+    recursionLevel?: VersionControlRecursionType;
+    version?: string;
+    versionOption?: TfvcVersionOption;
+    versionType?: TfvcVersionType;
+}
+
+export interface TfvcItemPreviousHash extends TfvcItem {
+    /**
+     * MD5 hash as a base 64 string, applies to files only.
+     */
+    previousHashValue?: string;
 }
 
 export interface TfvcItemRequestData {
     /**
      * If true, include metadata about the file type
      */
-    includeContentMetadata: boolean;
+    includeContentMetadata?: boolean;
     /**
      * Whether to include the _links field on the shallow references
      */
-    includeLinks: boolean;
-    itemDescriptors: TfvcItemDescriptor[];
+    includeLinks?: boolean;
+    itemDescriptors?: TfvcItemDescriptor[];
 }
 
 export interface TfvcLabel extends TfvcLabelRef {
-    items: TfvcItem[];
+    items?: TfvcItem[];
 }
 
 export interface TfvcLabelRef {
-    _links: any;
-    description: string;
-    id: number;
-    labelScope: string;
-    modifiedDate: Date;
-    name: string;
-    owner: VSSInterfaces.IdentityRef;
-    url: string;
+    _links?: any;
+    description?: string;
+    id?: number;
+    labelScope?: string;
+    modifiedDate?: Date;
+    name?: string;
+    owner?: VSSInterfaces.IdentityRef;
+    url?: string;
 }
 
 export interface TfvcLabelRequestData {
     /**
      * Whether to include the _links field on the shallow references
      */
-    includeLinks: boolean;
-    itemLabelFilter: string;
-    labelScope: string;
-    maxItemCount: number;
-    name: string;
-    owner: string;
+    includeLinks?: boolean;
+    itemLabelFilter?: string;
+    labelScope?: string;
+    maxItemCount?: number;
+    name?: string;
+    owner?: string;
+}
+
+export interface TfvcMappingFilter {
+    exclude?: boolean;
+    serverPath?: string;
 }
 
 export interface TfvcMergeSource {
     /**
      * Indicates if this a rename source. If false, it is a merge source.
      */
-    isRename: boolean;
+    isRename?: boolean;
     /**
      * The server item of the merge source
      */
-    serverItem: string;
+    serverItem?: string;
     /**
      * Start of the version range
      */
-    versionFrom: number;
+    versionFrom?: number;
     /**
      * End of the version range
      */
-    versionTo: number;
+    versionTo?: number;
 }
 
 export interface TfvcPolicyFailureInfo {
-    message: string;
-    policyName: string;
+    message?: string;
+    policyName?: string;
 }
 
 export interface TfvcPolicyOverrideInfo {
-    comment: string;
-    policyFailures: TfvcPolicyFailureInfo[];
+    comment?: string;
+    policyFailures?: TfvcPolicyFailureInfo[];
 }
 
 export interface TfvcShallowBranchRef {
     /**
      * Path for the branch.
      */
-    path: string;
+    path?: string;
 }
 
 /**
  * This is the deep shelveset class
  */
 export interface TfvcShelveset extends TfvcShelvesetRef {
-    changes: TfvcChange[];
-    notes: CheckinNote[];
-    policyOverride: TfvcPolicyOverrideInfo;
-    workItems: AssociatedWorkItem[];
+    changes?: TfvcChange[];
+    notes?: CheckinNote[];
+    policyOverride?: TfvcPolicyOverrideInfo;
+    workItems?: AssociatedWorkItem[];
 }
 
 /**
  * This is the shallow shelveset class
  */
 export interface TfvcShelvesetRef {
-    _links: any;
-    comment: string;
-    commentTruncated: boolean;
-    createdDate: Date;
-    id: string;
-    name: string;
-    owner: VSSInterfaces.IdentityRef;
-    url: string;
+    _links?: any;
+    comment?: string;
+    commentTruncated?: boolean;
+    createdDate?: Date;
+    id?: string;
+    name?: string;
+    owner?: VSSInterfaces.IdentityRef;
+    url?: string;
 }
 
 export interface TfvcShelvesetRequestData {
     /**
      * Whether to include policyOverride and notes Only applies when requesting a single deep shelveset
      */
-    includeDetails: boolean;
+    includeDetails?: boolean;
     /**
      * Whether to include the _links field on the shallow references. Does not apply when requesting a single deep shelveset object. Links will always be included in the deep shelveset.
      */
-    includeLinks: boolean;
+    includeLinks?: boolean;
     /**
      * Whether to include workItems
      */
-    includeWorkItems: boolean;
+    includeWorkItems?: boolean;
     /**
      * Max number of changes to include
      */
-    maxChangeCount: number;
+    maxChangeCount?: number;
     /**
      * Max length of comment
      */
-    maxCommentLength: number;
+    maxCommentLength?: number;
     /**
      * Shelveset's name
      */
-    name: string;
+    name?: string;
     /**
      * Owner's ID. Could be a name or a guid.
      */
-    owner: string;
+    owner?: string;
+}
+
+export interface TfvcStatistics {
+    /**
+     * Id of the last changeset the stats are based on.
+     */
+    changesetId?: number;
+    /**
+     * Count of files at the requested scope.
+     */
+    fileCountTotal?: number;
 }
 
 export interface TfvcVersionDescriptor {
-    version: string;
-    versionOption: TfvcVersionOption;
-    versionType: TfvcVersionType;
+    version?: string;
+    versionOption?: TfvcVersionOption;
+    versionType?: TfvcVersionType;
 }
 
 export enum TfvcVersionOption {
@@ -3315,8 +3400,8 @@ export interface TitleDescriptionUpdatedEvent extends RealTimePullRequestEvent {
 }
 
 export interface UpdateRefsRequest {
-    refUpdateRequests: GitRefUpdate[];
-    updateMode: GitRefUpdateMode;
+    refUpdateRequests?: GitRefUpdate[];
+    updateMode?: GitRefUpdateMode;
 }
 
 export enum VersionControlChangeType {
@@ -3338,10 +3423,10 @@ export enum VersionControlChangeType {
 }
 
 export interface VersionControlProjectInfo {
-    defaultSourceControlType: TfsCoreInterfaces.SourceControlTypes;
-    project: TfsCoreInterfaces.TeamProjectReference;
-    supportsGit: boolean;
-    supportsTFVC: boolean;
+    defaultSourceControlType?: TfsCoreInterfaces.SourceControlTypes;
+    project?: TfsCoreInterfaces.TeamProjectReference;
+    supportsGit?: boolean;
+    supportsTFVC?: boolean;
 }
 
 export enum VersionControlRecursionType {
@@ -3419,7 +3504,8 @@ export var TypeInfo = {
             "gitObjectTooLarge": 6,
             "operationIndentityNotFound": 7,
             "asyncOperationNotFound": 8,
-            "other": 9
+            "other": 9,
+            "emptyCommitterSignature": 10
         }
     },
     GitAsyncRefOperationParameters: <any>{
@@ -3507,6 +3593,8 @@ export var TypeInfo = {
     GitForkRef: <any>{
     },
     GitForkSyncRequest: <any>{
+    },
+    GitForkTeamProjectReference: <any>{
     },
     GitHistoryMode: {
         enumValues: {
@@ -3770,7 +3858,8 @@ export var TypeInfo = {
             "forcePush": 1,
             "create": 2,
             "rebase": 4,
-            "unknown": 8
+            "unknown": 8,
+            "retarget": 16
         }
     },
     PullRequestAsyncStatus: {
@@ -3824,6 +3913,7 @@ export var TypeInfo = {
             "rubyMine": 9,
             "tower": 10,
             "visualStudio": 11,
+            "vSCode": 14,
             "webStorm": 12
         }
     },
@@ -3844,6 +3934,8 @@ export var TypeInfo = {
     TfvcItem: <any>{
     },
     TfvcItemDescriptor: <any>{
+    },
+    TfvcItemPreviousHash: <any>{
     },
     TfvcItemRequestData: <any>{
     },
@@ -4101,6 +4193,9 @@ TypeInfo.GitCommitRef.fields = {
     },
     committer: {
         typeInfo: TypeInfo.GitUserDate
+    },
+    push: {
+        typeInfo: TypeInfo.GitPushRef
     },
     statuses: {
         isArray: true,
@@ -4533,6 +4628,12 @@ TypeInfo.GitForkRef.fields = {
 TypeInfo.GitForkSyncRequest.fields = {
     status: {
         enumType: TypeInfo.GitAsyncOperationStatus
+    }
+};
+
+TypeInfo.GitForkTeamProjectReference.fields = {
+    visibility: {
+        enumType: TfsCoreInterfaces.TypeInfo.ProjectVisibility
     }
 };
 
@@ -5078,6 +5179,12 @@ TypeInfo.TfvcItemDescriptor.fields = {
     },
     versionType: {
         enumType: TypeInfo.TfvcVersionType
+    }
+};
+
+TypeInfo.TfvcItemPreviousHash.fields = {
+    changeDate: {
+        isDate: true,
     }
 };
 
