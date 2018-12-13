@@ -100,8 +100,8 @@ async function runSamples(selected?: string) {
             continue;
         }
 
-        cm.banner("Sample " + sample);
-        var sm = require("./" + sample + ".js");
+        cm.banner(`Sample ${sample}`);
+        var sm = require(`./${sample}.js`);
         await sm.run(projectId);
     }
 

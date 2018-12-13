@@ -250,7 +250,7 @@ export async function run() {
         }
     }
     catch (err) {
-        console.error("Error: " + err.stack);
+        console.error(`Error: ${err.stack}`);
     }
 
 }

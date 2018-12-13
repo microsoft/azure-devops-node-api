@@ -11,18 +11,18 @@ export async function run() {
         let containers = await fileContainerApi.getContainers(null, null);
         if (containers.length > 0) {
             let container = containers[0];
-            console.log("found container " + container.name);
+            console.log(`found container ${container.name}`);
             let containerId = container.id;
 
             let items = await fileContainerApi.getItems(containerId, null, null, null, null, null, null, false);
-            console.log("found " + items.length + " items");
+            console.log(`found ${items.length} items`);
 
             let item = items.filter((item) => {
                 return item.itemType === ti.ContainerItemType.File;
             })[0];
 
             if (item) {
-                console.log("downloading " + item.path);
+                console.log(`downloading ${item.path}`);
                 let restResponse = await fileContainerApi.getItem(containerId, null, item.path, item.path.substring(item.path.lastIndexOf("/") + 1));
                 
                 let output = "";
@@ -34,13 +34,13 @@ export async function run() {
                         resolve(output);
                     });
                 });
-                console.log("downloaded " + item.path);
+                console.log(`downloaded ${item.path}`);
                 console.log(output);
             }
         }
     }
     catch (err) {
-        console.error("Error: " + err.stack);
+        console.error(`Error: ${err.stack}`);
     }
 
 }
