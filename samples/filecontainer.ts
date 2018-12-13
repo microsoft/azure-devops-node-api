@@ -1,6 +1,6 @@
-import * as cm from './common';
-import * as vm from 'azure-devops-node-api';
-import * as ti from 'azure-devops-node-api/interfaces/FileContainerInterfaces';
+import * as cm from "./common";
+import * as vm from "azure-devops-node-api";
+import * as ti from "azure-devops-node-api/interfaces/FileContainerInterfaces";
 
 export async function run() {
     try
@@ -23,14 +23,14 @@ export async function run() {
 
             if (item) {
                 console.log("downloading " + item.path);
-                let restResponse = await fileContainerApi.getItem(containerId, null, item.path, item.path.substring(item.path.lastIndexOf('/') + 1));
+                let restResponse = await fileContainerApi.getItem(containerId, null, item.path, item.path.substring(item.path.lastIndexOf("/") + 1));
                 
                 let output = "";
                 await new Promise((resolve, reject) => {
-                    restResponse.result.on('data', (chunk) => {
+                    restResponse.result.on("data", (chunk) => {
                         output += chunk;
                     });
-                    restResponse.result.on('end', () => {
+                    restResponse.result.on("end", () => {
                         resolve(output);
                     });
                 });
@@ -40,7 +40,7 @@ export async function run() {
         }
     }
     catch (err) {
-        console.error('Error: ' + err.stack);
+        console.error("Error: " + err.stack);
     }
 
 }

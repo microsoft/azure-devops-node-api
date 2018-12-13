@@ -1,17 +1,17 @@
-import * as common from './common';
-import * as nodeApi from 'azure-devops-node-api';
+import * as common from "./common";
+import * as nodeApi from "azure-devops-node-api";
 
-import * as PolicyApi from 'azure-devops-node-api/PolicyApi';
-import * as PolicyInterfaces from 'azure-devops-node-api/interfaces/PolicyInterfaces';
-import * as VSSInterfaces from 'azure-devops-node-api/interfaces/common/VSSInterfaces';
+import * as PolicyApi from "azure-devops-node-api/PolicyApi";
+import * as PolicyInterfaces from "azure-devops-node-api/interfaces/PolicyInterfaces";
+import * as VSSInterfaces from "azure-devops-node-api/interfaces/common/VSSInterfaces";
 
 export async function run(projectId: string) {
     const webApi: nodeApi.WebApi = await common.getWebApi();
     const policyApiObject: PolicyApi.IPolicyApi = await webApi.getPolicyApi();
 
-    common.banner('Policy Samples');
+    common.banner("Policy Samples");
 
-    common.heading('Create Policy Configuration for this Project');
+    common.heading("Create Policy Configuration for this Project");
     const newConfiguration: PolicyInterfaces.PolicyConfiguration = {isEnabled: true,
                                                                     isBlocking: false,
                                                                     type: {
@@ -51,13 +51,13 @@ export async function run(projectId: string) {
     const policies: PolicyInterfaces.PolicyType[] = await policyApiObject.getPolicyTypes(projectId);
     console.log("Policy Types:", policies);
 
-    common.heading('Delete Policy Configuration');
+    common.heading("Delete Policy Configuration");
     await policyApiObject.deletePolicyConfiguration(projectId, firstConfig.id);
     const deletedConfiguration: PolicyInterfaces.PolicyConfiguration = await policyApiObject.getPolicyConfiguration(projectId, firstConfig.id);
     if (deletedConfiguration.isDeleted) {
-        console.log('Policy configuration successfully deleted');
+        console.log("Policy configuration successfully deleted");
     }
     else {
-        console.log('Unable to delete policy');
+        console.log("Unable to delete policy");
     }
 }
