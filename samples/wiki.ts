@@ -1,27 +1,27 @@
-import * as common from './common';
-import * as nodeApi from 'azure-devops-node-api';
+import * as common from "./common";
+import * as nodeApi from "azure-devops-node-api";
 
-import * as CoreApi from 'azure-devops-node-api/CoreApi'
-import * as CoreInterfaces from 'azure-devops-node-api/interfaces/CoreInterfaces'
-import * as WikiApi from 'azure-devops-node-api/WikiApi';
-import * as WikiInterfaces from 'azure-devops-node-api/interfaces/WikiInterfaces';
+import * as CoreApi from "azure-devops-node-api/CoreApi"
+import * as CoreInterfaces from "azure-devops-node-api/interfaces/CoreInterfaces"
+import * as WikiApi from "azure-devops-node-api/WikiApi";
+import * as WikiInterfaces from "azure-devops-node-api/interfaces/WikiInterfaces";
 
 export async function run() { 
     const webApi: nodeApi.WebApi = await common.getWebApi();
     const wikiApiObject: WikiApi.IWikiApi = await webApi.getWikiApi();
     const coreApiObject: CoreApi.ICoreApi = await webApi.getCoreApi();
 
-    common.banner('Wiki Samples');
-    const project: string = common.getProject();
+    common.banner("Wiki Samples");
+    const project = common.getProject();
     const projectObject: CoreInterfaces.TeamProject = await coreApiObject.getProject(project);
-    console.log('Project:', project);
+    console.log("Project:", project);
 
-    common.heading('Get all wikis');
+    common.heading("Get all wikis");
     const wikis: WikiInterfaces.WikiV2[] = await wikiApiObject.getAllWikis(project);
     console.log("Wikis", wikis.map((wiki) => wiki.name));
 
     let wikiId: string;
-    const createNewWiki: boolean = (wikis.length === 0);
+    const createNewWiki = (wikis.length === 0);
     if (createNewWiki) {
         common.heading("Create a wiki");
         const wikiParams: WikiInterfaces.WikiCreateParametersV2 = <WikiInterfaces.WikiCreateParametersV2>{name: "Hello Wiki", projectId: projectObject.id};

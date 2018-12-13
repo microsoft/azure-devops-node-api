@@ -1,10 +1,10 @@
 // A sample showing how to list VSTS build artifacts, and how to download a zip of a VSTS build artifact.
-import * as cm from './common';
-import * as vm from 'azure-devops-node-api';
-import * as fs from 'fs';
+import * as cm from "./common";
+import * as vm from "azure-devops-node-api";
+import * as fs from "fs";
 
-import * as ba from 'azure-devops-node-api/BuildApi';
-import * as bi from 'azure-devops-node-api/interfaces/BuildInterfaces';
+import * as ba from "azure-devops-node-api/BuildApi";
+import * as bi from "azure-devops-node-api/interfaces/BuildInterfaces";
 
 export async function run() {
     try
@@ -12,9 +12,9 @@ export async function run() {
         const vsts: vm.WebApi = await cm.getWebApi();
         const vstsBuild: ba.IBuildApi = await vsts.getBuildApi();
 
-        cm.banner('Build Artifact Samples');
+        cm.banner("Build Artifact Samples");
         const project = cm.getProject();
-        console.log('project', project);
+        console.log("project", project);
 
         // get the latest successful build.
         cm.heading(`Get latest successful build for ${project} project`);
@@ -45,11 +45,11 @@ export async function run() {
 
             let downloadableArtifact;
             for (const artifact of artifacts) {
-                let additionalInfo = '';
-                if (artifact.resource.type === 'FilePath') {
+                let additionalInfo = "";
+                if (artifact.resource.type === "FilePath") {
                     additionalInfo = `UNC Path: ${artifact.resource.data}`;
                 }
-                else if (artifact.resource.type === 'Container') {
+                else if (artifact.resource.type === "Container") {
                     // As of June 2018, only `Container` artifacts can be downloaded as a zip.
                     additionalInfo = `Downloadable: true.`;
                     downloadableArtifact = artifact;
@@ -67,19 +67,19 @@ export async function run() {
                 const fileStream = fs.createWriteStream(path);
                 artifactStream.pipe(fileStream);
 
-                fileStream.on('close', () => {
+                fileStream.on("close", () => {
                     console.log(`Artifact '${downloadableArtifact.name}' downloaded to ${path}`);
                 });
             }
             else {
-                console.log('No downloadable artifact found.');
+                console.log("No downloadable artifact found.");
             }
         }
         else {
-            console.log('No successful builds found.');
+            console.log("No successful builds found.");
         }
     }
     catch (err) {
-        console.error('Error: ' + err.stack);
+        console.error(`Error: ${err.stack}`);
     }
 }

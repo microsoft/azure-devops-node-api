@@ -26,7 +26,7 @@ npm install azure-devops-node-api --save
 
 ### Create a connection
 ```javascript
-import * as azdev from 'azure-devops-node-api';
+import * as azdev from "azure-devops-node-api";
 
 // your collection url
 let orgUrl = "https://dev.azure.com/yourorgname";
@@ -41,7 +41,7 @@ let connection = new azdev.WebApi(orgUrl, authHandler);
 ### Get an instance of a client
 
 ```javascript
-import * as ba from 'azure-devops-node-api/BuildApi';
+import * as ba from "azure-devops-node-api/BuildApi";
 
 let build: ba.IBuildApi = await connection.getBuildApi();
 ```
@@ -79,10 +79,10 @@ These clients are available:
 Coding is easy using linear coding with async/await in TypeScript
 
 ```javascript
-import * as bi from 'azure-devops-node-api/interfaces/BuildInterfaces';
+import * as bi from "azure-devops-node-api/interfaces/BuildInterfaces";
 
 async function run() {
-    let project: string = 'myProject';
+    let project: string = "myProject";
     let defs: bi.DefinitionReference[] = await build.getDefinitions(project);
 
     defs.forEach((defRef: bi.DefinitionReference) => {

@@ -1,27 +1,27 @@
-import * as common from './common';
-import * as vsoNodeApi from 'azure-devops-node-api';
+import * as common from "./common";
+import * as vsoNodeApi from "azure-devops-node-api";
 
-import { Build } from 'azure-devops-node-api/interfaces/BuildInterfaces';
-import { ContributedFeature } from 'azure-devops-node-api/interfaces/FeatureManagementInterfaces';
-import { FileContainer } from 'azure-devops-node-api/interfaces/FileContainerInterfaces';
-import { GitRepository, TfvcChangesetRef } from 'azure-devops-node-api/interfaces/TfvcInterfaces';
-import { Plan } from 'azure-devops-node-api/interfaces/WorkInterfaces';
-import { PolicyType } from 'azure-devops-node-api/interfaces/PolicyInterfaces';
-import { ProfileRegions } from 'azure-devops-node-api/interfaces/ProfileInterfaces';
-import { ProjectLanguageAnalytics } from 'azure-devops-node-api/interfaces/ProjectAnalysisInterfaces';
-import { Release } from 'azure-devops-node-api/interfaces/ReleaseInterfaces';
-import { ResourceAreaInfo } from 'azure-devops-node-api/interfaces/LocationsInterfaces';
-import { RequestedExtension } from 'azure-devops-node-api/interfaces/ExtensionManagementInterfaces';
-import { SecurityRole } from 'azure-devops-node-api/interfaces/SecurityRolesInterfaces';
-import { TaskAgentPool } from 'azure-devops-node-api/interfaces/TaskAgentInterfaces';
-import { TestPlan } from 'azure-devops-node-api/interfaces/TestInterfaces';
+import { Build } from "azure-devops-node-api/interfaces/BuildInterfaces";
+import { ContributedFeature } from "azure-devops-node-api/interfaces/FeatureManagementInterfaces";
+import { FileContainer } from "azure-devops-node-api/interfaces/FileContainerInterfaces";
+import { GitRepository, TfvcChangesetRef } from "azure-devops-node-api/interfaces/TfvcInterfaces";
+import { Plan } from "azure-devops-node-api/interfaces/WorkInterfaces";
+import { PolicyType } from "azure-devops-node-api/interfaces/PolicyInterfaces";
+import { ProfileRegions } from "azure-devops-node-api/interfaces/ProfileInterfaces";
+import { ProjectLanguageAnalytics } from "azure-devops-node-api/interfaces/ProjectAnalysisInterfaces";
+import { Release } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
+import { ResourceAreaInfo } from "azure-devops-node-api/interfaces/LocationsInterfaces";
+import { RequestedExtension } from "azure-devops-node-api/interfaces/ExtensionManagementInterfaces";
+import { SecurityRole } from "azure-devops-node-api/interfaces/SecurityRolesInterfaces";
+import { TaskAgentPool } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
+import { TestPlan } from "azure-devops-node-api/interfaces/TestInterfaces";
 import { Timeline as TaskAgentTimeline } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
-import { WebApiTeam } from 'azure-devops-node-api/interfaces/CoreInterfaces';
-import { WidgetScope, WidgetTypesResponse } from 'azure-devops-node-api/interfaces/DashboardInterfaces';
-import { WorkItemField } from 'azure-devops-node-api/interfaces/WorkItemTrackingInterfaces';
-import { ProcessModel } from 'azure-devops-node-api/interfaces/WorkItemTrackingProcessInterfaces';
-import { PickListMetadataModel } from 'azure-devops-node-api/interfaces/WorkItemTrackingProcessDefinitionsInterfaces';
-import { WikiV2 } from 'azure-devops-node-api/interfaces/WikiInterfaces';
+import { WebApiTeam } from "azure-devops-node-api/interfaces/CoreInterfaces";
+import { WidgetScope, WidgetTypesResponse } from "azure-devops-node-api/interfaces/DashboardInterfaces";
+import { WorkItemField } from "azure-devops-node-api/interfaces/WorkItemTrackingInterfaces";
+import { ProcessModel } from "azure-devops-node-api/interfaces/WorkItemTrackingProcessInterfaces";
+import { PickListMetadataModel } from "azure-devops-node-api/interfaces/WorkItemTrackingProcessDefinitionsInterfaces";
+import { WikiV2 } from "azure-devops-node-api/interfaces/WikiInterfaces";
 
 // In order for this to run you will need to set the following environment variables:
 // 
@@ -37,7 +37,7 @@ export async function run() {
         const vstsCollectionLevel: vsoNodeApi.WebApi = await common.getWebApi();
 
         /********** Build **********/
-        printSectionStart('Build');
+        printSectionStart("Build");
         const buildApi = await vstsCollectionLevel.getBuildApi();
         const builds: Build[] = await buildApi.getBuilds(common.getProject());
 
@@ -46,7 +46,7 @@ export async function run() {
         }
 
         /********** Core **********/
-        printSectionStart('Core');
+        printSectionStart("Core");
         const coreApi = await vstsCollectionLevel.getCoreApi();
         const teams: WebApiTeam[] = await coreApi.getAllTeams();
 
@@ -55,7 +55,7 @@ export async function run() {
         }
 
         /********** Dashboard **********/
-        printSectionStart('Dashboard');
+        printSectionStart("Dashboard");
         const dashboardApi = await vstsCollectionLevel.getDashboardApi();
         const widgetTypes: WidgetTypesResponse = await dashboardApi.getWidgetTypes(WidgetScope.Collection_User);
 
@@ -64,7 +64,7 @@ export async function run() {
         }
 
         /********** Extension Management **********/
-        printSectionStart('Extension Management');
+        printSectionStart("Extension Management");
         const extensionManagementApi = await vstsCollectionLevel.getExtensionManagementApi();
         const requests:RequestedExtension[] = await extensionManagementApi.getRequests();
 
@@ -73,7 +73,7 @@ export async function run() {
         }
 
         /********** Feature Management **********/
-        printSectionStart('Feature Management');
+        printSectionStart("Feature Management");
         const featureManagementApi = await vstsCollectionLevel.getFeatureManagementApi();
         const features: ContributedFeature[] = await featureManagementApi.getFeatures();
 
@@ -82,7 +82,7 @@ export async function run() {
         }
 
         /********** File Container **********/
-        printSectionStart('File Container');
+        printSectionStart("File Container");
         const fileContainerApi = await vstsCollectionLevel.getFileContainerApi();
         const containers: FileContainer[] = await fileContainerApi.getContainers();
 
@@ -91,7 +91,7 @@ export async function run() {
         }
 
         /********** Git **********/
-        printSectionStart('Git');
+        printSectionStart("Git");
         const gitApi = await vstsCollectionLevel.getGitApi();
         const respositories: GitRepository[] = await gitApi.getRepositories();
 
@@ -100,7 +100,7 @@ export async function run() {
         }
 
         /********** Locations **********/
-        printSectionStart('Locations');
+        printSectionStart("Locations");
         const locationsApi = await vstsCollectionLevel.getLocationsApi();
         const resourceAreas: ResourceAreaInfo[] = await locationsApi.getResourceAreas();
 
@@ -109,7 +109,7 @@ export async function run() {
         }
 
         /********** Notifications **********/
-        printSectionStart('Notifications');
+        printSectionStart("Notifications");
         const notificationsApi = await vstsCollectionLevel.getNotificationApi();
         const subscriptions = await notificationsApi.listSubscriptions();
 
@@ -118,7 +118,7 @@ export async function run() {
         }
 
         /********** Policy **********/
-        printSectionStart('Policy');
+        printSectionStart("Policy");
         const policyApi = await vstsCollectionLevel.getPolicyApi();
         const policyTypes: PolicyType[] = await policyApi.getPolicyTypes(common.getProject());
 
@@ -127,7 +127,7 @@ export async function run() {
         }
 
         /********** Profile **********/
-        printSectionStart('Profile');
+        printSectionStart("Profile");
         const profileApi = await vstsCollectionLevel.getProfileApi();
         const regions: ProfileRegions = await profileApi.getRegions();
 
@@ -136,7 +136,7 @@ export async function run() {
         }
 
         /********** Project Analysis **********/
-        printSectionStart('Project Analysis');
+        printSectionStart("Project Analysis");
         const projectAnalysisApi = await vstsCollectionLevel.getProjectAnalysisApi();
         const languageAnalytics: ProjectLanguageAnalytics = await projectAnalysisApi.getProjectLanguageAnalytics(common.getProject());
 
@@ -145,7 +145,7 @@ export async function run() {
         }
 
         /********** Release **********/
-        printSectionStart('Release');
+        printSectionStart("Release");
         const releaseApi = await vstsCollectionLevel.getReleaseApi();
         const releases: Release[] = await releaseApi.getReleases();
 
@@ -154,29 +154,29 @@ export async function run() {
         }
 
         /********** Security **********/
-        printSectionStart('Security');
+        printSectionStart("Security");
         const securityApi = await vstsCollectionLevel.getSecurityRolesApi();
         const roleDefinitions: SecurityRole[] = await securityApi.getRoleDefinitions("");
 
         if (roleDefinitions) {
             console.log(`found ${roleDefinitions.length} role definitions`);
         } else {
-            console.log('role definitions is null');
+            console.log("role definitions is null");
         }
 
         /********** Task **********/
-        printSectionStart('Task');
+        printSectionStart("Task");
         const taskApi = await vstsCollectionLevel.getTaskApi();
         const timelines: TaskAgentTimeline[] = await taskApi.getTimelines("", "", "");
 
         if (timelines) {
             console.log(`found ${timelines.length} timelines`);
         } else {
-            console.log('timelines is null');
+            console.log("timelines is null");
         }
 
         /********** Task Agent **********/
-        printSectionStart('Task Agent');
+        printSectionStart("Task Agent");
         const taskAgentApi = await vstsCollectionLevel.getTaskAgentApi();
         const agentPools: TaskAgentPool[] = await taskAgentApi.getAgentPools();
 
@@ -185,7 +185,7 @@ export async function run() {
         }
 
         /********** Test **********/
-        printSectionStart('Test');
+        printSectionStart("Test");
         const testApi = await vstsCollectionLevel.getTestApi();
         const plans: TestPlan[] = await testApi.getPlans(common.getProject());
 
@@ -194,7 +194,7 @@ export async function run() {
         }
 
         /********** Tfvc **********/
-        printSectionStart('Tfvc');
+        printSectionStart("Tfvc");
         const tfvcApi = await vstsCollectionLevel.getTfvcApi();
         const changesets: TfvcChangesetRef[] = await tfvcApi.getChangesets();
 
@@ -203,7 +203,7 @@ export async function run() {
         }
 
         /********** Wiki **********/
-        printSectionStart('Wiki');
+        printSectionStart("Wiki");
         const wikiApi = await vstsCollectionLevel.getWikiApi();
         const wikis: WikiV2[] = await wikiApi.getAllWikis();
 
@@ -212,18 +212,18 @@ export async function run() {
         }
 
         /********** Work **********/
-        printSectionStart('Work');
+        printSectionStart("Work");
         const workApi = await vstsCollectionLevel.getWorkApi();
         const workPlans: Plan[] = await workApi.getPlans(common.getProject());
 
         if (workPlans) {
             console.log(`found ${workPlans.length} work plans`);
         } else {
-            console.log('work plans is null');
+            console.log("work plans is null");
         }
 
         /********** Work Item Tracking **********/
-        printSectionStart('Work Item Tracking');
+        printSectionStart("Work Item Tracking");
         const workItemTrackingApi = await vstsCollectionLevel.getWorkItemTrackingApi();
         const workItemFields: WorkItemField[] = await workItemTrackingApi.getFields();
 
@@ -232,7 +232,7 @@ export async function run() {
         }
         
         /********** Work Item Tracking Process **********/
-        printSectionStart('Work Item Tracking Process');
+        printSectionStart("Work Item Tracking Process");
         const workItemTrackingProcessApi = await vstsCollectionLevel.getWorkItemTrackingProcessApi();
         const processes: ProcessModel[] = await workItemTrackingProcessApi.getListOfProcesses();
 
@@ -241,7 +241,7 @@ export async function run() {
         }
 
         /********** Work Item Tracking Process Definitions **********/
-        printSectionStart('Work Item Tracking Process Definitions');
+        printSectionStart("Work Item Tracking Process Definitions");
         const workItemTrackingProcessDefinitionApi = await vstsCollectionLevel.getWorkItemTrackingProcessDefinitionApi();
         const listsMetadata: PickListMetadataModel[] = await workItemTrackingProcessDefinitionApi.getListsMetadata();
 
@@ -250,7 +250,7 @@ export async function run() {
         }
     }
     catch (err) {
-        console.error('Error: ' + err.stack);
+        console.error(`Error: ${err.stack}`);
     }
 
 }

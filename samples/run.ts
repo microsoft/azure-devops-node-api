@@ -3,19 +3,19 @@
 // export API_URL=https://buildcanary.visualstudio.com/DefaultCollection
 // export export API_TOKEN=<yourAllScopesApiToken>
 // export API_PROJECT=test
-import * as cm from './common';
-import * as nodeApi from 'azure-devops-node-api';
-import * as cApi from 'azure-devops-node-api/CoreApi';
-import * as coreInterfaces from 'azure-devops-node-api/interfaces/CoreInterfaces'
+import * as cm from "./common";
+import * as nodeApi from "azure-devops-node-api";
+import * as cApi from "azure-devops-node-api/CoreApi";
+import * as coreInterfaces from "azure-devops-node-api/interfaces/CoreInterfaces"
 
-let samples: string[] = require('./samples.json');
+let samples: string[] = require("./samples.json");
 let coreApi: cApi.ICoreApi;
 const maxLoops: number = 500;
 
 let selection: string = process.argv[2];
 if (selection) {
     if (samples.indexOf(selection) == -1) {
-        console.error('Not a valid sample.  See list of samples');
+        console.error("Not a valid sample.  See list of samples");
         process.exit(1);
     }
 
@@ -23,17 +23,17 @@ if (selection) {
 }
 
 async function createProject(projectId: string): Promise<boolean> {
-    console.log('Cleaning up from last run');
+    console.log("Cleaning up from last run");
     if (!(await deleteProject(projectId))) {
-        console.log('Failed to delete previous project');
+        console.log("Failed to delete previous project");
         return false;
     }
 
     const projectToCreate: coreInterfaces.TeamProject = {name: projectId,
-                                                         description: 'sample project created automatically by azure-devops-node-api.',
+                                                         description: "sample project created automatically by azure-devops-node-api.",
                                                          visibility: coreInterfaces.ProjectVisibility.Private,
-                                                         capabilities: {versioncontrol: {sourceControlType: 'Git'}, 
-                                                                        processTemplate: {templateTypeId: '6b724908-ef14-45cf-84f8-768b5384da45'}},
+                                                         capabilities: {versioncontrol: {sourceControlType: "Git"}, 
+                                                                        processTemplate: {templateTypeId: "6b724908-ef14-45cf-84f8-768b5384da45"}},
                                                          _links: null,
                                                          defaultTeam: null,
                                                          abbreviation: null,
@@ -45,7 +45,7 @@ async function createProject(projectId: string): Promise<boolean> {
 
     //Poll until project exists
     let project: coreInterfaces.TeamProject = null;
-    console.log('Waiting for project to spin up');
+    console.log("Waiting for project to spin up");
     let numLoops = 0;
     while (numLoops < maxLoops) {
         project = await coreApi.getProject(projectId);
@@ -67,7 +67,7 @@ async function deleteProject(projectId: string): Promise<boolean> {
     await coreApi.queueDeleteProject(project.id);
 
     //Poll until project no longer exists
-    console.log('Waiting for project to be deleted');
+    console.log("Waiting for project to be deleted");
     let numLoops = 0;
     while (project && numLoops < maxLoops) {
         project = await coreApi.getProject(projectId);
@@ -82,14 +82,14 @@ async function deleteProject(projectId: string): Promise<boolean> {
 async function runSamples(selected?: string) {
     const webApi: nodeApi.WebApi = await cm.getWebApi();
     coreApi = await webApi.getCoreApi();
-    const projectId: string = 'azureDevopsNodeSampleProject';
+    const projectId: string = "azureDevopsNodeSampleProject";
 
-    cm.heading('Creating example project');
+    cm.heading("Creating example project");
     if (await createProject(projectId)) {
-        console.log('Project created');
+        console.log("Project created");
     }
     else {
-        console.log('Failed to create project, exiting');
+        console.log("Failed to create project, exiting");
         return;
     }
     
@@ -100,17 +100,17 @@ async function runSamples(selected?: string) {
             continue;
         }
 
-        cm.banner('Sample ' + sample);
-        var sm = require('./' + sample + '.js');
+        cm.banner(`Sample ${sample}`);
+        var sm = require(`./${sample}.js`);
         await sm.run(projectId);
     }
 
-    cm.heading('Cleaning up project');
+    cm.heading("Cleaning up project");
     if (await deleteProject(projectId)) {
-        console.log('Done');
+        console.log("Done");
     }
     else {
-        console.log('Failed to delete project');
+        console.log("Failed to delete project");
     }
 }
 
