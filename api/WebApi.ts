@@ -9,6 +9,7 @@ import dashboardm = require('./DashboardApi');
 import extmgmtm = require("./ExtensionManagementApi");
 import featuremgmtm = require("./FeatureManagementApi");
 import filecontainerm = require('./FileContainerApi');
+import gallerym = require('./GalleryApi');
 import gitm = require('./GitApi');
 import locationsm = require('./LocationsApi');
 import notificationm = require('./NotificationApi');
@@ -216,6 +217,12 @@ export class WebApi {
         serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "");
         handlers = handlers || [this.authHandler];
         return new filecontainerm.FileContainerApi(serverUrl, handlers, this.options);
+    }
+
+    public async getGalleryApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<gallerym.IGalleryApi> {
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, gallerym.GalleryApi.RESOURCE_AREA_ID);
+        handlers = handlers || [this.authHandler];
+        return new gallerym.GalleryApi(serverUrl, handlers, this.options);
     }
 
     public async getGitApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<gitm.IGitApi> {
