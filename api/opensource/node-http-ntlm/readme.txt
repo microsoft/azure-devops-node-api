@@ -2,5 +2,5 @@
 //
 // As of this writing, it is a part of the node-http-ntlm module produced by SamDecrock.
 //
-// It is used as a part of the NTLM support provided by the vso-node-api library.
+// It is used as a part of the NTLM support provided by the azure-devops-node-api library.
 //

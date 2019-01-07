@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
@@ -11,19 +11,17 @@
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
 import * as restm from 'typed-rest-client/RestClient';
-import * as httpm from 'typed-rest-client/HttpClient';
 import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
-import serm = require('./Serialization');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import LocationsInterfaces = require("./interfaces/LocationsInterfaces");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
 export interface ILocationsApi extends basem.ClientApiBase {
     getConnectionData(connectOptions?: VSSInterfaces.ConnectOptions, lastChangeId?: number, lastChangeId64?: number): Promise<LocationsInterfaces.ConnectionData>;
-    getResourceArea(areaId: string, organizationName?: string, accountName?: string): Promise<LocationsInterfaces.ResourceAreaInfo>;
+    getResourceArea(areaId: string, enterpriseName?: string, organizationName?: string): Promise<LocationsInterfaces.ResourceAreaInfo>;
     getResourceAreaByHost(areaId: string, hostId: string): Promise<LocationsInterfaces.ResourceAreaInfo>;
-    getResourceAreas(organizationName?: string, accountName?: string): Promise<LocationsInterfaces.ResourceAreaInfo[]>;
+    getResourceAreas(enterpriseName?: string, organizationName?: string): Promise<LocationsInterfaces.ResourceAreaInfo[]>;
     getResourceAreasByHost(hostId: string): Promise<LocationsInterfaces.ResourceAreaInfo[]>;
     deleteServiceDefinition(serviceType: string, identifier: string): Promise<void>;
     getServiceDefinition(serviceType: string, identifier: string, allowFaultIn?: boolean, previewFaultIn?: boolean): Promise<LocationsInterfaces.ServiceDefinition>;
@@ -61,7 +59,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Location",
                     "00d9565f-ed9c-4a06-9a50-00e7896ccab4",
                     routeValues,
@@ -89,13 +87,13 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
 
     /**
      * @param {string} areaId
+     * @param {string} enterpriseName
      * @param {string} organizationName
-     * @param {string} accountName
      */
     public async getResourceArea(
         areaId: string,
-        organizationName?: string,
-        accountName?: string
+        enterpriseName?: string,
+        organizationName?: string
         ): Promise<LocationsInterfaces.ResourceAreaInfo> {
 
         return new Promise<LocationsInterfaces.ResourceAreaInfo>(async (resolve, reject) => {
@@ -104,13 +102,13 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
             };
 
             let queryValues: any = {
+                enterpriseName: enterpriseName,
                 organizationName: organizationName,
-                accountName: accountName,
             };
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Location",
                     "e81700f7-3be2-46de-8624-2eb35882fcaa",
                     routeValues,
@@ -144,6 +142,9 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
         areaId: string,
         hostId: string
         ): Promise<LocationsInterfaces.ResourceAreaInfo> {
+        if (hostId == null) {
+            throw new TypeError('hostId can not be null or undefined');
+        }
 
         return new Promise<LocationsInterfaces.ResourceAreaInfo>(async (resolve, reject) => {
             let routeValues: any = {
@@ -156,7 +157,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Location",
                     "e81700f7-3be2-46de-8624-2eb35882fcaa",
                     routeValues,
@@ -183,12 +184,12 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
     }
 
     /**
+     * @param {string} enterpriseName
      * @param {string} organizationName
-     * @param {string} accountName
      */
     public async getResourceAreas(
-        organizationName?: string,
-        accountName?: string
+        enterpriseName?: string,
+        organizationName?: string
         ): Promise<LocationsInterfaces.ResourceAreaInfo[]> {
 
         return new Promise<LocationsInterfaces.ResourceAreaInfo[]>(async (resolve, reject) => {
@@ -196,13 +197,13 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
             };
 
             let queryValues: any = {
+                enterpriseName: enterpriseName,
                 organizationName: organizationName,
-                accountName: accountName,
             };
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Location",
                     "e81700f7-3be2-46de-8624-2eb35882fcaa",
                     routeValues,
@@ -234,6 +235,9 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
     public async getResourceAreasByHost(
         hostId: string
         ): Promise<LocationsInterfaces.ResourceAreaInfo[]> {
+        if (hostId == null) {
+            throw new TypeError('hostId can not be null or undefined');
+        }
 
         return new Promise<LocationsInterfaces.ResourceAreaInfo[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -245,7 +249,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Location",
                     "e81700f7-3be2-46de-8624-2eb35882fcaa",
                     routeValues,
@@ -288,7 +292,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Location",
                     "d810a47d-f4f4-4a62-a03f-fa1860585c4c",
                     routeValues);
@@ -341,7 +345,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Location",
                     "d810a47d-f4f4-4a62-a03f-fa1860585c4c",
                     routeValues,
@@ -381,7 +385,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Location",
                     "d810a47d-f4f4-4a62-a03f-fa1860585c4c",
                     routeValues);
@@ -419,7 +423,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "Location",
                     "d810a47d-f4f4-4a62-a03f-fa1860585c4c",
                     routeValues);

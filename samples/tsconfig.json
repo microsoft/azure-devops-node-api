@@ -9,7 +9,11 @@
         "build.ts",
         "buildArtifact.ts",
         "creation.ts",
+        "policy.ts",
+        "profile.ts",
         "task.ts",
-        "filecontainer.ts"
+        "filecontainer.ts",
+        "git.ts",
+        "wiki.ts"
     ]
 }

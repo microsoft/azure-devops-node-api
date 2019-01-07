@@ -80,7 +80,7 @@ export class VsoClient {
                     if (regExExecArray[3]) {
                         // requesting preview
                         isPreview = true;
-                        if (regExExecArray[5]) { 
+                        if (regExExecArray[5]) {
                             // we have a resource version
                             resourceVersion = +regExExecArray[5];
                         }
@@ -119,7 +119,7 @@ export class VsoClient {
 
         return this.beginGetLocation(area, locationId)
             .then((location: ifm.ApiResourceLocation): ClientVersioningData => {
-                if (!location) { 
+                if (!location) {
                     throw new Error("Failed to find api location for area: " + area + " id: " + locationId);
                 }
 
@@ -132,7 +132,7 @@ export class VsoClient {
                 };
             });
     }
-    
+
     /**
      * Sets a promise that is waited on before any requests are issued. Can be used to asynchronously
      * set the request url and auth token manager.
@@ -142,10 +142,10 @@ export class VsoClient {
             this._initializationPromise = promise;
         }
     }
-    
+
     /**
      * Gets information about an API resource location (route template, supported versions, etc.)
-     * 
+     *
      * @param area resource area name
      * @param locationId Guid of the location to get
      */
@@ -162,7 +162,7 @@ export class VsoClient {
         if (!areaLocationsPromise) {
             let requestUrl = this.resolveUrl(VsoClient.APIS_RELATIVE_PATH + "/" + area);
             areaLocationsPromise = this.restClient.options<any>(requestUrl)
-                .then((res:restm.IRestResponse<any>) => {                    
+                .then((res:restm.IRestResponse<any>) => {
                     let locationsLookup: VssApiResourceLocationLookup = {};
                     let resourceLocations: ifm.ApiResourceLocation[] = res.result.value;
                     let i;
@@ -170,10 +170,11 @@ export class VsoClient {
                         let resourceLocation = resourceLocations[i];
                         locationsLookup[resourceLocation.id.toLowerCase()] = resourceLocation;
                     }
+                    // If we have completed successfully, cache the response.
+                    this._locationsByAreaPromises[area] = areaLocationsPromise;
+
                     return locationsLookup;
                 });
-
-            this._locationsByAreaPromises[area] = areaLocationsPromise;
         }
 
         return areaLocationsPromise;
@@ -183,27 +184,41 @@ export class VsoClient {
         return url.resolve(this.baseUrl, path.join(this.basePath, relativeUrl));
     }
 
-    private getSerializedObject(object: any): string {
-        let value:string = "";
-        let first:boolean = true;
+    private queryParamsToStringHelper(queryParams: any, prefix: string): string {
+        if (!queryParams) {
+            return '';
+        }
+        let queryString: string = '';
 
-        for (let property in object) {
-            if (object.hasOwnProperty(property)) {
-                let prop = object[property];
-                if (first && prop !== undefined) {
-                    value += property + "=" + encodeURIComponent(prop);
-                    first = false;
-                } else if (prop !== undefined) {
-                    value += "&" + property +"=" + encodeURIComponent(prop);
+        if(typeof(queryParams) !== 'string') {
+            for (let property in queryParams) {
+                if (queryParams.hasOwnProperty(property)) {
+                    const prop = queryParams[property];
+                    const newPrefix = prefix + encodeURIComponent(property.toString()) + '.';
+                    queryString += this.queryParamsToStringHelper(prop, newPrefix);
                 }
             }
         }
 
-        return value;
+        if(queryString === '' && prefix.length > 0){
+            // Date.prototype.toString() returns a string that is not valid for the REST API.
+            // Need to specially call `toUTCString()` instead for such cases
+            const queryValue = typeof queryParams === 'object' && 'toUTCString' in queryParams ? (queryParams as Date).toUTCString() : queryParams.toString();
+
+            // Will always need to chop period off of end of prefix
+            queryString = prefix.slice(0,-1) + '=' + encodeURIComponent(queryValue) + '&';
+        }
+        return queryString;
+    }
+
+    private queryParamsToString(queryParams: any): string {
+        const queryString: string = '?' + this.queryParamsToStringHelper(queryParams, '');
+
+        // Will always need to slice either a ? or & off of the end
+        return queryString.slice(0,-1);
     }
 
     protected getRequestUrl(routeTemplate: string, area: string, resource: string, routeValues: any, queryParams?: any): string {
-
         // Add area/resource route values (based on the location)
         routeValues = routeValues || {};
         if (!routeValues.area) {
@@ -216,27 +231,12 @@ export class VsoClient {
         // Replace templated route values
         let relativeUrl = this.replaceRouteValues(routeTemplate, routeValues);
 
-        //append query parameters to the end
-        let first = true;
-        for (let queryValue in queryParams) {
-            if (queryParams[queryValue] != null) {
-                let value = queryParams[queryValue];
-                let valueString = null;
-                if (typeof(value) === 'object') {
-                    valueString = this.getSerializedObject(value);
-                } else {
-                    valueString = queryValue + "=" + encodeURIComponent(queryParams[queryValue]);
-                }
-                if (first) {
-                    relativeUrl += "?" + valueString;
-                    first = false;
-                } else {
-                    relativeUrl += "&" + valueString;
-                }
-            }
+        // Append query parameters to the end
+        if (queryParams) {
+            relativeUrl += this.queryParamsToString(queryParams);
         }
 
-        //resolve the relative url with the base
+        // Resolve the relative url with the base
         return url.resolve(this.baseUrl, path.join(this.basePath, relativeUrl));
     }
 

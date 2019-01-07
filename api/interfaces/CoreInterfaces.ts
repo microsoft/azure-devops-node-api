@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
@@ -34,20 +34,20 @@ export enum ConnectedServiceKind {
 }
 
 export interface IdentityData {
-    identityIds: string[];
+    identityIds?: string[];
 }
 
 export interface Process extends ProcessReference {
-    _links: any;
-    description: string;
-    id: string;
-    isDefault: boolean;
-    type: ProcessType;
+    _links?: any;
+    description?: string;
+    id?: string;
+    isDefault?: boolean;
+    type?: ProcessType;
 }
 
 export interface ProcessReference {
-    name: string;
-    url: string;
+    name?: string;
+    url?: string;
 }
 
 export enum ProcessType {
@@ -66,31 +66,31 @@ export enum ProjectChangeType {
  * Contains information of the project
  */
 export interface ProjectInfo {
-    abbreviation: string;
-    description: string;
-    id: string;
-    lastUpdateTime: Date;
-    name: string;
-    properties: ProjectProperty[];
+    abbreviation?: string;
+    description?: string;
+    id?: string;
+    lastUpdateTime?: Date;
+    name?: string;
+    properties?: ProjectProperty[];
     /**
      * Current revision of the project
      */
-    revision: number;
-    state: any;
-    uri: string;
-    version: number;
-    visibility: ProjectVisibility;
+    revision?: number;
+    state?: any;
+    uri?: string;
+    version?: number;
+    visibility?: ProjectVisibility;
 }
 
 export interface ProjectMessage {
-    project: ProjectInfo;
-    projectChangeType: ProjectChangeType;
-    shouldInvalidateSystemStore: boolean;
+    project?: ProjectInfo;
+    projectChangeType?: ProjectChangeType;
+    shouldInvalidateSystemStore?: boolean;
 }
 
 export interface ProjectProperty {
-    name: string;
-    value: any;
+    name?: string;
+    value?: any;
 }
 
 export enum ProjectVisibility {
@@ -98,47 +98,48 @@ export enum ProjectVisibility {
     Private = 0,
     Organization = 1,
     Public = 2,
+    SystemPrivate = 3,
 }
 
 export interface Proxy {
-    authorization: ProxyAuthorization;
+    authorization?: ProxyAuthorization;
     /**
      * This is a description string
      */
-    description: string;
+    description?: string;
     /**
      * The friendly name of the server
      */
-    friendlyName: string;
-    globalDefault: boolean;
+    friendlyName?: string;
+    globalDefault?: boolean;
     /**
      * This is a string representation of the site that the proxy server is located in (e.g. "NA-WA-RED")
      */
-    site: string;
-    siteDefault: boolean;
+    site?: string;
+    siteDefault?: boolean;
     /**
      * The URL of the proxy server
      */
-    url: string;
+    url?: string;
 }
 
 export interface ProxyAuthorization {
     /**
      * Gets or sets the endpoint used to obtain access tokens from the configured token service.
      */
-    authorizationUrl: string;
+    authorizationUrl?: string;
     /**
      * Gets or sets the client identifier for this proxy.
      */
-    clientId: string;
+    clientId?: string;
     /**
      * Gets or sets the user identity to authorize for on-prem.
      */
-    identity: IdentitiesInterfaces.IdentityDescriptor;
+    identity?: IdentitiesInterfaces.IdentityDescriptor;
     /**
      * Gets or sets the public key used to verify the identity of this proxy. Only specify on hosted.
      */
-    publicKey: VSSInterfaces.PublicKey;
+    publicKey?: VSSInterfaces.PublicKey;
 }
 
 export enum SourceControlTypes {
@@ -153,19 +154,19 @@ export interface TeamContext {
     /**
      * The team project Id or name.  Ignored if ProjectId is set.
      */
-    project: string;
+    project?: string;
     /**
      * The Team Project ID.  Required if Project is not set.
      */
-    projectId: string;
+    projectId?: string;
     /**
      * The Team Id or name.  Ignored if TeamId is set.
      */
-    team: string;
+    team?: string;
     /**
      * The Team Id
      */
-    teamId: string;
+    teamId?: string;
 }
 
 /**
@@ -175,15 +176,15 @@ export interface TeamProject extends TeamProjectReference {
     /**
      * The links to other objects related to this object.
      */
-    _links: any;
+    _links?: any;
     /**
      * Set of capabilities this project has (such as process template & version control).
      */
-    capabilities: { [key: string] : { [key: string] : string; }; };
+    capabilities?: { [key: string] : { [key: string] : string; }; };
     /**
      * The shallow ref to the default team.
      */
-    defaultTeam: WebApiTeamRef;
+    defaultTeam?: WebApiTeamRef;
 }
 
 /**
@@ -193,15 +194,19 @@ export interface TeamProjectCollection extends TeamProjectCollectionReference {
     /**
      * The links to other objects related to this object.
      */
-    _links: any;
+    _links?: any;
     /**
      * Project collection description.
      */
-    description: string;
+    description?: string;
+    /**
+     * True if collection supports inherited process customization model.
+     */
+    enableInheritedProcessCustomization?: boolean;
     /**
      * Project collection state.
      */
-    state: string;
+    state?: string;
 }
 
 /**
@@ -211,15 +216,15 @@ export interface TeamProjectCollectionReference {
     /**
      * Collection Id.
      */
-    id: string;
+    id?: string;
     /**
      * Collection Name.
      */
-    name: string;
+    name?: string;
     /**
      * Collection REST Url.
      */
-    url: string;
+    url?: string;
 }
 
 /**
@@ -229,104 +234,104 @@ export interface TeamProjectReference {
     /**
      * Project abbreviation.
      */
-    abbreviation: string;
+    abbreviation?: string;
     /**
      * The project's description (if any).
      */
-    description: string;
+    description?: string;
     /**
      * Project identifier.
      */
-    id: string;
+    id?: string;
     /**
      * Project name.
      */
-    name: string;
+    name?: string;
     /**
      * Project revision.
      */
-    revision: number;
+    revision?: number;
     /**
      * Project state.
      */
-    state: any;
+    state?: any;
     /**
      * Url to the full version of the object.
      */
-    url: string;
+    url?: string;
     /**
      * Project visibility.
      */
-    visibility: ProjectVisibility;
+    visibility?: ProjectVisibility;
 }
 
 /**
  * A data transfer object that stores the metadata associated with the creation of temporary data.
  */
 export interface TemporaryDataCreatedDTO extends TemporaryDataDTO {
-    expirationDate: Date;
-    id: string;
-    url: string;
+    expirationDate?: Date;
+    id?: string;
+    url?: string;
 }
 
 /**
  * A data transfer object that stores the metadata associated with the temporary data.
  */
 export interface TemporaryDataDTO {
-    expirationSeconds: number;
-    origin: string;
-    value: any;
+    expirationSeconds?: number;
+    origin?: string;
+    value?: any;
 }
 
 export interface WebApiConnectedService extends WebApiConnectedServiceRef {
     /**
      * The user who did the OAuth authentication to created this service
      */
-    authenticatedBy: VSSInterfaces.IdentityRef;
+    authenticatedBy?: VSSInterfaces.IdentityRef;
     /**
      * Extra description on the service.
      */
-    description: string;
+    description?: string;
     /**
      * Friendly Name of service connection
      */
-    friendlyName: string;
+    friendlyName?: string;
     /**
      * Id/Name of the connection service. For Ex: Subscription Id for Azure Connection
      */
-    id: string;
+    id?: string;
     /**
      * The kind of service.
      */
-    kind: string;
+    kind?: string;
     /**
      * The project associated with this service
      */
-    project: TeamProjectReference;
+    project?: TeamProjectReference;
     /**
      * Optional uri to connect directly to the service such as https://windows.azure.com
      */
-    serviceUri: string;
+    serviceUri?: string;
 }
 
 export interface WebApiConnectedServiceDetails extends WebApiConnectedServiceRef {
     /**
      * Meta data for service connection
      */
-    connectedServiceMetaData: WebApiConnectedService;
+    connectedServiceMetaData?: WebApiConnectedService;
     /**
      * Credential info
      */
-    credentialsXml: string;
+    credentialsXml?: string;
     /**
      * Optional uri to connect directly to the service such as https://windows.azure.com
      */
-    endPoint: string;
+    endPoint?: string;
 }
 
 export interface WebApiConnectedServiceRef {
-    id: string;
-    url: string;
+    id?: string;
+    url?: string;
 }
 
 /**
@@ -343,45 +348,45 @@ export interface WebApiProject extends TeamProjectReference {
     /**
      * Set of capabilities this project has
      */
-    capabilities: { [key: string] : { [key: string] : string; }; };
+    capabilities?: { [key: string] : { [key: string] : string; }; };
     /**
      * Reference to collection which contains this project
      */
-    collection: WebApiProjectCollectionRef;
+    collection?: WebApiProjectCollectionRef;
     /**
      * Default team for this project
      */
-    defaultTeam: WebApiTeamRef;
+    defaultTeam?: WebApiTeamRef;
 }
 
 export interface WebApiProjectCollection extends WebApiProjectCollectionRef {
     /**
      * Project collection description
      */
-    description: string;
+    description?: string;
     /**
      * Project collection state
      */
-    state: string;
+    state?: string;
 }
 
 export interface WebApiProjectCollectionRef {
     /**
      * Collection Tfs Url (Host Url)
      */
-    collectionUrl: string;
+    collectionUrl?: string;
     /**
      * Collection Guid
      */
-    id: string;
+    id?: string;
     /**
      * Collection Name
      */
-    name: string;
+    name?: string;
     /**
      * Collection REST Url
      */
-    url: string;
+    url?: string;
 }
 
 /**
@@ -391,45 +396,47 @@ export interface WebApiTagDefinition {
     /**
      * Whether or not the tag definition is active.
      */
-    active: boolean;
+    active?: boolean;
     /**
      * ID of the tag definition.
      */
-    id: string;
+    id?: string;
     /**
      * The name of the tag definition.
      */
-    name: string;
+    name?: string;
     /**
      * Resource URL for the Tag Definition.
      */
-    url: string;
+    url?: string;
 }
 
 export interface WebApiTeam extends WebApiTeamRef {
     /**
      * Team description
      */
-    description: string;
+    description?: string;
     /**
      * Identity REST API Url to this team
      */
-    identityUrl: string;
+    identityUrl?: string;
+    projectId?: string;
+    projectName?: string;
 }
 
 export interface WebApiTeamRef {
     /**
      * Team (Identity) Guid. A Team Foundation ID.
      */
-    id: string;
+    id?: string;
     /**
      * Team name
      */
-    name: string;
+    name?: string;
     /**
      * Team REST API Url
      */
-    url: string;
+    url?: string;
 }
 
 export var TypeInfo = {
@@ -463,7 +470,6 @@ export var TypeInfo = {
     },
     ProjectVisibility: {
         enumValues: {
-            "unchanged": -1,
             "private": 0,
             "organization": 1,
             "public": 2

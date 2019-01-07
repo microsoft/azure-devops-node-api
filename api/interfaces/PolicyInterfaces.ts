@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
@@ -20,15 +20,15 @@ export interface PolicyConfiguration extends VersionedPolicyConfigurationRef {
     /**
      * The links to other objects related to this object.
      */
-    _links: any;
+    _links?: any;
     /**
      * A reference to the identity that created the policy.
      */
-    createdBy: VSSInterfaces.IdentityRef;
+    createdBy?: VSSInterfaces.IdentityRef;
     /**
      * The date and time when the policy was created.
      */
-    createdDate: Date;
+    createdDate?: Date;
     /**
      * Indicates whether the policy is blocking.
      */
@@ -36,7 +36,7 @@ export interface PolicyConfiguration extends VersionedPolicyConfigurationRef {
     /**
      * Indicates whether the policy has been (soft) deleted.
      */
-    isDeleted: boolean;
+    isDeleted?: boolean;
     /**
      * Indicates whether the policy is enabled.
      */
@@ -54,15 +54,15 @@ export interface PolicyConfigurationRef {
     /**
      * The policy configuration ID.
      */
-    id: number;
+    id?: number;
     /**
      * The policy configuration type.
      */
-    type: PolicyTypeRef;
+    type?: PolicyTypeRef;
     /**
      * The URL where the policy configuration can be retrieved.
      */
-    url: string;
+    url?: string;
 }
 
 /**
@@ -72,35 +72,35 @@ export interface PolicyEvaluationRecord {
     /**
      * Links to other related objects
      */
-    _links: any;
+    _links?: any;
     /**
      * A string which uniquely identifies the target of a policy evaluation.
      */
-    artifactId: string;
+    artifactId?: string;
     /**
      * Time when this policy finished evaluating on this pull request.
      */
-    completedDate: Date;
+    completedDate?: Date;
     /**
      * Contains all configuration data for the policy which is being evaluated.
      */
-    configuration: PolicyConfiguration;
+    configuration?: PolicyConfiguration;
     /**
      * Internal context data of this policy evaluation.
      */
-    context: any;
+    context?: any;
     /**
      * Guid which uniquely identifies this evaluation record (one policy running on one pull request).
      */
-    evaluationId: string;
+    evaluationId?: string;
     /**
      * Time when this policy was first evaluated on this pull request.
      */
-    startedDate: Date;
+    startedDate?: Date;
     /**
      * Status of the policy (Running, Approved, Failed, etc.)
      */
-    status: PolicyEvaluationStatus;
+    status?: PolicyEvaluationStatus;
 }
 
 /**
@@ -140,11 +140,11 @@ export interface PolicyType extends PolicyTypeRef {
     /**
      * The links to other objects related to this object.
      */
-    _links: any;
+    _links?: any;
     /**
      * Detailed description of the policy type.
      */
-    description: string;
+    description?: string;
 }
 
 /**
@@ -154,7 +154,7 @@ export interface PolicyTypeRef {
     /**
      * Display name of the policy type.
      */
-    displayName: string;
+    displayName?: string;
     /**
      * The policy type ID.
      */
@@ -162,7 +162,7 @@ export interface PolicyTypeRef {
     /**
      * The URL where the policy type can be retrieved.
      */
-    url: string;
+    url?: string;
 }
 
 /**
@@ -172,7 +172,7 @@ export interface VersionedPolicyConfigurationRef extends PolicyConfigurationRef 
     /**
      * The policy configuration revision ID.
      */
-    revision: number;
+    revision?: number;
 }
 
 export var TypeInfo = {

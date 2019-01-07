@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
@@ -31,15 +31,15 @@ export interface AcquisitionOperation {
     /**
      * State of the the AcquisitionOperation for the current user
      */
-    operationState: AcquisitionOperationState;
+    operationState?: AcquisitionOperationState;
     /**
      * AcquisitionOperationType: install, request, buy, etc...
      */
-    operationType: AcquisitionOperationType;
+    operationType?: AcquisitionOperationType;
     /**
      * Optional reason to justify current state. Typically used with Disallow state.
      */
-    reason: string;
+    reason?: string;
 }
 
 export enum AcquisitionOperationState {
@@ -98,99 +98,99 @@ export interface AcquisitionOptions {
     /**
      * Default Operation for the ItemId in this target
      */
-    defaultOperation: AcquisitionOperation;
+    defaultOperation?: AcquisitionOperation;
     /**
      * The item id that this options refer to
      */
-    itemId: string;
+    itemId?: string;
     /**
      * Operations allowed for the ItemId in this target
      */
-    operations: AcquisitionOperation[];
+    operations?: AcquisitionOperation[];
     /**
      * The target that this options refer to
      */
-    target: string;
+    target?: string;
 }
 
 export interface Answers {
     /**
      * Gets or sets the vs marketplace extension name
      */
-    vSMarketplaceExtensionName: string;
+    vSMarketplaceExtensionName?: string;
     /**
      * Gets or sets the vs marketplace publsiher name
      */
-    vSMarketplacePublisherName: string;
+    vSMarketplacePublisherName?: string;
 }
 
 export interface AssetDetails {
     /**
      * Gets or sets the Answers, which contains vs marketplace extension name and publisher name
      */
-    answers: Answers;
+    answers?: Answers;
     /**
      * Gets or sets the VS publisher Id
      */
-    publisherNaturalIdentifier: string;
+    publisherNaturalIdentifier?: string;
 }
 
 export interface AzurePublisher {
-    azurePublisherId: string;
-    publisherName: string;
+    azurePublisherId?: string;
+    publisherName?: string;
 }
 
 export interface AzureRestApiRequestModel {
     /**
      * Gets or sets the Asset details
      */
-    assetDetails: AssetDetails;
+    assetDetails?: AssetDetails;
     /**
      * Gets or sets the asset id
      */
-    assetId: string;
+    assetId?: string;
     /**
      * Gets or sets the asset version
      */
-    assetVersion: number;
+    assetVersion?: number;
     /**
      * Gets or sets the customer support email
      */
-    customerSupportEmail: string;
+    customerSupportEmail?: string;
     /**
      * Gets or sets the integration contact email
      */
-    integrationContactEmail: string;
+    integrationContactEmail?: string;
     /**
      * Gets or sets the asset version
      */
-    operation: string;
+    operation?: string;
     /**
      * Gets or sets the plan identifier if any.
      */
-    planId: string;
+    planId?: string;
     /**
      * Gets or sets the publisher id
      */
-    publisherId: string;
+    publisherId?: string;
     /**
      * Gets or sets the resource type
      */
-    type: string;
+    type?: string;
 }
 
 export interface AzureRestApiResponseModel extends AzureRestApiRequestModel {
     /**
      * Gets or sets the Asset operation status
      */
-    operationStatus: RestApiResponseStatusModel;
+    operationStatus?: RestApiResponseStatusModel;
 }
 
 /**
  * This is the set of categories in response to the get category query
  */
 export interface CategoriesResult {
-    categories: ExtensionCategory[];
+    categories?: ExtensionCategory[];
 }
 
 /**
@@ -200,15 +200,15 @@ export interface CategoryLanguageTitle {
     /**
      * The language for which the title is applicable
      */
-    lang: string;
+    lang?: string;
     /**
      * The language culture id of the lang parameter
      */
-    lcid: number;
+    lcid?: number;
     /**
      * Actual title to be shown on the UI
      */
-    title: string;
+    title?: string;
 }
 
 /**
@@ -218,7 +218,7 @@ export interface Concern extends QnAItem {
     /**
      * Category of the concern
      */
-    category: ConcernCategory;
+    category?: ConcernCategory;
 }
 
 export enum ConcernCategory {
@@ -234,11 +234,11 @@ export interface CustomerLastContact {
     /**
      * account for which customer was last contacted
      */
-    account: string;
+    account?: string;
     /**
      * Date on which the custoemr was last contacted
      */
-    lastContactDate: Date;
+    lastContactDate?: Date;
 }
 
 export enum DraftPatchOperation {
@@ -257,39 +257,39 @@ export interface EventCounts {
     /**
      * Average rating on the day for extension
      */
-    averageRating: number;
+    averageRating?: number;
     /**
      * Number of times the extension was bought in hosted scenario (applies only to VSTS extensions)
      */
-    buyCount: number;
+    buyCount?: number;
     /**
      * Number of times the extension was bought in connected scenario (applies only to VSTS extensions)
      */
-    connectedBuyCount: number;
+    connectedBuyCount?: number;
     /**
      * Number of times the extension was installed in connected scenario (applies only to VSTS extensions)
      */
-    connectedInstallCount: number;
+    connectedInstallCount?: number;
     /**
      * Number of times the extension was installed
      */
-    installCount: number;
+    installCount?: number;
     /**
      * Number of times the extension was installed as a trial (applies only to VSTS extensions)
      */
-    tryCount: number;
+    tryCount?: number;
     /**
      * Number of times the extension was uninstalled (applies only to VSTS extensions)
      */
-    uninstallCount: number;
+    uninstallCount?: number;
     /**
      * Number of times the extension was downloaded (applies to VSTS extensions and VSCode marketplace click installs)
      */
-    webDownloadCount: number;
+    webDownloadCount?: number;
     /**
      * Number of detail page views
      */
-    webPageViews: number;
+    webPageViews?: number;
 }
 
 /**
@@ -299,103 +299,103 @@ export interface ExtensionAcquisitionRequest {
     /**
      * How the item is being assigned
      */
-    assignmentType: AcquisitionAssignmentType;
+    assignmentType?: AcquisitionAssignmentType;
     /**
      * The id of the subscription used for purchase
      */
-    billingId: string;
+    billingId?: string;
     /**
      * The marketplace id (publisherName.extensionName) for the item
      */
-    itemId: string;
+    itemId?: string;
     /**
      * The type of operation, such as install, request, purchase
      */
-    operationType: AcquisitionOperationType;
+    operationType?: AcquisitionOperationType;
     /**
      * Additional properties which can be added to the request.
      */
-    properties: any;
+    properties?: any;
     /**
      * How many licenses should be purchased
      */
-    quantity: number;
+    quantity?: number;
     /**
      * A list of target guids where the item should be acquired (installed, requested, etc.), such as account id
      */
-    targets: string[];
+    targets?: string[];
 }
 
 export interface ExtensionBadge {
-    description: string;
-    imgUri: string;
-    link: string;
+    description?: string;
+    imgUri?: string;
+    link?: string;
 }
 
 export interface ExtensionCategory {
     /**
      * The name of the products with which this category is associated to.
      */
-    associatedProducts: string[];
-    categoryId: number;
+    associatedProducts?: string[];
+    categoryId?: number;
     /**
      * This is the internal name for a category
      */
-    categoryName: string;
+    categoryName?: string;
     /**
      * This parameter is obsolete. Refer to LanguageTitles for langauge specific titles
      */
-    language: string;
+    language?: string;
     /**
      * The list of all the titles of this category in various languages
      */
-    languageTitles: CategoryLanguageTitle[];
+    languageTitles?: CategoryLanguageTitle[];
     /**
      * This is the internal name of the parent if this is associated with a parent
      */
-    parentCategoryName: string;
+    parentCategoryName?: string;
 }
 
 export interface ExtensionDailyStat {
     /**
      * Stores the event counts
      */
-    counts: EventCounts;
+    counts?: EventCounts;
     /**
      * Generic key/value pair to store extended statistics. Used for sending paid extension stats like Upgrade, Downgrade, Cancel trend etc.
      */
-    extendedStats: { [key: string] : any; };
+    extendedStats?: { [key: string] : any; };
     /**
      * Timestamp of this data point
      */
-    statisticDate: Date;
+    statisticDate?: Date;
     /**
      * Version of the extension
      */
-    version: string;
+    version?: string;
 }
 
 export interface ExtensionDailyStats {
     /**
      * List of extension statistics data points
      */
-    dailyStats: ExtensionDailyStat[];
+    dailyStats?: ExtensionDailyStat[];
     /**
      * Id of the extension, this will never be sent back to the client. For internal use only.
      */
-    extensionId: string;
+    extensionId?: string;
     /**
      * Name of the extension
      */
-    extensionName: string;
+    extensionName?: string;
     /**
      * Name of the publisher
      */
-    publisherName: string;
+    publisherName?: string;
     /**
      * Count of stats
      */
-    statCount: number;
+    statCount?: number;
 }
 
 export enum ExtensionDeploymentTechnology {
@@ -406,25 +406,25 @@ export enum ExtensionDeploymentTechnology {
 }
 
 export interface ExtensionDraft {
-    assets: ExtensionDraftAsset[];
-    createdDate: Date;
-    draftState: DraftStateType;
-    extensionName: string;
-    id: string;
-    lastUpdated: Date;
-    payload: ExtensionPayload;
-    product: string;
-    publisherName: string;
-    validationErrors: { key: string; value: string }[];
-    validationWarnings: { key: string; value: string }[];
+    assets?: ExtensionDraftAsset[];
+    createdDate?: Date;
+    draftState?: DraftStateType;
+    extensionName?: string;
+    id?: string;
+    lastUpdated?: Date;
+    payload?: ExtensionPayload;
+    product?: string;
+    publisherName?: string;
+    validationErrors?: { key: string; value: string }[];
+    validationWarnings?: { key: string; value: string }[];
 }
 
 export interface ExtensionDraftAsset extends ExtensionFile {
 }
 
 export interface ExtensionDraftPatch {
-    extensionData: UnpackagedExtensionData;
-    operation: DraftPatchOperation;
+    extensionData?: UnpackagedExtensionData;
+    operation?: DraftPatchOperation;
 }
 
 /**
@@ -434,16 +434,16 @@ export interface ExtensionEvent {
     /**
      * Id which identifies each data point uniquely
      */
-    id: number;
-    properties: any;
+    id?: number;
+    properties?: any;
     /**
      * Timestamp of when the event occurred
      */
-    statisticDate: Date;
+    statisticDate?: Date;
     /**
      * Version of the extension
      */
-    version: string;
+    version?: string;
 }
 
 /**
@@ -453,25 +453,25 @@ export interface ExtensionEvents {
     /**
      * Generic container for events data. The dictionary key denotes the type of event and the list contains properties related to that event
      */
-    events: { [key: string] : ExtensionEvent[]; };
+    events?: { [key: string] : ExtensionEvent[]; };
     /**
      * Id of the extension, this will never be sent back to the client. This field will mainly be used when EMS calls into Gallery REST API to update install/uninstall events for various extensions in one go.
      */
-    extensionId: string;
+    extensionId?: string;
     /**
      * Name of the extension
      */
-    extensionName: string;
+    extensionName?: string;
     /**
      * Name of the publisher
      */
-    publisherName: string;
+    publisherName?: string;
 }
 
 export interface ExtensionFile {
-    assetType: string;
-    language: string;
-    source: string;
+    assetType?: string;
+    language?: string;
+    source?: string;
 }
 
 /**
@@ -481,15 +481,15 @@ export interface ExtensionFilterResult {
     /**
      * This is the set of appplications that matched the query filter supplied.
      */
-    extensions: PublishedExtension[];
+    extensions?: PublishedExtension[];
     /**
      * The PagingToken is returned from a request when more records exist that match the result than were requested or could be returned. A follow-up query with this paging token can be used to retrieve more results.
      */
-    pagingToken: string;
+    pagingToken?: string;
     /**
      * This is the additional optional metadata for the given result. E.g. Total count of results which is useful in case of paged results
      */
-    resultMetadata: ExtensionFilterResultMetadata[];
+    resultMetadata?: ExtensionFilterResultMetadata[];
 }
 
 /**
@@ -499,11 +499,11 @@ export interface ExtensionFilterResultMetadata {
     /**
      * The metadata items for the category
      */
-    metadataItems: MetadataItem[];
+    metadataItems?: MetadataItem[];
     /**
      * Defines the category of metadata items
      */
-    metadataType: string;
+    metadataType?: string;
 }
 
 /**
@@ -513,11 +513,11 @@ export interface ExtensionIdentifier {
     /**
      * The ExtensionName component part of the fully qualified ExtensionIdentifier
      */
-    extensionName: string;
+    extensionName?: string;
     /**
      * The PublisherName component part of the fully qualified ExtensionIdentifier
      */
-    publisherName: string;
+    publisherName?: string;
 }
 
 /**
@@ -539,18 +539,18 @@ export interface ExtensionPackage {
     /**
      * Base 64 encoded extension package
      */
-    extensionManifest: string;
+    extensionManifest?: string;
 }
 
 export interface ExtensionPayload {
-    description: string;
-    displayName: string;
-    fileName: string;
-    installationTargets: InstallationTarget[];
-    isSignedByMicrosoft: boolean;
-    isValid: boolean;
-    metadata: { key: string; value: string }[];
-    type: ExtensionDeploymentTechnology;
+    description?: string;
+    displayName?: string;
+    fileName?: string;
+    installationTargets?: InstallationTarget[];
+    isSignedByMicrosoft?: boolean;
+    isValid?: boolean;
+    metadata?: { key: string; value: string }[];
+    type?: ExtensionDeploymentTechnology;
 }
 
 /**
@@ -560,11 +560,11 @@ export interface ExtensionPolicy {
     /**
      * Permissions on 'Install' operation
      */
-    install: ExtensionPolicyFlags;
+    install?: ExtensionPolicyFlags;
     /**
      * Permission on 'Request' operation
      */
-    request: ExtensionPolicyFlags;
+    request?: ExtensionPolicyFlags;
 }
 
 /**
@@ -608,15 +608,15 @@ export interface ExtensionQuery {
     /**
      * When retrieving extensions with a query; frequently the caller only needs a small subset of the assets. The caller may specify a list of asset types that should be returned if the extension contains it. All other assets will not be returned.
      */
-    assetTypes: string[];
+    assetTypes?: string[];
     /**
      * Each filter is a unique query and will have matching set of extensions returned from the request. Each result will have the same index in the resulting array that the filter had in the incoming query.
      */
-    filters: QueryFilter[];
+    filters?: QueryFilter[];
     /**
      * The Flags are used to deterine which set of information the caller would like returned for the matched extensions.
      */
-    flags: ExtensionQueryFlags;
+    flags?: ExtensionQueryFlags;
 }
 
 /**
@@ -790,19 +790,19 @@ export interface ExtensionQueryResult {
     /**
      * For each filter supplied in the query, a filter result will be returned in the query result.
      */
-    results: ExtensionFilterResult[];
+    results?: ExtensionFilterResult[];
 }
 
 export interface ExtensionShare {
-    id: string;
-    isOrg: boolean;
-    name: string;
-    type: string;
+    id?: string;
+    isOrg?: boolean;
+    name?: string;
+    type?: string;
 }
 
 export interface ExtensionStatistic {
-    statisticName: string;
-    value: number;
+    statisticName?: string;
+    value?: number;
 }
 
 export enum ExtensionStatisticOperation {
@@ -814,10 +814,10 @@ export enum ExtensionStatisticOperation {
 }
 
 export interface ExtensionStatisticUpdate {
-    extensionName: string;
-    operation: ExtensionStatisticOperation;
-    publisherName: string;
-    statistic: ExtensionStatistic;
+    extensionName?: string;
+    operation?: ExtensionStatisticOperation;
+    publisherName?: string;
+    statistic?: ExtensionStatistic;
 }
 
 /**
@@ -828,16 +828,16 @@ export enum ExtensionStatsAggregateType {
 }
 
 export interface ExtensionVersion {
-    assetUri: string;
-    badges: ExtensionBadge[];
-    fallbackAssetUri: string;
-    files: ExtensionFile[];
-    flags: ExtensionVersionFlags;
-    lastUpdated: Date;
-    properties: { key: string; value: string }[];
-    validationResultMessage: string;
-    version: string;
-    versionDescription: string;
+    assetUri?: string;
+    badges?: ExtensionBadge[];
+    fallbackAssetUri?: string;
+    files?: ExtensionFile[];
+    flags?: ExtensionVersionFlags;
+    lastUpdated?: Date;
+    properties?: { key: string; value: string }[];
+    validationResultMessage?: string;
+    version?: string;
+    versionDescription?: string;
 }
 
 /**
@@ -858,16 +858,16 @@ export enum ExtensionVersionFlags {
  * One condition in a QueryFilter.
  */
 export interface FilterCriteria {
-    filterType: number;
+    filterType?: number;
     /**
      * The value used in the match based on the filter type.
      */
-    value: string;
+    value?: string;
 }
 
 export interface InstallationTarget {
-    target: string;
-    targetVersion: string;
+    target?: string;
+    targetVersion?: string;
 }
 
 /**
@@ -877,11 +877,11 @@ export interface MetadataItem {
     /**
      * The count of the metadata item
      */
-    count: number;
+    count?: number;
     /**
      * The name of the metadata item
      */
-    name: string;
+    name?: string;
 }
 
 /**
@@ -891,15 +891,15 @@ export interface NotificationsData {
     /**
      * Notification data needed
      */
-    data: { [key: string] : any; };
+    data?: { [key: string] : any; };
     /**
      * List of users who should get the notification
      */
-    identities: { [key: string] : any; };
+    identities?: { [key: string] : any; };
     /**
      * Type of Mail Notification.Can be Qna , review or CustomerContact
      */
-    type: NotificationTemplateType;
+    type?: NotificationTemplateType;
 }
 
 /**
@@ -942,52 +942,52 @@ export enum PagingDirection {
  * This is the set of categories in response to the get category query
  */
 export interface ProductCategoriesResult {
-    categories: ProductCategory[];
+    categories?: ProductCategory[];
 }
 
 /**
  * This is the interface object to be used by Root Categories and Category Tree APIs for Visual Studio Ide.
  */
 export interface ProductCategory {
-    children: ProductCategory[];
+    children?: ProductCategory[];
     /**
      * Indicator whether this is a leaf or there are children under this category
      */
-    hasChildren: boolean;
+    hasChildren?: boolean;
     /**
      * Individual Guid of the Category
      */
-    id: string;
+    id?: string;
     /**
      * Category Title in the requested language
      */
-    title: string;
+    title?: string;
 }
 
 export interface PublishedExtension {
-    categories: string[];
-    deploymentType: ExtensionDeploymentTechnology;
-    displayName: string;
-    extensionId: string;
-    extensionName: string;
-    flags: PublishedExtensionFlags;
-    installationTargets: InstallationTarget[];
-    lastUpdated: Date;
-    longDescription: string;
+    categories?: string[];
+    deploymentType?: ExtensionDeploymentTechnology;
+    displayName?: string;
+    extensionId?: string;
+    extensionName?: string;
+    flags?: PublishedExtensionFlags;
+    installationTargets?: InstallationTarget[];
+    lastUpdated?: Date;
+    longDescription?: string;
     /**
      * Date on which the extension was first uploaded.
      */
-    publishedDate: Date;
-    publisher: PublisherFacts;
+    publishedDate?: Date;
+    publisher?: PublisherFacts;
     /**
      * Date on which the extension first went public.
      */
-    releaseDate: Date;
-    sharedWith: ExtensionShare[];
-    shortDescription: string;
-    statistics: ExtensionStatistic[];
-    tags: string[];
-    versions: ExtensionVersion[];
+    releaseDate?: Date;
+    sharedWith?: ExtensionShare[];
+    shortDescription?: string;
+    statistics?: ExtensionStatistic[];
+    tags?: string[];
+    versions?: ExtensionVersion[];
 }
 
 /**
@@ -1053,33 +1053,33 @@ export enum PublishedExtensionFlags {
 }
 
 export interface Publisher extends PublisherBase {
-    _links: any;
+    _links?: any;
 }
 
 /**
  * Keeping base class separate since publisher DB model class and publisher contract class share these common properties
  */
 export interface PublisherBase {
-    displayName: string;
-    emailAddress: string[];
-    extensions: PublishedExtension[];
-    flags: PublisherFlags;
-    lastUpdated: Date;
-    longDescription: string;
-    publisherId: string;
-    publisherName: string;
-    shortDescription: string;
-    state: PublisherState;
+    displayName?: string;
+    emailAddress?: string[];
+    extensions?: PublishedExtension[];
+    flags?: PublisherFlags;
+    lastUpdated?: Date;
+    longDescription?: string;
+    publisherId?: string;
+    publisherName?: string;
+    shortDescription?: string;
+    state?: PublisherState;
 }
 
 /**
  * High-level information about the publisher, like id's and names
  */
 export interface PublisherFacts {
-    displayName: string;
-    flags: PublisherFlags;
-    publisherId: string;
-    publisherName: string;
+    displayName?: string;
+    flags?: PublisherFlags;
+    publisherId?: string;
+    publisherName?: string;
 }
 
 /**
@@ -1089,7 +1089,7 @@ export interface PublisherFilterResult {
     /**
      * This is the set of appplications that matched the query filter supplied.
      */
-    publishers: Publisher[];
+    publishers?: Publisher[];
 }
 
 export enum PublisherFlags {
@@ -1177,11 +1177,11 @@ export interface PublisherQuery {
     /**
      * Each filter is a unique query and will have matching set of publishers returned from the request. Each result will have the same index in the resulting array that the filter had in the incoming query.
      */
-    filters: QueryFilter[];
+    filters?: QueryFilter[];
     /**
      * The Flags are used to deterine which set of information the caller would like returned for the matched publishers.
      */
-    flags: PublisherQueryFlags;
+    flags?: PublisherQueryFlags;
 }
 
 /**
@@ -1209,7 +1209,30 @@ export interface PublisherQueryResult {
     /**
      * For each filter supplied in the query, a filter result will be returned in the query result.
      */
-    results: PublisherFilterResult[];
+    results?: PublisherFilterResult[];
+}
+
+export enum PublisherState {
+    /**
+     * No state exists for this publisher.
+     */
+    None = 0,
+    /**
+     * This state indicates that publisher has applied for Marketplace verification (via UI) and still not been certified. This state would be reset once the publisher is verified.
+     */
+    VerificationPending = 1,
+    /**
+     * This state indicates that publisher has applied for Marketplace certification (via UI) and still not been certified. This state would be reset once the publisher is certified.
+     */
+    CertificationPending = 2,
+    /**
+     * This state indicates that publisher had applied for Marketplace certification (via UI) but his/her certification got rejected. This state would be reset if and when the publisher is certified.
+     */
+    CertificationRejected = 4,
+    /**
+     * This state indicates that publisher was certified on the Marketplace, but his/her certification got revoked. This state would never be reset, even after publisher gets re-certified. It would indicate that the publisher certification was revoked at least once.
+     */
+    CertificationRevoked = 8,
 }
 
 export enum PublisherState {
@@ -1242,27 +1265,27 @@ export interface QnAItem {
     /**
      * Time when the review was first created
      */
-    createdDate: Date;
+    createdDate?: Date;
     /**
      * Unique identifier of a QnA item
      */
-    id: number;
+    id?: number;
     /**
      * Get status of item
      */
-    status: QnAItemStatus;
+    status?: QnAItemStatus;
     /**
      * Text description of the QnA item
      */
-    text: string;
+    text?: string;
     /**
      * Time when the review was edited/updated
      */
-    updatedDate: Date;
+    updatedDate?: Date;
     /**
      * User details for the item.
      */
-    user: UserIdentityRef;
+    user?: UserIdentityRef;
 }
 
 /**
@@ -1287,31 +1310,31 @@ export interface QueryFilter {
     /**
      * The filter values define the set of values in this query. They are applied based on the QueryFilterType.
      */
-    criteria: FilterCriteria[];
+    criteria?: FilterCriteria[];
     /**
      * The PagingDirection is applied to a paging token if one exists. If not the direction is ignored, and Forward from the start of the resultset is used. Direction should be left out of the request unless a paging token is used to help prevent future issues.
      */
-    direction: PagingDirection;
+    direction?: PagingDirection;
     /**
      * The page number requested by the user. If not provided 1 is assumed by default.
      */
-    pageNumber: number;
+    pageNumber?: number;
     /**
      * The page size defines the number of results the caller wants for this filter. The count can't exceed the overall query size limits.
      */
-    pageSize: number;
+    pageSize?: number;
     /**
      * The paging token is a distinct type of filter and the other filter fields are ignored. The paging token represents the continuation of a previously executed query. The information about where in the result and what fields are being filtered are embeded in the token.
      */
-    pagingToken: string;
+    pagingToken?: string;
     /**
      * Defines the type of sorting to be applied on the results. The page slice is cut of the sorted results only.
      */
-    sortBy: number;
+    sortBy?: number;
     /**
      * Defines the order of sorting, 1 for Ascending, 2 for Descending, else default ordering based on the SortBy value
      */
-    sortOrder: number;
+    sortOrder?: number;
 }
 
 /**
@@ -1321,29 +1344,29 @@ export interface Question extends QnAItem {
     /**
      * List of answers in for the question / thread
      */
-    responses: Response[];
+    responses?: Response[];
 }
 
 export interface QuestionsResult {
     /**
      * Flag indicating if there are more QnA threads to be shown (for paging)
      */
-    hasMoreQuestions: boolean;
+    hasMoreQuestions?: boolean;
     /**
      * List of the QnA threads
      */
-    questions: Question[];
+    questions?: Question[];
 }
 
 export interface RatingCountPerRating {
     /**
      * Rating value
      */
-    rating: number;
+    rating?: number;
     /**
      * Count of total ratings
      */
-    ratingCount: number;
+    ratingCount?: number;
 }
 
 /**
@@ -1381,71 +1404,71 @@ export interface RestApiResponseStatusModel {
     /**
      * Gets or sets the operation details
      */
-    operationDetails: any;
+    operationDetails?: any;
     /**
      * Gets or sets the operation id
      */
-    operationId: string;
+    operationId?: string;
     /**
      * Gets or sets the completed status percentage
      */
-    percentageCompleted: number;
+    percentageCompleted?: number;
     /**
      * Gets or sets the status
      */
-    status: RestApiResponseStatus;
+    status?: RestApiResponseStatus;
     /**
      * Gets or sets the status message
      */
-    statusMessage: string;
+    statusMessage?: string;
 }
 
 export interface Review {
     /**
      * Admin Reply, if any, for this review
      */
-    adminReply: ReviewReply;
+    adminReply?: ReviewReply;
     /**
      * Unique identifier of a review item
      */
-    id: number;
+    id?: number;
     /**
      * Flag for soft deletion
      */
-    isDeleted: boolean;
-    isIgnored: boolean;
+    isDeleted?: boolean;
+    isIgnored?: boolean;
     /**
      * Version of the product for which review was submitted
      */
-    productVersion: string;
+    productVersion?: string;
     /**
      * Rating procided by the user
      */
-    rating: number;
+    rating?: number;
     /**
      * Reply, if any, for this review
      */
-    reply: ReviewReply;
+    reply?: ReviewReply;
     /**
      * Text description of the review
      */
-    text: string;
+    text?: string;
     /**
      * Title of the review
      */
-    title: string;
+    title?: string;
     /**
      * Time when the review was edited/updated
      */
-    updatedDate: Date;
+    updatedDate?: Date;
     /**
      * Name of the user
      */
-    userDisplayName: string;
+    userDisplayName?: string;
     /**
      * Id of the user who submitted the review
      */
-    userId: string;
+    userId?: string;
 }
 
 /**
@@ -1464,55 +1487,55 @@ export interface ReviewEventProperties {
     /**
      * Operation performed on Event - Create\Update
      */
-    eventOperation: ReviewEventOperation;
+    eventOperation?: ReviewEventOperation;
     /**
      * Flag to see if reply is admin reply
      */
-    isAdminReply: boolean;
+    isAdminReply?: boolean;
     /**
      * Flag to record if the reviwe is ignored
      */
-    isIgnored: boolean;
+    isIgnored?: boolean;
     /**
      * Rating at the time of event
      */
-    rating: number;
+    rating?: number;
     /**
      * Reply update date
      */
-    replyDate: Date;
+    replyDate?: Date;
     /**
      * Publisher reply text or admin reply text
      */
-    replyText: string;
+    replyText?: string;
     /**
      * User who responded to the review
      */
-    replyUserId: string;
+    replyUserId?: string;
     /**
      * Review Event Type - Review
      */
-    resourceType: ReviewResourceType;
+    resourceType?: ReviewResourceType;
     /**
      * Review update date
      */
-    reviewDate: Date;
+    reviewDate?: Date;
     /**
      * ReviewId of the review  on which the operation is performed
      */
-    reviewId: number;
+    reviewId?: number;
     /**
      * Text in Review Text
      */
-    reviewText: string;
+    reviewText?: string;
     /**
      * User display name at the time of review
      */
-    userDisplayName: string;
+    userDisplayName?: string;
     /**
      * User who gave review
      */
-    userId: string;
+    userId?: string;
 }
 
 /**
@@ -1537,15 +1560,15 @@ export interface ReviewPatch {
     /**
      * Denotes the patch operation type
      */
-    operation: ReviewPatchOperation;
+    operation?: ReviewPatchOperation;
     /**
      * Use when patch operation is FlagReview
      */
-    reportedConcern: UserReportedConcern;
+    reportedConcern?: UserReportedConcern;
     /**
      * Use when patch operation is EditReview
      */
-    reviewItem: Review;
+    reviewItem?: Review;
 }
 
 /**
@@ -1582,35 +1605,35 @@ export interface ReviewReply {
     /**
      * Id of the reply
      */
-    id: number;
+    id?: number;
     /**
      * Flag for soft deletion
      */
-    isDeleted: boolean;
+    isDeleted?: boolean;
     /**
      * Version of the product when the reply was submitted or updated
      */
-    productVersion: string;
+    productVersion?: string;
     /**
      * Content of the reply
      */
-    replyText: string;
+    replyText?: string;
     /**
      * Id of the review, to which this reply belongs
      */
-    reviewId: number;
+    reviewId?: number;
     /**
      * Title of the reply
      */
-    title: string;
+    title?: string;
     /**
      * Date the reply was submitted or updated
      */
-    updatedDate: Date;
+    updatedDate?: Date;
     /**
      * Id of the user who left the reply
      */
-    userId: string;
+    userId?: string;
 }
 
 /**
@@ -1626,30 +1649,30 @@ export interface ReviewsResult {
     /**
      * Flag indicating if there are more reviews to be shown (for paging)
      */
-    hasMoreReviews: boolean;
+    hasMoreReviews?: boolean;
     /**
      * List of reviews
      */
-    reviews: Review[];
+    reviews?: Review[];
     /**
      * Count of total review items
      */
-    totalReviewCount: number;
+    totalReviewCount?: number;
 }
 
 export interface ReviewSummary {
     /**
      * Average Rating
      */
-    averageRating: number;
+    averageRating?: number;
     /**
      * Count of total ratings
      */
-    ratingCount: number;
+    ratingCount?: number;
     /**
      * Split of count accross rating
      */
-    ratingSplit: RatingCountPerRating[];
+    ratingSplit?: RatingCountPerRating[];
 }
 
 /**
@@ -1729,22 +1752,22 @@ export enum SortOrderType {
 }
 
 export interface UnpackagedExtensionData {
-    categories: string[];
-    description: string;
-    displayName: string;
-    draftId: string;
-    extensionName: string;
-    installationTargets: InstallationTarget[];
-    isConvertedToMarkdown: boolean;
-    pricingCategory: string;
-    product: string;
-    publisherName: string;
-    qnAEnabled: boolean;
-    referralUrl: string;
-    repositoryUrl: string;
-    tags: string[];
-    version: string;
-    vsixId: string;
+    categories?: string[];
+    description?: string;
+    displayName?: string;
+    draftId?: string;
+    extensionName?: string;
+    installationTargets?: InstallationTarget[];
+    isConvertedToMarkdown?: boolean;
+    pricingCategory?: string;
+    product?: string;
+    publisherName?: string;
+    qnAEnabled?: boolean;
+    referralUrl?: string;
+    repositoryUrl?: string;
+    tags?: string[];
+    version?: string;
+    vsixId?: string;
 }
 
 /**
@@ -1754,15 +1777,15 @@ export interface UserExtensionPolicy {
     /**
      * User display name that this policy refers to
      */
-    displayName: string;
+    displayName?: string;
     /**
      * The extension policy applied to the user
      */
-    permissions: ExtensionPolicy;
+    permissions?: ExtensionPolicy;
     /**
      * User id that this policy refers to
      */
-    userId: string;
+    userId?: string;
 }
 
 /**
@@ -1772,34 +1795,34 @@ export interface UserIdentityRef {
     /**
      * User display name
      */
-    displayName: string;
+    displayName?: string;
     /**
      * User VSID
      */
-    id: string;
+    id?: string;
 }
 
 export interface UserReportedConcern {
     /**
      * Category of the concern
      */
-    category: ConcernCategory;
+    category?: ConcernCategory;
     /**
      * User comment associated with the report
      */
-    concernText: string;
+    concernText?: string;
     /**
      * Id of the review which was reported
      */
-    reviewId: number;
+    reviewId?: number;
     /**
      * Date the report was submitted
      */
-    submittedDate: Date;
+    submittedDate?: Date;
     /**
      * Id of the user who reported a review
      */
-    userId: string;
+    userId?: string;
 }
 
 export var TypeInfo = {

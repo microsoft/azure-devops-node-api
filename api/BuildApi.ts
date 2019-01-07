@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
@@ -11,10 +11,8 @@
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
 import * as restm from 'typed-rest-client/RestClient';
-import * as httpm from 'typed-rest-client/HttpClient';
 import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
-import serm = require('./Serialization');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import BuildInterfaces = require("./interfaces/BuildInterfaces");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
@@ -24,6 +22,9 @@ export interface IBuildApi extends basem.ClientApiBase {
     getArtifact(buildId: number, artifactName: string, project?: string): Promise<BuildInterfaces.BuildArtifact>;
     getArtifactContentZip(buildId: number, artifactName: string, project?: string): Promise<NodeJS.ReadableStream>;
     getArtifacts(buildId: number, project?: string): Promise<BuildInterfaces.BuildArtifact[]>;
+    getFile(buildId: number, artifactName: string, fileId: string, fileName: string, project?: string): Promise<NodeJS.ReadableStream>;
+    getAttachments(project: string, buildId: number, type: string): Promise<BuildInterfaces.Attachment[]>;
+    getAttachment(project: string, buildId: number, timelineId: string, recordId: string, type: string, name: string): Promise<NodeJS.ReadableStream>;
     getBadge(project: string, definitionId: number, branchName?: string): Promise<string>;
     listBranches(project: string, providerName: string, serviceEndpointId?: string, repository?: string): Promise<string[]>;
     getBuildBadge(project: string, repoType: string, repoId?: string, branchName?: string): Promise<BuildInterfaces.BuildBadge>;
@@ -31,8 +32,8 @@ export interface IBuildApi extends basem.ClientApiBase {
     deleteBuild(buildId: number, project?: string): Promise<void>;
     getBuild(buildId: number, project?: string, propertyFilters?: string): Promise<BuildInterfaces.Build>;
     getBuilds(project?: string, definitions?: number[], queues?: number[], buildNumber?: string, minTime?: Date, maxTime?: Date, requestedFor?: string, reasonFilter?: BuildInterfaces.BuildReason, statusFilter?: BuildInterfaces.BuildStatus, resultFilter?: BuildInterfaces.BuildResult, tagFilters?: string[], properties?: string[], top?: number, continuationToken?: string, maxBuildsPerDefinition?: number, deletedFilter?: BuildInterfaces.QueryDeletedOption, queryOrder?: BuildInterfaces.BuildQueryOrder, branchName?: string, buildIds?: number[], repositoryId?: string, repositoryType?: string): Promise<BuildInterfaces.Build[]>;
-    queueBuild(build: BuildInterfaces.Build, project?: string, ignoreWarnings?: boolean, checkInTicket?: string): Promise<BuildInterfaces.Build>;
-    updateBuild(build: BuildInterfaces.Build, buildId: number, project?: string): Promise<BuildInterfaces.Build>;
+    queueBuild(build: BuildInterfaces.Build, project?: string, ignoreWarnings?: boolean, checkInTicket?: string, sourceBuildId?: number): Promise<BuildInterfaces.Build>;
+    updateBuild(build: BuildInterfaces.Build, buildId: number, project?: string, retry?: boolean): Promise<BuildInterfaces.Build>;
     updateBuilds(builds: BuildInterfaces.Build[], project?: string): Promise<BuildInterfaces.Build[]>;
     getBuildChanges(project: string, buildId: number, continuationToken?: string, top?: number, includeSourceChange?: boolean): Promise<BuildInterfaces.Change[]>;
     getChangesBetweenBuilds(project: string, fromBuildId?: number, toBuildId?: number, top?: number): Promise<BuildInterfaces.Change[]>;
@@ -41,31 +42,42 @@ export interface IBuildApi extends basem.ClientApiBase {
     createDefinition(definition: BuildInterfaces.BuildDefinition, project?: string, definitionToCloneId?: number, definitionToCloneRevision?: number): Promise<BuildInterfaces.BuildDefinition>;
     deleteDefinition(definitionId: number, project?: string): Promise<void>;
     getDefinition(definitionId: number, project?: string, revision?: number, minMetricsTime?: Date, propertyFilters?: string[], includeLatestBuilds?: boolean): Promise<BuildInterfaces.BuildDefinition>;
-    getDefinitions(project?: string, name?: string, repositoryId?: string, repositoryType?: string, queryOrder?: BuildInterfaces.DefinitionQueryOrder, top?: number, continuationToken?: string, minMetricsTime?: Date, definitionIds?: number[], path?: string, builtAfter?: Date, notBuiltAfter?: Date, includeAllProperties?: boolean, includeLatestBuilds?: boolean, taskIdFilter?: string): Promise<BuildInterfaces.BuildDefinitionReference[]>;
+    getDefinitions(project?: string, name?: string, repositoryId?: string, repositoryType?: string, queryOrder?: BuildInterfaces.DefinitionQueryOrder, top?: number, continuationToken?: string, minMetricsTime?: Date, definitionIds?: number[], path?: string, builtAfter?: Date, notBuiltAfter?: Date, includeAllProperties?: boolean, includeLatestBuilds?: boolean, taskIdFilter?: string, processType?: number, yamlFilename?: string): Promise<BuildInterfaces.BuildDefinitionReference[]>;
+    restoreDefinition(definitionId: number, deleted: boolean, project?: string): Promise<BuildInterfaces.BuildDefinition>;
     updateDefinition(definition: BuildInterfaces.BuildDefinition, definitionId: number, project?: string, secretsSourceDefinitionId?: number, secretsSourceDefinitionRevision?: number): Promise<BuildInterfaces.BuildDefinition>;
+    getFileContents(project: string, providerName: string, serviceEndpointId?: string, repository?: string, commitOrBranch?: string, path?: string): Promise<NodeJS.ReadableStream>;
     createFolder(folder: BuildInterfaces.Folder, project: string, path: string): Promise<BuildInterfaces.Folder>;
     deleteFolder(project: string, path: string): Promise<void>;
     getFolders(project: string, path?: string, queryOrder?: BuildInterfaces.FolderQueryOrder): Promise<BuildInterfaces.Folder[]>;
     updateFolder(folder: BuildInterfaces.Folder, project: string, path: string): Promise<BuildInterfaces.Folder>;
+    getLatestBuild(project: string, definition: string, branchName?: string): Promise<BuildInterfaces.Build>;
     getBuildLog(project: string, buildId: number, logId: number, startLine?: number, endLine?: number): Promise<NodeJS.ReadableStream>;
     getBuildLogLines(project: string, buildId: number, logId: number, startLine?: number, endLine?: number): Promise<string[]>;
     getBuildLogs(project: string, buildId: number): Promise<BuildInterfaces.BuildLog[]>;
     getBuildLogsZip(project: string, buildId: number): Promise<NodeJS.ReadableStream>;
+    getBuildLogZip(project: string, buildId: number, logId: number, startLine?: number, endLine?: number): Promise<NodeJS.ReadableStream>;
     getProjectMetrics(project: string, metricAggregationType?: string, minMetricsTime?: Date): Promise<BuildInterfaces.BuildMetric[]>;
     getDefinitionMetrics(project: string, definitionId: number, minMetricsTime?: Date): Promise<BuildInterfaces.BuildMetric[]>;
     getBuildOptionDefinitions(project?: string): Promise<BuildInterfaces.BuildOptionDefinition[]>;
+    getPathContents(project: string, providerName: string, serviceEndpointId?: string, repository?: string, commitOrBranch?: string, path?: string): Promise<BuildInterfaces.SourceRepositoryItem[]>;
     getBuildProperties(project: string, buildId: number, filter?: string[]): Promise<any>;
     updateBuildProperties(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, project: string, buildId: number): Promise<any>;
     getDefinitionProperties(project: string, definitionId: number, filter?: string[]): Promise<any>;
     updateDefinitionProperties(customHeaders: any, document: VSSInterfaces.JsonPatchDocument, project: string, definitionId: number): Promise<any>;
+    getPullRequest(project: string, providerName: string, pullRequestId: string, repositoryId?: string, serviceEndpointId?: string): Promise<BuildInterfaces.PullRequest>;
+    getRelatedWorkItemsForCommits(project: string, providerName: string, commits: string[], repositoryId?: string, serviceEndpointId?: string, top?: number): Promise<BuildInterfaces.SourceRelatedWorkItem[]>;
+    getRelatedWorkItemsForPullRequest(project: string, providerName: string, pullRequestId: string, repositoryId?: string, serviceEndpointId?: string, top?: number): Promise<BuildInterfaces.SourceRelatedWorkItem[]>;
     getBuildReport(project: string, buildId: number, type?: string): Promise<BuildInterfaces.BuildReportMetadata>;
     getBuildReportHtmlContent(project: string, buildId: number, type?: string): Promise<NodeJS.ReadableStream>;
-    listRepositories(project: string, providerName: string, serviceEndpointId?: string, repository?: string): Promise<BuildInterfaces.SourceRepository[]>;
+    listRepositories(project: string, providerName: string, serviceEndpointId?: string, repository?: string, resultSet?: BuildInterfaces.ResultSet, pageResults?: boolean, continuationToken?: string): Promise<BuildInterfaces.SourceRepositories>;
+    authorizeDefinitionResources(resources: BuildInterfaces.DefinitionResourceReference[], project: string, definitionId: number): Promise<BuildInterfaces.DefinitionResourceReference[]>;
+    getDefinitionResources(project: string, definitionId: number): Promise<BuildInterfaces.DefinitionResourceReference[]>;
     getResourceUsage(): Promise<BuildInterfaces.BuildResourceUsage>;
     getDefinitionRevisions(project: string, definitionId: number): Promise<BuildInterfaces.BuildDefinitionRevision[]>;
-    getBuildSettings(): Promise<BuildInterfaces.BuildSettings>;
-    updateBuildSettings(settings: BuildInterfaces.BuildSettings): Promise<BuildInterfaces.BuildSettings>;
+    getBuildSettings(project?: string): Promise<BuildInterfaces.BuildSettings>;
+    updateBuildSettings(settings: BuildInterfaces.BuildSettings, project?: string): Promise<BuildInterfaces.BuildSettings>;
     listSourceProviders(project: string): Promise<BuildInterfaces.SourceProviderAttributes[]>;
+    getStatusBadge(project: string, definition: string, branchName?: string, stageName?: string, jobName?: string, configuration?: string, label?: string): Promise<string>;
     addBuildTag(project: string, buildId: number, tag: string): Promise<string[]>;
     addBuildTags(tags: string[], project: string, buildId: number): Promise<string[]>;
     deleteBuildTag(project: string, buildId: number, tag: string): Promise<string[]>;
@@ -79,7 +91,10 @@ export interface IBuildApi extends basem.ClientApiBase {
     getTemplate(project: string, templateId: string): Promise<BuildInterfaces.BuildDefinitionTemplate>;
     getTemplates(project: string): Promise<BuildInterfaces.BuildDefinitionTemplate[]>;
     saveTemplate(template: BuildInterfaces.BuildDefinitionTemplate, project: string, templateId: string): Promise<BuildInterfaces.BuildDefinitionTemplate>;
+    getTicketedArtifactContentZip(customHeaders: any, buildId: number, projectId: string, artifactName: string, downloadTicket: String): Promise<NodeJS.ReadableStream>;
+    getTicketedLogsContentZip(customHeaders: any, buildId: number, projectId: string, downloadTicket: String): Promise<NodeJS.ReadableStream>;
     getBuildTimeline(project: string, buildId: number, timelineId?: string, changeId?: number, planId?: string): Promise<BuildInterfaces.Timeline>;
+    restoreWebhooks(triggerTypes: BuildInterfaces.DefinitionTriggerType[], project: string, providerName: string, serviceEndpointId?: string, repository?: string): Promise<void>;
     listWebhooks(project: string, providerName: string, serviceEndpointId?: string, repository?: string): Promise<BuildInterfaces.RepositoryWebhook[]>;
     getBuildWorkItemsRefs(project: string, buildId: number, top?: number): Promise<VSSInterfaces.ResourceRef[]>;
     getBuildWorkItemsRefsFromCommits(commitIds: string[], project: string, buildId: number, top?: number): Promise<VSSInterfaces.ResourceRef[]>;
@@ -114,7 +129,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.3",
+                    "5.0-preview.3",
                     "build",
                     "1db06c96-014e-44e1-ac91-90b2d4b3e984",
                     routeValues);
@@ -151,6 +166,9 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         artifactName: string,
         project?: string
         ): Promise<BuildInterfaces.BuildArtifact> {
+        if (artifactName == null) {
+            throw new TypeError('artifactName can not be null or undefined');
+        }
 
         return new Promise<BuildInterfaces.BuildArtifact>(async (resolve, reject) => {
             let routeValues: any = {
@@ -164,7 +182,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.3",
+                    "5.0-preview.3",
                     "build",
                     "1db06c96-014e-44e1-ac91-90b2d4b3e984",
                     routeValues,
@@ -202,6 +220,9 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         artifactName: string,
         project?: string
         ): Promise<NodeJS.ReadableStream> {
+        if (artifactName == null) {
+            throw new TypeError('artifactName can not be null or undefined');
+        }
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -215,7 +236,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.3",
+                    "5.0-preview.3",
                     "build",
                     "1db06c96-014e-44e1-ac91-90b2d4b3e984",
                     routeValues,
@@ -252,7 +273,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.3",
+                    "5.0-preview.3",
                     "build",
                     "1db06c96-014e-44e1-ac91-90b2d4b3e984",
                     routeValues);
@@ -270,6 +291,159 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 resolve(ret);
                 
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Gets a file from the build.
+     * 
+     * @param {number} buildId - The ID of the build.
+     * @param {string} artifactName - The name of the artifact.
+     * @param {string} fileId - The primary key for the file.
+     * @param {string} fileName - The name that the file will be set to.
+     * @param {string} project - Project ID or project name
+     */
+    public async getFile(
+        buildId: number,
+        artifactName: string,
+        fileId: string,
+        fileName: string,
+        project?: string
+        ): Promise<NodeJS.ReadableStream> {
+        if (artifactName == null) {
+            throw new TypeError('artifactName can not be null or undefined');
+        }
+        if (fileId == null) {
+            throw new TypeError('fileId can not be null or undefined');
+        }
+        if (fileName == null) {
+            throw new TypeError('fileName can not be null or undefined');
+        }
+
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId
+            };
+
+            let queryValues: any = {
+                artifactName: artifactName,
+                fileId: fileId,
+                fileName: fileName,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.0-preview.3",
+                    "build",
+                    "1db06c96-014e-44e1-ac91-90b2d4b3e984",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Gets the list of attachments of a specific type that are associated with a build.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} buildId - The ID of the build.
+     * @param {string} type - The type of attachment.
+     */
+    public async getAttachments(
+        project: string,
+        buildId: number,
+        type: string
+        ): Promise<BuildInterfaces.Attachment[]> {
+
+        return new Promise<BuildInterfaces.Attachment[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId,
+                type: type
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.0-preview.1",
+                    "build",
+                    "f2192269-89fa-4f94-baf6-8fb128c55159",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<BuildInterfaces.Attachment[]>;
+                res = await this.rest.get<BuildInterfaces.Attachment[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Gets a specific attachment.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} buildId - The ID of the build.
+     * @param {string} timelineId - The ID of the timeline.
+     * @param {string} recordId - The ID of the timeline record.
+     * @param {string} type - The type of the attachment.
+     * @param {string} name - The name of the attachment.
+     */
+    public async getAttachment(
+        project: string,
+        buildId: number,
+        timelineId: string,
+        recordId: string,
+        type: string,
+        name: string
+        ): Promise<NodeJS.ReadableStream> {
+
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId,
+                timelineId: timelineId,
+                recordId: recordId,
+                type: type,
+                name: name
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.0-preview.1",
+                    "build",
+                    "af5122d3-3438-485e-a25a-2dbbfde84ee6",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
             }
             catch (err) {
                 reject(err);
@@ -302,7 +476,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "de6a4df8-22cd-44ee-af2d-39f6aa7a4261",
                     routeValues,
@@ -356,7 +530,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "build",
                     "e05d4403-9b81-4244-8763-20fde28d1976",
                     routeValues,
@@ -410,7 +584,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "build",
                     "21b3b9ce-fad5-4567-9ad0-80679794e003",
                     routeValues,
@@ -464,7 +638,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "build",
                     "21b3b9ce-fad5-4567-9ad0-80679794e003",
                     routeValues,
@@ -509,7 +683,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.3",
+                    "5.0-preview.4",
                     "build",
                     "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
                     routeValues);
@@ -535,11 +709,11 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets a build.
+     * Gets a build
      * 
-     * @param {number} buildId - The ID of the build.
+     * @param {number} buildId
      * @param {string} project - Project ID or project name
-     * @param {string} propertyFilters - A comma-delimited list of properties to include in the results.
+     * @param {string} propertyFilters
      */
     public async getBuild(
         buildId: number,
@@ -559,7 +733,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.3",
+                    "5.0-preview.4",
                     "build",
                     "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
                     routeValues,
@@ -664,7 +838,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.3",
+                    "5.0-preview.4",
                     "build",
                     "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
                     routeValues,
@@ -697,12 +871,14 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
      * @param {string} project - Project ID or project name
      * @param {boolean} ignoreWarnings
      * @param {string} checkInTicket
+     * @param {number} sourceBuildId
      */
     public async queueBuild(
         build: BuildInterfaces.Build,
         project?: string,
         ignoreWarnings?: boolean,
-        checkInTicket?: string
+        checkInTicket?: string,
+        sourceBuildId?: number
         ): Promise<BuildInterfaces.Build> {
 
         return new Promise<BuildInterfaces.Build>(async (resolve, reject) => {
@@ -713,11 +889,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             let queryValues: any = {
                 ignoreWarnings: ignoreWarnings,
                 checkInTicket: checkInTicket,
+                sourceBuildId: sourceBuildId,
             };
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.3",
+                    "5.0-preview.4",
                     "build",
                     "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
                     routeValues,
@@ -749,11 +926,13 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
      * @param {BuildInterfaces.Build} build - The build.
      * @param {number} buildId - The ID of the build.
      * @param {string} project - Project ID or project name
+     * @param {boolean} retry
      */
     public async updateBuild(
         build: BuildInterfaces.Build,
         buildId: number,
-        project?: string
+        project?: string,
+        retry?: boolean
         ): Promise<BuildInterfaces.Build> {
 
         return new Promise<BuildInterfaces.Build>(async (resolve, reject) => {
@@ -762,12 +941,17 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 buildId: buildId
             };
 
+            let queryValues: any = {
+                retry: retry,
+            };
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.3",
+                    "5.0-preview.4",
                     "build",
                     "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
-                    routeValues);
+                    routeValues,
+                    queryValues);
 
                 let url: string = verData.requestUrl;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
@@ -807,7 +991,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.3",
+                    "5.0-preview.4",
                     "build",
                     "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
                     routeValues);
@@ -833,12 +1017,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets the changes associated with a build.
+     * Gets the changes associated with a build
      * 
      * @param {string} project - Project ID or project name
-     * @param {number} buildId - The build ID.
+     * @param {number} buildId
      * @param {string} continuationToken
-     * @param {number} top - The maximum number of changes to return.
+     * @param {number} top - The maximum number of changes to return
      * @param {boolean} includeSourceChange
      */
     public async getBuildChanges(
@@ -863,7 +1047,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "54572c7b-bbd3-45d4-80dc-28be08941620",
                     routeValues,
@@ -917,7 +1101,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "f10f0ea5-18a1-43ec-a8fb-2042c7be9b43",
                     routeValues,
@@ -959,7 +1143,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "fcac1932-2ee1-437f-9b6f-7f696be858f6",
                     routeValues);
@@ -1003,7 +1187,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "fcac1932-2ee1-437f-9b6f-7f696be858f6",
                     routeValues,
@@ -1056,7 +1240,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.6",
+                    "5.0-preview.6",
                     "build",
                     "dbeaf647-6167-421a-bda9-c9327b25e2e6",
                     routeValues,
@@ -1101,7 +1285,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.6",
+                    "5.0-preview.6",
                     "build",
                     "dbeaf647-6167-421a-bda9-c9327b25e2e6",
                     routeValues);
@@ -1160,7 +1344,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.6",
+                    "5.0-preview.6",
                     "build",
                     "dbeaf647-6167-421a-bda9-c9327b25e2e6",
                     routeValues,
@@ -1204,6 +1388,8 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
      * @param {boolean} includeAllProperties - Indicates whether the full definitions should be returned. By default, shallow representations of the definitions are returned.
      * @param {boolean} includeLatestBuilds - Indicates whether to return the latest and latest completed builds for this definition.
      * @param {string} taskIdFilter - If specified, filters to definitions that use the specified task.
+     * @param {number} processType - If specified, filters to definitions with the given process type.
+     * @param {string} yamlFilename - If specified, filters to YAML definitions that match the given filename.
      */
     public async getDefinitions(
         project?: string,
@@ -1220,7 +1406,9 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         notBuiltAfter?: Date,
         includeAllProperties?: boolean,
         includeLatestBuilds?: boolean,
-        taskIdFilter?: string
+        taskIdFilter?: string,
+        processType?: number,
+        yamlFilename?: string
         ): Promise<BuildInterfaces.BuildDefinitionReference[]> {
 
         return new Promise<BuildInterfaces.BuildDefinitionReference[]>(async (resolve, reject) => {
@@ -1243,11 +1431,13 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 includeAllProperties: includeAllProperties,
                 includeLatestBuilds: includeLatestBuilds,
                 taskIdFilter: taskIdFilter,
+                processType: processType,
+                yamlFilename: yamlFilename,
             };
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.6",
+                    "5.0-preview.6",
                     "build",
                     "dbeaf647-6167-421a-bda9-c9327b25e2e6",
                     routeValues,
@@ -1263,6 +1453,60 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let ret = this.formatResponse(res.result,
                                               BuildInterfaces.TypeInfo.BuildDefinitionReference,
                                               true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Restores a deleted definition
+     * 
+     * @param {number} definitionId - The identifier of the definition to restore.
+     * @param {boolean} deleted - When false, restores a deleted definition.
+     * @param {string} project - Project ID or project name
+     */
+    public async restoreDefinition(
+        definitionId: number,
+        deleted: boolean,
+        project?: string
+        ): Promise<BuildInterfaces.BuildDefinition> {
+        if (deleted == null) {
+            throw new TypeError('deleted can not be null or undefined');
+        }
+
+        return new Promise<BuildInterfaces.BuildDefinition>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId
+            };
+
+            let queryValues: any = {
+                deleted: deleted,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.0-preview.6",
+                    "build",
+                    "dbeaf647-6167-421a-bda9-c9327b25e2e6",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<BuildInterfaces.BuildDefinition>;
+                res = await this.rest.update<BuildInterfaces.BuildDefinition>(url, null, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.BuildDefinition,
+                                              false);
 
                 resolve(ret);
                 
@@ -1303,7 +1547,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.6",
+                    "5.0-preview.6",
                     "build",
                     "dbeaf647-6167-421a-bda9-c9327b25e2e6",
                     routeValues,
@@ -1322,6 +1566,58 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 resolve(ret);
                 
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Gets the contents of a file in the given source code repository.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} providerName - The name of the source provider.
+     * @param {string} serviceEndpointId - If specified, the ID of the service endpoint to query. Can only be omitted for providers that do not use service endpoints, e.g. TFVC or TFGit.
+     * @param {string} repository - If specified, the vendor-specific identifier or the name of the repository to get branches. Can only be omitted for providers that do not support multiple repositories.
+     * @param {string} commitOrBranch - The identifier of the commit or branch from which a file's contents are retrieved.
+     * @param {string} path - The path to the file to retrieve, relative to the root of the repository.
+     */
+    public async getFileContents(
+        project: string,
+        providerName: string,
+        serviceEndpointId?: string,
+        repository?: string,
+        commitOrBranch?: string,
+        path?: string
+        ): Promise<NodeJS.ReadableStream> {
+
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                providerName: providerName
+            };
+
+            let queryValues: any = {
+                serviceEndpointId: serviceEndpointId,
+                repository: repository,
+                commitOrBranch: commitOrBranch,
+                path: path,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.0-preview.1",
+                    "build",
+                    "29d12225-b1d9-425f-b668-6c594a981313",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("text/plain", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
             }
             catch (err) {
                 reject(err);
@@ -1350,7 +1646,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "build",
                     "a906531b-d2da-4f55-bda7-f3e676cc50d9",
                     routeValues);
@@ -1394,7 +1690,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "build",
                     "a906531b-d2da-4f55-bda7-f3e676cc50d9",
                     routeValues);
@@ -1444,7 +1740,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "build",
                     "a906531b-d2da-4f55-bda7-f3e676cc50d9",
                     routeValues,
@@ -1491,7 +1787,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "build",
                     "a906531b-d2da-4f55-bda7-f3e676cc50d9",
                     routeValues);
@@ -1505,6 +1801,57 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let ret = this.formatResponse(res.result,
                                               BuildInterfaces.TypeInfo.Folder,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Gets the latest build for a definition, optionally scoped to a specific branch.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} definition - definition name with optional leading folder path, or the definition id
+     * @param {string} branchName - optional parameter that indicates the specific branch to use
+     */
+    public async getLatestBuild(
+        project: string,
+        definition: string,
+        branchName?: string
+        ): Promise<BuildInterfaces.Build> {
+
+        return new Promise<BuildInterfaces.Build>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                definition: definition
+            };
+
+            let queryValues: any = {
+                branchName: branchName,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.0-preview.1",
+                    "build",
+                    "54481611-01f4-47f3-998f-160da0f0c229",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<BuildInterfaces.Build>;
+                res = await this.rest.get<BuildInterfaces.Build>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.Build,
                                               false);
 
                 resolve(ret);
@@ -1547,7 +1894,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "35a80daf-7f30-45fc-86e8-6b813d9c90df",
                     routeValues,
@@ -1596,7 +1943,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "35a80daf-7f30-45fc-86e8-6b813d9c90df",
                     routeValues,
@@ -1641,7 +1988,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "35a80daf-7f30-45fc-86e8-6b813d9c90df",
                     routeValues);
@@ -1685,10 +2032,59 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "35a80daf-7f30-45fc-86e8-6b813d9c90df",
                     routeValues);
+
+                let url: string = verData.requestUrl;
+                
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/zip", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Gets an individual log file for a build.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} buildId - The ID of the build.
+     * @param {number} logId - The ID of the log file.
+     * @param {number} startLine - The start line.
+     * @param {number} endLine - The end line.
+     */
+    public async getBuildLogZip(
+        project: string,
+        buildId: number,
+        logId: number,
+        startLine?: number,
+        endLine?: number
+        ): Promise<NodeJS.ReadableStream> {
+
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId,
+                logId: logId
+            };
+
+            let queryValues: any = {
+                startLine: startLine,
+                endLine: endLine,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.0-preview.2",
+                    "build",
+                    "35a80daf-7f30-45fc-86e8-6b813d9c90df",
+                    routeValues,
+                    queryValues);
 
                 let url: string = verData.requestUrl;
                 
@@ -1727,7 +2123,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "build",
                     "7433fae7-a6bc-41dc-a6e2-eef9005ce41a",
                     routeValues,
@@ -1778,7 +2174,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "build",
                     "d973b939-0ce0-4fec-91d8-da3940fa1827",
                     routeValues,
@@ -1820,7 +2216,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "591cb5a4-2d46-4f3a-a697-5cd42b6bd332",
                     routeValues);
@@ -1834,6 +2230,66 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let ret = this.formatResponse(res.result,
                                               BuildInterfaces.TypeInfo.BuildOptionDefinition,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Gets the contents of a directory in the given source code repository.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} providerName - The name of the source provider.
+     * @param {string} serviceEndpointId - If specified, the ID of the service endpoint to query. Can only be omitted for providers that do not use service endpoints, e.g. TFVC or TFGit.
+     * @param {string} repository - If specified, the vendor-specific identifier or the name of the repository to get branches. Can only be omitted for providers that do not support multiple repositories.
+     * @param {string} commitOrBranch - The identifier of the commit or branch from which a file's contents are retrieved.
+     * @param {string} path - The path contents to list, relative to the root of the repository.
+     */
+    public async getPathContents(
+        project: string,
+        providerName: string,
+        serviceEndpointId?: string,
+        repository?: string,
+        commitOrBranch?: string,
+        path?: string
+        ): Promise<BuildInterfaces.SourceRepositoryItem[]> {
+
+        return new Promise<BuildInterfaces.SourceRepositoryItem[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                providerName: providerName
+            };
+
+            let queryValues: any = {
+                serviceEndpointId: serviceEndpointId,
+                repository: repository,
+                commitOrBranch: commitOrBranch,
+                path: path,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.0-preview.1",
+                    "build",
+                    "7944d6fb-df01-4709-920a-7a189aa34037",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<BuildInterfaces.SourceRepositoryItem[]>;
+                res = await this.rest.get<BuildInterfaces.SourceRepositoryItem[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
                                               true);
 
                 resolve(ret);
@@ -1870,7 +2326,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "build",
                     "0a6312e9-0627-49b7-8083-7d74a64849c9",
                     routeValues,
@@ -1921,7 +2377,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "build",
                     "0a6312e9-0627-49b7-8083-7d74a64849c9",
                     routeValues);
@@ -1972,7 +2428,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "build",
                     "d9826ad7-2a68-46a9-a6e9-677698777895",
                     routeValues,
@@ -2023,7 +2479,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "build",
                     "d9826ad7-2a68-46a9-a6e9-677698777895",
                     routeValues);
@@ -2039,6 +2495,189 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let ret = this.formatResponse(res.result,
                                               null,
                                               false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Gets a pull request object from source provider.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} providerName - The name of the source provider.
+     * @param {string} pullRequestId - Vendor-specific id of the pull request.
+     * @param {string} repositoryId - Vendor-specific identifier or the name of the repository that contains the pull request.
+     * @param {string} serviceEndpointId - If specified, the ID of the service endpoint to query. Can only be omitted for providers that do not use service endpoints, e.g. TFVC or TFGit.
+     */
+    public async getPullRequest(
+        project: string,
+        providerName: string,
+        pullRequestId: string,
+        repositoryId?: string,
+        serviceEndpointId?: string
+        ): Promise<BuildInterfaces.PullRequest> {
+
+        return new Promise<BuildInterfaces.PullRequest>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                providerName: providerName,
+                pullRequestId: pullRequestId
+            };
+
+            let queryValues: any = {
+                repositoryId: repositoryId,
+                serviceEndpointId: serviceEndpointId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.0-preview.1",
+                    "build",
+                    "d8763ec7-9ff0-4fb4-b2b2-9d757906ff14",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<BuildInterfaces.PullRequest>;
+                res = await this.rest.get<BuildInterfaces.PullRequest>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Gets a list of related work items for a list of commits.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} providerName - The name of the source provider.
+     * @param {string[]} commits - The comma separated list of vendor-specific identifiers of commits/check-ins.
+     * @param {string} repositoryId - If specified, the vendor-specific identifier or the name of the repository that contains the commits or the pull request.
+     * @param {string} serviceEndpointId - If specified, the ID of the service endpoint to query. Can only be omitted for providers that do not use service endpoints, e.g. TFVC or TFGit.
+     * @param {number} top - Integer specifying the maximum number of work items to return.
+     */
+    public async getRelatedWorkItemsForCommits(
+        project: string,
+        providerName: string,
+        commits: string[],
+        repositoryId?: string,
+        serviceEndpointId?: string,
+        top?: number
+        ): Promise<BuildInterfaces.SourceRelatedWorkItem[]> {
+        if (commits == null) {
+            throw new TypeError('commits can not be null or undefined');
+        }
+
+        return new Promise<BuildInterfaces.SourceRelatedWorkItem[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                providerName: providerName
+            };
+
+            let queryValues: any = {
+                commits: commits && commits.join(","),
+                repositoryId: repositoryId,
+                serviceEndpointId: serviceEndpointId,
+                '$top': top,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.0-preview.1",
+                    "build",
+                    "caca4f48-db96-4935-9b76-71de7d9d69dc",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<BuildInterfaces.SourceRelatedWorkItem[]>;
+                res = await this.rest.get<BuildInterfaces.SourceRelatedWorkItem[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Gets a list of related work items for a particular Pull Request.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} providerName - The name of the source provider.
+     * @param {string} pullRequestId - The vendor-specific identifier of a Pull Request object.
+     * @param {string} repositoryId - If specified, the vendor-specific identifier or the name of the repository that contains the commits or the pull request.
+     * @param {string} serviceEndpointId - If specified, the ID of the service endpoint to query. Can only be omitted for providers that do not use service endpoints, e.g. TFVC or TFGit.
+     * @param {number} top - Integer specifying the maximum number of work items to return.
+     */
+    public async getRelatedWorkItemsForPullRequest(
+        project: string,
+        providerName: string,
+        pullRequestId: string,
+        repositoryId?: string,
+        serviceEndpointId?: string,
+        top?: number
+        ): Promise<BuildInterfaces.SourceRelatedWorkItem[]> {
+        if (pullRequestId == null) {
+            throw new TypeError('pullRequestId can not be null or undefined');
+        }
+
+        return new Promise<BuildInterfaces.SourceRelatedWorkItem[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                providerName: providerName
+            };
+
+            let queryValues: any = {
+                pullRequestId: pullRequestId,
+                repositoryId: repositoryId,
+                serviceEndpointId: serviceEndpointId,
+                '$top': top,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.0-preview.1",
+                    "build",
+                    "caca4f48-db96-4935-9b76-71de7d9d69dc",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<BuildInterfaces.SourceRelatedWorkItem[]>;
+                res = await this.rest.get<BuildInterfaces.SourceRelatedWorkItem[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
 
                 resolve(ret);
                 
@@ -2074,7 +2713,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "45bcaa88-67e1-4042-a035-56d3b4a7d44c",
                     routeValues,
@@ -2125,7 +2764,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "45bcaa88-67e1-4042-a035-56d3b4a7d44c",
                     routeValues,
@@ -2150,15 +2789,21 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
      * @param {string} providerName - The name of the source provider.
      * @param {string} serviceEndpointId - If specified, the ID of the service endpoint to query. Can only be omitted for providers that do not use service endpoints, e.g. TFVC or TFGit.
      * @param {string} repository - If specified, the vendor-specific identifier or the name of a single repository to get.
+     * @param {BuildInterfaces.ResultSet} resultSet - 'top' for the repositories most relevant for the endpoint. If not set, all repositories are returned. Ignored if 'repository' is set.
+     * @param {boolean} pageResults - If set to true, this will limit the set of results and will return a continuation token to continue the query.
+     * @param {string} continuationToken - When paging results, this is a continuation token, returned by a previous call to this method, that can be used to return the next set of repositories.
      */
     public async listRepositories(
         project: string,
         providerName: string,
         serviceEndpointId?: string,
-        repository?: string
-        ): Promise<BuildInterfaces.SourceRepository[]> {
+        repository?: string,
+        resultSet?: BuildInterfaces.ResultSet,
+        pageResults?: boolean,
+        continuationToken?: string
+        ): Promise<BuildInterfaces.SourceRepositories> {
 
-        return new Promise<BuildInterfaces.SourceRepository[]>(async (resolve, reject) => {
+        return new Promise<BuildInterfaces.SourceRepositories>(async (resolve, reject) => {
             let routeValues: any = {
                 project: project,
                 providerName: providerName
@@ -2167,11 +2812,14 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             let queryValues: any = {
                 serviceEndpointId: serviceEndpointId,
                 repository: repository,
+                resultSet: resultSet,
+                pageResults: pageResults,
+                continuationToken: continuationToken,
             };
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "build",
                     "d44d1680-f978-4834-9b93-8c6e132329c9",
                     routeValues,
@@ -2181,8 +2829,94 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
-                let res: restm.IRestResponse<BuildInterfaces.SourceRepository[]>;
-                res = await this.rest.get<BuildInterfaces.SourceRepository[]>(url, options);
+                let res: restm.IRestResponse<BuildInterfaces.SourceRepositories>;
+                res = await this.rest.get<BuildInterfaces.SourceRepositories>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {BuildInterfaces.DefinitionResourceReference[]} resources
+     * @param {string} project - Project ID or project name
+     * @param {number} definitionId
+     */
+    public async authorizeDefinitionResources(
+        resources: BuildInterfaces.DefinitionResourceReference[],
+        project: string,
+        definitionId: number
+        ): Promise<BuildInterfaces.DefinitionResourceReference[]> {
+
+        return new Promise<BuildInterfaces.DefinitionResourceReference[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.0-preview.1",
+                    "build",
+                    "ea623316-1967-45eb-89ab-e9e6110cf2d6",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<BuildInterfaces.DefinitionResourceReference[]>;
+                res = await this.rest.update<BuildInterfaces.DefinitionResourceReference[]>(url, resources, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number} definitionId
+     */
+    public async getDefinitionResources(
+        project: string,
+        definitionId: number
+        ): Promise<BuildInterfaces.DefinitionResourceReference[]> {
+
+        return new Promise<BuildInterfaces.DefinitionResourceReference[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.0-preview.1",
+                    "build",
+                    "ea623316-1967-45eb-89ab-e9e6110cf2d6",
+                    routeValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<BuildInterfaces.DefinitionResourceReference[]>;
+                res = await this.rest.get<BuildInterfaces.DefinitionResourceReference[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
@@ -2210,7 +2944,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "3813d06c-9e36-4ea1-aac3-61a485d60e3d",
                     routeValues);
@@ -2254,7 +2988,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "7c116775-52e5-453e-8c5d-914d9762d8c4",
                     routeValues);
@@ -2282,17 +3016,20 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     /**
      * Gets the build settings.
      * 
+     * @param {string} project - Project ID or project name
      */
     public async getBuildSettings(
+        project?: string
         ): Promise<BuildInterfaces.BuildSettings> {
 
         return new Promise<BuildInterfaces.BuildSettings>(async (resolve, reject) => {
             let routeValues: any = {
+                project: project
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "build",
                     "aa8c1c9c-ef8b-474a-b8c4-785c7b191d0d",
                     routeValues);
@@ -2321,18 +3058,21 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
      * Updates the build settings.
      * 
      * @param {BuildInterfaces.BuildSettings} settings - The new settings.
+     * @param {string} project - Project ID or project name
      */
     public async updateBuildSettings(
-        settings: BuildInterfaces.BuildSettings
+        settings: BuildInterfaces.BuildSettings,
+        project?: string
         ): Promise<BuildInterfaces.BuildSettings> {
 
         return new Promise<BuildInterfaces.BuildSettings>(async (resolve, reject) => {
             let routeValues: any = {
+                project: project
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "build",
                     "aa8c1c9c-ef8b-474a-b8c4-785c7b191d0d",
                     routeValues);
@@ -2373,7 +3113,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "build",
                     "3ce81729-954f-423d-a581-9fea01d25186",
                     routeValues);
@@ -2388,6 +3128,69 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let ret = this.formatResponse(res.result,
                                               BuildInterfaces.TypeInfo.SourceProviderAttributes,
                                               true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * <p>Gets the build status for a definition, optionally scoped to a specific branch, stage, job, and configuration.</p> <p>If there are more than one, then it is required to pass in a stageName value when specifying a jobName, and the same rule then applies for both if passing a configuration parameter.</p>
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} definition - Either the definition name with optional leading folder path, or the definition id.
+     * @param {string} branchName - Only consider the most recent build for this branch.
+     * @param {string} stageName - Use this stage within the pipeline to render the status.
+     * @param {string} jobName - Use this job within a stage of the pipeline to render the status.
+     * @param {string} configuration - Use this job configuration to render the status
+     * @param {string} label - Replaces the default text on the left side of the badge.
+     */
+    public async getStatusBadge(
+        project: string,
+        definition: string,
+        branchName?: string,
+        stageName?: string,
+        jobName?: string,
+        configuration?: string,
+        label?: string
+        ): Promise<string> {
+
+        return new Promise<string>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                definition: definition
+            };
+
+            let queryValues: any = {
+                branchName: branchName,
+                stageName: stageName,
+                jobName: jobName,
+                configuration: configuration,
+                label: label,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.0-preview.1",
+                    "build",
+                    "07acfdce-4757-4439-b422-ddd13a2fcc10",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<string>;
+                res = await this.rest.get<string>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
 
                 resolve(ret);
                 
@@ -2420,7 +3223,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "6e6114b2-8161-44c8-8f6c-c5505782427f",
                     routeValues);
@@ -2430,7 +3233,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
-                res = await this.rest.replace<string[]>(url, options);
+                res = await this.rest.replace<string[]>(url, null, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
@@ -2466,7 +3269,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "6e6114b2-8161-44c8-8f6c-c5505782427f",
                     routeValues);
@@ -2513,7 +3316,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "6e6114b2-8161-44c8-8f6c-c5505782427f",
                     routeValues);
@@ -2557,7 +3360,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "6e6114b2-8161-44c8-8f6c-c5505782427f",
                     routeValues);
@@ -2604,7 +3407,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "cb894432-134a-4d31-a839-83beceaace4b",
                     routeValues);
@@ -2614,7 +3417,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<string[]>;
-                res = await this.rest.replace<string[]>(url, options);
+                res = await this.rest.replace<string[]>(url, null, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
@@ -2650,7 +3453,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "cb894432-134a-4d31-a839-83beceaace4b",
                     routeValues);
@@ -2697,7 +3500,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "cb894432-134a-4d31-a839-83beceaace4b",
                     routeValues);
@@ -2747,7 +3550,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "cb894432-134a-4d31-a839-83beceaace4b",
                     routeValues,
@@ -2789,7 +3592,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "d84ac5c6-edc7-43d5-adc9-1b34be5dea09",
                     routeValues);
@@ -2833,7 +3636,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.3",
+                    "5.0-preview.3",
                     "build",
                     "e884571e-7f92-4d6a-9274-3f5649900835",
                     routeValues);
@@ -2877,7 +3680,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.3",
+                    "5.0-preview.3",
                     "build",
                     "e884571e-7f92-4d6a-9274-3f5649900835",
                     routeValues);
@@ -2918,7 +3721,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.3",
+                    "5.0-preview.3",
                     "build",
                     "e884571e-7f92-4d6a-9274-3f5649900835",
                     routeValues);
@@ -2964,7 +3767,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.3",
+                    "5.0-preview.3",
                     "build",
                     "e884571e-7f92-4d6a-9274-3f5649900835",
                     routeValues);
@@ -2990,13 +3793,117 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets a timeline for a build.
+     * Gets a Zip file of the artifact with the given name for a build.
+     * 
+     * @param {number} buildId - The ID of the build.
+     * @param {string} projectId - The project ID.
+     * @param {string} artifactName - The name of the artifact.
+     * @param {String} downloadTicket - A valid ticket that gives permission to download artifacts
+     */
+    public async getTicketedArtifactContentZip(
+        customHeaders: any,
+        buildId: number,
+        projectId: string,
+        artifactName: string,
+        downloadTicket: String
+        ): Promise<NodeJS.ReadableStream> {
+        if (projectId == null) {
+            throw new TypeError('projectId can not be null or undefined');
+        }
+        if (artifactName == null) {
+            throw new TypeError('artifactName can not be null or undefined');
+        }
+
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                buildId: buildId
+            };
+
+            let queryValues: any = {
+                projectId: projectId,
+                artifactName: artifactName,
+            };
+            
+            customHeaders = customHeaders || {};
+            customHeaders["X-VSS-DownloadTicket"] = "downloadTicket";
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.0-preview.1",
+                    "build",
+                    "731b7e7a-0b6c-4912-af75-de04fe4899db",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/zip", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Gets a Zip file of the logs for a given build.
+     * 
+     * @param {number} buildId - The ID of the build.
+     * @param {string} projectId - The project ID.
+     * @param {String} downloadTicket - A valid ticket that gives permission to download the logs.
+     */
+    public async getTicketedLogsContentZip(
+        customHeaders: any,
+        buildId: number,
+        projectId: string,
+        downloadTicket: String
+        ): Promise<NodeJS.ReadableStream> {
+        if (projectId == null) {
+            throw new TypeError('projectId can not be null or undefined');
+        }
+
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                buildId: buildId
+            };
+
+            let queryValues: any = {
+                projectId: projectId,
+            };
+            
+            customHeaders = customHeaders || {};
+            customHeaders["X-VSS-DownloadTicket"] = "downloadTicket";
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.0-preview.1",
+                    "build",
+                    "917890d1-a6b5-432d-832a-6afcf6bb0734",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/zip", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Gets details for a build
      * 
      * @param {string} project - Project ID or project name
-     * @param {number} buildId - The ID of the build.
-     * @param {string} timelineId - The ID of the timeline. If not specified, uses the main timeline for the plan.
+     * @param {number} buildId
+     * @param {string} timelineId
      * @param {number} changeId
-     * @param {string} planId - The ID of the plan. If not specified, uses the primary plan for the build.
+     * @param {string} planId
      */
     public async getBuildTimeline(
         project: string,
@@ -3020,7 +3927,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "8baac422-4c6e-4de5-8532-db96d92acffa",
                     routeValues,
@@ -3035,6 +3942,62 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let ret = this.formatResponse(res.result,
                                               BuildInterfaces.TypeInfo.Timeline,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Recreates the webhooks for the specified triggers in the given source code repository.
+     * 
+     * @param {BuildInterfaces.DefinitionTriggerType[]} triggerTypes - The types of triggers to restore webhooks for.
+     * @param {string} project - Project ID or project name
+     * @param {string} providerName - The name of the source provider.
+     * @param {string} serviceEndpointId - If specified, the ID of the service endpoint to query. Can only be omitted for providers that do not use service endpoints, e.g. TFVC or TFGit.
+     * @param {string} repository - If specified, the vendor-specific identifier or the name of the repository to get webhooks. Can only be omitted for providers that do not support multiple repositories.
+     */
+    public async restoreWebhooks(
+        triggerTypes: BuildInterfaces.DefinitionTriggerType[],
+        project: string,
+        providerName: string,
+        serviceEndpointId?: string,
+        repository?: string
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                providerName: providerName
+            };
+
+            let queryValues: any = {
+                serviceEndpointId: serviceEndpointId,
+                repository: repository,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.0-preview.1",
+                    "build",
+                    "793bceb8-9736-4030-bd2f-fb3ce6d6b478",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.create<void>(url, triggerTypes, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
                                               false);
 
                 resolve(ret);
@@ -3074,7 +4037,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "build",
                     "8f20ff82-9498-4812-9f6e-9c01bdc50e99",
                     routeValues,
@@ -3088,7 +4051,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 res = await this.rest.get<BuildInterfaces.RepositoryWebhook[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
+                                              BuildInterfaces.TypeInfo.RepositoryWebhook,
                                               true);
 
                 resolve(ret);
@@ -3125,7 +4088,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "5a21f5d2-5642-47e4-a0bd-1356e6731bee",
                     routeValues,
@@ -3178,7 +4141,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "5a21f5d2-5642-47e4-a0bd-1356e6731bee",
                     routeValues,
@@ -3218,6 +4181,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         toBuildId: number,
         top?: number
         ): Promise<VSSInterfaces.ResourceRef[]> {
+        if (fromBuildId == null) {
+            throw new TypeError('fromBuildId can not be null or undefined');
+        }
+        if (toBuildId == null) {
+            throw new TypeError('toBuildId can not be null or undefined');
+        }
 
         return new Promise<VSSInterfaces.ResourceRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3232,7 +4201,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "build",
                     "52ba8915-5518-42e3-a4bb-b0182d159e2d",
                     routeValues,

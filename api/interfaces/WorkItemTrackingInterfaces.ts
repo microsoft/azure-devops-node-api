@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
@@ -17,11 +17,11 @@ export interface AccountMyWorkResult {
     /**
      * True, when length of WorkItemDetails is same as the limit
      */
-    querySizeLimitExceeded: boolean;
+    querySizeLimitExceeded?: boolean;
     /**
      * WorkItem Details
      */
-    workItemDetails: AccountWorkWorkItemModel[];
+    workItemDetails?: AccountWorkWorkItemModel[];
 }
 
 /**
@@ -31,43 +31,43 @@ export interface AccountRecentActivityWorkItemModel {
     /**
      * Date of the last Activity by the user
      */
-    activityDate: Date;
+    activityDate?: Date;
     /**
      * Type of the activity
      */
-    activityType: WorkItemRecentActivityType;
+    activityType?: WorkItemRecentActivityType;
     /**
      * Assigned To
      */
-    assignedTo: string;
+    assignedTo?: string;
     /**
      * Last changed date of the work item
      */
-    changedDate: Date;
+    changedDate?: Date;
     /**
      * Work Item Id
      */
-    id: number;
+    id?: number;
     /**
      * TeamFoundationId of the user this activity belongs to
      */
-    identityId: string;
+    identityId?: string;
     /**
      * State of the work item
      */
-    state: string;
+    state?: string;
     /**
      * Team project the work item belongs to
      */
-    teamProject: string;
+    teamProject?: string;
     /**
      * Title of the work item
      */
-    title: string;
+    title?: string;
     /**
      * Type of Work Item
      */
-    workItemType: string;
+    workItemType?: string;
 }
 
 /**
@@ -77,41 +77,41 @@ export interface AccountRecentMentionWorkItemModel {
     /**
      * Assigned To
      */
-    assignedTo: string;
+    assignedTo?: string;
     /**
      * Work Item Id
      */
-    id: number;
+    id?: number;
     /**
      * Lastest date that the user were mentioned
      */
-    mentionedDateField: Date;
+    mentionedDateField?: Date;
     /**
      * State of the work item
      */
-    state: string;
+    state?: string;
     /**
      * Team project the work item belongs to
      */
-    teamProject: string;
+    teamProject?: string;
     /**
      * Title of the work item
      */
-    title: string;
+    title?: string;
     /**
      * Type of Work Item
      */
-    workItemType: string;
+    workItemType?: string;
 }
 
 export interface AccountWorkWorkItemModel {
-    assignedTo: string;
-    changedDate: Date;
-    id: number;
-    state: string;
-    teamProject: string;
-    title: string;
-    workItemType: string;
+    assignedTo?: string;
+    changedDate?: Date;
+    id?: number;
+    state?: string;
+    teamProject?: string;
+    title?: string;
+    workItemType?: string;
 }
 
 /**
@@ -121,7 +121,7 @@ export interface ArtifactUriQuery {
     /**
      * List of artifact URIs to use for querying work items.
      */
-    artifactUris: string[];
+    artifactUris?: string[];
 }
 
 /**
@@ -131,12 +131,20 @@ export interface ArtifactUriQueryResult {
     /**
      * A Dictionary that maps a list of work item references to the given list of artifact URI.
      */
-    artifactUrisQueryResult: { [key: string] : WorkItemReference[]; };
+    artifactUrisQueryResult?: { [key: string] : WorkItemReference[]; };
 }
 
 export interface AttachmentReference {
-    id: string;
-    url: string;
+    id?: string;
+    url?: string;
+}
+
+/**
+ * Flag to control error policy in a batch classification nodes get request.
+ */
+export enum ClassificationNodesErrorPolicy {
+    Fail = 1,
+    Omit = 2,
 }
 
 export enum CommentSortOrder {
@@ -151,7 +159,7 @@ export interface FieldDependentRule extends WorkItemTrackingResource {
     /**
      * The dependent fields.
      */
-    dependentFields: WorkItemFieldReference[];
+    dependentFields?: WorkItemFieldReference[];
 }
 
 /**
@@ -161,19 +169,19 @@ export interface FieldsToEvaluate {
     /**
      * List of fields to evaluate.
      */
-    fields: string[];
+    fields?: string[];
     /**
      * Updated field values to evaluate.
      */
-    fieldUpdates: { [key: string] : any; };
+    fieldUpdates?: { [key: string] : any; };
     /**
      * Initial field values.
      */
-    fieldValues: { [key: string] : any; };
+    fieldValues?: { [key: string] : any; };
     /**
      * URL of the work item type for which the rules need to be executed.
      */
-    rulesFrom: string[];
+    rulesFrom?: string[];
 }
 
 /**
@@ -282,11 +290,11 @@ export enum GetFieldsExpand {
  * Describes a reference to an identity.
  */
 export interface IdentityReference extends VSSInterfaces.IdentityRef {
-    id: string;
+    id?: string;
     /**
      * Legacy back-compat property. This has been the WIT specific value from Constants. Will be hidden (but exists) on the client unless they are targeting the newest version
      */
-    name: string;
+    name?: string;
 }
 
 /**
@@ -296,20 +304,15 @@ export interface Link {
     /**
      * Collection of link attributes.
      */
-    attributes: { [key: string] : any; };
+    attributes?: { [key: string] : any; };
     /**
      * Relation type.
      */
-    rel: string;
+    rel?: string;
     /**
      * Link url.
      */
-    url: string;
-}
-
-export enum LinkChangeType {
-    Create = 0,
-    Remove = 1,
+    url?: string;
 }
 
 /**
@@ -350,11 +353,11 @@ export interface ProjectWorkItemStateColors {
     /**
      * Project name
      */
-    projectName: string;
+    projectName?: string;
     /**
      * State colors for all work item type in a project
      */
-    workItemTypeStateColors: WorkItemTypeStateColors[];
+    workItemTypeStateColors?: WorkItemTypeStateColors[];
 }
 
 /**
@@ -372,7 +375,7 @@ export interface ProvisioningResult {
     /**
      * Details about of the provisioning import events.
      */
-    provisioningImportEvents: string[];
+    provisioningImportEvents?: string[];
 }
 
 /**
@@ -408,118 +411,118 @@ export interface QueryHierarchyItem extends WorkItemTrackingResource {
     /**
      * The child query items inside a query folder.
      */
-    children: QueryHierarchyItem[];
+    children?: QueryHierarchyItem[];
     /**
      * The clauses for a flat query.
      */
-    clauses: WorkItemQueryClause;
+    clauses?: WorkItemQueryClause;
     /**
      * The columns of the query.
      */
-    columns: WorkItemFieldReference[];
+    columns?: WorkItemFieldReference[];
     /**
      * The identity who created the query item.
      */
-    createdBy: IdentityReference;
+    createdBy?: IdentityReference;
     /**
      * When the query item was created.
      */
-    createdDate: Date;
+    createdDate?: Date;
     /**
      * The link query mode.
      */
-    filterOptions: LinkQueryMode;
+    filterOptions?: LinkQueryMode;
     /**
      * If this is a query folder, indicates if it contains any children.
      */
-    hasChildren: boolean;
+    hasChildren?: boolean;
     /**
      * The id of the query item.
      */
-    id: string;
+    id?: string;
     /**
-     * Indicates if this query item is deleted.
+     * Indicates if this query item is deleted. Setting this to false on a deleted query item will undelete it. Undeleting a query or folder will not bring back the permission changes that were previously applied to it.
      */
-    isDeleted: boolean;
+    isDeleted?: boolean;
     /**
      * Indicates if this is a query folder or a query.
      */
-    isFolder: boolean;
+    isFolder?: boolean;
     /**
      * Indicates if the WIQL of this query is invalid. This could be due to invalid syntax or a no longer valid area/iteration path.
      */
-    isInvalidSyntax: boolean;
+    isInvalidSyntax?: boolean;
     /**
      * Indicates if this query item is public or private.
      */
-    isPublic: boolean;
+    isPublic?: boolean;
     /**
      * The identity who last ran the query.
      */
-    lastExecutedBy: IdentityReference;
+    lastExecutedBy?: IdentityReference;
     /**
      * When the query was last run.
      */
-    lastExecutedDate: Date;
+    lastExecutedDate?: Date;
     /**
      * The identity who last modified the query item.
      */
-    lastModifiedBy: IdentityReference;
+    lastModifiedBy?: IdentityReference;
     /**
      * When the query item was last modified.
      */
-    lastModifiedDate: Date;
+    lastModifiedDate?: Date;
     /**
      * The link query clause.
      */
-    linkClauses: WorkItemQueryClause;
+    linkClauses?: WorkItemQueryClause;
     /**
      * The name of the query item.
      */
-    name: string;
+    name?: string;
     /**
      * The path of the query item.
      */
-    path: string;
+    path?: string;
     /**
      * The recursion option for use in a tree query.
      */
-    queryRecursionOption: QueryRecursionOption;
+    queryRecursionOption?: QueryRecursionOption;
     /**
      * The type of query.
      */
-    queryType: QueryType;
+    queryType?: QueryType;
     /**
      * The sort columns of the query.
      */
-    sortColumns: WorkItemQuerySortColumn[];
+    sortColumns?: WorkItemQuerySortColumn[];
     /**
      * The source clauses in a tree or one-hop link query.
      */
-    sourceClauses: WorkItemQueryClause;
+    sourceClauses?: WorkItemQueryClause;
     /**
      * The target clauses in a tree or one-hop link query.
      */
-    targetClauses: WorkItemQueryClause;
+    targetClauses?: WorkItemQueryClause;
     /**
      * The WIQL text of the query
      */
-    wiql: string;
+    wiql?: string;
 }
 
 export interface QueryHierarchyItemsResult {
     /**
      * The count of items.
      */
-    count: number;
+    count?: number;
     /**
      * Indicates if the max return limit was hit but there are still more items
      */
-    hasMore: boolean;
+    hasMore?: boolean;
     /**
      * The list of items
      */
-    value: QueryHierarchyItem[];
+    value?: QueryHierarchyItem[];
 }
 
 export enum QueryOption {
@@ -579,19 +582,7 @@ export enum ReportingRevisionsExpand {
     Fields = 1,
 }
 
-export interface ReportingWorkItemLink {
-    changedBy: VSSInterfaces.IdentityRef;
-    changedDate: Date;
-    changedOperation: LinkChangeType;
-    comment: string;
-    isActive: boolean;
-    linkType: string;
-    rel: string;
-    sourceId: number;
-    targetId: number;
-}
-
-export interface ReportingWorkItemLinksBatch extends StreamedBatch<ReportingWorkItemLink> {
+export interface ReportingWorkItemLinksBatch extends StreamedBatch<WorkItemRelation> {
 }
 
 export interface ReportingWorkItemRevisionsBatch extends StreamedBatch<WorkItem> {
@@ -601,34 +592,34 @@ export interface ReportingWorkItemRevisionsFilter {
     /**
      * A list of fields to return in work item revisions. Omit this parameter to get all reportable fields.
      */
-    fields: string[];
+    fields?: string[];
     /**
      * Include deleted work item in the result.
      */
-    includeDeleted: boolean;
+    includeDeleted?: boolean;
     /**
      * Return an identity reference instead of a string value for identity fields.
      */
-    includeIdentityRef: boolean;
+    includeIdentityRef?: boolean;
     /**
      * Include only the latest version of a work item, skipping over all previous revisions of the work item.
      */
-    includeLatestOnly: boolean;
+    includeLatestOnly?: boolean;
     /**
      * Include tag reference instead of string value for System.Tags field
      */
-    includeTagRef: boolean;
+    includeTagRef?: boolean;
     /**
      * A list of types to filter the results to specific work item types. Omit this parameter to get work item revisions of all work item types.
      */
-    types: string[];
+    types?: string[];
 }
 
 export interface StreamedBatch<T> {
-    continuationToken: string;
-    isLastBatch: boolean;
-    nextLink: string;
-    values: T[];
+    continuationToken?: string;
+    isLastBatch?: boolean;
+    nextLink?: string;
+    values?: T[];
 }
 
 /**
@@ -668,7 +659,7 @@ export interface Wiql {
     /**
      * The text of the WIQL query
      */
-    query: string;
+    query?: string;
 }
 
 /**
@@ -678,15 +669,15 @@ export interface WorkArtifactLink {
     /**
      * Target artifact type.
      */
-    artifactType: string;
+    artifactType?: string;
     /**
      * Outbound link type.
      */
-    linkType: string;
+    linkType?: string;
     /**
      * Target tool type.
      */
-    toolType: string;
+    toolType?: string;
 }
 
 /**
@@ -696,19 +687,45 @@ export interface WorkItem extends WorkItemTrackingResource {
     /**
      * Map of field and values for the work item.
      */
-    fields: { [key: string] : any; };
+    fields?: { [key: string] : any; };
     /**
      * The work item ID.
      */
-    id: number;
+    id?: number;
     /**
      * Relations of the work item.
      */
-    relations: WorkItemRelation[];
+    relations?: WorkItemRelation[];
     /**
      * Revision number of the work item.
      */
-    rev: number;
+    rev?: number;
+}
+
+/**
+ * Describes a request to get a set of work items
+ */
+export interface WorkItemBatchGetRequest {
+    /**
+     * The expand parameters for work item attributes. Possible options are { None, Relations, Fields, Links, All }
+     */
+    $expand?: WorkItemExpand;
+    /**
+     * AsOf UTC date time string
+     */
+    asOf?: Date;
+    /**
+     * The flag to control error policy in a bulk get work items request. Possible options are {Fail, Omit}.
+     */
+    errorPolicy?: WorkItemErrorPolicy;
+    /**
+     * The requested fields
+     */
+    fields?: string[];
+    /**
+     * The requested work item ids
+     */
+    ids?: number[];
 }
 
 /**
@@ -718,60 +735,75 @@ export interface WorkItemClassificationNode extends WorkItemTrackingResource {
     /**
      * Dictionary that has node attributes like start/finish date for iteration nodes.
      */
-    attributes: { [key: string] : any; };
+    attributes?: { [key: string] : any; };
     /**
      * List of child nodes fetched.
      */
-    children: WorkItemClassificationNode[];
+    children?: WorkItemClassificationNode[];
     /**
      * Flag that indicates if the classification node has any child nodes.
      */
-    hasChildren: boolean;
+    hasChildren?: boolean;
     /**
      * Integer ID of the classification node.
      */
-    id: number;
+    id?: number;
     /**
      * GUID ID of the classification node.
      */
-    identifier: string;
+    identifier?: string;
     /**
      * Name of the classification node.
      */
-    name: string;
+    name?: string;
     /**
      * Node structure type.
      */
-    structureType: TreeNodeStructureType;
-}
-
-export interface WorkItemComment extends WorkItemTrackingResource {
-    revisedBy: IdentityReference;
-    revisedDate: Date;
-    revision: number;
-    text: string;
+    structureType?: TreeNodeStructureType;
 }
 
 /**
- * Comment results container.
+ * Comment on Work Item
  */
-export interface WorkItemComments {
+export interface WorkItemComment extends WorkItemTrackingResource {
+    /**
+     * Identity of user who added the comment.
+     */
+    revisedBy?: IdentityReference;
+    /**
+     * The date of comment.
+     */
+    revisedDate?: Date;
+    /**
+     * The work item revision number.
+     */
+    revision?: number;
+    /**
+     * The text of the comment.
+     */
+    text?: string;
+}
+
+/**
+ * Collection of comments
+ */
+export interface WorkItemComments extends WorkItemTrackingResource {
     /**
      * Comments collection.
      */
-    comments: WorkItemComment[];
+    comments?: WorkItemComment[];
     /**
      * The count of comments.
      */
-    count: number;
+    count?: number;
     /**
      * Count of comments from the revision.
      */
-    fromRevisionCount: number;
+    fromRevisionCount?: number;
     /**
      * Total count of comments.
      */
-    totalCount: number;
+    totalCount?: number;
 }
 
 /**
@@ -781,7 +813,7 @@ export interface WorkItemDelete extends WorkItemDeleteReference {
     /**
      * The work item object that was deleted.
      */
-    resource: WorkItem;
+    resource?: WorkItem;
 }
 
 /**
@@ -791,39 +823,53 @@ export interface WorkItemDeleteReference {
     /**
      * The HTTP status code for work item operation in a batch request.
      */
-    code: number;
+    code?: number;
     /**
      * The user who deleted the work item type.
      */
-    deletedBy: string;
+    deletedBy?: string;
     /**
      * The work item deletion date.
      */
-    deletedDate: string;
+    deletedDate?: string;
     /**
      * Work item ID.
      */
-    id: number;
+    id?: number;
     /**
      * The exception message for work item operation in a batch request.
      */
-    message: string;
+    message?: string;
     /**
      * Name or title of the work item.
      */
-    name: string;
+    name?: string;
     /**
      * Parent project of the deleted work item.
      */
-    project: string;
+    project?: string;
     /**
      * Type of work item.
      */
-    type: string;
+    type?: string;
     /**
      * REST API URL of the resource
      */
-    url: string;
+    url?: string;
+}
+
+/**
+ * Shallow Reference to a deleted work item.
+ */
+export interface WorkItemDeleteShallowReference {
+    /**
+     * Work item ID.
+     */
+    id?: number;
+    /**
+     * REST API URL of the resource
+     */
+    url?: string;
 }
 
 /**
@@ -833,7 +879,7 @@ export interface WorkItemDeleteUpdate {
     /**
      * Sets a value indicating whether this work item is deleted.
      */
-    isDeleted: boolean;
+    isDeleted?: boolean;
 }
 
 /**
@@ -860,45 +906,57 @@ export enum WorkItemExpand {
  */
 export interface WorkItemField extends WorkItemTrackingResource {
     /**
+     * Indicates whether the field is sortable in server queries.
+     */
+    canSortBy?: boolean;
+    /**
      * The description of the field.
      */
-    description: string;
+    description?: string;
     /**
      * Indicates whether this field is an identity field.
      */
-    isIdentity: boolean;
+    isIdentity?: boolean;
     /**
      * Indicates whether this instance is picklist.
      */
-    isPicklist: boolean;
+    isPicklist?: boolean;
     /**
      * Indicates whether this instance is a suggested picklist .
      */
-    isPicklistSuggested: boolean;
+    isPicklistSuggested?: boolean;
+    /**
+     * Indicates whether the field can be queried in the server.
+     */
+    isQueryable?: boolean;
     /**
      * The name of the field.
      */
-    name: string;
+    name?: string;
+    /**
+     * If this field is picklist, the identifier of the picklist associated, otherwise null
+     */
+    picklistId?: string;
     /**
      * Indicates whether the field is [read only].
      */
-    readOnly: boolean;
+    readOnly?: boolean;
     /**
      * The reference name of the field.
      */
-    referenceName: string;
+    referenceName?: string;
     /**
      * The supported operations on this field.
      */
-    supportedOperations: WorkItemFieldOperation[];
+    supportedOperations?: WorkItemFieldOperation[];
     /**
      * The type of the field.
      */
-    type: FieldType;
+    type?: FieldType;
     /**
      * The usage of the field.
      */
-    usage: FieldUsage;
+    usage?: FieldUsage;
 }
 
 /**
@@ -908,11 +966,11 @@ export interface WorkItemFieldOperation {
     /**
      * Name of the operation.
      */
-    name: string;
+    name?: string;
     /**
      * Reference name of the operation.
      */
-    referenceName: string;
+    referenceName?: string;
 }
 
 /**
@@ -922,15 +980,15 @@ export interface WorkItemFieldReference {
     /**
      * The name of the field.
      */
-    name: string;
+    name?: string;
     /**
      * The reference name of the field.
      */
-    referenceName: string;
+    referenceName?: string;
     /**
      * The REST URL of the resource.
      */
-    url: string;
+    url?: string;
 }
 
 /**
@@ -940,18 +998,18 @@ export interface WorkItemFieldUpdate {
     /**
      * The new value of the field.
      */
-    newValue: any;
+    newValue?: any;
     /**
      * The old value of the field.
      */
-    oldValue: any;
+    oldValue?: any;
 }
 
 export interface WorkItemHistory extends WorkItemTrackingResource {
-    rev: number;
-    revisedBy: IdentityReference;
-    revisedDate: Date;
-    value: string;
+    rev?: number;
+    revisedBy?: IdentityReference;
+    revisedDate?: Date;
+    value?: string;
 }
 
 /**
@@ -961,11 +1019,11 @@ export interface WorkItemIcon {
     /**
      * The identifier of the icon.
      */
-    id: string;
+    id?: string;
     /**
      * The REST URL of the resource.
      */
-    url: string;
+    url?: string;
 }
 
 /**
@@ -975,15 +1033,15 @@ export interface WorkItemLink {
     /**
      * The type of link.
      */
-    rel: string;
+    rel?: string;
     /**
      * The source work item.
      */
-    source: WorkItemReference;
+    source?: WorkItemReference;
     /**
      * The target work item.
      */
-    target: WorkItemReference;
+    target?: WorkItemReference;
 }
 
 /**
@@ -993,19 +1051,19 @@ export interface WorkItemNextStateOnTransition {
     /**
      * Error code if there is no next state transition possible.
      */
-    errorCode: string;
+    errorCode?: string;
     /**
      * Work item ID.
      */
-    id: number;
+    id?: number;
     /**
      * Error message if there is no next state transition possible.
      */
-    message: string;
+    message?: string;
     /**
      * Name of the next state on transition.
      */
-    stateOnTransition: string;
+    stateOnTransition?: string;
 }
 
 /**
@@ -1015,31 +1073,31 @@ export interface WorkItemQueryClause {
     /**
      * Child clauses if the current clause is a logical operator
      */
-    clauses: WorkItemQueryClause[];
+    clauses?: WorkItemQueryClause[];
     /**
      * Field associated with condition
      */
-    field: WorkItemFieldReference;
+    field?: WorkItemFieldReference;
     /**
      * Right side of the condition when a field to field comparison
      */
-    fieldValue: WorkItemFieldReference;
+    fieldValue?: WorkItemFieldReference;
     /**
      * Determines if this is a field to field comparison
      */
-    isFieldValue: boolean;
+    isFieldValue?: boolean;
     /**
      * Logical operator separating the condition clause
      */
-    logicalOperator: LogicalOperation;
+    logicalOperator?: LogicalOperation;
     /**
      * The field operator
      */
-    operator: WorkItemFieldOperation;
+    operator?: WorkItemFieldOperation;
     /**
      * Right side of the condition when a field to value comparison
      */
-    value: string;
+    value?: string;
 }
 
 /**
@@ -1049,31 +1107,31 @@ export interface WorkItemQueryResult {
     /**
      * The date the query was run in the context of.
      */
-    asOf: Date;
+    asOf?: Date;
     /**
      * The columns of the query.
      */
-    columns: WorkItemFieldReference[];
+    columns?: WorkItemFieldReference[];
     /**
      * The result type
      */
-    queryResultType: QueryResultType;
+    queryResultType?: QueryResultType;
     /**
      * The type of the query
      */
-    queryType: QueryType;
+    queryType?: QueryType;
     /**
      * The sort columns of the query.
      */
-    sortColumns: WorkItemQuerySortColumn[];
+    sortColumns?: WorkItemQuerySortColumn[];
     /**
      * The work item links returned by the query.
      */
-    workItemRelations: WorkItemLink[];
+    workItemRelations?: WorkItemLink[];
     /**
      * The work items returned by the query.
      */
-    workItems: WorkItemReference[];
+    workItems?: WorkItemReference[];
 }
 
 /**
@@ -1083,11 +1141,11 @@ export interface WorkItemQuerySortColumn {
     /**
      * The direction to sort by.
      */
-    descending: boolean;
+    descending?: boolean;
     /**
      * A work item field.
      */
-    field: WorkItemFieldReference;
+    field?: WorkItemFieldReference;
 }
 
 /**
@@ -1107,11 +1165,11 @@ export interface WorkItemReference {
     /**
      * Work item ID.
      */
-    id: number;
+    id?: number;
     /**
      * REST API URL of the resource
      */
-    url: string;
+    url?: string;
 }
 
 export interface WorkItemRelation extends Link {
@@ -1124,7 +1182,7 @@ export interface WorkItemRelationType extends WorkItemTrackingReference {
     /**
      * The collection of relation type attributes.
      */
-    attributes: { [key: string] : any; };
+    attributes?: { [key: string] : any; };
 }
 
 /**
@@ -1134,15 +1192,15 @@ export interface WorkItemRelationUpdates {
     /**
      * List of newly added relations.
      */
-    added: WorkItemRelation[];
+    added?: WorkItemRelation[];
     /**
      * List of removed relations.
      */
-    removed: WorkItemRelation[];
+    removed?: WorkItemRelation[];
     /**
      * List of updated relations.
      */
-    updated: WorkItemRelation[];
+    updated?: WorkItemRelation[];
 }
 
 /**
@@ -1152,15 +1210,15 @@ export interface WorkItemStateColor {
     /**
      * Category of state
      */
-    category: string;
+    category?: string;
     /**
      * Color value
      */
-    color: string;
+    color?: string;
     /**
      * Work item type state name
      */
-    name: string;
+    name?: string;
 }
 
 /**
@@ -1170,11 +1228,11 @@ export interface WorkItemStateTransition {
     /**
      * Gets a list of actions needed to transition to that state.
      */
-    actions: string[];
+    actions?: string[];
     /**
      * Name of the next state.
      */
-    to: string;
+    to?: string;
 }
 
 /**
@@ -1194,11 +1252,11 @@ export interface WorkItemTemplateReference extends WorkItemTrackingResource {
     /**
      * The description of the work item template.
      */
-    description: string;
+    description?: string;
     /**
      * The identifier of the work item template.
      */
-    id: string;
+    id?: string;
     /**
      * The name of the work item template.
      */
@@ -1213,11 +1271,11 @@ export interface WorkItemTrackingReference extends WorkItemTrackingResource {
     /**
      * The name.
      */
-    name: string;
+    name?: string;
     /**
      * The reference name.
      */
-    referenceName: string;
+    referenceName?: string;
 }
 
 /**
@@ -1227,14 +1285,14 @@ export interface WorkItemTrackingResource extends WorkItemTrackingResourceRefere
     /**
      * Link references to related REST resources.
      */
-    _links: any;
+    _links?: any;
 }
 
 /**
  * Base class for work item tracking resource references.
  */
 export interface WorkItemTrackingResourceReference {
-    url: string;
+    url?: string;
 }
 
 /**
@@ -1244,43 +1302,43 @@ export interface WorkItemType extends WorkItemTrackingResource {
     /**
      * The color.
      */
-    color: string;
+    color?: string;
     /**
      * The description of the work item type.
      */
-    description: string;
+    description?: string;
     /**
      * The fields that exist on the work item type.
      */
-    fieldInstances: WorkItemTypeFieldInstance[];
+    fieldInstances?: WorkItemTypeFieldInstance[];
     /**
      * The fields that exist on the work item type.
      */
-    fields: WorkItemTypeFieldInstance[];
+    fields?: WorkItemTypeFieldInstance[];
     /**
      * The icon of the work item type.
      */
-    icon: WorkItemIcon;
+    icon?: WorkItemIcon;
     /**
      * True if work item type is disabled
      */
-    isDisabled: boolean;
+    isDisabled?: boolean;
     /**
      * Gets the name of the work item type.
      */
-    name: string;
+    name?: string;
     /**
      * The reference name of the work item type.
      */
-    referenceName: string;
+    referenceName?: string;
     /**
      * Gets the various state transition mappings in the work item type.
      */
-    transitions: { [key: string] : WorkItemStateTransition[]; };
+    transitions?: { [key: string] : WorkItemStateTransition[]; };
     /**
      * The XML form.
      */
-    xmlForm: string;
+    xmlForm?: string;
 }
 
 /**
@@ -1290,19 +1348,19 @@ export interface WorkItemTypeCategory extends WorkItemTrackingResource {
     /**
      * Gets or sets the default type of the work item.
      */
-    defaultWorkItemType: WorkItemTypeReference;
+    defaultWorkItemType?: WorkItemTypeReference;
     /**
      * The name of the category.
      */
-    name: string;
+    name?: string;
     /**
      * The reference name of the category.
      */
-    referenceName: string;
+    referenceName?: string;
     /**
      * The work item types that belond to the category.
      */
-    workItemTypes: WorkItemTypeReference[];
+    workItemTypes?: WorkItemTypeReference[];
 }
 
 /**
@@ -1312,15 +1370,15 @@ export interface WorkItemTypeColor {
     /**
      * Gets or sets the color of the primary.
      */
-    primaryColor: string;
+    primaryColor?: string;
     /**
      * Gets or sets the color of the secondary.
      */
-    secondaryColor: string;
+    secondaryColor?: string;
     /**
      * The name of the work item type.
      */
-    workItemTypeName: string;
+    workItemTypeName?: string;
 }
 
 /**
@@ -1330,37 +1388,47 @@ export interface WorkItemTypeColorAndIcon {
     /**
      * The color of the work item type in hex format.
      */
-    color: string;
+    color?: string;
     /**
      * Tthe work item type icon.
      */
-    icon: string;
+    icon?: string;
     /**
      * The name of the work item type.
      */
-    workItemTypeName: string;
+    workItemTypeName?: string;
 }
 
 /**
  * Field instance of a work item type.
  */
-export interface WorkItemTypeFieldInstance extends WorkItemFieldReference {
+export interface WorkItemTypeFieldInstance extends WorkItemTypeFieldInstanceBase {
     /**
      * The list of field allowed values.
      */
-    allowedValues: string[];
+    allowedValues?: string[];
+    /**
+     * Represents the default value of the field.
+     */
+    defaultValue?: string;
+}
+
+/**
+ * Base field instance for workItemType fields.
+ */
+export interface WorkItemTypeFieldInstanceBase extends WorkItemFieldReference {
     /**
      * Indicates whether field value is always required.
      */
-    alwaysRequired: boolean;
+    alwaysRequired?: boolean;
     /**
      * The list of dependent fields.
      */
-    dependentFields: WorkItemFieldReference[];
+    dependentFields?: WorkItemFieldReference[];
     /**
      * Gets the help text for the field.
      */
-    helpText: string;
+    helpText?: string;
 }
 
 /**
@@ -1386,13 +1454,27 @@ export enum WorkItemTypeFieldsExpandLevel {
 }
 
 /**
+ * Field Instance of a workItemype with detailed references.
+ */
+export interface WorkItemTypeFieldWithReferences extends WorkItemTypeFieldInstanceBase {
+    /**
+     * The list of field allowed values.
+     */
+    allowedValues?: any[];
+    /**
+     * Represents the default value of the field.
+     */
+    defaultValue?: any;
+}
+
+/**
  * Reference to a work item type.
  */
 export interface WorkItemTypeReference extends WorkItemTrackingResourceReference {
     /**
      * Name of the work item type.
      */
-    name: string;
+    name?: string;
 }
 
 /**
@@ -1402,11 +1484,11 @@ export interface WorkItemTypeStateColors {
     /**
      * Work item type state colors
      */
-    stateColors: WorkItemStateColor[];
+    stateColors?: WorkItemStateColor[];
     /**
      * Work item type name
      */
-    workItemTypeName: string;
+    workItemTypeName?: string;
 }
 
 /**
@@ -1416,7 +1498,7 @@ export interface WorkItemTypeTemplate {
     /**
      * XML template in string format.
      */
-    template: string;
+    template?: string;
 }
 
 /**
@@ -1426,19 +1508,19 @@ export interface WorkItemTypeTemplateUpdateModel {
     /**
      * Describes the type of the action for the update request.
      */
-    actionType: ProvisioningActionType;
+    actionType?: ProvisioningActionType;
     /**
      * Methodology to which the template belongs, eg. Agile, Scrum, CMMI.
      */
-    methodology: string;
+    methodology?: string;
     /**
      * String representation of the work item type template.
      */
-    template: string;
+    template?: string;
     /**
      * The type of the template described in the request body.
      */
-    templateType: TemplateType;
+    templateType?: TemplateType;
 }
 
 /**
@@ -1448,31 +1530,31 @@ export interface WorkItemUpdate extends WorkItemTrackingResource {
     /**
      * List of updates to fields.
      */
-    fields: { [key: string] : WorkItemFieldUpdate; };
+    fields?: { [key: string] : WorkItemFieldUpdate; };
     /**
      * ID of update.
      */
-    id: number;
+    id?: number;
     /**
      * List of updates to relations.
      */
-    relations: WorkItemRelationUpdates;
+    relations?: WorkItemRelationUpdates;
     /**
      * The revision number of work item update.
      */
-    rev: number;
+    rev?: number;
     /**
      * Identity for the work item update.
      */
-    revisedBy: IdentityReference;
+    revisedBy?: IdentityReference;
     /**
      * The work item updates revision date.
      */
-    revisedDate: Date;
+    revisedDate?: Date;
     /**
      * The work item ID.
      */
-    workItemId: number;
+    workItemId?: number;
 }
 
 export var TypeInfo = {
@@ -1483,6 +1565,12 @@ export var TypeInfo = {
     AccountRecentMentionWorkItemModel: <any>{
     },
     AccountWorkWorkItemModel: <any>{
+    },
+    ClassificationNodesErrorPolicy: {
+        enumValues: {
+            "fail": 1,
+            "omit": 2
+        }
     },
     CommentSortOrder: {
         enumValues: {
@@ -1521,12 +1609,6 @@ export var TypeInfo = {
         enumValues: {
             "none": 0,
             "extensionFields": 1
-        }
-    },
-    LinkChangeType: {
-        enumValues: {
-            "create": 0,
-            "remove": 1
         }
     },
     LinkQueryMode: {
@@ -1598,8 +1680,6 @@ export var TypeInfo = {
             "fields": 1
         }
     },
-    ReportingWorkItemLink: <any>{
-    },
     TemplateType: {
         enumValues: {
             "workItemType": 0,
@@ -1617,6 +1697,8 @@ export var TypeInfo = {
             "areas": 0,
             "iterations": 1
         }
+    },
+    WorkItemBatchGetRequest: <any>{
     },
     WorkItemClassificationNode: <any>{
     },
@@ -1744,12 +1826,15 @@ TypeInfo.QueryHierarchyItemsResult.fields = {
     }
 };
 
-TypeInfo.ReportingWorkItemLink.fields = {
-    changedDate: {
+TypeInfo.WorkItemBatchGetRequest.fields = {
+    $expand: {
+        enumType: TypeInfo.WorkItemExpand
+    },
+    asOf: {
         isDate: true,
     },
-    changedOperation: {
-        enumType: TypeInfo.LinkChangeType
+    errorPolicy: {
+        enumType: TypeInfo.WorkItemErrorPolicy
     }
 };
 

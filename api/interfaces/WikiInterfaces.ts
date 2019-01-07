@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
@@ -20,15 +20,15 @@ export interface Wiki extends WikiCreateParameters {
     /**
      * The head commit associated with the git repository backing up the wiki.
      */
-    headCommit: string;
+    headCommit?: string;
     /**
      * The ID of the wiki which is same as the ID of the Git repository that it is backed by.
      */
-    id: string;
+    id?: string;
     /**
      * The git repository that backs up the wiki.
      */
-    repository: GitInterfaces.GitRepository;
+    repository?: GitInterfaces.GitRepository;
 }
 
 /**
@@ -38,11 +38,11 @@ export interface WikiAttachment {
     /**
      * Name of the wiki attachment file.
      */
-    name: string;
+    name?: string;
     /**
      * Path of the wiki attachment file.
      */
-    path: string;
+    path?: string;
 }
 
 /**
@@ -52,11 +52,11 @@ export interface WikiAttachmentResponse {
     /**
      * Defines properties for wiki attachment file.
      */
-    attachment: WikiAttachment;
+    attachment?: WikiAttachment;
     /**
      * Contains the list of ETag values from the response header of the attachments API call. The first item in the list contains the version of the wiki attachment.
      */
-    eTag: string[];
+    eTag?: string[];
 }
 
 /**
@@ -66,23 +66,23 @@ export interface WikiCreateBaseParameters {
     /**
      * Folder path inside repository which is shown as Wiki. Not required for ProjectWiki type.
      */
-    mappedPath: string;
+    mappedPath?: string;
     /**
      * Wiki name.
      */
-    name: string;
+    name?: string;
     /**
      * ID of the project in which the wiki is to be created.
      */
-    projectId: string;
+    projectId?: string;
     /**
      * ID of the git repository that backs up the wiki. Not required for ProjectWiki type.
      */
-    repositoryId: string;
+    repositoryId?: string;
     /**
      * Type of the wiki.
      */
-    type: WikiType;
+    type?: WikiType;
 }
 
 /**
@@ -92,11 +92,11 @@ export interface WikiCreateParameters {
     /**
      * Wiki name.
      */
-    name: string;
+    name?: string;
     /**
      * ID of the project in which the wiki is to be created.
      */
-    projectId: string;
+    projectId?: string;
 }
 
 /**
@@ -106,7 +106,7 @@ export interface WikiCreateParametersV2 extends WikiCreateBaseParameters {
     /**
      * Version of the wiki. Not required for ProjectWiki type.
      */
-    version: GitInterfaces.GitVersionDescriptor;
+    version?: GitInterfaces.GitVersionDescriptor;
 }
 
 /**
@@ -116,35 +116,35 @@ export interface WikiPage extends WikiPageCreateOrUpdateParameters {
     /**
      * Path of the git item corresponding to the wiki page stored in the backing Git repository.
      */
-    gitItemPath: string;
+    gitItemPath?: string;
     /**
      * True if a page is non-conforming, i.e. 1) if the name doesn't match page naming standards. 2) if the page does not have a valid entry in the appropriate order file.
      */
-    isNonConformant: boolean;
+    isNonConformant?: boolean;
     /**
      * True if this page has subpages under its path.
      */
-    isParentPage: boolean;
+    isParentPage?: boolean;
     /**
      * Order of the wiki page, relative to other pages in the same hierarchy level.
      */
-    order: number;
+    order?: number;
     /**
      * Path of the wiki page.
      */
-    path: string;
+    path?: string;
     /**
      * Remote web url to the wiki page.
      */
-    remoteUrl: string;
+    remoteUrl?: string;
     /**
      * List of subpages of the current page.
      */
-    subPages: WikiPage[];
+    subPages?: WikiPage[];
     /**
      * REST url for this wiki page.
      */
-    url: string;
+    url?: string;
 }
 
 /**
@@ -154,7 +154,7 @@ export interface WikiPageCreateOrUpdateParameters {
     /**
      * Content of the wiki page.
      */
-    content: string;
+    content?: string;
 }
 
 /**
@@ -164,7 +164,7 @@ export interface WikiPageMove extends WikiPageMoveParameters {
     /**
      * Resultant page of this page move operation.
      */
-    page: WikiPage;
+    page?: WikiPage;
 }
 
 /**
@@ -174,15 +174,15 @@ export interface WikiPageMoveParameters {
     /**
      * New order of the wiki page.
      */
-    newOrder: number;
+    newOrder?: number;
     /**
      * New path of the wiki page.
      */
-    newPath: string;
+    newPath?: string;
     /**
      * Current path of the wiki page.
      */
-    path: string;
+    path?: string;
 }
 
 /**
@@ -192,11 +192,11 @@ export interface WikiPageMoveResponse {
     /**
      * Contains the list of ETag values from the response header of the page move API call. The first item in the list contains the version of the wiki page subject to page move.
      */
-    eTag: string[];
+    eTag?: string[];
     /**
      * Defines properties for wiki page move.
      */
-    pageMove: WikiPageMove;
+    pageMove?: WikiPageMove;
 }
 
 /**
@@ -206,11 +206,11 @@ export interface WikiPageResponse {
     /**
      * Contains the list of ETag values from the response header of the pages API call. The first item in the list contains the version of the wiki page.
      */
-    eTag: string[];
+    eTag?: string[];
     /**
      * Defines properties for wiki page.
      */
-    page: WikiPage;
+    page?: WikiPage;
 }
 
 /**
@@ -220,15 +220,15 @@ export interface WikiPageViewStats {
     /**
      * Wiki page view count.
      */
-    count: number;
+    count?: number;
     /**
      * Wiki page last viewed time.
      */
-    lastViewedTime: Date;
+    lastViewedTime?: Date;
     /**
      * Wiki page path.
      */
-    path: string;
+    path?: string;
 }
 
 /**
@@ -243,15 +243,15 @@ export interface WikiUpdatedNotificationMessage {
     /**
      * Collection host Id for which the wikis are updated.
      */
-    collectionId: string;
+    collectionId?: string;
     /**
      * Project Id for which the wikis are updated.
      */
-    projectId: string;
+    projectId?: string;
     /**
      * Repository Id associated with the particular wiki which is added, updated or deleted.
      */
-    repositoryId: string;
+    repositoryId?: string;
 }
 
 /**
@@ -259,9 +259,13 @@ export interface WikiUpdatedNotificationMessage {
  */
 export interface WikiUpdateParameters {
     /**
+     * Name for wiki.
+     */
+    name?: string;
+    /**
      * Versions of the wiki.
      */
-    versions: GitInterfaces.GitVersionDescriptor[];
+    versions?: GitInterfaces.GitVersionDescriptor[];
 }
 
 /**
@@ -271,23 +275,23 @@ export interface WikiV2 extends WikiCreateBaseParameters {
     /**
      * ID of the wiki.
      */
-    id: string;
+    id?: string;
     /**
      * Properties of the wiki.
      */
-    properties: { [key: string] : string; };
+    properties?: { [key: string] : string; };
     /**
      * Remote web url to the wiki.
      */
-    remoteUrl: string;
+    remoteUrl?: string;
     /**
      * REST url for this wiki.
      */
-    url: string;
+    url?: string;
     /**
      * Versions of the wiki.
      */
-    versions: GitInterfaces.GitVersionDescriptor[];
+    versions?: GitInterfaces.GitVersionDescriptor[];
 }
 
 export var TypeInfo = {
