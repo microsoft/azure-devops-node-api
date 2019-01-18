@@ -67,7 +67,12 @@ target.samples = function() {
     run('tsc -p samples');
 
     pushd('samples');
-    run('node run.js');
+    if (process.argv[3]) {
+        run('node run.js ' + process.argv[3]);
+    }
+    else {
+        run('node run.js');
+    }
     popd();
     console.log('done');
 }
