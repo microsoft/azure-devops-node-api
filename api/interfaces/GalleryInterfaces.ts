@@ -1235,29 +1235,6 @@ export enum PublisherState {
     CertificationRevoked = 8,
 }
 
-export enum PublisherState {
-    /**
-     * No state exists for this publisher.
-     */
-    None = 0,
-    /**
-     * This state indicates that publisher has applied for Marketplace verification (via UI) and still not been certified. This state would be reset once the publisher is verified.
-     */
-    VerificationPending = 1,
-    /**
-     * This state indicates that publisher has applied for Marketplace certification (via UI) and still not been certified. This state would be reset once the publisher is certified.
-     */
-    CertificationPending = 2,
-    /**
-     * This state indicates that publisher had applied for Marketplace certification (via UI) but his/her certification got rejected. This state would be reset if and when the publisher is certified.
-     */
-    CertificationRejected = 4,
-    /**
-     * This state indicates that publisher was certified on the Marketplace, but his/her certification got revoked. This state would never be reset, even after publisher gets re-certified. It would indicate that the publisher certification was revoked at least once.
-     */
-    CertificationRevoked = 8,
-}
-
 /**
  * The core structure of a QnA item
  */
