@@ -100,9 +100,15 @@ async function runSamples(selected?: string) {
             continue;
         }
 
-        cm.banner(`Sample ${sample}`);
-        var sm = require(`./${sample}.js`);
-        await sm.run(projectId);
+        try {
+            cm.banner(`Sample ${sample}`);
+            var sm = require(`./${sample}.js`);
+            await sm.run(projectId);
+        }
+        catch (err)
+        {
+            console.log(`Sample ${sample} failed with error ${err}`);
+        }
     }
 
     cm.heading("Cleaning up project");
