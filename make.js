@@ -70,7 +70,7 @@ target.samples = function() {
     if (process.argv[3]) {
         run('node run.js ' + process.argv[3]);
     }
-    else{
+    else {
         run('node run.js');
     }
     popd();
