@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
@@ -11,10 +11,8 @@
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
 import * as restm from 'typed-rest-client/RestClient';
-import * as httpm from 'typed-rest-client/HttpClient';
 import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
-import serm = require('./Serialization');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import TfvcInterfaces = require("./interfaces/TfvcInterfaces");
 
@@ -30,11 +28,11 @@ export interface ITfvcApi extends basem.ClientApiBase {
     getChangesetWorkItems(id?: number): Promise<TfvcInterfaces.AssociatedWorkItem[]>;
     getItemsBatch(itemRequestData: TfvcInterfaces.TfvcItemRequestData, project?: string): Promise<TfvcInterfaces.TfvcItem[][]>;
     getItemsBatchZip(itemRequestData: TfvcInterfaces.TfvcItemRequestData, project?: string): Promise<NodeJS.ReadableStream>;
-    getItem(path: string, project?: string, fileName?: string, download?: boolean, scopePath?: string, recursionLevel?: TfvcInterfaces.VersionControlRecursionType, versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor): Promise<TfvcInterfaces.TfvcItem>;
-    getItemContent(path: string, project?: string, fileName?: string, download?: boolean, scopePath?: string, recursionLevel?: TfvcInterfaces.VersionControlRecursionType, versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor): Promise<NodeJS.ReadableStream>;
+    getItem(path: string, project?: string, fileName?: string, download?: boolean, scopePath?: string, recursionLevel?: TfvcInterfaces.VersionControlRecursionType, versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor, includeContent?: boolean): Promise<TfvcInterfaces.TfvcItem>;
+    getItemContent(path: string, project?: string, fileName?: string, download?: boolean, scopePath?: string, recursionLevel?: TfvcInterfaces.VersionControlRecursionType, versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor, includeContent?: boolean): Promise<NodeJS.ReadableStream>;
     getItems(project?: string, scopePath?: string, recursionLevel?: TfvcInterfaces.VersionControlRecursionType, includeLinks?: boolean, versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor): Promise<TfvcInterfaces.TfvcItem[]>;
-    getItemText(path: string, project?: string, fileName?: string, download?: boolean, scopePath?: string, recursionLevel?: TfvcInterfaces.VersionControlRecursionType, versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor): Promise<NodeJS.ReadableStream>;
-    getItemZip(path: string, project?: string, fileName?: string, download?: boolean, scopePath?: string, recursionLevel?: TfvcInterfaces.VersionControlRecursionType, versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor): Promise<NodeJS.ReadableStream>;
+    getItemText(path: string, project?: string, fileName?: string, download?: boolean, scopePath?: string, recursionLevel?: TfvcInterfaces.VersionControlRecursionType, versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor, includeContent?: boolean): Promise<NodeJS.ReadableStream>;
+    getItemZip(path: string, project?: string, fileName?: string, download?: boolean, scopePath?: string, recursionLevel?: TfvcInterfaces.VersionControlRecursionType, versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor, includeContent?: boolean): Promise<NodeJS.ReadableStream>;
     getLabelItems(labelId: string, top?: number, skip?: number): Promise<TfvcInterfaces.TfvcItem[]>;
     getLabel(labelId: string, requestData: TfvcInterfaces.TfvcLabelRequestData, project?: string): Promise<TfvcInterfaces.TfvcLabel>;
     getLabels(requestData: TfvcInterfaces.TfvcLabelRequestData, project?: string, top?: number, skip?: number): Promise<TfvcInterfaces.TfvcLabelRef[]>;
@@ -42,12 +40,15 @@ export interface ITfvcApi extends basem.ClientApiBase {
     getShelveset(shelvesetId: string, requestData?: TfvcInterfaces.TfvcShelvesetRequestData): Promise<TfvcInterfaces.TfvcShelveset>;
     getShelvesets(requestData?: TfvcInterfaces.TfvcShelvesetRequestData, top?: number, skip?: number): Promise<TfvcInterfaces.TfvcShelvesetRef[]>;
     getShelvesetWorkItems(shelvesetId: string): Promise<TfvcInterfaces.AssociatedWorkItem[]>;
+    getTfvcStatistics(project?: string, scopePath?: string): Promise<TfvcInterfaces.TfvcStatistics>;
 }
 
 export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
         super(baseUrl, handlers, 'node-Tfvc-api', options);
     }
+
+    public static readonly RESOURCE_AREA_ID = "8aa40520-446d-40e6-89f6-9c9f9ce44c48";
 
     /**
      * Get a single branch hierarchy at the given path with parents or children as specified.
@@ -63,6 +64,9 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         includeParent?: boolean,
         includeChildren?: boolean
         ): Promise<TfvcInterfaces.TfvcBranch> {
+        if (path == null) {
+            throw new TypeError('path can not be null or undefined');
+        }
 
         return new Promise<TfvcInterfaces.TfvcBranch>(async (resolve, reject) => {
             let routeValues: any = {
@@ -77,7 +81,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "tfvc",
                     "bc1f417e-239d-42e7-85e1-76e80cb2d6eb",
                     routeValues,
@@ -134,7 +138,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "tfvc",
                     "bc1f417e-239d-42e7-85e1-76e80cb2d6eb",
                     routeValues,
@@ -174,6 +178,9 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         includeDeleted?: boolean,
         includeLinks?: boolean
         ): Promise<TfvcInterfaces.TfvcBranchRef[]> {
+        if (scopePath == null) {
+            throw new TypeError('scopePath can not be null or undefined');
+        }
 
         return new Promise<TfvcInterfaces.TfvcBranchRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -188,7 +195,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "tfvc",
                     "bc1f417e-239d-42e7-85e1-76e80cb2d6eb",
                     routeValues,
@@ -239,7 +246,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "tfvc",
                     "f32b86f2-15b9-4fe6-81b1-6f8938617ee5",
                     routeValues,
@@ -283,7 +290,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.3",
+                    "5.0-preview.3",
                     "tfvc",
                     "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49",
                     routeValues);
@@ -357,7 +364,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.3",
+                    "5.0-preview.3",
                     "tfvc",
                     "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49",
                     routeValues,
@@ -417,7 +424,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.3",
+                    "5.0-preview.3",
                     "tfvc",
                     "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49",
                     routeValues,
@@ -458,7 +465,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "tfvc",
                     "b7e7c173-803c-4fea-9ec8-31ee35c5502a",
                     routeValues);
@@ -499,7 +506,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "tfvc",
                     "64ae0bea-1d71-47c9-a9e5-fe73f5ea0ff4",
                     routeValues);
@@ -542,7 +549,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "tfvc",
                     "fe6f827b-5f64-480f-b8af-1eca3b80e833",
                     routeValues);
@@ -585,7 +592,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "tfvc",
                     "fe6f827b-5f64-480f-b8af-1eca3b80e833",
                     routeValues);
@@ -611,7 +618,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
      * @param {boolean} download - If true, create a downloadable attachment.
      * @param {string} scopePath - Version control path of a folder to return multiple items.
      * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel - None (just the item), or OneLevel (contents of a folder).
-     * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
+     * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor - Version descriptor.  Default is null.
+     * @param {boolean} includeContent - Set to true to include item content when requesting json.  Default is false.
      */
     public async getItem(
         path: string,
@@ -620,8 +628,12 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         download?: boolean,
         scopePath?: string,
         recursionLevel?: TfvcInterfaces.VersionControlRecursionType,
-        versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor
+        versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor,
+        includeContent?: boolean
         ): Promise<TfvcInterfaces.TfvcItem> {
+        if (path == null) {
+            throw new TypeError('path can not be null or undefined');
+        }
 
         return new Promise<TfvcInterfaces.TfvcItem>(async (resolve, reject) => {
             let routeValues: any = {
@@ -635,11 +647,12 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 scopePath: scopePath,
                 recursionLevel: recursionLevel,
                 versionDescriptor: versionDescriptor,
+                includeContent: includeContent,
             };
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "tfvc",
                     "ba9fc436-9a38-4578-89d6-e4f3241f5040",
                     routeValues,
@@ -674,7 +687,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
      * @param {boolean} download - If true, create a downloadable attachment.
      * @param {string} scopePath - Version control path of a folder to return multiple items.
      * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel - None (just the item), or OneLevel (contents of a folder).
-     * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
+     * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor - Version descriptor.  Default is null.
+     * @param {boolean} includeContent - Set to true to include item content when requesting json.  Default is false.
      */
     public async getItemContent(
         path: string,
@@ -683,8 +697,12 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         download?: boolean,
         scopePath?: string,
         recursionLevel?: TfvcInterfaces.VersionControlRecursionType,
-        versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor
+        versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor,
+        includeContent?: boolean
         ): Promise<NodeJS.ReadableStream> {
+        if (path == null) {
+            throw new TypeError('path can not be null or undefined');
+        }
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -698,11 +716,12 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 scopePath: scopePath,
                 recursionLevel: recursionLevel,
                 versionDescriptor: versionDescriptor,
+                includeContent: includeContent,
             };
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "tfvc",
                     "ba9fc436-9a38-4578-89d6-e4f3241f5040",
                     routeValues,
@@ -751,7 +770,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "tfvc",
                     "ba9fc436-9a38-4578-89d6-e4f3241f5040",
                     routeValues,
@@ -786,7 +805,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
      * @param {boolean} download - If true, create a downloadable attachment.
      * @param {string} scopePath - Version control path of a folder to return multiple items.
      * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel - None (just the item), or OneLevel (contents of a folder).
-     * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
+     * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor - Version descriptor.  Default is null.
+     * @param {boolean} includeContent - Set to true to include item content when requesting json.  Default is false.
      */
     public async getItemText(
         path: string,
@@ -795,8 +815,12 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         download?: boolean,
         scopePath?: string,
         recursionLevel?: TfvcInterfaces.VersionControlRecursionType,
-        versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor
+        versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor,
+        includeContent?: boolean
         ): Promise<NodeJS.ReadableStream> {
+        if (path == null) {
+            throw new TypeError('path can not be null or undefined');
+        }
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -810,11 +834,12 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 scopePath: scopePath,
                 recursionLevel: recursionLevel,
                 versionDescriptor: versionDescriptor,
+                includeContent: includeContent,
             };
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "tfvc",
                     "ba9fc436-9a38-4578-89d6-e4f3241f5040",
                     routeValues,
@@ -841,7 +866,8 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
      * @param {boolean} download - If true, create a downloadable attachment.
      * @param {string} scopePath - Version control path of a folder to return multiple items.
      * @param {TfvcInterfaces.VersionControlRecursionType} recursionLevel - None (just the item), or OneLevel (contents of a folder).
-     * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor
+     * @param {TfvcInterfaces.TfvcVersionDescriptor} versionDescriptor - Version descriptor.  Default is null.
+     * @param {boolean} includeContent - Set to true to include item content when requesting json.  Default is false.
      */
     public async getItemZip(
         path: string,
@@ -850,8 +876,12 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         download?: boolean,
         scopePath?: string,
         recursionLevel?: TfvcInterfaces.VersionControlRecursionType,
-        versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor
+        versionDescriptor?: TfvcInterfaces.TfvcVersionDescriptor,
+        includeContent?: boolean
         ): Promise<NodeJS.ReadableStream> {
+        if (path == null) {
+            throw new TypeError('path can not be null or undefined');
+        }
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -865,11 +895,12 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 scopePath: scopePath,
                 recursionLevel: recursionLevel,
                 versionDescriptor: versionDescriptor,
+                includeContent: includeContent,
             };
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "tfvc",
                     "ba9fc436-9a38-4578-89d6-e4f3241f5040",
                     routeValues,
@@ -912,7 +943,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "tfvc",
                     "06166e34-de17-4b60-8cd1-23182a346fda",
                     routeValues,
@@ -950,6 +981,9 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         requestData: TfvcInterfaces.TfvcLabelRequestData,
         project?: string
         ): Promise<TfvcInterfaces.TfvcLabel> {
+        if (requestData == null) {
+            throw new TypeError('requestData can not be null or undefined');
+        }
 
         return new Promise<TfvcInterfaces.TfvcLabel>(async (resolve, reject) => {
             let routeValues: any = {
@@ -963,7 +997,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "tfvc",
                     "a5d9bd7f-b661-4d0e-b9be-d9c16affae54",
                     routeValues,
@@ -1003,6 +1037,9 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         top?: number,
         skip?: number
         ): Promise<TfvcInterfaces.TfvcLabelRef[]> {
+        if (requestData == null) {
+            throw new TypeError('requestData can not be null or undefined');
+        }
 
         return new Promise<TfvcInterfaces.TfvcLabelRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1017,7 +1054,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "tfvc",
                     "a5d9bd7f-b661-4d0e-b9be-d9c16affae54",
                     routeValues,
@@ -1055,6 +1092,9 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         top?: number,
         skip?: number
         ): Promise<TfvcInterfaces.TfvcChange[]> {
+        if (shelvesetId == null) {
+            throw new TypeError('shelvesetId can not be null or undefined');
+        }
 
         return new Promise<TfvcInterfaces.TfvcChange[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1068,7 +1108,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "tfvc",
                     "dbaf075b-0445-4c34-9e5b-82292f856522",
                     routeValues,
@@ -1104,6 +1144,9 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
         shelvesetId: string,
         requestData?: TfvcInterfaces.TfvcShelvesetRequestData
         ): Promise<TfvcInterfaces.TfvcShelveset> {
+        if (shelvesetId == null) {
+            throw new TypeError('shelvesetId can not be null or undefined');
+        }
 
         return new Promise<TfvcInterfaces.TfvcShelveset>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1116,7 +1159,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "tfvc",
                     "e36d44fb-e907-4b0a-b194-f83f1ed32ad3",
                     routeValues,
@@ -1167,7 +1210,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "tfvc",
                     "e36d44fb-e907-4b0a-b194-f83f1ed32ad3",
                     routeValues,
@@ -1201,6 +1244,9 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     public async getShelvesetWorkItems(
         shelvesetId: string
         ): Promise<TfvcInterfaces.AssociatedWorkItem[]> {
+        if (shelvesetId == null) {
+            throw new TypeError('shelvesetId can not be null or undefined');
+        }
 
         return new Promise<TfvcInterfaces.AssociatedWorkItem[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1212,7 +1258,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "tfvc",
                     "a7a0c1c1-373e-425a-b031-a519474d743d",
                     routeValues,
@@ -1228,6 +1274,54 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 let ret = this.formatResponse(res.result,
                                               null,
                                               true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Provides File Count and Uncompressed Bytes for a Collection/Project at a particular scope for TFVC.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} scopePath - '$/' for collection, '$/project' for specific project
+     */
+    public async getTfvcStatistics(
+        project?: string,
+        scopePath?: string
+        ): Promise<TfvcInterfaces.TfvcStatistics> {
+
+        return new Promise<TfvcInterfaces.TfvcStatistics>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            let queryValues: any = {
+                scopePath: scopePath,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.0-preview.1",
+                    "tfvc",
+                    "e15c74c0-3605-40e0-aed4-4cc61e549ed8",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<TfvcInterfaces.TfvcStatistics>;
+                res = await this.rest.get<TfvcInterfaces.TfvcStatistics>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
 
                 resolve(ret);
                 

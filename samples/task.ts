@@ -1,15 +1,15 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import * as stream from 'stream';
-import * as sh from 'shelljs';
+import * as fs from "fs";
+import * as path from "path";
+import * as stream from "stream";
+import * as sh from "shelljs";
 
-import * as cm from './common';
-import * as vm from 'azure-devops-node-api';
+import * as cm from "./common";
+import * as vm from "azure-devops-node-api";
 
-import * as ta from 'azure-devops-node-api/TaskAgentApi';
-import * as ti from 'azure-devops-node-api/interfaces/TaskAgentInterfaces';
+import * as ta from "azure-devops-node-api/TaskAgentApi";
+import * as ti from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 
-let sampleFilePath: string = path.join(process.cwd(), 'taskdefinition.zip');
+let sampleFilePath: string = path.join(process.cwd(), "taskdefinition.zip");
 
 export async function run() {
     try
@@ -17,12 +17,12 @@ export async function run() {
         let vsts: vm.WebApi = await cm.getWebApi();
         let vstsTask: ta.ITaskAgentApi = await vsts.getTaskAgentApi();
 
-        cm.banner('Task Samples');
+        cm.banner("Task Samples");
         let project = cm.getProject();
-        console.log('project', project);
+        console.log("project", project);
 
         // list tasks
-        cm.heading('Task Definitions');
+        cm.heading("Task Definitions");
         let tasks: ti.TaskDefinition[] = await vstsTask.getTaskDefinitions();
         console.log(`You have ${tasks.length} task definition(s)`);
 
@@ -32,7 +32,7 @@ export async function run() {
             let file: NodeJS.WritableStream = fs.createWriteStream(sampleFilePath);
             let stream = (await vstsTask.getTaskContentZip(taskDefinition.id, `${taskDefinition.version.major}.${taskDefinition.version.minor}.${taskDefinition.version.patch}`)).pipe(file);
             let promise = new Promise((resolve, reject) => {
-                stream.on('finish', () => {
+                stream.on("finish", () => {
                     resolve();
                 });
             });
@@ -46,7 +46,7 @@ export async function run() {
         s.push("test file contents");
         s.push(null);
         let name = `vstsnodeapitest${new Date().getTime()}`;
-        console.log('uploading file');
+        console.log("uploading file");
         let secureFile = await vstsTask.uploadSecureFile(null, s, project, name);
         console.log(`uploaded secure file ${secureFile.name}`);
 
@@ -58,7 +58,7 @@ export async function run() {
         sh.rm(sampleFilePath);
     }
     catch (err) {
-        console.error('Error: ' + err.stack);
+        console.error(`Error: ${err.stack}`);
     }
 
 }

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
@@ -16,55 +16,55 @@ import WorkItemTrackingInterfaces = require("../interfaces/WorkItemTrackingInter
 
 
 export interface Activity {
-    capacityPerDay: number;
-    name: string;
+    capacityPerDay?: number;
+    name?: string;
 }
 
 export interface attribute {
 }
 
 export interface BacklogColumn {
-    columnFieldReference: WorkItemTrackingInterfaces.WorkItemFieldReference;
-    width: number;
+    columnFieldReference?: WorkItemTrackingInterfaces.WorkItemFieldReference;
+    width?: number;
 }
 
 export interface BacklogConfiguration {
     /**
      * Behavior/type field mapping
      */
-    backlogFields: BacklogFields;
+    backlogFields?: BacklogFields;
     /**
      * Bugs behavior
      */
-    bugsBehavior: BugsBehavior;
+    bugsBehavior?: BugsBehavior;
     /**
      * Hidden Backlog
      */
-    hiddenBacklogs: string[];
+    hiddenBacklogs?: string[];
     /**
      * Portfolio backlog descriptors
      */
-    portfolioBacklogs: BacklogLevelConfiguration[];
+    portfolioBacklogs?: BacklogLevelConfiguration[];
     /**
      * Requirement backlog
      */
-    requirementBacklog: BacklogLevelConfiguration;
+    requirementBacklog?: BacklogLevelConfiguration;
     /**
      * Task backlog
      */
-    taskBacklog: BacklogLevelConfiguration;
-    url: string;
+    taskBacklog?: BacklogLevelConfiguration;
+    url?: string;
     /**
      * Mapped states for work item types
      */
-    workItemTypeMappedStates: WorkItemTypeStateInfo[];
+    workItemTypeMappedStates?: WorkItemTypeStateInfo[];
 }
 
 export interface BacklogFields {
     /**
      * Field Type (e.g. Order, Activity) to Field Reference Name map
      */
-    typeFields: { [key: string] : string; };
+    typeFields?: { [key: string] : string; };
 }
 
 /**
@@ -74,111 +74,147 @@ export interface BacklogLevel {
     /**
      * Reference name of the corresponding WIT category
      */
-    categoryReferenceName: string;
+    categoryReferenceName?: string;
     /**
      * Plural name for the backlog level
      */
-    pluralName: string;
+    pluralName?: string;
     /**
      * Collection of work item states that are included in the plan. The server will filter to only these work item types.
      */
-    workItemStates: string[];
+    workItemStates?: string[];
     /**
      * Collection of valid workitem type names for the given backlog level
      */
-    workItemTypes: string[];
+    workItemTypes?: string[];
 }
 
 export interface BacklogLevelConfiguration {
     /**
      * List of fields to include in Add Panel
      */
-    addPanelFields: WorkItemTrackingInterfaces.WorkItemFieldReference[];
+    addPanelFields?: WorkItemTrackingInterfaces.WorkItemFieldReference[];
     /**
      * Color for the backlog level
      */
-    color: string;
+    color?: string;
     /**
      * Default list of columns for the backlog
      */
-    columnFields: BacklogColumn[];
+    columnFields?: BacklogColumn[];
     /**
      * Defaulst Work Item Type for the backlog
      */
-    defaultWorkItemType: WorkItemTrackingInterfaces.WorkItemTypeReference;
+    defaultWorkItemType?: WorkItemTrackingInterfaces.WorkItemTypeReference;
     /**
      * Backlog Id (for Legacy Backlog Level from process config it can be categoryref name)
      */
-    id: string;
+    id?: string;
+    /**
+     * Indicates whether the backlog level is hidden
+     */
+    isHidden?: boolean;
     /**
      * Backlog Name
      */
-    name: string;
+    name?: string;
     /**
      * Backlog Rank (Taskbacklog is 0)
      */
-    rank: number;
+    rank?: number;
+    /**
+     * The type of this backlog level
+     */
+    type?: BacklogType;
     /**
      * Max number of work items to show in the given backlog
      */
-    workItemCountLimit: number;
+    workItemCountLimit?: number;
     /**
      * Work Item types participating in this backlog as known by the project/Process, can be overridden by team settings for bugs
      */
-    workItemTypes: WorkItemTrackingInterfaces.WorkItemTypeReference[];
+    workItemTypes?: WorkItemTrackingInterfaces.WorkItemTypeReference[];
+}
+
+/**
+ * Represents work items in a backlog level
+ */
+export interface BacklogLevelWorkItems {
+    /**
+     * A list of work items within a backlog level
+     */
+    workItems?: WorkItemTrackingInterfaces.WorkItemLink[];
+}
+
+/**
+ * Definition of the type of backlog level
+ */
+export enum BacklogType {
+    /**
+     * Portfolio backlog level
+     */
+    Portfolio = 0,
+    /**
+     * Requirement backlog level
+     */
+    Requirement = 1,
+    /**
+     * Task backlog level
+     */
+    Task = 2,
 }
 
 export interface Board extends BoardReference {
-    _links: any;
-    allowedMappings: { [key: string] : { [key: string] : string[]; }; };
-    canEdit: boolean;
-    columns: BoardColumn[];
-    fields: BoardFields;
-    isValid: boolean;
-    revision: number;
-    rows: BoardRow[];
+    _links?: any;
+    allowedMappings?: { [key: string] : { [key: string] : string[]; }; };
+    canEdit?: boolean;
+    columns?: BoardColumn[];
+    fields?: BoardFields;
+    isValid?: boolean;
+    revision?: number;
+    rows?: BoardRow[];
 }
 
 export interface BoardCardRuleSettings {
-    _links: any;
-    rules: { [key: string] : Rule[]; };
-    url: string;
+    _links?: any;
+    rules?: { [key: string] : Rule[]; };
+    url?: string;
 }
 
 export interface BoardCardSettings {
-    cards: { [key: string] : FieldSetting[]; };
+    cards?: { [key: string] : FieldSetting[]; };
 }
 
 export interface BoardChart extends BoardChartReference {
     /**
      * The links for the resource
      */
-    _links: any;
+    _links?: any;
     /**
      * The settings for the resource
      */
-    settings: { [key: string] : any; };
+    settings?: { [key: string] : any; };
 }
 
 export interface BoardChartReference {
     /**
      * Name of the resource
      */
-    name: string;
+    name?: string;
     /**
      * Full http link to the resource
      */
-    url: string;
+    url?: string;
 }
 
 export interface BoardColumn {
-    columnType: BoardColumnType;
-    description: string;
-    id: string;
-    isSplit: boolean;
-    itemLimit: number;
-    name: string;
-    stateMappings: { [key: string] : string; };
+    columnType?: BoardColumnType;
+    description?: string;
+    id?: string;
+    isSplit?: boolean;
+    itemLimit?: number;
+    name?: string;
+    stateMappings?: { [key: string] : string; };
 }
 
 export enum BoardColumnType {
@@ -188,37 +224,37 @@ export enum BoardColumnType {
 }
 
 export interface BoardFields {
-    columnField: FieldReference;
-    doneField: FieldReference;
-    rowField: FieldReference;
+    columnField?: FieldReference;
+    doneField?: FieldReference;
+    rowField?: FieldReference;
 }
 
 export interface BoardReference {
     /**
      * Id of the resource
      */
-    id: string;
+    id?: string;
     /**
      * Name of the resource
      */
-    name: string;
+    name?: string;
     /**
      * Full http link to the resource
      */
-    url: string;
+    url?: string;
 }
 
 export interface BoardRow {
-    id: string;
-    name: string;
+    id?: string;
+    name?: string;
 }
 
 export interface BoardSuggestedValue {
-    name: string;
+    name?: string;
 }
 
 export interface BoardUserSettings {
-    autoRefreshState: boolean;
+    autoRefreshState?: boolean;
 }
 
 /**
@@ -234,8 +270,8 @@ export enum BugsBehavior {
  * Expected data from PATCH
  */
 export interface CapacityPatch {
-    activities: Activity[];
-    daysOff: DateRange[];
+    activities?: Activity[];
+    daysOff?: DateRange[];
 }
 
 /**
@@ -245,35 +281,35 @@ export interface CardFieldSettings {
     /**
      * A collection of field information of additional fields on cards. The index in the collection signifies the order of the field among the additional fields. Currently unused. Should be used with User Story 691539: Card setting: additional fields
      */
-    additionalFields: FieldInfo[];
+    additionalFields?: FieldInfo[];
     /**
      * Display format for the assigned to field
      */
-    assignedToDisplayFormat: IdentityDisplayFormat;
+    assignedToDisplayFormat?: IdentityDisplayFormat;
     /**
      * A collection of field information of rendered core fields on cards.
      */
-    coreFields: FieldInfo[];
+    coreFields?: FieldInfo[];
     /**
      * Flag indicating whether to show assigned to field on cards. When true, AssignedToDisplayFormat will determine how the field will be displayed
      */
-    showAssignedTo: boolean;
+    showAssignedTo?: boolean;
     /**
      * Flag indicating whether to show empty fields on cards
      */
-    showEmptyFields: boolean;
+    showEmptyFields?: boolean;
     /**
      * Flag indicating whether to show ID on cards
      */
-    showId: boolean;
+    showId?: boolean;
     /**
      * Flag indicating whether to show state field on cards
      */
-    showState: boolean;
+    showState?: boolean;
     /**
      * Flag indicating whether to show tags on cards
      */
-    showTags: boolean;
+    showTags?: boolean;
 }
 
 /**
@@ -293,45 +329,45 @@ export interface CategoryConfiguration {
     /**
      * Name
      */
-    name: string;
+    name?: string;
     /**
      * Category Reference Name
      */
-    referenceName: string;
+    referenceName?: string;
     /**
      * Work item types for the backlog category
      */
-    workItemTypes: WorkItemTrackingInterfaces.WorkItemTypeReference[];
+    workItemTypes?: WorkItemTrackingInterfaces.WorkItemTypeReference[];
 }
 
 export interface CreatePlan {
     /**
      * Description of the plan
      */
-    description: string;
+    description?: string;
     /**
      * Name of the plan to create.
      */
-    name: string;
+    name?: string;
     /**
      * Plan properties.
      */
-    properties: any;
+    properties?: any;
     /**
      * Type of plan to create.
      */
-    type: PlanType;
+    type?: PlanType;
 }
 
 export interface DateRange {
     /**
      * End of the date range.
      */
-    end: Date;
+    end?: Date;
     /**
      * Start of the date range.
      */
-    start: Date;
+    start?: Date;
 }
 
 /**
@@ -341,45 +377,45 @@ export interface DeliveryViewData extends PlanViewData {
     /**
      * Work item child id to parenet id map
      */
-    childIdToParentIdMap: { [key: number] : number; };
+    childIdToParentIdMap?: { [key: number] : number; };
     /**
      * Filter criteria status of the timeline
      */
-    criteriaStatus: TimelineCriteriaStatus;
+    criteriaStatus?: TimelineCriteriaStatus;
     /**
      * The end date of the delivery view data
      */
-    endDate: Date;
+    endDate?: Date;
     /**
      * The start date for the delivery view data
      */
-    startDate: Date;
+    startDate?: Date;
     /**
      * All the team data
      */
-    teams: TimelineTeamData[];
+    teams?: TimelineTeamData[];
 }
 
 /**
  * Collection of properties, specific to the DeliveryTimelineView
  */
-export interface DeliveryViewPropertyCollection extends PlanPropertyCollection {
+export interface DeliveryViewPropertyCollection {
     /**
      * Card settings
      */
-    cardSettings: CardSettings;
+    cardSettings?: CardSettings;
     /**
      * Field criteria
      */
-    criteria: FilterClause[];
+    criteria?: FilterClause[];
     /**
      * Markers. Will be missing/null if there are no markers.
      */
-    markers: Marker[];
+    markers?: Marker[];
     /**
      * Team backlog mappings
      */
-    teamBacklogMappings: TeamBacklogMapping[];
+    teamBacklogMappings?: TeamBacklogMapping[];
 }
 
 /**
@@ -389,19 +425,19 @@ export interface FieldInfo {
     /**
      * The additional field display name
      */
-    displayName: string;
+    displayName?: string;
     /**
      * The additional field type
      */
-    fieldType: FieldType;
+    fieldType?: FieldType;
     /**
      * Indicates if the field definition is for an identity field.
      */
-    isIdentity: boolean;
+    isIdentity?: boolean;
     /**
      * The additional field reference name
      */
-    referenceName: string;
+    referenceName?: string;
 }
 
 /**
@@ -411,11 +447,11 @@ export interface FieldReference {
     /**
      * fieldRefName for the field
      */
-    referenceName: string;
+    referenceName?: string;
     /**
      * Full http link to more information about the field
      */
-    url: string;
+    url?: string;
 }
 
 export interface FieldSetting {
@@ -432,17 +468,17 @@ export enum FieldType {
 }
 
 export interface FilterClause {
-    fieldName: string;
-    index: number;
-    logicalOperator: string;
-    operator: string;
-    value: string;
+    fieldName?: string;
+    index?: number;
+    logicalOperator?: string;
+    operator?: string;
+    value?: string;
 }
 
 export interface FilterGroup {
-    end: number;
-    level: number;
-    start: number;
+    end?: number;
+    level?: number;
+    start?: number;
 }
 
 /**
@@ -464,35 +500,45 @@ export enum IdentityDisplayFormat {
 }
 
 /**
+ * Represents work items in an iteration backlog
+ */
+export interface IterationWorkItems extends TeamSettingsDataContractBase {
+    /**
+     * Work item relations
+     */
+    workItemRelations?: WorkItemTrackingInterfaces.WorkItemLink[];
+}
+
+/**
  * Client serialization contract for Delivery Timeline Markers.
  */
 export interface Marker {
     /**
      * Color associated with the marker.
      */
-    color: string;
+    color?: string;
     /**
      * Where the marker should be displayed on the timeline.
      */
-    date: Date;
+    date?: Date;
     /**
      * Label/title for the marker.
      */
-    label: string;
+    label?: string;
 }
 
 export interface Member {
-    displayName: string;
-    id: string;
-    imageUrl: string;
-    uniqueName: string;
-    url: string;
+    displayName?: string;
+    id?: string;
+    imageUrl?: string;
+    uniqueName?: string;
+    url?: string;
 }
 
 export interface ParentChildWIMap {
-    childWorkItemIds: number[];
-    id: number;
-    title: string;
+    childWorkItemIds?: number[];
+    id?: number;
+    title?: string;
 }
 
 /**
@@ -502,51 +548,51 @@ export interface Plan {
     /**
      * Identity that created this plan. Defaults to null for records before upgrading to ScaledAgileViewComponent4.
      */
-    createdByIdentity: VSSInterfaces.IdentityRef;
+    createdByIdentity?: VSSInterfaces.IdentityRef;
     /**
      * Date when the plan was created
      */
-    createdDate: Date;
+    createdDate?: Date;
     /**
      * Description of the plan
      */
-    description: string;
+    description?: string;
     /**
      * Id of the plan
      */
-    id: string;
+    id?: string;
     /**
      * Identity that last modified this plan. Defaults to null for records before upgrading to ScaledAgileViewComponent4.
      */
-    modifiedByIdentity: VSSInterfaces.IdentityRef;
+    modifiedByIdentity?: VSSInterfaces.IdentityRef;
     /**
      * Date when the plan was last modified. Default to CreatedDate when the plan is first created.
      */
-    modifiedDate: Date;
+    modifiedDate?: Date;
     /**
      * Name of the plan
      */
-    name: string;
+    name?: string;
     /**
      * The PlanPropertyCollection instance associated with the plan. These are dependent on the type of the plan. For example, DeliveryTimelineView, it would be of type DeliveryViewPropertyCollection.
      */
-    properties: any;
+    properties?: any;
     /**
      * Revision of the plan. Used to safeguard users from overwriting each other's changes.
      */
-    revision: number;
+    revision?: number;
     /**
      * Type of the plan
      */
-    type: PlanType;
+    type?: PlanType;
     /**
      * The resource url to locate the plan via rest api
      */
-    url: string;
+    url?: string;
     /**
      * Bit flag indicating set of permissions a user has to the plan.
      */
-    userPermissions: PlanUserPermissions;
+    userPermissions?: PlanUserPermissions;
 }
 
 /**
@@ -556,25 +602,19 @@ export interface PlanMetadata {
     /**
      * Identity of the creator of the plan
      */
-    createdByIdentity: VSSInterfaces.IdentityRef;
+    createdByIdentity?: VSSInterfaces.IdentityRef;
     /**
      * Description of plan
      */
-    description: string;
+    description?: string;
     /**
      * Last modified date of the plan
      */
-    modifiedDate: Date;
+    modifiedDate?: Date;
     /**
      * Bit flag indicating set of permissions a user has to the plan.
      */
-    userPermissions: PlanUserPermissions;
-}
-
-/**
- * Base class for properties of a scaled agile plan
- */
-export interface PlanPropertyCollection {
+    userPermissions?: PlanUserPermissions;
 }
 
 /**
@@ -618,8 +658,38 @@ export enum PlanUserPermissions {
  * Base class for plan view data contracts. Anything common goes here.
  */
 export interface PlanViewData {
-    id: string;
-    revision: number;
+    id?: string;
+    revision?: number;
+}
+
+/**
+ * Represents a single pre-defined query.
+ */
+export interface PredefinedQuery {
+    /**
+     * Whether or not the query returned the complete set of data or if the data was truncated.
+     */
+    hasMore?: boolean;
+    /**
+     * Id of the query
+     */
+    id?: string;
+    /**
+     * Localized name of the query
+     */
+    name?: string;
+    /**
+     * The results of the query.  This will be a set of WorkItem objects with only the 'id' set.  The client is responsible for paging in the data as needed.
+     */
+    results?: WorkItemTrackingInterfaces.WorkItem[];
+    /**
+     * REST API Url to use to retrieve results for this query
+     */
+    url?: string;
+    /**
+     * Url to use to display a page in the browser with the results of this query
+     */
+    webUrl?: string;
 }
 
 /**
@@ -629,48 +699,48 @@ export interface ProcessConfiguration {
     /**
      * Details about bug work items
      */
-    bugWorkItems: CategoryConfiguration;
+    bugWorkItems?: CategoryConfiguration;
     /**
      * Details about portfolio backlogs
      */
-    portfolioBacklogs: CategoryConfiguration[];
+    portfolioBacklogs?: CategoryConfiguration[];
     /**
      * Details of requirement backlog
      */
-    requirementBacklog: CategoryConfiguration;
+    requirementBacklog?: CategoryConfiguration;
     /**
      * Details of task backlog
      */
-    taskBacklog: CategoryConfiguration;
+    taskBacklog?: CategoryConfiguration;
     /**
      * Type fields for the process configuration
      */
-    typeFields: { [key: string] : WorkItemTrackingInterfaces.WorkItemFieldReference; };
-    url: string;
+    typeFields?: { [key: string] : WorkItemTrackingInterfaces.WorkItemFieldReference; };
+    url?: string;
 }
 
 export interface Rule {
-    clauses: FilterClause[];
-    filter: string;
-    isEnabled: string;
-    name: string;
-    settings: attribute;
+    clauses?: FilterClause[];
+    filter?: string;
+    isEnabled?: string;
+    name?: string;
+    settings?: attribute;
 }
 
 /**
  * Mapping of teams to the corresponding work item category
  */
 export interface TeamBacklogMapping {
-    categoryReferenceName: string;
-    teamId: string;
+    categoryReferenceName?: string;
+    teamId?: string;
 }
 
 /**
  * Represents a single TeamFieldValue
  */
 export interface TeamFieldValue {
-    includeChildren: boolean;
-    value: string;
+    includeChildren?: boolean;
+    value?: string;
 }
 
 /**
@@ -680,29 +750,29 @@ export interface TeamFieldValues extends TeamSettingsDataContractBase {
     /**
      * The default team field value
      */
-    defaultValue: string;
+    defaultValue?: string;
     /**
      * Shallow ref to the field being used as a team field
      */
-    field: FieldReference;
+    field?: FieldReference;
     /**
      * Collection of all valid team field values
      */
-    values: TeamFieldValue[];
+    values?: TeamFieldValue[];
 }
 
 /**
  * Expected data from PATCH
  */
 export interface TeamFieldValuesPatch {
-    defaultValue: string;
-    values: TeamFieldValue[];
+    defaultValue?: string;
+    values?: TeamFieldValue[];
 }
 
 export interface TeamIterationAttributes {
-    finishDate: Date;
-    startDate: Date;
-    timeFrame: TimeFrame;
+    finishDate?: Date;
+    startDate?: Date;
+    timeFrame?: TimeFrame;
 }
 
 /**
@@ -712,15 +782,15 @@ export interface TeamMemberCapacity extends TeamSettingsDataContractBase {
     /**
      * Collection of capacities associated with the team member
      */
-    activities: Activity[];
+    activities?: Activity[];
     /**
      * The days off associated with the team member
      */
-    daysOff: DateRange[];
+    daysOff?: DateRange[];
     /**
      * Shallow Ref to the associated team member
      */
-    teamMember: Member;
+    teamMember?: Member;
 }
 
 /**
@@ -742,11 +812,11 @@ export interface TeamSetting extends TeamSettingsDataContractBase {
     /**
      * Default Iteration, the iteration used when creating a new work item on the queries page.
      */
-    defaultIteration: TeamSettingsIteration;
+    defaultIteration?: TeamSettingsIteration;
     /**
      * Default Iteration macro (if any)
      */
-    defaultIterationMacro: string;
+    defaultIterationMacro?: string;
     /**
      * Days that the team is working
      */
@@ -760,19 +830,19 @@ export interface TeamSettingsDataContractBase {
     /**
      * Collection of links relevant to resource
      */
-    _links: any;
+    _links?: any;
     /**
      * Full http link to the resource
      */
-    url: string;
+    url?: string;
 }
 
 export interface TeamSettingsDaysOff extends TeamSettingsDataContractBase {
-    daysOff: DateRange[];
+    daysOff?: DateRange[];
 }
 
 export interface TeamSettingsDaysOffPatch {
-    daysOff: DateRange[];
+    daysOff?: DateRange[];
 }
 
 /**
@@ -782,31 +852,31 @@ export interface TeamSettingsIteration extends TeamSettingsDataContractBase {
     /**
      * Attributes such as start and end date
      */
-    attributes: TeamIterationAttributes;
+    attributes?: TeamIterationAttributes;
     /**
      * Id of the resource
      */
-    id: string;
+    id?: string;
     /**
      * Name of the resource
      */
-    name: string;
+    name?: string;
     /**
      * Relative path of the iteration
      */
-    path: string;
+    path?: string;
 }
 
 /**
  * Data contract for what we expect to receive when PATCH
  */
 export interface TeamSettingsPatch {
-    backlogIteration: string;
-    backlogVisibilities: { [key: string] : boolean; };
-    bugsBehavior: BugsBehavior;
-    defaultIteration: string;
-    defaultIterationMacro: string;
-    workingDays: SystemInterfaces.DayOfWeek[];
+    backlogIteration?: string;
+    backlogVisibilities?: { [key: string] : boolean; };
+    bugsBehavior?: BugsBehavior;
+    defaultIteration?: string;
+    defaultIterationMacro?: string;
+    workingDays?: SystemInterfaces.DayOfWeek[];
 }
 
 export enum TimeFrame {
@@ -816,8 +886,8 @@ export enum TimeFrame {
 }
 
 export interface TimelineCriteriaStatus {
-    message: string;
-    type: TimelineCriteriaStatusCode;
+    message?: string;
+    type?: TimelineCriteriaStatusCode;
 }
 
 export enum TimelineCriteriaStatusCode {
@@ -836,8 +906,8 @@ export enum TimelineCriteriaStatusCode {
 }
 
 export interface TimelineIterationStatus {
-    message: string;
-    type: TimelineIterationStatusCode;
+    message?: string;
+    type?: TimelineIterationStatusCode;
 }
 
 export enum TimelineIterationStatusCode {
@@ -855,95 +925,95 @@ export interface TimelineTeamData {
     /**
      * Backlog matching the mapped backlog associated with this team.
      */
-    backlog: BacklogLevel;
+    backlog?: BacklogLevel;
     /**
      * The field reference names of the work item data
      */
-    fieldReferenceNames: string[];
+    fieldReferenceNames?: string[];
     /**
      * The id of the team
      */
-    id: string;
+    id?: string;
     /**
      * Was iteration and work item data retrieved for this team. <remarks> Teams with IsExpanded false have not had their iteration, work item, and field related data queried and will never contain this data. If true then these items are queried and, if there are items in the queried range, there will be data. </remarks>
      */
-    isExpanded: boolean;
+    isExpanded?: boolean;
     /**
      * The iteration data, including the work items, in the queried date range.
      */
-    iterations: TimelineTeamIteration[];
+    iterations?: TimelineTeamIteration[];
     /**
      * The name of the team
      */
-    name: string;
+    name?: string;
     /**
      * The order by field name of this team
      */
-    orderByField: string;
+    orderByField?: string;
     /**
      * The field reference names of the partially paged work items, such as ID, WorkItemType
      */
-    partiallyPagedFieldReferenceNames: string[];
+    partiallyPagedFieldReferenceNames?: string[];
     /**
      * The project id the team belongs team
      */
-    projectId: string;
+    projectId?: string;
     /**
      * Status for this team.
      */
-    status: TimelineTeamStatus;
+    status?: TimelineTeamStatus;
     /**
      * The team field default value
      */
-    teamFieldDefaultValue: string;
+    teamFieldDefaultValue?: string;
     /**
      * The team field name of this team
      */
-    teamFieldName: string;
+    teamFieldName?: string;
     /**
      * The team field values
      */
-    teamFieldValues: TeamFieldValue[];
+    teamFieldValues?: TeamFieldValue[];
     /**
      * Colors for the work item types.
      */
-    workItemTypeColors: WorkItemColor[];
+    workItemTypeColors?: WorkItemColor[];
 }
 
 export interface TimelineTeamIteration {
     /**
      * The end date of the iteration
      */
-    finishDate: Date;
+    finishDate?: Date;
     /**
      * The iteration name
      */
-    name: string;
+    name?: string;
     /**
      * All the partially paged workitems in this iteration.
      */
-    partiallyPagedWorkItems: any[][];
+    partiallyPagedWorkItems?: any[][];
     /**
      * The iteration path
      */
-    path: string;
+    path?: string;
     /**
      * The start date of the iteration
      */
-    startDate: Date;
+    startDate?: Date;
     /**
      * The status of this iteration
      */
-    status: TimelineIterationStatus;
+    status?: TimelineIterationStatus;
     /**
      * The work items that have been paged in this iteration
      */
-    workItems: any[][];
+    workItems?: any[][];
 }
 
 export interface TimelineTeamStatus {
-    message: string;
-    type: TimelineTeamStatusCode;
+    message?: string;
+    type?: TimelineTeamStatusCode;
 }
 
 export enum TimelineTeamStatusCode {
@@ -981,47 +1051,56 @@ export interface UpdatePlan {
     /**
      * Description of the plan
      */
-    description: string;
+    description?: string;
     /**
      * Name of the plan to create.
      */
-    name: string;
+    name?: string;
     /**
      * Plan properties.
      */
-    properties: any;
+    properties?: any;
     /**
      * Revision of the plan that was updated - the value used here should match the one the server gave the client in the Plan.
      */
-    revision: number;
+    revision?: number;
     /**
      * Type of the plan
      */
-    type: PlanType;
+    type?: PlanType;
 }
 
 /**
  * Work item color and icon.
  */
 export interface WorkItemColor {
-    icon: string;
-    primaryColor: string;
-    workItemTypeName: string;
+    icon?: string;
+    primaryColor?: string;
+    workItemTypeName?: string;
 }
 
 export interface WorkItemTypeStateInfo {
     /**
      * State name to state category map
      */
-    states: { [key: string] : string; };
+    states?: { [key: string] : string; };
     /**
      * Work Item type name
      */
-    workItemTypeName: string;
+    workItemTypeName?: string;
 }
 
 export var TypeInfo = {
     BacklogConfiguration: <any>{
+    },
+    BacklogLevelConfiguration: <any>{
+    },
+    BacklogType: {
+        enumValues: {
+            "portfolio": 0,
+            "requirement": 1,
+            "task": 2
+        }
     },
     Board: <any>{
     },
@@ -1158,6 +1237,22 @@ export var TypeInfo = {
 TypeInfo.BacklogConfiguration.fields = {
     bugsBehavior: {
         enumType: TypeInfo.BugsBehavior
+    },
+    portfolioBacklogs: {
+        isArray: true,
+        typeInfo: TypeInfo.BacklogLevelConfiguration
+    },
+    requirementBacklog: {
+        typeInfo: TypeInfo.BacklogLevelConfiguration
+    },
+    taskBacklog: {
+        typeInfo: TypeInfo.BacklogLevelConfiguration
+    }
+};
+
+TypeInfo.BacklogLevelConfiguration.fields = {
+    type: {
+        enumType: TypeInfo.BacklogType
     }
 };
 

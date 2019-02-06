@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
@@ -15,96 +15,100 @@ import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
 export interface AssociatedWorkItem {
-    assignedTo: string;
+    assignedTo?: string;
     /**
      * Id of associated the work item.
      */
-    id: number;
-    state: string;
-    title: string;
+    id?: number;
+    state?: string;
+    title?: string;
     /**
      * REST Url of the work item.
      */
-    url: string;
-    webUrl: string;
-    workItemType: string;
+    url?: string;
+    webUrl?: string;
+    workItemType?: string;
 }
 
 export interface Change<T> {
     /**
      * The type of change that was made to the item.
      */
-    changeType: VersionControlChangeType;
+    changeType?: VersionControlChangeType;
     /**
      * Current version.
      */
-    item: T;
+    item?: T;
     /**
      * Content of the item after the change.
      */
-    newContent: ItemContent;
+    newContent?: ItemContent;
     /**
      * Path of the item on the server.
      */
-    sourceServerItem: string;
+    sourceServerItem?: string;
     /**
      * URL to retrieve the item.
      */
-    url: string;
+    url?: string;
 }
 
 export interface CheckinNote {
-    name: string;
-    value: string;
+    name?: string;
+    value?: string;
 }
 
 export interface FileContentMetadata {
-    contentType: string;
-    encoding: number;
-    extension: string;
-    fileName: string;
-    isBinary: boolean;
-    isImage: boolean;
-    vsLink: string;
+    contentType?: string;
+    encoding?: number;
+    extension?: string;
+    fileName?: string;
+    isBinary?: boolean;
+    isImage?: boolean;
+    vsLink?: string;
 }
 
 export interface GitRepository {
-    _links: any;
-    defaultBranch: string;
-    id: string;
+    _links?: any;
+    defaultBranch?: string;
+    id?: string;
     /**
      * True if the repository was created as a fork
      */
-    isFork: boolean;
-    name: string;
-    parentRepository: GitRepositoryRef;
-    project: TfsCoreInterfaces.TeamProjectReference;
-    remoteUrl: string;
-    sshUrl: string;
-    url: string;
-    validRemoteUrls: string[];
+    isFork?: boolean;
+    name?: string;
+    parentRepository?: GitRepositoryRef;
+    project?: TfsCoreInterfaces.TeamProjectReference;
+    remoteUrl?: string;
+    /**
+     * Compressed size (bytes) of the repository.
+     */
+    size?: number;
+    sshUrl?: string;
+    url?: string;
+    validRemoteUrls?: string[];
 }
 
 export interface GitRepositoryRef {
     /**
      * Team Project Collection where this Fork resides
      */
-    collection: TfsCoreInterfaces.TeamProjectCollectionReference;
-    id: string;
+    collection?: TfsCoreInterfaces.TeamProjectCollectionReference;
+    id?: string;
     /**
      * True if the repository was created as a fork
      */
-    isFork: boolean;
-    name: string;
-    project: TfsCoreInterfaces.TeamProjectReference;
-    remoteUrl: string;
-    sshUrl: string;
-    url: string;
+    isFork?: boolean;
+    name?: string;
+    project?: TfsCoreInterfaces.TeamProjectReference;
+    remoteUrl?: string;
+    sshUrl?: string;
+    url?: string;
 }
 
 export interface ItemContent {
-    content: string;
-    contentType: ItemContentType;
+    content?: string;
+    contentType?: ItemContentType;
 }
 
 export enum ItemContentType {
@@ -113,154 +117,155 @@ export enum ItemContentType {
 }
 
 export interface ItemModel {
-    _links: any;
-    contentMetadata: FileContentMetadata;
-    isFolder: boolean;
-    isSymLink: boolean;
-    path: string;
-    url: string;
+    _links?: any;
+    content?: string;
+    contentMetadata?: FileContentMetadata;
+    isFolder?: boolean;
+    isSymLink?: boolean;
+    path?: string;
+    url?: string;
 }
 
 export interface TfvcBranch extends TfvcBranchRef {
     /**
      * List of children for the branch.
      */
-    children: TfvcBranch[];
+    children?: TfvcBranch[];
     /**
      * List of branch mappings.
      */
-    mappings: TfvcBranchMapping[];
+    mappings?: TfvcBranchMapping[];
     /**
      * Path of the branch's parent.
      */
-    parent: TfvcShallowBranchRef;
+    parent?: TfvcShallowBranchRef;
     /**
      * List of paths of the related branches.
      */
-    relatedBranches: TfvcShallowBranchRef[];
+    relatedBranches?: TfvcShallowBranchRef[];
 }
 
 export interface TfvcBranchMapping {
     /**
      * Depth of the branch.
      */
-    depth: string;
+    depth?: string;
     /**
      * Server item for the branch.
      */
-    serverItem: string;
+    serverItem?: string;
     /**
      * Type of the branch.
      */
-    type: string;
+    type?: string;
 }
 
 export interface TfvcBranchRef extends TfvcShallowBranchRef {
     /**
      * A collection of REST reference links.
      */
-    _links: any;
+    _links?: any;
     /**
      * Creation date of the branch.
      */
-    createdDate: Date;
+    createdDate?: Date;
     /**
      * Description of the branch.
      */
-    description: string;
+    description?: string;
     /**
      * Is the branch deleted?
      */
-    isDeleted: boolean;
+    isDeleted?: boolean;
     /**
      * Alias or display name of user
      */
-    owner: VSSInterfaces.IdentityRef;
+    owner?: VSSInterfaces.IdentityRef;
     /**
      * URL to retrieve the item.
      */
-    url: string;
+    url?: string;
 }
 
 export interface TfvcChange extends Change<TfvcItem> {
     /**
      * List of merge sources in case of rename or branch creation.
      */
-    mergeSources: TfvcMergeSource[];
+    mergeSources?: TfvcMergeSource[];
     /**
      * Version at which a (shelved) change was pended against
      */
-    pendingVersion: number;
+    pendingVersion?: number;
 }
 
 export interface TfvcChangeset extends TfvcChangesetRef {
     /**
      * Account Id of the changeset.
      */
-    accountId: string;
+    accountId?: string;
     /**
      * List of associated changes.
      */
-    changes: TfvcChange[];
+    changes?: TfvcChange[];
     /**
      * Checkin Notes for the changeset.
      */
-    checkinNotes: CheckinNote[];
+    checkinNotes?: CheckinNote[];
     /**
      * Collection Id of the changeset.
      */
-    collectionId: string;
+    collectionId?: string;
     /**
      * Are more changes available.
      */
-    hasMoreChanges: boolean;
+    hasMoreChanges?: boolean;
     /**
      * Policy Override for the changeset.
      */
-    policyOverride: TfvcPolicyOverrideInfo;
+    policyOverride?: TfvcPolicyOverrideInfo;
     /**
      * Team Project Ids for the changeset.
      */
-    teamProjectIds: string[];
+    teamProjectIds?: string[];
     /**
      * List of work items associated with the changeset.
      */
-    workItems: AssociatedWorkItem[];
+    workItems?: AssociatedWorkItem[];
 }
 
 export interface TfvcChangesetRef {
     /**
      * A collection of REST reference links.
      */
-    _links: any;
+    _links?: any;
     /**
      * Alias or display name of user
      */
-    author: VSSInterfaces.IdentityRef;
+    author?: VSSInterfaces.IdentityRef;
     /**
      * Id of the changeset.
      */
-    changesetId: number;
+    changesetId?: number;
     /**
      * Alias or display name of user
      */
-    checkedInBy: VSSInterfaces.IdentityRef;
+    checkedInBy?: VSSInterfaces.IdentityRef;
     /**
      * Comment for the changeset.
      */
-    comment: string;
+    comment?: string;
     /**
      * Was the Comment result truncated?
      */
-    commentTruncated: boolean;
+    commentTruncated?: boolean;
     /**
      * Creation date of the changeset.
      */
-    createdDate: Date;
+    createdDate?: Date;
     /**
      * URL to retrieve the item.
      */
-    url: string;
+    url?: string;
 }
 
 /**
@@ -270,213 +275,234 @@ export interface TfvcChangesetSearchCriteria {
     /**
      * Alias or display name of user who made the changes
      */
-    author: string;
+    author?: string;
     /**
      * Whether or not to follow renames for the given item being queried
      */
-    followRenames: boolean;
+    followRenames?: boolean;
     /**
      * If provided, only include changesets created after this date (string) Think of a better name for this.
      */
-    fromDate: string;
+    fromDate?: string;
     /**
      * If provided, only include changesets after this changesetID
      */
-    fromId: number;
+    fromId?: number;
     /**
      * Whether to include the _links field on the shallow references
      */
-    includeLinks: boolean;
+    includeLinks?: boolean;
     /**
      * Path of item to search under
      */
-    itemPath: string;
+    itemPath?: string;
+    mappings?: TfvcMappingFilter[];
     /**
      * If provided, only include changesets created before this date (string) Think of a better name for this.
      */
-    toDate: string;
+    toDate?: string;
     /**
      * If provided, a version descriptor for the latest change list to include
      */
-    toId: number;
+    toId?: number;
 }
 
 export interface TfvcChangesetsRequestData {
     /**
      * List of changeset Ids.
      */
-    changesetIds: number[];
+    changesetIds?: number[];
     /**
      * Length of the comment.
      */
-    commentLength: number;
+    commentLength?: number;
     /**
      * Whether to include the _links field on the shallow references
      */
-    includeLinks: boolean;
+    includeLinks?: boolean;
 }
 
 export interface TfvcItem extends ItemModel {
-    changeDate: Date;
-    deletionId: number;
+    changeDate?: Date;
+    deletionId?: number;
+    /**
+     * File encoding from database, -1 represents binary.
+     */
+    encoding?: number;
     /**
      * MD5 hash as a base 64 string, applies to files only.
      */
-    hashValue: string;
-    isBranch: boolean;
-    isPendingChange: boolean;
+    hashValue?: string;
+    isBranch?: boolean;
+    isPendingChange?: boolean;
     /**
      * The size of the file, if applicable.
      */
-    size: number;
-    version: number;
+    size?: number;
+    version?: number;
 }
 
 /**
  * Item path and Version descriptor properties
  */
 export interface TfvcItemDescriptor {
-    path: string;
-    recursionLevel: VersionControlRecursionType;
-    version: string;
-    versionOption: TfvcVersionOption;
-    versionType: TfvcVersionType;
+    path?: string;
+    recursionLevel?: VersionControlRecursionType;
+    version?: string;
+    versionOption?: TfvcVersionOption;
+    versionType?: TfvcVersionType;
 }
 
 export interface TfvcItemRequestData {
     /**
      * If true, include metadata about the file type
      */
-    includeContentMetadata: boolean;
+    includeContentMetadata?: boolean;
     /**
      * Whether to include the _links field on the shallow references
      */
-    includeLinks: boolean;
-    itemDescriptors: TfvcItemDescriptor[];
+    includeLinks?: boolean;
+    itemDescriptors?: TfvcItemDescriptor[];
 }
 
 export interface TfvcLabel extends TfvcLabelRef {
-    items: TfvcItem[];
+    items?: TfvcItem[];
 }
 
 export interface TfvcLabelRef {
-    _links: any;
-    description: string;
-    id: number;
-    labelScope: string;
-    modifiedDate: Date;
-    name: string;
-    owner: VSSInterfaces.IdentityRef;
-    url: string;
+    _links?: any;
+    description?: string;
+    id?: number;
+    labelScope?: string;
+    modifiedDate?: Date;
+    name?: string;
+    owner?: VSSInterfaces.IdentityRef;
+    url?: string;
 }
 
 export interface TfvcLabelRequestData {
     /**
      * Whether to include the _links field on the shallow references
      */
-    includeLinks: boolean;
-    itemLabelFilter: string;
-    labelScope: string;
-    maxItemCount: number;
-    name: string;
-    owner: string;
+    includeLinks?: boolean;
+    itemLabelFilter?: string;
+    labelScope?: string;
+    maxItemCount?: number;
+    name?: string;
+    owner?: string;
+}
+
+export interface TfvcMappingFilter {
+    exclude?: boolean;
+    serverPath?: string;
 }
 
 export interface TfvcMergeSource {
     /**
      * Indicates if this a rename source. If false, it is a merge source.
      */
-    isRename: boolean;
+    isRename?: boolean;
     /**
      * The server item of the merge source
      */
-    serverItem: string;
+    serverItem?: string;
     /**
      * Start of the version range
      */
-    versionFrom: number;
+    versionFrom?: number;
     /**
      * End of the version range
      */
-    versionTo: number;
+    versionTo?: number;
 }
 
 export interface TfvcPolicyFailureInfo {
-    message: string;
-    policyName: string;
+    message?: string;
+    policyName?: string;
 }
 
 export interface TfvcPolicyOverrideInfo {
-    comment: string;
-    policyFailures: TfvcPolicyFailureInfo[];
+    comment?: string;
+    policyFailures?: TfvcPolicyFailureInfo[];
 }
 
 export interface TfvcShallowBranchRef {
     /**
      * Path for the branch.
      */
-    path: string;
+    path?: string;
 }
 
 /**
  * This is the deep shelveset class
  */
 export interface TfvcShelveset extends TfvcShelvesetRef {
-    changes: TfvcChange[];
-    notes: CheckinNote[];
-    policyOverride: TfvcPolicyOverrideInfo;
-    workItems: AssociatedWorkItem[];
+    changes?: TfvcChange[];
+    notes?: CheckinNote[];
+    policyOverride?: TfvcPolicyOverrideInfo;
+    workItems?: AssociatedWorkItem[];
 }
 
 /**
  * This is the shallow shelveset class
  */
 export interface TfvcShelvesetRef {
-    _links: any;
-    comment: string;
-    commentTruncated: boolean;
-    createdDate: Date;
-    id: string;
-    name: string;
-    owner: VSSInterfaces.IdentityRef;
-    url: string;
+    _links?: any;
+    comment?: string;
+    commentTruncated?: boolean;
+    createdDate?: Date;
+    id?: string;
+    name?: string;
+    owner?: VSSInterfaces.IdentityRef;
+    url?: string;
 }
 
 export interface TfvcShelvesetRequestData {
     /**
      * Whether to include policyOverride and notes Only applies when requesting a single deep shelveset
      */
-    includeDetails: boolean;
+    includeDetails?: boolean;
     /**
      * Whether to include the _links field on the shallow references. Does not apply when requesting a single deep shelveset object. Links will always be included in the deep shelveset.
      */
-    includeLinks: boolean;
+    includeLinks?: boolean;
     /**
      * Whether to include workItems
      */
-    includeWorkItems: boolean;
+    includeWorkItems?: boolean;
     /**
      * Max number of changes to include
      */
-    maxChangeCount: number;
+    maxChangeCount?: number;
     /**
      * Max length of comment
      */
-    maxCommentLength: number;
+    maxCommentLength?: number;
     /**
      * Shelveset's name
      */
-    name: string;
+    name?: string;
     /**
      * Owner's ID. Could be a name or a guid.
      */
-    owner: string;
+    owner?: string;
+}
+
+export interface TfvcStatistics {
+    /**
+     * Id of the last changeset the stats are based on.
+     */
+    changesetId?: number;
+    /**
+     * Count of files at the requested scope.
+     */
+    fileCountTotal?: number;
 }
 
 export interface TfvcVersionDescriptor {
-    version: string;
-    versionOption: TfvcVersionOption;
-    versionType: TfvcVersionType;
+    version?: string;
+    versionOption?: TfvcVersionOption;
+    versionType?: TfvcVersionType;
 }
 
 export enum TfvcVersionOption {
@@ -515,10 +541,10 @@ export enum VersionControlChangeType {
 }
 
 export interface VersionControlProjectInfo {
-    defaultSourceControlType: TfsCoreInterfaces.SourceControlTypes;
-    project: TfsCoreInterfaces.TeamProjectReference;
-    supportsGit: boolean;
-    supportsTFVC: boolean;
+    defaultSourceControlType?: TfsCoreInterfaces.SourceControlTypes;
+    project?: TfsCoreInterfaces.TeamProjectReference;
+    supportsGit?: boolean;
+    supportsTFVC?: boolean;
 }
 
 export enum VersionControlRecursionType {

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
@@ -11,10 +11,8 @@
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
 import * as restm from 'typed-rest-client/RestClient';
-import * as httpm from 'typed-rest-client/HttpClient';
 import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
-import serm = require('./Serialization');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import CoreInterfaces = require("./interfaces/CoreInterfaces");
 import OperationsInterfaces = require("./interfaces/common/OperationsInterfaces");
@@ -75,7 +73,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "core",
                     "b4f70219-e18b-42c5-abe3-98b07d35525e",
                     routeValues);
@@ -117,7 +115,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "core",
                     "b4f70219-e18b-42c5-abe3-98b07d35525e",
                     routeValues);
@@ -162,7 +160,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "core",
                     "b4f70219-e18b-42c5-abe3-98b07d35525e",
                     routeValues,
@@ -204,7 +202,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "core",
                     "5ead0b70-2572-4697-97e9-f341069a783a",
                     routeValues);
@@ -245,7 +243,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "core",
                     "5ead0b70-2572-4697-97e9-f341069a783a",
                     routeValues);
@@ -284,7 +282,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "core",
                     "5ead0b70-2572-4697-97e9-f341069a783a",
                     routeValues);
@@ -325,7 +323,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "core",
                     "5ead0b70-2572-4697-97e9-f341069a783a",
                     routeValues);
@@ -378,7 +376,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "core",
                     "294c494c-2600-4d7e-b76c-3dd50c3c95be",
                     routeValues,
@@ -420,7 +418,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "core",
                     "93878975-88c5-4e6a-8abb-7ddd77a8a7d8",
                     routeValues);
@@ -458,7 +456,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "core",
                     "93878975-88c5-4e6a-8abb-7ddd77a8a7d8",
                     routeValues);
@@ -499,7 +497,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "core",
                     "8031090f-ef1d-4af6-85fc-698cd75d42bf",
                     routeValues);
@@ -546,7 +544,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "core",
                     "8031090f-ef1d-4af6-85fc-698cd75d42bf",
                     routeValues,
@@ -589,7 +587,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "core",
                     "6488a877-4749-4954-82ea-7340d36be9f2",
                     routeValues,
@@ -640,7 +638,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.3",
+                    "5.0-preview.3",
                     "core",
                     "603fe2ac-9723-48b9-88ad-09305aa6c6e1",
                     routeValues,
@@ -667,7 +665,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-     * Get project references with the specified state
+     * Get all projects in the organization that the authenticated user has access to.
      * 
      * @param {any} stateFilter - Filter on team projects in a specific team project state (default: WellFormed).
      * @param {number} top
@@ -694,7 +692,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.3",
+                    "5.0-preview.3",
                     "core",
                     "603fe2ac-9723-48b9-88ad-09305aa6c6e1",
                     routeValues,
@@ -721,7 +719,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-     * Queue a project creation.
+     * Queues a project to be created. Use the [GetOperation](../../operations/operations/get) to periodically check for create project status.
      * 
      * @param {CoreInterfaces.TeamProject} projectToCreate - The project to create.
      */
@@ -735,7 +733,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.3",
+                    "5.0-preview.3",
                     "core",
                     "603fe2ac-9723-48b9-88ad-09305aa6c6e1",
                     routeValues);
@@ -761,7 +759,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
     }
 
     /**
-     * Queue a project deletion.
+     * Queues a project to be deleted. Use the [GetOperation](../../operations/operations/get) to periodically check for delete project status.
      * 
      * @param {string} projectId - The project id of the project to delete.
      */
@@ -776,7 +774,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.3",
+                    "5.0-preview.3",
                     "core",
                     "603fe2ac-9723-48b9-88ad-09305aa6c6e1",
                     routeValues);
@@ -819,7 +817,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.3",
+                    "5.0-preview.3",
                     "core",
                     "603fe2ac-9723-48b9-88ad-09305aa6c6e1",
                     routeValues);
@@ -866,7 +864,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "core",
                     "4976a71a-4487-49aa-8aab-a1eda469037a",
                     routeValues,
@@ -914,7 +912,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.1",
+                    "5.0-preview.1",
                     "core",
                     "4976a71a-4487-49aa-8aab-a1eda469037a",
                     routeValues);
@@ -953,7 +951,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "core",
                     "ec1f4311-f2b4-4c15-b2b8-8990b80d2908",
                     routeValues);
@@ -986,6 +984,9 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
         proxyUrl: string,
         site?: string
         ): Promise<void> {
+        if (proxyUrl == null) {
+            throw new TypeError('proxyUrl can not be null or undefined');
+        }
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -998,7 +999,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "core",
                     "ec1f4311-f2b4-4c15-b2b8-8990b80d2908",
                     routeValues,
@@ -1041,7 +1042,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "core",
                     "ec1f4311-f2b4-4c15-b2b8-8990b80d2908",
                     routeValues,
@@ -1092,7 +1093,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "core",
                     "7a4d9ee9-3433-4347-b47a-7a80f1cf307e",
                     routeValues,
@@ -1136,7 +1137,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "core",
                     "d30a3dd1-f8ba-442a-b86a-bd0c0c383e59",
                     routeValues);
@@ -1180,7 +1181,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "core",
                     "d30a3dd1-f8ba-442a-b86a-bd0c0c383e59",
                     routeValues);
@@ -1224,7 +1225,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "core",
                     "d30a3dd1-f8ba-442a-b86a-bd0c0c383e59",
                     routeValues);
@@ -1277,7 +1278,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "core",
                     "d30a3dd1-f8ba-442a-b86a-bd0c0c383e59",
                     routeValues,
@@ -1324,7 +1325,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "4.1-preview.2",
+                    "5.0-preview.2",
                     "core",
                     "d30a3dd1-f8ba-442a-b86a-bd0c0c383e59",
                     routeValues);

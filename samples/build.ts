@@ -1,8 +1,8 @@
-import * as cm from './common';
-import * as vm from 'azure-devops-node-api';
+import * as cm from "./common";
+import * as vm from "azure-devops-node-api";
 
-import * as ba from 'azure-devops-node-api/BuildApi';
-import * as bi from 'azure-devops-node-api/interfaces/BuildInterfaces';
+import * as ba from "azure-devops-node-api/BuildApi";
+import * as bi from "azure-devops-node-api/interfaces/BuildInterfaces";
 
 export async function run() {
     try
@@ -10,15 +10,15 @@ export async function run() {
         let vsts: vm.WebApi = await cm.getWebApi();
         let vstsBuild: ba.IBuildApi = await vsts.getBuildApi();
 
-        cm.banner('Build Samples');
+        cm.banner("Build Samples");
         let project = cm.getProject();
-        console.log('project', project);
+        console.log("project", project);
 
         // list definitions
-        cm.heading('Build Definitions for ' + project);
+        cm.heading(`Build Definitions for ${project}`);
         let defs: bi.DefinitionReference[] = await vstsBuild.getDefinitions(project);
         
-        console.log('You have ' + defs.length + ' build definition(s)');
+        console.log(`You have ${defs.length} build definition(s)`);
 
         // save off last def to create a new definition below
         let lastDef: bi.BuildDefinition;
@@ -29,11 +29,11 @@ export async function run() {
             lastDef = def;
             let rep: bi.BuildRepository = def.repository;
 
-            console.log(defRef.name + ' (' + defRef.id + ') ' + 'repo ' + rep.type);
+            console.log(`${defRef.name} (${defRef.id}) repo ${rep.type}`);
         }
 
         // get top 10 successfully completed builds since 2016
-        cm.heading('top 10 successfully completed builds for ' + project + 'project');
+        cm.heading(`top 10 successfully completed builds for ${project}project`);
         let builds: bi.Build[] = await vstsBuild.getBuilds(
                         project, 
                         null,                       // definitions: number[] 
@@ -51,9 +51,9 @@ export async function run() {
                         10                          // top: number
                         );
         
-        console.log(builds.length + ' builds returned');
+        console.log(`${builds.length} builds returned`);
         builds.forEach((build: bi.Build) => {
-            console.log(build.buildNumber, bi.BuildResult[build.result], 'on', build.finishTime.toDateString());
+            console.log(build.buildNumber, bi.BuildResult[build.result], "on", build.finishTime.toDateString());
         });
 
         // new definition
@@ -61,10 +61,10 @@ export async function run() {
             let process = lastDef.process as bi.DesignerProcess;
             if (process.phases && process.phases.length > 0) {
                 let phase = process.phases[0];
-                cm.heading('creating a new definition');
+                cm.heading("creating a new definition");
                 let newDef: bi.BuildDefinition = <bi.BuildDefinition>{};
                 
-                let newName: string = "api copy of " + lastDef.name;
+                let newName = `api copy of ${lastDef.name}`;
                 console.log("name", newName);
                 newDef.name = newName;
 
@@ -137,7 +137,7 @@ export async function run() {
         }
     }
     catch (err) {
-        console.error('Error: ' + err.stack);
+        console.error(`Error: ${err.stack}`);
     }
 
 }

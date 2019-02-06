@@ -1,23 +1,23 @@
-import * as common from './common';
-import * as nodeApi from 'azure-devops-node-api';
+import * as common from "./common";
+import * as nodeApi from "azure-devops-node-api";
 
-import * as GitApi from 'azure-devops-node-api/GitApi';
-import * as GitInterfaces from 'azure-devops-node-api/interfaces/GitInterfaces';
+import * as GitApi from "azure-devops-node-api/GitApi";
+import * as GitInterfaces from "azure-devops-node-api/interfaces/GitInterfaces";
 
 export async function run() {
     let webApi: nodeApi.WebApi = await common.getWebApi();
     let gitApiObject: GitApi.IGitApi = await webApi.getGitApi();
 
-    common.banner('Git Samples');
-    let project: string = common.getProject();
-    console.log('Project:', project);
+    common.banner("Git Samples");
+    let project = common.getProject();
+    console.log("Project:", project);
 
     common.heading("Get Repositories");
     const repos: GitInterfaces.GitRepository[] = await gitApiObject.getRepositories(project);
     console.log("There are", repos.length, "repositories in this project");
 
     common.heading("Create a repository");
-    const createOptions: GitInterfaces.GitRepositoryCreateOptions = <GitInterfaces.GitRepositoryCreateOptions>{name: 'new repo'};
+    const createOptions: GitInterfaces.GitRepositoryCreateOptions = <GitInterfaces.GitRepositoryCreateOptions>{name: "new repo"};
     let newRepo: GitInterfaces.GitRepository = await gitApiObject.createRepository(createOptions, project);
     console.log("New repo:", newRepo.name);
 
@@ -52,7 +52,7 @@ export async function run() {
             threads = await gitApiObject.getThreads(firstRepo.id, pullRequests[0].pullRequestId);
         }
         if (pullRequests.length > 0 && threads.length > 0) {
-            let comment: GitInterfaces.Comment = <GitInterfaces.Comment>{content: 'Hello comment'};
+            let comment: GitInterfaces.Comment = <GitInterfaces.Comment>{content: "Hello comment"};
             comment = await gitApiObject.createComment(comment, firstRepo.id, pullRequests[0].pullRequestId, threads[0].id);
             console.log("Comment created:", comment.content);
             common.heading("Delete a comment on a pull request");
