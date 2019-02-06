@@ -20,6 +20,7 @@ export async function run() {
     const createOptions: GitInterfaces.GitRepositoryCreateOptions = <GitInterfaces.GitRepositoryCreateOptions>{name: 'new repo'};
     let newRepo: GitInterfaces.GitRepository = await gitApiObject.createRepository(createOptions, project);
     console.log("New repo:", newRepo.name);
+
     common.heading("Delete repository");
     await gitApiObject.deleteRepository(newRepo.id);
     console.log("Repo deleted");
