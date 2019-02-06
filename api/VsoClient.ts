@@ -201,11 +201,7 @@ export class VsoClient {
 
         if (queryString === '' && prefix.length > 0){
             // Will always need to chop period off of end of prefix
-            let queryValue: string = queryParams.toString();
-            if (queryParams instanceof Date) {
-                queryValue = queryParams.toISOString();
-            }
-            queryString = prefix.slice(0,-1) + '=' + encodeURIComponent(queryValue) + '&';
+            queryString = prefix.slice(0,-1) + '=' + encodeURIComponent(queryParams.toString()) + '&';
         }
         return queryString;
     }
