@@ -17,7 +17,6 @@ export async function run() {
     console.log("There are", repos.length, "repositories in this project");
 
     common.heading("Create a repository");
-
     const createOptions: GitInterfaces.GitRepositoryCreateOptions = <GitInterfaces.GitRepositoryCreateOptions>{name: 'new repo'};
     let newRepo: GitInterfaces.GitRepository = await gitApiObject.createRepository(createOptions, project);
     console.log("New repo:", newRepo.name);
