@@ -9,11 +9,18 @@
         "build.ts",
         "buildArtifact.ts",
         "creation.ts",
-        "policy.ts",
-        "profile.ts",
-        "task.ts",
+        "dashboard.ts",
+        "extensionManagement.ts",
         "filecontainer.ts",
         "git.ts",
-        "wiki.ts"
+        "policy.ts",
+        "profile.ts",
+        "projectAnalysis.ts",
+        "release.ts",
+        "task.ts",
+        "test.ts",
+        "wiki.ts",
+        "work.ts",
+        "workItemTracking.ts"
     ]
 }

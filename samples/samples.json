@@ -2,10 +2,17 @@
     "build",
     "buildArtifact",
     "creation",
-    "policy",
-    "profile",
-    "task",
+    "dashboard",
+    "extensionManagement",
     "filecontainer",
     "git",
-    "wiki"
+    "policy",
+    "profile",
+    "projectAnalysis",
+    "release",
+    "task",
+    "test",
+    "wiki",
+    "work",
+    "workItemTracking"
 ]

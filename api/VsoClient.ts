@@ -190,7 +190,7 @@ export class VsoClient {
         }
         let queryString: string = '';
 
-        if(typeof(queryParams) !== 'string') {
+        if (typeof(queryParams) !== 'string') {
             for (let property in queryParams) {
                 if (queryParams.hasOwnProperty(property)) {
                     const prop = queryParams[property];
@@ -200,10 +200,11 @@ export class VsoClient {
             }
         }
 
-        if(queryString === '' && prefix.length > 0){
+        if (queryString === '' && prefix.length > 0){
             // Date.prototype.toString() returns a string that is not valid for the REST API.
             // Need to specially call `toUTCString()` instead for such cases
             const queryValue = typeof queryParams === 'object' && 'toUTCString' in queryParams ? (queryParams as Date).toUTCString() : queryParams.toString();
+
 
             // Will always need to chop period off of end of prefix
             queryString = prefix.slice(0,-1) + '=' + encodeURIComponent(queryValue) + '&';
