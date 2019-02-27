@@ -71,21 +71,6 @@ export async function run() {
                 console.log("repo", lastDef.repository.name);
                 newDef.repository = lastDef.repository;
 
-                let steps: bi.BuildDefinitionStep[] = [];
-                phase.steps.forEach((step: bi.BuildDefinitionStep) => {
-                    console.log("adding step", step.displayName);
-                    steps.push(step);
-                });
-
-                let newProcess = {
-                    type: 1, /* Designer */
-                    phases: [
-                        {
-                            steps: steps
-                        }
-                    ]
-                } as bi.DesignerProcess;
-
                 newDef.comment = "copy of definition from sample";
                 newDef.buildNumberFormat = lastDef.buildNumberFormat;
                 
