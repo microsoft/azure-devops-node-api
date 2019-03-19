@@ -233,9 +233,12 @@ export class WebApi {
 
     // TODO: Don't call resource area here? Will cause infinite loop?
     public async getLocationsApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<locationsm.ILocationsApi> {
+        let optionsClone: VsoBaseInterfaces.IRequestOptions = Object.assign({}, this.options);
+        optionsClone.allowRetries = true;
+        optionsClone.maxRetries = 5;
         serverUrl = await serverUrl || this.serverUrl;
         handlers = handlers || [this.authHandler];
-        return new locationsm.LocationsApi(serverUrl, handlers, this.options);
+        return new locationsm.LocationsApi(serverUrl, handlers, optionsClone);
     }
 
     public async getNotificationApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<notificationm.INotificationApi> {
