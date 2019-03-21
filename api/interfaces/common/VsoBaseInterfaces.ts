@@ -85,10 +85,12 @@ export interface IHttpClientResponse {
 }
 
 export interface IRequestOptions {
-    socketTimeout?: number,
-    ignoreSslError?: boolean,
-    proxy?: IProxyConfiguration
-    cert?: ICertConfiguration
+    socketTimeout?: number;
+    ignoreSslError?: boolean;
+    proxy?: IProxyConfiguration;
+    cert?: ICertConfiguration;
+    allowRetries?: boolean;
+    maxRetries?: number;
 }
 
 export interface IProxyConfiguration {
