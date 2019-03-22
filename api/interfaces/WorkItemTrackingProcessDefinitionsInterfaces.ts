@@ -170,20 +170,65 @@ export interface FieldModel {
     url?: string;
 }
 
+/**
+ * Enum for the type of a field.
+ */
 export enum FieldType {
+    /**
+     * String field type.
+     */
     String = 1,
+    /**
+     * Integer field type.
+     */
     Integer = 2,
+    /**
+     * Datetime field type.
+     */
     DateTime = 3,
+    /**
+     * Plain Text field type.
+     */
     PlainText = 5,
+    /**
+     * HTML (Multiline) field type.
+     */
     Html = 7,
+    /**
+     * Treepath field type.
+     */
     TreePath = 8,
+    /**
+     * History field type.
+     */
     History = 9,
+    /**
+     * Double field type.
+     */
     Double = 10,
+    /**
+     * Guid field type.
+     */
     Guid = 11,
+    /**
+     * Boolean field type.
+     */
     Boolean = 12,
+    /**
+     * Identity field type.
+     */
     Identity = 13,
+    /**
+     * Integer picklist field type.
+     */
     PicklistInteger = 14,
+    /**
+     * String picklist field type.
+     */
     PicklistString = 15,
+    /**
+     * Double picklist field type.
+     */
     PicklistDouble = 16,
 }
 

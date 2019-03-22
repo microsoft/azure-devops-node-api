@@ -162,6 +162,7 @@ export interface BuildConfiguration {
     repositoryId?: number;
     repositoryType?: string;
     sourceVersion?: string;
+    targetBranchName?: string;
     uri?: string;
 }
 
@@ -447,6 +448,10 @@ export interface CodeCoverageSummary {
      * Uri of build against which difference in coverage is computed
      */
     deltaBuild?: ShallowReference;
+    /**
+     * Uri of build against which difference in coverage is computed
+     */
+    status?: CoverageSummaryStatus;
 }
 
 export interface CodeCoverageSummary2 {
@@ -490,6 +495,34 @@ export interface CoverageStatistics {
     linesCovered?: number;
     linesNotCovered?: number;
     linesPartiallyCovered?: number;
+}
+
+export enum CoverageStatus {
+    Covered = 0,
+    NotCovered = 1,
+    PartiallyCovered = 2,
+}
+
+/**
+ * Represents status of code coverage summary for a build
+ */
+export enum CoverageSummaryStatus {
+    /**
+     * No coverage status
+     */
+    None = 0,
+    /**
+     * The summary evaluation is in progress
+     */
+    Pending = 1,
+    /**
+     * The summary evaluation for the previous request is completed. Summary can change in future
+     */
+    Completed = 2,
+    /**
+     * The summary evaluation is finalized and won't change
+     */
+    Finalized = 3,
 }
 
 export interface CreateTestMessageLogEntryRequest {
@@ -564,6 +597,11 @@ export interface DeleteTestRunRequest {
     testRunIds?: number[];
 }
 
+export interface DownloadAttachmentsRequest {
+    ids?: number[];
+    lengths?: number[];
+}
+
 /**
  * This is a temporary class to provide the details for the test run environment.
  */
@@ -614,6 +652,32 @@ export interface FieldDetailsForTestResults {
      * Group by field values
      */
     groupsForField?: any[];
+}
+
+export interface FileCoverage {
+    /**
+     * List of line blocks along with their coverage status
+     */
+    lineBlocksCoverage?: LineBlockCoverage[];
+    /**
+     * File path for which coverage information is sought for
+     */
+    path: string;
+}
+
+export interface FileCoverageRequest {
+    filePath: string;
+    pullRequestBaseIterationId: number;
+    pullRequestId: number;
+    pullRequestIterationId: number;
+    repoId: string;
+}
+
+export interface FilterPointQuery {
+    planId: number;
+    pointIds: number[];
+    pointOutcome: number[];
+    resultState: number[];
 }
 
 export interface FunctionCoverage {
@@ -850,6 +914,21 @@ export interface LegacyTestSettings {
     teamProjectUri?: string;
 }
 
+export interface LineBlockCoverage {
+    /**
+     * End of line block
+     */
+    end: number;
+    /**
+     * Start of line block
+     */
+    start: number;
+    /**
+     * Coverage status. Covered: 0, NotCovered: 1,  PartiallyCovered: 2
+     */
+    status: number;
+}
+
 export interface LinkedWorkItemsQuery {
     automatedTestNames?: string[];
     planId?: number;
@@ -899,9 +978,23 @@ export interface ModuleCoverage2 {
     signatureAge?: number;
 }
 
+/**
+ * Name value pair
+ */
 export interface NameValuePair {
+    /**
+     * Name
+     */
     name?: string;
+    /**
+     * Value
+     */
     value?: string;
+}
+
+export enum OperationType {
+    Add = 1,
+    Delete = 2,
 }
 
 /**
@@ -981,6 +1074,11 @@ export interface PointAssignment {
     tester?: VSSInterfaces.IdentityRef;
 }
 
+export interface PointLastResult {
+    lastUpdatedDate?: Date;
+    pointId?: number;
+}
+
 /**
  * Filter class for test point.
  */
@@ -997,6 +1095,19 @@ export interface PointsFilter {
      * List of tester for filtering.
      */
     testers?: VSSInterfaces.IdentityRef[];
+}
+
+export interface PointsResults2 {
+    changeNumber?: number;
+    lastFailureType?: number;
+    lastResolutionStateId?: number;
+    lastResultOutcome?: number;
+    lastResultState?: number;
+    lastTestResultId?: number;
+    lastTestRunId?: number;
+    lastUpdated?: Date;
+    planId?: number;
+    pointId?: number;
 }
 
 /**
@@ -1424,6 +1535,10 @@ export interface RunCreateModel {
      * URI of release associated with the run.
      */
     releaseUri?: string;
+    /**
+     * Run summary for run Type = NoConfigRun.
+     */
+    runSummary?: RunSummaryModel[];
     runTimeout?: any;
     sourceWorkflow?: string;
     /**
@@ -1434,6 +1549,10 @@ export interface RunCreateModel {
      * The state of the run. Valid states - NotStarted, InProgress, Waiting
      */
     state?: string;
+    /**
+     * Tags to attach with the test run, maximum of 5 tags can be added to run.
+     */
+    tags?: TestTag[];
     testConfigurationsMapping?: string;
     /**
      * ID of the test environment associated with the run.
@@ -1443,6 +1562,9 @@ export interface RunCreateModel {
      * An abstracted reference to the test settings resource.
      */
     testSettings?: ShallowReference;
+    /**
+     * Type of the run(RunType)
+     */
     type?: string;
 }
 
@@ -1474,6 +1596,55 @@ export interface RunStatistic {
      * State of the test run
      */
     state: string;
+}
+
+/**
+ * Run summary for each output type of test.
+ */
+export interface RunSummaryModel {
+    /**
+     * Total time taken in milliseconds.
+     */
+    duration?: number;
+    /**
+     * Number of results for Outcome TestOutcome
+     */
+    resultCount: number;
+    /**
+     * Summary is based on outcome
+     */
+    testOutcome: TestOutcome;
+}
+
+export enum RunType {
+    /**
+     * Only used during an update to preserve the existing value.
+     */
+    Unspecified = 0,
+    /**
+     * Normal test run.
+     */
+    Normal = 1,
+    /**
+     * Test run created for the blocked result when a test point is blocked.
+     */
+    Blocking = 2,
+    /**
+     * Test run created from Web.
+     */
+    Web = 4,
+    /**
+     * Run initiated from web through MTR
+     */
+    MtrRunInitiatedFromWeb = 8,
+    /**
+     * These test run would require DTL environment. These could be either of automated or manual test run.
+     */
+    RunWithDtlEnv = 16,
+    /**
+     * These test run may or may not have published test results but it will have summary like total test, passed test, failed test etc. These are automated tests.
+     */
+    NoConfigRun = 32,
 }
 
 export interface RunUpdateModel {
@@ -1528,6 +1699,10 @@ export interface RunUpdateModel {
     name?: string;
     releaseEnvironmentUri?: string;
     releaseUri?: string;
+    /**
+     * Run summary for run Type = NoConfigRun.
+     */
+    runSummary?: RunSummaryModel[];
     sourceWorkflow?: string;
     /**
      * Start date time of the run.
@@ -1538,6 +1713,10 @@ export interface RunUpdateModel {
      */
     state?: string;
     substate?: TestRunSubstate;
+    /**
+     * Tags to attach with the test run.
+     */
+    tags?: TestTag[];
     testEnvironmentId?: string;
     /**
      * An abstracted reference to test setting resource.
@@ -1570,6 +1749,7 @@ export interface ShallowReference {
 }
 
 export interface ShallowTestCaseResult {
+    automatedTestName?: string;
     automatedTestStorage?: string;
     durationInMs?: number;
     id?: number;
@@ -1579,6 +1759,7 @@ export interface ShallowTestCaseResult {
     priority?: number;
     refId?: number;
     runId?: number;
+    tags?: string[];
     testCaseTitle?: string;
 }
 
@@ -1733,6 +1914,25 @@ export interface TCMPropertyBag2 {
     value?: string;
 }
 
+export enum TCMServiceDataMigrationStatus {
+    /**
+     * Migration Not Started
+     */
+    NotStarted = 0,
+    /**
+     * Migration InProgress
+     */
+    InProgress = 1,
+    /**
+     * Migration Completed
+     */
+    Completed = 2,
+    /**
+     * Migration Failed
+     */
+    Failed = 3,
+}
+
 export interface TestActionResult {
     actionPath?: string;
     comment?: string;
@@ -1862,7 +2062,12 @@ export interface TestAttachmentRequestModel {
 
 export interface TestAuthoringDetails {
     configurationId?: number;
+    isAutomated?: boolean;
+    lastUpdated?: Date;
     pointId?: number;
+    priority?: number;
+    runBy?: string;
+    state?: TestPointState;
     suiteId?: number;
     testerId?: string;
 }
@@ -2287,6 +2492,20 @@ export interface TestFieldsEx2 {
 }
 
 /**
+ * Test Flaky Identifier
+ */
+export interface TestFlakyIdentifier {
+    /**
+     * Branch Name where Flakiness has to be Marked/Unmarked
+     */
+    branchName: string;
+    /**
+     * State for Flakiness
+     */
+    isFlaky: boolean;
+}
+
+/**
  * Filter to get TestCase result history.
  */
 export interface TestHistoryQuery {
@@ -2303,7 +2522,7 @@ export interface TestHistoryQuery {
      */
     buildDefinitionId?: number;
     /**
-     * It will be filled by server. If not null means there are some results still to be get, and we need to call this REST API with this ContinuousToken.
+     * It will be filled by server. If not null means there are some results still to be get, and we need to call this REST API with this ContinuousToken. It is not supposed to be created (or altered, if received from server in last batch) by user.
      */
     continuationToken?: string;
     /**
@@ -2322,6 +2541,10 @@ export interface TestHistoryQuery {
      * List of TestResultHistoryForGroup which are grouped by GroupBy
      */
     resultsForGroup?: TestResultHistoryForGroup[];
+    /**
+     * Get the results history only for this testCaseId. This to get used in query to filter the result along with automatedtestname
+     */
+    testCaseId?: number;
     /**
      * Number of days for which history to collect. Maximum supported value is 7 days. Default is 7 days.
      */
@@ -2407,6 +2630,14 @@ export interface TestLogReference {
      */
     filePath: string;
     /**
+     * ReleaseEnvId for test log, if context is Release
+     */
+    releaseEnvId?: number;
+    /**
+     * ReleaseId for test log, if context is Release
+     */
+    releaseId?: number;
+    /**
      * Resultid for test log, if context is run and log is related to result
      */
     resultId: number;
@@ -2440,6 +2671,10 @@ export enum TestLogScope {
      * Log File associated with Build
      */
     Build = 1,
+    /**
+     * Log File associated with Release
+     */
+    Release = 2,
 }
 
 /**
@@ -2472,11 +2707,12 @@ export enum TestLogStatusCode {
     InvalidContainer = 5,
     TransferFailed = 6,
     FeatureDisabled = 7,
-    BuildNotExist = 8,
-    RunNotExist = 9,
+    BuildDoesNotExist = 8,
+    RunDoesNotExist = 9,
     ContainerNotCreated = 10,
     APINotSupported = 11,
-    FileSizeExceed = 12,
+    FileSizeExceeds = 12,
+    ContainerNotFound = 13,
 }
 
 /**
@@ -2491,6 +2727,10 @@ export interface TestLogStoreEndpointDetails {
      * Test log store endpoint type.
      */
     endpointType?: TestLogStoreEndpointType;
+    /**
+     * Test log store status code
+     */
+    status?: TestLogStatusCode;
 }
 
 export enum TestLogStoreEndpointType {
@@ -2645,6 +2885,9 @@ export enum TestOutcome {
     MaxValue = 14,
 }
 
+/**
+ * Test outcome settings
+ */
 export interface TestOutcomeSettings {
     /**
      * Value to configure how test outcomes for the same tests across suites are shown
@@ -2795,6 +3038,10 @@ export interface TestPoint {
      * ID of the test point.
      */
     id: number;
+    /**
+     * Last date when test point was reset to Active.
+     */
+    lastResetToActive?: Date;
     /**
      * Last resolution state id of test point.
      */
@@ -3067,6 +3314,10 @@ export interface TestResultMetaData {
      */
     automatedTestStorage?: string;
     /**
+     * List of Flaky Identifier for TestCaseReferenceId
+     */
+    flakyIdentifiers?: TestFlakyIdentifier[];
+    /**
      * Owner of test result.
      */
     owner?: string;
@@ -3082,6 +3333,20 @@ export interface TestResultMetaData {
      * TestCaseTitle of test result.
      */
     testCaseTitle?: string;
+}
+
+/**
+ * Represents a TestResultMetaData Input
+ */
+export interface TestResultMetaDataUpdateInput {
+    /**
+     * List of Flaky Identifiers
+     */
+    flakyIdentifiers?: TestFlakyIdentifier[];
+}
+
+export interface TestResultMetaDataUpdateResponse {
+    status?: string;
 }
 
 export interface TestResultModelBase {
@@ -3187,6 +3452,7 @@ export interface TestResultsDetailsForGroup {
     groupByValue?: any;
     results?: TestCaseResult[];
     resultsCountByOutcome?: { [key: number] : AggregatedResultsByOutcome; };
+    tags?: string[];
 }
 
 export interface TestResultsEx2 {
@@ -3238,9 +3504,11 @@ export interface TestResultsQuery {
 
 export interface TestResultSummary {
     aggregatedResultsAnalysis?: AggregatedResultsAnalysis;
+    noConfigRunsCount?: number;
     teamProject?: TfsCoreInterfaces.TeamProjectReference;
     testFailures?: TestFailuresAnalysis;
     testResultsContext?: TestResultsContext;
+    totalRunsCount?: number;
 }
 
 export interface TestResultTrendFilter {
@@ -3348,6 +3616,10 @@ export interface TestRun {
      */
     state?: string;
     substate?: TestRunSubstate;
+    /**
+     * Tags attached with this test run.
+     */
+    tags?: TestTag[];
     /**
      * Test environment associated with the run.
      */
@@ -3589,6 +3861,13 @@ export interface TestRunSummary2 {
     testRunContextId?: number;
     testRunId?: number;
     testRunStatsId?: number;
+}
+
+export interface TestRunWithDtlEnvEvent extends TestRunEvent {
+    configurationIds: number[];
+    mappedTestRunEventType: string;
+    runTimeout: any;
+    testConfigurationsMapping: string;
 }
 
 /**
@@ -4031,6 +4310,33 @@ export interface TestSummaryForWorkItem {
     workItem: WorkItemReference;
 }
 
+/**
+ * Tag attached to a run or result.
+ */
+export interface TestTag {
+    /**
+     * Name of the tag, alphanumeric value less than 30 chars
+     */
+    name: string;
+}
+
+/**
+ * Test tag summary for build or release grouped by test run.
+ */
+export interface TestTagSummary {
+    /**
+     * Dictionary which contains tags associated with a test run.
+     */
+    tagsGroupByTestArtifact?: { [key: number] : TestTag[]; };
+}
+
+/**
+ * Tags to update to a run or result.
+ */
+export interface TestTagsUpdateModel {
+    tags?: { key: OperationType; value: TestTag[] }[];
+}
+
 export interface TestToWorkItemLinks {
     test: TestMethod;
     workItems?: WorkItemReference[];
@@ -4156,6 +4462,8 @@ export var TypeInfo = {
             "succeeded": 3
         }
     },
+    CodeCoverageSummary: <any>{
+    },
     Coverage2: <any>{
     },
     CoverageQueryFlags: {
@@ -4163,6 +4471,21 @@ export var TypeInfo = {
             "modules": 1,
             "functions": 2,
             "blockData": 4
+        }
+    },
+    CoverageStatus: {
+        enumValues: {
+            "covered": 0,
+            "notCovered": 1,
+            "partiallyCovered": 2
+        }
+    },
+    CoverageSummaryStatus: {
+        enumValues: {
+            "none": 0,
+            "pending": 1,
+            "completed": 2,
+            "finalized": 3
         }
     },
     CreateTestMessageLogEntryRequest: <any>{
@@ -4209,6 +4532,16 @@ export var TypeInfo = {
     LegacyTestRun: <any>{
     },
     LegacyTestSettings: <any>{
+    },
+    OperationType: {
+        enumValues: {
+            "add": 1,
+            "delete": 2
+        }
+    },
+    PointLastResult: <any>{
+    },
+    PointsResults2: <any>{
     },
     QueryTestActionResultResponse: <any>{
     },
@@ -4258,6 +4591,19 @@ export var TypeInfo = {
     },
     RunCreateModel: <any>{
     },
+    RunSummaryModel: <any>{
+    },
+    RunType: {
+        enumValues: {
+            "unspecified": 0,
+            "normal": 1,
+            "blocking": 2,
+            "web": 4,
+            "mtrRunInitiatedFromWeb": 8,
+            "runWithDtlEnv": 16,
+            "noConfigRun": 32
+        }
+    },
     RunUpdateModel: <any>{
     },
     Service: {
@@ -4273,6 +4619,14 @@ export var TypeInfo = {
             "defaultTesters": 2
         }
     },
+    TCMServiceDataMigrationStatus: {
+        enumValues: {
+            "notStarted": 0,
+            "inProgress": 1,
+            "completed": 2,
+            "failed": 3
+        }
+    },
     TestActionResult: <any>{
     },
     TestActionResult2: <any>{
@@ -4280,6 +4634,8 @@ export var TypeInfo = {
     TestActionResultModel: <any>{
     },
     TestAttachment: <any>{
+    },
+    TestAuthoringDetails: <any>{
     },
     TestCaseReference2: <any>{
     },
@@ -4312,7 +4668,8 @@ export var TypeInfo = {
     TestLogScope: {
         enumValues: {
             "run": 0,
-            "build": 1
+            "build": 1,
+            "release": 2
         }
     },
     TestLogStatus: <any>{
@@ -4327,11 +4684,12 @@ export var TypeInfo = {
             "invalidContainer": 5,
             "transferFailed": 6,
             "featureDisabled": 7,
-            "buildNotExist": 8,
-            "runNotExist": 9,
+            "buildDoesNotExist": 8,
+            "runDoesNotExist": 9,
             "containerNotCreated": 10,
-            "aPINotSupported": 11,
-            "fileSizeExceed": 12
+            "apiNotSupported": 11,
+            "fileSizeExceeds": 12,
+            "containerNotFound": 13
         }
     },
     TestLogStoreEndpointDetails: <any>{
@@ -4510,6 +4868,8 @@ export var TypeInfo = {
     },
     TestRunSummary2: <any>{
     },
+    TestRunWithDtlEnvEvent: <any>{
+    },
     TestSession: <any>{
     },
     TestSessionExploredWorkItemReference: <any>{
@@ -4517,11 +4877,11 @@ export var TypeInfo = {
     TestSessionSource: {
         enumValues: {
             "unknown": 0,
-            "xTDesktop": 1,
+            "xtDesktop": 1,
             "feedbackDesktop": 2,
-            "xTWeb": 3,
+            "xtWeb": 3,
             "feedbackWeb": 4,
-            "xTDesktop2": 5,
+            "xtDesktop2": 5,
             "sessionInsightsForAll": 6
         }
     },
@@ -4668,6 +5028,12 @@ TypeInfo.CloneOperationInformation.fields = {
     },
     state: {
         enumType: TypeInfo.CloneOperationState
+    }
+};
+
+TypeInfo.CodeCoverageSummary.fields = {
+    status: {
+        enumType: TypeInfo.CoverageSummaryStatus
     }
 };
 
@@ -4845,6 +5211,18 @@ TypeInfo.LegacyTestSettings.fields = {
     }
 };
 
+TypeInfo.PointLastResult.fields = {
+    lastUpdatedDate: {
+        isDate: true,
+    }
+};
+
+TypeInfo.PointsResults2.fields = {
+    lastUpdated: {
+        isDate: true,
+    }
+};
+
 TypeInfo.QueryTestActionResultResponse.fields = {
     testActionResults: {
         isArray: true,
@@ -4952,6 +5330,16 @@ TypeInfo.RunCreateModel.fields = {
     },
     releaseReference: {
         typeInfo: TypeInfo.ReleaseReference
+    },
+    runSummary: {
+        isArray: true,
+        typeInfo: TypeInfo.RunSummaryModel
+    }
+};
+
+TypeInfo.RunSummaryModel.fields = {
+    testOutcome: {
+        enumType: TypeInfo.TestOutcome
     }
 };
 
@@ -4959,6 +5347,10 @@ TypeInfo.RunUpdateModel.fields = {
     logEntries: {
         isArray: true,
         typeInfo: TypeInfo.TestMessageLogDetails
+    },
+    runSummary: {
+        isArray: true,
+        typeInfo: TypeInfo.RunSummaryModel
     },
     substate: {
         enumType: TypeInfo.TestRunSubstate
@@ -5010,6 +5402,15 @@ TypeInfo.TestAttachment.fields = {
     },
     createdDate: {
         isDate: true,
+    }
+};
+
+TypeInfo.TestAuthoringDetails.fields = {
+    lastUpdated: {
+        isDate: true,
+    },
+    state: {
+        enumType: TypeInfo.TestPointState
     }
 };
 
@@ -5141,6 +5542,9 @@ TypeInfo.TestLogStatus.fields = {
 TypeInfo.TestLogStoreEndpointDetails.fields = {
     endpointType: {
         enumType: TypeInfo.TestLogStoreEndpointType
+    },
+    status: {
+        enumType: TypeInfo.TestLogStatusCode
     }
 };
 
@@ -5211,6 +5615,9 @@ TypeInfo.TestPlansWithSelection.fields = {
 };
 
 TypeInfo.TestPoint.fields = {
+    lastResetToActive: {
+        isDate: true,
+    },
     lastResultDetails: {
         typeInfo: TypeInfo.LastResultDetails
     },
@@ -5463,6 +5870,12 @@ TypeInfo.TestRunStartedEvent.fields = {
 TypeInfo.TestRunSummary2.fields = {
     testRunCompletedDate: {
         isDate: true,
+    }
+};
+
+TypeInfo.TestRunWithDtlEnvEvent.fields = {
+    testRun: {
+        typeInfo: TypeInfo.TestRun
     }
 };
 

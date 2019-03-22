@@ -96,6 +96,9 @@ export interface Control {
     watermark?: string;
 }
 
+/**
+ * Describes a process being created.
+ */
 export interface CreateProcessModel {
     /**
      * Description of the process
@@ -110,7 +113,7 @@ export interface CreateProcessModel {
      */
     parentProcessTypeId?: string;
     /**
-     * Reference name of the process
+     * Reference name of process being created. If not specified, server will assign a unique reference name
      */
     referenceName?: string;
 }
@@ -217,19 +220,61 @@ export interface FieldRuleModel {
  * Enum for the type of a field.
  */
 export enum FieldType {
+    /**
+     * String field type.
+     */
     String = 1,
+    /**
+     * Integer field type.
+     */
     Integer = 2,
+    /**
+     * DateTime field type.
+     */
     DateTime = 3,
+    /**
+     * Plain text field type.
+     */
     PlainText = 5,
+    /**
+     * HTML (Multiline) field type.
+     */
     Html = 7,
+    /**
+     * Treepath field type.
+     */
     TreePath = 8,
+    /**
+     * History field type.
+     */
     History = 9,
+    /**
+     * Double field type.
+     */
     Double = 10,
+    /**
+     * Guid field type.
+     */
     Guid = 11,
+    /**
+     * Boolean field type.
+     */
     Boolean = 12,
+    /**
+     * Identity field type.
+     */
     Identity = 13,
+    /**
+     * Integer picklist field type.
+     */
     PicklistInteger = 14,
+    /**
+     * String picklist field type.
+     */
     PicklistString = 15,
+    /**
+     * Double picklist field type.
+     */
     PicklistDouble = 16,
 }
 
@@ -269,8 +314,17 @@ export enum GetBehaviorsExpand {
     CombinedFields = 2,
 }
 
+/**
+ * The expand level of returned processes.
+ */
 export enum GetProcessExpandLevel {
+    /**
+     * No expand level.
+     */
     None = 0,
+    /**
+     * Projects expand level.
+     */
     Projects = 1,
 }
 
@@ -278,9 +332,21 @@ export enum GetProcessExpandLevel {
  * Flag to define what properties to return in get work item type response.
  */
 export enum GetWorkItemTypeExpand {
+    /**
+     * Returns no properties in get work item type response.
+     */
     None = 0,
+    /**
+     * Returns states property in get work item type response.
+     */
     States = 1,
+    /**
+     * Returns behaviors property in get work item type response.
+     */
     Behaviors = 2,
+    /**
+     * Returns layout property in get work item type response.
+     */
     Layout = 4,
 }
 
@@ -330,7 +396,13 @@ export interface Group {
     visible?: boolean;
 }
 
+/**
+ * Class that describes the work item state is hidden.
+ */
 export interface HideStateModel {
+    /**
+     * Returns 'true', if workitem state is hidden, 'false' otherwise.
+     */
     hidden?: boolean;
 }
 
@@ -388,9 +460,21 @@ export interface Page {
  * Enum for the types of pages in the work item form layout
  */
 export enum PageType {
+    /**
+     * Custom page type.
+     */
     Custom = 1,
+    /**
+     * History page type.
+     */
     History = 2,
+    /**
+     * Link page type.
+     */
     Links = 3,
+    /**
+     * Attachment page type.
+     */
     Attachments = 4,
 }
 
@@ -712,6 +796,9 @@ export interface ProcessWorkItemTypeField {
      * Allow setting field value to a group identity. Only applies to identity fields.
      */
     allowGroups?: boolean;
+    /**
+     * Indicates the type of customization on this work item.
+     */
     customization?: CustomizationType;
     /**
      * The default value of the field.
@@ -747,6 +834,9 @@ export interface ProcessWorkItemTypeField {
     url?: string;
 }
 
+/**
+ * Defines the project reference class.
+ */
 export interface ProjectReference {
     /**
      * Description of the project
@@ -766,6 +856,9 @@ export interface ProjectReference {
     url?: string;
 }
 
+/**
+ * Action to take when the rule is triggered.
+ */
 export interface RuleAction {
     /**
      * Type of action to take when the rule is triggered.
@@ -781,6 +874,9 @@ export interface RuleAction {
     value?: string;
 }
 
+/**
+ * Action to take when the rule is triggered.
+ */
 export interface RuleActionModel {
     actionType?: string;
     targetField?: string;
@@ -1032,11 +1128,23 @@ export interface WorkItemBehaviorField {
     url?: string;
 }
 
+/**
+ * Reference to the behavior of a work item type.
+ */
 export interface WorkItemBehaviorReference {
+    /**
+     * The ID of the reference behavior.
+     */
     id?: string;
+    /**
+     * The url of the reference behavior.
+     */
     url?: string;
 }
 
+/**
+ * Class That represents a work item state input.
+ */
 export interface WorkItemStateInputModel {
     /**
      * Color of the state
@@ -1056,14 +1164,41 @@ export interface WorkItemStateInputModel {
     stateCategory?: string;
 }
 
+/**
+ * Class that represents a work item state result.
+ */
 export interface WorkItemStateResultModel {
+    /**
+     * Work item state color.
+     */
     color?: string;
+    /**
+     * Work item state customization type.
+     */
     customizationType?: CustomizationType;
+    /**
+     * If the Work item state is hidden.
+     */
     hidden?: boolean;
+    /**
+     * Id of the Workitemstate.
+     */
     id?: string;
+    /**
+     * Work item state name.
+     */
     name?: string;
+    /**
+     * Work item state order.
+     */
     order?: number;
+    /**
+     * Work item state statecategory.
+     */
     stateCategory?: string;
+    /**
+     * Work item state url.
+     */
     url?: string;
 }
 

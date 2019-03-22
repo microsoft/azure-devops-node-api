@@ -89,7 +89,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "288dff58-d13b-468e-9671-0fb754e9398c",
                     routeValues,
@@ -128,7 +128,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "da616457-eed3-4672-92d7-18d21f5c1658",
                     routeValues);
@@ -173,7 +173,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "f21cfc80-d2d2-4248-98bb-7820c74c4606",
                     routeValues);
@@ -226,7 +226,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749",
                     routeValues);
@@ -280,7 +280,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749",
                     routeValues);
@@ -334,7 +334,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749",
                     routeValues);
@@ -385,7 +385,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749",
                     routeValues);
@@ -438,7 +438,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749",
                     routeValues);
@@ -491,7 +491,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749",
                     routeValues);
@@ -537,7 +537,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "56c331f1-ce53-4318-adfd-4db5c52a7a2e",
                     routeValues);
@@ -587,7 +587,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "92755d3d-9a8a-42b3-8a4d-87359fe5aa93",
                     routeValues,
@@ -626,7 +626,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "046c980f-1345-4ce2-bf85-b46d10ff4cfd",
                     routeValues);
@@ -679,7 +679,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "275424d0-c844-4fe2-bda6-04933a1357d8",
                     routeValues,
@@ -720,7 +720,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "275424d0-c844-4fe2-bda6-04933a1357d8",
                     routeValues);
@@ -770,7 +770,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "fb0da285-f23e-4b56-8b53-3ef5f9f6de66",
                     routeValues,
@@ -818,7 +818,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "fb0da285-f23e-4b56-8b53-3ef5f9f6de66",
                     routeValues);
@@ -871,7 +871,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "fb0da285-f23e-4b56-8b53-3ef5f9f6de66",
                     routeValues,
@@ -911,7 +911,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "e5cc8c09-407b-4867-8319-2ae3338cbf6f",
                     routeValues);
@@ -967,7 +967,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "aa93e1f3-511c-4364-8b9c-eb98818f2e0b",
                     routeValues,
@@ -1004,7 +1004,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "216b978f-b164-424e-ada2-b77561e842b7",
                     routeValues);
@@ -1057,7 +1057,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "ba93e1f3-511c-4364-8b9c-eb98818f2e0b",
                     routeValues,
@@ -1100,7 +1100,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "f5afca1e-a728-4294-aa2d-4af0173431b5",
                     routeValues);
@@ -1144,7 +1144,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "f5afca1e-a728-4294-aa2d-4af0173431b5",
                     routeValues);
@@ -1180,7 +1180,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "3a2e24ed-1d6f-4cb2-9f3b-45a96bbfaf50",
                     routeValues);

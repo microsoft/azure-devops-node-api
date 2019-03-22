@@ -42,6 +42,10 @@ export interface BacklogConfiguration {
      */
     hiddenBacklogs?: string[];
     /**
+     * Is BugsBehavior Configured in the process
+     */
+    isBugsBehaviorConfigured?: boolean;
+    /**
      * Portfolio backlog descriptors
      */
     portfolioBacklogs?: BacklogLevelConfiguration[];
@@ -266,6 +270,17 @@ export enum BugsBehavior {
     AsTasks = 2,
 }
 
+export interface CapacityContractBase extends TeamSettingsDataContractBase {
+    /**
+     * Collection of capacities associated with the team member
+     */
+    activities?: Activity[];
+    /**
+     * The days off associated with the team member
+     */
+    daysOff?: DateRange[];
+}
+
 /**
  * Expected data from PATCH
  */
@@ -386,6 +401,10 @@ export interface DeliveryViewData extends PlanViewData {
      * The end date of the delivery view data
      */
     endDate?: Date;
+    /**
+     * Max number of teams can be configured for a delivery plan.
+     */
+    maxExpandedTeams?: number;
     /**
      * The start date for the delivery view data
      */
@@ -770,27 +789,38 @@ export interface TeamFieldValuesPatch {
 }
 
 export interface TeamIterationAttributes {
+    /**
+     * Finish date of the iteration. Date-only, correct unadjusted at midnight in UTC.
+     */
     finishDate?: Date;
+    /**
+     * Start date of the iteration. Date-only, correct unadjusted at midnight in UTC.
+     */
     startDate?: Date;
+    /**
+     * Time frame of the iteration, such as past, current or future.
+     */
     timeFrame?: TimeFrame;
 }
 
 /**
  * Represents capacity for a specific team member
  */
-export interface TeamMemberCapacity extends TeamSettingsDataContractBase {
-    /**
-     * Collection of capacities associated with the team member
-     */
-    activities?: Activity[];
-    /**
-     * The days off associated with the team member
-     */
-    daysOff?: DateRange[];
+export interface TeamMemberCapacity extends CapacityContractBase {
     /**
      * Shallow Ref to the associated team member
      */
     teamMember?: Member;
+}
+
+/**
+ * Represents capacity for a specific team member
+ */
+export interface TeamMemberCapacityIdentityRef extends CapacityContractBase {
+    /**
+     * Identity ref of the associated team member
+     */
+    teamMember?: VSSInterfaces.IdentityRef;
 }
 
 /**
@@ -846,23 +876,23 @@ export interface TeamSettingsDaysOffPatch {
 }
 
 /**
- * Represents a shallow ref for a single iteration
+ * Represents a shallow ref for a single iteration.
  */
 export interface TeamSettingsIteration extends TeamSettingsDataContractBase {
     /**
-     * Attributes such as start and end date
+     * Attributes of the iteration such as start and end date.
      */
     attributes?: TeamIterationAttributes;
     /**
-     * Id of the resource
+     * Id of the iteration.
      */
     id?: string;
     /**
-     * Name of the resource
+     * Name of the iteration.
      */
     name?: string;
     /**
-     * Relative path of the iteration
+     * Relative path of the iteration.
      */
     path?: string;
 }
@@ -1120,6 +1150,8 @@ export var TypeInfo = {
             "asTasks": 2
         }
     },
+    CapacityContractBase: <any>{
+    },
     CapacityPatch: <any>{
     },
     CardFieldSettings: <any>{
@@ -1179,6 +1211,8 @@ export var TypeInfo = {
     },
     TeamMemberCapacity: <any>{
     },
+    TeamMemberCapacityIdentityRef: <any>{
+    },
     TeamSetting: <any>{
     },
     TeamSettingsDaysOff: <any>{
@@ -1200,7 +1234,7 @@ export var TypeInfo = {
     },
     TimelineCriteriaStatusCode: {
         enumValues: {
-            "oK": 0,
+            "ok": 0,
             "invalidFilterClause": 1,
             "unknown": 2
         }
@@ -1209,7 +1243,7 @@ export var TypeInfo = {
     },
     TimelineIterationStatusCode: {
         enumValues: {
-            "oK": 0,
+            "ok": 0,
             "isOverlapping": 1
         }
     },
@@ -1221,7 +1255,7 @@ export var TypeInfo = {
     },
     TimelineTeamStatusCode: {
         enumValues: {
-            "oK": 0,
+            "ok": 0,
             "doesntExistOrAccessDenied": 1,
             "maxTeamsExceeded": 2,
             "maxTeamFieldsExceeded": 3,
@@ -1266,6 +1300,13 @@ TypeInfo.Board.fields = {
 TypeInfo.BoardColumn.fields = {
     columnType: {
         enumType: TypeInfo.BoardColumnType
+    }
+};
+
+TypeInfo.CapacityContractBase.fields = {
+    daysOff: {
+        isArray: true,
+        typeInfo: TypeInfo.DateRange
     }
 };
 
@@ -1386,6 +1427,13 @@ TypeInfo.TeamIterationAttributes.fields = {
 };
 
 TypeInfo.TeamMemberCapacity.fields = {
+    daysOff: {
+        isArray: true,
+        typeInfo: TypeInfo.DateRange
+    }
+};
+
+TypeInfo.TeamMemberCapacityIdentityRef.fields = {
     daysOff: {
         isArray: true,
         typeInfo: TypeInfo.DateRange

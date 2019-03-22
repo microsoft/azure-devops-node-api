@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
@@ -11,10 +11,8 @@
 // Licensed under the MIT license.  See LICENSE file in the project root for full license information.
 
 import * as restm from 'typed-rest-client/RestClient';
-import * as httpm from 'typed-rest-client/HttpClient';
 import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
-import serm = require('./Serialization');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import compatBase = require("././GalleryCompatHttpClientBase");
 import GalleryInterfaces = require("./interfaces/GalleryInterfaces");
@@ -73,6 +71,7 @@ export interface IGalleryApi extends compatBase.GalleryCompatHttpClientBase {
     deletePublisher(publisherName: string): Promise<void>;
     getPublisher(publisherName: string, flags?: number): Promise<GalleryInterfaces.Publisher>;
     updatePublisher(publisher: GalleryInterfaces.Publisher, publisherName: string): Promise<GalleryInterfaces.Publisher>;
+    updatePublisherMembers(roleAssignments: GalleryInterfaces.PublisherUserRoleAssignmentRef[], publisherName: string, limitToCallerIdentityDomain?: boolean): Promise<GalleryInterfaces.PublisherRoleAssignment[]>;
     getQuestions(publisherName: string, extensionName: string, count?: number, page?: number, afterDate?: Date): Promise<GalleryInterfaces.QuestionsResult>;
     reportQuestion(concern: GalleryInterfaces.Concern, pubName: string, extName: string, questionId: number): Promise<GalleryInterfaces.Concern>;
     createQuestion(question: GalleryInterfaces.Question, publisherName: string, extensionName: string): Promise<GalleryInterfaces.Question>;
@@ -123,7 +122,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "1f19631b-a0b4-4a03-89c2-d79785d24360",
                     routeValues);
@@ -133,7 +132,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
-                res = await this.rest.create<void>(url, options);
+                res = await this.rest.create<void>(url, null, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
@@ -165,7 +164,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "1f19631b-a0b4-4a03-89c2-d79785d24360",
                     routeValues);
@@ -210,7 +209,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "a1e66d8f-f5de-4d16-8309-91a4e015ee46",
                     routeValues);
@@ -220,7 +219,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
-                res = await this.rest.create<void>(url, options);
+                res = await this.rest.create<void>(url, null, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
@@ -255,7 +254,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "a1e66d8f-f5de-4d16-8309-91a4e015ee46",
                     routeValues);
@@ -292,6 +291,9 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         testCommerce?: boolean,
         isFreeOrTrialInstall?: boolean
         ): Promise<GalleryInterfaces.AcquisitionOptions> {
+        if (installationTarget == null) {
+            throw new TypeError('installationTarget can not be null or undefined');
+        }
 
         return new Promise<GalleryInterfaces.AcquisitionOptions>(async (resolve, reject) => {
             let routeValues: any = {
@@ -306,7 +308,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "9d0a0105-075e-4760-aa15-8bcf54d1bd7d",
                     routeValues,
@@ -345,7 +347,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "3adb1f2d-e328-446e-be73-9f6d98071c45",
                     routeValues);
@@ -408,7 +410,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "7529171f-a002-4180-93ba-685f358a0482",
                     routeValues,
@@ -461,7 +463,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "5d545f3d-ef47-488b-8be3-f5ee1517856c",
                     routeValues,
@@ -514,7 +516,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "506aff36-2622-4f70-8063-77cce6366d20",
                     routeValues,
@@ -540,6 +542,9 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         publisherName: string,
         azurePublisherId: string
         ): Promise<GalleryInterfaces.AzurePublisher> {
+        if (azurePublisherId == null) {
+            throw new TypeError('azurePublisherId can not be null or undefined');
+        }
 
         return new Promise<GalleryInterfaces.AzurePublisher>(async (resolve, reject) => {
             let routeValues: any = {
@@ -552,7 +557,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "efd202a6-9d87-4ebc-9229-d2b8ae2fdb6d",
                     routeValues,
@@ -563,7 +568,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.AzurePublisher>;
-                res = await this.rest.replace<GalleryInterfaces.AzurePublisher>(url, options);
+                res = await this.rest.replace<GalleryInterfaces.AzurePublisher>(url, null, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
@@ -592,7 +597,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "efd202a6-9d87-4ebc-9229-d2b8ae2fdb6d",
                     routeValues);
@@ -634,7 +639,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "e0a5a71e-3ac3-43a0-ae7d-0bb5c3046a2a",
                     routeValues,
@@ -683,7 +688,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "75d3c04d-84d2-4973-acd2-22627587dabc",
                     routeValues,
@@ -744,7 +749,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "1102bb42-82b0-4955-8d8a-435d6b4cedd3",
                     routeValues,
@@ -802,7 +807,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "31fba831-35b2-46f6-a641-d05de5a877d8",
                     routeValues,
@@ -848,7 +853,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "e905ad6a-3f1f-4d08-9f6d-7d357ff8b7d0",
                     routeValues);
@@ -882,7 +887,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "c0f1c7c4-3557-4ffb-b774-1e48c4865e99",
                     routeValues);
@@ -916,7 +921,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "02b33873-4e61-496e-83a2-59d1df46b7d8",
                     routeValues);
@@ -926,7 +931,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionDraft>;
-                res = await this.rest.create<GalleryInterfaces.ExtensionDraft>(url, options);
+                res = await this.rest.create<GalleryInterfaces.ExtensionDraft>(url, null, options);
 
                 let ret = this.formatResponse(res.result,
                                               GalleryInterfaces.TypeInfo.ExtensionDraft,
@@ -963,7 +968,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "02b33873-4e61-496e-83a2-59d1df46b7d8",
                     routeValues);
@@ -1017,7 +1022,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "02b33873-4e61-496e-83a2-59d1df46b7d8",
                     routeValues);
@@ -1072,7 +1077,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "f1db9c47-6619-4998-a7e5-d7f9f41a4617",
                     routeValues);
@@ -1124,7 +1129,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "b3ab127d-ebb9-4d22-b611-4e09593c8d79",
                     routeValues);
@@ -1169,7 +1174,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "b3ab127d-ebb9-4d22-b611-4e09593c8d79",
                     routeValues);
@@ -1220,7 +1225,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "b3ab127d-ebb9-4d22-b611-4e09593c8d79",
                     routeValues);
@@ -1272,7 +1277,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "88c0b1c8-b4f1-498a-9b2a-8446ef9f32e7",
                     routeValues);
@@ -1310,6 +1315,9 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         assetType: string,
         extensionName: string
         ): Promise<NodeJS.ReadableStream> {
+        if (extensionName == null) {
+            throw new TypeError('extensionName can not be null or undefined');
+        }
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1324,7 +1332,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "88c0b1c8-b4f1-498a-9b2a-8446ef9f32e7",
                     routeValues,
@@ -1362,7 +1370,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "88c0b1c8-b4f1-498a-9b2a-8446ef9f32e7",
                     routeValues);
@@ -1413,7 +1421,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "3d13c499-2168-4d06-bef4-14aba185dcd5",
                     routeValues,
@@ -1454,7 +1462,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "0bf2bd3a-70e0-4d5d-8bf7-bd4a9c2ab6e7",
                     routeValues);
@@ -1504,7 +1512,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "eb9d5ee1-6d43-456b-b80e-8a96fbc014b6",
                     routeValues,
@@ -1548,7 +1556,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "gallery",
                     "a41192c8-9525-4b58-bc86-179fa549d80d",
                     routeValues);
@@ -1594,7 +1602,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "gallery",
                     "a41192c8-9525-4b58-bc86-179fa549d80d",
                     routeValues,
@@ -1643,7 +1651,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "gallery",
                     "a41192c8-9525-4b58-bc86-179fa549d80d",
                     routeValues,
@@ -1683,7 +1691,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "gallery",
                     "a41192c8-9525-4b58-bc86-179fa549d80d",
                     routeValues);
@@ -1693,7 +1701,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
-                res = await this.rest.replace<GalleryInterfaces.PublishedExtension>(url, options);
+                res = await this.rest.replace<GalleryInterfaces.PublishedExtension>(url, null, options);
 
                 let ret = this.formatResponse(res.result,
                                               GalleryInterfaces.TypeInfo.PublishedExtension,
@@ -1728,7 +1736,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "gallery",
                     "e11ea35a-16fe-4b80-ab11-c4cab88a0966",
                     routeValues);
@@ -1777,7 +1785,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "gallery",
                     "e11ea35a-16fe-4b80-ab11-c4cab88a0966",
                     routeValues,
@@ -1838,7 +1846,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "gallery",
                     "e11ea35a-16fe-4b80-ab11-c4cab88a0966",
                     routeValues,
@@ -1896,7 +1904,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "gallery",
                     "e11ea35a-16fe-4b80-ab11-c4cab88a0966",
                     routeValues,
@@ -1933,6 +1941,9 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         extensionName: string,
         flags: GalleryInterfaces.PublishedExtensionFlags
         ): Promise<GalleryInterfaces.PublishedExtension> {
+        if (flags == null) {
+            throw new TypeError('flags can not be null or undefined');
+        }
 
         return new Promise<GalleryInterfaces.PublishedExtension>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1946,7 +1957,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "gallery",
                     "e11ea35a-16fe-4b80-ab11-c4cab88a0966",
                     routeValues,
@@ -1957,7 +1968,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
-                res = await this.rest.update<GalleryInterfaces.PublishedExtension>(url, options);
+                res = await this.rest.update<GalleryInterfaces.PublishedExtension>(url, null, options);
 
                 let ret = this.formatResponse(res.result,
                                               GalleryInterfaces.TypeInfo.PublishedExtension,
@@ -1995,7 +2006,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "328a3af8-d124-46e9-9483-01690cd415b9",
                     routeValues);
@@ -2005,7 +2016,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
-                res = await this.rest.create<void>(url, options);
+                res = await this.rest.create<void>(url, null, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
@@ -2043,7 +2054,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "328a3af8-d124-46e9-9483-01690cd415b9",
                     routeValues);
@@ -2081,7 +2092,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "05e8a5e1-8c59-4c2c-8856-0ff087d1a844",
                     routeValues);
@@ -2121,7 +2132,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "eab39817-413c-4602-a49f-07ad00844980",
                     routeValues);
@@ -2183,7 +2194,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "7cb576f8-1cae-4c4b-b7b1-e4af5759e965",
                     routeValues,
@@ -2242,7 +2253,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "364415a1-0077-4a41-a7a0-06edd4497492",
                     routeValues,
@@ -2282,7 +2293,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "21143299-34f9-4c62-8ca8-53da691192f9",
                     routeValues,
@@ -2330,7 +2341,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "21143299-34f9-4c62-8ca8-53da691192f9",
                     routeValues,
@@ -2379,7 +2390,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "21143299-34f9-4c62-8ca8-53da691192f9",
                     routeValues,
@@ -2419,7 +2430,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "2ad6ee0a-b53f-4034-9d1d-d009fda1212e",
                     routeValues);
@@ -2457,7 +2468,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4",
                     routeValues);
@@ -2496,7 +2507,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4",
                     routeValues);
@@ -2541,7 +2552,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4",
                     routeValues,
@@ -2583,7 +2594,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4",
                     routeValues);
@@ -2598,6 +2609,56 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let ret = this.formatResponse(res.result,
                                               GalleryInterfaces.TypeInfo.Publisher,
                                               false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Endpoint to add/modify publisher membership. Currently Supports only addition/modification of 1 user at a time Works only for adding members of same tenant.
+     * 
+     * @param {GalleryInterfaces.PublisherUserRoleAssignmentRef[]} roleAssignments - List of user identifiers(email address) and role to be added. Currently only one entry is supported.
+     * @param {string} publisherName - The name/id of publisher to which users have to be added
+     * @param {boolean} limitToCallerIdentityDomain - Should cross tenant addtions be allowed or not.
+     */
+    public async updatePublisherMembers(
+        roleAssignments: GalleryInterfaces.PublisherUserRoleAssignmentRef[],
+        publisherName: string,
+        limitToCallerIdentityDomain?: boolean
+        ): Promise<GalleryInterfaces.PublisherRoleAssignment[]> {
+
+        return new Promise<GalleryInterfaces.PublisherRoleAssignment[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName
+            };
+
+            let queryValues: any = {
+                limitToCallerIdentityDomain: limitToCallerIdentityDomain,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.1-preview.1",
+                    "gallery",
+                    "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<GalleryInterfaces.PublisherRoleAssignment[]>;
+                res = await this.rest.create<GalleryInterfaces.PublisherRoleAssignment[]>(url, roleAssignments, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.PublisherRoleAssignment,
+                                              true);
 
                 resolve(ret);
                 
@@ -2639,7 +2700,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "c010d03d-812c-4ade-ae07-c1862475eda5",
                     routeValues,
@@ -2689,7 +2750,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "784910cd-254a-494d-898b-0728549b2f10",
                     routeValues);
@@ -2735,7 +2796,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "6d1d9741-eca8-4701-a3a5-235afc82dfa4",
                     routeValues);
@@ -2782,7 +2843,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "6d1d9741-eca8-4701-a3a5-235afc82dfa4",
                     routeValues);
@@ -2831,7 +2892,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "6d1d9741-eca8-4701-a3a5-235afc82dfa4",
                     routeValues);
@@ -2880,7 +2941,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "7f8ae5e0-46b0-438f-b2e8-13e8513517bd",
                     routeValues);
@@ -2930,7 +2991,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "7f8ae5e0-46b0-438f-b2e8-13e8513517bd",
                     routeValues);
@@ -2982,7 +3043,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "7f8ae5e0-46b0-438f-b2e8-13e8513517bd",
                     routeValues);
@@ -3038,7 +3099,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "79e0c74f-157f-437e-845f-74fbb4121d4c",
                     routeValues,
@@ -3098,7 +3159,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "5b3f819f-f247-42ad-8c00-dd9ab9ab246d",
                     routeValues,
@@ -3152,7 +3213,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "b7b44e21-209e-48f0-ae78-04727fc37d77",
                     routeValues,
@@ -3199,7 +3260,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "e6e85b9d-aa70-40e6-aa28-d0fbf40b91a3",
                     routeValues);
@@ -3246,7 +3307,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "e6e85b9d-aa70-40e6-aa28-d0fbf40b91a3",
                     routeValues);
@@ -3295,7 +3356,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "e6e85b9d-aa70-40e6-aa28-d0fbf40b91a3",
                     routeValues);
@@ -3333,7 +3394,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "476531a3-7024-4516-a76a-ed64d3008ad6",
                     routeValues);
@@ -3377,7 +3438,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "9b75ece3-7960-401c-848b-148ac01ca350",
                     routeValues);
@@ -3420,7 +3481,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "9b75ece3-7960-401c-848b-148ac01ca350",
                     routeValues);
@@ -3465,7 +3526,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "92ed5cf4-c38b-465a-9059-2f2fb7c624b5",
                     routeValues,
@@ -3476,7 +3537,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
-                res = await this.rest.create<void>(url, options);
+                res = await this.rest.create<void>(url, null, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
@@ -3505,7 +3566,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "92ed5cf4-c38b-465a-9059-2f2fb7c624b5",
                     routeValues);
@@ -3549,7 +3610,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "a0ea3204-11e9-422d-a9ca-45851cc41400",
                     routeValues);
@@ -3603,7 +3664,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "ae06047e-51c5-4fb4-ab65-7be488544416",
                     routeValues,
@@ -3651,7 +3712,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "4fa7adb6-ca65-4075-a232-5f28323288ea",
                     routeValues);
@@ -3690,6 +3751,9 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
         version: string,
         statType: string
         ): Promise<void> {
+        if (statType == null) {
+            throw new TypeError('statType can not be null or undefined');
+        }
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3704,7 +3768,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "4fa7adb6-ca65-4075-a232-5f28323288ea",
                     routeValues,
@@ -3715,7 +3779,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
-                res = await this.rest.create<void>(url, options);
+                res = await this.rest.create<void>(url, null, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
@@ -3750,7 +3814,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "gallery",
                     "c5523abe-b843-437f-875b-5833064efe4d",
                     routeValues);

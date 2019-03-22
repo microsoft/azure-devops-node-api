@@ -1076,6 +1076,10 @@ export enum SubscriptionFlags {
      * If the subscriber is a group, is it a team.
      */
     TeamSubscription = 8,
+    /**
+     * For role based subscriptions, there is an expectation that there will always be at least one actor that matches
+     */
+    OneActorMatches = 16,
 }
 
 /**
@@ -1169,6 +1173,10 @@ export enum SubscriptionQueryFlags {
      * For a subscription the caller does not have permission to view, return basic (non-confidential) information.
      */
     AlwaysReturnBasicInformation = 16,
+    /**
+     * Include system subscriptions.
+     */
+    IncludeSystemSubscriptions = 32,
 }
 
 /**
@@ -1562,7 +1570,8 @@ export var TypeInfo = {
             "groupSubscription": 1,
             "contributedSubscription": 2,
             "canOptOut": 4,
-            "teamSubscription": 8
+            "teamSubscription": 8,
+            "oneActorMatches": 16
         }
     },
     SubscriptionPermissions: {
@@ -1583,7 +1592,8 @@ export var TypeInfo = {
             "includeInvalidSubscriptions": 2,
             "includeDeletedSubscriptions": 4,
             "includeFilterDetails": 8,
-            "alwaysReturnBasicInformation": 16
+            "alwaysReturnBasicInformation": 16,
+            "includeSystemSubscriptions": 32
         }
     },
     SubscriptionStatus: {

@@ -11,8 +11,8 @@
 "use strict";
 
 import DistributedTaskCommonInterfaces = require("../interfaces/DistributedTaskCommonInterfaces");
-import TFS_SourceControl_Contracts = require("./TfvcInterfaces");
-import TFS_TestManagement_Contracts = require("./TestInterfaces");
+import TFS_SourceControl_Contracts = require("../interfaces/TfvcInterfaces");
+import TFS_TestManagement_Contracts = require("../interfaces/TestInterfaces");
 import TfsCoreInterfaces = require("../interfaces/CoreInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
@@ -55,6 +55,10 @@ export interface AgentPoolQueueReference extends ResourceReference {
  */
 export interface AgentPoolQueueTarget extends PhaseTarget {
     /**
+     * Agent specification of the target.
+     */
+    agentSpecification?: AgentSpecification;
+    /**
      * Enables scripts and other processes launched while executing phase to access the OAuth token
      */
     allowScriptsAuthAccessOption?: boolean;
@@ -67,6 +71,16 @@ export interface AgentPoolQueueTarget extends PhaseTarget {
      * The queue.
      */
     queue?: AgentPoolQueue;
+}
+
+/**
+ * Specification of the agent defined by the pool provider.
+ */
+export interface AgentSpecification {
+    /**
+     * Agent specification unique identifier.
+     */
+    identifier?: string;
 }
 
 export enum AgentStatus {
@@ -100,10 +114,6 @@ export interface ArtifactResource {
      * Type-specific data about the artifact.
      */
     data?: string;
-    /**
-     * A secret that can be sent in a request header to retrieve an artifact anonymously. Valid for a limited amount of time. Optional.
-     */
-    downloadTicket?: string;
     /**
      * A link to download the resource.
      */
@@ -144,6 +154,10 @@ export enum AuditAction {
  */
 export interface Build {
     _links?: any;
+    /**
+     * The agent specification for the build.
+     */
+    agentSpecification?: AgentSpecification;
     /**
      * The build number/name of the build.
      */
@@ -1057,6 +1071,9 @@ export enum BuildQueryOrder {
     StartTimeAscending = 7,
 }
 
+export interface BuildQueuedEvent extends BuildUpdatedEvent {
+}
+
 export enum BuildReason {
     /**
      * No reason. This value should not be used.
@@ -1078,6 +1095,10 @@ export enum BuildReason {
      * The build was started for the trigger TriggerType.Schedule.
      */
     Schedule = 8,
+    /**
+     * The build was started for the trigger TriggerType.ScheduleForced.
+     */
+    ScheduleForced = 16,
     /**
      * The build was created by a user.
      */
@@ -1545,7 +1566,7 @@ export enum DefinitionQueueStatus {
  */
 export interface DefinitionReference {
     /**
-     * The date the definition was created.
+     * The date this version of the definition was created.
      */
     createdDate?: Date;
     /**
@@ -1741,9 +1762,30 @@ export interface DeploymentTest extends Deployment {
  */
 export interface DesignerProcess extends BuildProcess {
     phases?: Phase[];
+    /**
+     * The target for the build process.
+     */
+    target?: DesignerProcessTarget;
+}
+
+/**
+ * Represents the target for the build process.
+ */
+export interface DesignerProcessTarget {
+    /**
+     * Agent specification for the build process.
+     */
+    agentSpecification?: AgentSpecification;
 }
 
 export interface DockerProcess extends BuildProcess {
+    target?: DockerProcessTarget;
+}
+
+/**
+ * Represents the target for the docker build process.
+ */
+export interface DockerProcessTarget extends DesignerProcessTarget {
 }
 
 /**
@@ -2044,10 +2086,16 @@ export interface PullRequest {
  * Represents a pull request trigger.
  */
 export interface PullRequestTrigger extends BuildTrigger {
+    /**
+     * Indicates if an update to a PR should delete current in-progress builds.
+     */
+    autoCancel?: boolean;
     branchFilters?: string[];
     forks?: Forks;
     isCommentRequiredForPullRequest?: boolean;
     pathFilters?: string[];
+    requireCommentsForNonTeamMembersOnly?: boolean;
+    settingsSourceType?: number;
 }
 
 export enum QueryDeletedOption {
@@ -2619,11 +2667,30 @@ export interface Timeline extends TimelineReference {
     records?: TimelineRecord[];
 }
 
+export interface TimelineAttempt {
+    /**
+     * Gets or sets the attempt of the record.
+     */
+    attempt?: number;
+    /**
+     * Gets or sets the record identifier located within the specified timeline.
+     */
+    recordId?: string;
+    /**
+     * Gets or sets the timeline identifier which owns the record representing this attempt.
+     */
+    timelineId?: string;
+}
+
 /**
  * Represents an entry in a build's timeline.
  */
 export interface TimelineRecord {
     _links?: any;
+    /**
+     * Attempt number of record.
+     */
+    attempt?: number;
     /**
      * The change ID.
      */
@@ -2648,6 +2715,10 @@ export interface TimelineRecord {
      * The ID of the record.
      */
     id?: string;
+    /**
+     * String identifier that is consistent across attempts.
+     */
+    identifier?: string;
     issues?: Issue[];
     /**
      * The time the record was last modified.
@@ -2673,6 +2744,7 @@ export interface TimelineRecord {
      * The current completion percentage.
      */
     percentComplete?: number;
+    previousAttempts?: TimelineAttempt[];
     /**
      * The result.
      */
@@ -3081,6 +3153,8 @@ export var TypeInfo = {
             "startTimeAscending": 7
         }
     },
+    BuildQueuedEvent: <any>{
+    },
     BuildReason: {
         enumValues: {
             "none": 0,
@@ -3088,6 +3162,7 @@ export var TypeInfo = {
             "individualCI": 2,
             "batchedCI": 4,
             "schedule": 8,
+            "scheduleForced": 16,
             "userCreated": 32,
             "validateShelveset": 64,
             "checkInShelveset": 128,
@@ -3343,7 +3418,7 @@ export var TypeInfo = {
     },
     ValidationResult: {
         enumValues: {
-            "oK": 0,
+            "ok": 0,
             "warning": 1,
             "error": 2
         }
@@ -3685,6 +3760,12 @@ TypeInfo.BuildProcessTemplate.fields = {
     },
     templateType: {
         enumType: TypeInfo.ProcessTemplateType
+    }
+};
+
+TypeInfo.BuildQueuedEvent.fields = {
+    build: {
+        typeInfo: TypeInfo.Build
     }
 };
 
