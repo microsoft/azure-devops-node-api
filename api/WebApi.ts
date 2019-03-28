@@ -145,7 +145,7 @@ export class WebApi {
                 userAgent = window.navigator.userAgent;
             }
         } else {
-        const nodeApiName: string = 'azure-devops-node-api';
+            const nodeApiName: string = 'azure-devops-node-api';
             const nodeApiVersion: string = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json'), 'utf8')).version;
             const osName: string = os.platform();
             const osVersion: string = os.release();
