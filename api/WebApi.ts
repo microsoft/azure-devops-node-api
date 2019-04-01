@@ -42,6 +42,8 @@ import os = require('os');
 import url = require('url');
 import path = require('path');
 
+const isBrowser: boolean =(function(){return typeof window !== 'undefined' && this===window})();
+
 /**
  * Methods to return handler objects (see handlers folder)
  */
@@ -137,15 +139,23 @@ export class WebApi {
 
         let userAgent: string;
         const nodeApiName: string = 'azure-devops-node-api';
-        const nodeApiVersion: string = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json'), 'utf8')).version;
-        const osName: string = os.platform();
-        const osVersion: string = os.release();
+        if(isBrowser) {
+            if(requestSettings) {
+                userAgent = `${requestSettings.productName}/${requestSettings.productVersion} (${nodeApiName}; ${window.navigator.userAgent})`
+            } else {
+                userAgent = `${nodeApiName} (${window.navigator.userAgent})`;
+            }
+        } else {
+            const nodeApiVersion: string = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json'), 'utf8')).version;
+            const osName: string = os.platform();
+            const osVersion: string = os.release();
 
-        if (requestSettings) {
-            userAgent = `${requestSettings.productName}/${requestSettings.productVersion} (${nodeApiName} ${nodeApiVersion}; ${osName} ${osVersion})`;
-        }
-        else {
-            userAgent = `${nodeApiName}/${nodeApiVersion} (${osName} ${osVersion})`;
+            if (requestSettings) {
+                userAgent = `${requestSettings.productName}/${requestSettings.productVersion} (${nodeApiName} ${nodeApiVersion}; ${osName} ${osVersion})`;
+            }
+            else {
+                userAgent = `${nodeApiName}/${nodeApiVersion} (${osName} ${osVersion})`;
+            }
         }
         this.rest = new rm.RestClient(userAgent, null, [this.authHandler], this.options);
         this.vsoClient = new vsom.VsoClient(defaultUrl, this.rest);
@@ -401,6 +411,9 @@ export class WebApi {
     }
 
     private _readTaskLibSecrets(lookupKey: string): string {
+        if(isBrowser) {
+            throw new Error("Browsers can't securely keep secrets");
+        }
         // the lookupKey should has following format
         // base64encoded<keyFilePath>:base64encoded<encryptedContent>
         if (lookupKey && lookupKey.indexOf(':') > 0) {
