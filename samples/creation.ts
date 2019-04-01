@@ -14,7 +14,7 @@ import { ResourceAreaInfo } from "azure-devops-node-api/interfaces/LocationsInte
 import { RequestedExtension } from "azure-devops-node-api/interfaces/ExtensionManagementInterfaces";
 import { SecurityRole } from "azure-devops-node-api/interfaces/SecurityRolesInterfaces";
 import { TaskAgentPool } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
-import { TestPlan } from "azure-devops-node-api/interfaces/TestInterfaces";
+import { TestRun } from "azure-devops-node-api/interfaces/TestInterfaces";
 import { Timeline as TaskAgentTimeline } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 import { WebApiTeam } from "azure-devops-node-api/interfaces/CoreInterfaces";
 import { WidgetScope, WidgetTypesResponse } from "azure-devops-node-api/interfaces/DashboardInterfaces";
@@ -196,10 +196,10 @@ export async function run() {
         /********** Test **********/
         printSectionStart("Test");
         const testApi = await vstsCollectionLevel.getTestApi();
-        const plans: TestPlan[] = await testApi.getPlans(common.getProject());
+        const runs: TestRun[] = await testApi.getTestRuns(common.getProject());
 
-        if (plans) {
-            console.log(`found ${plans.length} plans`);
+        if (runs) {
+            console.log(`found ${runs.length} test runs`);
         }
 
         /********** Tfvc **********/
