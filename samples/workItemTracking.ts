@@ -67,6 +67,6 @@ export async function run() {
     if (workItemTypes.length > 0) {
         const type: WorkItemTrackingInterfaces.WorkItemType = workItemTypes[0];
         common.heading('Info for type' + type.name);
-        console.log(type.name, 'has', (await witApi.getWorkItemTypeFields(project.id, type.name)).length, 'fields');
+        console.log(type.name, 'has', (await witApi.getWorkItemTypeColors([project.id])).length, 'colors');
     }
 }
