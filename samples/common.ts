@@ -10,8 +10,8 @@ function getEnv(name: string): string {
     return val;
 }
 
-export async function getWebApi(): Promise<vm.WebApi> {
-    let serverUrl = getEnv("API_URL");
+export async function getWebApi(serverUrl?: string): Promise<vm.WebApi> {
+    serverUrl = serverUrl || getEnv("API_URL");
     return await this.getApi(serverUrl);
 }
 
