@@ -64,7 +64,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                     "dad91cbe-d183-45f8-9c6e-9c1164472121",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -108,7 +108,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                     "dad91cbe-d183-45f8-9c6e-9c1164472121",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -152,7 +152,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                     "dad91cbe-d183-45f8-9c6e-9c1164472121",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -203,7 +203,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -249,7 +249,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                     "dad91cbe-d183-45f8-9c6e-9c1164472121",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -293,7 +293,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                     "46aecb7a-5d2c-4647-897b-0209505a9fe4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -337,7 +337,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                     "46aecb7a-5d2c-4647-897b-0209505a9fe4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -397,7 +397,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -444,7 +444,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                     "fe1e68a2-60d3-43cb-855b-85e41ae97c95",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -498,7 +498,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -542,7 +542,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                     "44096322-2d3d-466a-bb30-d1b7de69f61f",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -583,7 +583,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                     "44096322-2d3d-466a-bb30-d1b7de69f61f",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 

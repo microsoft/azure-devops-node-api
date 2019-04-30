@@ -632,6 +632,14 @@ export interface EnvironmentDeploymentExecutionRecord {
      */
     id?: number;
     /**
+     * Job Attempt
+     */
+    jobAttempt?: number;
+    /**
+     * Job name
+     */
+    jobName?: string;
+    /**
      * Owner of the environment deployment execution record
      */
     owner?: TaskOrchestrationOwner;
@@ -667,6 +675,14 @@ export interface EnvironmentDeploymentExecutionRecord {
      * Service owner Id
      */
     serviceOwner?: string;
+    /**
+     * Stage Attempt
+     */
+    stageAttempt?: number;
+    /**
+     * Stage name
+     */
+    stageName?: string;
     /**
      * Start time of the environment deployment execution
      */
@@ -720,6 +736,20 @@ export interface EnvironmentInstance {
      */
     name?: string;
     resources?: EnvironmentResourceReference[];
+}
+
+/**
+ * EnvironmentLinkedResourceReference.
+ */
+export interface EnvironmentLinkedResourceReference {
+    /**
+     * Id of the resource.
+     */
+    id?: string;
+    /**
+     * Type of resource.
+     */
+    typeName?: string;
 }
 
 export interface EnvironmentReference {
@@ -902,11 +932,13 @@ export interface JobStartedEvent extends JobEvent {
 }
 
 export interface KubernetesResource extends EnvironmentResource {
+    clusterName?: string;
     namespace?: string;
     serviceEndpointId?: string;
 }
 
 export interface KubernetesResourceCreateParameters {
+    clusterName?: string;
     name?: string;
     namespace?: string;
     serviceEndpointId?: string;
@@ -1882,6 +1914,10 @@ export interface TaskAgentPoolReference {
      * Gets or sets a value indicating whether or not this pool is managed by the service.
      */
     isHosted?: boolean;
+    /**
+     * Determines whether the pool is legacy.
+     */
+    isLegacy?: boolean;
     name?: string;
     /**
      * Gets or sets the type of the pool
@@ -2370,6 +2406,7 @@ export interface TaskGroupRevision {
     changeType?: AuditAction;
     comment?: string;
     fileId?: number;
+    majorVersion?: number;
     revision?: number;
     taskGroupId?: string;
 }

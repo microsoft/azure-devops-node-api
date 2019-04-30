@@ -49,7 +49,7 @@ export class ProjectAnalysisApi extends basem.ClientApiBase implements IProjectA
                     "5b02a779-1867-433f-90b7-d23ed5e33e57",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -104,7 +104,7 @@ export class ProjectAnalysisApi extends basem.ClientApiBase implements IProjectA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -173,7 +173,7 @@ export class ProjectAnalysisApi extends basem.ClientApiBase implements IProjectA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -231,7 +231,7 @@ export class ProjectAnalysisApi extends basem.ClientApiBase implements IProjectA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 

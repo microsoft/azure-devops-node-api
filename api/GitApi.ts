@@ -177,7 +177,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "5e8a8081-3851-4626-b677-9891cc04102e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -224,7 +224,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "5e8a8081-3851-4626-b677-9891cc04102e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -284,7 +284,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -344,7 +344,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -389,7 +389,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
@@ -441,7 +441,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
@@ -490,7 +490,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -541,7 +541,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -585,7 +585,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "d5b216de-d8d5-4d32-ae76-51df755b16d3",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -642,7 +642,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -696,7 +696,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -742,7 +742,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "033bad68-9a14-43d1-90e0-59cb8856fef6",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -789,7 +789,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "033bad68-9a14-43d1-90e0-59cb8856fef6",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -843,7 +843,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -906,7 +906,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -960,7 +960,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1020,7 +1020,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1083,7 +1083,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1142,7 +1142,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1183,7 +1183,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "2b6869c4-cb25-42b5-b7a3-0d3e6be0a11a",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1229,7 +1229,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "c4c5a7e6-e9f3-4730-a92b-84baacff694b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1283,7 +1283,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1336,7 +1336,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1390,7 +1390,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1444,7 +1444,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1490,7 +1490,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "01828ddc-3600-4a41-8633-99b3a73a0eb3",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1537,7 +1537,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "01828ddc-3600-4a41-8633-99b3a73a0eb3",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1588,7 +1588,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1637,7 +1637,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "01828ddc-3600-4a41-8633-99b3a73a0eb3",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1715,7 +1715,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1793,7 +1793,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -1854,7 +1854,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1932,7 +1932,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
@@ -2002,7 +2002,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
@@ -2040,7 +2040,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "630fd2e4-fb88-4f85-ad21-13f3fd1fbca9",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2103,7 +2103,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2156,7 +2156,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2210,7 +2210,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2266,7 +2266,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "965d9361-878b-413b-a494-45d5b5fd8ab7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
@@ -2317,7 +2317,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "965d9361-878b-413b-a494-45d5b5fd8ab7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2367,7 +2367,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "965d9361-878b-413b-a494-45d5b5fd8ab7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -2406,7 +2406,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "965d9361-878b-413b-a494-45d5b5fd8ab7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2456,7 +2456,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "965d9361-878b-413b-a494-45d5b5fd8ab7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
@@ -2501,7 +2501,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "5f2e2851-1389-425b-a00b-fb2adb3ef31b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2554,7 +2554,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "5f2e2851-1389-425b-a00b-fb2adb3ef31b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2607,7 +2607,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "5f2e2851-1389-425b-a00b-fb2adb3ef31b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2667,7 +2667,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2714,7 +2714,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "52823034-34a8-4576-922c-8d8b77e9e4c4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2764,7 +2764,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "d840fb74-bbef-42d3-b250-564604c054a4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2830,7 +2830,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2882,7 +2882,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "d840fb74-bbef-42d3-b250-564604c054a4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2931,7 +2931,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "d840fb74-bbef-42d3-b250-564604c054a4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2994,7 +2994,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3044,7 +3044,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "d43911ee-6958-46b0-a42b-8445b8a0d004",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3098,7 +3098,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3150,7 +3150,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "75cf11c5-979f-4038-a76e-058a06adf2bf",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3203,7 +3203,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "75cf11c5-979f-4038-a76e-058a06adf2bf",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3256,7 +3256,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "75cf11c5-979f-4038-a76e-058a06adf2bf",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3306,7 +3306,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "75cf11c5-979f-4038-a76e-058a06adf2bf",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3362,7 +3362,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "75cf11c5-979f-4038-a76e-058a06adf2bf",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
                 options.additionalHeaders = customHeaders;
@@ -3419,7 +3419,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3476,7 +3476,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3533,7 +3533,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3587,7 +3587,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3634,7 +3634,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "48a52185-5b9e-4736-9dc1-bb1e2feac80b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3687,7 +3687,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "48a52185-5b9e-4736-9dc1-bb1e2feac80b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
                 options.additionalHeaders = customHeaders;
@@ -3734,7 +3734,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "b3a6eebe-9cf0-49ea-b6cb-1a4c5f5007b0",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3786,7 +3786,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3835,7 +3835,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3885,7 +3885,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3935,7 +3935,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3982,7 +3982,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4031,7 +4031,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4075,7 +4075,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "01a46dea-7d46-4d40-bc84-319e7c260d99",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4135,7 +4135,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4188,7 +4188,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4254,7 +4254,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4317,7 +4317,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4366,7 +4366,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "9946fd70-0d40-406e-b686-b4744cbbcc37",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4415,7 +4415,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "696f3a82-47c9-487f-9117-b9d00972ca84",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4464,7 +4464,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4514,7 +4514,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4564,7 +4564,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4611,7 +4611,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4664,7 +4664,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
                 options.additionalHeaders = customHeaders;
@@ -4717,7 +4717,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4770,7 +4770,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4823,7 +4823,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4873,7 +4873,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4928,7 +4928,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4977,7 +4977,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "ab6e2e5d-a0b7-4153-b64a-a4efe0d49449",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5037,7 +5037,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5094,7 +5094,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5146,7 +5146,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "ab6e2e5d-a0b7-4153-b64a-a4efe0d49449",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5193,7 +5193,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "0a637fcc-5370-4ce8-b0e8-98091f5f9482",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5239,7 +5239,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "ea98d07b-3c87-4971-8ede-a613694ffb55",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5296,7 +5296,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5353,7 +5353,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5397,7 +5397,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "a663da97-81db-4eb3-8b83-287670f63073",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5438,7 +5438,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "a663da97-81db-4eb3-8b83-287670f63073",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5484,7 +5484,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "a663da97-81db-4eb3-8b83-287670f63073",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5553,7 +5553,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5612,7 +5612,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5665,7 +5665,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5708,7 +5708,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "876f70af-5792-485a-a1c7-d0a7b2f42bbb",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5752,7 +5752,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "876f70af-5792-485a-a1c7-d0a7b2f42bbb",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5796,7 +5796,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "876f70af-5792-485a-a1c7-d0a7b2f42bbb",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5847,7 +5847,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5897,7 +5897,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5941,7 +5941,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5995,7 +5995,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6039,7 +6039,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6093,7 +6093,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6139,7 +6139,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6185,7 +6185,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "bc866058-5449-4715-9cf1-a510b6ff193c",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6232,7 +6232,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "bc866058-5449-4715-9cf1-a510b6ff193c",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6286,7 +6286,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6335,7 +6335,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "428dd4fb-fda5-4722-af02-9313b80305da",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6395,7 +6395,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6439,7 +6439,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     "9393b4fb-4445-4919-972b-9ad16f442d83",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6499,7 +6499,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6559,7 +6559,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);

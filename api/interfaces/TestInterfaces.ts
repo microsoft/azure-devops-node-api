@@ -128,9 +128,15 @@ export interface AggregatedRunsByState {
  * The types of test attachments.
  */
 export enum AttachmentType {
+    /**
+     * Attachment type GeneralAttachment , use this as default type unless you have other type.
+     */
     GeneralAttachment = 0,
     AfnStrip = 1,
     BugFilingData = 2,
+    /**
+     * Attachment type CodeCoverage.
+     */
     CodeCoverage = 3,
     IntermediateCollectorData = 4,
     RunConfig = 5,
@@ -139,6 +145,9 @@ export enum AttachmentType {
     TmiTestRunReverseDeploymentFiles = 8,
     TmiTestResultDetail = 9,
     TmiTestRunSummary = 10,
+    /**
+     * Attachment type ConsoleLog.
+     */
     ConsoleLog = 11,
 }
 
@@ -148,21 +157,69 @@ export interface BatchResponse {
     status: string;
 }
 
+/**
+ * BuildConfiguration Details.
+ */
 export interface BuildConfiguration {
+    /**
+     * Branch name for which build is generated.
+     */
     branchName?: string;
+    /**
+     * BuildDefnitionId for build.
+     */
     buildDefinitionId?: number;
+    /**
+     * Build system.
+     */
     buildSystem?: string;
+    /**
+     * Build Creation Date.
+     */
     creationDate?: Date;
+    /**
+     * Build flavor (eg Build/Release).
+     */
     flavor?: string;
+    /**
+     * BuildConfiguration Id.
+     */
     id?: number;
+    /**
+     * Build Number.
+     */
     number?: string;
+    /**
+     * BuildConfiguration Platform.
+     */
     platform?: string;
+    /**
+     * Project associated with this BuildConfiguration.
+     */
     project?: ShallowReference;
+    /**
+     * ResposotoryGuid for the Build.
+     */
     repositoryGuid?: string;
+    /**
+     * Repository Id.
+     */
     repositoryId?: number;
+    /**
+     * Repository Type (eg. TFSGit).
+     */
     repositoryType?: string;
+    /**
+     * Source Version(/first commit) for the build was triggered.
+     */
     sourceVersion?: string;
+    /**
+     * Target BranchName.
+     */
     targetBranchName?: string;
+    /**
+     * Build Uri.
+     */
     uri?: string;
 }
 
@@ -334,6 +391,9 @@ export enum CloneOperationState {
     Succeeded = 3,
 }
 
+/**
+ * Clone options for cloning the test suite.
+ */
 export interface CloneOptions {
     /**
      * If set to true requirements will be cloned
@@ -361,6 +421,9 @@ export interface CloneOptions {
     relatedLinkComment?: string;
 }
 
+/**
+ * Clone Statistics Details.
+ */
 export interface CloneStatistics {
     /**
      * Number of Requirments cloned so far.
@@ -514,7 +577,7 @@ export enum CoverageSummaryStatus {
     /**
      * The summary evaluation is in progress
      */
-    Pending = 1,
+    InProgress = 1,
     /**
      * The summary evaluation for the previous request is completed. Summary can change in future
      */
@@ -523,6 +586,10 @@ export enum CoverageSummaryStatus {
      * The summary evaluation is finalized and won't change
      */
     Finalized = 3,
+    /**
+     * The summary evaluation is pending
+     */
+    Pending = 4,
 }
 
 export interface CreateTestMessageLogEntryRequest {
@@ -544,7 +611,7 @@ export interface CreateTestRunRequest {
 }
 
 /**
- * A custom field information.
+ * A custom field information. Allowed Key : Value pairs - ( AttemptId: IntVaue , IsTestResultFlaky: bool)
  */
 export interface CustomTestField {
     /**
@@ -710,9 +777,35 @@ export interface HttpPostedTcmAttachment {
     fileName?: string;
 }
 
+/**
+ * Job in pipeline. This is related to matrixing in YAML.
+ */
+export interface JobReference {
+    /**
+     * Attempt number of the job
+     */
+    attempt?: number;
+    /**
+     * Matrixing in YAML generates copies of a job with different inputs in matrix. JobName is the name of those input. Maximum supported length for name is 256 character.
+     */
+    jobName?: string;
+}
+
+/**
+ * Last result details of test point.
+ */
 export interface LastResultDetails {
+    /**
+     * CompletedDate of LastResult.
+     */
     dateCompleted?: Date;
+    /**
+     * Duration of LastResult.
+     */
     duration?: number;
+    /**
+     * RunBy.
+     */
     runBy?: VSSInterfaces.IdentityRef;
 }
 
@@ -998,6 +1091,42 @@ export enum OperationType {
 }
 
 /**
+ * Phase in pipeline
+ */
+export interface PhaseReference {
+    /**
+     * Attempt number of the pahse
+     */
+    attempt?: number;
+    /**
+     * Name of the phase. Maximum supported length for name is 256 character.
+     */
+    phaseName?: string;
+}
+
+/**
+ * Pipeline reference
+ */
+export interface PipelineReference {
+    /**
+     * Reference of the job
+     */
+    jobReference?: JobReference;
+    /**
+     * Reference of the phase.
+     */
+    phaseReference?: PhaseReference;
+    /**
+     * Reference of the pipeline with which this pipeline intance is related.
+     */
+    pipelineId: number;
+    /**
+     * Reference of the stage.
+     */
+    stageReference?: StageReference;
+}
+
+/**
  * A model class used for creating and updating test plans.
  */
 export interface PlanUpdateModel {
@@ -1097,6 +1226,11 @@ export interface PointsFilter {
     testers?: VSSInterfaces.IdentityRef[];
 }
 
+export interface PointsReference2 {
+    planId?: number;
+    pointId?: number;
+}
+
 export interface PointsResults2 {
     changeNumber?: number;
     lastFailureType?: number;
@@ -1138,6 +1272,9 @@ export interface PointWorkItemProperty {
     workItem: { key: string; value: any };
 }
 
+/**
+ * The class to represent a Generic store for test session data.
+ */
 export interface PropertyBag {
     /**
      * Generic store for test session data
@@ -1220,12 +1357,21 @@ export interface ReleaseEnvironmentDefinitionReference {
  * Reference to a release.
  */
 export interface ReleaseReference {
+    /**
+     * Number of Release Attempt.
+     */
     attempt?: number;
+    /**
+     * Release Creation Date.
+     */
     creationDate?: Date;
     /**
      * Release definition ID.
      */
     definitionId?: number;
+    /**
+     * Environment creation Date.
+     */
     environmentCreationDate?: Date;
     /**
      * Release environment definition ID.
@@ -1345,6 +1491,20 @@ export enum ResultGroupType {
 }
 
 /**
+ * Additional details with test result metadata
+ */
+export enum ResultMetaDataDetails {
+    /**
+     * Core fields of test result metadata.
+     */
+    None = 0,
+    /**
+     * Test FlakyIdentifiers details in test result metadata.
+     */
+    FlakyIdentifiers = 1,
+}
+
+/**
  * The top level entity that is being cloned as part of a Clone operation
  */
 export enum ResultObjectType {
@@ -1439,6 +1599,7 @@ export interface ResultUpdateResponse {
     lastUpdatedByName?: string;
     maxReservedSubResultId?: number;
     revision?: number;
+    testPlanId?: number;
     testResultId?: number;
 }
 
@@ -1470,6 +1631,9 @@ export interface RunCreateModel {
      * Platform of the build used for test run. (E.g.: x86, amd64)
      */
     buildPlatform?: string;
+    /**
+     * BuildReference of the test run.
+     */
     buildReference?: BuildConfiguration;
     /**
      * Comments entered by those analyzing the run.
@@ -1487,6 +1651,9 @@ export interface RunCreateModel {
      * Name of the test controller used for automated run.
      */
     controller?: string;
+    /**
+     * Additional properties of test Run.
+     */
     customTestFields?: CustomTestField[];
     /**
      * An abstracted reference to DtlAutEnvironment.
@@ -1505,6 +1672,9 @@ export interface RunCreateModel {
      * Error message associated with the run.
      */
     errorMessage?: string;
+    /**
+     * Filter used for discovering the Run.
+     */
     filter?: RunFilter;
     /**
      * The iteration in which to create the run. Root iteration of the team project will be default
@@ -1519,6 +1689,10 @@ export interface RunCreateModel {
      */
     owner?: VSSInterfaces.IdentityRef;
     /**
+     * Reference of the pipeline to which this test run belongs. PipelineReference.PipelineId should be equal to RunCreateModel.Build.Id
+     */
+    pipelineReference?: PipelineReference;
+    /**
      * An abstracted reference to the plan that it belongs.
      */
     plan: ShallowReference;
@@ -1530,6 +1704,9 @@ export interface RunCreateModel {
      * URI of release environment associated with the run.
      */
     releaseEnvironmentUri?: string;
+    /**
+     * Reference to release associated with test run.
+     */
     releaseReference?: ReleaseReference;
     /**
      * URI of release associated with the run.
@@ -1539,20 +1716,29 @@ export interface RunCreateModel {
      * Run summary for run Type = NoConfigRun.
      */
     runSummary?: RunSummaryModel[];
+    /**
+     * Timespan till the Run RunTimesout.
+     */
     runTimeout?: any;
+    /**
+     * SourceWorkFlow(CI/CD) of the test run.
+     */
     sourceWorkflow?: string;
     /**
      * Start date time of the run.
      */
     startDate?: string;
     /**
-     * The state of the run. Valid states - NotStarted, InProgress, Waiting
+     * The state of the run. Type TestRunState Valid states - Unspecified ,NotStarted, InProgress, Completed, Waiting, Aborted, NeedsInvestigation
      */
     state?: string;
     /**
      * Tags to attach with the test run, maximum of 5 tags can be added to run.
      */
     tags?: TestTag[];
+    /**
+     * TestConfgurationMapping of the test run.
+     */
     testConfigurationsMapping?: string;
     /**
      * ID of the test environment associated with the run.
@@ -1563,7 +1749,7 @@ export interface RunCreateModel {
      */
     testSettings?: ShallowReference;
     /**
-     * Type of the run(RunType)
+     * Type of the run(RunType) Valid Values : (Unspecified, Normal, Blocking, Web, MtrRunInitiatedFromWeb, RunWithDtlEnv, NoConfigRun)
      */
     type?: string;
 }
@@ -1583,14 +1769,20 @@ export interface RunFilter {
 }
 
 /**
- * Test run statistics.
+ * Test run statistics per outcome.
  */
 export interface RunStatistic {
+    /**
+     * Test result count fo the given outcome.
+     */
     count: number;
     /**
-     * Test run outcome
+     * Test result outcome
      */
     outcome: string;
+    /**
+     * Test run Resolution State.
+     */
     resolutionState?: TestResolutionState;
     /**
      * State of the test run
@@ -1652,8 +1844,17 @@ export interface RunUpdateModel {
      * An abstracted reference to the build that it belongs.
      */
     build?: ShallowReference;
+    /**
+     * Drop location of the build used for test run.
+     */
     buildDropLocation?: string;
+    /**
+     * Flavor of the build used for test run. (E.g: Release, Debug)
+     */
     buildFlavor?: string;
+    /**
+     * Platform of the build used for test run. (E.g.: x86, amd64)
+     */
     buildPlatform?: string;
     /**
      * Comments entered by those analyzing the run.
@@ -1667,6 +1868,9 @@ export interface RunUpdateModel {
      * Name of the test controller used for automated run.
      */
     controller?: string;
+    /**
+     * true to delete inProgess Results , false otherwise.
+     */
     deleteInProgressResults?: boolean;
     /**
      * An abstracted reference to DtlAutEnvironment.
@@ -1697,12 +1901,21 @@ export interface RunUpdateModel {
      * Name of the test run.
      */
     name?: string;
+    /**
+     * URI of release environment associated with the run.
+     */
     releaseEnvironmentUri?: string;
+    /**
+     * URI of release associated with the run.
+     */
     releaseUri?: string;
     /**
      * Run summary for run Type = NoConfigRun.
      */
     runSummary?: RunSummaryModel[];
+    /**
+     * SourceWorkFlow(CI/CD) of the test run.
+     */
     sourceWorkflow?: string;
     /**
      * Start date time of the run.
@@ -1712,11 +1925,17 @@ export interface RunUpdateModel {
      * The state of the test run Below are the valid values - NotStarted, InProgress, Completed, Aborted, Waiting
      */
     state?: string;
+    /**
+     * The types of sub states for test run.
+     */
     substate?: TestRunSubstate;
     /**
      * Tags to attach with the test run.
      */
     tags?: TestTag[];
+    /**
+     * ID of the test environment associated with the run.
+     */
     testEnvironmentId?: string;
     /**
      * An abstracted reference to test setting resource.
@@ -1775,6 +1994,20 @@ export interface SharedStepModel {
      * Shared step workitem revision.
      */
     revision: number;
+}
+
+/**
+ * Stage in pipeline
+ */
+export interface StageReference {
+    /**
+     * Attempt number of stage
+     */
+    attempt?: number;
+    /**
+     * Name of the stage. Maximum supported length for name is 256 character.
+     */
+    stageName?: string;
 }
 
 /**
@@ -2133,6 +2366,9 @@ export interface TestCaseResult {
      * Type of automated test.
      */
     automatedTestType?: string;
+    /**
+     * TypeId of automated test.
+     */
     automatedTestTypeId?: string;
     /**
      * Shallow reference to build associated with test result.
@@ -2143,11 +2379,11 @@ export interface TestCaseResult {
      */
     buildReference?: BuildReference;
     /**
-     * Comment in a test result.
+     * Comment in a test result with maxSize= 1000 chars.
      */
     comment?: string;
     /**
-     * Time when test execution completed.
+     * Time when test execution completed. Completed date should be greater than StartedDate.
      */
     completedDate?: Date;
     /**
@@ -2155,7 +2391,7 @@ export interface TestCaseResult {
      */
     computerName?: string;
     /**
-     * Test configuration of a test result.
+     * Reference to test configuration. Type ShallowReference.
      */
     configuration?: ShallowReference;
     /**
@@ -2167,7 +2403,7 @@ export interface TestCaseResult {
      */
     customFields?: CustomTestField[];
     /**
-     * Duration of test execution in milliseconds.
+     * Duration of test execution in milliseconds. If not provided value will be set as CompletedDate - StartedDate
      */
     durationInMs?: number;
     /**
@@ -2179,7 +2415,7 @@ export interface TestCaseResult {
      */
     failingSince?: FailingSince;
     /**
-     * Failure type of test result.
+     * Failure type of test result. Valid Value= (Known Issue, New Issue, Regression, Unknown, None)
      */
     failureType?: string;
     /**
@@ -2187,7 +2423,7 @@ export interface TestCaseResult {
      */
     id?: number;
     /**
-     * Test result details of test iterations.
+     * Test result details of test iterations used only for Manual Testing.
      */
     iterationDetails?: TestIterationDetailsModel[];
     /**
@@ -2199,7 +2435,7 @@ export interface TestCaseResult {
      */
     lastUpdatedDate?: Date;
     /**
-     * Test outcome of test result.
+     * Test outcome of test result. Valid values = (Unspecified, None, Passed, Failed, Inconclusive, Timeout, Aborted, Blocked, NotExecuted, Warning, Error, NotApplicable, Paused, InProgress, NotImpacted)
      */
     outcome?: string;
     /**
@@ -2222,6 +2458,9 @@ export interface TestCaseResult {
      * Reference to release associated with test result.
      */
     releaseReference?: ReleaseReference;
+    /**
+     * ResetCount.
+     */
     resetCount?: number;
     /**
      * Resolution state of test result.
@@ -2244,7 +2483,7 @@ export interface TestCaseResult {
      */
     runBy?: VSSInterfaces.IdentityRef;
     /**
-     * Stacktrace.
+     * Stacktrace with maxSize= 1000 chars.
      */
     stackTrace?: string;
     /**
@@ -2252,7 +2491,7 @@ export interface TestCaseResult {
      */
     startedDate?: Date;
     /**
-     * State of test result.
+     * State of test result. Type TestRunState.
      */
     state?: string;
     /**
@@ -2264,11 +2503,11 @@ export interface TestCaseResult {
      */
     testCase?: ShallowReference;
     /**
-     * Reference ID of test used by test result.
+     * Reference ID of test used by test result. Type TestResultMetaData
      */
     testCaseReferenceId?: number;
     /**
-     * Name of test.
+     * TestCaseRevision Number.
      */
     testCaseRevision?: number;
     /**
@@ -2435,8 +2674,17 @@ export enum TestConfigurationState {
     Inactive = 2,
 }
 
+/**
+ * Test environment Detail.
+ */
 export interface TestEnvironment {
+    /**
+     * Test Environment Id.
+     */
     environmentId: string;
+    /**
+     * Test Environment Name.
+     */
     environmentName: string;
 }
 
@@ -2713,6 +2961,8 @@ export enum TestLogStatusCode {
     APINotSupported = 11,
     FileSizeExceeds = 12,
     ContainerNotFound = 13,
+    FileNotFound = 14,
+    DirectoryNotFound = 15,
 }
 
 /**
@@ -2821,6 +3071,9 @@ export interface TestOperationReference {
     url?: string;
 }
 
+/**
+ * Valid TestOutcome values.
+ */
 export enum TestOutcome {
     /**
      * Only used during an update to preserve the existing value.
@@ -3167,8 +3420,17 @@ export enum TestPointState {
 export interface TestPointsUpdatedEvent extends TestPointsEvent {
 }
 
+/**
+ * Test Resolution State Details.
+ */
 export interface TestResolutionState {
+    /**
+     * Test Resolution state Id.
+     */
     id: number;
+    /**
+     * Test Resolution State Name.
+     */
     name: string;
     project: ShallowReference;
 }
@@ -3542,9 +3804,21 @@ export interface TestRun {
      * Completed date time of the run.
      */
     completedDate?: Date;
+    /**
+     * Test Run Controller.
+     */
     controller?: string;
+    /**
+     * Test Run CreatedDate.
+     */
     createdDate?: Date;
+    /**
+     * List of Custom Fields for TestRun.
+     */
     customFields?: CustomTestField[];
+    /**
+     * Drop Location for the test Run.
+     */
     dropLocation?: string;
     dtlAutEnvironment?: ShallowReference;
     dtlEnvironment?: ShallowReference;
@@ -3562,6 +3836,9 @@ export interface TestRun {
      * ID of the test run.
      */
     id: number;
+    /**
+     * Number of Incomplete Tests.
+     */
     incompleteTests?: number;
     /**
      * true if test run is automated, false otherwise.
@@ -3583,6 +3860,9 @@ export interface TestRun {
      * Name of the test run.
      */
     name: string;
+    /**
+     * Number of Not Applicable Tests.
+     */
     notApplicableTests?: number;
     /**
      * Team Foundation ID of the owner of the runs.
@@ -3592,29 +3872,54 @@ export interface TestRun {
      * Number of passed tests in the run
      */
     passedTests?: number;
+    /**
+     * Phase/State for the testRun.
+     */
     phase?: string;
+    /**
+     * Reference of the pipeline to which this test run belongs.
+     */
+    pipelineReference?: PipelineReference;
     /**
      * Test plan associated with this test run.
      */
     plan?: ShallowReference;
+    /**
+     * Post Process State.
+     */
     postProcessState?: string;
     /**
      * Project associated with this run.
      */
     project?: ShallowReference;
+    /**
+     * Release Reference for the Test Run.
+     */
     release?: ReleaseReference;
+    /**
+     * Release Environment Uri for TestRun.
+     */
     releaseEnvironmentUri?: string;
+    /**
+     * Release Uri for TestRun.
+     */
     releaseUri?: string;
     revision?: number;
+    /**
+     * RunSummary by outcome.
+     */
     runStatistics?: RunStatistic[];
     /**
      * Start date time of the run.
      */
     startedDate?: Date;
     /**
-     * The state of the run. { NotStarted, InProgress, Waiting }
+     * The state of the run. Type TestRunState Valid states - Unspecified ,NotStarted, InProgress, Completed, Waiting, Aborted, NeedsInvestigation
      */
     state?: string;
+    /**
+     * TestRun Substate.
+     */
     substate?: TestRunSubstate;
     /**
      * Tags attached with this test run.
@@ -3630,11 +3935,17 @@ export interface TestRun {
      * Total tests in the run
      */
     totalTests?: number;
+    /**
+     * Number of failed tests in the run.
+     */
     unanalyzedTests?: number;
     /**
      * Url of the test run
      */
     url: string;
+    /**
+     * Web Access Url for TestRun.
+     */
     webAccessUrl?: string;
 }
 
@@ -3839,14 +4150,41 @@ export interface TestRunStatistic {
  * The types of sub states for test run. It gives the user more info about the test run beyond the high level test run state
  */
 export enum TestRunSubstate {
+    /**
+     * Run with noState.
+     */
     None = 0,
+    /**
+     * Run state while Creating Environment.
+     */
     CreatingEnvironment = 1,
+    /**
+     * Run state while Running Tests.
+     */
     RunningTests = 2,
+    /**
+     * Run state while Creating Environment.
+     */
     CanceledByUser = 3,
+    /**
+     * Run state when it is Aborted By the System.
+     */
     AbortedBySystem = 4,
+    /**
+     * Run state when run has timedOut.
+     */
     TimedOut = 5,
+    /**
+     * Run state while Pending Analysis.
+     */
     PendingAnalysis = 6,
+    /**
+     * Run state after being Analysed.
+     */
     Analyzed = 7,
+    /**
+     * Run state when cancellation is in Progress.
+     */
     CancellationInProgress = 8,
 }
 
@@ -4399,11 +4737,29 @@ export interface UploadAttachmentsRequest {
     requestParams?: { [key: string] : string; };
 }
 
+/**
+ * WorkItem reference Details.
+ */
 export interface WorkItemReference {
+    /**
+     * WorkItem Id.
+     */
     id?: string;
+    /**
+     * WorkItem Name.
+     */
     name?: string;
+    /**
+     * WorkItem Type.
+     */
     type?: string;
+    /**
+     * WorkItem Url. Valid Values : (Bug, Task, User Story, Test Case)
+     */
     url?: string;
+    /**
+     * WorkItem WebUrl.
+     */
     webUrl?: string;
 }
 
@@ -4483,9 +4839,10 @@ export var TypeInfo = {
     CoverageSummaryStatus: {
         enumValues: {
             "none": 0,
-            "pending": 1,
+            "inProgress": 1,
             "completed": 2,
-            "finalized": 3
+            "finalized": 3,
+            "pending": 4
         }
     },
     CreateTestMessageLogEntryRequest: <any>{
@@ -4569,6 +4926,12 @@ export var TypeInfo = {
             "dataDriven": 2,
             "orderedTest": 3,
             "generic": 4
+        }
+    },
+    ResultMetaDataDetails: {
+        enumValues: {
+            "none": 0,
+            "flakyIdentifiers": 1
         }
     },
     ResultObjectType: {
@@ -4689,7 +5052,9 @@ export var TypeInfo = {
             "containerNotCreated": 10,
             "apiNotSupported": 11,
             "fileSizeExceeds": 12,
-            "containerNotFound": 13
+            "containerNotFound": 13,
+            "fileNotFound": 14,
+            "directoryNotFound": 15
         }
     },
     TestLogStoreEndpointDetails: <any>{

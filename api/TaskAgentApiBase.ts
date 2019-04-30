@@ -26,8 +26,8 @@ export interface ITaskAgentApiBase extends basem.ClientApiBase {
     queueAgentRequest(request: TaskAgentInterfaces.TaskAgentJobRequest, queueId: number): Promise<TaskAgentInterfaces.TaskAgentJobRequest>;
     addAgent(agent: TaskAgentInterfaces.TaskAgent, poolId: number): Promise<TaskAgentInterfaces.TaskAgent>;
     deleteAgent(poolId: number, agentId: number): Promise<void>;
-    getAgent(poolId: number, agentId: number, includeCapabilities?: boolean, includeAssignedRequest?: boolean, propertyFilters?: string[]): Promise<TaskAgentInterfaces.TaskAgent>;
-    getAgents(poolId: number, agentName?: string, includeCapabilities?: boolean, includeAssignedRequest?: boolean, propertyFilters?: string[], demands?: string[]): Promise<TaskAgentInterfaces.TaskAgent[]>;
+    getAgent(poolId: number, agentId: number, includeCapabilities?: boolean, includeAssignedRequest?: boolean, includeLastCompletedRequest?: boolean, propertyFilters?: string[]): Promise<TaskAgentInterfaces.TaskAgent>;
+    getAgents(poolId: number, agentName?: string, includeCapabilities?: boolean, includeAssignedRequest?: boolean, includeLastCompletedRequest?: boolean, propertyFilters?: string[], demands?: string[]): Promise<TaskAgentInterfaces.TaskAgent[]>;
     replaceAgent(agent: TaskAgentInterfaces.TaskAgent, poolId: number, agentId: number): Promise<TaskAgentInterfaces.TaskAgent>;
     updateAgent(agent: TaskAgentInterfaces.TaskAgent, poolId: number, agentId: number): Promise<TaskAgentInterfaces.TaskAgent>;
     getAzureManagementGroups(): Promise<TaskAgentInterfaces.AzureManagementGroupQueryResult>;
@@ -107,6 +107,7 @@ export interface ITaskAgentApiBase extends basem.ClientApiBase {
     deleteAgentPool(poolId: number): Promise<void>;
     getAgentPool(poolId: number, properties?: string[], actionFilter?: TaskAgentInterfaces.TaskAgentPoolActionFilter): Promise<TaskAgentInterfaces.TaskAgentPool>;
     getAgentPools(poolName?: string, properties?: string[], poolType?: TaskAgentInterfaces.TaskAgentPoolType, actionFilter?: TaskAgentInterfaces.TaskAgentPoolActionFilter): Promise<TaskAgentInterfaces.TaskAgentPool[]>;
+    getAgentPoolsByIds(poolIds: number[], actionFilter?: TaskAgentInterfaces.TaskAgentPoolActionFilter): Promise<TaskAgentInterfaces.TaskAgentPool[]>;
     updateAgentPool(pool: TaskAgentInterfaces.TaskAgentPool, poolId: number): Promise<TaskAgentInterfaces.TaskAgentPool>;
     addAgentQueue(queue: TaskAgentInterfaces.TaskAgentQueue, project?: string, authorizePipelines?: boolean): Promise<TaskAgentInterfaces.TaskAgentQueue>;
     createTeamProject(project?: string): Promise<void>;
@@ -198,7 +199,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "bfa72b3d-0fc6-43fb-932b-a7f6559f93b9",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -237,7 +238,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "bfa72b3d-0fc6-43fb-932b-a7f6559f93b9",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -276,7 +277,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "bfa72b3d-0fc6-43fb-932b-a7f6559f93b9",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -312,7 +313,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "bfa72b3d-0fc6-43fb-932b-a7f6559f93b9",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -350,7 +351,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "5932e193-f376-469d-9c3e-e5588ce12cb5",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -402,7 +403,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -443,7 +444,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "f5f81ffb-f396-498d-85b1-5ada145e648a",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -486,7 +487,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "e298ef32-5878-4cab-993c-043836571f42",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -530,7 +531,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "e298ef32-5878-4cab-993c-043836571f42",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -557,6 +558,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      * @param {number} agentId - The agent ID to get information about
      * @param {boolean} includeCapabilities - Whether to include the agent's capabilities in the response
      * @param {boolean} includeAssignedRequest - Whether to include details about the agent's current work
+     * @param {boolean} includeLastCompletedRequest - Whether to include details about the agents' most recent completed work
      * @param {string[]} propertyFilters - Filter which custom properties will be returned
      */
     public async getAgent(
@@ -564,6 +566,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         agentId: number,
         includeCapabilities?: boolean,
         includeAssignedRequest?: boolean,
+        includeLastCompletedRequest?: boolean,
         propertyFilters?: string[]
         ): Promise<TaskAgentInterfaces.TaskAgent> {
 
@@ -576,6 +579,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             let queryValues: any = {
                 includeCapabilities: includeCapabilities,
                 includeAssignedRequest: includeAssignedRequest,
+                includeLastCompletedRequest: includeLastCompletedRequest,
                 propertyFilters: propertyFilters && propertyFilters.join(","),
             };
             
@@ -587,7 +591,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -614,6 +618,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      * @param {string} agentName - Filter on agent name
      * @param {boolean} includeCapabilities - Whether to include the agents' capabilities in the response
      * @param {boolean} includeAssignedRequest - Whether to include details about the agents' current work
+     * @param {boolean} includeLastCompletedRequest - Whether to include details about the agents' most recent completed work
      * @param {string[]} propertyFilters - Filter which custom properties will be returned
      * @param {string[]} demands - Filter by demands the agents can satisfy
      */
@@ -622,6 +627,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         agentName?: string,
         includeCapabilities?: boolean,
         includeAssignedRequest?: boolean,
+        includeLastCompletedRequest?: boolean,
         propertyFilters?: string[],
         demands?: string[]
         ): Promise<TaskAgentInterfaces.TaskAgent[]> {
@@ -635,6 +641,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 agentName: agentName,
                 includeCapabilities: includeCapabilities,
                 includeAssignedRequest: includeAssignedRequest,
+                includeLastCompletedRequest: includeLastCompletedRequest,
                 propertyFilters: propertyFilters && propertyFilters.join(","),
                 demands: demands && demands.join(","),
             };
@@ -647,7 +654,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -693,7 +700,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "e298ef32-5878-4cab-993c-043836571f42",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -739,7 +746,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "e298ef32-5878-4cab-993c-043836571f42",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -777,7 +784,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "39fe3bf2-7ee0-4198-a469-4a29929afa9c",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -815,7 +822,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "bcd6189c-0303-471f-a8e1-acb22b74d700",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -859,7 +866,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "3d197ba2-c3e9-4253-882f-0ee2440f8174",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -902,7 +909,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "083c4d89-ab35-45af-aa11-7cf66895c53e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -946,7 +953,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "083c4d89-ab35-45af-aa11-7cf66895c53e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1000,7 +1007,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1063,7 +1070,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1109,7 +1116,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "083c4d89-ab35-45af-aa11-7cf66895c53e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1163,7 +1170,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1218,7 +1225,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1270,7 +1277,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1312,7 +1319,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "91006ac4-0f68-4d82-a2bc-540676bd73ce",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1353,7 +1360,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "e077ee4a-399b-420b-841f-c43fbc058e0b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1404,7 +1411,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1461,7 +1468,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1521,7 +1528,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1565,7 +1572,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "1c1a817f-f23d-41c6-bf8d-14b638f64152",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1605,7 +1612,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "f223b809-8c33-4b7d-b53f-07232569b5d6",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1659,7 +1666,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1702,7 +1709,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "8572b1fc-2482-47fa-8f74-7e3ed53ee54b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1746,7 +1753,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "8572b1fc-2482-47fa-8f74-7e3ed53ee54b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1797,7 +1804,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1851,7 +1858,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1897,7 +1904,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "8572b1fc-2482-47fa-8f74-7e3ed53ee54b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1946,7 +1953,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1987,7 +1994,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "f9f0f436-b8a1-4475-9041-1ccdbf8f0128",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2025,7 +2032,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "58475b1e-adaf-4155-9bc1-e04bf1fff4c2",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2080,7 +2087,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2129,7 +2136,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2181,7 +2188,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2233,7 +2240,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2282,7 +2289,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2334,7 +2341,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2375,7 +2382,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "fc825784-c92a-4299-9221-998a02d1b54f",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2429,7 +2436,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2473,7 +2480,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "73fba52f-15ab-42b3-a538-ce67a9223a04",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2518,7 +2525,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "73fba52f-15ab-42b3-a538-ce67a9223a04",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2563,7 +2570,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "73fba52f-15ab-42b3-a538-ce67a9223a04",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2607,7 +2614,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "73fba52f-15ab-42b3-a538-ce67a9223a04",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2649,7 +2656,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "f8c7c0de-ac0d-469b-9cb1-c21f72d67693",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2690,7 +2697,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "d4adf50f-80c6-4ac8-9ca1-6e4e544286e9",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2732,7 +2739,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "d4adf50f-80c6-4ac8-9ca1-6e4e544286e9",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2781,7 +2788,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2830,7 +2837,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2874,7 +2881,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "d4adf50f-80c6-4ac8-9ca1-6e4e544286e9",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2923,7 +2930,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2967,7 +2974,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "966c3874-c347-4b18-a90c-d509116717fd",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3011,7 +3018,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "6f6d406f-cfe6-409c-9327-7009928077e7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3056,7 +3063,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "6f6d406f-cfe6-409c-9327-7009928077e7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3108,7 +3115,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3163,7 +3170,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3210,7 +3217,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "6f6d406f-cfe6-409c-9327-7009928077e7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3257,7 +3264,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "6f6d406f-cfe6-409c-9327-7009928077e7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3301,7 +3308,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "6f6d406f-cfe6-409c-9327-7009928077e7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3342,7 +3349,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "80572e16-58f0-4419-ac07-d19fde32195c",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3384,7 +3391,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "80572e16-58f0-4419-ac07-d19fde32195c",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3426,7 +3433,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "80572e16-58f0-4419-ac07-d19fde32195c",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3465,7 +3472,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "80572e16-58f0-4419-ac07-d19fde32195c",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3509,7 +3516,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "80572e16-58f0-4419-ac07-d19fde32195c",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3551,7 +3558,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "15e7ab6e-abce-4601-a6d8-e111fe148f46",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3593,7 +3600,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "15e7ab6e-abce-4601-a6d8-e111fe148f46",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3635,7 +3642,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "15e7ab6e-abce-4601-a6d8-e111fe148f46",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
@@ -3673,7 +3680,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3714,7 +3721,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "15e7ab6e-abce-4601-a6d8-e111fe148f46",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3758,7 +3765,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "15e7ab6e-abce-4601-a6d8-e111fe148f46",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3810,7 +3817,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3862,7 +3869,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3911,7 +3918,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3950,7 +3957,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4001,7 +4008,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4046,7 +4053,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "8ffcd551-079c-493a-9c02-54346299d144",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4095,7 +4102,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4134,7 +4141,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "0d62f887-9f53-48b9-9161-4c35d5735b0f",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
@@ -4166,7 +4173,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "a8c47e17-4d56-4a56-92bb-de7ea7dc65be",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4207,7 +4214,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "a8c47e17-4d56-4a56-92bb-de7ea7dc65be",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4258,7 +4265,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4312,7 +4319,58 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPool[]>;
+                res = await this.rest.get<TaskAgentInterfaces.TaskAgentPool[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TaskAgentInterfaces.TypeInfo.TaskAgentPool,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get a list of agent pools.
+     * 
+     * @param {number[]} poolIds - pool Ids to fetch
+     * @param {TaskAgentInterfaces.TaskAgentPoolActionFilter} actionFilter - Filter by whether the calling user has use or manage permissions
+     */
+    public async getAgentPoolsByIds(
+        poolIds: number[],
+        actionFilter?: TaskAgentInterfaces.TaskAgentPoolActionFilter
+        ): Promise<TaskAgentInterfaces.TaskAgentPool[]> {
+        if (poolIds == null) {
+            throw new TypeError('poolIds can not be null or undefined');
+        }
+
+        return new Promise<TaskAgentInterfaces.TaskAgentPool[]>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
+
+            let queryValues: any = {
+                poolIds: poolIds && poolIds.join(","),
+                actionFilter: actionFilter,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.1-preview.1",
+                    "distributedtask",
+                    "a8c47e17-4d56-4a56-92bb-de7ea7dc65be",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4355,7 +4413,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "a8c47e17-4d56-4a56-92bb-de7ea7dc65be",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4405,7 +4463,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4446,7 +4504,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "900fa995-c559-4923-aae7-f8424fe4fbea",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4490,7 +4548,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "900fa995-c559-4923-aae7-f8424fe4fbea",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4541,7 +4599,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4592,7 +4650,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4646,7 +4704,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4700,7 +4758,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4739,7 +4797,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "20189bd7-5134-49c2-b8e9-f9e856eea2b2",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4775,7 +4833,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "1f1f0557-c445-42a6-b4a0-0df605a3a0f8",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4824,7 +4882,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4866,7 +4924,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "100cc92a-b255-47fa-9ab3-e44a2985a3ac",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4910,7 +4968,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "adcfd8bc-b184-43ba-bd84-7c8c6a2ff421",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4967,7 +5025,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -5013,7 +5071,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5067,7 +5125,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5124,7 +5182,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5181,7 +5239,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5231,7 +5289,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5277,7 +5335,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "adcfd8bc-b184-43ba-bd84-7c8c6a2ff421",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5320,7 +5378,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "adcfd8bc-b184-43ba-bd84-7c8c6a2ff421",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5380,7 +5438,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
@@ -5422,7 +5480,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "134e239e-2df3-4794-a6f6-24f1f19ec8dc",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5464,7 +5522,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "134e239e-2df3-4794-a6f6-24f1f19ec8dc",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5510,7 +5568,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "2f0aa599-c121-4256-a5fd-ba370e0ae7b6",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5557,7 +5615,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "2f0aa599-c121-4256-a5fd-ba370e0ae7b6",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5611,7 +5669,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5689,7 +5747,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5738,7 +5796,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "2f0aa599-c121-4256-a5fd-ba370e0ae7b6",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5787,7 +5845,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "2f0aa599-c121-4256-a5fd-ba370e0ae7b6",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5833,7 +5891,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "2f0aa599-c121-4256-a5fd-ba370e0ae7b6",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5876,7 +5934,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "6c08ffbf-dbf1-4f9a-94e5-a1cbd47005e7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5927,7 +5985,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5984,7 +6042,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6036,7 +6094,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
@@ -6094,7 +6152,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6145,7 +6203,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6196,7 +6254,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6237,7 +6295,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "6c08ffbf-dbf1-4f9a-94e5-a1cbd47005e7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6283,7 +6341,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "6c08ffbf-dbf1-4f9a-94e5-a1cbd47005e7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6322,7 +6380,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6374,7 +6432,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
@@ -6418,7 +6476,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6467,7 +6525,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6519,7 +6577,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6563,7 +6621,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "30ba3ada-fedf-4da8-bbb5-dacf2f82e176",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6606,7 +6664,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "f5b09dd5-9d54-45a1-8b5a-1c8287d634cc",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6650,7 +6708,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "f5b09dd5-9d54-45a1-8b5a-1c8287d634cc",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6694,7 +6752,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "f5b09dd5-9d54-45a1-8b5a-1c8287d634cc",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6754,7 +6812,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6805,7 +6863,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6851,7 +6909,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "f5b09dd5-9d54-45a1-8b5a-1c8287d634cc",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6900,7 +6958,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6955,7 +7013,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6999,7 +7057,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "9e597901-4af7-4cc3-8d92-47d54db8ebfb",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -7044,7 +7102,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "9e597901-4af7-4cc3-8d92-47d54db8ebfb",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -7089,7 +7147,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "9e597901-4af7-4cc3-8d92-47d54db8ebfb",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -7133,7 +7191,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "9e597901-4af7-4cc3-8d92-47d54db8ebfb",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -7197,7 +7255,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -7244,7 +7302,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "48700676-2ba5-4282-8ec8-083280d169c7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -7282,7 +7340,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "9c63205e-3a0f-42a0-ad88-095200f13607",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -7343,7 +7401,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -7379,7 +7437,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "9c63205e-3a0f-42a0-ad88-095200f13607",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -7415,7 +7473,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                     "1f9990b9-1dba-441f-9c2e-6485888c42b6",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 

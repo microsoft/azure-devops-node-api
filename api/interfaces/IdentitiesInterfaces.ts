@@ -114,6 +114,7 @@ export interface IdentityBase {
      */
     providerDisplayName?: string;
     resourceVersion?: number;
+    socialDescriptor?: string;
     subjectDescriptor?: string;
     uniqueUserId?: number;
 }

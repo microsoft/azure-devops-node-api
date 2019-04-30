@@ -40,10 +40,6 @@ export interface GraphFederatedProviderData {
      */
     accessToken?: string;
     /**
-     * Whether or not the immediate provider (i.e. AAD) has indicated that we can call them to attempt to get an access token to communicate with the federated provider on behalf of the target identity.
-     */
-    canQueryAccessToken?: boolean;
-    /**
      * The name of the federated provider, e.g. "github.com".
      */
     providerName?: string;
@@ -392,6 +388,10 @@ export enum GraphTraversalDirection {
  * Graph user entity
  */
 export interface GraphUser extends GraphMember {
+    /**
+     * The short, generally unique name for the user in the backing directory. For AAD users, this corresponds to the mail nickname, which is often but not necessarily similar to the part of the user's mail address before the @ sign. For GitHub users, this corresponds to the GitHub user handle.
+     */
+    directoryAlias?: string;
     /**
      * When true, the group has been deleted in the identity provider
      */

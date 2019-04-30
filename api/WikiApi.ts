@@ -77,7 +77,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
@@ -129,7 +129,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
@@ -178,7 +178,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
@@ -227,7 +227,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
@@ -282,7 +282,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -325,7 +325,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                     "288d122c-dbd4-451d-aa5f-7dbbba070728",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -369,7 +369,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                     "288d122c-dbd4-451d-aa5f-7dbbba070728",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -410,7 +410,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                     "288d122c-dbd4-451d-aa5f-7dbbba070728",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -454,7 +454,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                     "288d122c-dbd4-451d-aa5f-7dbbba070728",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -500,7 +500,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                     "288d122c-dbd4-451d-aa5f-7dbbba070728",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 

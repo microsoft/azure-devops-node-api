@@ -127,7 +127,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "1f19631b-a0b4-4a03-89c2-d79785d24360",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -169,7 +169,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "1f19631b-a0b4-4a03-89c2-d79785d24360",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -214,7 +214,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "a1e66d8f-f5de-4d16-8309-91a4e015ee46",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -259,7 +259,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "a1e66d8f-f5de-4d16-8309-91a4e015ee46",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -314,7 +314,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -352,7 +352,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "3adb1f2d-e328-446e-be73-9f6d98071c45",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -416,7 +416,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -469,7 +469,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -522,7 +522,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -563,7 +563,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -602,7 +602,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "efd202a6-9d87-4ebc-9229-d2b8ae2fdb6d",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -645,7 +645,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -694,7 +694,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -755,7 +755,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -813,7 +813,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -858,7 +858,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "e905ad6a-3f1f-4d08-9f6d-7d357ff8b7d0",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -892,7 +892,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "c0f1c7c4-3557-4ffb-b774-1e48c4865e99",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -926,7 +926,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "02b33873-4e61-496e-83a2-59d1df46b7d8",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -973,7 +973,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "02b33873-4e61-496e-83a2-59d1df46b7d8",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1027,7 +1027,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "02b33873-4e61-496e-83a2-59d1df46b7d8",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
@@ -1082,7 +1082,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "f1db9c47-6619-4998-a7e5-d7f9f41a4617",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
@@ -1134,7 +1134,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "b3ab127d-ebb9-4d22-b611-4e09593c8d79",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
@@ -1179,7 +1179,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "b3ab127d-ebb9-4d22-b611-4e09593c8d79",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1230,7 +1230,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "b3ab127d-ebb9-4d22-b611-4e09593c8d79",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
@@ -1282,7 +1282,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "88c0b1c8-b4f1-498a-9b2a-8446ef9f32e7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
@@ -1338,7 +1338,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -1375,7 +1375,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "88c0b1c8-b4f1-498a-9b2a-8446ef9f32e7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -1427,7 +1427,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1467,7 +1467,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "0bf2bd3a-70e0-4d5d-8bf7-bd4a9c2ab6e7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1518,7 +1518,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
                 options.additionalHeaders = customHeaders;
@@ -1561,7 +1561,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "a41192c8-9525-4b58-bc86-179fa549d80d",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
@@ -1608,7 +1608,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1657,7 +1657,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1696,7 +1696,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "a41192c8-9525-4b58-bc86-179fa549d80d",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1741,7 +1741,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "e11ea35a-16fe-4b80-ab11-c4cab88a0966",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
@@ -1791,7 +1791,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1852,7 +1852,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
                 options.additionalHeaders = customHeaders;
@@ -1910,7 +1910,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
@@ -1963,7 +1963,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2011,7 +2011,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "328a3af8-d124-46e9-9483-01690cd415b9",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2059,7 +2059,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "328a3af8-d124-46e9-9483-01690cd415b9",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2097,7 +2097,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "05e8a5e1-8c59-4c2c-8856-0ff087d1a844",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2137,7 +2137,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "eab39817-413c-4602-a49f-07ad00844980",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2200,7 +2200,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -2259,7 +2259,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -2299,7 +2299,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2347,7 +2347,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -2396,7 +2396,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
@@ -2435,7 +2435,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "2ad6ee0a-b53f-4034-9d1d-d009fda1212e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2473,7 +2473,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2512,7 +2512,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2558,7 +2558,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2599,7 +2599,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "4ddec66a-e4f6-4f5d-999e-9e77710d7ff4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2649,7 +2649,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2706,7 +2706,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2755,7 +2755,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "784910cd-254a-494d-898b-0728549b2f10",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2801,7 +2801,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "6d1d9741-eca8-4701-a3a5-235afc82dfa4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2848,7 +2848,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "6d1d9741-eca8-4701-a3a5-235afc82dfa4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2897,7 +2897,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "6d1d9741-eca8-4701-a3a5-235afc82dfa4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2946,7 +2946,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "7f8ae5e0-46b0-438f-b2e8-13e8513517bd",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2996,7 +2996,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "7f8ae5e0-46b0-438f-b2e8-13e8513517bd",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3048,7 +3048,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "7f8ae5e0-46b0-438f-b2e8-13e8513517bd",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3105,7 +3105,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3165,7 +3165,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3219,7 +3219,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3265,7 +3265,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "e6e85b9d-aa70-40e6-aa28-d0fbf40b91a3",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3312,7 +3312,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "e6e85b9d-aa70-40e6-aa28-d0fbf40b91a3",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3361,7 +3361,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "e6e85b9d-aa70-40e6-aa28-d0fbf40b91a3",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3399,7 +3399,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "476531a3-7024-4516-a76a-ed64d3008ad6",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3443,7 +3443,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "9b75ece3-7960-401c-848b-148ac01ca350",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3486,7 +3486,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "9b75ece3-7960-401c-848b-148ac01ca350",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3532,7 +3532,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3571,7 +3571,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "92ed5cf4-c38b-465a-9059-2f2fb7c624b5",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3615,7 +3615,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "a0ea3204-11e9-422d-a9ca-45851cc41400",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3670,7 +3670,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3717,7 +3717,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "4fa7adb6-ca65-4075-a232-5f28323288ea",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3774,7 +3774,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3819,7 +3819,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "c5523abe-b843-437f-875b-5833064efe4d",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);

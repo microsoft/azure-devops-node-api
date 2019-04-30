@@ -65,7 +65,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -114,7 +114,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -163,7 +163,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -209,7 +209,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -255,7 +255,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -297,7 +297,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
                     "d810a47d-f4f4-4a62-a03f-fa1860585c4c",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -351,7 +351,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -390,7 +390,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
                     "d810a47d-f4f4-4a62-a03f-fa1860585c4c",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -428,7 +428,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
                     "d810a47d-f4f4-4a62-a03f-fa1860585c4c",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 

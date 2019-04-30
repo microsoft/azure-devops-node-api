@@ -363,6 +363,20 @@ export interface TemporaryDataDTO {
     value?: any;
 }
 
+/**
+ * Updateable properties for a WebApiTeam.
+ */
+export interface UpdateTeam {
+    /**
+     * New description for the team.
+     */
+    description?: string;
+    /**
+     * New name for the team.
+     */
+    name?: string;
+}
+
 export interface WebApiConnectedService extends WebApiConnectedServiceRef {
     /**
      * The user who did the OAuth authentication to created this service
@@ -496,6 +510,10 @@ export interface WebApiTeam extends WebApiTeamRef {
      * Team description
      */
     description?: string;
+    /**
+     * Team identity.
+     */
+    identity?: IdentitiesInterfaces.Identity;
     /**
      * Identity REST API Url to this team
      */

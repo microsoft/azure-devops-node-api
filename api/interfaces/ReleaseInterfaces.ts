@@ -94,6 +94,10 @@ export interface AgentBasedDeployPhase extends DeployPhase {
 
 export interface AgentDeploymentInput extends DeploymentInput {
     /**
+     * Specification for an agent on which a job gets executed.
+     */
+    agentSpecification?: AgentSpecification;
+    /**
      * Gets or sets the image ID.
      */
     imageId?: number;
@@ -111,6 +115,16 @@ export interface AgentPoolQueueReference extends ResourceReference {
      * The ID of the queue.
      */
     id?: number;
+}
+
+/**
+ * Specification of the agent defined by the pool provider.
+ */
+export interface AgentSpecification {
+    /**
+     * Agent specification unique identifier.
+     */
+    identifier?: string;
 }
 
 export enum ApprovalExecutionOrder {
@@ -3693,6 +3707,10 @@ export interface SourceIdInput {
 }
 
 export interface SourcePullRequestVersion {
+    /**
+     * Pull Request Iteration Id for which the release will publish status.
+     */
+    iterationId?: string;
     /**
      * Pull Request Id for which the release will publish status.
      */

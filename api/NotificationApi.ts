@@ -66,7 +66,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     "8f3c6ab2-5bae-4537-b16e-f84e0955599e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -120,7 +120,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -159,7 +159,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     "20f1929d-4be7-4c2e-a74e-d47640ff3418",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -200,7 +200,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     "20f1929d-4be7-4c2e-a74e-d47640ff3418",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -240,7 +240,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     "14c57b7a-c0e6-4555-9f51-e067188fdd8e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -280,7 +280,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     "9463a800-1b44-450e-9083-f948ea174b45",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -321,7 +321,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     "b5bbdd21-c178-4398-b6db-0166d910028a",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -362,7 +362,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     "cc84fb5f-6247-4c7a-aeae-e5a3c3fddb21",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -407,7 +407,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -446,7 +446,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     "19824fa9-1c76-40e6-9cce-cf0b9ca1cb60",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -489,7 +489,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -525,7 +525,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     "cbe076d8-2803-45ff-8d8d-44653686ea2a",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -563,7 +563,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     "cbe076d8-2803-45ff-8d8d-44653686ea2a",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -602,7 +602,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     "4d5caff1-25ba-430b-b808-7a1f352cc197",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -643,7 +643,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     "4d5caff1-25ba-430b-b808-7a1f352cc197",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -683,7 +683,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     "6864db85-08c0-4006-8e8e-cc1bebe31675",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -723,7 +723,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     "70f911d6-abac-488c-85b3-a206bf57e165",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -764,7 +764,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     "70f911d6-abac-488c-85b3-a206bf57e165",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -812,7 +812,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -861,7 +861,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -904,7 +904,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     "70f911d6-abac-488c-85b3-a206bf57e165",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -942,7 +942,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     "fa5d24ba-7484-4f3d-888d-4ec6b1974082",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -988,7 +988,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                     "ed5a3dff-aeb5-41b1-b4f7-89e66e58b62e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 

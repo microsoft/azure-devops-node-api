@@ -135,7 +135,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "f2571c27-bf50-4938-b396-32d109ddef26",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -204,7 +204,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -248,7 +248,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "250c7158-852e-4130-a00f-a0cce9b72d05",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -299,7 +299,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -345,7 +345,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "9328e074-59fb-465a-89d9-b09c82ee5109",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -386,7 +386,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "c957584a-82aa-4131-8222-6d47f78bfa7a",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -448,7 +448,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "c4071f6d-3697-46ca-858e-8b10ff09e52f",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -505,7 +505,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "60b86efb-7b8c-4853-8f9f-aa142b77b479",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -553,7 +553,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "214111ee-2415-4df2-8ed2-74417f7d61f9",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -609,7 +609,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "a4d06688-0dfa-4895-82a5-f43ec9452306",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -670,7 +670,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -720,7 +720,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "1a60a35d-b8c9-45fb-bf67-da0829711147",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -775,7 +775,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -824,7 +824,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -867,7 +867,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -921,7 +921,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -972,7 +972,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1026,7 +1026,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
@@ -1105,7 +1105,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1151,7 +1151,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1194,7 +1194,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1282,7 +1282,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1323,7 +1323,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "b005ef73-cddc-448e-9ba2-5193bf36b19f",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1370,7 +1370,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "a7e426b1-03dc-48af-9dfe-c98bac612dcb",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1419,7 +1419,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "a7e426b1-03dc-48af-9dfe-c98bac612dcb",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1462,7 +1462,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "6b03b696-824e-4479-8eb2-6644a51aba89",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1513,7 +1513,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1564,7 +1564,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1612,7 +1612,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1663,7 +1663,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1714,7 +1714,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1766,7 +1766,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1815,7 +1815,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1858,7 +1858,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1904,7 +1904,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "f7ddf76d-ce0c-4d68-94ff-becaec5d9dea",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1948,7 +1948,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "f7ddf76d-ce0c-4d68-94ff-becaec5d9dea",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1999,7 +1999,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2045,7 +2045,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "f7ddf76d-ce0c-4d68-94ff-becaec5d9dea",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2091,7 +2091,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "2666a539-2001-4f80-bcc7-0379956749d4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2133,7 +2133,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "23f461c8-629a-4144-a076-3054fa5f268a",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2174,7 +2174,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "71dd499b-317d-45ea-9134-140ea1932b5e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2223,7 +2223,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2276,7 +2276,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "dec7ca5a-7f7f-4797-8bf1-8efc0dc93b28",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
@@ -2312,7 +2312,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "c37fbab5-214b-48e4-a55b-cb6b4f6e4038",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
@@ -2361,7 +2361,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
@@ -2419,7 +2419,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
@@ -2474,7 +2474,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
@@ -2513,7 +2513,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "616c46e4-f370-4456-adaa-fbaf79c7b79e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2557,7 +2557,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "616c46e4-f370-4456-adaa-fbaf79c7b79e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2606,7 +2606,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "616c46e4-f370-4456-adaa-fbaf79c7b79e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2652,7 +2652,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2704,7 +2704,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2812,7 +2812,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2855,7 +2855,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2906,7 +2906,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2966,7 +2966,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3029,7 +3029,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3083,7 +3083,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
@@ -3129,7 +3129,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3175,7 +3175,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3221,7 +3221,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3262,7 +3262,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "c63c3718-7cfd-41e0-b89b-81c1ca143437",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3305,7 +3305,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "c63c3718-7cfd-41e0-b89b-81c1ca143437",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3352,7 +3352,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "258b82e0-9d41-43f3-86d6-fef14ddd44bc",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
@@ -3388,7 +3388,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "258b82e0-9d41-43f3-86d6-fef14ddd44bc",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3430,7 +3430,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "224e92b2-8d13-4c14-b120-13d877c516f8",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3474,7 +3474,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "224e92b2-8d13-4c14-b120-13d877c516f8",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3516,7 +3516,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "0e5def23-78b3-461f-8198-1558f25041c8",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3563,7 +3563,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "3d21b4c8-c32e-45b2-a7cb-770a369012f4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3609,7 +3609,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "3d21b4c8-c32e-45b2-a7cb-770a369012f4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3656,7 +3656,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "3d21b4c8-c32e-45b2-a7cb-770a369012f4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3700,7 +3700,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "3d21b4c8-c32e-45b2-a7cb-770a369012f4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3747,7 +3747,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "c5b602b6-d1b3-4363-8a51-94384f78068f",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3793,7 +3793,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "c5b602b6-d1b3-4363-8a51-94384f78068f",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3840,7 +3840,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "c5b602b6-d1b3-4363-8a51-94384f78068f",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3884,7 +3884,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "c5b602b6-d1b3-4363-8a51-94384f78068f",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3923,7 +3923,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "86cee25a-68ba-4ba3-9171-8ad6ffc6df93",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3971,7 +3971,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "4259191d-4b0a-4409-9fb3-09f22ab9bc47",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4022,7 +4022,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "4259291d-4b0a-4409-9fb3-04f22ab9bc47",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4074,7 +4074,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4113,7 +4113,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "8efc2a3c-1fc8-4f6d-9822-75e98cecb48f",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4162,7 +4162,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4203,7 +4203,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     "30fc787e-a9e0-4a07-9fbc-3e903aa051d2",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4258,7 +4258,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 

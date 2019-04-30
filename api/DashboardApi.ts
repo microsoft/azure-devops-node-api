@@ -71,7 +71,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     "454b3e51-2e6e-48d4-ad81-978154089351",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -123,7 +123,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     "454b3e51-2e6e-48d4-ad81-978154089351",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -175,7 +175,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     "454b3e51-2e6e-48d4-ad81-978154089351",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -224,7 +224,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     "454b3e51-2e6e-48d4-ad81-978154089351",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -278,7 +278,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     "454b3e51-2e6e-48d4-ad81-978154089351",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -329,7 +329,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     "454b3e51-2e6e-48d4-ad81-978154089351",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -383,7 +383,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     "bdcff53a-8355-4172-a00a-40497ea23afc",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -438,7 +438,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     "bdcff53a-8355-4172-a00a-40497ea23afc",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -493,7 +493,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     "bdcff53a-8355-4172-a00a-40497ea23afc",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -550,7 +550,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     "bdcff53a-8355-4172-a00a-40497ea23afc",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -607,7 +607,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     "bdcff53a-8355-4172-a00a-40497ea23afc",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -651,7 +651,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     "6b3628d3-e96f-4fc7-b176-50240b03b515",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -702,7 +702,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 

@@ -54,7 +54,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                     "c4209f25-7a27-41dd-9f04-06080c7b6afd",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -99,7 +99,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -143,7 +143,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                     "98911314-3f9b-4eaf-80e8-83900d8e85d9",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -199,7 +199,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -249,7 +249,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                     "dd291e43-aa9f-4cee-8465-a93c78e414a4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -311,7 +311,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -351,7 +351,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                     "2b4486ad-122b-400c-ae65-17b6672c1f9d",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -394,7 +394,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                     "3f810f28-03e2-4239-b0bc-788add3005e5",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -443,7 +443,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                     "f29e997b-c2da-4d15-8380-765788a1a74c",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 

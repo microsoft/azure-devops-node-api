@@ -138,7 +138,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "eaf40c31-ff84-4062-aafd-d5664be11a37",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -200,7 +200,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -249,7 +249,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "2bffebe9-2f0f-4639-9af8-56129e9fed2d",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -308,7 +308,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -358,7 +358,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "2bffebe9-2f0f-4639-9af8-56129e9fed2d",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -397,7 +397,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "2bffebe9-2f0f-4639-9af8-56129e9fed2d",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -447,7 +447,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "2bffebe9-2f0f-4639-9af8-56129e9fed2d",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
@@ -499,7 +499,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -548,7 +548,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -608,7 +608,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
@@ -646,7 +646,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "4f004af4-a507-489c-9b13-cb62060beb11",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -693,7 +693,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "4f004af4-a507-489c-9b13-cb62060beb11",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -729,7 +729,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "4f004af4-a507-489c-9b13-cb62060beb11",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -776,7 +776,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "4f004af4-a507-489c-9b13-cb62060beb11",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
@@ -813,7 +813,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "6de20ca2-67de-4faf-97fa-38c5d585eb00",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -870,7 +870,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -924,7 +924,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -977,7 +977,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1031,7 +1031,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1072,7 +1072,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "8ce1923b-f4c7-4e22-b93b-f6284e525ec2",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1121,7 +1121,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1162,7 +1162,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "234616f5-429c-4e7b-9192-affd76731dfd",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1219,7 +1219,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1273,7 +1273,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1314,7 +1314,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "a4dcb25b-9878-49ea-abfd-e440bd9b1dcd",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1358,7 +1358,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "a1e55200-637e-42e9-a7c0-7e5bfdedb1b3",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1415,7 +1415,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1472,7 +1472,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1544,7 +1544,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1596,7 +1596,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "3bcfd5c8-be62-488e-b1da-b8289ce9299c",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1649,7 +1649,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1716,7 +1716,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1789,7 +1789,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1833,7 +1833,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "370ca04b-8eec-4ca8-8ba3-d24dca228791",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1894,7 +1894,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1958,7 +1958,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2001,7 +2001,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "afa7830e-67a7-4336-8090-2b448ca80295",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2042,7 +2042,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "a3206d9e-fa8d-42d3-88cb-f75c51e69cde",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2085,7 +2085,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "a3206d9e-fa8d-42d3-88cb-f75c51e69cde",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2131,7 +2131,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "4637d869-3a76-4468-8057-0bb02aa385cf",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2185,7 +2185,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2245,7 +2245,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2291,7 +2291,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "4637d869-3a76-4468-8057-0bb02aa385cf",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2332,7 +2332,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "6711da49-8e6f-4d35-9f73-cef7a3c81a5b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2393,7 +2393,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2457,7 +2457,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2515,7 +2515,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2579,7 +2579,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2620,7 +2620,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "85765790-ac68-494e-b268-af36c3929744",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2668,7 +2668,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2709,7 +2709,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "fbc82a85-0786-4442-88bb-eb0fda6b01b0",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2750,7 +2750,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "dd178e93-d8dd-4887-9635-d6b9560b7b6e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2771,7 +2771,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-     * Get test run statistics
+     * Get test run statistics , used when we want to get summary of a run by outcome.
      * 
      * @param {string} project - Project ID or project name
      * @param {number} runId - ID of the run to get.
@@ -2794,7 +2794,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "0a42c424-d764-4a16-a2d5-5c85f87d0ae8",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2837,7 +2837,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "cadb3810-d47d-4a3c-a234-fe5f3be50138",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2881,7 +2881,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "cadb3810-d47d-4a3c-a234-fe5f3be50138",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2932,7 +2932,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3001,7 +3001,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3100,7 +3100,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3146,7 +3146,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "cadb3810-d47d-4a3c-a234-fe5f3be50138",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3197,7 +3197,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "1500b4b4-6c69-4ca6-9b18-35e9e97fe2ac",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3265,7 +3265,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3316,7 +3316,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "1500b4b4-6c69-4ca6-9b18-35e9e97fe2ac",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3358,7 +3358,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "8300eeca-0f8c-4eff-a089-d2dda409c41f",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3400,7 +3400,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "fabb3cc9-e3f8-40b7-8b62-24cc4b73fccf",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3451,7 +3451,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "a4a1ec1c-b03f-41ca-8857-704594ecf58e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3502,7 +3502,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "a4a1ec1c-b03f-41ca-8857-704594ecf58e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3550,7 +3550,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "a4a1ec1c-b03f-41ca-8857-704594ecf58e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3601,7 +3601,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "a4a1ec1c-b03f-41ca-8857-704594ecf58e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3654,7 +3654,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "a4a1ec1c-b03f-41ca-8857-704594ecf58e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3698,7 +3698,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "4d472e0f-e32c-4ef8-adf4-a4078772889c",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3741,7 +3741,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "929fd86c-3e38-4d8c-b4b6-90df256e5971",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3782,7 +3782,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "8133ce14-962f-42af-a5f9-6aa9defcb9c8",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3824,7 +3824,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "8133ce14-962f-42af-a5f9-6aa9defcb9c8",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3866,7 +3866,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "8133ce14-962f-42af-a5f9-6aa9defcb9c8",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3907,7 +3907,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     "371b1655-ce05-412e-a113-64cc77bb78d2",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3962,7 +3962,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4011,7 +4011,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4075,7 +4075,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
