@@ -59,12 +59,12 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "policy",
                     "dad91cbe-d183-45f8-9c6e-9c1164472121",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -103,12 +103,12 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "policy",
                     "dad91cbe-d183-45f8-9c6e-9c1164472121",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -147,12 +147,12 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "policy",
                     "dad91cbe-d183-45f8-9c6e-9c1164472121",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -176,7 +176,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
      * Get a list of policy configurations in a project.
      * 
      * @param {string} project - Project ID or project name
-     * @param {string} scope - The scope on which a subset of policies is defined.
+     * @param {string} scope - [Provided for legacy reasons] The scope on which a subset of policies is defined.
      * @param {string} policyType - Filter returned policies to only this type
      */
     public async getPolicyConfigurations(
@@ -197,13 +197,13 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "policy",
                     "dad91cbe-d183-45f8-9c6e-9c1164472121",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -244,12 +244,12 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "policy",
                     "dad91cbe-d183-45f8-9c6e-9c1164472121",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -288,12 +288,12 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "policy",
                     "46aecb7a-5d2c-4647-897b-0209505a9fe4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -332,12 +332,12 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "policy",
                     "46aecb7a-5d2c-4647-897b-0209505a9fe4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -391,13 +391,13 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "policy",
                     "c23ddff5-229c-4d04-a80b-0fdce9f360c8",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -439,12 +439,12 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "policy",
                     "fe1e68a2-60d3-43cb-855b-85e41ae97c95",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -492,13 +492,13 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "policy",
                     "fe1e68a2-60d3-43cb-855b-85e41ae97c95",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -537,12 +537,12 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "policy",
                     "44096322-2d3d-466a-bb30-d1b7de69f61f",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -578,12 +578,12 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "policy",
                     "44096322-2d3d-466a-bb30-d1b7de69f61f",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 

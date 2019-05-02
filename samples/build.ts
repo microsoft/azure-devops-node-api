@@ -25,7 +25,7 @@ export async function run() {
         for (let i: number = 0; i < defs.length; i++) {
             let defRef: bi.DefinitionReference = defs[i];
 
-            let def: bi.BuildDefinition = await vstsBuild.getDefinition(defRef.id, project);
+            let def: bi.BuildDefinition = await vstsBuild.getDefinition(project, defRef.id);
             lastDef = def;
             let rep: bi.BuildRepository = def.repository;
 
@@ -116,7 +116,7 @@ export async function run() {
 
                 // delete def
                 console.log("deleting", createdDef.name);
-                await vstsBuild.deleteDefinition(createdDef.id, project);
+                await vstsBuild.deleteDefinition(project, createdDef.id);
                 console.log("deleted");
             }
         }

@@ -27,7 +27,27 @@ export interface AccountMyWorkResult {
 /**
  * Represents Work Item Recent Activity
  */
-export interface AccountRecentActivityWorkItemModel {
+export interface AccountRecentActivityWorkItemModel extends AccountRecentActivityWorkItemModelBase {
+    /**
+     * Assigned To
+     */
+    assignedTo?: string;
+}
+
+/**
+ * Represents Work Item Recent Activity
+ */
+export interface AccountRecentActivityWorkItemModel2 extends AccountRecentActivityWorkItemModelBase {
+    /**
+     * Assigned To
+     */
+    assignedTo?: VSSInterfaces.IdentityRef;
+}
+
+/**
+ * Represents Work Item Recent Activity
+ */
+export interface AccountRecentActivityWorkItemModelBase {
     /**
      * Date of the last Activity by the user
      */
@@ -36,10 +56,6 @@ export interface AccountRecentActivityWorkItemModel {
      * Type of the activity
      */
     activityType?: WorkItemRecentActivityType;
-    /**
-     * Assigned To
-     */
-    assignedTo?: string;
     /**
      * Last changed date of the work item
      */
@@ -147,9 +163,246 @@ export enum ClassificationNodesErrorPolicy {
     Omit = 2,
 }
 
+/**
+ * Comment on a Work Item.
+ */
+export interface Comment extends WorkItemTrackingResource {
+    /**
+     * IdentityRef of the creator of the comment.
+     */
+    createdBy?: VSSInterfaces.IdentityRef;
+    /**
+     * The creation date of the comment.
+     */
+    createdDate?: Date;
+    /**
+     * Effective Date/time value for adding the comment. Can be optionally different from CreatedDate.
+     */
+    createdOnBehalfDate?: Date;
+    /**
+     * Identity on whose behalf this comment has been added. Can be optionally different from CreatedBy.
+     */
+    createdOnBehalfOf?: VSSInterfaces.IdentityRef;
+    /**
+     * The id assigned to the comment.
+     */
+    id?: number;
+    /**
+     * Indicates if the comment has been deleted.
+     */
+    isDeleted?: boolean;
+    /**
+     * The mentions of the comment.
+     */
+    mentions?: CommentMention[];
+    /**
+     * IdentityRef of the user who last modified the comment.
+     */
+    modifiedBy?: VSSInterfaces.IdentityRef;
+    /**
+     * The last modification date of the comment.
+     */
+    modifiedDate?: Date;
+    /**
+     * The reactions of the comment.
+     */
+    reactions?: CommentReaction[];
+    /**
+     * The text of the comment.
+     */
+    text?: string;
+    /**
+     * The current version of the comment.
+     */
+    version?: number;
+    /**
+     * The id of the work item this comment belongs to.
+     */
+    workItemId?: number;
+}
+
+/**
+ * Represents a request to create a work item comment.
+ */
+export interface CommentCreate {
+    /**
+     * The text of the comment.
+     */
+    text: string;
+}
+
+/**
+ * Specifies the additional data retrieval options for work item comments.
+ */
+export enum CommentExpandOptions {
+    None = 0,
+    /**
+     * Include comment reactions.
+     */
+    Reactions = 1,
+    /**
+     * Include comment mentions.
+     */
+    Mentions = 2,
+    /**
+     * Include the rendered text (html) in addition to MD text.
+     */
+    RenderedText = 8,
+    /**
+     * If specified, then ONLY rendered text (html) will be returned, w/o markdown. Supposed to be used internally from data provides for optimization purposes.
+     */
+    RenderedTextOnly = 16,
+    All = -17,
+}
+
+/**
+ * Represents a list of work item comments.
+ */
+export interface CommentList extends WorkItemTrackingResource {
+    /**
+     * List of comments in the current batch.
+     */
+    comments?: Comment[];
+    /**
+     * A string token that can be used to retrieving next page of comments if available. Otherwise null.
+     */
+    continuationToken?: string;
+    /**
+     * The count of comments in the current batch.
+     */
+    count?: number;
+    /**
+     * Uri to the next page of comments if it is available. Otherwise null.
+     */
+    nextPage?: string;
+    /**
+     * Total count of comments on a work item.
+     */
+    totalCount?: number;
+}
+
+export interface CommentMention extends WorkItemTrackingResource {
+    /**
+     * The artifact portion of the parsed text. (i.e. the work item's id)
+     */
+    artifactId?: string;
+    /**
+     * The type the parser assigned to the mention. (i.e. person, work item, etc)
+     */
+    artifactType?: string;
+    /**
+     * The comment id of the mention.
+     */
+    commentId?: number;
+    /**
+     * The resolved target of the mention. An example of this could be a user's tfid
+     */
+    targetId?: string;
+}
+
+/**
+ * Contains information about work item comment reaction for a particular reaction type.
+ */
+export interface CommentReaction extends WorkItemTrackingResource {
+    /**
+     * The id of the comment this reaction belongs to.
+     */
+    commentId?: number;
+    /**
+     * Total number of reactions for the CommentReactionType.
+     */
+    count?: number;
+    /**
+     * Flag to indicate if the current user has engaged on this particular EngagementType (e.g. if they liked the associated comment).
+     */
+    isCurrentUserEngaged?: boolean;
+    /**
+     * Type of the reaction.
+     */
+    type?: CommentReactionType;
+}
+
+/**
+ * Represents different reaction types for a work item comment.
+ */
+export enum CommentReactionType {
+    Like = 0,
+    Dislike = 1,
+    Heart = 2,
+    Hooray = 3,
+    Smile = 4,
+    Confused = 5,
+}
+
 export enum CommentSortOrder {
+    /**
+     * The results will be sorted in Ascending order.
+     */
     Asc = 1,
+    /**
+     * The results will be sorted in Descending order.
+     */
     Desc = 2,
+}
+
+/**
+ * Represents a request to update a work item comment.
+ */
+export interface CommentUpdate {
+    /**
+     * The updated text of the comment.
+     */
+    text: string;
+}
+
+/**
+ * Represents a specific version of a comment on a work item.
+ */
+export interface CommentVersion extends WorkItemTrackingResource {
+    /**
+     * IdentityRef of the creator of the comment.
+     */
+    createdBy?: VSSInterfaces.IdentityRef;
+    /**
+     * The creation date of the comment.
+     */
+    createdDate?: Date;
+    /**
+     * Effective Date/time value for adding the comment. Can be optionally different from CreatedDate.
+     */
+    createdOnBehalfDate?: Date;
+    /**
+     * Identity on whose behalf this comment has been added. Can be optionally different from CreatedBy.
+     */
+    createdOnBehalfOf?: VSSInterfaces.IdentityRef;
+    /**
+     * The id assigned to the comment.
+     */
+    id?: number;
+    /**
+     * Indicates if the comment has been deleted at this version.
+     */
+    isDeleted?: boolean;
+    /**
+     * IdentityRef of the user who modified the comment at this version.
+     */
+    modifiedBy?: VSSInterfaces.IdentityRef;
+    /**
+     * The modification date of the comment for this version.
+     */
+    modifiedDate?: Date;
+    /**
+     * The rendered content of the comment at this version.
+     */
+    renderedText?: string;
+    /**
+     * The text of the comment at this version.
+     */
+    text?: string;
+    /**
+     * The version number.
+     */
+    version?: number;
 }
 
 /**
@@ -319,6 +572,9 @@ export interface Link {
  * The link query mode which determines the behavior of the query.
  */
 export enum LinkQueryMode {
+    /**
+     * Returns flat list of work items.
+     */
     WorkItems = 0,
     /**
      * Returns work items where the source, target, and link criteria are all satisfied.
@@ -376,6 +632,32 @@ export interface ProvisioningResult {
      * Details about of the provisioning import events.
      */
     provisioningImportEvents?: string[];
+}
+
+/**
+ * Describes a request to get a list of queries
+ */
+export interface QueryBatchGetRequest {
+    /**
+     * The expand parameters for queries. Possible options are { None, Wiql, Clauses, All, Minimal }
+     */
+    $expand?: QueryExpand;
+    /**
+     * The flag to control error policy in a query batch request. Possible options are { Fail, Omit }.
+     */
+    errorPolicy?: QueryErrorPolicy;
+    /**
+     * The requested query ids
+     */
+    ids?: string[];
+}
+
+/**
+ * Enum to control error policy in a query batch request.
+ */
+export enum QueryErrorPolicy {
+    Fail = 1,
+    Omit = 2,
 }
 
 /**
@@ -577,8 +859,17 @@ export enum QueryType {
     OneHop = 3,
 }
 
+/**
+ * The reporting revision expand level.
+ */
 export enum ReportingRevisionsExpand {
+    /**
+     * Default behavior.
+     */
     None = 0,
+    /**
+     * Add fields to the response.
+     */
     Fields = 1,
 }
 
@@ -588,6 +879,9 @@ export interface ReportingWorkItemLinksBatch extends StreamedBatch<WorkItemRelat
 export interface ReportingWorkItemRevisionsBatch extends StreamedBatch<WorkItem> {
 }
 
+/**
+ * The class reprensents the reporting work item revision filer.
+ */
 export interface ReportingWorkItemRevisionsFilter {
     /**
      * A list of fields to return in work item revisions. Omit this parameter to get all reportable fields.
@@ -615,10 +909,25 @@ export interface ReportingWorkItemRevisionsFilter {
     types?: string[];
 }
 
+/**
+ * The class describes reporting work item revision batch.
+ */
 export interface StreamedBatch<T> {
+    /**
+     * ContinuationToken acts as a waterMark. Used while quering large results.
+     */
     continuationToken?: string;
+    /**
+     * Returns 'true' if it's last batch, 'false' otherwise.
+     */
     isLastBatch?: boolean;
+    /**
+     * The next link for the work item.
+     */
     nextLink?: string;
+    /**
+     * Values such as rel, sourceId, TargetId, ChangedDate, isActive.
+     */
     values?: T[];
 }
 
@@ -684,6 +993,10 @@ export interface WorkArtifactLink {
  * Describes a work item.
  */
 export interface WorkItem extends WorkItemTrackingResource {
+    /**
+     * Reference to a specific version of the comment added/edited/deleted in this revision.
+     */
+    commentVersionRef?: WorkItemCommentVersionRef;
     /**
      * Map of field and values for the work item.
      */
@@ -757,6 +1070,10 @@ export interface WorkItemClassificationNode extends WorkItemTrackingResource {
      */
     name?: string;
     /**
+     * Path of the classification node.
+     */
+    path?: string;
+    /**
      * Node structure type.
      */
     structureType?: TreeNodeStructureType;
@@ -785,7 +1102,7 @@ export interface WorkItemComment extends WorkItemTrackingResource {
 }
 
 /**
- * Collection of comments
+ * Collection of comments.
  */
 export interface WorkItemComments extends WorkItemTrackingResource {
     /**
@@ -804,6 +1121,32 @@ export interface WorkItemComments extends WorkItemTrackingResource {
      * Total count of comments.
      */
     totalCount?: number;
+}
+
+/**
+ * Represents the reference to a specific version of a comment on a Work Item.
+ */
+export interface WorkItemCommentVersionRef extends WorkItemTrackingResourceReference {
+    /**
+     * The id assigned to the comment.
+     */
+    commentId?: number;
+    /**
+     * [Internal] The work item revision where this comment was originally added.
+     */
+    createdInRevision?: number;
+    /**
+     * [Internal] Specifies whether comment was deleted.
+     */
+    isDeleted?: boolean;
+    /**
+     * [Internal] The text of the comment.
+     */
+    text?: string;
+    /**
+     * The version number.
+     */
+    version?: number;
 }
 
 /**
@@ -886,7 +1229,13 @@ export interface WorkItemDeleteUpdate {
  * Enum to control error policy in a bulk get work items request.
  */
 export enum WorkItemErrorPolicy {
+    /**
+     * Fail work error policy.
+     */
     Fail = 1,
+    /**
+     * Omit work error policy.
+     */
     Omit = 2,
 }
 
@@ -894,10 +1243,25 @@ export enum WorkItemErrorPolicy {
  * Flag to control payload properties from get work item command.
  */
 export enum WorkItemExpand {
+    /**
+     * Default behavior.
+     */
     None = 0,
+    /**
+     * Relations work item expand.
+     */
     Relations = 1,
+    /**
+     * Fields work item expand.
+     */
     Fields = 2,
+    /**
+     * Links work item expand.
+     */
     Links = 3,
+    /**
+     * Expands all.
+     */
     All = 4,
 }
 
@@ -964,7 +1328,7 @@ export interface WorkItemField extends WorkItemTrackingResource {
  */
 export interface WorkItemFieldOperation {
     /**
-     * Name of the operation.
+     * Friendly name of the operation.
      */
     name?: string;
     /**
@@ -978,7 +1342,7 @@ export interface WorkItemFieldOperation {
  */
 export interface WorkItemFieldReference {
     /**
-     * The name of the field.
+     * The friendly name of the field.
      */
     name?: string;
     /**
@@ -1332,6 +1696,10 @@ export interface WorkItemType extends WorkItemTrackingResource {
      */
     referenceName?: string;
     /**
+     * Gets state information for the work item type.
+     */
+    states?: WorkItemStateColor[];
+    /**
      * Gets the various state transition mappings in the work item type.
      */
     transitions?: { [key: string] : WorkItemStateTransition[]; };
@@ -1562,6 +1930,10 @@ export var TypeInfo = {
     },
     AccountRecentActivityWorkItemModel: <any>{
     },
+    AccountRecentActivityWorkItemModel2: <any>{
+    },
+    AccountRecentActivityWorkItemModelBase: <any>{
+    },
     AccountRecentMentionWorkItemModel: <any>{
     },
     AccountWorkWorkItemModel: <any>{
@@ -1572,11 +1944,39 @@ export var TypeInfo = {
             "omit": 2
         }
     },
+    Comment: <any>{
+    },
+    CommentExpandOptions: {
+        enumValues: {
+            "none": 0,
+            "reactions": 1,
+            "mentions": 2,
+            "renderedText": 8,
+            "renderedTextOnly": 16,
+            "all": -17
+        }
+    },
+    CommentList: <any>{
+    },
+    CommentReaction: <any>{
+    },
+    CommentReactionType: {
+        enumValues: {
+            "like": 0,
+            "dislike": 1,
+            "heart": 2,
+            "hooray": 3,
+            "smile": 4,
+            "confused": 5
+        }
+    },
     CommentSortOrder: {
         enumValues: {
             "asc": 1,
             "desc": 2
         }
+    },
+    CommentVersion: <any>{
     },
     FieldType: {
         enumValues: {
@@ -1624,15 +2024,23 @@ export var TypeInfo = {
     },
     LogicalOperation: {
         enumValues: {
-            "nONE": 0,
-            "aND": 1,
-            "oR": 2
+            "none": 0,
+            "and": 1,
+            "or": 2
         }
     },
     ProvisioningActionType: {
         enumValues: {
             "import": 0,
             "validate": 1
+        }
+    },
+    QueryBatchGetRequest: <any>{
+    },
+    QueryErrorPolicy: {
+        enumValues: {
+            "fail": 1,
+            "omit": 2
         }
     },
     QueryExpand: {
@@ -1770,6 +2178,30 @@ TypeInfo.AccountRecentActivityWorkItemModel.fields = {
     }
 };
 
+TypeInfo.AccountRecentActivityWorkItemModel2.fields = {
+    activityDate: {
+        isDate: true,
+    },
+    activityType: {
+        enumType: TypeInfo.WorkItemRecentActivityType
+    },
+    changedDate: {
+        isDate: true,
+    }
+};
+
+TypeInfo.AccountRecentActivityWorkItemModelBase.fields = {
+    activityDate: {
+        isDate: true,
+    },
+    activityType: {
+        enumType: TypeInfo.WorkItemRecentActivityType
+    },
+    changedDate: {
+        isDate: true,
+    }
+};
+
 TypeInfo.AccountRecentMentionWorkItemModel.fields = {
     mentionedDateField: {
         isDate: true,
@@ -1779,6 +2211,56 @@ TypeInfo.AccountRecentMentionWorkItemModel.fields = {
 TypeInfo.AccountWorkWorkItemModel.fields = {
     changedDate: {
         isDate: true,
+    }
+};
+
+TypeInfo.Comment.fields = {
+    createdDate: {
+        isDate: true,
+    },
+    createdOnBehalfDate: {
+        isDate: true,
+    },
+    modifiedDate: {
+        isDate: true,
+    },
+    reactions: {
+        isArray: true,
+        typeInfo: TypeInfo.CommentReaction
+    }
+};
+
+TypeInfo.CommentList.fields = {
+    comments: {
+        isArray: true,
+        typeInfo: TypeInfo.Comment
+    }
+};
+
+TypeInfo.CommentReaction.fields = {
+    type: {
+        enumType: TypeInfo.CommentReactionType
+    }
+};
+
+TypeInfo.CommentVersion.fields = {
+    createdDate: {
+        isDate: true,
+    },
+    createdOnBehalfDate: {
+        isDate: true,
+    },
+    modifiedDate: {
+        isDate: true,
+    }
+};
+
+TypeInfo.QueryBatchGetRequest.fields = {
+    $expand: {
+        enumType: TypeInfo.QueryExpand
+    },
+    errorPolicy: {
+        enumType: TypeInfo.QueryErrorPolicy
     }
 };
 

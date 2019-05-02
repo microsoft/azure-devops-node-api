@@ -41,7 +41,7 @@ export async function run() {
 
             // Retrieve the list of artifacts for the latest build.
             cm.heading(`Artifacts for build ${latestBuild.id}, ${project} project`);
-            const artifacts: bi.BuildArtifact[] = await vstsBuild.getArtifacts(latestBuild.id, project);
+            const artifacts: bi.BuildArtifact[] = await vstsBuild.getArtifacts(project, latestBuild.id);
 
             let downloadableArtifact;
             for (const artifact of artifacts) {
@@ -60,7 +60,7 @@ export async function run() {
             // Download an artifact.
             if (downloadableArtifact) {
                 cm.heading(`Download zip of artifact '${downloadableArtifact.name}' for build ${latestBuild.id}, ${project} project`);
-                const artifactStream: NodeJS.ReadableStream = await vstsBuild.getArtifactContentZip(latestBuild.id, downloadableArtifact.name, project);
+                const artifactStream: NodeJS.ReadableStream = await vstsBuild.getArtifactContentZip(project, latestBuild.id, downloadableArtifact.name);
 
                 const path = `${downloadableArtifact.name}.zip`;
 

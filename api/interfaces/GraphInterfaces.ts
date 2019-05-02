@@ -20,6 +20,9 @@ export interface GraphCachePolicies {
     cacheSize?: number;
 }
 
+/**
+ * Subject descriptor of a Graph entity
+ */
 export interface GraphDescriptorResult {
     /**
      * This field contains zero or more interesting links about the graph descriptor. These links may be invoked to obtain additional relationships or more detailed information about this graph descriptor.
@@ -36,10 +39,6 @@ export interface GraphFederatedProviderData {
      * The access token that can be used to communicated with the federated provider on behalf on the target identity, if we were able to successfully acquire one, otherwise <code>null</code>, if we were not.
      */
     accessToken?: string;
-    /**
-     * Whether or not the immediate provider (i.e. AAD) has indicated that we can call them to attempt to get an access token to communicate with the federated provider on behalf of the target identity.
-     */
-    canQueryAccessToken?: boolean;
     /**
      * The name of the federated provider, e.g. "github.com".
      */
@@ -59,6 +58,9 @@ export interface GraphGlobalExtendedPropertyBatch {
     subjectDescriptors?: string[];
 }
 
+/**
+ * Graph group entity
+ */
 export interface GraphGroup extends GraphMember {
     /**
      * A short phrase to help human readers disambiguate groups with similar names
@@ -183,6 +185,9 @@ export enum GraphMemberSearchFactor {
     DirectoryAlias = 8,
 }
 
+/**
+ * Relationship between a container and a member
+ */
 export interface GraphMembership {
     /**
      * This field contains zero or more interesting links about the graph membership. These links may be invoked to obtain additional relationships or more detailed information about this graph membership.
@@ -192,11 +197,17 @@ export interface GraphMembership {
     memberDescriptor?: string;
 }
 
+/**
+ * Status of a Graph membership (active/inactive)
+ */
 export interface GraphMembershipState {
     /**
      * This field contains zero or more interesting links about the graph membership state. These links may be invoked to obtain additional relationships or more detailed information about this graph membership state.
      */
     _links?: any;
+    /**
+     * When true, the membership is active
+     */
     active?: boolean;
 }
 
@@ -245,6 +256,9 @@ export interface GraphProviderInfo {
     originId?: string;
 }
 
+/**
+ * Container where a graph entity is defined (organization, project, team)
+ */
 export interface GraphScope extends GraphSubject {
     /**
      * The subject descriptor that references the administrators group for this scope. Only members of this group can change the contents of this scope or assign other users permissions to access this scope.
@@ -298,6 +312,9 @@ export interface GraphScopeCreationContext {
     storageKey?: string;
 }
 
+/**
+ * Storage key of a Graph entity
+ */
 export interface GraphStorageKeyResult {
     /**
      * This field contains zero or more interesting links about the graph storage key. These links may be invoked to obtain additional relationships or more detailed information about this graph storage key.
@@ -306,6 +323,9 @@ export interface GraphStorageKeyResult {
     value?: string;
 }
 
+/**
+ * Top-level graph entity
+ */
 export interface GraphSubject extends GraphSubjectBase {
     /**
      * [Internal Use Only] The legacy descriptor is here in case you need to access old version IMS using identity descriptor.
@@ -344,6 +364,9 @@ export interface GraphSubjectBase {
     url?: string;
 }
 
+/**
+ * Batching of subjects to lookup using the Graph API
+ */
 export interface GraphSubjectLookup {
     lookupKeys?: GraphSubjectLookupKey[];
 }
@@ -361,7 +384,17 @@ export enum GraphTraversalDirection {
     Up = 2,
 }
 
+/**
+ * Graph user entity
+ */
 export interface GraphUser extends GraphMember {
+    /**
+     * The short, generally unique name for the user in the backing directory. For AAD users, this corresponds to the mail nickname, which is often but not necessarily similar to the part of the user's mail address before the @ sign. For GitHub users, this corresponds to the GitHub user handle.
+     */
+    directoryAlias?: string;
+    /**
+     * When true, the group has been deleted in the identity provider
+     */
     isDeletedInOrigin?: boolean;
     metadataUpdateDate?: Date;
     /**
@@ -398,6 +431,16 @@ export interface GraphUserOriginIdCreationContext extends GraphUserCreationConte
 }
 
 /**
+ * Use this type to update an existing user using the OriginID as a reference to an existing user from an external AD or AAD backed provider. This is the subset of GraphUser fields required for creation of a GraphUser for the AD and AAD use case when looking up the user by its unique ID in the backing provider.
+ */
+export interface GraphUserOriginIdUpdateContext extends GraphUserUpdateContext {
+    /**
+     * This should be the object id or sid of the user from the source AD or AAD provider. Example: d47d025a-ce2f-4a79-8618-e8862ade30dd Azure Devops will communicate with the source provider to fill all other fields on creation.
+     */
+    originId: string;
+}
+
+/**
  * Use this type to create a new user using the principal name as a reference to an existing user from an external AD or AAD backed provider. This is the subset of GraphUser fields required for creation of a GraphUser for the AD and AAD use case when looking up the user by its principal name in the backing provider.
  */
 export interface GraphUserPrincipalNameCreationContext extends GraphUserCreationContext {
@@ -407,10 +450,14 @@ export interface GraphUserPrincipalNameCreationContext extends GraphUserCreation
     principalName: string;
 }
 
-export enum IdentityShardingState {
-    Undefined = 0,
-    Enabled = 1,
-    Disabled = 2,
+/**
+ * Do not attempt to use this type to update user. Use one of the subclasses instead. This type does not contain sufficient fields to create a new user.
+ */
+export interface GraphUserUpdateContext {
+    /**
+     * Storage key should not be specified in case of updating user
+     */
+    storageKey?: string;
 }
 
 export interface PagedGraphGroups {
@@ -460,13 +507,6 @@ export var TypeInfo = {
         }
     },
     GraphUser: <any>{
-    },
-    IdentityShardingState: {
-        enumValues: {
-            "undefined": 0,
-            "enabled": 1,
-            "disabled": 2
-        }
     },
     PagedGraphUsers: <any>{
     },

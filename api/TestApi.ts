@@ -19,8 +19,6 @@ import TfsCoreInterfaces = require("./interfaces/CoreInterfaces");
 
 export interface ITestApi extends basem.ClientApiBase {
     getActionResults(project: string, runId: number, testCaseResultId: number, iterationId: number, actionPath?: string): Promise<TestInterfaces.TestActionResultModel[]>;
-    createAfnStrip(afnStrip: TestInterfaces.AfnStrip, project: string): Promise<TestInterfaces.AfnStrip>;
-    getAfnStrips(project: string, testCaseIds?: number[]): Promise<TestInterfaces.AfnStrip[]>;
     createTestIterationResultAttachment(attachmentRequestModel: TestInterfaces.TestAttachmentRequestModel, project: string, runId: number, testCaseResultId: number, iterationId: number, actionPath?: string): Promise<TestInterfaces.TestAttachmentReference>;
     createTestResultAttachment(attachmentRequestModel: TestInterfaces.TestAttachmentRequestModel, project: string, runId: number, testCaseResultId: number): Promise<TestInterfaces.TestAttachmentReference>;
     createTestSubResultAttachment(attachmentRequestModel: TestInterfaces.TestAttachmentRequestModel, project: string, runId: number, testCaseResultId: number, testSubResultId: number): Promise<TestInterfaces.TestAttachmentReference>;
@@ -35,18 +33,10 @@ export interface ITestApi extends basem.ClientApiBase {
     getTestRunAttachments(project: string, runId: number): Promise<TestInterfaces.TestAttachment[]>;
     getTestRunAttachmentZip(project: string, runId: number, attachmentId: number): Promise<NodeJS.ReadableStream>;
     getBugsLinkedToTestResult(project: string, runId: number, testCaseResultId: number): Promise<TestInterfaces.WorkItemReference[]>;
-    getCloneInformation(project: string, cloneOperationId: number, includeDetails?: boolean): Promise<TestInterfaces.CloneOperationInformation>;
-    cloneTestPlan(cloneRequestBody: TestInterfaces.TestPlanCloneRequest, project: string, planId: number): Promise<TestInterfaces.CloneOperationInformation>;
-    cloneTestSuite(cloneRequestBody: TestInterfaces.TestSuiteCloneRequest, project: string, planId: number, sourceSuiteId: number): Promise<TestInterfaces.CloneOperationInformation>;
     getBuildCodeCoverage(project: string, buildId: number, flags: number): Promise<TestInterfaces.BuildCoverage[]>;
     getCodeCoverageSummary(project: string, buildId: number, deltaBuildId?: number): Promise<TestInterfaces.CodeCoverageSummary>;
     updateCodeCoverageSummary(coverageData: TestInterfaces.CodeCoverageData, project: string, buildId: number): Promise<void>;
     getTestRunCodeCoverage(project: string, runId: number, flags: number): Promise<TestInterfaces.TestRunCoverage[]>;
-    createTestConfiguration(testConfiguration: TestInterfaces.TestConfiguration, project: string): Promise<TestInterfaces.TestConfiguration>;
-    deleteTestConfiguration(project: string, testConfigurationId: number): Promise<void>;
-    getTestConfigurationById(project: string, testConfigurationId: number): Promise<TestInterfaces.TestConfiguration>;
-    getTestConfigurations(project: string, skip?: number, top?: number, continuationToken?: string, includeAllProperties?: boolean): Promise<TestInterfaces.TestConfiguration[]>;
-    updateTestConfiguration(testConfiguration: TestInterfaces.TestConfiguration, project: string, testConfigurationId: number): Promise<TestInterfaces.TestConfiguration>;
     addCustomFields(newFields: TestInterfaces.CustomTestFieldDefinition[], project: string): Promise<TestInterfaces.CustomTestFieldDefinition[]>;
     queryCustomFields(project: string, scopeFilter: TestInterfaces.CustomTestFieldScope): Promise<TestInterfaces.CustomTestFieldDefinition[]>;
     queryTestResultHistory(filter: TestInterfaces.ResultsFilter, project: string): Promise<TestInterfaces.TestResultHistory>;
@@ -55,11 +45,6 @@ export interface ITestApi extends basem.ClientApiBase {
     getLinkedWorkItemsByQuery(workItemQuery: TestInterfaces.LinkedWorkItemsQuery, project: string): Promise<TestInterfaces.LinkedWorkItemsQueryResult[]>;
     getTestRunLogs(project: string, runId: number): Promise<TestInterfaces.TestMessageLogDetails[]>;
     getResultParameters(project: string, runId: number, testCaseResultId: number, iterationId: number, paramName?: string): Promise<TestInterfaces.TestResultParameterModel[]>;
-    createTestPlan(testPlan: TestInterfaces.PlanUpdateModel, project: string): Promise<TestInterfaces.TestPlan>;
-    deleteTestPlan(project: string, planId: number): Promise<void>;
-    getPlanById(project: string, planId: number): Promise<TestInterfaces.TestPlan>;
-    getPlans(project: string, owner?: string, skip?: number, top?: number, includePlanDetails?: boolean, filterActivePlans?: boolean): Promise<TestInterfaces.TestPlan[]>;
-    updateTestPlan(planUpdateModel: TestInterfaces.PlanUpdateModel, project: string, planId: number): Promise<TestInterfaces.TestPlan>;
     getPoint(project: string, planId: number, suiteId: number, pointIds: number, witFields?: string): Promise<TestInterfaces.TestPoint>;
     getPoints(project: string, planId: number, suiteId: number, witFields?: string, configurationId?: string, testCaseId?: string, testPointIds?: string, includePointDetails?: boolean, skip?: number, top?: number): Promise<TestInterfaces.TestPoint[]>;
     updateTestPoints(pointUpdateModel: TestInterfaces.PointUpdateModel, project: string, planId: number, suiteId: number, pointIds: string): Promise<TestInterfaces.TestPoint[]>;
@@ -69,7 +54,7 @@ export interface ITestApi extends basem.ClientApiBase {
     publishTestResultDocument(document: TestInterfaces.TestResultDocument, project: string, runId: number): Promise<TestInterfaces.TestResultDocument>;
     getResultGroupsByBuild(project: string, buildId: number, publishContext: string, fields?: string[], continuationToken?: string): Promise<TestInterfaces.FieldDetailsForTestResults[]>;
     getResultGroupsByRelease(project: string, releaseId: number, publishContext: string, releaseEnvId?: number, fields?: string[], continuationToken?: string): Promise<TestInterfaces.FieldDetailsForTestResults[]>;
-    getTestResultsMetaData(project: string, testReferenceIds: number[]): Promise<TestInterfaces.TestResultMetaData[]>;
+    queryTestResultsMetaData(testReferenceIds: string[], project: string): Promise<TestInterfaces.TestResultMetaData[]>;
     getResultRetentionSettings(project: string): Promise<TestInterfaces.ResultRetentionSettings>;
     updateResultRetentionSettings(retentionSettings: TestInterfaces.ResultRetentionSettings, project: string): Promise<TestInterfaces.ResultRetentionSettings>;
     addTestResultsToTestRun(results: TestInterfaces.TestCaseResult[], project: string, runId: number): Promise<TestInterfaces.TestCaseResult[]>;
@@ -97,29 +82,16 @@ export interface ITestApi extends basem.ClientApiBase {
     updateTestSession(testSession: TestInterfaces.TestSession, teamContext: TfsCoreInterfaces.TeamContext): Promise<TestInterfaces.TestSession>;
     deleteSharedParameter(project: string, sharedParameterId: number): Promise<void>;
     deleteSharedStep(project: string, sharedStepId: number): Promise<void>;
-    getSuiteEntries(project: string, suiteId: number): Promise<TestInterfaces.SuiteEntry[]>;
-    reorderSuiteEntries(suiteEntries: TestInterfaces.SuiteEntryUpdateModel[], project: string, suiteId: number): Promise<TestInterfaces.SuiteEntry[]>;
     addTestCasesToSuite(project: string, planId: number, suiteId: number, testCaseIds: string): Promise<TestInterfaces.SuiteTestCase[]>;
     getTestCaseById(project: string, planId: number, suiteId: number, testCaseIds: number): Promise<TestInterfaces.SuiteTestCase>;
     getTestCases(project: string, planId: number, suiteId: number): Promise<TestInterfaces.SuiteTestCase[]>;
     removeTestCasesFromSuiteUrl(project: string, planId: number, suiteId: number, testCaseIds: string): Promise<void>;
     updateSuiteTestCases(suiteTestCaseUpdateModel: TestInterfaces.SuiteTestCaseUpdateModel, project: string, planId: number, suiteId: number, testCaseIds: string): Promise<TestInterfaces.SuiteTestCase[]>;
-    createTestSuite(testSuite: TestInterfaces.SuiteCreateModel, project: string, planId: number, suiteId: number): Promise<TestInterfaces.TestSuite[]>;
-    deleteTestSuite(project: string, planId: number, suiteId: number): Promise<void>;
-    getTestSuiteById(project: string, planId: number, suiteId: number, expand?: number): Promise<TestInterfaces.TestSuite>;
-    getTestSuitesForPlan(project: string, planId: number, expand?: number, skip?: number, top?: number, asTreeView?: boolean): Promise<TestInterfaces.TestSuite[]>;
-    updateTestSuite(suiteUpdateModel: TestInterfaces.SuiteUpdateModel, project: string, planId: number, suiteId: number): Promise<TestInterfaces.TestSuite>;
-    getSuitesByTestCaseId(testCaseId: number): Promise<TestInterfaces.TestSuite[]>;
     deleteTestCase(project: string, testCaseId: number): Promise<void>;
     queryTestHistory(filter: TestInterfaces.TestHistoryQuery, project: string): Promise<TestInterfaces.TestHistoryQuery>;
     createTestSettings(testSettings: TestInterfaces.TestSettings, project: string): Promise<number>;
     deleteTestSettings(project: string, testSettingsId: number): Promise<void>;
     getTestSettingsById(project: string, testSettingsId: number): Promise<TestInterfaces.TestSettings>;
-    createTestVariable(testVariable: TestInterfaces.TestVariable, project: string): Promise<TestInterfaces.TestVariable>;
-    deleteTestVariable(project: string, testVariableId: number): Promise<void>;
-    getTestVariableById(project: string, testVariableId: number): Promise<TestInterfaces.TestVariable>;
-    getTestVariables(project: string, skip?: number, top?: number): Promise<TestInterfaces.TestVariable[]>;
-    updateTestVariable(testVariable: TestInterfaces.TestVariable, project: string, testVariableId: number): Promise<TestInterfaces.TestVariable>;
     addWorkItemToTestLinks(workItemToTestLinks: TestInterfaces.WorkItemToTestLinks, project: string): Promise<TestInterfaces.WorkItemToTestLinks>;
     deleteTestMethodToWorkItemLink(project: string, testName: string, workItemId: number): Promise<boolean>;
     queryTestMethodLinkedWorkItems(project: string, testName: string): Promise<TestInterfaces.TestToWorkItemLinks>;
@@ -161,12 +133,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
+                    "5.1-preview.3",
                     "Test",
                     "eaf40c31-ff84-4062-aafd-d5664be11a37",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -175,97 +147,6 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let ret = this.formatResponse(res.result,
                                               TestInterfaces.TypeInfo.TestActionResultModel,
-                                              true);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Create AfnStrip
-     * 
-     * @param {TestInterfaces.AfnStrip} afnStrip - AfnStrip request payload
-     * @param {string} project - Project ID or project name
-     */
-    public async createAfnStrip(
-        afnStrip: TestInterfaces.AfnStrip,
-        project: string
-        ): Promise<TestInterfaces.AfnStrip> {
-
-        return new Promise<TestInterfaces.AfnStrip>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
-                    "Test",
-                    "708cd155-cd42-48c1-8679-decc9929c3ad",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.AfnStrip>;
-                res = await this.rest.create<TestInterfaces.AfnStrip>(url, afnStrip, options);
-
-                let ret = this.formatResponse(res.result,
-                                              TestInterfaces.TypeInfo.AfnStrip,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Get list of afnStrips by testcaseid
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number[]} testCaseIds - Ids of testcases
-     */
-    public async getAfnStrips(
-        project: string,
-        testCaseIds?: number[]
-        ): Promise<TestInterfaces.AfnStrip[]> {
-
-        return new Promise<TestInterfaces.AfnStrip[]>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project
-            };
-
-            let queryValues: any = {
-                testCaseIds: testCaseIds && testCaseIds.join(","),
-            };
-            
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
-                    "Test",
-                    "708cd155-cd42-48c1-8679-decc9929c3ad",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.AfnStrip[]>;
-                res = await this.rest.get<TestInterfaces.AfnStrip[]>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              TestInterfaces.TypeInfo.AfnStrip,
                                               true);
 
                 resolve(ret);
@@ -313,13 +194,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "2bffebe9-2f0f-4639-9af8-56129e9fed2d",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -363,12 +244,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "2bffebe9-2f0f-4639-9af8-56129e9fed2d",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -421,13 +302,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "2bffebe9-2f0f-4639-9af8-56129e9fed2d",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -472,12 +353,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "2bffebe9-2f0f-4639-9af8-56129e9fed2d",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -511,12 +392,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "2bffebe9-2f0f-4639-9af8-56129e9fed2d",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -561,12 +442,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "2bffebe9-2f0f-4639-9af8-56129e9fed2d",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
@@ -612,13 +493,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "2bffebe9-2f0f-4639-9af8-56129e9fed2d",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -661,13 +542,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "2bffebe9-2f0f-4639-9af8-56129e9fed2d",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -721,13 +602,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "2bffebe9-2f0f-4639-9af8-56129e9fed2d",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
@@ -760,12 +641,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "4f004af4-a507-489c-9b13-cb62060beb11",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -807,12 +688,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "4f004af4-a507-489c-9b13-cb62060beb11",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -843,12 +724,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "4f004af4-a507-489c-9b13-cb62060beb11",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -890,12 +771,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "4f004af4-a507-489c-9b13-cb62060beb11",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
@@ -927,12 +808,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "6de20ca2-67de-4faf-97fa-38c5d585eb00",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -942,152 +823,6 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let ret = this.formatResponse(res.result,
                                               null,
                                               true);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Get clone information.
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} cloneOperationId - Operation ID returned when we queue a clone operation
-     * @param {boolean} includeDetails - If false returns only status of the clone operation information, if true returns complete clone information
-     */
-    public async getCloneInformation(
-        project: string,
-        cloneOperationId: number,
-        includeDetails?: boolean
-        ): Promise<TestInterfaces.CloneOperationInformation> {
-
-        return new Promise<TestInterfaces.CloneOperationInformation>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                cloneOperationId: cloneOperationId
-            };
-
-            let queryValues: any = {
-                '$includeDetails': includeDetails,
-            };
-            
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
-                    "Test",
-                    "5b9d6320-abed-47a5-a151-cd6dc3798be6",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.CloneOperationInformation>;
-                res = await this.rest.get<TestInterfaces.CloneOperationInformation>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              TestInterfaces.TypeInfo.CloneOperationInformation,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Clone test plan
-     * 
-     * @param {TestInterfaces.TestPlanCloneRequest} cloneRequestBody - Plan Clone Request Body detail TestPlanCloneRequest
-     * @param {string} project - Project ID or project name
-     * @param {number} planId - ID of the test plan to be cloned.
-     */
-    public async cloneTestPlan(
-        cloneRequestBody: TestInterfaces.TestPlanCloneRequest,
-        project: string,
-        planId: number
-        ): Promise<TestInterfaces.CloneOperationInformation> {
-
-        return new Promise<TestInterfaces.CloneOperationInformation>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                planId: planId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
-                    "Test",
-                    "edc3ef4b-8460-4e86-86fa-8e4f5e9be831",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.CloneOperationInformation>;
-                res = await this.rest.create<TestInterfaces.CloneOperationInformation>(url, cloneRequestBody, options);
-
-                let ret = this.formatResponse(res.result,
-                                              TestInterfaces.TypeInfo.CloneOperationInformation,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Clone test suite
-     * 
-     * @param {TestInterfaces.TestSuiteCloneRequest} cloneRequestBody - Suite Clone Request Body detail TestSuiteCloneRequest
-     * @param {string} project - Project ID or project name
-     * @param {number} planId - ID of the test plan in which suite to be cloned is present
-     * @param {number} sourceSuiteId - ID of the test suite to be cloned
-     */
-    public async cloneTestSuite(
-        cloneRequestBody: TestInterfaces.TestSuiteCloneRequest,
-        project: string,
-        planId: number,
-        sourceSuiteId: number
-        ): Promise<TestInterfaces.CloneOperationInformation> {
-
-        return new Promise<TestInterfaces.CloneOperationInformation>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                planId: planId,
-                sourceSuiteId: sourceSuiteId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
-                    "Test",
-                    "751e4ab5-5bf6-4fb5-9d5d-19ef347662dd",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.CloneOperationInformation>;
-                res = await this.rest.create<TestInterfaces.CloneOperationInformation>(url, cloneRequestBody, options);
-
-                let ret = this.formatResponse(res.result,
-                                              TestInterfaces.TypeInfo.CloneOperationInformation,
-                                              false);
 
                 resolve(ret);
                 
@@ -1129,13 +864,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "77560e8a-4e8c-4d59-894e-a5f264c24444",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1183,13 +918,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "77560e8a-4e8c-4d59-894e-a5f264c24444",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1197,7 +932,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 res = await this.rest.get<TestInterfaces.CodeCoverageSummary>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
+                                              TestInterfaces.TypeInfo.CodeCoverageSummary,
                                               false);
 
                 resolve(ret);
@@ -1236,13 +971,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "77560e8a-4e8c-4d59-894e-a5f264c24444",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1290,13 +1025,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "9629116f-3b89-4ed8-b358-d4694efda160",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1306,240 +1041,6 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let ret = this.formatResponse(res.result,
                                               null,
                                               true);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Create a test configuration
-     * 
-     * @param {TestInterfaces.TestConfiguration} testConfiguration - Test configuration
-     * @param {string} project - Project ID or project name
-     */
-    public async createTestConfiguration(
-        testConfiguration: TestInterfaces.TestConfiguration,
-        project: string
-        ): Promise<TestInterfaces.TestConfiguration> {
-
-        return new Promise<TestInterfaces.TestConfiguration>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
-                    "Test",
-                    "d667591b-b9fd-4263-997a-9a084cca848f",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.TestConfiguration>;
-                res = await this.rest.create<TestInterfaces.TestConfiguration>(url, testConfiguration, options);
-
-                let ret = this.formatResponse(res.result,
-                                              TestInterfaces.TypeInfo.TestConfiguration,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Delete a test configuration
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} testConfigurationId - ID of the test configuration to get.
-     */
-    public async deleteTestConfiguration(
-        project: string,
-        testConfigurationId: number
-        ): Promise<void> {
-
-        return new Promise<void>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                testConfigurationId: testConfigurationId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
-                    "Test",
-                    "d667591b-b9fd-4263-997a-9a084cca848f",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<void>;
-                res = await this.rest.del<void>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Get a test configuration
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} testConfigurationId - ID of the test configuration to get.
-     */
-    public async getTestConfigurationById(
-        project: string,
-        testConfigurationId: number
-        ): Promise<TestInterfaces.TestConfiguration> {
-
-        return new Promise<TestInterfaces.TestConfiguration>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                testConfigurationId: testConfigurationId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
-                    "Test",
-                    "d667591b-b9fd-4263-997a-9a084cca848f",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.TestConfiguration>;
-                res = await this.rest.get<TestInterfaces.TestConfiguration>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              TestInterfaces.TypeInfo.TestConfiguration,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Get a list of test configurations
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} skip - Number of test configurations to skip.
-     * @param {number} top - Number of test configurations to return.
-     * @param {string} continuationToken - If the list of configurations returned is not complete, a continuation token to query next batch of configurations is included in the response header as "x-ms-continuationtoken". Omit this parameter to get the first batch of test configurations.
-     * @param {boolean} includeAllProperties - If true, it returns all properties of the test configurations. Otherwise, it returns the skinny version.
-     */
-    public async getTestConfigurations(
-        project: string,
-        skip?: number,
-        top?: number,
-        continuationToken?: string,
-        includeAllProperties?: boolean
-        ): Promise<TestInterfaces.TestConfiguration[]> {
-
-        return new Promise<TestInterfaces.TestConfiguration[]>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project
-            };
-
-            let queryValues: any = {
-                '$skip': skip,
-                '$top': top,
-                continuationToken: continuationToken,
-                includeAllProperties: includeAllProperties,
-            };
-            
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
-                    "Test",
-                    "d667591b-b9fd-4263-997a-9a084cca848f",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.TestConfiguration[]>;
-                res = await this.rest.get<TestInterfaces.TestConfiguration[]>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              TestInterfaces.TypeInfo.TestConfiguration,
-                                              true);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Update a test configuration
-     * 
-     * @param {TestInterfaces.TestConfiguration} testConfiguration - Test configuration
-     * @param {string} project - Project ID or project name
-     * @param {number} testConfigurationId - ID of the test configuration to update.
-     */
-    public async updateTestConfiguration(
-        testConfiguration: TestInterfaces.TestConfiguration,
-        project: string,
-        testConfigurationId: number
-        ): Promise<TestInterfaces.TestConfiguration> {
-
-        return new Promise<TestInterfaces.TestConfiguration>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                testConfigurationId: testConfigurationId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
-                    "Test",
-                    "d667591b-b9fd-4263-997a-9a084cca848f",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.TestConfiguration>;
-                res = await this.rest.update<TestInterfaces.TestConfiguration>(url, testConfiguration, options);
-
-                let ret = this.formatResponse(res.result,
-                                              TestInterfaces.TypeInfo.TestConfiguration,
-                                              false);
 
                 resolve(ret);
                 
@@ -1566,12 +1067,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "8ce1923b-f4c7-4e22-b93b-f6284e525ec2",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1614,13 +1115,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "8ce1923b-f4c7-4e22-b93b-f6284e525ec2",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1656,12 +1157,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "234616f5-429c-4e7b-9192-affd76731dfd",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1712,13 +1213,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
+                    "5.1-preview.3",
                     "Test",
                     "73eb9074-3446-4c44-8296-2f811950ff8d",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1766,13 +1267,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
+                    "5.1-preview.3",
                     "Test",
                     "73eb9074-3446-4c44-8296-2f811950ff8d",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1808,12 +1309,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "a4dcb25b-9878-49ea-abfd-e440bd9b1dcd",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1852,12 +1353,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "a1e55200-637e-42e9-a7c0-7e5bfdedb1b3",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1908,13 +1409,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
+                    "5.1-preview.3",
                     "Test",
                     "7c69810d-3354-4af3-844a-180bd25db08a",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1924,243 +1425,6 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let ret = this.formatResponse(res.result,
                                               null,
                                               true);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Create a test plan.
-     * 
-     * @param {TestInterfaces.PlanUpdateModel} testPlan - A test plan object.
-     * @param {string} project - Project ID or project name
-     */
-    public async createTestPlan(
-        testPlan: TestInterfaces.PlanUpdateModel,
-        project: string
-        ): Promise<TestInterfaces.TestPlan> {
-
-        return new Promise<TestInterfaces.TestPlan>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
-                    "Test",
-                    "51712106-7278-4208-8563-1c96f40cf5e4",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.TestPlan>;
-                res = await this.rest.create<TestInterfaces.TestPlan>(url, testPlan, options);
-
-                let ret = this.formatResponse(res.result,
-                                              TestInterfaces.TypeInfo.TestPlan,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Delete a test plan.
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} planId - ID of the test plan to be deleted.
-     */
-    public async deleteTestPlan(
-        project: string,
-        planId: number
-        ): Promise<void> {
-
-        return new Promise<void>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                planId: planId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
-                    "Test",
-                    "51712106-7278-4208-8563-1c96f40cf5e4",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<void>;
-                res = await this.rest.del<void>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Get test plan by ID.
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} planId - ID of the test plan to return.
-     */
-    public async getPlanById(
-        project: string,
-        planId: number
-        ): Promise<TestInterfaces.TestPlan> {
-
-        return new Promise<TestInterfaces.TestPlan>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                planId: planId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
-                    "Test",
-                    "51712106-7278-4208-8563-1c96f40cf5e4",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.TestPlan>;
-                res = await this.rest.get<TestInterfaces.TestPlan>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              TestInterfaces.TypeInfo.TestPlan,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Get a list of test plans.
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {string} owner - Filter for test plan by owner ID or name.
-     * @param {number} skip - Number of test plans to skip.
-     * @param {number} top - Number of test plans to return.
-     * @param {boolean} includePlanDetails - Get all properties of the test plan.
-     * @param {boolean} filterActivePlans - Get just the active plans.
-     */
-    public async getPlans(
-        project: string,
-        owner?: string,
-        skip?: number,
-        top?: number,
-        includePlanDetails?: boolean,
-        filterActivePlans?: boolean
-        ): Promise<TestInterfaces.TestPlan[]> {
-
-        return new Promise<TestInterfaces.TestPlan[]>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project
-            };
-
-            let queryValues: any = {
-                owner: owner,
-                '$skip': skip,
-                '$top': top,
-                includePlanDetails: includePlanDetails,
-                filterActivePlans: filterActivePlans,
-            };
-            
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
-                    "Test",
-                    "51712106-7278-4208-8563-1c96f40cf5e4",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.TestPlan[]>;
-                res = await this.rest.get<TestInterfaces.TestPlan[]>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              TestInterfaces.TypeInfo.TestPlan,
-                                              true);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Update a test plan.
-     * 
-     * @param {TestInterfaces.PlanUpdateModel} planUpdateModel
-     * @param {string} project - Project ID or project name
-     * @param {number} planId - ID of the test plan to be updated.
-     */
-    public async updateTestPlan(
-        planUpdateModel: TestInterfaces.PlanUpdateModel,
-        project: string,
-        planId: number
-        ): Promise<TestInterfaces.TestPlan> {
-
-        return new Promise<TestInterfaces.TestPlan>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                planId: planId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
-                    "Test",
-                    "51712106-7278-4208-8563-1c96f40cf5e4",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.TestPlan>;
-                res = await this.rest.update<TestInterfaces.TestPlan>(url, planUpdateModel, options);
-
-                let ret = this.formatResponse(res.result,
-                                              TestInterfaces.TypeInfo.TestPlan,
-                                              false);
 
                 resolve(ret);
                 
@@ -2202,13 +1466,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "Test",
                     "3bcfd5c8-be62-488e-b1da-b8289ce9299c",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2274,13 +1538,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "Test",
                     "3bcfd5c8-be62-488e-b1da-b8289ce9299c",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2327,12 +1591,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "Test",
                     "3bcfd5c8-be62-488e-b1da-b8289ce9299c",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2379,13 +1643,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "Test",
                     "b4264fd0-a5d1-43e2-82a5-b9c46b7da9ce",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2446,13 +1710,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.2",
                     "Test",
                     "efb387b0-10d5-42e7-be40-95e06ee9430f",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2519,13 +1783,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.2",
                     "Test",
                     "b834ec7e-35bb-450f-a3c8-802e70ca40dd",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2564,12 +1828,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "370ca04b-8eec-4ca8-8ba3-d24dca228791",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2624,13 +1888,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "Test",
                     "d279d052-c55a-4204-b913-42f733b52958",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2688,13 +1952,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "Test",
                     "ef5ce5d4-a4e5-47ee-804c-354518f8d03f",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2717,40 +1981,32 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     /**
      * Get list of test Result meta data details for corresponding testcasereferenceId
      * 
+     * @param {string[]} testReferenceIds - TestCaseReference Ids of the test Result to be queried, comma seperated list of valid ids (limit no. of ids 200).
      * @param {string} project - Project ID or project name
-     * @param {number[]} testReferenceIds - TestCaseReference Ids of the test Result to be queried, comma seperated list of valid ids (limit no. of ids 100).
      */
-    public async getTestResultsMetaData(
-        project: string,
-        testReferenceIds: number[]
+    public async queryTestResultsMetaData(
+        testReferenceIds: string[],
+        project: string
         ): Promise<TestInterfaces.TestResultMetaData[]> {
-        if (testReferenceIds == null) {
-            throw new TypeError('testReferenceIds can not be null or undefined');
-        }
 
         return new Promise<TestInterfaces.TestResultMetaData[]>(async (resolve, reject) => {
             let routeValues: any = {
                 project: project
             };
 
-            let queryValues: any = {
-                testReferenceIds: testReferenceIds && testReferenceIds.join(","),
-            };
-            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.2",
                     "Test",
                     "afa7830e-67a7-4336-8090-2b448ca80295",
-                    routeValues,
-                    queryValues);
+                    routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestResultMetaData[]>;
-                res = await this.rest.get<TestInterfaces.TestResultMetaData[]>(url, options);
+                res = await this.rest.create<TestInterfaces.TestResultMetaData[]>(url, testReferenceIds, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
@@ -2781,12 +2037,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "a3206d9e-fa8d-42d3-88cb-f75c51e69cde",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2824,12 +2080,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "a3206d9e-fa8d-42d3-88cb-f75c51e69cde",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2870,12 +2126,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.5",
+                    "5.1-preview.6",
                     "Test",
                     "4637d869-3a76-4468-8057-0bb02aa385cf",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2923,13 +2179,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.5",
+                    "5.1-preview.6",
                     "Test",
                     "4637d869-3a76-4468-8057-0bb02aa385cf",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2983,13 +2239,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.5",
+                    "5.1-preview.6",
                     "Test",
                     "4637d869-3a76-4468-8057-0bb02aa385cf",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3030,12 +2286,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.5",
+                    "5.1-preview.6",
                     "Test",
                     "4637d869-3a76-4468-8057-0bb02aa385cf",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3071,12 +2327,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.5",
+                    "5.1-preview.6",
                     "Test",
                     "6711da49-8e6f-4d35-9f73-cef7a3c81a5b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3131,13 +2387,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "3c191b88-615b-4be2-b7d9-5ff9141e91d4",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3195,13 +2451,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "ce01820b-83f3-4c15-a583-697a43292c4e",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3253,13 +2509,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.3",
                     "Test",
                     "000ef77b-fea2-498d-a10d-ad1a037f559f",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3317,13 +2573,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.3",
                     "Test",
                     "85765790-ac68-494e-b268-af36c3929744",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3359,12 +2615,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.3",
                     "Test",
                     "85765790-ac68-494e-b268-af36c3929744",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3406,13 +2662,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "cd08294e-308d-4460-a46e-4cfdefba0b4b",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3448,12 +2704,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "fbc82a85-0786-4442-88bb-eb0fda6b01b0",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3489,12 +2745,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "dd178e93-d8dd-4887-9635-d6b9560b7b6e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3515,7 +2771,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-     * Get test run statistics
+     * Get test run statistics , used when we want to get summary of a run by outcome.
      * 
      * @param {string} project - Project ID or project name
      * @param {number} runId - ID of the run to get.
@@ -3533,12 +2789,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.3",
                     "Test",
                     "0a42c424-d764-4a16-a2d5-5c85f87d0ae8",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3576,12 +2832,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.3",
                     "Test",
                     "cadb3810-d47d-4a3c-a234-fe5f3be50138",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3620,12 +2876,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.3",
                     "Test",
                     "cadb3810-d47d-4a3c-a234-fe5f3be50138",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3670,13 +2926,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.3",
                     "Test",
                     "cadb3810-d47d-4a3c-a234-fe5f3be50138",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3739,13 +2995,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.3",
                     "Test",
                     "cadb3810-d47d-4a3c-a234-fe5f3be50138",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3766,7 +3022,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
     }
 
     /**
-     * Query Test Runs based on filters.
+     * Query Test Runs based on filters. Mandatory fields are minLastUpdatedDate and maxLastUpdatedDate.
      * 
      * @param {string} project - Project ID or project name
      * @param {Date} minLastUpdatedDate - Minimum Last Modified Date of run to be queried (Mandatory).
@@ -3784,7 +3040,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
      * @param {number[]} releaseEnvDefIds - Release Environment Definition Ids of the Runs to be queried, comma seperated list of valid ids (limit no. of ids 10).
      * @param {string} runTitle - Run Title of the Runs to be queried.
      * @param {number} top - Number of runs to be queried. Limit is 100
-     * @param {string} continuationToken - continuationToken received from previous batch or null for first batch.
+     * @param {string} continuationToken - continuationToken received from previous batch or null for first batch. It is not supposed to be created (or altered, if received from last batch) by user.
      */
     public async queryTestRuns(
         project: string,
@@ -3838,13 +3094,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.3",
                     "Test",
                     "cadb3810-d47d-4a3c-a234-fe5f3be50138",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3885,12 +3141,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.3",
                     "Test",
                     "cadb3810-d47d-4a3c-a234-fe5f3be50138",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3936,12 +3192,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "1500b4b4-6c69-4ca6-9b18-35e9e97fe2ac",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4003,13 +3259,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "1500b4b4-6c69-4ca6-9b18-35e9e97fe2ac",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4055,12 +3311,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "1500b4b4-6c69-4ca6-9b18-35e9e97fe2ac",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4097,12 +3353,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "8300eeca-0f8c-4eff-a089-d2dda409c41f",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4139,12 +3395,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "fabb3cc9-e3f8-40b7-8b62-24cc4b73fccf",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4154,96 +3410,6 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 let ret = this.formatResponse(res.result,
                                               null,
                                               false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Get a list of test suite entries in the test suite.
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} suiteId - Id of the parent suite.
-     */
-    public async getSuiteEntries(
-        project: string,
-        suiteId: number
-        ): Promise<TestInterfaces.SuiteEntry[]> {
-
-        return new Promise<TestInterfaces.SuiteEntry[]>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                suiteId: suiteId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
-                    "Test",
-                    "bf8b7f78-0c1f-49cb-89e9-d1a17bcaaad3",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.SuiteEntry[]>;
-                res = await this.rest.get<TestInterfaces.SuiteEntry[]>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Reorder test suite entries in the test suite.
-     * 
-     * @param {TestInterfaces.SuiteEntryUpdateModel[]} suiteEntries - List of SuiteEntryUpdateModel to reorder.
-     * @param {string} project - Project ID or project name
-     * @param {number} suiteId - Id of the parent test suite.
-     */
-    public async reorderSuiteEntries(
-        suiteEntries: TestInterfaces.SuiteEntryUpdateModel[],
-        project: string,
-        suiteId: number
-        ): Promise<TestInterfaces.SuiteEntry[]> {
-
-        return new Promise<TestInterfaces.SuiteEntry[]>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                suiteId: suiteId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
-                    "Test",
-                    "bf8b7f78-0c1f-49cb-89e9-d1a17bcaaad3",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.SuiteEntry[]>;
-                res = await this.rest.update<TestInterfaces.SuiteEntry[]>(url, suiteEntries, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
 
                 resolve(ret);
                 
@@ -4280,12 +3446,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
+                    "5.1-preview.3",
                     "Test",
                     "a4a1ec1c-b03f-41ca-8857-704594ecf58e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4331,12 +3497,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
+                    "5.1-preview.3",
                     "Test",
                     "a4a1ec1c-b03f-41ca-8857-704594ecf58e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4379,12 +3545,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
+                    "5.1-preview.3",
                     "Test",
                     "a4a1ec1c-b03f-41ca-8857-704594ecf58e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4430,12 +3596,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
+                    "5.1-preview.3",
                     "Test",
                     "a4a1ec1c-b03f-41ca-8857-704594ecf58e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4483,12 +3649,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
+                    "5.1-preview.3",
                     "Test",
                     "a4a1ec1c-b03f-41ca-8857-704594ecf58e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4497,313 +3663,6 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
                 let ret = this.formatResponse(res.result,
                                               null,
-                                              true);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Create a test suite.
-     * 
-     * @param {TestInterfaces.SuiteCreateModel} testSuite - Test suite data.
-     * @param {string} project - Project ID or project name
-     * @param {number} planId - ID of the test plan that contains the suite.
-     * @param {number} suiteId - ID of the parent suite.
-     */
-    public async createTestSuite(
-        testSuite: TestInterfaces.SuiteCreateModel,
-        project: string,
-        planId: number,
-        suiteId: number
-        ): Promise<TestInterfaces.TestSuite[]> {
-
-        return new Promise<TestInterfaces.TestSuite[]>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                planId: planId,
-                suiteId: suiteId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
-                    "Test",
-                    "7b7619a0-cb54-4ab3-bf22-194056f45dd1",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.TestSuite[]>;
-                res = await this.rest.create<TestInterfaces.TestSuite[]>(url, testSuite, options);
-
-                let ret = this.formatResponse(res.result,
-                                              TestInterfaces.TypeInfo.TestSuite,
-                                              true);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Delete test suite.
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} planId - ID of the test plan that contains the suite.
-     * @param {number} suiteId - ID of the test suite to delete.
-     */
-    public async deleteTestSuite(
-        project: string,
-        planId: number,
-        suiteId: number
-        ): Promise<void> {
-
-        return new Promise<void>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                planId: planId,
-                suiteId: suiteId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
-                    "Test",
-                    "7b7619a0-cb54-4ab3-bf22-194056f45dd1",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<void>;
-                res = await this.rest.del<void>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Get test suite by suite id.
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} planId - ID of the test plan that contains the suites.
-     * @param {number} suiteId - ID of the suite to get.
-     * @param {number} expand - Include the children suites and testers details
-     */
-    public async getTestSuiteById(
-        project: string,
-        planId: number,
-        suiteId: number,
-        expand?: number
-        ): Promise<TestInterfaces.TestSuite> {
-
-        return new Promise<TestInterfaces.TestSuite>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                planId: planId,
-                suiteId: suiteId
-            };
-
-            let queryValues: any = {
-                '$expand': expand,
-            };
-            
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
-                    "Test",
-                    "7b7619a0-cb54-4ab3-bf22-194056f45dd1",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.TestSuite>;
-                res = await this.rest.get<TestInterfaces.TestSuite>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              TestInterfaces.TypeInfo.TestSuite,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Get test suites for plan.
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} planId - ID of the test plan for which suites are requested.
-     * @param {number} expand - Include the children suites and testers details.
-     * @param {number} skip - Number of suites to skip from the result.
-     * @param {number} top - Number of Suites to be return after skipping the suites from the result.
-     * @param {boolean} asTreeView - If the suites returned should be in a tree structure.
-     */
-    public async getTestSuitesForPlan(
-        project: string,
-        planId: number,
-        expand?: number,
-        skip?: number,
-        top?: number,
-        asTreeView?: boolean
-        ): Promise<TestInterfaces.TestSuite[]> {
-
-        return new Promise<TestInterfaces.TestSuite[]>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                planId: planId
-            };
-
-            let queryValues: any = {
-                '$expand': expand,
-                '$skip': skip,
-                '$top': top,
-                '$asTreeView': asTreeView,
-            };
-            
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
-                    "Test",
-                    "7b7619a0-cb54-4ab3-bf22-194056f45dd1",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.TestSuite[]>;
-                res = await this.rest.get<TestInterfaces.TestSuite[]>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              TestInterfaces.TypeInfo.TestSuite,
-                                              true);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Update a test suite.
-     * 
-     * @param {TestInterfaces.SuiteUpdateModel} suiteUpdateModel - Suite Model to update
-     * @param {string} project - Project ID or project name
-     * @param {number} planId - ID of the test plan that contains the suites.
-     * @param {number} suiteId - ID of the suite to update.
-     */
-    public async updateTestSuite(
-        suiteUpdateModel: TestInterfaces.SuiteUpdateModel,
-        project: string,
-        planId: number,
-        suiteId: number
-        ): Promise<TestInterfaces.TestSuite> {
-
-        return new Promise<TestInterfaces.TestSuite>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                planId: planId,
-                suiteId: suiteId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
-                    "Test",
-                    "7b7619a0-cb54-4ab3-bf22-194056f45dd1",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.TestSuite>;
-                res = await this.rest.update<TestInterfaces.TestSuite>(url, suiteUpdateModel, options);
-
-                let ret = this.formatResponse(res.result,
-                                              TestInterfaces.TypeInfo.TestSuite,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Find the list of all test suites in which a given test case is present. This is helpful if you need to find out which test suites are using a test case, when you need to make changes to a test case.
-     * 
-     * @param {number} testCaseId - ID of the test case for which suites need to be fetched.
-     */
-    public async getSuitesByTestCaseId(
-        testCaseId: number
-        ): Promise<TestInterfaces.TestSuite[]> {
-        if (testCaseId == null) {
-            throw new TypeError('testCaseId can not be null or undefined');
-        }
-
-        return new Promise<TestInterfaces.TestSuite[]>(async (resolve, reject) => {
-            let routeValues: any = {
-            };
-
-            let queryValues: any = {
-                testCaseId: testCaseId,
-            };
-            
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.3",
-                    "Test",
-                    "09a6167b-e969-4775-9247-b94cf3819caf",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.TestSuite[]>;
-                res = await this.rest.get<TestInterfaces.TestSuite[]>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              TestInterfaces.TypeInfo.TestSuite,
                                               true);
 
                 resolve(ret);
@@ -4834,12 +3693,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "4d472e0f-e32c-4ef8-adf4-a4078772889c",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4877,12 +3736,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.2",
                     "Test",
                     "929fd86c-3e38-4d8c-b4b6-90df256e5971",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4918,12 +3777,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "8133ce14-962f-42af-a5f9-6aa9defcb9c8",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4960,12 +3819,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "8133ce14-962f-42af-a5f9-6aa9defcb9c8",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5002,245 +3861,17 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "8133ce14-962f-42af-a5f9-6aa9defcb9c8",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<TestInterfaces.TestSettings>;
                 res = await this.rest.get<TestInterfaces.TestSettings>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Create a test variable.
-     * 
-     * @param {TestInterfaces.TestVariable} testVariable - TestVariable
-     * @param {string} project - Project ID or project name
-     */
-    public async createTestVariable(
-        testVariable: TestInterfaces.TestVariable,
-        project: string
-        ): Promise<TestInterfaces.TestVariable> {
-
-        return new Promise<TestInterfaces.TestVariable>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
-                    "Test",
-                    "be3fcb2b-995b-47bf-90e5-ca3cf9980912",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.TestVariable>;
-                res = await this.rest.create<TestInterfaces.TestVariable>(url, testVariable, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Delete a test variable by its ID.
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} testVariableId - ID of the test variable to delete.
-     */
-    public async deleteTestVariable(
-        project: string,
-        testVariableId: number
-        ): Promise<void> {
-
-        return new Promise<void>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                testVariableId: testVariableId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
-                    "Test",
-                    "be3fcb2b-995b-47bf-90e5-ca3cf9980912",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<void>;
-                res = await this.rest.del<void>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Get a test variable by its ID.
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} testVariableId - ID of the test variable to get.
-     */
-    public async getTestVariableById(
-        project: string,
-        testVariableId: number
-        ): Promise<TestInterfaces.TestVariable> {
-
-        return new Promise<TestInterfaces.TestVariable>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                testVariableId: testVariableId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
-                    "Test",
-                    "be3fcb2b-995b-47bf-90e5-ca3cf9980912",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.TestVariable>;
-                res = await this.rest.get<TestInterfaces.TestVariable>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Get a list of test variables.
-     * 
-     * @param {string} project - Project ID or project name
-     * @param {number} skip - Number of test variables to skip.
-     * @param {number} top - Number of test variables to return.
-     */
-    public async getTestVariables(
-        project: string,
-        skip?: number,
-        top?: number
-        ): Promise<TestInterfaces.TestVariable[]> {
-
-        return new Promise<TestInterfaces.TestVariable[]>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project
-            };
-
-            let queryValues: any = {
-                '$skip': skip,
-                '$top': top,
-            };
-            
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
-                    "Test",
-                    "be3fcb2b-995b-47bf-90e5-ca3cf9980912",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.TestVariable[]>;
-                res = await this.rest.get<TestInterfaces.TestVariable[]>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Update a test variable by its ID.
-     * 
-     * @param {TestInterfaces.TestVariable} testVariable - TestVariable
-     * @param {string} project - Project ID or project name
-     * @param {number} testVariableId - ID of the test variable to update.
-     */
-    public async updateTestVariable(
-        testVariable: TestInterfaces.TestVariable,
-        project: string,
-        testVariableId: number
-        ): Promise<TestInterfaces.TestVariable> {
-
-        return new Promise<TestInterfaces.TestVariable>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                testVariableId: testVariableId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
-                    "Test",
-                    "be3fcb2b-995b-47bf-90e5-ca3cf9980912",
-                    routeValues);
-
-                let url: string = verData.requestUrl;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TestInterfaces.TestVariable>;
-                res = await this.rest.update<TestInterfaces.TestVariable>(url, testVariable, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
@@ -5271,12 +3902,12 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "371b1655-ce05-412e-a113-64cc77bb78d2",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5325,13 +3956,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "7b0bdee3-a354-47f9-a42c-89018d7808d5",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5374,13 +4005,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "7b0bdee3-a354-47f9-a42c-89018d7808d5",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5438,13 +4069,13 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "Test",
                     "926ff5dc-137f-45f0-bd51-9412fa9810ce",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 

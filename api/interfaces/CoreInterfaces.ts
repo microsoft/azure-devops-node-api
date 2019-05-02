@@ -45,6 +45,20 @@ export interface Process extends ProcessReference {
     type?: ProcessType;
 }
 
+/**
+ * Type of process customization on a collection.
+ */
+export enum ProcessCustomizationType {
+    /**
+     * Customization based on project-scoped xml customization
+     */
+    Xml = 0,
+    /**
+     * Customization based on process inheritance
+     */
+    Inherited = 1,
+}
+
 export interface ProcessReference {
     name?: string;
     url?: string;
@@ -56,6 +70,16 @@ export enum ProcessType {
     Inherited = 2,
 }
 
+/**
+ * Contains the image data for project avatar.
+ */
+export interface ProjectAvatar {
+    /**
+     * The avatar image represented as a byte array.
+     */
+    image?: number[];
+}
+
 export enum ProjectChangeType {
     Modified = 0,
     Deleted = 1,
@@ -63,22 +87,52 @@ export enum ProjectChangeType {
 }
 
 /**
- * Contains information of the project
+ * Contains information describing a project.
  */
 export interface ProjectInfo {
+    /**
+     * The abbreviated name of the project.
+     */
     abbreviation?: string;
+    /**
+     * The description of the project.
+     */
     description?: string;
+    /**
+     * The id of the project.
+     */
     id?: string;
+    /**
+     * The time that this project was last updated.
+     */
     lastUpdateTime?: Date;
+    /**
+     * The name of the project.
+     */
     name?: string;
+    /**
+     * A set of name-value pairs storing additional property data related to the project.
+     */
     properties?: ProjectProperty[];
     /**
-     * Current revision of the project
+     * The current revision of the project.
      */
     revision?: number;
+    /**
+     * The current state of the project.
+     */
     state?: any;
+    /**
+     * A Uri that can be used to refer to this project.
+     */
     uri?: string;
+    /**
+     * The version number of the project.
+     */
     version?: number;
+    /**
+     * Indicates whom the project is visible to.
+     */
     visibility?: ProjectVisibility;
 }
 
@@ -88,15 +142,33 @@ export interface ProjectMessage {
     shouldInvalidateSystemStore?: boolean;
 }
 
+/**
+ * A named value associated with a project.
+ */
 export interface ProjectProperty {
+    /**
+     * The name of the property.
+     */
     name?: string;
+    /**
+     * The value of the property.
+     */
     value?: any;
 }
 
 export enum ProjectVisibility {
     Unchanged = -1,
+    /**
+     * The project is only visible to users with explicit access.
+     */
     Private = 0,
+    /**
+     * Enterprise level project visibility
+     */
     Organization = 1,
+    /**
+     * The project is visible to all.
+     */
     Public = 2,
     SystemPrivate = 3,
 }
@@ -200,9 +272,9 @@ export interface TeamProjectCollection extends TeamProjectCollectionReference {
      */
     description?: string;
     /**
-     * True if collection supports inherited process customization model.
+     * Process customzation type on this collection. It can be Xml or Inherited.
      */
-    enableInheritedProcessCustomization?: boolean;
+    processCustomizationType?: ProcessCustomizationType;
     /**
      * Project collection state.
      */
@@ -236,6 +308,10 @@ export interface TeamProjectReference {
      */
     abbreviation?: string;
     /**
+     * Url to default team identity image.
+     */
+    defaultTeamImageUrl?: string;
+    /**
      * The project's description (if any).
      */
     description?: string;
@@ -243,6 +319,10 @@ export interface TeamProjectReference {
      * Project identifier.
      */
     id?: string;
+    /**
+     * Project last update time.
+     */
+    lastUpdateTime?: Date;
     /**
      * Project name.
      */
@@ -281,6 +361,20 @@ export interface TemporaryDataDTO {
     expirationSeconds?: number;
     origin?: string;
     value?: any;
+}
+
+/**
+ * Updateable properties for a WebApiTeam.
+ */
+export interface UpdateTeam {
+    /**
+     * New description for the team.
+     */
+    description?: string;
+    /**
+     * New name for the team.
+     */
+    name?: string;
 }
 
 export interface WebApiConnectedService extends WebApiConnectedServiceRef {
@@ -417,6 +511,10 @@ export interface WebApiTeam extends WebApiTeamRef {
      */
     description?: string;
     /**
+     * Team identity.
+     */
+    identity?: IdentitiesInterfaces.Identity;
+    /**
      * Identity REST API Url to this team
      */
     identityUrl?: string;
@@ -450,6 +548,12 @@ export var TypeInfo = {
     },
     Process: <any>{
     },
+    ProcessCustomizationType: {
+        enumValues: {
+            "xml": 0,
+            "inherited": 1
+        }
+    },
     ProcessType: {
         enumValues: {
             "system": 0,
@@ -482,6 +586,8 @@ export var TypeInfo = {
         }
     },
     TeamProject: <any>{
+    },
+    TeamProjectCollection: <any>{
     },
     TeamProjectReference: <any>{
     },
@@ -520,12 +626,24 @@ TypeInfo.ProjectMessage.fields = {
 };
 
 TypeInfo.TeamProject.fields = {
+    lastUpdateTime: {
+        isDate: true,
+    },
     visibility: {
         enumType: TypeInfo.ProjectVisibility
     }
 };
 
+TypeInfo.TeamProjectCollection.fields = {
+    processCustomizationType: {
+        enumType: TypeInfo.ProcessCustomizationType
+    }
+};
+
 TypeInfo.TeamProjectReference.fields = {
+    lastUpdateTime: {
+        isDate: true,
+    },
     visibility: {
         enumType: TypeInfo.ProjectVisibility
     }
@@ -550,6 +668,9 @@ TypeInfo.WebApiConnectedServiceDetails.fields = {
 };
 
 TypeInfo.WebApiProject.fields = {
+    lastUpdateTime: {
+        isDate: true,
+    },
     visibility: {
         enumType: TypeInfo.ProjectVisibility
     }

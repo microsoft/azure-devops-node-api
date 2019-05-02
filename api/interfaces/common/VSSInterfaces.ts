@@ -10,7 +10,7 @@
 
 "use strict";
 
-import GraphInterfaces = require("../GraphInterfaces");
+import GraphInterfaces = require("../../interfaces/GraphInterfaces");
 
 
 /**
@@ -67,87 +67,6 @@ export interface ApiResourceVersion {
      * Internal resource version. This is defined per-resource and is used to support build-to-build compatibility of API changes within a given (in-preview) public api version. For example, within the TFS 1.0 API release cycle, while it is still in preview, a resource's data structure may be changed. This resource can be versioned such that older clients will still work (requests will be sent to the older version) and new/upgraded clients will talk to the new version of the resource.
      */
     resourceVersion?: number;
-}
-
-export interface AuditLogEntry {
-    /**
-     * The action if for the event, i.e Git.CreateRepo, Project.RenameProject
-     */
-    actionId?: string;
-    /**
-     * ActivityId
-     */
-    activityId?: string;
-    /**
-     * The Actor's CUID
-     */
-    actorCUID?: string;
-    /**
-     * The Actor's User Id
-     */
-    actorUserId?: string;
-    /**
-     * Type of authentication used by the author
-     */
-    authenticationMechanism?: string;
-    /**
-     * This allows us to group things together, like one user action that caused a cascade of event entries (project creation).
-     */
-    correlationId?: string;
-    /**
-     * External data such as CUIDs, item names, etc.
-     */
-    data?: { [key: string] : any; };
-    /**
-     * EventId, should be unique
-     */
-    id?: string;
-    /**
-     * IP Address where the event was originated
-     */
-    iPAddress?: string;
-    /**
-     * The org, collection or project Id
-     */
-    scopeId?: string;
-    /**
-     * The type of the scope, collection, org, project, etc.
-     */
-    scopeType?: AuditScopeType;
-    /**
-     * The time when the event occurred in UTC
-     */
-    timestamp?: Date;
-    /**
-     * The user agent from the request
-     */
-    userAgent?: string;
-}
-
-/**
- * The type of scope from where the event is originated
- */
-export enum AuditScopeType {
-    /**
-     * The scope is not known or has not been set
-     */
-    Unknown = 0,
-    /**
-     * Deployment
-     */
-    Deployment = 1,
-    /**
-     * Organization
-     */
-    Organization = 2,
-    /**
-     * Collection
-     */
-    Collection = 4,
-    /**
-     * Project
-     */
-    Project = 8,
 }
 
 /**
@@ -215,14 +134,35 @@ export interface EventScope {
 }
 
 export interface IdentityRef extends GraphInterfaces.GraphSubjectBase {
+    /**
+     * Deprecated - Can be retrieved by querying the Graph user referenced in the "self" entry of the IdentityRef "_links" dictionary
+     */
     directoryAlias?: string;
     id?: string;
+    /**
+     * Deprecated - Available in the "avatar" entry of the IdentityRef "_links" dictionary
+     */
     imageUrl?: string;
+    /**
+     * Deprecated - Can be retrieved by querying the Graph membership state referenced in the "membershipState" entry of the GraphUser "_links" dictionary
+     */
     inactive?: boolean;
+    /**
+     * Deprecated - Can be inferred from the subject type of the descriptor (Descriptor.IsAadUserType/Descriptor.IsAadGroupType)
+     */
     isAadIdentity?: boolean;
+    /**
+     * Deprecated - Can be inferred from the subject type of the descriptor (Descriptor.IsGroupType)
+     */
     isContainer?: boolean;
     isDeletedInOrigin?: boolean;
+    /**
+     * Deprecated - not in use in most preexisting implementations of ToIdentityRef
+     */
     profileUrl?: string;
+    /**
+     * Deprecated - use Domain+PrincipalName instead
+     */
     uniqueName?: string;
 }
 
@@ -249,7 +189,7 @@ export interface JsonPatchOperation {
      */
     op: Operation;
     /**
-     * The path for the operation
+     * The path for the operation. In the case of an array, a zero based index can be used to specify the position in the array (e.g. /biscuits/0/name). The "-" character can be used instead of an index to insert at the end of the array (e.g. /biscuits/-).
      */
     path: string;
     /**
@@ -474,17 +414,6 @@ export interface WrappedException {
 }
 
 export var TypeInfo = {
-    AuditLogEntry: <any>{
-    },
-    AuditScopeType: {
-        enumValues: {
-            "unknown": 0,
-            "deployment": 1,
-            "organization": 2,
-            "collection": 4,
-            "project": 8
-        }
-    },
     ConnectOptions: {
         enumValues: {
             "none": 0,
@@ -524,15 +453,6 @@ export var TypeInfo = {
     },
     VssNotificationEvent: <any>{
     },
-};
-
-TypeInfo.AuditLogEntry.fields = {
-    scopeType: {
-        enumType: TypeInfo.AuditScopeType
-    },
-    timestamp: {
-        isDate: true,
-    }
 };
 
 TypeInfo.JsonPatchOperation.fields = {

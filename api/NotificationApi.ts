@@ -61,12 +61,12 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "8f3c6ab2-5bae-4537-b16e-f84e0955599e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -114,13 +114,13 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "991842f3-eb16-4aea-ac81-81353ef2b75c",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -154,12 +154,12 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "20f1929d-4be7-4c2e-a74e-d47640ff3418",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -195,12 +195,12 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "20f1929d-4be7-4c2e-a74e-d47640ff3418",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -221,7 +221,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
     }
 
     /**
-     * Publish an event.
+     * Publish an event. This request must be directed to the service "extmgmt".
      * 
      * @param {VSSInterfaces.VssNotificationEvent} notificationEvent
      */
@@ -235,12 +235,12 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "14c57b7a-c0e6-4555-9f51-e067188fdd8e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -275,12 +275,12 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "9463a800-1b44-450e-9083-f948ea174b45",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -316,12 +316,12 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "b5bbdd21-c178-4398-b6db-0166d910028a",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -357,12 +357,12 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "cc84fb5f-6247-4c7a-aeae-e5a3c3fddb21",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -401,13 +401,13 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "cc84fb5f-6247-4c7a-aeae-e5a3c3fddb21",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -441,12 +441,12 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "19824fa9-1c76-40e6-9cce-cf0b9ca1cb60",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -483,13 +483,13 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "19824fa9-1c76-40e6-9cce-cf0b9ca1cb60",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -520,12 +520,12 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "cbe076d8-2803-45ff-8d8d-44653686ea2a",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -558,12 +558,12 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "cbe076d8-2803-45ff-8d8d-44653686ea2a",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -597,12 +597,12 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "4d5caff1-25ba-430b-b808-7a1f352cc197",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -638,12 +638,12 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "4d5caff1-25ba-430b-b808-7a1f352cc197",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -678,12 +678,12 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "6864db85-08c0-4006-8e8e-cc1bebe31675",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -718,12 +718,12 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "70f911d6-abac-488c-85b3-a206bf57e165",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -759,12 +759,12 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "70f911d6-abac-488c-85b3-a206bf57e165",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -806,13 +806,13 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "70f911d6-abac-488c-85b3-a206bf57e165",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -855,13 +855,13 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "70f911d6-abac-488c-85b3-a206bf57e165",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -899,12 +899,12 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "70f911d6-abac-488c-85b3-a206bf57e165",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -937,12 +937,12 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "fa5d24ba-7484-4f3d-888d-4ec6b1974082",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -983,12 +983,12 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "notification",
                     "ed5a3dff-aeb5-41b1-b4f7-89e66e58b62e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 

@@ -44,12 +44,12 @@ export class ProjectAnalysisApi extends basem.ClientApiBase implements IProjectA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "projectanalysis",
                     "5b02a779-1867-433f-90b7-d23ed5e33e57",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -98,13 +98,13 @@ export class ProjectAnalysisApi extends basem.ClientApiBase implements IProjectA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "projectanalysis",
                     "e40ae584-9ea6-4f06-a7c7-6284651b466b",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -167,13 +167,13 @@ export class ProjectAnalysisApi extends basem.ClientApiBase implements IProjectA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "projectanalysis",
                     "df7fbbca-630a-40e3-8aa3-7a3faf66947e",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -225,13 +225,13 @@ export class ProjectAnalysisApi extends basem.ClientApiBase implements IProjectA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "projectanalysis",
                     "df7fbbca-630a-40e3-8aa3-7a3faf66947e",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 

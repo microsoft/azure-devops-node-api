@@ -20,6 +20,8 @@ import WikiInterfaces = require("./interfaces/WikiInterfaces");
 export interface IWikiApi extends basem.ClientApiBase {
     getPageText(project: string, wikiIdentifier: string, path?: string, recursionLevel?: GitInterfaces.VersionControlRecursionType, versionDescriptor?: GitInterfaces.GitVersionDescriptor, includeContent?: boolean): Promise<NodeJS.ReadableStream>;
     getPageZip(project: string, wikiIdentifier: string, path?: string, recursionLevel?: GitInterfaces.VersionControlRecursionType, versionDescriptor?: GitInterfaces.GitVersionDescriptor, includeContent?: boolean): Promise<NodeJS.ReadableStream>;
+    getPageByIdText(project: string, wikiIdentifier: string, id: number, recursionLevel?: GitInterfaces.VersionControlRecursionType, includeContent?: boolean): Promise<NodeJS.ReadableStream>;
+    getPageByIdZip(project: string, wikiIdentifier: string, id: number, recursionLevel?: GitInterfaces.VersionControlRecursionType, includeContent?: boolean): Promise<NodeJS.ReadableStream>;
     createOrUpdatePageViewStats(project: string, wikiIdentifier: string, wikiVersion: GitInterfaces.GitVersionDescriptor, path: string, oldPath?: string): Promise<WikiInterfaces.WikiPageViewStats>;
     createWiki(wikiCreateParams: WikiInterfaces.WikiCreateParametersV2, project?: string): Promise<WikiInterfaces.WikiV2>;
     deleteWiki(wikiIdentifier: string, project?: string): Promise<WikiInterfaces.WikiV2>;
@@ -69,13 +71,13 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "wiki",
                     "25d3fbc7-fe3d-46cb-b5a5-0b6f79caf27b",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
@@ -121,13 +123,111 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "wiki",
                     "25d3fbc7-fe3d-46cb-b5a5-0b6f79caf27b",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
+                
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("application/zip", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Gets metadata or content of the wiki page for the provided page id. Content negotiation is done based on the `Accept` header sent in the request.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} wikiIdentifier - Wiki Id or name.
+     * @param {number} id - Wiki page id.
+     * @param {GitInterfaces.VersionControlRecursionType} recursionLevel - Recursion level for subpages retrieval. Defaults to `None` (Optional).
+     * @param {boolean} includeContent - True to include the content of the page in the response for Json content type. Defaults to false (Optional)
+     */
+    public async getPageByIdText(
+        project: string,
+        wikiIdentifier: string,
+        id: number,
+        recursionLevel?: GitInterfaces.VersionControlRecursionType,
+        includeContent?: boolean
+        ): Promise<NodeJS.ReadableStream> {
+
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                wikiIdentifier: wikiIdentifier,
+                id: id
+            };
+
+            let queryValues: any = {
+                recursionLevel: recursionLevel,
+                includeContent: includeContent,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.1-preview.1",
+                    "wiki",
+                    "ceddcf75-1068-452d-8b13-2d4d76e1f970",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                
+                let apiVersion: string = verData.apiVersion;
+                let accept: string = this.createAcceptHeader("text/plain", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Gets metadata or content of the wiki page for the provided page id. Content negotiation is done based on the `Accept` header sent in the request.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} wikiIdentifier - Wiki Id or name.
+     * @param {number} id - Wiki page id.
+     * @param {GitInterfaces.VersionControlRecursionType} recursionLevel - Recursion level for subpages retrieval. Defaults to `None` (Optional).
+     * @param {boolean} includeContent - True to include the content of the page in the response for Json content type. Defaults to false (Optional)
+     */
+    public async getPageByIdZip(
+        project: string,
+        wikiIdentifier: string,
+        id: number,
+        recursionLevel?: GitInterfaces.VersionControlRecursionType,
+        includeContent?: boolean
+        ): Promise<NodeJS.ReadableStream> {
+
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                wikiIdentifier: wikiIdentifier,
+                id: id
+            };
+
+            let queryValues: any = {
+                recursionLevel: recursionLevel,
+                includeContent: includeContent,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.1-preview.1",
+                    "wiki",
+                    "ceddcf75-1068-452d-8b13-2d4d76e1f970",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
@@ -176,13 +276,13 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "wiki",
                     "1087b746-5d15-41b9-bea6-14e325e7f880",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -220,12 +320,12 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "wiki",
                     "288d122c-dbd4-451d-aa5f-7dbbba070728",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -264,12 +364,12 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "wiki",
                     "288d122c-dbd4-451d-aa5f-7dbbba070728",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -305,12 +405,12 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "wiki",
                     "288d122c-dbd4-451d-aa5f-7dbbba070728",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -349,12 +449,12 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "wiki",
                     "288d122c-dbd4-451d-aa5f-7dbbba070728",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -395,12 +495,12 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "wiki",
                     "288d122c-dbd4-451d-aa5f-7dbbba070728",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 

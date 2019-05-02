@@ -419,6 +419,10 @@ export interface DeploymentMachine {
      */
     id?: number;
     /**
+     * Properties of the deployment target.
+     */
+    properties?: any;
+    /**
      * Tags of the deployment target.
      */
     tags?: string[];
@@ -472,6 +476,10 @@ export interface DeploymentPoolSummary {
      * Deployment pool.
      */
     pool?: TaskAgentPoolReference;
+    /**
+     * Virtual machine Resource referring in pool.
+     */
+    resource?: EnvironmentResourceReference;
 }
 
 /**
@@ -486,6 +494,10 @@ export enum DeploymentPoolSummaryExpands {
      * Include deployment groups referring to the deployment pool.
      */
     DeploymentGroups = 2,
+    /**
+     * Include Resource referring to the deployment pool.
+     */
+    Resource = 4,
 }
 
 /**
@@ -565,6 +577,249 @@ export interface EndpointUrl {
      * Gets or sets the value of service endpoint url.
      */
     value?: string;
+}
+
+/**
+ * This is useful in getting a list of Environments, filtered for which caller has permissions to take a particular action.
+ */
+export enum EnvironmentActionFilter {
+    /**
+     * All environments for which user has **view** permission.
+     */
+    None = 0,
+    /**
+     * Only environments for which caller has **manage** permission.
+     */
+    Manage = 2,
+    /**
+     * Only environments for which caller has **use** permission.
+     */
+    Use = 16,
+}
+
+/**
+ * Properties to create Environment.
+ */
+export interface EnvironmentCreateParameter {
+    /**
+     * Description of the environment.
+     */
+    description?: string;
+    /**
+     * Name of the environment.
+     */
+    name?: string;
+}
+
+/**
+ * EnvironmentDeploymentExecutionRecord.
+ */
+export interface EnvironmentDeploymentExecutionRecord {
+    /**
+     * Definition of the environment deployment execution owner
+     */
+    definition?: TaskOrchestrationOwner;
+    /**
+     * Id of the Environment
+     */
+    environmentId?: number;
+    /**
+     * Finish time of the environment deployment execution
+     */
+    finishTime?: Date;
+    /**
+     * Id of the Environment deployment execution history record
+     */
+    id?: number;
+    /**
+     * Job Attempt
+     */
+    jobAttempt?: number;
+    /**
+     * Job name
+     */
+    jobName?: string;
+    /**
+     * Owner of the environment deployment execution record
+     */
+    owner?: TaskOrchestrationOwner;
+    /**
+     * Plan Id
+     */
+    planId?: string;
+    /**
+     * Plan type of the environment deployment execution record
+     */
+    planType?: string;
+    /**
+     * Queue time of the environment deployment execution
+     */
+    queueTime?: Date;
+    /**
+     * Request identifier of the Environment deployment execution history record
+     */
+    requestIdentifier?: string;
+    /**
+     * Resource Id
+     */
+    resourceId?: number;
+    /**
+     * Result of the environment deployment execution
+     */
+    result?: TaskResult;
+    /**
+     * Project Id
+     */
+    scopeId?: string;
+    /**
+     * Service owner Id
+     */
+    serviceOwner?: string;
+    /**
+     * Stage Attempt
+     */
+    stageAttempt?: number;
+    /**
+     * Stage name
+     */
+    stageName?: string;
+    /**
+     * Start time of the environment deployment execution
+     */
+    startTime?: Date;
+}
+
+/**
+ * Properties to be included or expanded in environment objects. This is useful when getting a single environment.
+ */
+export enum EnvironmentExpands {
+    /**
+     * No additional properties
+     */
+    None = 0,
+    /**
+     * Include resource references referring to the environment.
+     */
+    ResourceReferences = 1,
+}
+
+/**
+ * Environment.
+ */
+export interface EnvironmentInstance {
+    /**
+     * Identity reference of the user who created the Environment.
+     */
+    createdBy?: VSSInterfaces.IdentityRef;
+    /**
+     * Creation time of the Environment
+     */
+    createdOn?: Date;
+    /**
+     * Description of the Environment.
+     */
+    description?: string;
+    /**
+     * Id of the Environment
+     */
+    id?: number;
+    /**
+     * Identity reference of the user who last modified the Environment.
+     */
+    lastModifiedBy?: VSSInterfaces.IdentityRef;
+    /**
+     * Last modified time of the Environment
+     */
+    lastModifiedOn?: Date;
+    /**
+     * Name of the Environment.
+     */
+    name?: string;
+    resources?: EnvironmentResourceReference[];
+}
+
+/**
+ * EnvironmentLinkedResourceReference.
+ */
+export interface EnvironmentLinkedResourceReference {
+    /**
+     * Id of the resource.
+     */
+    id?: string;
+    /**
+     * Type of resource.
+     */
+    typeName?: string;
+}
+
+export interface EnvironmentReference {
+    id?: number;
+    name?: string;
+}
+
+export interface EnvironmentResource {
+    createdBy?: VSSInterfaces.IdentityRef;
+    createdOn?: Date;
+    environmentReference?: EnvironmentReference;
+    id?: number;
+    lastModifiedBy?: VSSInterfaces.IdentityRef;
+    lastModifiedOn?: Date;
+    name?: string;
+    /**
+     * Environment resource type
+     */
+    type?: EnvironmentResourceType;
+}
+
+/**
+ * EnvironmentResourceReference.
+ */
+export interface EnvironmentResourceReference {
+    /**
+     * Id of the resource.
+     */
+    id?: number;
+    /**
+     * Name of the resource.
+     */
+    name?: string;
+    /**
+     * Type of the resource.
+     */
+    type?: EnvironmentResourceType;
+}
+
+/**
+ * EnvironmentResourceType.
+ */
+export enum EnvironmentResourceType {
+    Undefined = 0,
+    /**
+     * Unknown resource type
+     */
+    Generic = 1,
+    /**
+     * Virtual machine resource type
+     */
+    VirtualMachine = 2,
+    /**
+     * Kubernetes resource type
+     */
+    Kubernetes = 4,
+}
+
+/**
+ * Properties to update Environment.
+ */
+export interface EnvironmentUpdateParameter {
+    /**
+     * Description of the environment.
+     */
+    description?: string;
+    /**
+     * Name of the environment.
+     */
+    name?: string;
 }
 
 export interface EventsConfig {
@@ -674,6 +929,19 @@ export interface JobRequestMessage {
 }
 
 export interface JobStartedEvent extends JobEvent {
+}
+
+export interface KubernetesResource extends EnvironmentResource {
+    clusterName?: string;
+    namespace?: string;
+    serviceEndpointId?: string;
+}
+
+export interface KubernetesResourceCreateParameters {
+    clusterName?: string;
+    name?: string;
+    namespace?: string;
+    serviceEndpointId?: string;
 }
 
 export enum MachineGroupActionFilter {
@@ -827,6 +1095,55 @@ export interface PublishTaskGroupMetadata {
     taskGroupRevision?: number;
 }
 
+export interface ResourceFilterOptions {
+    identities?: VSSInterfaces.IdentityRef[];
+    resourceTypes?: string[];
+}
+
+export interface ResourceFilters {
+    createdBy?: string[];
+    resourceType?: string[];
+    searchText?: string;
+}
+
+/**
+ * Resources include Service Connections, Variable Groups and Secure Files.
+ */
+export interface ResourceItem {
+    /**
+     * Gets or sets the identity who created the resource.
+     */
+    createdBy?: VSSInterfaces.IdentityRef;
+    /**
+     * Gets or sets description of the resource.
+     */
+    description?: string;
+    /**
+     * Gets or sets icon url of the resource.
+     */
+    iconUrl?: string;
+    /**
+     * Gets or sets Id of the resource.
+     */
+    id?: string;
+    /**
+     * Indicates whether resource is shared with other projects or not.
+     */
+    isShared?: boolean;
+    /**
+     * Gets or sets name of the resource.
+     */
+    name?: string;
+    /**
+     * Gets or sets internal properties of the resource.
+     */
+    properties?: { [key: string] : string; };
+    /**
+     * Gets or sets resource type.
+     */
+    resourceType?: string;
+}
+
 export interface ResourceLimit {
     failedToReachAllProviders?: boolean;
     hostId?: string;
@@ -836,6 +1153,13 @@ export interface ResourceLimit {
     resourceLimitsData?: { [key: string] : string; };
     totalCount?: number;
     totalMinutes?: number;
+}
+
+export interface ResourcesHubData {
+    continuationToken?: string;
+    resourceFilterOptions?: ResourceFilterOptions;
+    resourceFilters?: ResourceFilters;
+    resourceItems?: ResourceItem[];
 }
 
 export interface ResourceUsage {
@@ -864,6 +1188,12 @@ export enum SecureFileActionFilter {
     None = 0,
     Manage = 2,
     Use = 16,
+}
+
+export interface SecureFileEvent {
+    eventType?: string;
+    projectId?: string;
+    secureFiles?: SecureFile[];
 }
 
 export interface SendJobResponse {
@@ -923,6 +1253,10 @@ export interface ServiceEndpoint {
      * Error message during creation/deletion of endpoint
      */
     operationStatus?: any;
+    /**
+     * Gets or sets the owner of the endpoint.
+     */
+    owner?: string;
     /**
      * Gets or sets the identity reference for the readers group of the service endpoint.
      */
@@ -1084,38 +1418,41 @@ export interface ServiceEndpointType {
     uiContributionId?: string;
 }
 
+/**
+ * A task agent.
+ */
 export interface TaskAgent extends TaskAgentReference {
     /**
-     * Gets the Agent Cloud Request that's currently associated with this agent
+     * The agent cloud request that's currently associated with this agent.
      */
     assignedAgentCloudRequest?: TaskAgentCloudRequest;
     /**
-     * Gets the request which is currently assigned to this agent.
+     * The request which is currently assigned to this agent.
      */
     assignedRequest?: TaskAgentJobRequest;
     /**
-     * Gets or sets the authorization information for this agent.
+     * Authorization information for this agent.
      */
     authorization?: TaskAgentAuthorization;
     /**
-     * Gets the date on which this agent was created.
+     * Date on which this agent was created.
      */
     createdOn?: Date;
     /**
-     * Gets the last request which was completed by this agent.
+     * The last request which was completed by this agent.
      */
     lastCompletedRequest?: TaskAgentJobRequest;
     /**
-     * Gets or sets the maximum job parallelism allowed on this host.
+     * Maximum job parallelism allowed for this agent.
      */
     maxParallelism?: number;
     /**
-     * Gets the pending update for this agent.
+     * Pending update for this agent.
      */
     pendingUpdate?: TaskAgentUpdate;
     properties?: any;
     /**
-     * Gets the date on which the last connectivity status change occurred.
+     * Date on which the last connectivity status change occurred.
      */
     statusChangedOn?: Date;
     systemCapabilities?: { [key: string] : string; };
@@ -1127,15 +1464,15 @@ export interface TaskAgent extends TaskAgentReference {
  */
 export interface TaskAgentAuthorization {
     /**
-     * Gets or sets the endpoint used to obtain access tokens from the configured token service.
+     * Endpoint used to obtain access tokens from the configured token service.
      */
     authorizationUrl?: string;
     /**
-     * Gets or sets the client identifier for this agent.
+     * Client identifier for this agent.
      */
     clientId?: string;
     /**
-     * Gets or sets the public key used to verify the identity of this agent.
+     * Public key used to verify the identity of this agent.
      */
     publicKey?: TaskAgentPublicKey;
 }
@@ -1145,15 +1482,20 @@ export interface TaskAgentCloud {
      * Gets or sets a AcquireAgentEndpoint using which a request can be made to acquire new agent
      */
     acquireAgentEndpoint?: string;
+    acquisitionTimeout?: number;
     agentCloudId?: number;
+    getAccountParallelismEndpoint?: string;
     getAgentDefinitionEndpoint?: string;
     getAgentRequestStatusEndpoint?: string;
+    id?: string;
     /**
      * Signifies that this Agent Cloud is internal and should not be user-manageable
      */
     internal?: boolean;
+    maxParallelism?: number;
     name?: string;
     releaseAgentEndpoint?: string;
+    sharedSecret?: string;
     /**
      * Gets or sets the type of the endpoint.
      */
@@ -1193,33 +1535,102 @@ export interface TaskAgentDelaySource {
     taskAgent?: TaskAgentReference;
 }
 
+/**
+ * A job request for an agent.
+ */
 export interface TaskAgentJobRequest {
     agentDelays?: TaskAgentDelaySource[];
     agentSpecification?: any;
+    /**
+     * The date/time this request was assigned.
+     */
     assignTime?: Date;
+    /**
+     * Additional data about the request.
+     */
     data?: { [key: string] : string; };
+    /**
+     * The pipeline definition associated with this request
+     */
     definition?: TaskOrchestrationOwner;
+    /**
+     * A list of demands required to fulfill this request.
+     */
     demands?: Demand[];
     expectedDuration?: any;
+    /**
+     * The date/time this request was finished.
+     */
     finishTime?: Date;
+    /**
+     * The host which triggered this request.
+     */
     hostId?: string;
+    /**
+     * ID of the job resulting from this request.
+     */
     jobId?: string;
+    /**
+     * Name of the job resulting from this request.
+     */
     jobName?: string;
+    /**
+     * The deadline for the agent to renew the lock.
+     */
     lockedUntil?: Date;
     matchedAgents?: TaskAgentReference[];
+    matchesAllAgentsInPool?: boolean;
+    orchestrationId?: string;
+    /**
+     * The pipeline associated with this request
+     */
     owner?: TaskOrchestrationOwner;
     planGroup?: string;
+    /**
+     * Internal ID for the orchestration plan connected with this request.
+     */
     planId?: string;
+    /**
+     * Internal detail representing the type of orchestration plan.
+     */
     planType?: string;
+    /**
+     * The ID of the pool this request targets
+     */
     poolId?: number;
+    /**
+     * The ID of the queue this request targets
+     */
     queueId?: number;
+    /**
+     * The date/time this request was queued.
+     */
     queueTime?: Date;
+    /**
+     * The date/time this request was receieved by an agent.
+     */
     receiveTime?: Date;
+    /**
+     * ID of the request.
+     */
     requestId?: number;
+    /**
+     * The agent allocated for this request.
+     */
     reservedAgent?: TaskAgentReference;
+    /**
+     * The result of this request.
+     */
     result?: TaskResult;
+    /**
+     * Scope of the pipeline; matches the project ID.
+     */
     scopeId?: string;
+    /**
+     * The service which owns this request.
+     */
     serviceOwner?: string;
+    statusMessage?: string;
 }
 
 /**
@@ -1275,34 +1686,44 @@ export interface TaskAgentMinAgentVersionRequiredUpdate extends TaskAgentUpdateR
     minAgentVersion?: Demand;
 }
 
+/**
+ * An organization-level grouping of agents.
+ */
 export interface TaskAgentPool extends TaskAgentPoolReference {
     /**
-     * Gets or sets an agentCloudId
+     * The ID of the associated agent cloud.
      */
     agentCloudId?: number;
     /**
-     * Gets or sets a value indicating whether or not a queue should be automatically provisioned for each project collection or not.
+     * Whether or not a queue should be automatically provisioned for each project collection.
      */
     autoProvision?: boolean;
     /**
-     * Gets or sets a value indicating whether or not the pool should autosize itself based on the Agent Cloud Provider settings
+     * Whether or not the pool should autosize itself based on the Agent Cloud Provider settings.
      */
     autoSize?: boolean;
     /**
-     * Gets the identity who created this pool. The creator of the pool is automatically added into the administrators group for the pool on creation.
+     * Creator of the pool. The creator of the pool is automatically added into the administrators group for the pool on creation.
      */
     createdBy?: VSSInterfaces.IdentityRef;
     /**
-     * Gets the date/time of the pool creation.
+     * The date/time of the pool creation.
      */
     createdOn?: Date;
     /**
-     * Gets the identity who owns or administrates this pool.
+     * Owner or administrator of the pool.
      */
     owner?: VSSInterfaces.IdentityRef;
     properties?: any;
+    /**
+     * Target parallelism.
+     */
+    targetSize?: number;
 }
 
+/**
+ * Filters pools based on whether the calling user has permission to use or manage the pool.
+ */
 export enum TaskAgentPoolActionFilter {
     None = 0,
     Manage = 2,
@@ -1493,6 +1914,10 @@ export interface TaskAgentPoolReference {
      * Gets or sets a value indicating whether or not this pool is managed by the service.
      */
     isHosted?: boolean;
+    /**
+     * Determines whether the pool is legacy.
+     */
+    isLegacy?: boolean;
     name?: string;
     /**
      * Gets or sets the type of the pool
@@ -1505,6 +1930,21 @@ export interface TaskAgentPoolReference {
     size?: number;
 }
 
+export interface TaskAgentPoolStatus extends TaskAgentPoolReference {
+    /**
+     * Number of requests queued and assigned to an agent. Not running yet.
+     */
+    assignedRequestCount?: number;
+    /**
+     * Number of queued requests which are not assigned to any agents
+     */
+    queuedRequestCount?: number;
+    /**
+     * Number of currently running requests
+     */
+    runningRequestCount?: number;
+}
+
 export interface TaskAgentPoolSummary {
     columnsHeader?: MetricsColumnsHeader;
     deploymentGroups?: DeploymentGroupReference[];
@@ -1513,8 +1953,17 @@ export interface TaskAgentPoolSummary {
     rows?: MetricsRow[];
 }
 
+/**
+ * The type of agent pool.
+ */
 export enum TaskAgentPoolType {
+    /**
+     * A typical pool of task agents
+     */
     Automation = 1,
+    /**
+     * A deployment pool
+     */
     Deployment = 2,
 }
 
@@ -1532,9 +1981,12 @@ export interface TaskAgentPublicKey {
     modulus?: number[];
 }
 
+/**
+ * An agent queue.
+ */
 export interface TaskAgentQueue {
     /**
-     * Id of the queue
+     * ID of the queue
      */
     id?: number;
     /**
@@ -1546,49 +1998,55 @@ export interface TaskAgentQueue {
      */
     pool?: TaskAgentPoolReference;
     /**
-     * Project Id
+     * Project ID
      */
     projectId?: string;
 }
 
+/**
+ * Filters queues based on whether the calling user has permission to use or manage the queue.
+ */
 export enum TaskAgentQueueActionFilter {
     None = 0,
     Manage = 2,
     Use = 16,
 }
 
+/**
+ * A reference to an agent.
+ */
 export interface TaskAgentReference {
     _links?: any;
     /**
-     * Gets the access point of the agent.
+     * This agent's access point.
      */
     accessPoint?: string;
     /**
-     * Gets or sets a value indicating whether or not this agent should be enabled for job execution.
+     * Whether or not this agent should run jobs.
      */
     enabled?: boolean;
     /**
-     * Gets the identifier of the agent.
+     * Identifier of the agent.
      */
     id?: number;
     /**
-     * Gets the name of the agent.
+     * Name of the agent.
      */
     name?: string;
     /**
-     * Gets the OS of the agent.
+     * Agent OS.
      */
     oSDescription?: string;
     /**
-     * Gets or sets the current provisioning state of this agent
+     * Provisioning state of this agent.
      */
     provisioningState?: string;
     /**
-     * Gets the current connectivity status of the agent.
+     * Whether or not the agent is online.
      */
     status?: TaskAgentStatus;
     /**
-     * Gets the version of the agent.
+     * Agent version.
      */
     version?: string;
 }
@@ -1653,29 +2111,32 @@ export enum TaskAgentStatusFilter {
     All = 3,
 }
 
+/**
+ * Details about an agent update.
+ */
 export interface TaskAgentUpdate {
     /**
-     * The current state of this agent update
+     * Current state of this agent update.
      */
     currentState?: string;
     /**
-     * The reason of this agent update
+     * Reason for this update.
      */
     reason?: TaskAgentUpdateReason;
     /**
-     * The identity that request the agent update
+     * Identity which requested this update.
      */
     requestedBy?: VSSInterfaces.IdentityRef;
     /**
-     * Gets the date on which this agent update was requested.
+     * Date on which this update was requested.
      */
     requestTime?: Date;
     /**
-     * Gets or sets the source agent version of the agent update
+     * Source agent version of the update.
      */
     sourceVersion?: PackageVersion;
     /**
-     * Gets or sets the target agent version of the agent update
+     * Target agent version of the update.
      */
     targetVersion?: PackageVersion;
 }
@@ -1720,6 +2181,7 @@ export interface TaskDefinition {
     deprecated?: boolean;
     description?: string;
     disabled?: boolean;
+    ecosystem?: string;
     execution?: { [key: string] : any; };
     friendlyName?: string;
     groups?: TaskGroupDefinition[];
@@ -1944,6 +2406,7 @@ export interface TaskGroupRevision {
     changeType?: AuditAction;
     comment?: string;
     fileId?: number;
+    majorVersion?: number;
     revision?: number;
     taskGroupId?: string;
 }
@@ -2145,6 +2608,7 @@ export interface TaskOrchestrationPlan extends TaskOrchestrationPlanReference {
     environment?: PlanEnvironment;
     finishTime?: Date;
     implementation?: TaskOrchestrationContainer;
+    initializationLog?: TaskLogReference;
     requestedById?: string;
     requestedForId?: string;
     result?: TaskResult;
@@ -2181,6 +2645,7 @@ export enum TaskOrchestrationPlanState {
     InProgress = 1,
     Queued = 2,
     Completed = 4,
+    Throttled = 8,
 }
 
 export interface TaskOrchestrationQueuedPlan {
@@ -2366,6 +2831,10 @@ export interface VariableGroup {
      */
     id?: number;
     /**
+     * Indicates whether variable group is shared with other projects or not.
+     */
+    isShared?: boolean;
+    /**
      * Gets or sets the identity who modified the variable group.
      */
     modifiedBy?: VSSInterfaces.IdentityRef;
@@ -2445,6 +2914,20 @@ export interface VariableValue {
     value?: string;
 }
 
+export interface VirtualMachine {
+    agent?: TaskAgent;
+    id?: number;
+    tags?: string[];
+}
+
+export interface VirtualMachineGroup extends EnvironmentResource {
+    poolId?: number;
+}
+
+export interface VirtualMachineGroupCreateParameters {
+    name?: string;
+}
+
 export var TypeInfo = {
     AadLoginPromptOption: {
         enumValues: {
@@ -2519,7 +3002,8 @@ export var TypeInfo = {
     DeploymentPoolSummaryExpands: {
         enumValues: {
             "none": 0,
-            "deploymentGroups": 2
+            "deploymentGroups": 2,
+            "resource": 4
         }
     },
     DeploymentTargetExpands: {
@@ -2528,6 +3012,35 @@ export var TypeInfo = {
             "capabilities": 2,
             "assignedRequest": 4,
             "lastCompletedRequest": 8
+        }
+    },
+    EnvironmentActionFilter: {
+        enumValues: {
+            "none": 0,
+            "manage": 2,
+            "use": 16
+        }
+    },
+    EnvironmentDeploymentExecutionRecord: <any>{
+    },
+    EnvironmentExpands: {
+        enumValues: {
+            "none": 0,
+            "resourceReferences": 1
+        }
+    },
+    EnvironmentInstance: <any>{
+    },
+    EnvironmentResource: <any>{
+    },
+    EnvironmentResourceReference: <any>{
+    },
+    EnvironmentResourceType: {
+        enumValues: {
+            "undefined": 0,
+            "generic": 1,
+            "virtualMachine": 2,
+            "kubernetes": 4
         }
     },
     Issue: <any>{
@@ -2545,6 +3058,8 @@ export var TypeInfo = {
     JobEnvironment: <any>{
     },
     JobRequestMessage: <any>{
+    },
+    KubernetesResource: <any>{
     },
     MachineGroupActionFilter: {
         enumValues: {
@@ -2589,6 +3104,8 @@ export var TypeInfo = {
             "manage": 2,
             "use": 16
         }
+    },
+    SecureFileEvent: <any>{
     },
     ServerTaskRequestMessage: <any>{
     },
@@ -2672,6 +3189,8 @@ export var TypeInfo = {
         }
     },
     TaskAgentPoolReference: <any>{
+    },
+    TaskAgentPoolStatus: <any>{
     },
     TaskAgentPoolSummary: <any>{
     },
@@ -2774,7 +3293,8 @@ export var TypeInfo = {
         enumValues: {
             "inProgress": 1,
             "queued": 2,
-            "completed": 4
+            "completed": 4,
+            "throttled": 8
         }
     },
     TaskOrchestrationQueuedPlan: <any>{
@@ -2816,6 +3336,10 @@ export var TypeInfo = {
             "idAscending": 0,
             "idDescending": 1
         }
+    },
+    VirtualMachine: <any>{
+    },
+    VirtualMachineGroup: <any>{
     },
 };
 
@@ -2938,6 +3462,55 @@ TypeInfo.DeploymentPoolSummary.fields = {
     },
     pool: {
         typeInfo: TypeInfo.TaskAgentPoolReference
+    },
+    resource: {
+        typeInfo: TypeInfo.EnvironmentResourceReference
+    }
+};
+
+TypeInfo.EnvironmentDeploymentExecutionRecord.fields = {
+    finishTime: {
+        isDate: true,
+    },
+    queueTime: {
+        isDate: true,
+    },
+    result: {
+        enumType: TypeInfo.TaskResult
+    },
+    startTime: {
+        isDate: true,
+    }
+};
+
+TypeInfo.EnvironmentInstance.fields = {
+    createdOn: {
+        isDate: true,
+    },
+    lastModifiedOn: {
+        isDate: true,
+    },
+    resources: {
+        isArray: true,
+        typeInfo: TypeInfo.EnvironmentResourceReference
+    }
+};
+
+TypeInfo.EnvironmentResource.fields = {
+    createdOn: {
+        isDate: true,
+    },
+    lastModifiedOn: {
+        isDate: true,
+    },
+    type: {
+        enumType: TypeInfo.EnvironmentResourceType
+    }
+};
+
+TypeInfo.EnvironmentResourceReference.fields = {
+    type: {
+        enumType: TypeInfo.EnvironmentResourceType
     }
 };
 
@@ -2976,6 +3549,18 @@ TypeInfo.JobRequestMessage.fields = {
     }
 };
 
+TypeInfo.KubernetesResource.fields = {
+    createdOn: {
+        isDate: true,
+    },
+    lastModifiedOn: {
+        isDate: true,
+    },
+    type: {
+        enumType: TypeInfo.EnvironmentResourceType
+    }
+};
+
 TypeInfo.MaskHint.fields = {
     type: {
         enumType: TypeInfo.MaskType
@@ -3008,6 +3593,13 @@ TypeInfo.SecureFile.fields = {
     },
     modifiedOn: {
         isDate: true,
+    }
+};
+
+TypeInfo.SecureFileEvent.fields = {
+    secureFiles: {
+        isArray: true,
+        typeInfo: TypeInfo.SecureFile
     }
 };
 
@@ -3231,6 +3823,12 @@ TypeInfo.TaskAgentPoolReference.fields = {
     }
 };
 
+TypeInfo.TaskAgentPoolStatus.fields = {
+    poolType: {
+        enumType: TypeInfo.TaskAgentPoolType
+    }
+};
+
 TypeInfo.TaskAgentPoolSummary.fields = {
     deploymentGroups: {
         isArray: true,
@@ -3433,5 +4031,23 @@ TypeInfo.VariableGroup.fields = {
     },
     modifiedOn: {
         isDate: true,
+    }
+};
+
+TypeInfo.VirtualMachine.fields = {
+    agent: {
+        typeInfo: TypeInfo.TaskAgent
+    }
+};
+
+TypeInfo.VirtualMachineGroup.fields = {
+    createdOn: {
+        isDate: true,
+    },
+    lastModifiedOn: {
+        isDate: true,
+    },
+    type: {
+        enumType: TypeInfo.EnvironmentResourceType
     }
 };

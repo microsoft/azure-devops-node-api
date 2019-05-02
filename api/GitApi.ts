@@ -15,6 +15,7 @@ import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import GitInterfaces = require("./interfaces/GitInterfaces");
+import PolicyInterfaces = require("./interfaces/PolicyInterfaces");
 import TfsCoreInterfaces = require("./interfaces/CoreInterfaces");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
@@ -39,6 +40,7 @@ export interface IGitApi extends basem.ClientApiBase {
     getPushCommits(repositoryId: string, pushId: number, project?: string, top?: number, skip?: number, includeLinks?: boolean): Promise<GitInterfaces.GitCommitRef[]>;
     getCommitsBatch(searchCriteria: GitInterfaces.GitQueryCommitsCriteria, repositoryId: string, project?: string, skip?: number, top?: number, includeStatuses?: boolean): Promise<GitInterfaces.GitCommitRef[]>;
     getDeletedRepositories(project: string): Promise<GitInterfaces.GitDeletedRepository[]>;
+    getFileDiffs(fileDiffsCriteria: GitInterfaces.FileDiffsCriteria, project: string, repositoryId: string): Promise<GitInterfaces.FileDiff[]>;
     getForks(repositoryNameOrId: string, collectionId: string, project?: string, includeLinks?: boolean): Promise<GitInterfaces.GitRepositoryRef[]>;
     createForkSyncRequest(syncParams: GitInterfaces.GitForkSyncRequestParameters, repositoryNameOrId: string, project?: string, includeLinks?: boolean): Promise<GitInterfaces.GitForkSyncRequest>;
     getForkSyncRequest(repositoryNameOrId: string, forkSyncOperationId: number, project?: string, includeLinks?: boolean): Promise<GitInterfaces.GitForkSyncRequest>;
@@ -54,6 +56,8 @@ export interface IGitApi extends basem.ClientApiBase {
     getItemZip(repositoryId: string, path: string, project?: string, scopePath?: string, recursionLevel?: GitInterfaces.VersionControlRecursionType, includeContentMetadata?: boolean, latestProcessedChange?: boolean, download?: boolean, versionDescriptor?: GitInterfaces.GitVersionDescriptor, includeContent?: boolean, resolveLfs?: boolean): Promise<NodeJS.ReadableStream>;
     getItemsBatch(requestData: GitInterfaces.GitItemRequestData, repositoryId: string, project?: string): Promise<GitInterfaces.GitItem[][]>;
     getMergeBases(repositoryNameOrId: string, commitId: string, otherCommitId: string, project?: string, otherCollectionId?: string, otherRepositoryId?: string): Promise<GitInterfaces.GitCommitRef[]>;
+    createMergeRequest(mergeParameters: GitInterfaces.GitMergeParameters, project: string, repositoryNameOrId: string, includeLinks?: boolean): Promise<GitInterfaces.GitMerge>;
+    getMergeRequest(project: string, repositoryNameOrId: string, mergeOperationId: number, includeLinks?: boolean): Promise<GitInterfaces.GitMerge>;
     createAttachment(customHeaders: any, contentStream: NodeJS.ReadableStream, fileName: string, repositoryId: string, pullRequestId: number, project?: string): Promise<GitInterfaces.Attachment>;
     deleteAttachment(fileName: string, repositoryId: string, pullRequestId: number, project?: string): Promise<void>;
     getAttachmentContent(fileName: string, repositoryId: string, pullRequestId: number, project?: string): Promise<NodeJS.ReadableStream>;
@@ -62,7 +66,7 @@ export interface IGitApi extends basem.ClientApiBase {
     createLike(repositoryId: string, pullRequestId: number, threadId: number, commentId: number, project?: string): Promise<void>;
     deleteLike(repositoryId: string, pullRequestId: number, threadId: number, commentId: number, project?: string): Promise<void>;
     getLikes(repositoryId: string, pullRequestId: number, threadId: number, commentId: number, project?: string): Promise<VSSInterfaces.IdentityRef[]>;
-    getPullRequestIterationCommits(repositoryId: string, pullRequestId: number, iterationId: number, project?: string): Promise<GitInterfaces.GitCommitRef[]>;
+    getPullRequestIterationCommits(repositoryId: string, pullRequestId: number, iterationId: number, project?: string, top?: number, skip?: number): Promise<GitInterfaces.GitCommitRef[]>;
     getPullRequestCommits(repositoryId: string, pullRequestId: number, project?: string): Promise<GitInterfaces.GitCommitRef[]>;
     getPullRequestConflict(repositoryId: string, pullRequestId: number, conflictId: number, project?: string): Promise<GitInterfaces.GitConflict>;
     getPullRequestConflicts(repositoryId: string, pullRequestId: number, project?: string, skip?: number, top?: number, includeObsolete?: boolean, excludeResolved?: boolean, onlyResolved?: boolean): Promise<GitInterfaces.GitConflict[]>;
@@ -168,12 +172,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "5e8a8081-3851-4626-b677-9891cc04102e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -215,12 +219,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "5e8a8081-3851-4626-b677-9891cc04102e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -274,13 +278,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "7b28e929-2c99-405d-9c5c-6167a06e6816",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -334,13 +338,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "7b28e929-2c99-405d-9c5c-6167a06e6816",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -379,13 +383,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "7b28e929-2c99-405d-9c5c-6167a06e6816",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
@@ -431,13 +435,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "7b28e929-2c99-405d-9c5c-6167a06e6816",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
@@ -480,13 +484,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "d5b216de-d8d5-4d32-ae76-51df755b16d3",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -531,13 +535,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "d5b216de-d8d5-4d32-ae76-51df755b16d3",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -576,12 +580,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "d5b216de-d8d5-4d32-ae76-51df755b16d3",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -632,13 +636,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "5bf884f5-3e07-42e9-afb8-1b872267bf16",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -686,13 +690,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "8af142a4-27c2-4168-9e82-46b8629aaa0d",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -733,12 +737,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "033bad68-9a14-43d1-90e0-59cb8856fef6",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -780,12 +784,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "033bad68-9a14-43d1-90e0-59cb8856fef6",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -833,13 +837,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "033bad68-9a14-43d1-90e0-59cb8856fef6",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -896,13 +900,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "615588d5-c0c7-4b88-88f8-e625306446e8",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -950,13 +954,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "c2570c3b-5b3f-41b8-98bf-5407bfde8d58",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1010,13 +1014,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "c2570c3b-5b3f-41b8-98bf-5407bfde8d58",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1073,13 +1077,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "c2570c3b-5b3f-41b8-98bf-5407bfde8d58",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1132,13 +1136,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "6400dfb2-0bcb-462b-b992-5a57f8f1416c",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1174,12 +1178,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "2b6869c4-cb25-42b5-b7a3-0d3e6be0a11a",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1188,6 +1192,52 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 let ret = this.formatResponse(res.result,
                                               GitInterfaces.TypeInfo.GitDeletedRepository,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get the file diffs for each of the specified files
+     * 
+     * @param {GitInterfaces.FileDiffsCriteria} fileDiffsCriteria - List of file parameters objects
+     * @param {string} project - Project ID or project name
+     * @param {string} repositoryId - The name or ID of the repository
+     */
+    public async getFileDiffs(
+        fileDiffsCriteria: GitInterfaces.FileDiffsCriteria,
+        project: string,
+        repositoryId: string
+        ): Promise<GitInterfaces.FileDiff[]> {
+
+        return new Promise<GitInterfaces.FileDiff[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                repositoryId: repositoryId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.1-preview.1",
+                    "git",
+                    "c4c5a7e6-e9f3-4730-a92b-84baacff694b",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<GitInterfaces.FileDiff[]>;
+                res = await this.rest.create<GitInterfaces.FileDiff[]>(url, fileDiffsCriteria, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.FileDiff,
                                               true);
 
                 resolve(ret);
@@ -1227,13 +1277,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "158c0340-bf6f-489c-9625-d572a1480d57",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1254,7 +1304,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Request that another repository's refs be fetched into this one.
+     * Request that another repository's refs be fetched into this one. It syncs two existing forks. To create a fork, please see the <a href="https://docs.microsoft.com/en-us/rest/api/vsts/git/repositories/create?view=azure-devops-rest-5.1"> repositories endpoint</a>
      * 
      * @param {GitInterfaces.GitForkSyncRequestParameters} syncParams - Source repository and ref mapping.
      * @param {string} repositoryNameOrId - The name or ID of the repository.
@@ -1280,13 +1330,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "1703f858-b9d1-46af-ab62-483e9e1055b5",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1334,13 +1384,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "1703f858-b9d1-46af-ab62-483e9e1055b5",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1388,13 +1438,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "1703f858-b9d1-46af-ab62-483e9e1055b5",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1435,12 +1485,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "01828ddc-3600-4a41-8633-99b3a73a0eb3",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1482,12 +1532,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "01828ddc-3600-4a41-8633-99b3a73a0eb3",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1532,13 +1582,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "01828ddc-3600-4a41-8633-99b3a73a0eb3",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1582,12 +1632,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "01828ddc-3600-4a41-8633-99b3a73a0eb3",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1618,7 +1668,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
      * @param {boolean} includeContentMetadata - Set to true to include content metadata.  Default is false.
      * @param {boolean} latestProcessedChange - Set to true to include the lastest changes.  Default is false.
      * @param {boolean} download - Set to true to download the response as a file.  Default is false.
-     * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor - Version descriptor.  Default is null.
+     * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor - Version descriptor.  Default is the default branch for the repository.
      * @param {boolean} includeContent - Set to true to include item content when requesting json.  Default is false.
      * @param {boolean} resolveLfs - Set to true to resolve Git LFS pointer files to return actual content from Git LFS.  Default is false.
      */
@@ -1659,13 +1709,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "fb93c0db-47ed-4a31-8c20-47552878fb44",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1696,7 +1746,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
      * @param {boolean} includeContentMetadata - Set to true to include content metadata.  Default is false.
      * @param {boolean} latestProcessedChange - Set to true to include the lastest changes.  Default is false.
      * @param {boolean} download - Set to true to download the response as a file.  Default is false.
-     * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor - Version descriptor.  Default is null.
+     * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor - Version descriptor.  Default is the default branch for the repository.
      * @param {boolean} includeContent - Set to true to include item content when requesting json.  Default is false.
      * @param {boolean} resolveLfs - Set to true to resolve Git LFS pointer files to return actual content from Git LFS.  Default is false.
      */
@@ -1737,13 +1787,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "fb93c0db-47ed-4a31-8c20-47552878fb44",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -1766,7 +1816,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
      * @param {boolean} latestProcessedChange - Set to true to include the lastest changes.  Default is false.
      * @param {boolean} download - Set to true to download the response as a file.  Default is false.
      * @param {boolean} includeLinks - Set to true to include links to items.  Default is false.
-     * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor - Version descriptor.  Default is null.
+     * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor - Version descriptor.  Default is the default branch for the repository.
      */
     public async getItems(
         repositoryId: string,
@@ -1798,13 +1848,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "fb93c0db-47ed-4a31-8c20-47552878fb44",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1835,7 +1885,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
      * @param {boolean} includeContentMetadata - Set to true to include content metadata.  Default is false.
      * @param {boolean} latestProcessedChange - Set to true to include the lastest changes.  Default is false.
      * @param {boolean} download - Set to true to download the response as a file.  Default is false.
-     * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor - Version descriptor.  Default is null.
+     * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor - Version descriptor.  Default is the default branch for the repository.
      * @param {boolean} includeContent - Set to true to include item content when requesting json.  Default is false.
      * @param {boolean} resolveLfs - Set to true to resolve Git LFS pointer files to return actual content from Git LFS.  Default is false.
      */
@@ -1876,13 +1926,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "fb93c0db-47ed-4a31-8c20-47552878fb44",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
@@ -1905,7 +1955,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
      * @param {boolean} includeContentMetadata - Set to true to include content metadata.  Default is false.
      * @param {boolean} latestProcessedChange - Set to true to include the lastest changes.  Default is false.
      * @param {boolean} download - Set to true to download the response as a file.  Default is false.
-     * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor - Version descriptor.  Default is null.
+     * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor - Version descriptor.  Default is the default branch for the repository.
      * @param {boolean} includeContent - Set to true to include item content when requesting json.  Default is false.
      * @param {boolean} resolveLfs - Set to true to resolve Git LFS pointer files to return actual content from Git LFS.  Default is false.
      */
@@ -1946,13 +1996,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "fb93c0db-47ed-4a31-8c20-47552878fb44",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
@@ -1985,12 +2035,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "630fd2e4-fb88-4f85-ad21-13f3fd1fbca9",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2047,13 +2097,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "7cf2abb6-c964-4f7e-9872-f78c66e72e9c",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2063,6 +2113,113 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let ret = this.formatResponse(res.result,
                                               GitInterfaces.TypeInfo.GitCommitRef,
                                               true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Request a git merge operation. Currently we support merging only 2 commits.
+     * 
+     * @param {GitInterfaces.GitMergeParameters} mergeParameters - Parents commitIds and merge commit messsage.
+     * @param {string} project - Project ID or project name
+     * @param {string} repositoryNameOrId - The name or ID of the repository.
+     * @param {boolean} includeLinks - True to include links
+     */
+    public async createMergeRequest(
+        mergeParameters: GitInterfaces.GitMergeParameters,
+        project: string,
+        repositoryNameOrId: string,
+        includeLinks?: boolean
+        ): Promise<GitInterfaces.GitMerge> {
+
+        return new Promise<GitInterfaces.GitMerge>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                repositoryNameOrId: repositoryNameOrId
+            };
+
+            let queryValues: any = {
+                includeLinks: includeLinks,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.1-preview.1",
+                    "git",
+                    "985f7ae9-844f-4906-9897-7ef41516c0e2",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<GitInterfaces.GitMerge>;
+                res = await this.rest.create<GitInterfaces.GitMerge>(url, mergeParameters, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitMerge,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get a specific merge operation's details.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} repositoryNameOrId - The name or ID of the repository.
+     * @param {number} mergeOperationId - OperationId of the merge request.
+     * @param {boolean} includeLinks - True to include links
+     */
+    public async getMergeRequest(
+        project: string,
+        repositoryNameOrId: string,
+        mergeOperationId: number,
+        includeLinks?: boolean
+        ): Promise<GitInterfaces.GitMerge> {
+
+        return new Promise<GitInterfaces.GitMerge>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                repositoryNameOrId: repositoryNameOrId,
+                mergeOperationId: mergeOperationId
+            };
+
+            let queryValues: any = {
+                includeLinks: includeLinks,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.1-preview.1",
+                    "git",
+                    "985f7ae9-844f-4906-9897-7ef41516c0e2",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<GitInterfaces.GitMerge>;
+                res = await this.rest.get<GitInterfaces.GitMerge>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitMerge,
+                                              false);
 
                 resolve(ret);
                 
@@ -2104,12 +2261,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "965d9361-878b-413b-a494-45d5b5fd8ab7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
                                                                                 verData.apiVersion);
@@ -2155,12 +2312,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "965d9361-878b-413b-a494-45d5b5fd8ab7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2205,12 +2362,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "965d9361-878b-413b-a494-45d5b5fd8ab7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
@@ -2244,12 +2401,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "965d9361-878b-413b-a494-45d5b5fd8ab7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2294,12 +2451,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "965d9361-878b-413b-a494-45d5b5fd8ab7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
@@ -2339,12 +2496,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "5f2e2851-1389-425b-a00b-fb2adb3ef31b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2392,12 +2549,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "5f2e2851-1389-425b-a00b-fb2adb3ef31b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2445,12 +2602,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "5f2e2851-1389-425b-a00b-fb2adb3ef31b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2477,12 +2634,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
      * @param {number} pullRequestId - ID of the pull request.
      * @param {number} iterationId - ID of the iteration from which to get the commits.
      * @param {string} project - Project ID or project name
+     * @param {number} top - Maximum number of commits to return. The maximum number of commits that can be returned per batch is 500.
+     * @param {number} skip - Number of commits to skip.
      */
     public async getPullRequestIterationCommits(
         repositoryId: string,
         pullRequestId: number,
         iterationId: number,
-        project?: string
+        project?: string,
+        top?: number,
+        skip?: number
         ): Promise<GitInterfaces.GitCommitRef[]> {
 
         return new Promise<GitInterfaces.GitCommitRef[]>(async (resolve, reject) => {
@@ -2493,14 +2654,20 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 iterationId: iterationId
             };
 
+            let queryValues: any = {
+                top: top,
+                skip: skip,
+            };
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "e7ea0883-095f-4926-b5fb-f24691c26fb9",
-                    routeValues);
+                    routeValues,
+                    queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2542,12 +2709,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "52823034-34a8-4576-922c-8d8b77e9e4c4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2592,12 +2759,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "d840fb74-bbef-42d3-b250-564604c054a4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2657,13 +2824,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "d840fb74-bbef-42d3-b250-564604c054a4",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2710,12 +2877,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "d840fb74-bbef-42d3-b250-564604c054a4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2759,12 +2926,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "d840fb74-bbef-42d3-b250-564604c054a4",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2821,13 +2988,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "4216bdcf-b6b1-4d59-8b82-c34cc183fc8b",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2872,12 +3039,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "d43911ee-6958-46b0-a42b-8445b8a0d004",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2925,13 +3092,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "d43911ee-6958-46b0-a42b-8445b8a0d004",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2978,12 +3145,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "75cf11c5-979f-4038-a76e-058a06adf2bf",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3031,12 +3198,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "75cf11c5-979f-4038-a76e-058a06adf2bf",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3084,12 +3251,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "75cf11c5-979f-4038-a76e-058a06adf2bf",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3134,12 +3301,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "75cf11c5-979f-4038-a76e-058a06adf2bf",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3190,12 +3357,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "75cf11c5-979f-4038-a76e-058a06adf2bf",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
                 options.additionalHeaders = customHeaders;
@@ -3246,13 +3413,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "f22387e3-984e-4c52-9c6d-fbb8f14c812d",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3303,13 +3470,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "f22387e3-984e-4c52-9c6d-fbb8f14c812d",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3360,13 +3527,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "f22387e3-984e-4c52-9c6d-fbb8f14c812d",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3414,13 +3581,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "f22387e3-984e-4c52-9c6d-fbb8f14c812d",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3462,12 +3629,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "48a52185-5b9e-4736-9dc1-bb1e2feac80b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3515,12 +3682,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "48a52185-5b9e-4736-9dc1-bb1e2feac80b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
                 options.additionalHeaders = customHeaders;
@@ -3562,12 +3729,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "b3a6eebe-9cf0-49ea-b6cb-1a4c5f5007b0",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3614,12 +3781,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3663,12 +3830,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3713,12 +3880,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3763,12 +3930,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3810,12 +3977,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3836,7 +4003,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Reset the votes of multiple reviewers on a pull request.
+     * Reset the votes of multiple reviewers on a pull request.  NOTE: This endpoint only supports updating votes, but does not support updating required reviewers (use policy) or display names.
      * 
      * @param {GitInterfaces.IdentityRefWithVote[]} patchVotes - IDs of the reviewers whose votes will be reset to zero
      * @param {string} repositoryId - The repository ID of the pull request’s target branch.
@@ -3859,12 +4026,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3903,12 +4070,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "01a46dea-7d46-4d40-bc84-319e7c260d99",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -3962,13 +4129,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "a5d28130-9cd2-40fa-9f08-902e7daa9efb",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4015,13 +4182,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "9946fd70-0d40-406e-b686-b4744cbbcc37",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4081,13 +4248,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "9946fd70-0d40-406e-b686-b4744cbbcc37",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4144,13 +4311,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "9946fd70-0d40-406e-b686-b4744cbbcc37",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4171,11 +4338,11 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Update a pull request.
+     * Update a pull request
      * 
-     * @param {GitInterfaces.GitPullRequest} gitPullRequestToUpdate - The pull request content to update.
+     * @param {GitInterfaces.GitPullRequest} gitPullRequestToUpdate - The pull request content that should be updated.
      * @param {string} repositoryId - The repository ID of the pull request's target branch.
-     * @param {number} pullRequestId - The ID of the pull request to retrieve.
+     * @param {number} pullRequestId - ID of the pull request to update.
      * @param {string} project - Project ID or project name
      */
     public async updatePullRequest(
@@ -4194,12 +4361,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "9946fd70-0d40-406e-b686-b4744cbbcc37",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4243,12 +4410,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "696f3a82-47c9-487f-9117-b9d00972ca84",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4292,12 +4459,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4342,12 +4509,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4392,12 +4559,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4439,12 +4606,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4492,12 +4659,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
                 options.additionalHeaders = customHeaders;
@@ -4519,9 +4686,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Create a comment on a specific thread in a pull request.
+     * Create a comment on a specific thread in a pull request (up to 500 comments can be created per thread).
      * 
-     * @param {GitInterfaces.Comment} comment - The comment to create.
+     * @param {GitInterfaces.Comment} comment - The comment to create. Comments can be up to 150,000 characters.
      * @param {string} repositoryId - The repository ID of the pull request's target branch.
      * @param {number} pullRequestId - ID of the pull request.
      * @param {number} threadId - ID of the thread that the desired comment is in.
@@ -4545,12 +4712,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4598,12 +4765,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4651,12 +4818,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4701,12 +4868,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4729,7 +4896,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     /**
      * Update a comment associated with a specific thread in a pull request.
      * 
-     * @param {GitInterfaces.Comment} comment - The comment content that should be updated.
+     * @param {GitInterfaces.Comment} comment - The comment content that should be updated. Comments can be up to 150,000 characters.
      * @param {string} repositoryId - The repository ID of the pull request's target branch.
      * @param {number} pullRequestId - ID of the pull request.
      * @param {number} threadId - ID of the thread that the desired comment is in.
@@ -4756,12 +4923,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4805,12 +4972,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "ab6e2e5d-a0b7-4153-b64a-a4efe0d49449",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4864,13 +5031,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "ab6e2e5d-a0b7-4153-b64a-a4efe0d49449",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4921,13 +5088,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "ab6e2e5d-a0b7-4153-b64a-a4efe0d49449",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -4974,12 +5141,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "ab6e2e5d-a0b7-4153-b64a-a4efe0d49449",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5021,12 +5188,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "0a637fcc-5370-4ce8-b0e8-98091f5f9482",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5067,12 +5234,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "git",
                     "ea98d07b-3c87-4971-8ede-a613694ffb55",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5123,13 +5290,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "git",
                     "ea98d07b-3c87-4971-8ede-a613694ffb55",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5180,13 +5347,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "git",
                     "ea98d07b-3c87-4971-8ede-a613694ffb55",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5225,12 +5392,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "a663da97-81db-4eb3-8b83-287670f63073",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5266,12 +5433,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "a663da97-81db-4eb3-8b83-287670f63073",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5312,12 +5479,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "a663da97-81db-4eb3-8b83-287670f63073",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5380,13 +5547,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "2d874a60-a811-4f62-9c9f-963a6ea0a55b",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5439,13 +5606,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "2d874a60-a811-4f62-9c9f-963a6ea0a55b",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5492,13 +5659,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "2d874a60-a811-4f62-9c9f-963a6ea0a55b",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5536,12 +5703,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "876f70af-5792-485a-a1c7-d0a7b2f42bbb",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5580,12 +5747,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "876f70af-5792-485a-a1c7-d0a7b2f42bbb",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5624,12 +5791,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "876f70af-5792-485a-a1c7-d0a7b2f42bbb",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5674,13 +5841,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "876f70af-5792-485a-a1c7-d0a7b2f42bbb",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5724,13 +5891,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5769,12 +5936,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5822,13 +5989,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5867,12 +6034,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5920,13 +6087,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -5967,12 +6134,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6013,12 +6180,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "bc866058-5449-4715-9cf1-a510b6ff193c",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6060,12 +6227,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "bc866058-5449-4715-9cf1-a510b6ff193c",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6113,13 +6280,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "bc866058-5449-4715-9cf1-a510b6ff193c",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6163,12 +6330,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "428dd4fb-fda5-4722-af02-9313b80305da",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6222,13 +6389,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "428dd4fb-fda5-4722-af02-9313b80305da",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6267,12 +6434,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "9393b4fb-4445-4919-972b-9ad16f442d83",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6326,13 +6493,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "729f6437-6f92-44ec-8bee-273a7111063c",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -6386,13 +6553,13 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "git",
                     "729f6437-6f92-44ec-8bee-273a7111063c",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 
                 let apiVersion: string = verData.apiVersion;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);

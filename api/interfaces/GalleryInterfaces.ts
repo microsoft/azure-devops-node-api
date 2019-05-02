@@ -10,6 +10,7 @@
 
 "use strict";
 
+import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
 /**
@@ -547,6 +548,7 @@ export interface ExtensionPayload {
     displayName?: string;
     fileName?: string;
     installationTargets?: InstallationTarget[];
+    isPreview?: boolean;
     isSignedByMicrosoft?: boolean;
     isValid?: boolean;
     metadata?: { key: string; value: string }[];
@@ -1212,6 +1214,70 @@ export interface PublisherQueryResult {
     results?: PublisherFilterResult[];
 }
 
+/**
+ * Access definition for a RoleAssignment.
+ */
+export enum PublisherRoleAccess {
+    /**
+     * Access has been explicitly set.
+     */
+    Assigned = 1,
+    /**
+     * Access has been inherited from a higher scope.
+     */
+    Inherited = 2,
+}
+
+export interface PublisherRoleAssignment {
+    /**
+     * Designates the role as explicitly assigned or inherited.
+     */
+    access?: PublisherRoleAccess;
+    /**
+     * User friendly description of access assignment.
+     */
+    accessDisplayName?: string;
+    /**
+     * The user to whom the role is assigned.
+     */
+    identity?: VSSInterfaces.IdentityRef;
+    /**
+     * The role assigned to the user.
+     */
+    role?: PublisherSecurityRole;
+}
+
+export interface PublisherSecurityRole {
+    /**
+     * Permissions the role is allowed.
+     */
+    allowPermissions?: number;
+    /**
+     * Permissions the role is denied.
+     */
+    denyPermissions?: number;
+    /**
+     * Description of user access defined by the role
+     */
+    description?: string;
+    /**
+     * User friendly name of the role.
+     */
+    displayName?: string;
+    /**
+     * Globally unique identifier for the role.
+     */
+    identifier?: string;
+    /**
+     * Unique name of the role in the scope.
+     */
+    name?: string;
+    /**
+     * Returns the id of the ParentScope.
+     */
+    scope?: string;
+}
+
 export enum PublisherState {
     /**
      * No state exists for this publisher.
@@ -1233,6 +1299,21 @@ export enum PublisherState {
      * This state indicates that publisher was certified on the Marketplace, but his/her certification got revoked. This state would never be reset, even after publisher gets re-certified. It would indicate that the publisher certification was revoked at least once.
      */
     CertificationRevoked = 8,
+}
+
+export interface PublisherUserRoleAssignmentRef {
+    /**
+     * The name of the role assigned.
+     */
+    roleName?: string;
+    /**
+     * Identifier of the user given the role assignment.
+     */
+    uniqueName?: string;
+    /**
+     * Unique id of the user given the role assignment.
+     */
+    userId?: string;
 }
 
 /**
@@ -1736,6 +1817,7 @@ export interface UnpackagedExtensionData {
     extensionName?: string;
     installationTargets?: InstallationTarget[];
     isConvertedToMarkdown?: boolean;
+    isPreview?: boolean;
     pricingCategory?: string;
     product?: string;
     publisherName?: string;
@@ -2062,6 +2144,14 @@ export var TypeInfo = {
         }
     },
     PublisherQueryResult: <any>{
+    },
+    PublisherRoleAccess: {
+        enumValues: {
+            "assigned": 1,
+            "inherited": 2
+        }
+    },
+    PublisherRoleAssignment: <any>{
     },
     PublisherState: {
         enumValues: {
@@ -2419,6 +2509,12 @@ TypeInfo.PublisherQueryResult.fields = {
     results: {
         isArray: true,
         typeInfo: TypeInfo.PublisherFilterResult
+    }
+};
+
+TypeInfo.PublisherRoleAssignment.fields = {
+    access: {
+        enumType: TypeInfo.PublisherRoleAccess
     }
 };
 

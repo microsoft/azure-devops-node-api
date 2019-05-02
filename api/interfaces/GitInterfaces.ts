@@ -10,6 +10,7 @@
 
 "use strict";
 
+import PolicyInterfaces = require("../interfaces/PolicyInterfaces");
 import TfsCoreInterfaces = require("../interfaces/CoreInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
@@ -475,6 +476,56 @@ export interface FileContentMetadata {
     isBinary?: boolean;
     isImage?: boolean;
     vsLink?: string;
+}
+
+/**
+ * Provides properties that describe file differences
+ */
+export interface FileDiff {
+    /**
+     * The collection of line diff blocks
+     */
+    lineDiffBlocks?: LineDiffBlock[];
+    /**
+     * Original path of item if different from current path.
+     */
+    originalPath?: string;
+    /**
+     * Current path of item
+     */
+    path?: string;
+}
+
+/**
+ * Provides parameters that describe inputs for the file diff
+ */
+export interface FileDiffParams {
+    /**
+     * Original path of the file
+     */
+    originalPath?: string;
+    /**
+     * Current path of the file
+     */
+    path?: string;
+}
+
+/**
+ * Provides properties that describe inputs for the file diffs
+ */
+export interface FileDiffsCriteria {
+    /**
+     * Commit ID of the base version
+     */
+    baseVersionCommit?: string;
+    /**
+     * List of parameters for each of the files for which we need to get the file diff
+     */
+    fileDiffParams?: FileDiffParams[];
+    /**
+     * Commit ID of the target version
+     */
+    targetVersionCommit?: string;
 }
 
 /**
@@ -1391,8 +1442,55 @@ export interface GitLastChangeTreeItems {
     lastExploredTime?: Date;
 }
 
+export interface GitMerge extends GitMergeParameters {
+    /**
+     * Reference links.
+     */
+    _links?: any;
+    /**
+     * Detailed status of the merge operation.
+     */
+    detailedStatus?: GitMergeOperationStatusDetail;
+    /**
+     * Unique identifier for the merge operation.
+     */
+    mergeOperationId?: number;
+    /**
+     * Status of the merge operation.
+     */
+    status?: GitAsyncOperationStatus;
+}
+
+/**
+ * Status information about a requested merge operation.
+ */
+export interface GitMergeOperationStatusDetail {
+    /**
+     * Error message if the operation failed.
+     */
+    failureMessage?: string;
+    /**
+     * The commitId of the resultant merge commit.
+     */
+    mergeCommitId?: string;
+}
+
 export interface GitMergeOriginRef {
     pullRequestId?: number;
+}
+
+/**
+ * Parameters required for performing git merge.
+ */
+export interface GitMergeParameters {
+    /**
+     * Comment or message of the commit.
+     */
+    comment?: string;
+    /**
+     * An enumeration of the parent commit IDs for the merge  commit.
+     */
+    parents?: string[];
 }
 
 /**
@@ -1438,6 +1536,14 @@ export enum GitPathActions {
 
 export interface GitPathToItemsCollection {
     items?: { [key: string] : GitItem[]; };
+}
+
+export interface GitPolicyConfigurationResponse {
+    /**
+     * The HTTP client methods find the continuation token header in the response and populate this field.
+     */
+    continuationToken?: string;
+    policyConfigurations?: PolicyInterfaces.PolicyConfiguration[];
 }
 
 /**
@@ -1641,7 +1747,11 @@ export interface GitPullRequestCompletionOptions {
      */
     mergeCommitMessage?: string;
     /**
-     * If true, the commits in the pull request will be squash-merged into the specified target branch on completion.
+     * Specify the strategy used to merge the pull request during completion. If MergeStrategy is not set to any value, a no-FF merge will be created if SquashMerge == false. If MergeStrategy is not set to any value, the pull request commits will be squash if SquashMerge == true. The SquashMerge member is deprecated. It is recommended that you explicitly set MergeStrategy in all cases. If an explicit value is provided for MergeStrategy, the SquashMerge member will be ignored.
+     */
+    mergeStrategy?: GitPullRequestMergeStrategy;
+    /**
+     * SquashMerge is deprecated. You should explicity set the value of MergeStrategy. If MergeStrategy is set to any value, the SquashMerge value will be ignored. If MergeStrategy is not set, the merge strategy will be no-fast-forward if this flag is false, or squash if true.
      */
     squashMerge?: boolean;
     /**
@@ -1751,6 +1861,28 @@ export interface GitPullRequestMergeOptions {
      * If true, rename detection will not be performed during the merge.
      */
     disableRenames?: boolean;
+}
+
+/**
+ * Enumeration of possible merge strategies which can be used to complete a pull request.
+ */
+export enum GitPullRequestMergeStrategy {
+    /**
+     * A two-parent, no-fast-forward merge. The source branch is unchanged. This is the default behavior.
+     */
+    NoFastForward = 1,
+    /**
+     * Put all changes from the pull request into a single-parent commit.
+     */
+    Squash = 2,
+    /**
+     * Rebase the source branch on top of the target branch HEAD commit, and fast-forward the target branch. The source branch is updated during the rebase operation.
+     */
+    Rebase = 3,
+    /**
+     * Rebase the source branch on top of the target branch HEAD commit, and create a two-parent, no-fast-forward merge. The source branch is updated during the rebase operation.
+     */
+    RebaseMerge = 4,
 }
 
 /**
@@ -2186,6 +2318,7 @@ export interface GitRepository {
     sshUrl?: string;
     url?: string;
     validRemoteUrls?: string[];
+    webUrl?: string;
 }
 
 export interface GitRepositoryCreateOptions {
@@ -2216,6 +2349,13 @@ export interface GitRepositoryStats {
     branchesCount?: number;
     commitsCount?: number;
     repositoryId?: string;
+}
+
+export interface GitResolution {
+    /**
+     * User who created the resolution.
+     */
+    author?: VSSInterfaces.IdentityRef;
 }
 
 /**
@@ -2252,7 +2392,7 @@ export enum GitResolutionError {
     OtherError = 255,
 }
 
-export interface GitResolutionMergeContent {
+export interface GitResolutionMergeContent extends GitResolution {
     mergeType?: GitResolutionMergeType;
     userMergedBlob?: GitBlobRef;
     userMergedContent?: number[];
@@ -2266,7 +2406,7 @@ export enum GitResolutionMergeType {
     UserMerged = 4,
 }
 
-export interface GitResolutionPathConflict {
+export interface GitResolutionPathConflict extends GitResolution {
     action?: GitResolutionPathConflictAction;
     renamePath?: string;
 }
@@ -2279,7 +2419,7 @@ export enum GitResolutionPathConflictAction {
     KeepTargetDeleteSource = 4,
 }
 
-export interface GitResolutionPickOneAction {
+export interface GitResolutionPickOneAction extends GitResolution {
     action?: GitResolutionWhichAction;
 }
 
@@ -2734,6 +2874,54 @@ export enum IterationReason {
  * Real time event (SignalR) for updated labels on a pull request
  */
 export interface LabelsUpdatedEvent extends RealTimePullRequestEvent {
+}
+
+/**
+ * The class to represent the line diff block
+ */
+export interface LineDiffBlock {
+    /**
+     * Type of change that was made to the block.
+     */
+    changeType?: LineDiffBlockChangeType;
+    /**
+     * Line number where this block starts in modified file.
+     */
+    modifiedLineNumberStart?: number;
+    /**
+     * Count of lines in this block in modified file.
+     */
+    modifiedLinesCount?: number;
+    /**
+     * Line number where this block starts in original file.
+     */
+    originalLineNumberStart?: number;
+    /**
+     * Count of lines in this block in original file.
+     */
+    originalLinesCount?: number;
+}
+
+/**
+ * Type of change for a line diff block
+ */
+export enum LineDiffBlockChangeType {
+    /**
+     * No change - both the blocks are identical
+     */
+    None = 0,
+    /**
+     * Lines were added to the block in the modified file
+     */
+    Add = 1,
+    /**
+     * Lines were deleted from the block in the original file
+     */
+    Delete = 2,
+    /**
+     * Lines were modified
+     */
+    Edit = 3,
 }
 
 /**
@@ -3478,6 +3666,8 @@ export var TypeInfo = {
             "system": 3
         }
     },
+    FileDiff: <any>{
+    },
     GitAnnotatedTag: <any>{
     },
     GitAsyncOperationStatus: {
@@ -3618,6 +3808,8 @@ export var TypeInfo = {
     },
     GitLastChangeTreeItems: <any>{
     },
+    GitMerge: <any>{
+    },
     GitObject: <any>{
     },
     GitObjectType: {
@@ -3645,15 +3837,27 @@ export var TypeInfo = {
     },
     GitPathToItemsCollection: <any>{
     },
+    GitPolicyConfigurationResponse: <any>{
+    },
     GitPullRequest: <any>{
     },
     GitPullRequestChange: <any>{
     },
     GitPullRequestCommentThread: <any>{
     },
+    GitPullRequestCompletionOptions: <any>{
+    },
     GitPullRequestIteration: <any>{
     },
     GitPullRequestIterationChanges: <any>{
+    },
+    GitPullRequestMergeStrategy: {
+        enumValues: {
+            "noFastForward": 1,
+            "squash": 2,
+            "rebase": 3,
+            "rebaseMerge": 4
+        }
     },
     GitPullRequestQuery: <any>{
     },
@@ -3862,6 +4066,16 @@ export var TypeInfo = {
             "retarget": 16
         }
     },
+    LineDiffBlock: <any>{
+    },
+    LineDiffBlockChangeType: {
+        enumValues: {
+            "none": 0,
+            "add": 1,
+            "delete": 2,
+            "edit": 3
+        }
+    },
     PullRequestAsyncStatus: {
         enumValues: {
             "notSet": 0,
@@ -3907,13 +4121,13 @@ export var TypeInfo = {
             "dataGrip": 4,
             "eclipse": 13,
             "intelliJ": 5,
-            "mPS": 6,
+            "mps": 6,
             "phpStorm": 7,
             "pyCharm": 8,
             "rubyMine": 9,
             "tower": 10,
             "visualStudio": 11,
-            "vSCode": 14,
+            "vsCode": 14,
             "webStorm": 12
         }
     },
@@ -4057,6 +4271,13 @@ TypeInfo.CommentThread.fields = {
     },
     status: {
         enumType: TypeInfo.CommentThreadStatus
+    }
+};
+
+TypeInfo.FileDiff.fields = {
+    lineDiffBlocks: {
+        isArray: true,
+        typeInfo: TypeInfo.LineDiffBlock
     }
 };
 
@@ -4632,6 +4853,9 @@ TypeInfo.GitForkSyncRequest.fields = {
 };
 
 TypeInfo.GitForkTeamProjectReference.fields = {
+    lastUpdateTime: {
+        isDate: true,
+    },
     visibility: {
         enumType: TfsCoreInterfaces.TypeInfo.ProjectVisibility
     }
@@ -4696,6 +4920,12 @@ TypeInfo.GitLastChangeTreeItems.fields = {
     }
 };
 
+TypeInfo.GitMerge.fields = {
+    status: {
+        enumType: TypeInfo.GitAsyncOperationStatus
+    }
+};
+
 TypeInfo.GitObject.fields = {
     objectType: {
         enumType: TypeInfo.GitObjectType
@@ -4718,6 +4948,13 @@ TypeInfo.GitPathToItemsCollection.fields = {
     }
 };
 
+TypeInfo.GitPolicyConfigurationResponse.fields = {
+    policyConfigurations: {
+        isArray: true,
+        typeInfo: PolicyInterfaces.TypeInfo.PolicyConfiguration
+    }
+};
+
 TypeInfo.GitPullRequest.fields = {
     closedDate: {
         isDate: true,
@@ -4725,6 +4962,9 @@ TypeInfo.GitPullRequest.fields = {
     commits: {
         isArray: true,
         typeInfo: TypeInfo.GitCommitRef
+    },
+    completionOptions: {
+        typeInfo: TypeInfo.GitPullRequestCompletionOptions
     },
     completionQueueTime: {
         isDate: true,
@@ -4780,6 +5020,12 @@ TypeInfo.GitPullRequestCommentThread.fields = {
     },
     status: {
         enumType: TypeInfo.CommentThreadStatus
+    }
+};
+
+TypeInfo.GitPullRequestCompletionOptions.fields = {
+    mergeStrategy: {
+        enumType: TypeInfo.GitPullRequestMergeStrategy
     }
 };
 
@@ -5099,6 +5345,12 @@ TypeInfo.ItemContent.fields = {
 TypeInfo.ItemDetailsOptions.fields = {
     recursionLevel: {
         enumType: TypeInfo.VersionControlRecursionType
+    }
+};
+
+TypeInfo.LineDiffBlock.fields = {
+    changeType: {
+        enumType: TypeInfo.LineDiffBlockChangeType
     }
 };
 

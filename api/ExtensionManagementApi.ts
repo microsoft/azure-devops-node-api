@@ -20,6 +20,7 @@ import GalleryInterfaces = require("./interfaces/GalleryInterfaces");
 export interface IExtensionManagementApi extends basem.ClientApiBase {
     getAcquisitionOptions(itemId: string, testCommerce?: boolean, isFreeOrTrialInstall?: boolean, isAccountOwner?: boolean, isLinked?: boolean, isConnectedServer?: boolean, isBuyOperationValid?: boolean): Promise<ExtensionManagementInterfaces.AcquisitionOptions>;
     requestAcquisition(acquisitionRequest: ExtensionManagementInterfaces.ExtensionAcquisitionRequest): Promise<ExtensionManagementInterfaces.ExtensionAcquisitionRequest>;
+    getAuditLog(publisherName: string, extensionName: string): Promise<ExtensionManagementInterfaces.ExtensionAuditLog>;
     registerAuthorization(publisherName: string, extensionName: string, registrationId: string): Promise<ExtensionManagementInterfaces.ExtensionAuthorization>;
     createDocumentByName(doc: any, publisherName: string, extensionName: string, scopeType: string, scopeValue: string, collectionName: string): Promise<any>;
     deleteDocumentByName(publisherName: string, extensionName: string, scopeType: string, scopeValue: string, collectionName: string, documentId: string): Promise<void>;
@@ -89,13 +90,13 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "288dff58-d13b-468e-9671-0fb754e9398c",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -128,12 +129,12 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "da616457-eed3-4672-92d7-18d21f5c1658",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -142,6 +143,48 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
                 let ret = this.formatResponse(res.result,
                                               ExtensionManagementInterfaces.TypeInfo.ExtensionAcquisitionRequest,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} publisherName
+     * @param {string} extensionName
+     */
+    public async getAuditLog(
+        publisherName: string,
+        extensionName: string
+        ): Promise<ExtensionManagementInterfaces.ExtensionAuditLog> {
+
+        return new Promise<ExtensionManagementInterfaces.ExtensionAuditLog>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.1-preview.1",
+                    "ExtensionManagement",
+                    "23a312e0-562d-42fb-a505-5a046b5635db",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<ExtensionManagementInterfaces.ExtensionAuditLog>;
+                res = await this.rest.get<ExtensionManagementInterfaces.ExtensionAuditLog>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              ExtensionManagementInterfaces.TypeInfo.ExtensionAuditLog,
                                               false);
 
                 resolve(ret);
@@ -173,12 +216,12 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "f21cfc80-d2d2-4248-98bb-7820c74c4606",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -226,12 +269,12 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -280,12 +323,12 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -334,12 +377,12 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -385,12 +428,12 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -438,12 +481,12 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -491,12 +534,12 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "bbe06c18-1c8b-4fcd-b9c6-1535aaab8749",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -537,12 +580,12 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "56c331f1-ce53-4318-adfd-4db5c52a7a2e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -587,13 +630,13 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "92755d3d-9a8a-42b3-8a4d-87359fe5aa93",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -626,12 +669,12 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "046c980f-1345-4ce2-bf85-b46d10ff4cfd",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -679,13 +722,13 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "275424d0-c844-4fe2-bda6-04933a1357d8",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -720,12 +763,12 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "275424d0-c844-4fe2-bda6-04933a1357d8",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -770,13 +813,13 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "fb0da285-f23e-4b56-8b53-3ef5f9f6de66",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -818,12 +861,12 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "fb0da285-f23e-4b56-8b53-3ef5f9f6de66",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -871,13 +914,13 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "fb0da285-f23e-4b56-8b53-3ef5f9f6de66",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -911,12 +954,12 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "e5cc8c09-407b-4867-8319-2ae3338cbf6f",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -967,13 +1010,13 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "aa93e1f3-511c-4364-8b9c-eb98818f2e0b",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1004,12 +1047,12 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "216b978f-b164-424e-ada2-b77561e842b7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1057,13 +1100,13 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "ba93e1f3-511c-4364-8b9c-eb98818f2e0b",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1100,12 +1143,12 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "f5afca1e-a728-4294-aa2d-4af0173431b5",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1144,12 +1187,12 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "f5afca1e-a728-4294-aa2d-4af0173431b5",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1180,12 +1223,12 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "ExtensionManagement",
                     "3a2e24ed-1d6f-4cb2-9f3b-45a96bbfaf50",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 

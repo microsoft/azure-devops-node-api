@@ -118,6 +118,10 @@ export interface WikiPage extends WikiPageCreateOrUpdateParameters {
      */
     gitItemPath?: string;
     /**
+     * When present, permanent identifier for the wiki page
+     */
+    id?: number;
+    /**
      * True if a page is non-conforming, i.e. 1) if the name doesn't match page naming standards. 2) if the page does not have a valid entry in the appropriate order file.
      */
     isNonConformant?: boolean;
@@ -235,7 +239,13 @@ export interface WikiPageViewStats {
  * Wiki types.
  */
 export enum WikiType {
+    /**
+     * Indicates that the wiki is provisioned for the team project
+     */
     ProjectWiki = 0,
+    /**
+     * Indicates that the wiki is published from a git repository
+     */
     CodeWiki = 1,
 }
 

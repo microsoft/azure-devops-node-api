@@ -78,6 +78,8 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
         super(baseUrl, handlers, 'node-WorkItemTracking-api', options);
     }
 
+    public static readonly RESOURCE_AREA_ID = "5264459e-e5e0-4bd8-b118-0985e68a4ec5";
+
     /**
      * Creates a single behavior in the given process.
      * 
@@ -96,12 +98,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "d1800200-f184-4e75-a5f2-ad0b04b4373e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -140,12 +142,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "d1800200-f184-4e75-a5f2-ad0b04b4373e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -190,13 +192,13 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "d1800200-f184-4e75-a5f2-ad0b04b4373e",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -238,13 +240,13 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "d1800200-f184-4e75-a5f2-ad0b04b4373e",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -285,12 +287,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "d1800200-f184-4e75-a5f2-ad0b04b4373e",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -334,12 +336,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "1f59b363-a2d0-4b7e-9bc6-eb9f5f3f0e58",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -392,13 +394,13 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "1f59b363-a2d0-4b7e-9bc6-eb9f5f3f0e58",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -443,12 +445,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "1f59b363-a2d0-4b7e-9bc6-eb9f5f3f0e58",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -495,12 +497,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "1f59b363-a2d0-4b7e-9bc6-eb9f5f3f0e58",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -541,12 +543,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "bc0ad8dc-e3f3-46b0-b06c-5bf861793196",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -585,12 +587,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "bc0ad8dc-e3f3-46b0-b06c-5bf861793196",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -632,12 +634,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "bc0ad8dc-e3f3-46b0-b06c-5bf861793196",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -679,12 +681,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "bc0ad8dc-e3f3-46b0-b06c-5bf861793196",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -728,12 +730,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "bc0ad8dc-e3f3-46b0-b06c-5bf861793196",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -780,12 +782,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "766e44e1-36a8-41d7-9050-c343ff02f7a5",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -850,13 +852,13 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "766e44e1-36a8-41d7-9050-c343ff02f7a5",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -915,13 +917,13 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "766e44e1-36a8-41d7-9050-c343ff02f7a5",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -969,12 +971,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "766e44e1-36a8-41d7-9050-c343ff02f7a5",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1024,12 +1026,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "766e44e1-36a8-41d7-9050-c343ff02f7a5",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1068,12 +1070,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "fa8646eb-43cd-4b71-9564-40106fd63e40",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1108,12 +1110,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "01e15468-e27c-4e20-a974-bd957dcccebc",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1149,12 +1151,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "01e15468-e27c-4e20-a974-bd957dcccebc",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1190,12 +1192,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "01e15468-e27c-4e20-a974-bd957dcccebc",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1228,12 +1230,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "01e15468-e27c-4e20-a974-bd957dcccebc",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1271,12 +1273,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "01e15468-e27c-4e20-a974-bd957dcccebc",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1317,12 +1319,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "1cc7b29f-6697-4d9d-b0a1-2650d3e1d584",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1364,12 +1366,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "1cc7b29f-6697-4d9d-b0a1-2650d3e1d584",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1410,12 +1412,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "1cc7b29f-6697-4d9d-b0a1-2650d3e1d584",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1450,12 +1452,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "02cc6a73-5cfb-427d-8c8e-b49fb086e8af",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1491,12 +1493,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "02cc6a73-5cfb-427d-8c8e-b49fb086e8af",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1534,12 +1536,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "02cc6a73-5cfb-427d-8c8e-b49fb086e8af",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1578,13 +1580,13 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "02cc6a73-5cfb-427d-8c8e-b49fb086e8af",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1626,13 +1628,13 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "02cc6a73-5cfb-427d-8c8e-b49fb086e8af",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1673,12 +1675,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "76fe3432-d825-479d-a5f6-983bbb78b4f3",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1720,12 +1722,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "76fe3432-d825-479d-a5f6-983bbb78b4f3",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1767,12 +1769,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "76fe3432-d825-479d-a5f6-983bbb78b4f3",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1811,12 +1813,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "76fe3432-d825-479d-a5f6-983bbb78b4f3",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1860,12 +1862,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "76fe3432-d825-479d-a5f6-983bbb78b4f3",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1906,12 +1908,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "31015d57-2dff-4a46-adb3-2fb4ee3dcec9",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -1953,12 +1955,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "31015d57-2dff-4a46-adb3-2fb4ee3dcec9",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2000,12 +2002,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "31015d57-2dff-4a46-adb3-2fb4ee3dcec9",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2044,12 +2046,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "31015d57-2dff-4a46-adb3-2fb4ee3dcec9",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2093,12 +2095,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "31015d57-2dff-4a46-adb3-2fb4ee3dcec9",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2142,12 +2144,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "31015d57-2dff-4a46-adb3-2fb4ee3dcec9",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2185,12 +2187,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "e2e9d1a6-432d-4062-8870-bfcb8c324ad7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2229,12 +2231,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "e2e9d1a6-432d-4062-8870-bfcb8c324ad7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2279,13 +2281,13 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "e2e9d1a6-432d-4062-8870-bfcb8c324ad7",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2327,13 +2329,13 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "e2e9d1a6-432d-4062-8870-bfcb8c324ad7",
                     routeValues,
                     queryValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2374,12 +2376,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.2",
+                    "5.1-preview.2",
                     "processes",
                     "e2e9d1a6-432d-4062-8870-bfcb8c324ad7",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2420,12 +2422,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "6d765a2e-4e1b-4b11-be93-f953be676024",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2467,12 +2469,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "6d765a2e-4e1b-4b11-be93-f953be676024",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2511,12 +2513,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "6d765a2e-4e1b-4b11-be93-f953be676024",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2558,12 +2560,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "6d765a2e-4e1b-4b11-be93-f953be676024",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
@@ -2604,12 +2606,12 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.0-preview.1",
+                    "5.1-preview.1",
                     "processes",
                     "6d765a2e-4e1b-4b11-be93-f953be676024",
                     routeValues);
 
-                let url: string = verData.requestUrl;
+                let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 

@@ -114,6 +114,7 @@ export interface IdentityBase {
      */
     providerDisplayName?: string;
     resourceVersion?: number;
+    socialDescriptor?: string;
     subjectDescriptor?: string;
     uniqueUserId?: number;
 }
@@ -239,6 +240,7 @@ export interface TenantInfo {
     homeTenant?: boolean;
     tenantId?: string;
     tenantName?: string;
+    verifiedDomains?: string[];
 }
 
 export var TypeInfo = {
