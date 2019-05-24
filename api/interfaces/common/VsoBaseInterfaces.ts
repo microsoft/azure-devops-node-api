@@ -91,6 +91,9 @@ export interface IRequestOptions {
     cert?: ICertConfiguration;
     allowRetries?: boolean;
     maxRetries?: number;
+    allowRedirects?: boolean;
+    maxRedirects?: number;
+    presignedUrlPatterns?: RegExp[];
 }
 
 export interface IProxyConfiguration {
