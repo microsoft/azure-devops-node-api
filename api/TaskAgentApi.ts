@@ -186,9 +186,6 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
         };
 
         return new Promise<void>(async (resolve, reject) => {
-            let routeValues: any = {
-            };
-
             customHeaders = customHeaders || {};
             customHeaders["Content-Type"] = "application/octet-stream";
 
@@ -205,7 +202,7 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
                 options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<void>;
-                res = await this.rest.uploadStream<void>("POST", url, contentStream, options);
+                res = await this.rest.uploadStream<void>("PUT", url, contentStream, options);
 
                 resolve(res.result);
             }
