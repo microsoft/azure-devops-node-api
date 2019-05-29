@@ -146,7 +146,7 @@ export class WebApi {
                 userAgent = `${nodeApiName} (${window.navigator.userAgent})`;
             }
         } else {
-            const nodeApiVersion: string = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json'), 'utf8')).version;
+            const nodeApiVersion = require('../package.json').version;
             const osName: string = os.platform();
             const osVersion: string = os.release();
 
