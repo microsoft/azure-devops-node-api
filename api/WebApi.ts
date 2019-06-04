@@ -42,7 +42,7 @@ import os = require('os');
 import url = require('url');
 import path = require('path');
 
-const isBrowser: boolean =(function(){return typeof window !== 'undefined' && typeof window.document !== 'undefined'})();
+const isBrowser: boolean =(function(){return typeof window !== 'undefined'})();
 /**
  * Methods to return handler objects (see handlers folder)
  */
