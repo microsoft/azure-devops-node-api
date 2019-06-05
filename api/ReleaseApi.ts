@@ -52,7 +52,7 @@ export interface IReleaseApi extends basem.ClientApiBase {
     deleteFavorites(project: string, scope: string, identityId?: string, favoriteItemIds?: string): Promise<void>;
     getFavorites(project: string, scope: string, identityId?: string): Promise<ReleaseInterfaces.FavoriteItem[]>;
     getFlightAssignments(flightName?: string): Promise<string[]>;
-    createFolder(folder: ReleaseInterfaces.Folder, project: string, path: string): Promise<ReleaseInterfaces.Folder>;
+    createFolder(folder: ReleaseInterfaces.Folder, project: string, path?: string): Promise<ReleaseInterfaces.Folder>;
     deleteFolder(project: string, path: string): Promise<void>;
     getFolders(project: string, path?: string, queryOrder?: ReleaseInterfaces.FolderPathQueryOrder): Promise<ReleaseInterfaces.Folder[]>;
     updateFolder(folder: ReleaseInterfaces.Folder, project: string, path: string): Promise<ReleaseInterfaces.Folder>;
@@ -1879,16 +1879,16 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * Creates a new folder
+     * Creates a new folder.
      * 
-     * @param {ReleaseInterfaces.Folder} folder
+     * @param {ReleaseInterfaces.Folder} folder - folder.
      * @param {string} project - Project ID or project name
-     * @param {string} path
+     * @param {string} path - Path of the folder.
      */
     public async createFolder(
         folder: ReleaseInterfaces.Folder,
         project: string,
-        path: string
+        path?: string
         ): Promise<ReleaseInterfaces.Folder> {
 
         return new Promise<ReleaseInterfaces.Folder>(async (resolve, reject) => {
@@ -1899,7 +1899,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "5.1-preview.2",
                     "Release",
                     "f7ddf76d-ce0c-4d68-94ff-becaec5d9dea",
                     routeValues);
@@ -1925,10 +1925,10 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * Deletes a definition folder for given folder name and path and all it's existing definitions
+     * Deletes a definition folder for given folder name and path and all it's existing definitions.
      * 
      * @param {string} project - Project ID or project name
-     * @param {string} path
+     * @param {string} path - Path of the folder to delete.
      */
     public async deleteFolder(
         project: string,
@@ -1943,7 +1943,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "5.1-preview.2",
                     "Release",
                     "f7ddf76d-ce0c-4d68-94ff-becaec5d9dea",
                     routeValues);
@@ -1969,11 +1969,11 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * Gets folders
+     * Gets folders.
      * 
      * @param {string} project - Project ID or project name
-     * @param {string} path
-     * @param {ReleaseInterfaces.FolderPathQueryOrder} queryOrder
+     * @param {string} path - Path of the folder.
+     * @param {ReleaseInterfaces.FolderPathQueryOrder} queryOrder - Gets the results in the defined order. Default is 'None'.
      */
     public async getFolders(
         project: string,
@@ -1993,7 +1993,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "5.1-preview.2",
                     "Release",
                     "f7ddf76d-ce0c-4d68-94ff-becaec5d9dea",
                     routeValues,
@@ -2020,11 +2020,11 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
-     * Updates an existing folder at given  existing path
+     * Updates an existing folder at given existing path.
      * 
-     * @param {ReleaseInterfaces.Folder} folder
+     * @param {ReleaseInterfaces.Folder} folder - folder.
      * @param {string} project - Project ID or project name
-     * @param {string} path
+     * @param {string} path - Path of the folder to update.
      */
     public async updateFolder(
         folder: ReleaseInterfaces.Folder,
@@ -2040,7 +2040,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "5.1-preview.2",
                     "Release",
                     "f7ddf76d-ce0c-4d68-94ff-becaec5d9dea",
                     routeValues);

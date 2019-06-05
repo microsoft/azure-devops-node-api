@@ -50,6 +50,10 @@ export interface Process extends ProcessReference {
  */
 export enum ProcessCustomizationType {
     /**
+     * Process customization can't be computed.
+     */
+    Unknown = -1,
+    /**
      * Customization based on project-scoped xml customization
      */
     Xml = 0,
@@ -140,6 +144,17 @@ export interface ProjectMessage {
     project?: ProjectInfo;
     projectChangeType?: ProjectChangeType;
     shouldInvalidateSystemStore?: boolean;
+}
+
+export interface ProjectProperties {
+    /**
+     * The team project Id
+     */
+    projectId?: string;
+    /**
+     * The collection of team project properties
+     */
+    properties?: ProjectProperty[];
 }
 
 /**
@@ -550,6 +565,7 @@ export var TypeInfo = {
     },
     ProcessCustomizationType: {
         enumValues: {
+            "unknown": -1,
             "xml": 0,
             "inherited": 1
         }

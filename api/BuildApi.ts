@@ -1728,19 +1728,26 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         project: string,
         path: string
         ): Promise<BuildInterfaces.Folder> {
+        if (path == null) {
+            throw new TypeError('path can not be null or undefined');
+        }
 
         return new Promise<BuildInterfaces.Folder>(async (resolve, reject) => {
             let routeValues: any = {
-                project: project,
-                path: path
+                project: project
             };
 
+            let queryValues: any = {
+                path: path,
+            };
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "5.1-preview.2",
                     "build",
                     "a906531b-d2da-4f55-bda7-f3e676cc50d9",
-                    routeValues);
+                    routeValues,
+                    queryValues);
 
                 let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
@@ -1772,19 +1779,26 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         project: string,
         path: string
         ): Promise<void> {
+        if (path == null) {
+            throw new TypeError('path can not be null or undefined');
+        }
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
-                project: project,
-                path: path
+                project: project
             };
 
+            let queryValues: any = {
+                path: path,
+            };
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "5.1-preview.2",
                     "build",
                     "a906531b-d2da-4f55-bda7-f3e676cc50d9",
-                    routeValues);
+                    routeValues,
+                    queryValues);
 
                 let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
@@ -1869,19 +1883,26 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
         project: string,
         path: string
         ): Promise<BuildInterfaces.Folder> {
+        if (path == null) {
+            throw new TypeError('path can not be null or undefined');
+        }
 
         return new Promise<BuildInterfaces.Folder>(async (resolve, reject) => {
             let routeValues: any = {
-                project: project,
-                path: path
+                project: project
             };
 
+            let queryValues: any = {
+                path: path,
+            };
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "5.1-preview.2",
                     "build",
                     "a906531b-d2da-4f55-bda7-f3e676cc50d9",
-                    routeValues);
+                    routeValues,
+                    queryValues);
 
                 let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 

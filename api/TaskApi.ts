@@ -24,6 +24,7 @@ export interface ITaskApi extends basem.ClientApiBase {
     getAttachmentContent(scopeIdentifier: string, hubName: string, planId: string, timelineId: string, recordId: string, type: string, name: string): Promise<NodeJS.ReadableStream>;
     getAttachments(scopeIdentifier: string, hubName: string, planId: string, timelineId: string, recordId: string, type: string): Promise<TaskAgentInterfaces.TaskAttachment[]>;
     appendTimelineRecordFeed(lines: TaskAgentInterfaces.TimelineRecordFeedLinesWrapper, scopeIdentifier: string, hubName: string, planId: string, timelineId: string, recordId: string): Promise<void>;
+    getJobInstance(scopeIdentifier: string, hubName: string, orchestrationId: string): Promise<TaskAgentInterfaces.TaskAgentJob>;
     appendLogContent(customHeaders: any, contentStream: NodeJS.ReadableStream, scopeIdentifier: string, hubName: string, planId: string, logId: number): Promise<TaskAgentInterfaces.TaskLog>;
     createLog(log: TaskAgentInterfaces.TaskLog, scopeIdentifier: string, hubName: string, planId: string): Promise<TaskAgentInterfaces.TaskLog>;
     getLog(scopeIdentifier: string, hubName: string, planId: string, logId: number, startLine?: number, endLine?: number): Promise<string[]>;
@@ -359,6 +360,51 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
                 let ret = this.formatResponse(res.result,
                                               null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} scopeIdentifier - The project GUID to scope the request
+     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+     * @param {string} orchestrationId
+     */
+    public async getJobInstance(
+        scopeIdentifier: string,
+        hubName: string,
+        orchestrationId: string
+        ): Promise<TaskAgentInterfaces.TaskAgentJob> {
+
+        return new Promise<TaskAgentInterfaces.TaskAgentJob>(async (resolve, reject) => {
+            let routeValues: any = {
+                scopeIdentifier: scopeIdentifier,
+                hubName: hubName,
+                orchestrationId: orchestrationId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.1-preview.1",
+                    "distributedtask",
+                    "0a1efd25-abda-43bd-9629-6c7bdd2e0d60",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJob>;
+                res = await this.rest.get<TaskAgentInterfaces.TaskAgentJob>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TaskAgentInterfaces.TypeInfo.TaskAgentJob,
                                               false);
 
                 resolve(ret);

@@ -68,7 +68,6 @@ export interface ITaskAgentApiBase extends basem.ClientApiBase {
     addKubernetesResource(createParameters: TaskAgentInterfaces.KubernetesResourceCreateParameters, project: string, environmentId: number): Promise<TaskAgentInterfaces.KubernetesResource>;
     deleteKubernetesResource(project: string, environmentId: number, resourceId: number): Promise<void>;
     getKubernetesResource(project: string, environmentId: number, resourceId: number): Promise<TaskAgentInterfaces.KubernetesResource>;
-    updateKubernetesResource(resource: TaskAgentInterfaces.KubernetesResource, project: string, environmentId: number): Promise<TaskAgentInterfaces.KubernetesResource>;
     generateDeploymentMachineGroupAccessToken(project: string, machineGroupId: number): Promise<string>;
     addDeploymentMachineGroup(machineGroup: TaskAgentInterfaces.DeploymentMachineGroup, project: string): Promise<TaskAgentInterfaces.DeploymentMachineGroup>;
     deleteDeploymentMachineGroup(project: string, machineGroupId: number): Promise<void>;
@@ -2576,50 +2575,6 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
                 let res: restm.IRestResponse<TaskAgentInterfaces.KubernetesResource>;
                 res = await this.rest.get<TaskAgentInterfaces.KubernetesResource>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              TaskAgentInterfaces.TypeInfo.KubernetesResource,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * @param {TaskAgentInterfaces.KubernetesResource} resource
-     * @param {string} project - Project ID or project name
-     * @param {number} environmentId
-     */
-    public async updateKubernetesResource(
-        resource: TaskAgentInterfaces.KubernetesResource,
-        project: string,
-        environmentId: number
-        ): Promise<TaskAgentInterfaces.KubernetesResource> {
-
-        return new Promise<TaskAgentInterfaces.KubernetesResource>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                environmentId: environmentId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
-                    "distributedtask",
-                    "73fba52f-15ab-42b3-a538-ce67a9223a04",
-                    routeValues);
-
-                let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TaskAgentInterfaces.KubernetesResource>;
-                res = await this.rest.update<TaskAgentInterfaces.KubernetesResource>(url, resource, options);
 
                 let ret = this.formatResponse(res.result,
                                               TaskAgentInterfaces.TypeInfo.KubernetesResource,

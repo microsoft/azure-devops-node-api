@@ -29,7 +29,7 @@ export interface IExtensionManagementApi extends basem.ClientApiBase {
     setDocumentByName(doc: any, publisherName: string, extensionName: string, scopeType: string, scopeValue: string, collectionName: string): Promise<any>;
     updateDocumentByName(doc: any, publisherName: string, extensionName: string, scopeType: string, scopeValue: string, collectionName: string): Promise<any>;
     queryCollectionsByName(collectionQuery: ExtensionManagementInterfaces.ExtensionDataCollectionQuery, publisherName: string, extensionName: string): Promise<ExtensionManagementInterfaces.ExtensionDataCollection[]>;
-    getStates(includeDisabled?: boolean, includeErrors?: boolean, includeInstallationIssues?: boolean): Promise<ExtensionManagementInterfaces.ExtensionState[]>;
+    getStates(includeDisabled?: boolean, includeErrors?: boolean, includeInstallationIssues?: boolean, forceRefresh?: boolean): Promise<ExtensionManagementInterfaces.ExtensionState[]>;
     queryExtensions(query: ExtensionManagementInterfaces.InstalledExtensionQuery): Promise<ExtensionManagementInterfaces.InstalledExtension[]>;
     getInstalledExtensions(includeDisabledExtensions?: boolean, includeErrors?: boolean, assetTypes?: string[], includeInstallationIssues?: boolean): Promise<ExtensionManagementInterfaces.InstalledExtension[]>;
     updateInstalledExtension(extension: ExtensionManagementInterfaces.InstalledExtension): Promise<ExtensionManagementInterfaces.InstalledExtension>;
@@ -611,11 +611,13 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
      * @param {boolean} includeDisabled - If true (the default), include disabled extensions in the results.
      * @param {boolean} includeErrors - If true, include installed extensions in an error state in the results.
      * @param {boolean} includeInstallationIssues
+     * @param {boolean} forceRefresh
      */
     public async getStates(
         includeDisabled?: boolean,
         includeErrors?: boolean,
-        includeInstallationIssues?: boolean
+        includeInstallationIssues?: boolean,
+        forceRefresh?: boolean
         ): Promise<ExtensionManagementInterfaces.ExtensionState[]> {
 
         return new Promise<ExtensionManagementInterfaces.ExtensionState[]>(async (resolve, reject) => {
@@ -626,6 +628,7 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
                 includeDisabled: includeDisabled,
                 includeErrors: includeErrors,
                 includeInstallationIssues: includeInstallationIssues,
+                forceRefresh: forceRefresh,
             };
             
             try {

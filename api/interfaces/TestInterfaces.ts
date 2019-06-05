@@ -747,6 +747,54 @@ export interface FilterPointQuery {
     resultState: number[];
 }
 
+export interface FlakyDetection {
+    /**
+     * FlakyDetectionPipelines defines Pipelines for Detection.
+     */
+    flakyDetectionPipelines?: FlakyDetectionPipelines;
+    /**
+     * FlakyDetectionType defines Detection type i.e. 1. System or 2. Manual.
+     */
+    flakyDetectionType: FlakyDetectionType;
+}
+
+export interface FlakyDetectionPipelines {
+    /**
+     * AllowedPipelines - List All Pipelines allowed for detection.
+     */
+    allowedPipelines?: number[];
+    /**
+     * IsAllPipelinesAllowed if users configure all system's pipelines.
+     */
+    isAllPipelinesAllowed: boolean;
+}
+
+export enum FlakyDetectionType {
+    /**
+     * Custom defines manual detection type.
+     */
+    Custom = 1,
+    /**
+     * Defines System detection type.
+     */
+    System = 2,
+}
+
+export interface FlakySettings {
+    /**
+     * FlakyDetection defines types of detection.
+     */
+    flakyDetection?: FlakyDetection;
+    /**
+     * FlakyInSummaryReport defines flaky data should show in summary report or not.
+     */
+    flakyInSummaryReport?: boolean;
+    /**
+     * ManualMarkUnmarkFlaky defines manual marking unmarking of flaky testcase.
+     */
+    manualMarkUnmarkFlaky?: boolean;
+}
+
 export interface FunctionCoverage {
     class?: string;
     name?: string;
@@ -1240,6 +1288,7 @@ export interface PointsResults2 {
     lastTestResultId?: number;
     lastTestRunId?: number;
     lastUpdated?: Date;
+    lastUpdatedBy?: string;
     planId?: number;
     pointId?: number;
 }
@@ -3764,6 +3813,24 @@ export interface TestResultsQuery {
     resultsFilter?: ResultsFilter;
 }
 
+export interface TestResultsSettings {
+    /**
+     * IsRequired and EmitDefaultValue are passed as false as if users doesn't pass anything, should not come for serialisation and deserialisation.
+     */
+    flakySettings?: FlakySettings;
+}
+
+export enum TestResultsSettingsType {
+    /**
+     * Returns All Test Settings.
+     */
+    All = 1,
+    /**
+     * Returns Flaky Test Settings.
+     */
+    Flaky = 2,
+}
+
 export interface TestResultSummary {
     aggregatedResultsAnalysis?: AggregatedResultsAnalysis;
     noConfigRunsCount?: number;
@@ -3771,6 +3838,20 @@ export interface TestResultSummary {
     testFailures?: TestFailuresAnalysis;
     testResultsContext?: TestResultsContext;
     totalRunsCount?: number;
+}
+
+export interface TestResultsUpdateSettings {
+    /**
+     * FlakySettings defines Flaky Setttings Data.
+     */
+    flakySettings?: FlakySettings;
+}
+
+export interface TestResultsWithWatermark {
+    changedDate?: Date;
+    pointsResults?: PointsResults2[];
+    resultId?: number;
+    runId?: number;
 }
 
 export interface TestResultTrendFilter {
@@ -4878,6 +4959,16 @@ export var TypeInfo = {
     },
     FetchTestResultsResponse: <any>{
     },
+    FlakyDetection: <any>{
+    },
+    FlakyDetectionType: {
+        enumValues: {
+            "custom": 1,
+            "system": 2
+        }
+    },
+    FlakySettings: <any>{
+    },
     LastResultDetails: <any>{
     },
     LegacyBuildConfiguration: <any>{
@@ -5174,7 +5265,19 @@ export var TypeInfo = {
     },
     TestResultsQuery: <any>{
     },
+    TestResultsSettings: <any>{
+    },
+    TestResultsSettingsType: {
+        enumValues: {
+            "all": 1,
+            "flaky": 2
+        }
+    },
     TestResultSummary: <any>{
+    },
+    TestResultsUpdateSettings: <any>{
+    },
+    TestResultsWithWatermark: <any>{
     },
     TestResultTrendFilter: <any>{
     },
@@ -5474,6 +5577,18 @@ TypeInfo.FetchTestResultsResponse.fields = {
     results: {
         isArray: true,
         typeInfo: TypeInfo.LegacyTestCaseResult
+    }
+};
+
+TypeInfo.FlakyDetection.fields = {
+    flakyDetectionType: {
+        enumType: TypeInfo.FlakyDetectionType
+    }
+};
+
+TypeInfo.FlakySettings.fields = {
+    flakyDetection: {
+        typeInfo: TypeInfo.FlakyDetection
     }
 };
 
@@ -6130,6 +6245,12 @@ TypeInfo.TestResultsQuery.fields = {
     }
 };
 
+TypeInfo.TestResultsSettings.fields = {
+    flakySettings: {
+        typeInfo: TypeInfo.FlakySettings
+    }
+};
+
 TypeInfo.TestResultSummary.fields = {
     aggregatedResultsAnalysis: {
         typeInfo: TypeInfo.AggregatedResultsAnalysis
@@ -6142,6 +6263,22 @@ TypeInfo.TestResultSummary.fields = {
     },
     testResultsContext: {
         typeInfo: TypeInfo.TestResultsContext
+    }
+};
+
+TypeInfo.TestResultsUpdateSettings.fields = {
+    flakySettings: {
+        typeInfo: TypeInfo.FlakySettings
+    }
+};
+
+TypeInfo.TestResultsWithWatermark.fields = {
+    changedDate: {
+        isDate: true,
+    },
+    pointsResults: {
+        isArray: true,
+        typeInfo: TypeInfo.PointsResults2
     }
 };
 

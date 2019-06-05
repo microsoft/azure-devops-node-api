@@ -833,8 +833,10 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
     }
 
     /**
-     * @param {string} targetId
-     * @param {string[]} ids
+     * Get a list of notification subscriptions, either by subscription IDs or by all subscriptions for a given user or group.
+     * 
+     * @param {string} targetId - User or Group ID
+     * @param {string[]} ids - List of subscription IDs
      * @param {NotificationInterfaces.SubscriptionQueryFlags} queryFlags
      */
     public async listSubscriptions(
