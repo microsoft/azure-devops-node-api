@@ -39,6 +39,7 @@ export interface ICoreApi extends basem.ClientApiBase {
     queueCreateProject(projectToCreate: CoreInterfaces.TeamProject): Promise<OperationsInterfaces.OperationReference>;
     queueDeleteProject(projectId: string): Promise<OperationsInterfaces.OperationReference>;
     updateProject(projectUpdate: CoreInterfaces.TeamProject, projectId: string): Promise<OperationsInterfaces.OperationReference>;
+    getProjectsProperties(projectIds: string[], properties?: string[]): Promise<CoreInterfaces.ProjectProperties[]>;
     getProjectProperties(projectId: string, keys?: string[]): Promise<CoreInterfaces.ProjectProperty[]>;
     setProjectProperties(customHeaders: any, projectId: string, patchDocument: VSSInterfaces.JsonPatchDocument): Promise<void>;
     createOrUpdateProxy(proxy: CoreInterfaces.Proxy): Promise<CoreInterfaces.Proxy>;
@@ -923,6 +924,57 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let ret = this.formatResponse(res.result,
                                               OperationsInterfaces.TypeInfo.OperationReference,
                                               false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get a collection of team project properties for multiple projects.
+     * 
+     * @param {string[]} projectIds - A comma-delimited string of team project IDs
+     * @param {string[]} properties
+     */
+    public async getProjectsProperties(
+        projectIds: string[],
+        properties?: string[]
+        ): Promise<CoreInterfaces.ProjectProperties[]> {
+        if (projectIds == null) {
+            throw new TypeError('projectIds can not be null or undefined');
+        }
+
+        return new Promise<CoreInterfaces.ProjectProperties[]>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
+
+            let queryValues: any = {
+                projectIds: projectIds && projectIds.join(","),
+                properties: properties && properties.join(","),
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.1-preview.1",
+                    "core",
+                    "0a3ffdfc-fe94-47a6-bb27-79bf3f762eac",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<CoreInterfaces.ProjectProperties[]>;
+                res = await this.rest.get<CoreInterfaces.ProjectProperties[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
 
                 resolve(ret);
                 

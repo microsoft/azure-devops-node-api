@@ -368,6 +368,10 @@ export interface BuildArtifact {
      * The actual resource.
      */
     resource?: ArtifactResource;
+    /**
+     * The artifact source, which will be the ID of the job that produced this artifact.
+     */
+    source?: string;
 }
 
 /**
@@ -1936,6 +1940,9 @@ export interface Issue {
 export enum IssueType {
     Error = 1,
     Warning = 2,
+}
+
+export interface JustInTimeProcess extends BuildProcess {
 }
 
 /**

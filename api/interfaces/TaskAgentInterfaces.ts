@@ -1535,6 +1535,15 @@ export interface TaskAgentDelaySource {
     taskAgent?: TaskAgentReference;
 }
 
+export interface TaskAgentJob {
+    container?: string;
+    id?: string;
+    name?: string;
+    sidecarContainers?: { [key: string] : string; };
+    steps?: TaskAgentJobStep[];
+    variables?: TaskAgentJobVariable[];
+}
+
 /**
  * A job request for an agent.
  */
@@ -1631,6 +1640,7 @@ export interface TaskAgentJobRequest {
      */
     serviceOwner?: string;
     statusMessage?: string;
+    userDelayed?: boolean;
 }
 
 /**
@@ -1653,6 +1663,36 @@ export enum TaskAgentJobResultFilter {
      * All deployment targets.
      */
     All = 7,
+}
+
+export interface TaskAgentJobStep {
+    condition?: string;
+    continueOnError?: boolean;
+    enabled?: boolean;
+    env?: { [key: string] : string; };
+    id?: string;
+    inputs?: { [key: string] : string; };
+    name?: string;
+    task?: TaskAgentJobTask;
+    timeoutInMinutes?: number;
+    type?: TaskAgentJobStepType;
+}
+
+export enum TaskAgentJobStepType {
+    Task = 1,
+    Action = 2,
+}
+
+export interface TaskAgentJobTask {
+    id?: string;
+    name?: string;
+    version?: string;
+}
+
+export interface TaskAgentJobVariable {
+    name?: string;
+    secret?: boolean;
+    value?: string;
 }
 
 export interface TaskAgentManualUpdate extends TaskAgentUpdateReason {
@@ -2186,6 +2226,7 @@ export interface TaskDefinition {
     friendlyName?: string;
     groups?: TaskGroupDefinition[];
     helpMarkDown?: string;
+    helpUrl?: string;
     hostType?: string;
     iconUrl?: string;
     id?: string;
@@ -3129,6 +3170,8 @@ export var TypeInfo = {
     },
     TaskAgentDelaySource: <any>{
     },
+    TaskAgentJob: <any>{
+    },
     TaskAgentJobRequest: <any>{
     },
     TaskAgentJobResultFilter: {
@@ -3137,6 +3180,14 @@ export var TypeInfo = {
             "passed": 2,
             "neverDeployed": 4,
             "all": 7
+        }
+    },
+    TaskAgentJobStep: <any>{
+    },
+    TaskAgentJobStepType: {
+        enumValues: {
+            "task": 1,
+            "action": 2
         }
     },
     TaskAgentManualUpdate: <any>{
@@ -3712,6 +3763,13 @@ TypeInfo.TaskAgentDelaySource.fields = {
     }
 };
 
+TypeInfo.TaskAgentJob.fields = {
+    steps: {
+        isArray: true,
+        typeInfo: TypeInfo.TaskAgentJobStep
+    }
+};
+
 TypeInfo.TaskAgentJobRequest.fields = {
     agentDelays: {
         isArray: true,
@@ -3741,6 +3799,12 @@ TypeInfo.TaskAgentJobRequest.fields = {
     },
     result: {
         enumType: TypeInfo.TaskResult
+    }
+};
+
+TypeInfo.TaskAgentJobStep.fields = {
+    type: {
+        enumType: TypeInfo.TaskAgentJobStepType
     }
 };
 

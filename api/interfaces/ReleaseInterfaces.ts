@@ -670,9 +670,9 @@ export interface CodeRepositoryReference {
 
 export interface ComplianceSettings {
     /**
-     * Block Release Definition save if any secrets is saved in Release Definition.
+     * Scan the release definition for secrets
      */
-    blockReleaseDefinitionSaveIfSecretPresent?: boolean;
+    checkForCredentialsAndOtherSecrets?: boolean;
 }
 
 export interface Condition {

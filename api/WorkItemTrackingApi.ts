@@ -33,6 +33,7 @@ export interface IWorkItemTrackingApi extends basem.ClientApiBase {
     deleteClassificationNode(project: string, structureGroup: WorkItemTrackingInterfaces.TreeStructureGroup, path?: string, reclassifyId?: number): Promise<void>;
     getClassificationNode(project: string, structureGroup: WorkItemTrackingInterfaces.TreeStructureGroup, path?: string, depth?: number): Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode>;
     updateClassificationNode(postedNode: WorkItemTrackingInterfaces.WorkItemClassificationNode, project: string, structureGroup: WorkItemTrackingInterfaces.TreeStructureGroup, path?: string): Promise<WorkItemTrackingInterfaces.WorkItemClassificationNode>;
+    getEngagedUsers(project: string, workItemId: number, commentId: number, reactionType: WorkItemTrackingInterfaces.CommentReactionType, top?: number, skip?: number): Promise<VSSInterfaces.IdentityRef[]>;
     addComment(request: WorkItemTrackingInterfaces.CommentCreate, project: string, workItemId: number): Promise<WorkItemTrackingInterfaces.Comment>;
     deleteComment(project: string, workItemId: number, commentId: number): Promise<void>;
     getComment(project: string, workItemId: number, commentId: number, includeDeleted?: boolean, expand?: WorkItemTrackingInterfaces.CommentExpandOptions): Promise<WorkItemTrackingInterfaces.Comment>;
@@ -767,6 +768,66 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let ret = this.formatResponse(res.result,
                                               WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode,
                                               false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get users who reacted on the comment.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} workItemId - WorkItem ID.
+     * @param {number} commentId - Comment ID.
+     * @param {WorkItemTrackingInterfaces.CommentReactionType} reactionType - Type of the reaction.
+     * @param {number} top
+     * @param {number} skip
+     */
+    public async getEngagedUsers(
+        project: string,
+        workItemId: number,
+        commentId: number,
+        reactionType: WorkItemTrackingInterfaces.CommentReactionType,
+        top?: number,
+        skip?: number
+        ): Promise<VSSInterfaces.IdentityRef[]> {
+
+        return new Promise<VSSInterfaces.IdentityRef[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                workItemId: workItemId,
+                commentId: commentId,
+                reactionType: reactionType
+            };
+
+            let queryValues: any = {
+                '$top': top,
+                '$skip': skip,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.1-preview.1",
+                    "wit",
+                    "e33ca5e0-2349-4285-af3d-d72d86781c35",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<VSSInterfaces.IdentityRef[]>;
+                res = await this.rest.get<VSSInterfaces.IdentityRef[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
 
                 resolve(ret);
                 

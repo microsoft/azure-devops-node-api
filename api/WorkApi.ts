@@ -67,6 +67,8 @@ export interface IWorkApi extends basem.ClientApiBase {
     getTeamSettings(teamContext: TfsCoreInterfaces.TeamContext): Promise<WorkInterfaces.TeamSetting>;
     updateTeamSettings(teamSettingsPatch: WorkInterfaces.TeamSettingsPatch, teamContext: TfsCoreInterfaces.TeamContext): Promise<WorkInterfaces.TeamSetting>;
     getIterationWorkItems(teamContext: TfsCoreInterfaces.TeamContext, iterationId: string): Promise<WorkInterfaces.IterationWorkItems>;
+    reorderBacklogWorkItems(operation: WorkInterfaces.ReorderOperation, teamContext: TfsCoreInterfaces.TeamContext): Promise<WorkInterfaces.ReorderResult[]>;
+    reorderIterationWorkItems(operation: WorkInterfaces.ReorderOperation, teamContext: TfsCoreInterfaces.TeamContext, iterationId: string): Promise<WorkInterfaces.ReorderResult[]>;
 }
 
 export class WorkApi extends basem.ClientApiBase implements IWorkApi {
@@ -2593,6 +2595,111 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let ret = this.formatResponse(res.result,
                                               null,
                                               false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Reorder Product Backlog/Boards Work Items
+     * 
+     * @param {WorkInterfaces.ReorderOperation} operation
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     */
+    public async reorderBacklogWorkItems(
+        operation: WorkInterfaces.ReorderOperation,
+        teamContext: TfsCoreInterfaces.TeamContext
+        ): Promise<WorkInterfaces.ReorderResult[]> {
+
+        return new Promise<WorkInterfaces.ReorderResult[]>(async (resolve, reject) => {
+            let project = null;
+            let team = null;
+            if (teamContext) {
+                project = teamContext.projectId || teamContext.project;
+                team = teamContext.teamId || teamContext.team;
+            }
+
+            let routeValues: any = {
+                project: project,
+                team: team
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.1-preview.1",
+                    "work",
+                    "1c22b714-e7e4-41b9-85e0-56ee13ef55ed",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<WorkInterfaces.ReorderResult[]>;
+                res = await this.rest.update<WorkInterfaces.ReorderResult[]>(url, operation, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Reorder Sprint Backlog/Taskboard Work Items
+     * 
+     * @param {WorkInterfaces.ReorderOperation} operation
+     * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
+     * @param {string} iterationId - The id of the iteration
+     */
+    public async reorderIterationWorkItems(
+        operation: WorkInterfaces.ReorderOperation,
+        teamContext: TfsCoreInterfaces.TeamContext,
+        iterationId: string
+        ): Promise<WorkInterfaces.ReorderResult[]> {
+
+        return new Promise<WorkInterfaces.ReorderResult[]>(async (resolve, reject) => {
+            let project = null;
+            let team = null;
+            if (teamContext) {
+                project = teamContext.projectId || teamContext.project;
+                team = teamContext.teamId || teamContext.team;
+            }
+
+            let routeValues: any = {
+                project: project,
+                team: team,
+                iterationId: iterationId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "5.1-preview.1",
+                    "work",
+                    "47755db2-d7eb-405a-8c25-675401525fc9",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<WorkInterfaces.ReorderResult[]>;
+                res = await this.rest.update<WorkInterfaces.ReorderResult[]>(url, operation, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
 
                 resolve(ret);
                 
