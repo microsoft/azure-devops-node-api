@@ -145,15 +145,14 @@ export class WebApi {
                 userAgent = `${nodeApiName} (${window.navigator.userAgent})`;
             }
         } else {
-            const nodeApiVersion = require('../package.json').version;
             const osName: string = os.platform();
             const osVersion: string = os.release();
 
             if (requestSettings) {
-                userAgent = `${requestSettings.productName}/${requestSettings.productVersion} (${nodeApiName} ${nodeApiVersion}; ${osName} ${osVersion})`;
+                userAgent = `${requestSettings.productName}/${requestSettings.productVersion} (${nodeApiName}; ${osName} ${osVersion})`;
             }
             else {
-                userAgent = `${nodeApiName}/${nodeApiVersion} (${osName} ${osVersion})`;
+                userAgent = `${nodeApiName} (${osName} ${osVersion})`;
             }
         }
         this.rest = new rm.RestClient(userAgent, null, [this.authHandler], this.options);

@@ -231,25 +231,24 @@ describe('WebApi Units', function () {
     const osName: string = os.platform();
     const osVersion: string = os.release();
     const nodeApiName: string = 'azure-devops-node-api';
-    const nodeApiVersion: string = JSON.parse(fs.readFileSync('package.json', 'utf8')).version;
 
     it('sets the user agent correctly when request settings are specified', async () => {
         const myWebApi: WebApi.WebApi = new WebApi.WebApi('microsoft.com', WebApi.getBasicHandler('user', 'password'),
                                                           undefined, {productName: 'name', productVersion: '1.2.3'});
-        const userAgent: string = `name/1.2.3 (${nodeApiName} ${nodeApiVersion}; ${osName} ${osVersion})`;
+        const userAgent: string = `name/1.2.3 (${nodeApiName}; ${osName} ${osVersion})`;
         assert.equal(userAgent, myWebApi.rest.client.userAgent, 'User agent should be: ' + userAgent);
     });
 
     it('sets the user agent correctly when request settings are not specified', async () => {
         const myWebApi: WebApi.WebApi = new WebApi.WebApi('microsoft.com', WebApi.getBasicHandler('user', 'password'), undefined);
-        const userAgent: string = `${nodeApiName}/${nodeApiVersion} (${osName} ${osVersion})`;
+        const userAgent: string = `${nodeApiName} (${osName} ${osVersion})`;
         assert.equal(userAgent, myWebApi.rest.client.userAgent, 'User agent should be: ' + userAgent);
     });
 
     it('connects to the server with the correct user agent when request settings are specified', async () => {
         const myWebApi: WebApi.WebApi = new WebApi.WebApi('https://dev.azure.com/', WebApi.getBasicHandler('user', 'password'),
                                                           undefined, {productName: 'name', productVersion: '1.2.3'});
-        const userAgent: string = `name/1.2.3 (${nodeApiName} ${nodeApiVersion}; ${osName} ${osVersion})`;
+        const userAgent: string = `name/1.2.3 (${nodeApiName}; ${osName} ${osVersion})`;
         nock('https://dev.azure.com/_apis/testArea', {
             reqheaders: {
                 'accept': 'application/json',
@@ -272,7 +271,7 @@ describe('WebApi Units', function () {
     it('connects to the server with the correct user agent when request settings are not specified', async () => {
         // Arrange
         const myWebApi: WebApi.WebApi = new WebApi.WebApi('https://dev.azure.com/', WebApi.getBasicHandler('user', 'password'), null);
-        const userAgent: string = `${nodeApiName}/${nodeApiVersion} (${osName} ${osVersion})`;
+        const userAgent: string = `${nodeApiName} (${osName} ${osVersion})`;
         nock('https://dev.azure.com/_apis/testArea', {
             reqheaders: {
                 'accept': 'application/json',
