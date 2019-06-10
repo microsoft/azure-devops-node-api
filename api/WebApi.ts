@@ -145,14 +145,15 @@ export class WebApi {
                 userAgent = `${nodeApiName} (${window.navigator.userAgent})`;
             }
         } else {
+            const nodeApiVersion: string = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json'), 'utf8')).version;
             const osName: string = os.platform();
             const osVersion: string = os.release();
 
             if (requestSettings) {
-                userAgent = `${requestSettings.productName}/${requestSettings.productVersion} (${nodeApiName}; ${osName} ${osVersion})`;
+                userAgent = `${requestSettings.productName}/${requestSettings.productVersion} (${nodeApiName} ${nodeApiVersion}; ${osName} ${osVersion})`;
             }
             else {
-                userAgent = `${nodeApiName} (${osName} ${osVersion})`;
+                userAgent = `${nodeApiName}/${nodeApiVersion} (${osName} ${osVersion})`;
             }
         }
         this.rest = new rm.RestClient(userAgent, null, [this.authHandler], this.options);
