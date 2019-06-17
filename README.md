@@ -135,6 +135,8 @@ Below you'll find a quick mapping of azure-devops-node-api versions and their co
 
  |**TFS Version** | **Node API VERSION**|
  |-------------------|------------------|
+ |Azure DevOps Server vNext | 8.0.0|
+ |Azure DevOps Server 2019  | 7.0.0|
  |TFS 2018 Update 2  |  6.6.2|
  |TFS 2017 Update 2  |  6.2.8-preview|
  |TFS 2017 Update 1  |  5.1.2|
