@@ -2,7 +2,7 @@
 * ---------------------------------------------------------
 * Copyright(C) Microsoft Corporation. All rights reserved.
 * ---------------------------------------------------------
-* 
+*
 * ---------------------------------------------------------
 * Generated file, DO NOT EDIT
 * ---------------------------------------------------------
@@ -13,7 +13,7 @@
 import stream = require("stream");
 import * as zlib from "zlib";
 import * as restm from 'typed-rest-client/RestClient';
-import * as httpm from 'typed-rest-client//HttpClient';
+import * as httpm from 'typed-rest-client/HttpClient';
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import FileContainerApiBase = require("./FileContainerApiBase");
 import FileContainerInterfaces = require("./interfaces/FileContainerInterfaces");
