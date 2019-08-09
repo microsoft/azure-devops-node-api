@@ -280,7 +280,6 @@ export module ContractSerializer {
                                     var value = enumType.enumValues[name];
                                     if (name.toLowerCase() === lowerCaseEnumName) {
                                         resultPart = value;
-                                        return resultPart;
                                     }
                                 }
                             }
