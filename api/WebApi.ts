@@ -145,7 +145,10 @@ export class WebApi {
                 userAgent = `${nodeApiName} (${window.navigator.userAgent})`;
             }
         } else {
-            const nodeApiVersion: string = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json'), 'utf8')).version;
+            let nodeApiVersion: string = 'unknown';
+            if (fs.existsSync(path.resolve(__dirname, 'package.json'))) {
+                nodeApiVersion = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json'), 'utf8')).version;
+            }
             const osName: string = os.platform();
             const osVersion: string = os.release();
 
