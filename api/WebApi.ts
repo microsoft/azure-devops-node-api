@@ -146,8 +146,9 @@ export class WebApi {
             }
         } else {
             let nodeApiVersion: string = 'unknown';
-            if (fs.existsSync(path.resolve(__dirname, 'package.json'))) {
-                nodeApiVersion = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json'), 'utf8')).version;
+            const packageJsonPath: string = path.resolve(__dirname, 'package.json');
+            if (fs.existsSync(packageJsonPath)) {
+                nodeApiVersion = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8')).version;
             }
             const osName: string = os.platform();
             const osVersion: string = os.release();
