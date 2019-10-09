@@ -894,9 +894,11 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 diffCommonCommit: diffCommonCommit,
                 '$top': top,
                 '$skip': skip,
-                baseVersionDescriptor: baseVersionDescriptor,
-                targetVersionDescriptor: targetVersionDescriptor,
-            };
+                'baseVersion': baseVersionDescriptor.baseVersion,
+                'baseVersionType': baseVersionDescriptor.baseVersionType,
+                'targetVersion': targetVersionDescriptor.targetVersion,
+                'targetVersionType': targetVersionDescriptor.targetVersionType
+              };
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
