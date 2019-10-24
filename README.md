@@ -147,6 +147,12 @@ Below you'll find a quick mapping of azure-devops-node-api versions and their co
 
 To contribute to this repository, see the [contribution guide](./CONTRIBUTING.md)
 
+## Issues
+
+Feel free to file an issue in this repo.
+
+Do you think there might be a security issue? Have you been phished or identified a security vulnerability? Please don't report it here - let us know by sending an email to secure@microsoft.com.
+
 ## Code of Conduct
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
