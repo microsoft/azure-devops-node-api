@@ -217,6 +217,16 @@ export enum Operation {
 }
 
 /**
+ * A list that contains a single page of results from a query.
+ */
+export interface PagedList<T> {
+    /**
+     * A string that can be passed to the same endpoint that returned this PagedList in order to retrieve the next page of results.
+     */
+    continuationToken?: string;
+}
+
+/**
  * Represents the public key portion of an RSA asymmetric key.
  */
 export interface PublicKey {
@@ -274,6 +284,14 @@ export interface ServiceEvent {
      * This is the version of the resource.
      */
     resourceVersion?: string;
+}
+
+/**
+ * A signed url allowing limited-time anonymous access to private resources.
+ */
+export interface SignedUrl {
+    signatureExpires?: Date;
+    url?: string;
 }
 
 export interface TeamMember {
@@ -449,6 +467,8 @@ export var TypeInfo = {
             "test": 5
         }
     },
+    SignedUrl: <any>{
+    },
     TraceFilter: <any>{
     },
     VssNotificationEvent: <any>{
@@ -458,6 +478,12 @@ export var TypeInfo = {
 TypeInfo.JsonPatchOperation.fields = {
     op: {
         enumType: TypeInfo.Operation
+    }
+};
+
+TypeInfo.SignedUrl.fields = {
+    signatureExpires: {
+        isDate: true,
     }
 };
 

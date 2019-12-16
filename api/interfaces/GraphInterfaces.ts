@@ -150,41 +150,6 @@ export interface GraphMember extends GraphSubject {
     principalName?: string;
 }
 
-export enum GraphMemberSearchFactor {
-    /**
-     * Domain qualified account name (domain\alias)
-     */
-    PrincipalName = 0,
-    /**
-     * Display name
-     */
-    DisplayName = 1,
-    /**
-     * Administrators group
-     */
-    AdministratorsGroup = 2,
-    /**
-     * Find the identity using the identifier (SID)
-     */
-    Identifier = 3,
-    /**
-     * Email address
-     */
-    MailAddress = 4,
-    /**
-     * A general search for an identity.
-     */
-    General = 5,
-    /**
-     * Alternate login username (Basic Auth Alias)
-     */
-    Alias = 6,
-    /**
-     * Find identity using DirectoryAlias
-     */
-    DirectoryAlias = 8,
-}
-
 /**
  * Relationship between a container and a member
  */
@@ -375,6 +340,24 @@ export interface GraphSubjectLookupKey {
     descriptor?: string;
 }
 
+/**
+ * Subject to search using the Graph API
+ */
+export interface GraphSubjectQuery {
+    /**
+     * Search term to search for Azure Devops users or/and groups
+     */
+    query?: string;
+    /**
+     * Optional parameter. Specify a non-default scope (collection, project) to search for users or groups within the scope.
+     */
+    scopeDescriptor?: string;
+    /**
+     * "User" or "Group" can be specified, both or either
+     */
+    subjectKind?: string[];
+}
+
 export interface GraphSystemSubject extends GraphSubject {
 }
 
@@ -486,19 +469,13 @@ export interface PagedGraphUsers {
     graphUsers?: GraphUser[];
 }
 
+export interface RequestAccessPayLoad {
+    message?: string;
+    projectUri?: string;
+    urlRequested?: string;
+}
+
 export var TypeInfo = {
-    GraphMemberSearchFactor: {
-        enumValues: {
-            "principalName": 0,
-            "displayName": 1,
-            "administratorsGroup": 2,
-            "identifier": 3,
-            "mailAddress": 4,
-            "general": 5,
-            "alias": 6,
-            "directoryAlias": 8
-        }
-    },
     GraphScope: <any>{
     },
     GraphScopeCreationContext: <any>{

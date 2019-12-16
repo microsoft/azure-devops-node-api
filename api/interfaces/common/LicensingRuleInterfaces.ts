@@ -126,6 +126,10 @@ export interface LicenseRule {
      */
     lastExecuted?: Date;
     /**
+     * Lasted updated timestamp of the licensing rule
+     */
+    lastUpdated?: Date;
+    /**
      * License
      */
     license?: LicensingInterfaces.License;
@@ -221,6 +225,9 @@ TypeInfo.LicenseApplicationStatus.fields = {
 
 TypeInfo.LicenseRule.fields = {
     lastExecuted: {
+        isDate: true,
+    },
+    lastUpdated: {
         isDate: true,
     },
     license: {

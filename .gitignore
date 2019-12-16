@@ -3,7 +3,8 @@ _build
 _def
 
 # Samples
-samples/*.js 
+samples/*.js
+test/units/*.js
 
 # Logs
 logs

@@ -312,6 +312,10 @@ export interface ArtifactFilter {
      */
     sourceBranch?: string;
     /**
+     * Gets or sets the regex based tag filter.
+     */
+    tagFilter?: TagFilter;
+    /**
      * Gets or sets the list of tags for the filter.
      */
     tags?: string[];
@@ -428,31 +432,39 @@ export interface ArtifactTriggerConfiguration {
 
 export interface ArtifactTypeDefinition {
     /**
-     * Gets or sets the artifact trigger configuration of artifact type defintion.
+     * Gets or sets the artifact trigger configuration of artifact type definition.
      */
     artifactTriggerConfiguration?: ArtifactTriggerConfiguration;
     /**
-     * Gets or sets the artifact type of artifact type defintion. Valid values are 'Build', 'Package', 'Source' or 'ContainerImage'.
+     * Gets or sets the artifact type of artifact type definition. Valid values are 'Build', 'Package', 'Source' or 'ContainerImage'.
      */
     artifactType?: string;
     /**
-     * Gets or sets the display name of artifact type defintion.
+     * Gets or sets the display name of artifact type definition.
      */
     displayName?: string;
     /**
-     * Gets or sets the endpoint type id of artifact type defintion.
+     * Gets or sets the endpoint type id of artifact type definition.
      */
     endpointTypeId?: string;
     /**
-     * Gets or sets the input descriptors of artifact type defintion.
+     * Gets or sets the input descriptors of artifact type definition.
      */
     inputDescriptors?: FormInputInterfaces.InputDescriptor[];
     /**
-     * Gets or sets the name of artifact type defintion.
+     * Gets or sets the is commits tracebility supported value of artifact type defintion.
+     */
+    isCommitsTraceabilitySupported?: boolean;
+    /**
+     * Gets or sets the is workitems tracebility supported value of artifact type defintion.
+     */
+    isWorkitemsTraceabilitySupported?: boolean;
+    /**
+     * Gets or sets the name of artifact type definition.
      */
     name?: string;
     /**
-     * Gets or sets the unique source identifier of artifact type defintion.
+     * Gets or sets the unique source identifier of artifact type definition.
      */
     uniqueSourceIdentifier?: string;
 }
@@ -467,7 +479,7 @@ export interface ArtifactVersion {
      */
     defaultVersion?: BuildVersion;
     /**
-     * Gets or sets the error message encountered during quering of versions for artifact.
+     * Gets or sets the error message encountered during querying of versions for artifact.
      */
     errorMessage?: string;
     sourceId?: string;
@@ -518,7 +530,7 @@ export interface AutoTriggerIssue {
 
 export interface AzureKeyVaultVariableGroupProviderData extends VariableGroupProviderData {
     /**
-     * Gets or sets last refershed time.
+     * Gets or sets last refreshed time.
      */
     lastRefreshedOn?: Date;
     /**
@@ -767,7 +779,7 @@ export interface ControlOptions {
      */
     alwaysRun?: boolean;
     /**
-     * Indicates whether to continuer job on error or not.
+     * Indicates whether to continue job on error or not.
      */
     continueOnError?: boolean;
     /**
@@ -951,13 +963,13 @@ export interface Deployment {
     startedOn?: Date;
 }
 
-export interface DeploymentApprovalCompletedEvent {
+export interface DeploymentApprovalCompletedEvent extends DeploymentEvent {
     approval?: ReleaseApproval;
     project?: ProjectReference;
     release?: Release;
 }
 
-export interface DeploymentApprovalPendingEvent {
+export interface DeploymentApprovalPendingEvent extends DeploymentEvent {
     approval?: ReleaseApproval;
     approvalOptions?: ApprovalOptions;
     completedApprovals?: ReleaseApproval[];
@@ -1004,7 +1016,7 @@ export interface DeploymentAttempt {
      */
     lastModifiedOn?: Date;
     /**
-     * Deployment opeartion status.
+     * Deployment operation status.
      */
     operationStatus?: DeploymentOperationStatus;
     /**
@@ -1068,12 +1080,17 @@ export enum DeploymentAuthorizationOwner {
     FirstPreDeploymentApprover = 2,
 }
 
-export interface DeploymentCompletedEvent {
+export interface DeploymentCompletedEvent extends DeploymentEvent {
     comment?: string;
     data?: { [key: string] : any; };
     deployment?: Deployment;
     environment?: ReleaseEnvironment;
     project?: ProjectReference;
+}
+
+export interface DeploymentEvent extends ReleaseEvent {
+    attemptId?: number;
+    stageName?: string;
 }
 
 export enum DeploymentExpands {
@@ -1289,7 +1306,7 @@ export enum DeploymentsQueryType {
     FailingSince = 2,
 }
 
-export interface DeploymentStartedEvent {
+export interface DeploymentStartedEvent extends DeploymentEvent {
     environment?: ReleaseEnvironment;
     project?: ProjectReference;
     release?: Release;
@@ -2082,6 +2099,10 @@ export interface Release {
      */
     createdBy?: VSSInterfaces.IdentityRef;
     /**
+     * Gets or sets the identity for whom release was created.
+     */
+    createdFor?: VSSInterfaces.IdentityRef;
+    /**
      * Gets date on which it got created.
      */
     createdOn?: Date;
@@ -2166,7 +2187,7 @@ export interface Release {
     variables?: { [key: string] : ConfigurationVariableValue; };
 }
 
-export interface ReleaseAbandonedEvent {
+export interface ReleaseAbandonedEvent extends ReleaseEvent {
     project?: ProjectReference;
     release?: Release;
 }
@@ -2254,7 +2275,7 @@ export interface ReleaseApprovalHistory {
      */
     changedBy?: VSSInterfaces.IdentityRef;
     /**
-     * Approval histroy comments.
+     * Approval history comments.
      */
     comments?: string;
     /**
@@ -2266,7 +2287,7 @@ export interface ReleaseApprovalHistory {
      */
     modifiedOn?: Date;
     /**
-     * Approval histroy revision.
+     * Approval history revision.
      */
     revision?: number;
 }
@@ -2330,7 +2351,7 @@ export interface ReleaseCondition extends Condition {
     result?: boolean;
 }
 
-export interface ReleaseCreatedEvent {
+export interface ReleaseCreatedEvent extends ReleaseEvent {
     project?: ProjectReference;
     release?: Release;
 }
@@ -2803,7 +2824,7 @@ export interface ReleaseDefinitionSummary {
      */
     releaseDefinition?: ReleaseDefinitionShallowReference;
     /**
-     * List of releases deployed using this Release Defintion.
+     * List of releases deployed using this Release Definition.
      */
     releases?: Release[];
 }
@@ -3061,6 +3082,11 @@ export interface ReleaseEnvironmentUpdateMetadata {
      * Sets list of environment variables to be overridden at deployment time.
      */
     variables?: { [key: string] : ConfigurationVariableValue; };
+}
+
+export interface ReleaseEvent {
+    id?: number;
+    url?: string;
 }
 
 export enum ReleaseExpands {
@@ -3329,6 +3355,10 @@ export interface ReleaseStartMetadata {
      */
     artifacts?: ArtifactMetadata[];
     /**
+     * Optionally provide a requestor identity
+     */
+    createdFor?: string;
+    /**
      * Sets definition Id to create a release.
      */
     definitionId?: number;
@@ -3560,6 +3590,10 @@ export interface ReleaseWorkItemRef {
      */
     id?: string;
     /**
+     * Gets or sets the provider.
+     */
+    provider?: string;
+    /**
      * Gets or sets the state.
      */
     state?: string;
@@ -3675,7 +3709,7 @@ export interface ServerDeploymentInput extends BaseDeploymentInput {
 }
 
 /**
- * Represents a referenec to a service endpoint.
+ * Represents a reference to a service endpoint.
  */
 export interface ServiceEndpointReference extends ResourceReference {
     /**
@@ -3892,6 +3926,10 @@ export interface VariableGroup {
      */
     type?: string;
     /**
+     * all project references where the variable group is shared with other projects.
+     */
+    variableGroupProjectReferences?: VariableGroupProjectReference[];
+    /**
      * Gets and sets the dictionary of variables.
      */
     variables?: { [key: string] : VariableValue; };
@@ -3903,10 +3941,32 @@ export enum VariableGroupActionFilter {
     Use = 16,
 }
 
+/**
+ * A variable group reference is a shallow reference to variable group.
+ */
+export interface VariableGroupProjectReference {
+    /**
+     * Gets or sets description of the variable group.
+     */
+    description?: string;
+    /**
+     * Gets or sets name of the variable group.
+     */
+    name?: string;
+    /**
+     * Gets or sets project reference of the variable group.
+     */
+    projectReference?: ProjectReference;
+}
+
 export interface VariableGroupProviderData {
 }
 
 export interface VariableValue {
+    /**
+     * Gets or sets if the variable is read only or not.
+     */
+    isReadOnly?: boolean;
     /**
      * Gets or sets as the variable is secret or not.
      */

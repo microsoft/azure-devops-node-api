@@ -287,7 +287,7 @@ export interface TeamProjectCollection extends TeamProjectCollectionReference {
      */
     description?: string;
     /**
-     * Process customzation type on this collection. It can be Xml or Inherited.
+     * Process customization type on this collection. It can be Xml or Inherited.
      */
     processCustomizationType?: ProcessCustomizationType;
     /**

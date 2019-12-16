@@ -42,6 +42,10 @@ export interface PolicyConfiguration extends VersionedPolicyConfigurationRef {
      */
     isEnabled: boolean;
     /**
+     * If set, this policy requires "Manage Enterprise Policies" permission to create, edit, or delete.
+     */
+    isEnterpriseManaged?: boolean;
+    /**
      * The policy configuration settings.
      */
     settings: any;

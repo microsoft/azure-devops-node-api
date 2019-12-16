@@ -81,7 +81,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "tfvc",
                     "bc1f417e-239d-42e7-85e1-76e80cb2d6eb",
                     routeValues,
@@ -138,7 +138,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "tfvc",
                     "bc1f417e-239d-42e7-85e1-76e80cb2d6eb",
                     routeValues,
@@ -195,7 +195,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "tfvc",
                     "bc1f417e-239d-42e7-85e1-76e80cb2d6eb",
                     routeValues,
@@ -246,7 +246,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "tfvc",
                     "f32b86f2-15b9-4fe6-81b1-6f8938617ee5",
                     routeValues,
@@ -290,7 +290,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.3",
+                    "6.0-preview.3",
                     "tfvc",
                     "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49",
                     routeValues);
@@ -364,7 +364,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.3",
+                    "6.0-preview.3",
                     "tfvc",
                     "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49",
                     routeValues,
@@ -424,7 +424,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.3",
+                    "6.0-preview.3",
                     "tfvc",
                     "0bc8f0a4-6bfb-42a9-ba84-139da7b99c49",
                     routeValues,
@@ -465,7 +465,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "tfvc",
                     "b7e7c173-803c-4fea-9ec8-31ee35c5502a",
                     routeValues);
@@ -493,7 +493,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
     /**
      * Retrieves the work items associated with a particular changeset.
      * 
-     * @param {number} id - ID of the changeset. Default: null
+     * @param {number} id - ID of the changeset.
      */
     public async getChangesetWorkItems(
         id?: number
@@ -506,7 +506,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "tfvc",
                     "64ae0bea-1d71-47c9-a9e5-fe73f5ea0ff4",
                     routeValues);
@@ -549,7 +549,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "tfvc",
                     "fe6f827b-5f64-480f-b8af-1eca3b80e833",
                     routeValues);
@@ -592,14 +592,14 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "tfvc",
                     "fe6f827b-5f64-480f-b8af-1eca3b80e833",
                     routeValues);
 
                 let url: string = verData.requestUrl!;
                 
-                let apiVersion: string = verData.apiVersion;
+                let apiVersion: string = verData.apiVersion!;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
             }
@@ -652,7 +652,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "tfvc",
                     "ba9fc436-9a38-4578-89d6-e4f3241f5040",
                     routeValues,
@@ -721,7 +721,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "tfvc",
                     "ba9fc436-9a38-4578-89d6-e4f3241f5040",
                     routeValues,
@@ -729,7 +729,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
                 let url: string = verData.requestUrl!;
                 
-                let apiVersion: string = verData.apiVersion;
+                let apiVersion: string = verData.apiVersion!;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
             }
@@ -770,7 +770,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "tfvc",
                     "ba9fc436-9a38-4578-89d6-e4f3241f5040",
                     routeValues,
@@ -839,7 +839,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "tfvc",
                     "ba9fc436-9a38-4578-89d6-e4f3241f5040",
                     routeValues,
@@ -847,7 +847,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
                 let url: string = verData.requestUrl!;
                 
-                let apiVersion: string = verData.apiVersion;
+                let apiVersion: string = verData.apiVersion!;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
             }
@@ -900,7 +900,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "tfvc",
                     "ba9fc436-9a38-4578-89d6-e4f3241f5040",
                     routeValues,
@@ -908,7 +908,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
 
                 let url: string = verData.requestUrl!;
                 
-                let apiVersion: string = verData.apiVersion;
+                let apiVersion: string = verData.apiVersion!;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
             }
@@ -943,7 +943,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "tfvc",
                     "06166e34-de17-4b60-8cd1-23182a346fda",
                     routeValues,
@@ -997,7 +997,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "tfvc",
                     "a5d9bd7f-b661-4d0e-b9be-d9c16affae54",
                     routeValues,
@@ -1028,7 +1028,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
      * 
      * @param {TfvcInterfaces.TfvcLabelRequestData} requestData - labelScope, name, owner, and itemLabelFilter
      * @param {string} project - Project ID or project name
-     * @param {number} top - Max number of labels to return
+     * @param {number} top - Max number of labels to return, defaults to 100 when undefined
      * @param {number} skip - Number of labels to skip
      */
     public async getLabels(
@@ -1054,7 +1054,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "tfvc",
                     "a5d9bd7f-b661-4d0e-b9be-d9c16affae54",
                     routeValues,
@@ -1108,7 +1108,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "tfvc",
                     "dbaf075b-0445-4c34-9e5b-82292f856522",
                     routeValues,
@@ -1159,7 +1159,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "tfvc",
                     "e36d44fb-e907-4b0a-b194-f83f1ed32ad3",
                     routeValues,
@@ -1210,7 +1210,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "tfvc",
                     "e36d44fb-e907-4b0a-b194-f83f1ed32ad3",
                     routeValues,
@@ -1258,7 +1258,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "tfvc",
                     "a7a0c1c1-373e-425a-b031-a519474d743d",
                     routeValues,
@@ -1306,7 +1306,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "tfvc",
                     "e15c74c0-3605-40e0-aed4-4cc61e549ed8",
                     routeValues,

@@ -21,7 +21,7 @@ export interface IDashboardApi extends basem.ClientApiBase {
     createDashboard(dashboard: DashboardInterfaces.Dashboard, teamContext: TfsCoreInterfaces.TeamContext): Promise<DashboardInterfaces.Dashboard>;
     deleteDashboard(teamContext: TfsCoreInterfaces.TeamContext, dashboardId: string): Promise<void>;
     getDashboard(teamContext: TfsCoreInterfaces.TeamContext, dashboardId: string): Promise<DashboardInterfaces.Dashboard>;
-    getDashboards(teamContext: TfsCoreInterfaces.TeamContext): Promise<DashboardInterfaces.DashboardGroup>;
+    getDashboardsByProject(teamContext: TfsCoreInterfaces.TeamContext): Promise<DashboardInterfaces.Dashboard[]>;
     replaceDashboard(dashboard: DashboardInterfaces.Dashboard, teamContext: TfsCoreInterfaces.TeamContext, dashboardId: string): Promise<DashboardInterfaces.Dashboard>;
     replaceDashboards(group: DashboardInterfaces.DashboardGroup, teamContext: TfsCoreInterfaces.TeamContext): Promise<DashboardInterfaces.DashboardGroup>;
     createWidget(widget: DashboardInterfaces.Widget, teamContext: TfsCoreInterfaces.TeamContext, dashboardId: string): Promise<DashboardInterfaces.Widget>;
@@ -66,7 +66,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.2",
+                    "6.0-preview.3",
                     "Dashboard",
                     "454b3e51-2e6e-48d4-ad81-978154089351",
                     routeValues);
@@ -79,7 +79,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                 res = await this.rest.create<DashboardInterfaces.Dashboard>(url, dashboard, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
+                                              DashboardInterfaces.TypeInfo.Dashboard,
                                               false);
 
                 resolve(ret);
@@ -118,7 +118,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.2",
+                    "6.0-preview.3",
                     "Dashboard",
                     "454b3e51-2e6e-48d4-ad81-978154089351",
                     routeValues);
@@ -170,7 +170,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.2",
+                    "6.0-preview.3",
                     "Dashboard",
                     "454b3e51-2e6e-48d4-ad81-978154089351",
                     routeValues);
@@ -183,7 +183,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                 res = await this.rest.get<DashboardInterfaces.Dashboard>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
+                                              DashboardInterfaces.TypeInfo.Dashboard,
                                               false);
 
                 resolve(ret);
@@ -196,15 +196,15 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
     }
 
     /**
-     * Get a list of dashboards.
+     * Get a list of dashboards under a project.
      * 
      * @param {TfsCoreInterfaces.TeamContext} teamContext - The team context for the operation
      */
-    public async getDashboards(
+    public async getDashboardsByProject(
         teamContext: TfsCoreInterfaces.TeamContext
-        ): Promise<DashboardInterfaces.DashboardGroup> {
+        ): Promise<DashboardInterfaces.Dashboard[]> {
 
-        return new Promise<DashboardInterfaces.DashboardGroup>(async (resolve, reject) => {
+        return new Promise<DashboardInterfaces.Dashboard[]>(async (resolve, reject) => {
             let project = null;
             let team = null;
             if (teamContext) {
@@ -219,7 +219,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.2",
+                    "6.0-preview.3",
                     "Dashboard",
                     "454b3e51-2e6e-48d4-ad81-978154089351",
                     routeValues);
@@ -228,12 +228,12 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
-                let res: restm.IRestResponse<DashboardInterfaces.DashboardGroup>;
-                res = await this.rest.get<DashboardInterfaces.DashboardGroup>(url, options);
+                let res: restm.IRestResponse<DashboardInterfaces.Dashboard[]>;
+                res = await this.rest.get<DashboardInterfaces.Dashboard[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              DashboardInterfaces.TypeInfo.DashboardGroup,
-                                              false);
+                                              DashboardInterfaces.TypeInfo.Dashboard,
+                                              true);
 
                 resolve(ret);
                 
@@ -273,7 +273,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.2",
+                    "6.0-preview.3",
                     "Dashboard",
                     "454b3e51-2e6e-48d4-ad81-978154089351",
                     routeValues);
@@ -286,7 +286,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                 res = await this.rest.replace<DashboardInterfaces.Dashboard>(url, dashboard, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
+                                              DashboardInterfaces.TypeInfo.Dashboard,
                                               false);
 
                 resolve(ret);
@@ -324,7 +324,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.2",
+                    "6.0-preview.3",
                     "Dashboard",
                     "454b3e51-2e6e-48d4-ad81-978154089351",
                     routeValues);
@@ -378,7 +378,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.2",
+                    "6.0-preview.2",
                     "Dashboard",
                     "bdcff53a-8355-4172-a00a-40497ea23afc",
                     routeValues);
@@ -391,7 +391,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                 res = await this.rest.create<DashboardInterfaces.Widget>(url, widget, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
+                                              DashboardInterfaces.TypeInfo.Widget,
                                               false);
 
                 resolve(ret);
@@ -433,7 +433,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.2",
+                    "6.0-preview.2",
                     "Dashboard",
                     "bdcff53a-8355-4172-a00a-40497ea23afc",
                     routeValues);
@@ -446,7 +446,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                 res = await this.rest.del<DashboardInterfaces.Dashboard>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
+                                              DashboardInterfaces.TypeInfo.Dashboard,
                                               false);
 
                 resolve(ret);
@@ -488,7 +488,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.2",
+                    "6.0-preview.2",
                     "Dashboard",
                     "bdcff53a-8355-4172-a00a-40497ea23afc",
                     routeValues);
@@ -501,7 +501,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                 res = await this.rest.get<DashboardInterfaces.Widget>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
+                                              DashboardInterfaces.TypeInfo.Widget,
                                               false);
 
                 resolve(ret);
@@ -545,7 +545,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.2",
+                    "6.0-preview.2",
                     "Dashboard",
                     "bdcff53a-8355-4172-a00a-40497ea23afc",
                     routeValues);
@@ -558,7 +558,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                 res = await this.rest.replace<DashboardInterfaces.Widget>(url, widget, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
+                                              DashboardInterfaces.TypeInfo.Widget,
                                               false);
 
                 resolve(ret);
@@ -602,7 +602,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.2",
+                    "6.0-preview.2",
                     "Dashboard",
                     "bdcff53a-8355-4172-a00a-40497ea23afc",
                     routeValues);
@@ -615,7 +615,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                 res = await this.rest.update<DashboardInterfaces.Widget>(url, widget, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
+                                              DashboardInterfaces.TypeInfo.Widget,
                                               false);
 
                 resolve(ret);
@@ -646,7 +646,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "Dashboard",
                     "6b3628d3-e96f-4fc7-b176-50240b03b515",
                     routeValues);
@@ -672,7 +672,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
     }
 
     /**
-     * Get all available widget metadata in alphabetical order.
+     * Get all available widget metadata in alphabetical order, including widgets marked with isVisibleFromCatalog == false.
      * 
      * @param {DashboardInterfaces.WidgetScope} scope
      * @param {string} project - Project ID or project name
@@ -696,7 +696,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "5.1-preview.1",
+                    "6.0-preview.1",
                     "Dashboard",
                     "6b3628d3-e96f-4fc7-b176-50240b03b515",
                     routeValues,
