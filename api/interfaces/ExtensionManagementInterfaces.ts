@@ -135,7 +135,7 @@ export interface AcquisitionOptions {
 }
 
 /**
- * Representaion of a ContributionNode that can be used for serialized to clients.
+ * Representation of a ContributionNode that can be used for serialized to clients.
  */
 export interface ClientContribution {
     /**
@@ -165,7 +165,7 @@ export interface ClientContribution {
 }
 
 /**
- * Representaion of a ContributionNode that can be used for serialized to clients.
+ * Representation of a ContributionNode that can be used for serialized to clients.
  */
 export interface ClientContributionNode {
     /**
@@ -196,7 +196,7 @@ export interface ClientContributionProviderDetails {
      */
     properties?: { [key: string] : string; };
     /**
-     * Version of contributions assoicated with this contribution provider.
+     * Version of contributions associated with this contribution provider.
      */
     version?: string;
 }
@@ -284,7 +284,7 @@ export interface ContributionConstraint {
      */
     properties?: any;
     /**
-     * Constraints can be optionally be applied to one or more of the relationships defined in the contribution. If no relationships are defined then all relationships are associated with the constraint. This means the default behaviour will elimiate the contribution from the tree completely if the constraint is applied.
+     * Constraints can be optionally be applied to one or more of the relationships defined in the contribution. If no relationships are defined then all relationships are associated with the constraint. This means the default behaviour will eliminate the contribution from the tree completely if the constraint is applied.
      */
     relationships?: string[];
 }
@@ -338,7 +338,7 @@ export interface ContributionNodeQueryResult {
      */
     nodes?: { [key: string] : ClientContributionNode; };
     /**
-     * Map of provder ids to the corresponding provider details object.
+     * Map of provider ids to the corresponding provider details object.
      */
     providerDetails?: { [key: string] : ClientContributionProviderDetails; };
 }
@@ -429,7 +429,7 @@ export interface ContributionProviderDetails {
      */
     properties?: { [key: string] : string; };
     /**
-     * Version of contributions assoicated with this contribution provider.
+     * Version of contributions associated with this contribution provider.
      */
     version?: string;
 }
@@ -448,7 +448,7 @@ export enum ContributionQueryOptions {
      */
     IncludeChildren = 32,
     /**
-     * Include the contributions from the entire sub-tree targetting the contributions queried.
+     * Include the contributions from the entire sub-tree targeting the contributions queried.
      */
     IncludeSubTree = 96,
     /**
@@ -707,27 +707,27 @@ export interface ExtensionEventCallback {
  */
 export interface ExtensionEventCallbackCollection {
     /**
-     * Optional.  Defines an endpoint that gets called via a POST reqeust to notify that an extension disable has occurred.
+     * Optional.  Defines an endpoint that gets called via a POST request to notify that an extension disable has occurred.
      */
     postDisable?: ExtensionEventCallback;
     /**
-     * Optional.  Defines an endpoint that gets called via a POST reqeust to notify that an extension enable has occurred.
+     * Optional.  Defines an endpoint that gets called via a POST request to notify that an extension enable has occurred.
      */
     postEnable?: ExtensionEventCallback;
     /**
-     * Optional.  Defines an endpoint that gets called via a POST reqeust to notify that an extension install has completed.
+     * Optional.  Defines an endpoint that gets called via a POST request to notify that an extension install has completed.
      */
     postInstall?: ExtensionEventCallback;
     /**
-     * Optional.  Defines an endpoint that gets called via a POST reqeust to notify that an extension uninstall has occurred.
+     * Optional.  Defines an endpoint that gets called via a POST request to notify that an extension uninstall has occurred.
      */
     postUninstall?: ExtensionEventCallback;
     /**
-     * Optional.  Defines an endpoint that gets called via a POST reqeust to notify that an extension update has occurred.
+     * Optional.  Defines an endpoint that gets called via a POST request to notify that an extension update has occurred.
      */
     postUpdate?: ExtensionEventCallback;
     /**
-     * Optional.  Defines an endpoint that gets called via a POST reqeust to notify that an extension install is about to occur.  Response indicates whether to proceed or abort.
+     * Optional.  Defines an endpoint that gets called via a POST request to notify that an extension install is about to occur.  Response indicates whether to proceed or abort.
      */
     preInstall?: ExtensionEventCallback;
     /**
@@ -817,7 +817,7 @@ export interface ExtensionManifest {
      */
     manifestVersion?: number;
     /**
-     * Default user claims applied to all contributions (except the ones which have been speficied restrictedTo explicitly) to control the visibility of a contribution.
+     * Default user claims applied to all contributions (except the ones which have been specified restrictedTo explicitly) to control the visibility of a contribution.
      */
     restrictedTo?: string[];
     /**

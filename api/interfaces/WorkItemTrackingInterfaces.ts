@@ -99,7 +99,7 @@ export interface AccountRecentMentionWorkItemModel {
      */
     id?: number;
     /**
-     * Lastest date that the user were mentioned
+     * Latest date that the user were mentioned
      */
     mentionedDateField?: Date;
     /**
@@ -240,10 +240,6 @@ export enum CommentExpandOptions {
      * Include comment reactions.
      */
     Reactions = 1,
-    /**
-     * Include comment mentions.
-     */
-    Mentions = 2,
     /**
      * Include the rendered text (html) in addition to MD text.
      */
@@ -405,6 +401,34 @@ export interface CommentVersion extends WorkItemTrackingResource {
     version?: number;
 }
 
+export interface ExternalDeployment {
+    artifactId?: string;
+    createdBy?: string;
+    description?: string;
+    displayName?: string;
+    environment?: ExternalEnvironment;
+    group?: string;
+    pipeline?: ExternalPipeline;
+    relatedWorkItemIds?: number[];
+    runId?: number;
+    sequenceNumber?: number;
+    status?: string;
+    statusDate?: Date;
+    url?: string;
+}
+
+export interface ExternalEnvironment {
+    displayName?: string;
+    id?: number;
+    type?: string;
+}
+
+export interface ExternalPipeline {
+    displayName?: string;
+    id?: number;
+    url?: string;
+}
+
 /**
  * Describes a list of dependent fields for a rule.
  */
@@ -413,28 +437,6 @@ export interface FieldDependentRule extends WorkItemTrackingResource {
      * The dependent fields.
      */
     dependentFields?: WorkItemFieldReference[];
-}
-
-/**
- * Describes a set fields for rule evaluation.
- */
-export interface FieldsToEvaluate {
-    /**
-     * List of fields to evaluate.
-     */
-    fields?: string[];
-    /**
-     * Updated field values to evaluate.
-     */
-    fieldUpdates?: { [key: string] : any; };
-    /**
-     * Initial field values.
-     */
-    fieldValues?: { [key: string] : any; };
-    /**
-     * URL of the work item type for which the rules need to be executed.
-     */
-    rulesFrom?: string[];
 }
 
 /**
@@ -537,6 +539,10 @@ export enum GetFieldsExpand {
      * Adds extension fields to the response.
      */
     ExtensionFields = 1,
+    /**
+     * Includes fields that have been deleted.
+     */
+    IncludeDeleted = 2,
 }
 
 /**
@@ -600,6 +606,30 @@ export enum LogicalOperation {
     NONE = 0,
     AND = 1,
     OR = 2,
+}
+
+/**
+ * Stores process ID.
+ */
+export interface ProcessIdModel {
+    /**
+     * The ID of the process.
+     */
+    typeId?: string;
+}
+
+/**
+ * Stores project ID and its process ID.
+ */
+export interface ProcessMigrationResultModel {
+    /**
+     * The ID of the process.
+     */
+    processId?: string;
+    /**
+     * The ID of the project.
+     */
+    projectId?: string;
 }
 
 /**
@@ -880,7 +910,7 @@ export interface ReportingWorkItemRevisionsBatch extends StreamedBatch<WorkItem>
 }
 
 /**
- * The class reprensents the reporting work item revision filer.
+ * The class represents the reporting work item revision filer.
  */
 export interface ReportingWorkItemRevisionsFilter {
     /**
@@ -914,7 +944,7 @@ export interface ReportingWorkItemRevisionsFilter {
  */
 export interface StreamedBatch<T> {
     /**
-     * ContinuationToken acts as a waterMark. Used while quering large results.
+     * ContinuationToken acts as a waterMark. Used while querying large results.
      */
     continuationToken?: string;
     /**
@@ -959,6 +989,16 @@ export enum TreeNodeStructureType {
 export enum TreeStructureGroup {
     Areas = 0,
     Iterations = 1,
+}
+
+/**
+ * Describes an update request for a work item field.
+ */
+export interface UpdateWorkItemField {
+    /**
+     * Indicates whether the user wants to restore the field.
+     */
+    isDeleted?: boolean;
 }
 
 /**
@@ -1278,6 +1318,10 @@ export interface WorkItemField extends WorkItemTrackingResource {
      */
     description?: string;
     /**
+     * Indicates whether this field is deleted.
+     */
+    isDeleted?: boolean;
+    /**
      * Indicates whether this field is an identity field.
      */
     isIdentity?: boolean;
@@ -1540,7 +1584,7 @@ export interface WorkItemRelation extends Link {
 }
 
 /**
- * Represents the work item type relatiion type.
+ * Represents the work item type relation type.
  */
 export interface WorkItemRelationType extends WorkItemTrackingReference {
     /**
@@ -1550,7 +1594,7 @@ export interface WorkItemRelationType extends WorkItemTrackingReference {
 }
 
 /**
- * Descrives updates to a work item's relations.
+ * Describes updates to a work item's relations.
  */
 export interface WorkItemRelationUpdates {
     /**
@@ -1597,6 +1641,12 @@ export interface WorkItemStateTransition {
      * Name of the next state.
      */
     to?: string;
+}
+
+export interface WorkItemTagDefinition {
+    id?: string;
+    name?: string;
+    url?: string;
 }
 
 /**
@@ -1726,7 +1776,7 @@ export interface WorkItemTypeCategory extends WorkItemTrackingResource {
      */
     referenceName?: string;
     /**
-     * The work item types that belond to the category.
+     * The work item types that belong to the category.
      */
     workItemTypes?: WorkItemTypeReference[];
 }
@@ -1758,7 +1808,7 @@ export interface WorkItemTypeColorAndIcon {
      */
     color?: string;
     /**
-     * Tthe work item type icon.
+     * The work item type icon.
      */
     icon?: string;
     /**
@@ -1950,7 +2000,6 @@ export var TypeInfo = {
         enumValues: {
             "none": 0,
             "reactions": 1,
-            "mentions": 2,
             "renderedText": 8,
             "renderedTextOnly": 16,
             "all": -17
@@ -1977,6 +2026,8 @@ export var TypeInfo = {
         }
     },
     CommentVersion: <any>{
+    },
+    ExternalDeployment: <any>{
     },
     FieldType: {
         enumValues: {
@@ -2008,7 +2059,8 @@ export var TypeInfo = {
     GetFieldsExpand: {
         enumValues: {
             "none": 0,
-            "extensionFields": 1
+            "extensionFields": 1,
+            "includeDeleted": 2
         }
     },
     LinkQueryMode: {
@@ -2251,6 +2303,12 @@ TypeInfo.CommentVersion.fields = {
         isDate: true,
     },
     modifiedDate: {
+        isDate: true,
+    }
+};
+
+TypeInfo.ExternalDeployment.fields = {
+    statusDate: {
         isDate: true,
     }
 };

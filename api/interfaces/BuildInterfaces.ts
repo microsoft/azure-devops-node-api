@@ -369,7 +369,7 @@ export interface BuildArtifact {
      */
     resource?: ArtifactResource;
     /**
-     * The artifact source, which will be the ID of the job that produced this artifact.
+     * The artifact source, which will be the ID of the job that produced this artifact. If an artifact is associated with multiple sources, this points to the first source.
      */
     source?: string;
 }
@@ -1124,13 +1124,17 @@ export enum BuildReason {
      */
     BuildCompletion = 512,
     /**
+     * The build was started when resources in pipeline triggered it
+     */
+    ResourceTrigger = 1024,
+    /**
      * The build was triggered for retention policy purposes.
      */
-    Triggered = 943,
+    Triggered = 1967,
     /**
      * All reasons.
      */
-    All = 1007,
+    All = 2031,
 }
 
 /**
@@ -1977,6 +1981,29 @@ export interface MultipleAgentExecutionOptions extends AgentTargetExecutionOptio
     maxConcurrency?: number;
 }
 
+export interface NewRetentionLease {
+    /**
+     * The number of days to consider the lease valid.
+     */
+    daysValid?: number;
+    /**
+     * The pipeline definition of the run.
+     */
+    definitionId?: number;
+    /**
+     * User-provided string that identifies the owner of a retention lease.
+     */
+    ownerId?: string;
+    /**
+     * If set, this lease will also prevent the pipeline from being deleted while the lease is still valid.
+     */
+    protectPipeline?: boolean;
+    /**
+     * The pipeline run to protect.
+     */
+    runId?: number;
+}
+
 /**
  * Represents a phase of a build definition.
  */
@@ -2037,6 +2064,28 @@ export enum ProcessTemplateType {
      * Indicates an upgrade template.
      */
     Upgrade = 2,
+}
+
+/**
+ * Contains the settings for the retention rules.
+ */
+export interface ProjectRetentionSetting {
+    /**
+     * The rules for artifact retention. Artifacts can not live longer than a run, so will be overridden by a shorter run purge setting.
+     */
+    purgeArtifacts?: RetentionSetting;
+    /**
+     * The rules for pull request pipeline run retention.
+     */
+    purgePullRequestRuns?: RetentionSetting;
+    /**
+     * The rules for pipeline run retention.
+     */
+    purgeRuns?: RetentionSetting;
+    /**
+     * The rules for retaining runs per protected branch.
+     */
+    retainRunsPerProtectedBranch?: RetentionSetting;
 }
 
 /**
@@ -2208,6 +2257,36 @@ export enum ResultSet {
 }
 
 /**
+ * A valid retention lease prevents automated systems from deleting a pipeline run.
+ */
+export interface RetentionLease {
+    /**
+     * When the lease was created.
+     */
+    createdOn?: Date;
+    /**
+     * The pipeline definition of the run.
+     */
+    definitionId?: number;
+    /**
+     * The unique identifier for this lease.
+     */
+    leaseId?: number;
+    /**
+     * Non-unique string that identifies the owner of a retention lease.
+     */
+    ownerId?: string;
+    /**
+     * The pipeline run protected by this lease.
+     */
+    runId?: number;
+    /**
+     * The last day the lease is considered valid.
+     */
+    validUntil?: Date;
+}
+
+/**
  * Represents a retention policy for a build definition.
  */
 export interface RetentionPolicy {
@@ -2230,6 +2309,15 @@ export interface RetentionPolicy {
      * The minimum number of builds to keep.
      */
     minimumToKeep?: number;
+}
+
+/**
+ * Contains the minimum, maximum, and current value for a retention setting.
+ */
+export interface RetentionSetting {
+    max?: number;
+    min?: number;
+    value?: number;
 }
 
 export interface Schedule {
@@ -2495,6 +2583,11 @@ export interface SourceRepositoryItem {
      * The URL of the item.
      */
     url?: string;
+}
+
+export enum StageUpdateType {
+    Cancel = 0,
+    Retry = 1,
 }
 
 export interface SupportedTrigger {
@@ -2816,6 +2909,24 @@ export interface TimelineReference {
      * The REST URL of the timeline.
      */
     url?: string;
+}
+
+/**
+ * Contains members for updating the retention settings values. All fields are optional.
+ */
+export interface UpdateProjectRetentionSettingModel {
+    artifactsRetention?: UpdateRetentionSettingModel;
+    pullRequestRunRetention?: UpdateRetentionSettingModel;
+    retainRunsPerProtectedBranch?: UpdateRetentionSettingModel;
+    runRetention?: UpdateRetentionSettingModel;
+}
+
+export interface UpdateRetentionSettingModel {
+    value?: number;
+}
+
+export interface UpdateStageParameters {
+    state?: StageUpdateType;
 }
 
 export enum ValidationResult {
@@ -3175,8 +3286,9 @@ export var TypeInfo = {
             "checkInShelveset": 128,
             "pullRequest": 256,
             "buildCompletion": 512,
-            "triggered": 943,
-            "all": 1007
+            "resourceTrigger": 1024,
+            "triggered": 1967,
+            "all": 2031
         }
     },
     BuildReference: <any>{
@@ -3359,6 +3471,8 @@ export var TypeInfo = {
             "top": 1
         }
     },
+    RetentionLease: <any>{
+    },
     Schedule: <any>{
     },
     ScheduleDays: {
@@ -3389,6 +3503,12 @@ export var TypeInfo = {
             "hosted": 1,
             "onPremises": 2,
             "all": 3
+        }
+    },
+    StageUpdateType: {
+        enumValues: {
+            "cancel": 0,
+            "retry": 1
         }
     },
     SupportedTrigger: <any>{
@@ -3422,6 +3542,8 @@ export var TypeInfo = {
         }
     },
     TimelineRecordsUpdatedEvent: <any>{
+    },
+    UpdateStageParameters: <any>{
     },
     ValidationResult: {
         enumValues: {
@@ -3931,6 +4053,15 @@ TypeInfo.RepositoryWebhook.fields = {
     }
 };
 
+TypeInfo.RetentionLease.fields = {
+    createdOn: {
+        isDate: true,
+    },
+    validUntil: {
+        isDate: true,
+    }
+};
+
 TypeInfo.Schedule.fields = {
     daysToBuild: {
         enumType: TypeInfo.ScheduleDays
@@ -4000,6 +4131,12 @@ TypeInfo.TimelineRecordsUpdatedEvent.fields = {
     timelineRecords: {
         isArray: true,
         typeInfo: TypeInfo.TimelineRecord
+    }
+};
+
+TypeInfo.UpdateStageParameters.fields = {
+    state: {
+        enumType: TypeInfo.StageUpdateType
     }
 };
 

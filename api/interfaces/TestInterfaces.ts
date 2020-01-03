@@ -85,6 +85,28 @@ export interface AggregatedDataForResultTrend {
     totalTests?: number;
 }
 
+/**
+ * Result deatils for a particular test result outcome.
+ */
+export interface AggregatedResultDetailsByOutcome {
+    /**
+     * Number of results for current outcome.
+     */
+    count?: number;
+    /**
+     * Time taken by results.
+     */
+    duration?: any;
+    /**
+     * Test result outcome
+     */
+    outcome?: TestOutcome;
+    /**
+     * Number of results on rerun
+     */
+    rerunResultCount?: number;
+}
+
 export interface AggregatedResultsAnalysis {
     duration?: any;
     notReportedResultsByOutcome?: { [key: number] : AggregatedResultsByOutcome; };
@@ -108,6 +130,7 @@ export interface AggregatedResultsByOutcome {
 export interface AggregatedResultsDifference {
     increaseInDuration?: any;
     increaseInFailures?: number;
+    increaseInNonImpactedTests?: number;
     increaseInOtherTests?: number;
     increaseInPassedTests?: number;
     increaseInTotalTests?: number;
@@ -166,7 +189,7 @@ export interface BuildConfiguration {
      */
     branchName?: string;
     /**
-     * BuildDefnitionId for build.
+     * BuildDefinitionId for build.
      */
     buildDefinitionId?: number;
     /**
@@ -198,7 +221,7 @@ export interface BuildConfiguration {
      */
     project?: ShallowReference;
     /**
-     * ResposotoryGuid for the Build.
+     * Repository Guid for the Build.
      */
     repositoryGuid?: string;
     /**
@@ -360,11 +383,11 @@ export interface CloneOperationInformation {
      */
     sourceProject?: ShallowReference;
     /**
-     * Current state of the operation. When State reaches Suceeded or Failed, the operation is complete
+     * Current state of the operation. When State reaches Succeeded or Failed, the operation is complete
      */
     state?: CloneOperationState;
     /**
-     * Url for geting the clone information
+     * Url for getting the clone information
      */
     url?: string;
 }
@@ -404,7 +427,7 @@ export interface CloneOptions {
      */
     copyAllSuites?: boolean;
     /**
-     * copy ancestor hieracrchy
+     * copy ancestor hierarchy
      */
     copyAncestorHierarchy?: boolean;
     /**
@@ -426,7 +449,7 @@ export interface CloneOptions {
  */
 export interface CloneStatistics {
     /**
-     * Number of Requirments cloned so far.
+     * Number of requirements cloned so far.
      */
     clonedRequirementsCount?: number;
     /**
@@ -611,7 +634,7 @@ export interface CreateTestRunRequest {
 }
 
 /**
- * A custom field information. Allowed Key : Value pairs - ( AttemptId: IntVaue , IsTestResultFlaky: bool)
+ * A custom field information. Allowed Key : Value pairs - ( AttemptId: int value, IsTestResultFlaky: bool)
  */
 export interface CustomTestField {
     /**
@@ -789,6 +812,10 @@ export interface FlakySettings {
      * FlakyInSummaryReport defines flaky data should show in summary report or not.
      */
     flakyInSummaryReport?: boolean;
+    /**
+     * IsFlakyBugCreated defines if there is any bug that has been created with flaky testresult.
+     */
+    isFlakyBugCreated?: boolean;
     /**
      * ManualMarkUnmarkFlaky defines manual marking unmarking of flaky testcase.
      */
@@ -1088,6 +1115,28 @@ export interface LinkedWorkItemsQueryResult {
     workItems?: WorkItemReference[];
 }
 
+/**
+ * Test summary metrics.
+ */
+export enum Metrics {
+    /**
+     * To get results of all matrix.
+     */
+    All = 1,
+    /**
+     * Get results summary by results outcome
+     */
+    ResultSummary = 2,
+    /**
+     * Get results analysis which include failure analysis, increase/decrease in results count analysis.
+     */
+    ResultsAnalysis = 3,
+    /**
+     * Get runs summary
+     */
+    RunSummary = 4,
+}
+
 export interface ModuleCoverage {
     blockCount?: number;
     blockData?: number[];
@@ -1143,7 +1192,7 @@ export enum OperationType {
  */
 export interface PhaseReference {
     /**
-     * Attempt number of the pahse
+     * Attempt number of the phase
      */
     attempt?: number;
     /**
@@ -1165,13 +1214,39 @@ export interface PipelineReference {
      */
     phaseReference?: PhaseReference;
     /**
-     * Reference of the pipeline with which this pipeline intance is related.
+     * Reference of the pipeline with which this pipeline instance is related.
      */
     pipelineId: number;
     /**
      * Reference of the stage.
      */
     stageReference?: StageReference;
+}
+
+/**
+ * Test summary of a pipeline instance.
+ */
+export interface PipelineTestMetrics {
+    /**
+     * Reference of Pipeline instance for which test summary is calculated.
+     */
+    currentContext?: PipelineReference;
+    /**
+     * This is the return value for metric ResultsAnalysis Results insights which include failure analysis, increase/decrease in results count analysis.
+     */
+    resultsAnalysis?: ResultsAnalysis;
+    /**
+     * This is the return value for metric ResultSummary Results summary based on results outcome.
+     */
+    resultSummary?: ResultSummary;
+    /**
+     * This is the return value for metric RunSummary Run summary.
+     */
+    runSummary?: RunSummary;
+    /**
+     * Summary at child node.
+     */
+    summaryAtChild?: PipelineTestMetrics[];
 }
 
 /**
@@ -1539,6 +1614,17 @@ export enum ResultGroupType {
     Generic = 4,
 }
 
+export enum ResultMetadata {
+    /**
+     * Rerun metadata
+     */
+    Rerun = 1,
+    /**
+     * Flaky metadata
+     */
+    Flaky = 2,
+}
+
 /**
  * Additional details with test result metadata
  */
@@ -1589,6 +1675,24 @@ export interface ResultRetentionSettings {
     manualResultsRetentionDuration: number;
 }
 
+/**
+ * Results insights for runs with state completed and NeedInvestigation.
+ */
+export interface ResultsAnalysis {
+    /**
+     * Reference of pipeline instance from which to compare the results.
+     */
+    previousContext?: PipelineReference;
+    /**
+     * Increase/Decrease in counts of results for a different outcome with respect to PreviousContext.
+     */
+    resultsDifference?: AggregatedResultsDifference;
+    /**
+     * Failure analysis of results with respect to PreviousContext
+     */
+    testFailuresAnalysis?: TestResultFailuresAnalysis;
+}
+
 export interface ResultsByQueryRequest {
     pageSize?: number;
     query?: ResultsStoreQuery;
@@ -1619,6 +1723,38 @@ export interface ResultsStoreQuery {
     queryText?: string;
     teamProjectName?: string;
     timeZone?: string;
+}
+
+/**
+ * Result summary by the outcome of test results.
+ */
+export interface ResultsSummaryByOutcome {
+    /**
+     * Aggregated result details for each test result outcome.
+     */
+    aggregatedResultDetailsByOutcome?: { [key: number] : AggregatedResultDetailsByOutcome; };
+    /**
+     * Time taken by results.
+     */
+    duration?: any;
+    /**
+     * Total number of not reported test results.
+     */
+    notReportedTestCount?: number;
+    /**
+     * Total number of test results. (It includes NotImpacted test results as well which need to exclude while calculating pass/fail test result percentage).
+     */
+    totalTestCount?: number;
+}
+
+/**
+ * Summary of results for a pipeline instance.
+ */
+export interface ResultSummary {
+    /**
+     * Result summary of pipeline, group by TestRun state.
+     */
+    resultSummaryByRunState?: { [key: number] : ResultsSummaryByOutcome; };
 }
 
 export interface ResultUpdateRequest {
@@ -1766,7 +1902,7 @@ export interface RunCreateModel {
      */
     runSummary?: RunSummaryModel[];
     /**
-     * Timespan till the Run RunTimesout.
+     * Timespan till the run times out.
      */
     runTimeout?: any;
     /**
@@ -1786,7 +1922,7 @@ export interface RunCreateModel {
      */
     tags?: TestTag[];
     /**
-     * TestConfgurationMapping of the test run.
+     * TestConfigurationMapping of the test run.
      */
     testConfigurationsMapping?: string;
     /**
@@ -1834,9 +1970,39 @@ export interface RunStatistic {
      */
     resolutionState?: TestResolutionState;
     /**
+     * ResultMetadata for the given outcome/count.
+     */
+    resultMetadata?: ResultMetadata;
+    /**
      * State of the test run
      */
     state: string;
+}
+
+/**
+ * Summary of runs for a pipeline instance.
+ */
+export interface RunSummary {
+    /**
+     * Total time taken by runs with state completed and NeedInvestigation.
+     */
+    duration?: any;
+    /**
+     * NoConfig runs count.
+     */
+    noConfigRunsCount?: number;
+    /**
+     * Runs count by outcome for runs with state completed and NeedInvestigation runs.
+     */
+    runSummaryByOutcome?: { [key: number] : number; };
+    /**
+     * Runs count by state.
+     */
+    runSummaryByState?: { [key: number] : number; };
+    /**
+     * Total runs count.
+     */
+    totalRunsCount?: number;
 }
 
 /**
@@ -2815,7 +2981,7 @@ export interface TestHistoryQuery {
      */
     branch?: string;
     /**
-     * Get the results history only for this BuildDefinationId. This to get used in query GroupBy should be Branch. If this is provided, Branch will have no use.
+     * Get the results history only for this BuildDefinitionId. This to get used in query GroupBy should be Branch. If this is provided, Branch will have no use.
      */
     buildDefinitionId?: number;
     /**
@@ -2857,7 +3023,7 @@ export interface TestIterationDetailsModel {
      */
     actionResults?: TestActionResultModel[];
     /**
-     * Refence to attachments in test iteration result.
+     * Reference to attachments in test iteration result.
      */
     attachments?: TestCaseResultAttachmentModel[];
     /**
@@ -2906,6 +3072,9 @@ export interface TestLog {
      * Test Log Context run, build
      */
     logReference: TestLogReference;
+    /**
+     * Meta data for Log file
+     */
     metaData?: { [key: string] : string; };
     /**
      * LastUpdatedDate for Log file
@@ -2917,6 +3086,9 @@ export interface TestLog {
     size?: number;
 }
 
+/**
+ * Test Log Reference object
+ */
 export interface TestLogReference {
     /**
      * BuildId for test log, if context is build
@@ -2943,7 +3115,7 @@ export interface TestLogReference {
      */
     runId: number;
     /**
-     * Test Log Reference object
+     * Test Log Scope
      */
     scope: TestLogScope;
     /**
@@ -2996,22 +3168,74 @@ export interface TestLogStatus {
  * Test Log Status codes.
  */
 export enum TestLogStatusCode {
+    /**
+     * Operation is successful
+     */
     Success = 0,
+    /**
+     * Operation failed
+     */
     Failed = 1,
+    /**
+     * Operation failed due to file already exist
+     */
     FileAlreadyExists = 2,
+    /**
+     * Invalid input provided by user
+     */
     InvalidInput = 3,
+    /**
+     * Invalid file name provided by user
+     */
     InvalidFileName = 4,
+    /**
+     * Error occurred while operating on container
+     */
     InvalidContainer = 5,
+    /**
+     * Blob Transfer Error
+     */
     TransferFailed = 6,
+    /**
+     * TestLogStore feature is not enabled
+     */
     FeatureDisabled = 7,
+    /**
+     * Build for which operation is requested does not exist
+     */
     BuildDoesNotExist = 8,
+    /**
+     * Run for which operation is requested does not exist
+     */
     RunDoesNotExist = 9,
+    /**
+     * Container cannot be created
+     */
     ContainerNotCreated = 10,
+    /**
+     * Api is not supported
+     */
     APINotSupported = 11,
+    /**
+     * File size is greater than the limitation
+     */
     FileSizeExceeds = 12,
+    /**
+     * Container is not found for which operation is requested
+     */
     ContainerNotFound = 13,
+    /**
+     * File cannot be found
+     */
     FileNotFound = 14,
+    /**
+     * Directory cannot be found
+     */
     DirectoryNotFound = 15,
+    /**
+     * Storage capacity exceeded
+     */
+    StorageCapacityExceeded = 16,
 }
 
 /**
@@ -3032,14 +3256,35 @@ export interface TestLogStoreEndpointDetails {
     status?: TestLogStatusCode;
 }
 
+/**
+ * Specifies set of possible log store endpoint type.
+ */
 export enum TestLogStoreEndpointType {
+    /**
+     * Endpoint type is scoped to root
+     */
     Root = 1,
+    /**
+     * Endpoint type is scoped to file
+     */
     File = 2,
 }
 
+/**
+ * Specifies set of possible operation type on log store.
+ */
 export enum TestLogStoreOperationType {
+    /**
+     * Operation is scoped to read data only.
+     */
     Read = 1,
+    /**
+     * Operation is scoped to create data only.
+     */
     Create = 2,
+    /**
+     * Operation is scoped to read and create data.
+     */
     ReadAndCreate = 3,
 }
 
@@ -3063,6 +3308,10 @@ export enum TestLogType {
      * Temporary files
      */
     Intermediate = 4,
+    /**
+     * Subresult Attachment
+     */
+    System = 5,
 }
 
 export interface TestMessageLog2 {
@@ -3570,6 +3819,12 @@ export interface TestResultDocument {
     payload?: TestResultPayload;
 }
 
+export interface TestResultFailuresAnalysis {
+    existingFailures?: TestFailureDetails;
+    fixedTests?: TestFailureDetails;
+    newFailures?: TestFailureDetails;
+}
+
 /**
  * Group by for results
  */
@@ -3746,12 +4001,14 @@ export interface TestResultReset2 {
 export interface TestResultsContext {
     build?: BuildReference;
     contextType?: TestResultsContextType;
+    pipelineReference?: PipelineReference;
     release?: ReleaseReference;
 }
 
 export enum TestResultsContextType {
     Build = 1,
     Release = 2,
+    Pipeline = 3,
 }
 
 export interface TestResultsDetails {
@@ -3842,7 +4099,7 @@ export interface TestResultSummary {
 
 export interface TestResultsUpdateSettings {
     /**
-     * FlakySettings defines Flaky Setttings Data.
+     * FlakySettings defines Flaky Settings Data.
      */
     flakySettings?: FlakySettings;
 }
@@ -4147,7 +4404,7 @@ export interface TestRunExtended2 {
  */
 export enum TestRunOutcome {
     /**
-     * Run with zero failed tests and has atleast one impacted test
+     * Run with zero failed tests and has at least one impacted test
      */
     Passed = 0,
     /**
@@ -4206,7 +4463,7 @@ export enum TestRunState {
      */
     Completed = 3,
     /**
-     * Run is stopped and remaing tests have been aborted
+     * Run is stopped and remaining tests have been aborted
      */
     Aborted = 4,
     /**
@@ -4855,6 +5112,8 @@ export var TypeInfo = {
     },
     AggregatedDataForResultTrend: <any>{
     },
+    AggregatedResultDetailsByOutcome: <any>{
+    },
     AggregatedResultsAnalysis: <any>{
     },
     AggregatedResultsByOutcome: <any>{
@@ -4981,11 +5240,21 @@ export var TypeInfo = {
     },
     LegacyTestSettings: <any>{
     },
+    Metrics: {
+        enumValues: {
+            "all": 1,
+            "resultSummary": 2,
+            "resultsAnalysis": 3,
+            "runSummary": 4
+        }
+    },
     OperationType: {
         enumValues: {
             "add": 1,
             "delete": 2
         }
+    },
+    PipelineTestMetrics: <any>{
     },
     PointLastResult: <any>{
     },
@@ -5019,6 +5288,12 @@ export var TypeInfo = {
             "generic": 4
         }
     },
+    ResultMetadata: {
+        enumValues: {
+            "rerun": 1,
+            "flaky": 2
+        }
+    },
     ResultMetaDataDetails: {
         enumValues: {
             "none": 0,
@@ -5037,6 +5312,10 @@ export var TypeInfo = {
     },
     ResultsFilter: <any>{
     },
+    ResultsSummaryByOutcome: <any>{
+    },
+    ResultSummary: <any>{
+    },
     ResultUpdateRequest: <any>{
     },
     ResultUpdateRequestModel: <any>{
@@ -5044,6 +5323,10 @@ export var TypeInfo = {
     ResultUpdateResponse: <any>{
     },
     RunCreateModel: <any>{
+    },
+    RunStatistic: <any>{
+    },
+    RunSummary: <any>{
     },
     RunSummaryModel: <any>{
     },
@@ -5145,7 +5428,8 @@ export var TypeInfo = {
             "fileSizeExceeds": 12,
             "containerNotFound": 13,
             "fileNotFound": 14,
-            "directoryNotFound": 15
+            "directoryNotFound": 15,
+            "storageCapacityExceeded": 16
         }
     },
     TestLogStoreEndpointDetails: <any>{
@@ -5168,7 +5452,8 @@ export var TypeInfo = {
             "generalAttachment": 1,
             "codeCoverage": 2,
             "testImpact": 3,
-            "intermediate": 4
+            "intermediate": 4,
+            "system": 5
         }
     },
     TestMessageLogDetails: <any>{
@@ -5254,7 +5539,8 @@ export var TypeInfo = {
     TestResultsContextType: {
         enumValues: {
             "build": 1,
-            "release": 2
+            "release": 2,
+            "pipeline": 3
         }
     },
     TestResultsDetails: <any>{
@@ -5320,6 +5606,8 @@ export var TypeInfo = {
             "waiting": 5,
             "needsInvestigation": 6
         }
+    },
+    TestRunStatistic: <any>{
     },
     TestRunSubstate: {
         enumValues: {
@@ -5400,6 +5688,12 @@ TypeInfo.AggregatedDataForResultTrend.fields = {
     },
     testResultsContext: {
         typeInfo: TypeInfo.TestResultsContext
+    }
+};
+
+TypeInfo.AggregatedResultDetailsByOutcome.fields = {
+    outcome: {
+        enumType: TypeInfo.TestOutcome
     }
 };
 
@@ -5691,6 +5985,19 @@ TypeInfo.LegacyTestSettings.fields = {
     }
 };
 
+TypeInfo.PipelineTestMetrics.fields = {
+    resultSummary: {
+        typeInfo: TypeInfo.ResultSummary
+    },
+    runSummary: {
+        typeInfo: TypeInfo.RunSummary
+    },
+    summaryAtChild: {
+        isArray: true,
+        typeInfo: TypeInfo.PipelineTestMetrics
+    }
+};
+
 TypeInfo.PointLastResult.fields = {
     lastUpdatedDate: {
         isDate: true,
@@ -5769,6 +6076,22 @@ TypeInfo.ResultsFilter.fields = {
     }
 };
 
+TypeInfo.ResultsSummaryByOutcome.fields = {
+    aggregatedResultDetailsByOutcome: {
+        isDictionary: true,
+        dictionaryKeyEnumType: TypeInfo.TestOutcome,
+        dictionaryValueTypeInfo: TypeInfo.AggregatedResultDetailsByOutcome
+    }
+};
+
+TypeInfo.ResultSummary.fields = {
+    resultSummaryByRunState: {
+        isDictionary: true,
+        dictionaryKeyEnumType: TypeInfo.TestRunState,
+        dictionaryValueTypeInfo: TypeInfo.ResultsSummaryByOutcome
+    }
+};
+
 TypeInfo.ResultUpdateRequest.fields = {
     actionResultDeletes: {
         isArray: true,
@@ -5814,6 +6137,23 @@ TypeInfo.RunCreateModel.fields = {
     runSummary: {
         isArray: true,
         typeInfo: TypeInfo.RunSummaryModel
+    }
+};
+
+TypeInfo.RunStatistic.fields = {
+    resultMetadata: {
+        enumType: TypeInfo.ResultMetadata
+    }
+};
+
+TypeInfo.RunSummary.fields = {
+    runSummaryByOutcome: {
+        isDictionary: true,
+        dictionaryKeyEnumType: TypeInfo.TestRunOutcome,
+    },
+    runSummaryByState: {
+        isDictionary: true,
+        dictionaryKeyEnumType: TypeInfo.TestRunState,
     }
 };
 
@@ -6307,6 +6647,10 @@ TypeInfo.TestRun.fields = {
     release: {
         typeInfo: TypeInfo.ReleaseReference
     },
+    runStatistics: {
+        isArray: true,
+        typeInfo: TypeInfo.RunStatistic
+    },
     startedDate: {
         isDate: true,
     },
@@ -6366,6 +6710,13 @@ TypeInfo.TestRunEx2.fields = {
 TypeInfo.TestRunStartedEvent.fields = {
     testRun: {
         typeInfo: TypeInfo.TestRun
+    }
+};
+
+TypeInfo.TestRunStatistic.fields = {
+    runStatistics: {
+        isArray: true,
+        typeInfo: TypeInfo.RunStatistic
     }
 };
 
