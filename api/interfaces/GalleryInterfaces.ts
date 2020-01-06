@@ -120,7 +120,7 @@ export interface Answers {
      */
     vSMarketplaceExtensionName?: string;
     /**
-     * Gets or sets the vs marketplace publsiher name
+     * Gets or sets the vs marketplace publisher name
      */
     vSMarketplacePublisherName?: string;
 }
@@ -237,7 +237,7 @@ export interface CustomerLastContact {
      */
     account?: string;
     /**
-     * Date on which the custoemr was last contacted
+     * Date on which the customer was last contacted
      */
     lastContactDate?: Date;
 }
@@ -344,7 +344,7 @@ export interface ExtensionCategory {
      */
     categoryName?: string;
     /**
-     * This parameter is obsolete. Refer to LanguageTitles for langauge specific titles
+     * This parameter is obsolete. Refer to LanguageTitles for language specific titles
      */
     language?: string;
     /**
@@ -480,7 +480,7 @@ export interface ExtensionFile {
  */
 export interface ExtensionFilterResult {
     /**
-     * This is the set of appplications that matched the query filter supplied.
+     * This is the set of applications that matched the query filter supplied.
      */
     extensions?: PublishedExtension[];
     /**
@@ -586,11 +586,11 @@ export enum ExtensionPolicyFlags {
      */
     Public = 2,
     /**
-     * Premission in extensions that are in preview
+     * Permission in extensions that are in preview
      */
     Preview = 4,
     /**
-     * Premission in relased extensions
+     * Permission in released extensions
      */
     Released = 8,
     /**
@@ -616,7 +616,7 @@ export interface ExtensionQuery {
      */
     filters?: QueryFilter[];
     /**
-     * The Flags are used to deterine which set of information the caller would like returned for the matched extensions.
+     * The Flags are used to determine which set of information the caller would like returned for the matched extensions.
      */
     flags?: ExtensionQueryFlags;
 }
@@ -642,7 +642,7 @@ export enum ExtensionQueryFilterType {
      */
     Id = 4,
     /**
-     * The catgeory is unlike other filters. It is AND'd with the other filters instead of being a seperate query.
+     * The category is unlike other filters. It is AND'd with the other filters instead of being a separate query.
      */
     Category = 5,
     /**
@@ -670,15 +670,15 @@ export enum ExtensionQueryFilterType {
      */
     FeaturedInCategory = 11,
     /**
-     * When retrieving extensions from a query, exclude the extensions which are having the given flags. The value specified for this filter should be a string representing the integer values of the flags to be excluded. In case of mulitple flags to be specified, a logical OR of the interger values should be given as value for this filter This should be at most one filter of this type. This only acts as a restrictive filter after. In case of having a particular flag in both IncludeWithFlags and ExcludeWithFlags, excludeFlags will remove the included extensions giving empty result for that flag.
+     * When retrieving extensions from a query, exclude the extensions which are having the given flags. The value specified for this filter should be a string representing the integer values of the flags to be excluded. In case of multiple flags to be specified, a logical OR of the interger values should be given as value for this filter This should be at most one filter of this type. This only acts as a restrictive filter after. In case of having a particular flag in both IncludeWithFlags and ExcludeWithFlags, excludeFlags will remove the included extensions giving empty result for that flag.
      */
     ExcludeWithFlags = 12,
     /**
-     * When retrieving extensions from a query, include the extensions which are having the given flags. The value specified for this filter should be a string representing the integer values of the flags to be included. In case of mulitple flags to be specified, a logical OR of the interger values should be given as value for this filter This should be at most one filter of this type. This only acts as a restrictive filter after. In case of having a particular flag in both IncludeWithFlags and ExcludeWithFlags, excludeFlags will remove the included extensions giving empty result for that flag. In case of multiple flags given in IncludeWithFlags in ORed fashion, extensions having any of the given flags will be included.
+     * When retrieving extensions from a query, include the extensions which are having the given flags. The value specified for this filter should be a string representing the integer values of the flags to be included. In case of multiple flags to be specified, a logical OR of the integer values should be given as value for this filter This should be at most one filter of this type. This only acts as a restrictive filter after. In case of having a particular flag in both IncludeWithFlags and ExcludeWithFlags, excludeFlags will remove the included extensions giving empty result for that flag. In case of multiple flags given in IncludeWithFlags in ORed fashion, extensions having any of the given flags will be included.
      */
     IncludeWithFlags = 13,
     /**
-     * Fitler the extensions based on the LCID values applicable. Any extensions which are not having any LCID values will also be filtered. This is currenlty only supported for VS extensions.
+     * Filter the extensions based on the LCID values applicable. Any extensions which are not having any LCID values will also be filtered. This is currently only supported for VS extensions.
      */
     Lcid = 14,
     /**
@@ -702,7 +702,7 @@ export enum ExtensionQueryFilterType {
      */
     PublisherDisplayName = 19,
     /**
-     * When retrieving extensions from a query, include the extensions which have a publisher having the given flags. The value specified for this filter should be a string representing the integer values of the flags to be included. In case of mulitple flags to be specified, a logical OR of the interger values should be given as value for this filter There should be at most one filter of this type. This only acts as a restrictive filter after. In case of multiple flags given in IncludeWithFlags in ORed fashion, extensions having any of the given flags will be included.
+     * When retrieving extensions from a query, include the extensions which have a publisher having the given flags. The value specified for this filter should be a string representing the integer values of the flags to be included. In case of multiple flags to be specified, a logical OR of the integer values should be given as value for this filter There should be at most one filter of this type. This only acts as a restrictive filter after. In case of multiple flags given in IncludeWithFlags in ORed fashion, extensions having any of the given flags will be included.
      */
     IncludeWithPublisherFlags = 20,
     /**
@@ -724,7 +724,7 @@ export enum ExtensionQueryFlags {
      */
     IncludeVersions = 1,
     /**
-     * IncludeFiles will return information about which files were found within the extension that were stored independant of the manifest. When asking for files, versions will be included as well since files are returned as a property of the versions.  These files can be retrieved using the path to the file without requiring the entire manifest be downloaded.
+     * IncludeFiles will return information about which files were found within the extension that were stored independent of the manifest. When asking for files, versions will be included as well since files are returned as a property of the versions.  These files can be retrieved using the path to the file without requiring the entire manifest be downloaded.
      */
     IncludeFiles = 2,
     /**
@@ -768,7 +768,7 @@ export enum ExtensionQueryFlags {
      */
     IncludeMetadata = 2048,
     /**
-     * This flag is used to indicate to return very small data for extension reruired by VS IDE. This flag is only compatible when querying is done by VS IDE
+     * This flag is used to indicate to return very small data for extension required by VS IDE. This flag is only compatible when querying is done by VS IDE
      */
     IncludeMinimalPayloadForVsIde = 4096,
     /**
@@ -776,7 +776,7 @@ export enum ExtensionQueryFlags {
      */
     IncludeLcids = 8192,
     /**
-     * Include the details about which organizations the extension has been shared with if the extesion is a private extension.
+     * Include the details about which organizations the extension has been shared with if the extension is a private extension.
      */
     IncludeSharedOrganizations = 16384,
     /**
@@ -1021,11 +1021,11 @@ export enum PublishedExtensionFlags {
      */
     Paid = 16,
     /**
-     * This extension registration is public, making its visibilty open to the public. This means all tenants have the ability to install this extension. Without this flag the extension will be private and will need to be shared with the tenants that can install it.
+     * This extension registration is public, making its visibility open to the public. This means all tenants have the ability to install this extension. Without this flag the extension will be private and will need to be shared with the tenants that can install it.
      */
     Public = 256,
     /**
-     * This extension has multiple versions active at one time and version discovery should be done usig the defined "Version Discovery" protocol to determine the version available to a specific user or tenant.  @TODO: Link to Version Discovery Protocol.
+     * This extension has multiple versions active at one time and version discovery should be done using the defined "Version Discovery" protocol to determine the version available to a specific user or tenant.  @TODO: Link to Version Discovery Protocol.
      */
     MultiVersion = 512,
     /**
@@ -1041,7 +1041,7 @@ export enum PublishedExtensionFlags {
      */
     Unpublished = 4096,
     /**
-     * The Trial flag indicates that the extension is in Trial version. The flag is right now being used only with respec to Visual Studio extensions.
+     * The Trial flag indicates that the extension is in Trial version. The flag is right now being used only with respect to Visual Studio extensions.
      */
     Trial = 8192,
     /**
@@ -1089,14 +1089,14 @@ export interface PublisherFacts {
  */
 export interface PublisherFilterResult {
     /**
-     * This is the set of appplications that matched the query filter supplied.
+     * This is the set of applications that matched the query filter supplied.
      */
     publishers?: Publisher[];
 }
 
 export enum PublisherFlags {
     /**
-     * This should never be returned, it is used to represent a publisher who's flags havent changed during update calls.
+     * This should never be returned, it is used to represent a publisher who's flags haven't changed during update calls.
      */
     UnChanged = 1073741824,
     /**
@@ -1181,7 +1181,7 @@ export interface PublisherQuery {
      */
     filters?: QueryFilter[];
     /**
-     * The Flags are used to deterine which set of information the caller would like returned for the matched publishers.
+     * The Flags are used to determine which set of information the caller would like returned for the matched publishers.
      */
     flags?: PublisherQueryFlags;
 }
@@ -1382,7 +1382,7 @@ export interface QueryFilter {
      */
     pageSize?: number;
     /**
-     * The paging token is a distinct type of filter and the other filter fields are ignored. The paging token represents the continuation of a previously executed query. The information about where in the result and what fields are being filtered are embeded in the token.
+     * The paging token is a distinct type of filter and the other filter fields are ignored. The paging token represents the continuation of a previously executed query. The information about where in the result and what fields are being filtered are embedded in the token.
      */
     pagingToken?: string;
     /**
@@ -1500,7 +1500,7 @@ export interface Review {
      */
     productVersion?: string;
     /**
-     * Rating procided by the user
+     * Rating provided by the user
      */
     rating?: number;
     /**
@@ -1551,7 +1551,7 @@ export interface ReviewEventProperties {
      */
     isAdminReply?: boolean;
     /**
-     * Flag to record if the reviwe is ignored
+     * Flag to record if the review is ignored
      */
     isIgnored?: boolean;
     /**
@@ -1728,7 +1728,7 @@ export interface ReviewSummary {
      */
     ratingCount?: number;
     /**
-     * Split of count accross rating
+     * Split of count across rating
      */
     ratingSplit?: RatingCountPerRating[];
 }
@@ -1796,7 +1796,7 @@ export enum SortByType {
  */
 export enum SortOrderType {
     /**
-     * Results will be sorted in the default order as per the sorting type defined. The default varies for each type, e.g. for Relevance, default is Descnding, for Title default is Ascending etc.
+     * Results will be sorted in the default order as per the sorting type defined. The default varies for each type, e.g. for Relevance, default is Descending, for Title default is Ascending etc.
      */
     Default = 0,
     /**

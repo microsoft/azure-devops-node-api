@@ -37,7 +37,7 @@ export interface ContributedFeature {
      */
     featureProperties?: { [key: string] : any; };
     /**
-     * Handler for listening to setter calls on feature value. These listeners are only invoked after a successful set has occured
+     * Handler for listening to setter calls on feature value. These listeners are only invoked after a successful set has occurred
      */
     featureStateChangedListeners?: ContributedFeatureListener[];
     /**

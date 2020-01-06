@@ -107,7 +107,7 @@ export interface BacklogLevelConfiguration {
      */
     columnFields?: BacklogColumn[];
     /**
-     * Defaulst Work Item Type for the backlog
+     * Default Work Item Type for the backlog
      */
     defaultWorkItemType?: WorkItemTrackingInterfaces.WorkItemTypeReference;
     /**
@@ -422,7 +422,7 @@ export interface DateRange {
  */
 export interface DeliveryViewData extends PlanViewData {
     /**
-     * Work item child id to parenet id map
+     * Work item child id to parent id map
      */
     childIdToParentIdMap?: { [key: number] : number; };
     /**
@@ -548,6 +548,11 @@ export enum IdentityDisplayFormat {
      * Display Avatar and Full name
      */
     AvatarAndFullName = 2,
+}
+
+export interface ITaskboardColumnMapping {
+    state?: string;
+    workItemType?: string;
 }
 
 /**
@@ -816,6 +821,80 @@ export interface Rule {
     isEnabled?: string;
     name?: string;
     settings?: attribute;
+}
+
+/**
+ * Represents the taskbord column
+ */
+export interface TaskboardColumn {
+    /**
+     * Column ID
+     */
+    id?: string;
+    /**
+     * Work item type states mapped to this column to support auto state update when column is updated.
+     */
+    mappings?: ITaskboardColumnMapping[];
+    /**
+     * Column name
+     */
+    name?: string;
+    /**
+     * Column position relative to other columns in the same board
+     */
+    order?: number;
+}
+
+/**
+ * Represents the state to column mapping per work item type This allows auto state update when the column changes
+ */
+export interface TaskboardColumnMapping {
+    /**
+     * State of the work item type mapped to the column
+     */
+    state?: string;
+    /**
+     * Work Item Type name who's state is mapped to the column
+     */
+    workItemType?: string;
+}
+
+export interface TaskboardColumns {
+    columns?: TaskboardColumn[];
+    /**
+     * Are the columns cutomized for this team
+     */
+    isCustomized?: boolean;
+    /**
+     * Specifies if the referenced WIT and State is valid
+     */
+    isValid?: boolean;
+    /**
+     * Details of validation failure if the state to column mapping is invalid
+     */
+    validationMesssage?: string;
+}
+
+/**
+ * Column value of a work item in the taskboard
+ */
+export interface TaskboardWorkItemColumn {
+    /**
+     * Work item column value in the taskboard
+     */
+    column?: string;
+    /**
+     * Work item column id in the taskboard
+     */
+    columnId?: string;
+    /**
+     * Work Item state value
+     */
+    state?: string;
+    /**
+     * Work item id
+     */
+    workItemId?: number;
 }
 
 /**
@@ -1174,6 +1253,29 @@ export interface UpdatePlan {
      * Type of the plan
      */
     type?: PlanType;
+}
+
+export interface UpdateTaskboardColumn {
+    /**
+     * Column ID, keep it null for new column
+     */
+    id?: string;
+    /**
+     * Work item type states mapped to this column to support auto state update when column is updated.
+     */
+    mappings?: TaskboardColumnMapping[];
+    /**
+     * Column name is required
+     */
+    name?: string;
+    /**
+     * Column position relative to other columns in the same board
+     */
+    order?: number;
+}
+
+export interface UpdateTaskboardWorkItemColumn {
+    newColumn?: string;
 }
 
 /**

@@ -25,7 +25,7 @@ export enum AadLoginPromptOption {
      */
     Login = 1,
     /**
-     * Force the user to select which account they are logging in with instead of automatically picking the user up from the session state. NOTE: This does not work for switching bewtween the variants of a dual-homed user.
+     * Force the user to select which account they are logging in with instead of automatically picking the user up from the session state. NOTE: This does not work for switching between the variants of a dual-homed user.
      */
     SelectAccount = 2,
     /**
@@ -146,7 +146,7 @@ export interface AzureManagementGroup {
      */
     name?: string;
     /**
-     * Id of tenant from which azure management group belogs
+     * Id of tenant from which azure management group belongs
      */
     tenantId?: string;
 }
@@ -735,6 +735,10 @@ export interface EnvironmentInstance {
      * Name of the Environment.
      */
     name?: string;
+    /**
+     * Project information for environment.
+     */
+    project?: ProjectReference;
     resources?: EnvironmentResourceReference[];
 }
 
@@ -766,9 +770,43 @@ export interface EnvironmentResource {
     lastModifiedOn?: Date;
     name?: string;
     /**
+     * Tags of the Environment Resource.
+     */
+    tags?: string[];
+    /**
      * Environment resource type
      */
     type?: EnvironmentResourceType;
+}
+
+/**
+ * EnvironmentResourceDeploymentExecutionRecord.
+ */
+export interface EnvironmentResourceDeploymentExecutionRecord {
+    /**
+     * Id of the Environment
+     */
+    environmentId?: number;
+    /**
+     * Finish time of the environment resource deployment execution
+     */
+    finishTime?: Date;
+    /**
+     * Id of the Environment deployment execution history record
+     */
+    requestId?: number;
+    /**
+     * Resource Id
+     */
+    resourceId?: number;
+    /**
+     * Result of the environment deployment execution
+     */
+    result?: TaskResult;
+    /**
+     * Start time of the environment resource deployment execution
+     */
+    startTime?: Date;
 }
 
 /**
@@ -783,6 +821,10 @@ export interface EnvironmentResourceReference {
      * Name of the resource.
      */
     name?: string;
+    /**
+     * Tags of the Environment Resource Reference.
+     */
+    tags?: string[];
     /**
      * Type of the resource.
      */
@@ -941,7 +983,27 @@ export interface KubernetesResourceCreateParameters {
     clusterName?: string;
     name?: string;
     namespace?: string;
+    /**
+     * Tags of the kubernetes resource.
+     */
+    tags?: string[];
+}
+
+export interface KubernetesResourceCreateParametersExistingEndpoint extends KubernetesResourceCreateParameters {
     serviceEndpointId?: string;
+}
+
+export interface KubernetesResourceCreateParametersNewEndpoint extends KubernetesResourceCreateParameters {
+    endpoint?: ServiceEndpoint;
+}
+
+export interface KubernetesResourcePatchParameters {
+    authorizationParameters?: { [key: string] : string; };
+    /**
+     * Provider type (CustomProvider or AzureKubernetesServiceProvider) of the resource to be updated
+     */
+    providerType?: string;
+    resourceId?: number;
 }
 
 export enum MachineGroupActionFilter {
@@ -1157,6 +1219,7 @@ export interface ResourceLimit {
 
 export interface ResourcesHubData {
     continuationToken?: string;
+    hasProjectLevelManagePermission?: boolean;
     resourceFilterOptions?: ResourceFilterOptions;
     resourceFilters?: ResourceFilters;
     resourceItems?: ResourceItem[];
@@ -1238,7 +1301,7 @@ export interface ServiceEndpoint {
      */
     id?: string;
     /**
-     * EndPoint state indictor
+     * EndPoint state indicator
      */
     isReady?: boolean;
     /**
@@ -1517,7 +1580,7 @@ export interface TaskAgentCloudRequest {
 
 export interface TaskAgentCloudType {
     /**
-     * Gets or sets the display name of agnet cloud type.
+     * Gets or sets the display name of agent cloud type.
      */
     displayName?: string;
     /**
@@ -1707,7 +1770,7 @@ export interface TaskAgentMessage {
      */
     body?: string;
     /**
-     * Gets or sets the intialization vector used to encrypt this message.
+     * Gets or sets the initialization vector used to encrypt this message.
      */
     iV?: number[];
     /**
@@ -2261,7 +2324,7 @@ export interface TaskDefinitionEndpoint {
      */
     keySelector?: string;
     /**
-     * The scope as understood by Connected Services. Essentialy, a project-id for now.
+     * The scope as understood by Connected Services. Essentially, a project-id for now.
      */
     scope?: string;
     /**
@@ -2427,6 +2490,25 @@ export enum TaskGroupExpands {
     Tasks = 2,
 }
 
+export interface TaskGroupPublishPreviewParameter extends TaskGroupUpdatePropertiesBase {
+    /**
+     * This is to disable previous versions of task group upon publish
+     */
+    disablePriorVersions?: boolean;
+    /**
+     * Denotes if task group is in preview
+     */
+    preview?: boolean;
+    /**
+     * This is the revision of task group that is getting published
+     */
+    revision?: number;
+    /**
+     * This is the version of task group that is getting published
+     */
+    version?: TaskVersion;
+}
+
 /**
  * Specifies the desired ordering of taskGroups.
  */
@@ -2439,6 +2521,13 @@ export enum TaskGroupQueryOrder {
      * Order by createdon descending.
      */
     CreatedOnDescending = 1,
+}
+
+export interface TaskGroupRestoreParameter extends TaskGroupUpdatePropertiesBase {
+    /**
+     * This is to restore deleted Task Group
+     */
+    restore?: boolean;
 }
 
 export interface TaskGroupRevision {
@@ -2555,6 +2644,13 @@ export interface TaskGroupUpdateParameter {
      * Sets version of the task group.
      */
     version?: TaskVersion;
+}
+
+export interface TaskGroupUpdatePropertiesBase {
+    /**
+     * Comment for this update request
+     */
+    comment?: string;
 }
 
 export interface TaskHubLicenseDetails {
@@ -2785,6 +2881,7 @@ export interface TimelineAttempt {
 }
 
 export interface TimelineRecord {
+    agentSpecification?: any;
     attempt?: number;
     changeId?: number;
     currentOperation?: string;
@@ -2802,6 +2899,7 @@ export interface TimelineRecord {
     parentId?: string;
     percentComplete?: number;
     previousAttempts?: TimelineAttempt[];
+    queueId?: number;
     refName?: string;
     result?: TaskResult;
     resultCode?: string;
@@ -2816,6 +2914,8 @@ export interface TimelineRecord {
 
 export interface TimelineRecordFeedLinesWrapper {
     count?: number;
+    endLine?: number;
+    startLine?: number;
     stepId?: string;
     value?: string[];
 }
@@ -2896,6 +2996,10 @@ export interface VariableGroup {
      */
     type?: string;
     /**
+     * all project references where the variable group is shared with other projects.
+     */
+    variableGroupProjectReferences?: VariableGroupProjectReference[];
+    /**
      * Gets or sets variables contained in the variable group.
      */
     variables?: { [key: string] : VariableValue; };
@@ -2924,10 +3028,29 @@ export interface VariableGroupParameters {
      * Sets type of the variable group.
      */
     type?: string;
+    variableGroupProjectReferences?: VariableGroupProjectReference[];
     /**
      * Sets variables contained in the variable group.
      */
     variables?: { [key: string] : VariableValue; };
+}
+
+/**
+ * A variable group reference is a shallow reference to variable group.
+ */
+export interface VariableGroupProjectReference {
+    /**
+     * Gets or sets description of the variable group.
+     */
+    description?: string;
+    /**
+     * Gets or sets name of the variable group.
+     */
+    name?: string;
+    /**
+     * Gets or sets project reference of the variable group.
+     */
+    projectReference?: ProjectReference;
 }
 
 /**
@@ -2951,6 +3074,7 @@ export enum VariableGroupQueryOrder {
 }
 
 export interface VariableValue {
+    isReadOnly?: boolean;
     isSecret?: boolean;
     value?: string;
 }
@@ -2967,6 +3091,14 @@ export interface VirtualMachineGroup extends EnvironmentResource {
 
 export interface VirtualMachineGroupCreateParameters {
     name?: string;
+}
+
+export interface VirtualMachineResource extends EnvironmentResource {
+    agent?: TaskAgent;
+}
+
+export interface VirtualMachineResourceCreateParameters {
+    virtualMachineResource?: VirtualMachineResource;
 }
 
 export var TypeInfo = {
@@ -3073,6 +3205,8 @@ export var TypeInfo = {
     EnvironmentInstance: <any>{
     },
     EnvironmentResource: <any>{
+    },
+    EnvironmentResourceDeploymentExecutionRecord: <any>{
     },
     EnvironmentResourceReference: <any>{
     },
@@ -3392,6 +3526,10 @@ export var TypeInfo = {
     },
     VirtualMachineGroup: <any>{
     },
+    VirtualMachineResource: <any>{
+    },
+    VirtualMachineResourceCreateParameters: <any>{
+    },
 };
 
 TypeInfo.AgentChangeEvent.fields = {
@@ -3556,6 +3694,18 @@ TypeInfo.EnvironmentResource.fields = {
     },
     type: {
         enumType: TypeInfo.EnvironmentResourceType
+    }
+};
+
+TypeInfo.EnvironmentResourceDeploymentExecutionRecord.fields = {
+    finishTime: {
+        isDate: true,
+    },
+    result: {
+        enumType: TypeInfo.TaskResult
+    },
+    startTime: {
+        isDate: true,
     }
 };
 
@@ -4113,5 +4263,26 @@ TypeInfo.VirtualMachineGroup.fields = {
     },
     type: {
         enumType: TypeInfo.EnvironmentResourceType
+    }
+};
+
+TypeInfo.VirtualMachineResource.fields = {
+    agent: {
+        typeInfo: TypeInfo.TaskAgent
+    },
+    createdOn: {
+        isDate: true,
+    },
+    lastModifiedOn: {
+        isDate: true,
+    },
+    type: {
+        enumType: TypeInfo.EnvironmentResourceType
+    }
+};
+
+TypeInfo.VirtualMachineResourceCreateParameters.fields = {
+    virtualMachineResource: {
+        typeInfo: TypeInfo.VirtualMachineResource
     }
 };

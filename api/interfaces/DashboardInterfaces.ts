@@ -18,6 +18,10 @@
 export interface Dashboard {
     _links?: any;
     /**
+     * Entity to which the dashboard is scoped.
+     */
+    dashboardScope?: DashboardScope;
+    /**
      * Description of the dashboard.
      */
     description?: string;
@@ -25,6 +29,10 @@ export interface Dashboard {
      * Server defined version tracking value, used for edit collision detection.
      */
     eTag?: string;
+    /**
+     * ID of the group for a dashboard. For team-scoped dashboards, this is the unique identifier for the team associated with the dashboard. For project-scoped dashboards this property is empty.
+     */
+    groupId?: string;
     /**
      * ID of the Dashboard. Provided by service at creation time.
      */
@@ -34,7 +42,7 @@ export interface Dashboard {
      */
     name?: string;
     /**
-     * ID of the Owner for a dashboard. For any legacy dashboards, this would be the unique identifier for the team associated with the dashboard.
+     * ID of the owner for a dashboard. For team-scoped dashboards, this is the unique identifier for the team associated with the dashboard. For project-scoped dashboards, this is the unique identifier for the user identity associated with the dashboard.
      */
     ownerId?: string;
     /**
@@ -73,7 +81,7 @@ export interface DashboardGroup {
 }
 
 /**
- * Dashboard group entry, wraping around Dashboard (needed?)
+ * Dashboard group entry, wrapping around Dashboard (needed?)
  */
 export interface DashboardGroupEntry extends Dashboard {
 }
@@ -91,8 +99,18 @@ export interface DashboardResponse extends DashboardGroupEntry {
  * identifies the scope of dashboard storage and permissions.
  */
 export enum DashboardScope {
+    /**
+     * [DEPRECATED] Dashboard is scoped to the collection user.
+     */
     Collection_User = 0,
+    /**
+     * Dashboard is scoped to the team.
+     */
     Project_Team = 1,
+    /**
+     * Dashboard is scoped to the project.
+     */
+    Project = 2,
 }
 
 export enum GroupMemberPermission {
@@ -251,6 +269,10 @@ export interface WidgetMetadata {
      */
     isVisibleFromCatalog?: boolean;
     /**
+     * Keywords associated with this widget, non-filterable and invisible
+     */
+    keywords?: string[];
+    /**
      * Opt-in properties for customizing widget presentation in a "lightbox" dialog.
      */
     lightboxOptions?: LightboxOptions;
@@ -270,6 +292,10 @@ export interface WidgetMetadata {
      * Data contract required for the widget to function and to work in its container.
      */
     supportedScopes?: WidgetScope[];
+    /**
+     * Tags associated with this widget, visible on each widget and filterable.
+     */
+    tags?: string[];
     /**
      * Contribution target IDs
      */
@@ -330,12 +356,21 @@ export interface WidgetTypesResponse {
 }
 
 export var TypeInfo = {
+    Dashboard: <any>{
+    },
     DashboardGroup: <any>{
+    },
+    DashboardGroupEntry: <any>{
+    },
+    DashboardGroupEntryResponse: <any>{
+    },
+    DashboardResponse: <any>{
     },
     DashboardScope: {
         enumValues: {
             "collection_User": 0,
-            "project_Team": 1
+            "project_Team": 1,
+            "project": 2
         }
     },
     GroupMemberPermission: {
@@ -356,9 +391,13 @@ export var TypeInfo = {
             "managePermissions": 16
         }
     },
+    Widget: <any>{
+    },
     WidgetMetadata: <any>{
     },
     WidgetMetadataResponse: <any>{
+    },
+    WidgetResponse: <any>{
     },
     WidgetScope: {
         enumValues: {
@@ -366,16 +405,68 @@ export var TypeInfo = {
             "project_Team": 1
         }
     },
+    WidgetsVersionedList: <any>{
+    },
     WidgetTypesResponse: <any>{
     },
 };
 
+TypeInfo.Dashboard.fields = {
+    dashboardScope: {
+        enumType: TypeInfo.DashboardScope
+    },
+    widgets: {
+        isArray: true,
+        typeInfo: TypeInfo.Widget
+    }
+};
+
 TypeInfo.DashboardGroup.fields = {
+    dashboardEntries: {
+        isArray: true,
+        typeInfo: TypeInfo.DashboardGroupEntry
+    },
     permission: {
         enumType: TypeInfo.GroupMemberPermission
     },
     teamDashboardPermission: {
         enumType: TypeInfo.TeamDashboardPermission
+    }
+};
+
+TypeInfo.DashboardGroupEntry.fields = {
+    dashboardScope: {
+        enumType: TypeInfo.DashboardScope
+    },
+    widgets: {
+        isArray: true,
+        typeInfo: TypeInfo.Widget
+    }
+};
+
+TypeInfo.DashboardGroupEntryResponse.fields = {
+    dashboardScope: {
+        enumType: TypeInfo.DashboardScope
+    },
+    widgets: {
+        isArray: true,
+        typeInfo: TypeInfo.Widget
+    }
+};
+
+TypeInfo.DashboardResponse.fields = {
+    dashboardScope: {
+        enumType: TypeInfo.DashboardScope
+    },
+    widgets: {
+        isArray: true,
+        typeInfo: TypeInfo.Widget
+    }
+};
+
+TypeInfo.Widget.fields = {
+    dashboard: {
+        typeInfo: TypeInfo.Dashboard
     }
 };
 
@@ -389,6 +480,19 @@ TypeInfo.WidgetMetadata.fields = {
 TypeInfo.WidgetMetadataResponse.fields = {
     widgetMetadata: {
         typeInfo: TypeInfo.WidgetMetadata
+    }
+};
+
+TypeInfo.WidgetResponse.fields = {
+    dashboard: {
+        typeInfo: TypeInfo.Dashboard
+    }
+};
+
+TypeInfo.WidgetsVersionedList.fields = {
+    widgets: {
+        isArray: true,
+        typeInfo: TypeInfo.Widget
     }
 };
 

@@ -302,14 +302,41 @@ export interface GroupSubscriptionChannel extends SubscriptionChannelWithAddress
  * Abstraction interface for the diagnostic log.  Primarily for deserialization.
  */
 export interface INotificationDiagnosticLog {
+    /**
+     * Identifier used for correlating to other diagnostics that may have been recorded elsewhere.
+     */
     activityId?: string;
+    /**
+     * Description of what subscription or notification job is being logged.
+     */
     description?: string;
+    /**
+     * Time the log ended.
+     */
     endTime?: Date;
+    /**
+     * Unique instance identifier.
+     */
     id?: string;
+    /**
+     * Type of information being logged.
+     */
     logType?: string;
+    /**
+     * List of log messages.
+     */
     messages?: NotificationDiagnosticLogMessage[];
+    /**
+     * Dictionary of log properties and settings for the job.
+     */
     properties?: { [key: string] : string; };
+    /**
+     * This identifier depends on the logType.  For notification jobs, this will be the job Id. For subscription tracing, this will be a special root Guid with the subscription Id encoded.
+     */
     source?: string;
+    /**
+     * Time the log started.
+     */
     startTime?: Date;
 }
 
@@ -671,12 +698,21 @@ export interface NotificationSubscriber {
  * Delivery preference for a subscriber. Indicates how the subscriber should be notified.
  */
 export enum NotificationSubscriberDeliveryPreference {
+    /**
+     * Do not send notifications by default. Note: notifications can still be delivered to this subscriber, for example via a custom subscription.
+     */
     NoDelivery = -1,
     /**
      * Deliver notifications to the subscriber's preferred email address.
      */
     PreferredEmailAddress = 1,
+    /**
+     * Deliver notifications to each member of the group representing the subscriber. Only applicable when the subscriber is a group.
+     */
     EachMember = 2,
+    /**
+     * Use default
+     */
     UseDefault = 3,
 }
 
@@ -857,7 +893,7 @@ export interface OperatorConstraint {
 
 export interface ProcessedEvent {
     /**
-     * All of the users that were associtated with this event and their role.
+     * All of the users that were associated with this event and their role.
      */
     actors?: VSSInterfaces.EventActor[];
     allowedChannels?: string;
@@ -959,9 +995,21 @@ export interface SubscriptionChannelWithAddress {
     useCustomAddress?: boolean;
 }
 
+/**
+ * Contains all the diagnostics settings for a subscription.
+ */
 export interface SubscriptionDiagnostics {
+    /**
+     * Diagnostics settings for retaining delivery results.  Used for Service Hooks subscriptions.
+     */
     deliveryResults?: SubscriptionTracing;
+    /**
+     * Diagnostics settings for troubleshooting notification delivery.
+     */
     deliveryTracing?: SubscriptionTracing;
+    /**
+     * Diagnostics settings for troubleshooting event matching.
+     */
     evaluationTracing?: SubscriptionTracing;
 }
 
@@ -991,7 +1039,7 @@ export interface SubscriptionEvaluationRequest {
 }
 
 /**
- * Ecapsulates the subscription evaluation results. It defines the Date Interval that was used, number of events evaluated and events and notifications results
+ * Encapsulates the subscription evaluation results. It defines the Date Interval that was used, number of events evaluated and events and notifications results
  */
 export interface SubscriptionEvaluationResult {
     /**
@@ -1311,7 +1359,13 @@ export interface SubscriptionTraceNotificationDeliveryLog extends SubscriptionTr
     notifications?: DiagnosticNotification[];
 }
 
+/**
+ * Data controlling a single diagnostic setting for a subscription.
+ */
 export interface SubscriptionTracing {
+    /**
+     * Indicates whether the diagnostic tracing is enabled or not.
+     */
     enabled: boolean;
     /**
      * Trace until the specified end date.
@@ -1349,13 +1403,31 @@ export interface UnsupportedSubscriptionChannel {
     type?: string;
 }
 
+/**
+ * Parameters to update diagnostics settings for a subscription.
+ */
 export interface UpdateSubscripitonDiagnosticsParameters {
+    /**
+     * Diagnostics settings for retaining delivery results.  Used for Service Hooks subscriptions.
+     */
     deliveryResults?: UpdateSubscripitonTracingParameters;
+    /**
+     * Diagnostics settings for troubleshooting notification delivery.
+     */
     deliveryTracing?: UpdateSubscripitonTracingParameters;
+    /**
+     * Diagnostics settings for troubleshooting event matching.
+     */
     evaluationTracing?: UpdateSubscripitonTracingParameters;
 }
 
+/**
+ * Parameters to update a specific diagnostic setting.
+ */
 export interface UpdateSubscripitonTracingParameters {
+    /**
+     * Indicates whether to enable to disable the diagnostic tracing.
+     */
     enabled: boolean;
 }
 

@@ -17,6 +17,10 @@
  */
 export interface AddProcessWorkItemTypeFieldRequest {
     /**
+     * The list of field allowed values.
+     */
+    allowedValues?: string[];
+    /**
      * Allow setting field value to a group identity. Only applies to identity fields.
      */
     allowGroups?: boolean;
@@ -793,6 +797,10 @@ export interface ProcessWorkItemType {
  */
 export interface ProcessWorkItemTypeField {
     /**
+     * The list of field allowed values.
+     */
+    allowedValues?: any[];
+    /**
      * Allow setting field value to a group identity. Only applies to identity fields.
      */
     allowGroups?: boolean;
@@ -832,6 +840,24 @@ export interface ProcessWorkItemTypeField {
      * Resource URL of the field.
      */
     url?: string;
+}
+
+/**
+ * Expand options for the work item field(s) request.
+ */
+export enum ProcessWorkItemTypeFieldsExpandLevel {
+    /**
+     * Includes only basic properties of the field.
+     */
+    None = 0,
+    /**
+     * Includes allowed values for the field.
+     */
+    AllowedValues = 1,
+    /**
+     * Includes allowed values and dependent fields of the field.
+     */
+    All = 2,
 }
 
 /**
@@ -939,6 +965,10 @@ export enum RuleActionType {
      * Use the current user to set the value of the target field.
      */
     CopyFromServerCurrentUser = 13,
+    /**
+     * Hides target field from the form. This is a server side only action.
+     */
+    HideTargetField = 14,
 }
 
 /**
@@ -991,6 +1021,8 @@ export enum RuleConditionType {
     WhenWorkItemIsCreated = 8,
     WhenValueIsDefined = 9,
     WhenValueIsNotDefined = 10,
+    WhenCurrentUserIsMemberOfGroup = 11,
+    WhenCurrentUserIsNotMemberOfGroup = 12,
 }
 
 /**
@@ -1047,6 +1079,10 @@ export interface UpdateProcessRuleRequest extends CreateProcessRuleRequest {
  * Class to describe a request that updates a field's properties in a work item type.
  */
 export interface UpdateProcessWorkItemTypeFieldRequest {
+    /**
+     * The list of field allowed values.
+     */
+    allowedValues?: string[];
     /**
      * Allow setting field value to a group identity. Only applies to identity fields.
      */
@@ -1328,6 +1364,13 @@ export var TypeInfo = {
     },
     ProcessWorkItemTypeField: <any>{
     },
+    ProcessWorkItemTypeFieldsExpandLevel: {
+        enumValues: {
+            "none": 0,
+            "allowedValues": 1,
+            "all": 2
+        }
+    },
     RuleAction: <any>{
     },
     RuleActionType: {
@@ -1344,7 +1387,8 @@ export var TypeInfo = {
             "copyFromField": 10,
             "setValueToEmpty": 11,
             "copyFromServerClock": 12,
-            "copyFromServerCurrentUser": 13
+            "copyFromServerCurrentUser": 13,
+            "hideTargetField": 14
         }
     },
     RuleCondition: <any>{
@@ -1360,7 +1404,9 @@ export var TypeInfo = {
             "whenStateChangedFromAndTo": 7,
             "whenWorkItemIsCreated": 8,
             "whenValueIsDefined": 9,
-            "whenValueIsNotDefined": 10
+            "whenValueIsNotDefined": 10,
+            "whenCurrentUserIsMemberOfGroup": 11,
+            "whenCurrentUserIsNotMemberOfGroup": 12
         }
     },
     UpdateProcessRuleRequest: <any>{

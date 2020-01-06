@@ -143,6 +143,10 @@ export interface IdentityDescriptor {
     identityType?: string;
 }
 
+export interface IdentityRightsTransferData {
+    userPrincipalNameMappings?: { [key: string] : string; };
+}
+
 export interface IdentityScope {
     administrators?: IdentityDescriptor;
     id: string;
@@ -202,6 +206,11 @@ export interface IdentityUpdateData {
     id?: string;
     index?: number;
     updated?: boolean;
+}
+
+export interface PagedIdentities {
+    continuationToken?: string[];
+    identities?: Identity[];
 }
 
 export enum QueryMembership {

@@ -162,6 +162,24 @@ export interface WikiPageCreateOrUpdateParameters {
 }
 
 /**
+ * Defines a page with its metedata in a wiki.
+ */
+export interface WikiPageDetail {
+    /**
+     * When present, permanent identifier for the wiki page
+     */
+    id?: number;
+    /**
+     * Path of the wiki page.
+     */
+    path?: string;
+    /**
+     * Path of the wiki page.
+     */
+    viewStats?: WikiPageStat[];
+}
+
+/**
  * Request contract for Wiki Page Move.
  */
 export interface WikiPageMove extends WikiPageMoveParameters {
@@ -215,6 +233,38 @@ export interface WikiPageResponse {
      * Defines properties for wiki page.
      */
     page?: WikiPage;
+}
+
+/**
+ * Contract encapsulating parameters for the pages batch.
+ */
+export interface WikiPagesBatchRequest {
+    /**
+     * If the list of page data returned is not complete, a continuation token to query next batch of pages is included in the response header as "x-ms-continuationtoken". Omit this parameter to get the first batch of Wiki Page Data.
+     */
+    continuationToken?: string;
+    /**
+     * last N days from the current day for which page views is to be returned. It's inclusive of current day.
+     */
+    pageViewsForDays?: number;
+    /**
+     * Total count of pages on a wiki to return.
+     */
+    top?: number;
+}
+
+/**
+ * Defines properties for wiki page stat.
+ */
+export interface WikiPageStat {
+    /**
+     * the count of the stat for the Day
+     */
+    count?: number;
+    /**
+     * Day of the stat
+     */
+    day?: Date;
 }
 
 /**
@@ -311,6 +361,10 @@ export var TypeInfo = {
     },
     WikiCreateParametersV2: <any>{
     },
+    WikiPageDetail: <any>{
+    },
+    WikiPageStat: <any>{
+    },
     WikiPageViewStats: <any>{
     },
     WikiType: {
@@ -343,6 +397,19 @@ TypeInfo.WikiCreateParametersV2.fields = {
     },
     version: {
         typeInfo: GitInterfaces.TypeInfo.GitVersionDescriptor
+    }
+};
+
+TypeInfo.WikiPageDetail.fields = {
+    viewStats: {
+        isArray: true,
+        typeInfo: TypeInfo.WikiPageStat
+    }
+};
+
+TypeInfo.WikiPageStat.fields = {
+    day: {
+        isDate: true,
     }
 };
 
