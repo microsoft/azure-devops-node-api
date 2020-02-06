@@ -131,7 +131,7 @@ $ npm run samples -- http
 
 ## API and TFS Mapping
 
-Below you'll find a quick mapping of azure-devops-node-api versions and their corresponding TFS releases. All API versions will work on the server version mentioned as well as later versions.
+Below you'll find a quick mapping of azure-devops-node-api versions and their corresponding TFS releases. All API versions will work on the TFS version mentioned as well as later TFS versions.
 
  |**TFS Version** | **Node API VERSION**|
  |-------------------|------------------|
