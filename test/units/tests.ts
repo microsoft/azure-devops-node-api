@@ -234,14 +234,14 @@ describe('WebApi Units', function () {
     const nodeApiVersion: string = JSON.parse(fs.readFileSync('package.json', 'utf8')).version;
 
     it('sets the user agent correctly when request settings are specified', async () => {
-        const myWebApi: WebApi.WebApi = new WebApi.WebApi('microsoft.com', WebApi.getBasicHandler('user', 'password'),
+        const myWebApi: WebApi.WebApi = new WebApi.WebApi('https://microsoft.com', WebApi.getBasicHandler('user', 'password'),
                                                           undefined, {productName: 'name', productVersion: '1.2.3'});
         const userAgent: string = `name/1.2.3 (${nodeApiName} ${nodeApiVersion}; ${osName} ${osVersion})`;
         assert.equal(userAgent, myWebApi.rest.client.userAgent, 'User agent should be: ' + userAgent);
     });
 
     it('sets the user agent correctly when request settings are not specified', async () => {
-        const myWebApi: WebApi.WebApi = new WebApi.WebApi('microsoft.com', WebApi.getBasicHandler('user', 'password'), undefined);
+        const myWebApi: WebApi.WebApi = new WebApi.WebApi('https://microsoft.com', WebApi.getBasicHandler('user', 'password'), undefined);
         const userAgent: string = `${nodeApiName}/${nodeApiVersion} (${osName} ${osVersion})`;
         assert.equal(userAgent, myWebApi.rest.client.userAgent, 'User agent should be: ' + userAgent);
     });
