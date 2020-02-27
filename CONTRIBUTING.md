@@ -18,7 +18,7 @@ You should test with node 4.x, 6.x and 8.x LTS.  We recommend using nvm ([linux]
 To run units:
 
 ```
-npm units
+npm run units
 ```
 
 To run all tests:
