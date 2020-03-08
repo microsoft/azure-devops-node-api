@@ -3,7 +3,12 @@ steps:
   inputs:
     versionSpec: "8.x"
   displayName: Install node 8
-
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    appType: 'webApp'
+    WebAppName: 
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
 # install dependencies
 - script: npm install
   displayName: npm install
