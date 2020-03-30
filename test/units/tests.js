@@ -270,7 +270,7 @@ describe('WebApi Units', function () {
         assert.equal(myWebApi.isNoProxyHost('https://dev.azure.com/myproject'), true);
         assert.equal(myWebApi.isNoProxyHost('https://my-tfs-instance.host/myproject'), true);
         assert.equal(myWebApi.isNoProxyHost('https://my-other-tfs-instance.host/myproject'), false);
-        assert.equal(myWebApi.isNoProxyHost('https://tfs.mydomain.com/mycollection'), false);
+        assert.equal(myWebApi.isNoProxyHost('https://tfs.mydomain.com/mycollection'), true);
         assert.equal(myWebApi.isNoProxyHost('https://tfs.ad.mydomain.com/mycollection'), true);
     }));
 });
