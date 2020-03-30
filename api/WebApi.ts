@@ -366,12 +366,20 @@ export class WebApi {
         if (!process.env.no_proxy) {
             return false;
         }
+
         const noProxyDomains = (process.env.no_proxy || '')
         .split(',')
         .map(v => v.toLowerCase());
         const serverUrl = url.parse(_url).host.toLowerCase();
-        // return true if the no_proxy includes the host
-        return noProxyDomains.indexOf(serverUrl) !== -1;
+
+        for (const domain of noProxyDomains) {
+            // if the domain of the server is listed, return true
+            if (serverUrl.endsWith(domain)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private async _getResourceAreaUrl(serverUrl: string, resourceId: string): Promise<string> {
