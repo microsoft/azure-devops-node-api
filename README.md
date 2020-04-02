@@ -126,7 +126,7 @@ $ npm run samples
 Run a specific sample:
 
 ```bash
-$ npm run samples -- http
+$ npm run samples -- projectAnalysis
 ```
 
 ## API and TFS Mapping
