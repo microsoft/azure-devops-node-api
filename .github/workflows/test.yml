@@ -1,0 +1,22 @@
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Supported versions https://github.com/nodejs/Release#release-schedule
+        node: [10, 12, 13]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install node ${{ matrix.node}}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Run tests
+        run: npm test
