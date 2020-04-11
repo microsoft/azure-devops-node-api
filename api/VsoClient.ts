@@ -43,12 +43,10 @@ export class VsoClient {
     private _initializationPromise: Promise<any>;
 
     restClient: restm.RestClient;
-    baseUrl: string;
-    basePath: string;
+    baseUrl: URL;
 
     constructor(baseUrl: string, restClient: restm.RestClient) {
-        this.baseUrl = baseUrl;
-        this.basePath = new URL(baseUrl).pathname;
+        this.baseUrl = new URL(baseUrl);
         this.restClient = restClient;
         this._locationsByAreaPromises = {};
         this._initializationPromise = Promise.resolve(true);
@@ -180,7 +178,7 @@ export class VsoClient {
     }
 
     public resolveUrl(relativeUrl: string): string {
-        return new URL(path.resolve(this.basePath, relativeUrl), this.baseUrl).toString();
+        return new URL(relativeUrl, this.baseUrl).toString();
     }
 
     private queryParamsToStringHelper(queryParams: any, prefix: string): string {
@@ -238,7 +236,7 @@ export class VsoClient {
 
         // Resolve the relative url with the base
         return new URL(
-          path.resolve(this.basePath, relativeUrl),
+          relativeUrl,
           this.baseUrl
         ).toString();
     }
