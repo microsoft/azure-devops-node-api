@@ -3,7 +3,6 @@
 //*******************************************************************************************************
 
 /// Imports of 3rd Party ///
-import url = require("url");
 import path = require("path");
 /// Import base rest class ///
 import * as restm from 'typed-rest-client/RestClient';
@@ -49,7 +48,7 @@ export class VsoClient {
 
     constructor(baseUrl: string, restClient: restm.RestClient) {
         this.baseUrl = baseUrl;
-        this.basePath = url.parse(baseUrl).pathname;
+        this.basePath = new URL(baseUrl).pathname;
         this.restClient = restClient;
         this._locationsByAreaPromises = {};
         this._initializationPromise = Promise.resolve(true);
@@ -181,7 +180,7 @@ export class VsoClient {
     }
 
     public resolveUrl(relativeUrl: string): string {
-        return url.resolve(this.baseUrl, path.join(this.basePath, relativeUrl));
+        return new URL(path.resolve(this.basePath, relativeUrl), this.baseUrl).toString();
     }
 
     private queryParamsToStringHelper(queryParams: any, prefix: string): string {
@@ -238,7 +237,10 @@ export class VsoClient {
         }
 
         // Resolve the relative url with the base
-        return url.resolve(this.baseUrl, path.join(this.basePath, relativeUrl));
+        return new URL(
+          path.resolve(this.basePath, relativeUrl),
+          this.baseUrl
+        ).toString();
     }
 
     // helper method copied directly from VSS\WebAPI\restclient.ts

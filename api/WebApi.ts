@@ -39,7 +39,6 @@ import lim = require("./interfaces/LocationsInterfaces");
 import crypto = require('crypto');
 import fs = require('fs');
 import os = require('os');
-import url = require('url');
 import path = require('path');
 
 const isBrowser: boolean = typeof window !== 'undefined';
@@ -369,7 +368,7 @@ export class WebApi {
         const noProxyDomains = (process.env.no_proxy || '')
         .split(',')
         .map(v => v.toLowerCase());
-        const serverUrl = url.parse(_url).host.toLowerCase();
+        const serverUrl = new URL(_url).host.toLowerCase();
         // return true if the no_proxy includes the host
         return noProxyDomains.indexOf(serverUrl) !== -1;
     }
