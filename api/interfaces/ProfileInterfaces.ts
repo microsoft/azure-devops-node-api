@@ -60,6 +60,9 @@ export interface GeoRegion {
 }
 
 export interface Profile {
+    displayName: string;
+    publicAlias: string;
+    emailAddress: string;
     applicationContainer: AttributesContainer;
     coreAttributes: { [key: string] : CoreProfileAttribute; };
     coreRevision: number;
