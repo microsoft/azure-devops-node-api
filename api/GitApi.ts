@@ -4249,7 +4249,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Edit a reviewer entry. These fields are patchable: isFlagged
+     * Edit a reviewer entry. These fields are patchable: isFlagged, vote
      * 
      * @param {GitInterfaces.IdentityRefWithVote} reviewer - Reviewer data.<br />If the reviewer's ID is included here, it must match the reviewerID parameter.
      * @param {string} repositoryId - The repository ID of the pull request’s target branch.
@@ -4285,7 +4285,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                                                                                 verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote>;
-                res = await this.rest.update<GitInterfaces.IdentityRefWithVote>(url, reviewer, options);
+                res = await this.rest.replace<GitInterfaces.IdentityRefWithVote>(url, reviewer, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
