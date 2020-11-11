@@ -47,8 +47,8 @@ const isBrowser: boolean = typeof window !== 'undefined';
  * Methods to return handler objects (see handlers folder)
  */
 
-export function getBasicHandler(username: string, password: string): VsoBaseInterfaces.IRequestHandler {
-    return new basicm.BasicCredentialHandler(username, password);
+export function getBasicHandler(username: string, password: string, allowCrossOriginAuthentication?: boolean): VsoBaseInterfaces.IRequestHandler {
+    return new basicm.BasicCredentialHandler(username, password, allowCrossOriginAuthentication);
 }
 
 export function getNtlmHandler(username: string, password: string, workstation?: string, domain?: string): VsoBaseInterfaces.IRequestHandler {
