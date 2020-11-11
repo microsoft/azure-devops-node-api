@@ -55,20 +55,20 @@ export function getNtlmHandler(username: string, password: string, workstation?:
     return new ntlmm.NtlmCredentialHandler(username, password, workstation, domain);
 }
 
-export function getBearerHandler(token: string): VsoBaseInterfaces.IRequestHandler {
-    return new bearm.BearerCredentialHandler(token);
+export function getBearerHandler(token: string, allowCrossOriginAuthentication?: boolean): VsoBaseInterfaces.IRequestHandler {
+    return new bearm.BearerCredentialHandler(token, allowCrossOriginAuthentication);
 }
 
-export function getPersonalAccessTokenHandler(token: string): VsoBaseInterfaces.IRequestHandler {
-    return new patm.PersonalAccessTokenCredentialHandler(token);
+export function getPersonalAccessTokenHandler(token: string, allowCrossOriginAuthentication?: boolean): VsoBaseInterfaces.IRequestHandler {
+    return new patm.PersonalAccessTokenCredentialHandler(token, allowCrossOriginAuthentication);
 }
 
-export function getHandlerFromToken(token: string): VsoBaseInterfaces.IRequestHandler {
+export function getHandlerFromToken(token: string, allowCrossOriginAuthentication?: boolean): VsoBaseInterfaces.IRequestHandler {
     if (token.length === 52) {
-        return getPersonalAccessTokenHandler(token);
+        return getPersonalAccessTokenHandler(token, allowCrossOriginAuthentication);
     }
     else {
-        return getBearerHandler(token);
+        return getBearerHandler(token, allowCrossOriginAuthentication);
     }
 }
 

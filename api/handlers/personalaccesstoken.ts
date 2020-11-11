@@ -5,7 +5,7 @@ import ifm = require('../interfaces/common/VsoBaseInterfaces');
 import * as resthandlers from 'typed-rest-client/Handlers'; 
 
 export class PersonalAccessTokenCredentialHandler extends resthandlers.PersonalAccessTokenCredentialHandler implements ifm.IRequestHandler {
-    constructor(token: string) {
-        super(token);
+    constructor(token: string, allowCrossOriginAuthentication?: boolean) {
+        super(token, allowCrossOriginAuthentication);
     }
 }
