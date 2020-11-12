@@ -14,3 +14,14 @@ steps:
 
 - script: npm run units
   displayName: Run unit tests
+
+# For CI runs on master, automatically publish packages
+- bash: |
+      echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+      cd _build
+      npm publish || true # Ignore publish failures, usually will happen because package already exists
+  displayName: (azure-pipelines-task-lib) npm publish
+  workingDirectory: node
+  condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), eq(variables['build.sourcebranchname'], 'master'))
+  env:
+    NPM_TOKEN: $(npmPublishToken)
