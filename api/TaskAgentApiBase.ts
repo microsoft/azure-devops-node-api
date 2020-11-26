@@ -121,7 +121,7 @@ export interface ITaskAgentApiBase extends basem.ClientApiBase {
     getResourceUsage(parallelismTag?: string, poolIsHosted?: boolean, includeRunningRequests?: boolean): Promise<TaskAgentInterfaces.ResourceUsage>;
     getTaskGroupHistory(project: string, taskGroupId: string): Promise<TaskAgentInterfaces.TaskGroupRevision[]>;
     deleteSecureFile(project: string, secureFileId: string): Promise<void>;
-    downloadSecureFile(project: string, secureFileId: string, ticket: string, download?: boolean): Promise<NodeJS.ReadableStream>;
+    downloadSecureFile(project: string, secureFileId: string, ticket: string, download?: boolean, maxRetryCount?: number): Promise<NodeJS.ReadableStream>;
     getSecureFile(project: string, secureFileId: string, includeDownloadTicket?: boolean, actionFilter?: TaskAgentInterfaces.SecureFileActionFilter): Promise<TaskAgentInterfaces.SecureFile>;
     getSecureFiles(project: string, namePattern?: string, includeDownloadTickets?: boolean, actionFilter?: TaskAgentInterfaces.SecureFileActionFilter): Promise<TaskAgentInterfaces.SecureFile[]>;
     getSecureFilesByIds(project: string, secureFileIds: string[], includeDownloadTickets?: boolean, actionFilter?: TaskAgentInterfaces.SecureFileActionFilter): Promise<TaskAgentInterfaces.SecureFile[]>;
@@ -5010,12 +5010,14 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      * @param {string} secureFileId - The unique secure file Id
      * @param {string} ticket - A valid download ticket
      * @param {boolean} download - If download is true, the file is sent as attachement in the response body. If download is false, the response body contains the file stream.
+     * @param {number} maxRetryCount - Number of attempts to retry file downloading in case any error occurred
      */
     public async downloadSecureFile(
         project: string,
         secureFileId: string,
         ticket: string,
-        download?: boolean
+        download?: boolean,
+        maxRetryCount?: number
         ): Promise<NodeJS.ReadableStream> {
         if (ticket == null) {
             throw new TypeError('ticket can not be null or undefined');
@@ -5032,22 +5034,30 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 download: download,
             };
             
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
-                    "distributedtask",
-                    "adcfd8bc-b184-43ba-bd84-7c8c6a2ff421",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl!;
-                
-                let apiVersion: string = verData.apiVersion!;
-                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
-                resolve((await this.http.get(url, { "Accept": accept })).message);
-            }
-            catch (err) {
-                reject(err);
+            let numberOfAttemps: number = 0;
+            let isDownloadSuccessful: boolean = false;
+            while (numberOfAttemps <= maxRetryCount && !isDownloadSuccessful) {
+                try {
+                    numberOfAttemps++;
+                    let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                        "6.0-preview.1",
+                        "distributedtask",
+                        "adcfd8bc-b184-43ba-bd84-7c8c6a2ff421",
+                        routeValues,
+                        queryValues);
+    
+                    let url: string = verData.requestUrl!;
+                    
+                    let apiVersion: string = verData.apiVersion!;
+                    let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                    resolve((await this.http.get(url, { "Accept": accept })).message);
+                    isDownloadSuccessful = true;
+                }
+                catch (err) {
+                    if (numberOfAttemps == maxRetryCount) {
+                        reject(err);
+                    }
+                }
             }
         });
     }
