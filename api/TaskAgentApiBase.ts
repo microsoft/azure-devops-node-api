@@ -5047,11 +5047,11 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                         queryValues);
     
                     let url: string = verData.requestUrl!;
-                    
                     let apiVersion: string = verData.apiVersion!;
                     let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
-                    resolve((await this.http.get(url, { "Accept": accept })).message);
+                    const result = await this.http.get(url, { "Accept": accept });
                     isDownloadSuccessful = true;
+                    resolve(result.message);
                 }
                 catch (err) {
                     if (numberOfAttemps == maxRetryCount) {
