@@ -34,7 +34,7 @@ export interface IBuildApi extends basem.ClientApiBase {
     deleteBuild(project: string, buildId: number): Promise<void>;
     getBuild(project: string, buildId: number, propertyFilters?: string): Promise<BuildInterfaces.Build>;
     getBuilds(project: string, definitions?: number[], queues?: number[], buildNumber?: string, minTime?: Date, maxTime?: Date, requestedFor?: string, reasonFilter?: BuildInterfaces.BuildReason, statusFilter?: BuildInterfaces.BuildStatus, resultFilter?: BuildInterfaces.BuildResult, tagFilters?: string[], properties?: string[], top?: number, continuationToken?: string, maxBuildsPerDefinition?: number, deletedFilter?: BuildInterfaces.QueryDeletedOption, queryOrder?: BuildInterfaces.BuildQueryOrder, branchName?: string, buildIds?: number[], repositoryId?: string, repositoryType?: string): Promise<BuildInterfaces.Build[]>;
-    queueBuild(build: BuildInterfaces.Build, project: string, ignoreWarnings?: boolean, checkInTicket?: string, sourceBuildId?: number): Promise<BuildInterfaces.Build>;
+    queueBuild(build: BuildInterfaces.Build, project: string, ignoreWarnings?: boolean, checkInTicket?: string, sourceBuildId?: number, definitionId?: number): Promise<BuildInterfaces.Build>;
     updateBuild(build: BuildInterfaces.Build, project: string, buildId: number, retry?: boolean): Promise<BuildInterfaces.Build>;
     updateBuilds(builds: BuildInterfaces.Build[], project: string): Promise<BuildInterfaces.Build[]>;
     getBuildChanges(project: string, buildId: number, continuationToken?: string, top?: number, includeSourceChange?: boolean): Promise<BuildInterfaces.Change[]>;
@@ -45,6 +45,7 @@ export interface IBuildApi extends basem.ClientApiBase {
     deleteDefinition(project: string, definitionId: number): Promise<void>;
     getDefinition(project: string, definitionId: number, revision?: number, minMetricsTime?: Date, propertyFilters?: string[], includeLatestBuilds?: boolean): Promise<BuildInterfaces.BuildDefinition>;
     getDefinitions(project: string, name?: string, repositoryId?: string, repositoryType?: string, queryOrder?: BuildInterfaces.DefinitionQueryOrder, top?: number, continuationToken?: string, minMetricsTime?: Date, definitionIds?: number[], path?: string, builtAfter?: Date, notBuiltAfter?: Date, includeAllProperties?: boolean, includeLatestBuilds?: boolean, taskIdFilter?: string, processType?: number, yamlFilename?: string): Promise<BuildInterfaces.BuildDefinitionReference[]>;
+    getDefinitionYaml(project: string, definitionId: number, dummyValue: string, revision?: number, minMetricsTime?: Date, propertyFilters?: string[], includeLatestBuilds?: boolean): Promise<BuildInterfaces.YamlBuild>;
     restoreDefinition(project: string, definitionId: number, deleted: boolean): Promise<BuildInterfaces.BuildDefinition>;
     updateDefinition(definition: BuildInterfaces.BuildDefinition, project: string, definitionId: number, secretsSourceDefinitionId?: number, secretsSourceDefinitionRevision?: number): Promise<BuildInterfaces.BuildDefinition>;
     getFileContents(project: string, providerName: string, serviceEndpointId?: string, repository?: string, commitOrBranch?: string, path?: string): Promise<NodeJS.ReadableStream>;
@@ -52,10 +53,14 @@ export interface IBuildApi extends basem.ClientApiBase {
     deleteFolder(project: string, path: string): Promise<void>;
     getFolders(project: string, path?: string, queryOrder?: BuildInterfaces.FolderQueryOrder): Promise<BuildInterfaces.Folder[]>;
     updateFolder(folder: BuildInterfaces.Folder, project: string, path: string): Promise<BuildInterfaces.Folder>;
+    getBuildGeneralSettings(project: string): Promise<BuildInterfaces.PipelineGeneralSettings>;
+    updateBuildGeneralSettings(newSettings: BuildInterfaces.PipelineGeneralSettings, project: string): Promise<BuildInterfaces.PipelineGeneralSettings>;
+    getRetentionHistory(daysToLookback?: number): Promise<BuildInterfaces.BuildRetentionHistory>;
     getLatestBuild(project: string, definition: string, branchName?: string): Promise<BuildInterfaces.Build>;
     addRetentionLeases(newLeases: BuildInterfaces.NewRetentionLease[], project: string): Promise<BuildInterfaces.RetentionLease[]>;
     deleteRetentionLeasesById(project: string, ids: number[]): Promise<void>;
     getRetentionLease(project: string, leaseId: number): Promise<BuildInterfaces.RetentionLease>;
+    getRetentionLeasesByMinimalRetentionLeases(project: string, leasesToFetch: BuildInterfaces.MinimalRetentionLease[]): Promise<BuildInterfaces.RetentionLease[]>;
     getRetentionLeasesByOwnerId(project: string, ownerId?: string, definitionId?: number, runId?: number): Promise<BuildInterfaces.RetentionLease[]>;
     getRetentionLeasesByUserId(project: string, userOwnerId: string, definitionId?: number, runId?: number): Promise<BuildInterfaces.RetentionLease[]>;
     getBuildLog(project: string, buildId: number, logId: number, startLine?: number, endLine?: number): Promise<NodeJS.ReadableStream>;
@@ -136,7 +141,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.5",
+                    "6.1-preview.5",
                     "build",
                     "1db06c96-014e-44e1-ac91-90b2d4b3e984",
                     routeValues);
@@ -189,7 +194,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.5",
+                    "6.1-preview.5",
                     "build",
                     "1db06c96-014e-44e1-ac91-90b2d4b3e984",
                     routeValues,
@@ -243,7 +248,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.5",
+                    "6.1-preview.5",
                     "build",
                     "1db06c96-014e-44e1-ac91-90b2d4b3e984",
                     routeValues,
@@ -280,7 +285,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.5",
+                    "6.1-preview.5",
                     "build",
                     "1db06c96-014e-44e1-ac91-90b2d4b3e984",
                     routeValues);
@@ -345,7 +350,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.5",
+                    "6.1-preview.5",
                     "build",
                     "1db06c96-014e-44e1-ac91-90b2d4b3e984",
                     routeValues,
@@ -385,7 +390,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "f2192269-89fa-4f94-baf6-8fb128c55159",
                     routeValues);
@@ -441,7 +446,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "af5122d3-3438-485e-a25a-2dbbfde84ee6",
                     routeValues);
@@ -474,7 +479,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "398c85bc-81aa-4822-947c-a194a05f0fef",
                     routeValues);
@@ -522,7 +527,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "398c85bc-81aa-4822-947c-a194a05f0fef",
                     routeValues,
@@ -573,7 +578,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "de6a4df8-22cd-44ee-af2d-39f6aa7a4261",
                     routeValues,
@@ -630,7 +635,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "e05d4403-9b81-4244-8763-20fde28d1976",
                     routeValues,
@@ -684,7 +689,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "21b3b9ce-fad5-4567-9ad0-80679794e003",
                     routeValues,
@@ -738,7 +743,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "21b3b9ce-fad5-4567-9ad0-80679794e003",
                     routeValues,
@@ -783,7 +788,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.5",
+                    "6.1-preview.6",
                     "build",
                     "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
                     routeValues);
@@ -833,7 +838,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.5",
+                    "6.1-preview.6",
                     "build",
                     "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
                     routeValues,
@@ -938,7 +943,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.5",
+                    "6.1-preview.6",
                     "build",
                     "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
                     routeValues,
@@ -972,13 +977,15 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
      * @param {boolean} ignoreWarnings
      * @param {string} checkInTicket
      * @param {number} sourceBuildId
+     * @param {number} definitionId - Optional definition id to queue a build without a body. Ignored if there's a valid body
      */
     public async queueBuild(
         build: BuildInterfaces.Build,
         project: string,
         ignoreWarnings?: boolean,
         checkInTicket?: string,
-        sourceBuildId?: number
+        sourceBuildId?: number,
+        definitionId?: number
         ): Promise<BuildInterfaces.Build> {
 
         return new Promise<BuildInterfaces.Build>(async (resolve, reject) => {
@@ -990,11 +997,12 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 ignoreWarnings: ignoreWarnings,
                 checkInTicket: checkInTicket,
                 sourceBuildId: sourceBuildId,
+                definitionId: definitionId,
             };
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.5",
+                    "6.1-preview.6",
                     "build",
                     "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
                     routeValues,
@@ -1047,7 +1055,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.5",
+                    "6.1-preview.6",
                     "build",
                     "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
                     routeValues,
@@ -1091,7 +1099,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.5",
+                    "6.1-preview.6",
                     "build",
                     "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
                     routeValues);
@@ -1147,7 +1155,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "54572c7b-bbd3-45d4-80dc-28be08941620",
                     routeValues,
@@ -1201,7 +1209,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "f10f0ea5-18a1-43ec-a8fb-2042c7be9b43",
                     routeValues,
@@ -1243,7 +1251,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "fcac1932-2ee1-437f-9b6f-7f696be858f6",
                     routeValues);
@@ -1287,7 +1295,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "fcac1932-2ee1-437f-9b6f-7f696be858f6",
                     routeValues,
@@ -1340,7 +1348,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.7",
+                    "6.1-preview.7",
                     "build",
                     "dbeaf647-6167-421a-bda9-c9327b25e2e6",
                     routeValues,
@@ -1385,7 +1393,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.7",
+                    "6.1-preview.7",
                     "build",
                     "dbeaf647-6167-421a-bda9-c9327b25e2e6",
                     routeValues);
@@ -1444,7 +1452,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.7",
+                    "6.1-preview.7",
                     "build",
                     "dbeaf647-6167-421a-bda9-c9327b25e2e6",
                     routeValues,
@@ -1537,7 +1545,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.7",
+                    "6.1-preview.7",
                     "build",
                     "dbeaf647-6167-421a-bda9-c9327b25e2e6",
                     routeValues,
@@ -1553,6 +1561,70 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let ret = this.formatResponse(res.result,
                                               BuildInterfaces.TypeInfo.BuildDefinitionReference,
                                               true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number} definitionId
+     * @param {string} dummyValue
+     * @param {number} revision
+     * @param {Date} minMetricsTime
+     * @param {string[]} propertyFilters
+     * @param {boolean} includeLatestBuilds
+     */
+    public async getDefinitionYaml(
+        project: string,
+        definitionId: number,
+        dummyValue: string,
+        revision?: number,
+        minMetricsTime?: Date,
+        propertyFilters?: string[],
+        includeLatestBuilds?: boolean
+        ): Promise<BuildInterfaces.YamlBuild> {
+        if (dummyValue == null) {
+            throw new TypeError('dummyValue can not be null or undefined');
+        }
+
+        return new Promise<BuildInterfaces.YamlBuild>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId
+            };
+
+            let queryValues: any = {
+                dummyValue: dummyValue,
+                revision: revision,
+                minMetricsTime: minMetricsTime,
+                propertyFilters: propertyFilters && propertyFilters.join(","),
+                includeLatestBuilds: includeLatestBuilds,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "6.1-preview.7",
+                    "build",
+                    "dbeaf647-6167-421a-bda9-c9327b25e2e6",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<BuildInterfaces.YamlBuild>;
+                res = await this.rest.get<BuildInterfaces.YamlBuild>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
 
                 resolve(ret);
                 
@@ -1591,7 +1663,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.7",
+                    "6.1-preview.7",
                     "build",
                     "dbeaf647-6167-421a-bda9-c9327b25e2e6",
                     routeValues,
@@ -1618,9 +1690,9 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Updates an existing definition.
+     * Updates an existing build definition.  In order for this operation to succeed, the value of the "Revision" property of the request body must match the existing build definition's. It is recommended that you obtain the existing build definition by using GET, modify the build definition as necessary, and then submit the modified definition with PUT.
      * 
-     * @param {BuildInterfaces.BuildDefinition} definition - The new version of the definition.
+     * @param {BuildInterfaces.BuildDefinition} definition - The new version of the definition. Its "Revision" property must match the existing definition for the update to be accepted.
      * @param {string} project - Project ID or project name
      * @param {number} definitionId - The ID of the definition.
      * @param {number} secretsSourceDefinitionId
@@ -1647,7 +1719,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.7",
+                    "6.1-preview.7",
                     "build",
                     "dbeaf647-6167-421a-bda9-c9327b25e2e6",
                     routeValues,
@@ -1707,7 +1779,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "29d12225-b1d9-425f-b668-6c594a981313",
                     routeValues,
@@ -1752,7 +1824,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "a906531b-d2da-4f55-bda7-f3e676cc50d9",
                     routeValues,
@@ -1803,7 +1875,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "a906531b-d2da-4f55-bda7-f3e676cc50d9",
                     routeValues,
@@ -1854,7 +1926,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "a906531b-d2da-4f55-bda7-f3e676cc50d9",
                     routeValues,
@@ -1907,7 +1979,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "a906531b-d2da-4f55-bda7-f3e676cc50d9",
                     routeValues,
@@ -1922,6 +1994,135 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let ret = this.formatResponse(res.result,
                                               BuildInterfaces.TypeInfo.Folder,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Gets pipeline general settings.
+     * 
+     * @param {string} project - Project ID or project name
+     */
+    public async getBuildGeneralSettings(
+        project: string
+        ): Promise<BuildInterfaces.PipelineGeneralSettings> {
+
+        return new Promise<BuildInterfaces.PipelineGeneralSettings>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "6.1-preview.1",
+                    "build",
+                    "c4aefd19-30ff-405b-80ad-aca021e7242a",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<BuildInterfaces.PipelineGeneralSettings>;
+                res = await this.rest.get<BuildInterfaces.PipelineGeneralSettings>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Updates pipeline general settings.
+     * 
+     * @param {BuildInterfaces.PipelineGeneralSettings} newSettings
+     * @param {string} project - Project ID or project name
+     */
+    public async updateBuildGeneralSettings(
+        newSettings: BuildInterfaces.PipelineGeneralSettings,
+        project: string
+        ): Promise<BuildInterfaces.PipelineGeneralSettings> {
+
+        return new Promise<BuildInterfaces.PipelineGeneralSettings>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "6.1-preview.1",
+                    "build",
+                    "c4aefd19-30ff-405b-80ad-aca021e7242a",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<BuildInterfaces.PipelineGeneralSettings>;
+                res = await this.rest.update<BuildInterfaces.PipelineGeneralSettings>(url, newSettings, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Returns the retention history for the project collection. This includes pipelines that have custom retention rules that may prevent the retention job from cleaning them up, runs per pipeline with retention type, files associated with pipelines owned by the collection with retention type, and the number of files per pipeline.
+     * 
+     * @param {number} daysToLookback
+     */
+    public async getRetentionHistory(
+        daysToLookback?: number
+        ): Promise<BuildInterfaces.BuildRetentionHistory> {
+
+        return new Promise<BuildInterfaces.BuildRetentionHistory>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
+
+            let queryValues: any = {
+                daysToLookback: daysToLookback,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "6.1-preview.1",
+                    "build",
+                    "1a9c48be-0ef5-4ec2-b94f-f053bdd2d3bf",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<BuildInterfaces.BuildRetentionHistory>;
+                res = await this.rest.get<BuildInterfaces.BuildRetentionHistory>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.BuildRetentionHistory,
                                               false);
 
                 resolve(ret);
@@ -1958,7 +2159,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "54481611-01f4-47f3-998f-160da0f0c229",
                     routeValues,
@@ -2002,7 +2203,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "272051e4-9af1-45b5-ae22-8d960a5539d4",
                     routeValues);
@@ -2052,7 +2253,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "272051e4-9af1-45b5-ae22-8d960a5539d4",
                     routeValues,
@@ -2097,7 +2298,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "272051e4-9af1-45b5-ae22-8d960a5539d4",
                     routeValues);
@@ -2112,6 +2313,57 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let ret = this.formatResponse(res.result,
                                               BuildInterfaces.TypeInfo.RetentionLease,
                                               false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Returns any leases matching the specified MinimalRetentionLeases
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {BuildInterfaces.MinimalRetentionLease[]} leasesToFetch - List of JSON-serialized MinimalRetentionLeases separated by '|'
+     */
+    public async getRetentionLeasesByMinimalRetentionLeases(
+        project: string,
+        leasesToFetch: BuildInterfaces.MinimalRetentionLease[]
+        ): Promise<BuildInterfaces.RetentionLease[]> {
+        if (leasesToFetch == null) {
+            throw new TypeError('leasesToFetch can not be null or undefined');
+        }
+
+        return new Promise<BuildInterfaces.RetentionLease[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            let queryValues: any = {
+                leasesToFetch: leasesToFetch && leasesToFetch.join("|"),
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "6.1-preview.1",
+                    "build",
+                    "272051e4-9af1-45b5-ae22-8d960a5539d4",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<BuildInterfaces.RetentionLease[]>;
+                res = await this.rest.get<BuildInterfaces.RetentionLease[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.RetentionLease,
+                                              true);
 
                 resolve(ret);
                 
@@ -2150,7 +2402,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "272051e4-9af1-45b5-ae22-8d960a5539d4",
                     routeValues,
@@ -2207,7 +2459,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "272051e4-9af1-45b5-ae22-8d960a5539d4",
                     routeValues,
@@ -2264,7 +2516,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "35a80daf-7f30-45fc-86e8-6b813d9c90df",
                     routeValues,
@@ -2313,7 +2565,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "35a80daf-7f30-45fc-86e8-6b813d9c90df",
                     routeValues,
@@ -2358,7 +2610,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "35a80daf-7f30-45fc-86e8-6b813d9c90df",
                     routeValues);
@@ -2402,7 +2654,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "35a80daf-7f30-45fc-86e8-6b813d9c90df",
                     routeValues);
@@ -2450,7 +2702,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "35a80daf-7f30-45fc-86e8-6b813d9c90df",
                     routeValues,
@@ -2493,7 +2745,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "7433fae7-a6bc-41dc-a6e2-eef9005ce41a",
                     routeValues,
@@ -2544,7 +2796,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "d973b939-0ce0-4fec-91d8-da3940fa1827",
                     routeValues,
@@ -2586,7 +2838,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "591cb5a4-2d46-4f3a-a697-5cd42b6bd332",
                     routeValues);
@@ -2645,7 +2897,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "7944d6fb-df01-4709-920a-7a189aa34037",
                     routeValues,
@@ -2696,7 +2948,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "0a6312e9-0627-49b7-8083-7d74a64849c9",
                     routeValues,
@@ -2747,7 +2999,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "0a6312e9-0627-49b7-8083-7d74a64849c9",
                     routeValues);
@@ -2798,7 +3050,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "d9826ad7-2a68-46a9-a6e9-677698777895",
                     routeValues,
@@ -2849,7 +3101,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "d9826ad7-2a68-46a9-a6e9-677698777895",
                     routeValues);
@@ -2906,7 +3158,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "d8763ec7-9ff0-4fb4-b2b2-9d757906ff14",
                     routeValues,
@@ -2957,7 +3209,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "45bcaa88-67e1-4042-a035-56d3b4a7d44c",
                     routeValues,
@@ -3008,7 +3260,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "45bcaa88-67e1-4042-a035-56d3b4a7d44c",
                     routeValues,
@@ -3063,7 +3315,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "d44d1680-f978-4834-9b93-8c6e132329c9",
                     routeValues,
@@ -3108,7 +3360,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "ea623316-1967-45eb-89ab-e9e6110cf2d6",
                     routeValues);
@@ -3150,7 +3402,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "ea623316-1967-45eb-89ab-e9e6110cf2d6",
                     routeValues);
@@ -3188,7 +3440,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "3813d06c-9e36-4ea1-aac3-61a485d60e3d",
                     routeValues);
@@ -3229,7 +3481,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "dadb46e7-5851-4c72-820e-ae8abb82f59f",
                     routeValues);
@@ -3272,7 +3524,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "dadb46e7-5851-4c72-820e-ae8abb82f59f",
                     routeValues);
@@ -3316,7 +3568,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "build",
                     "7c116775-52e5-453e-8c5d-914d9762d8c4",
                     routeValues);
@@ -3357,7 +3609,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "aa8c1c9c-ef8b-474a-b8c4-785c7b191d0d",
                     routeValues);
@@ -3400,7 +3652,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "aa8c1c9c-ef8b-474a-b8c4-785c7b191d0d",
                     routeValues);
@@ -3441,7 +3693,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "3ce81729-954f-423d-a581-9fea01d25186",
                     routeValues);
@@ -3490,7 +3742,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "b8aac6c9-744b-46e1-88fc-3550969f9313",
                     routeValues);
@@ -3552,7 +3804,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "07acfdce-4757-4439-b422-ddd13a2fcc10",
                     routeValues,
@@ -3600,7 +3852,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "6e6114b2-8161-44c8-8f6c-c5505782427f",
                     routeValues);
@@ -3646,7 +3898,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "6e6114b2-8161-44c8-8f6c-c5505782427f",
                     routeValues);
@@ -3693,7 +3945,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "6e6114b2-8161-44c8-8f6c-c5505782427f",
                     routeValues);
@@ -3737,7 +3989,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "6e6114b2-8161-44c8-8f6c-c5505782427f",
                     routeValues);
@@ -3784,7 +4036,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "cb894432-134a-4d31-a839-83beceaace4b",
                     routeValues);
@@ -3830,7 +4082,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "cb894432-134a-4d31-a839-83beceaace4b",
                     routeValues);
@@ -3877,7 +4129,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "cb894432-134a-4d31-a839-83beceaace4b",
                     routeValues);
@@ -3927,7 +4179,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "cb894432-134a-4d31-a839-83beceaace4b",
                     routeValues,
@@ -3972,7 +4224,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "d84ac5c6-edc7-43d5-adc9-1b34be5dea09",
                     routeValues);
@@ -4013,7 +4265,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "d84ac5c6-edc7-43d5-adc9-1b34be5dea09",
                     routeValues);
@@ -4057,7 +4309,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "build",
                     "e884571e-7f92-4d6a-9274-3f5649900835",
                     routeValues);
@@ -4101,7 +4353,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "build",
                     "e884571e-7f92-4d6a-9274-3f5649900835",
                     routeValues);
@@ -4142,7 +4394,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "build",
                     "e884571e-7f92-4d6a-9274-3f5649900835",
                     routeValues);
@@ -4188,7 +4440,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "build",
                     "e884571e-7f92-4d6a-9274-3f5649900835",
                     routeValues);
@@ -4244,7 +4496,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "8baac422-4c6e-4de5-8532-db96d92acffa",
                     routeValues,
@@ -4300,7 +4552,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "793bceb8-9736-4030-bd2f-fb3ce6d6b478",
                     routeValues,
@@ -4354,7 +4606,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "build",
                     "8f20ff82-9498-4812-9f6e-9c01bdc50e99",
                     routeValues,
@@ -4381,7 +4633,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Gets the work items associated with a build.
+     * Gets the work items associated with a build. Only work items in the same project are returned.
      * 
      * @param {string} project - Project ID or project name
      * @param {number} buildId - The ID of the build.
@@ -4405,7 +4657,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "5a21f5d2-5642-47e4-a0bd-1356e6731bee",
                     routeValues,
@@ -4458,7 +4710,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "5a21f5d2-5642-47e4-a0bd-1356e6731bee",
                     routeValues,
@@ -4518,7 +4770,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "build",
                     "52ba8915-5518-42e3-a4bb-b0182d159e2d",
                     routeValues,
