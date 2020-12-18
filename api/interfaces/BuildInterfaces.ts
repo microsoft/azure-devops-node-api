@@ -301,6 +301,10 @@ export interface Build {
     status?: BuildStatus;
     tags?: string[];
     /**
+     * Parameters to template expression evaluation
+     */
+    templateParameters?: { [key: string] : string; };
+    /**
      * The build that triggered this build via a Build completion trigger.
      */
     triggeredByBuild?: Build;
@@ -1299,6 +1303,38 @@ export enum BuildResult {
     Canceled = 32,
 }
 
+/**
+ * A historical overview of build retention information. This includes a list of snapshots taken about build retention usage, and a list of builds that have exceeded the default 30 day retention policy.
+ */
+export interface BuildRetentionHistory {
+    /**
+     * A list of builds that are older than the default retention policy, but are not marked as retained. Something is causing these builds to not get cleaned up.
+     */
+    buildRetentionSamples?: BuildRetentionSample[];
+}
+
+/**
+ * A snapshot of build retention information. This class takes a sample at the given time. It provides information about retained builds, files associated with those retained builds, and number of files being retained.
+ */
+export interface BuildRetentionSample {
+    /**
+     * Summary of retention by build
+     */
+    builds?: string;
+    /**
+     * List of build definitions
+     */
+    definitions?: string;
+    /**
+     * Summary of files consumed by retained builds
+     */
+    files?: string;
+    /**
+     * The date and time when the sample was taken
+     */
+    sampleTime?: Date;
+}
+
 export interface BuildsDeletedEvent extends BuildsDeletedEvent1 {
 }
 
@@ -1967,6 +2003,21 @@ export interface MappingDetails {
     serverPath?: string;
 }
 
+export interface MinimalRetentionLease {
+    /**
+     * The pipeline definition of the run.
+     */
+    definitionId?: number;
+    /**
+     * User-provided string that identifies the owner of a retention lease.
+     */
+    ownerId?: string;
+    /**
+     * The pipeline run to protect.
+     */
+    runId?: number;
+}
+
 /**
  * Represents options for running a phase against multiple agents.
  */
@@ -2051,6 +2102,36 @@ export interface PhaseTarget {
     type?: number;
 }
 
+/**
+ * Contains pipeline general settings.
+ */
+export interface PipelineGeneralSettings {
+    /**
+     * If enabled, scope of access for all non-release pipelines reduces to the current project.
+     */
+    enforceJobAuthScope?: boolean;
+    /**
+     * If enabled, scope of access for all release pipelines reduces to the current project.
+     */
+    enforceJobAuthScopeForReleases?: boolean;
+    /**
+     * Restricts the scope of access for all pipelines to only repositories explicitly referenced by the pipeline.
+     */
+    enforceReferencedRepoScopedToken?: boolean;
+    /**
+     * If enabled, only those variables that are explicitly marked as "Settable at queue time" can be set at queue time.
+     */
+    enforceSettableVar?: boolean;
+    /**
+     * Allows pipelines to record metadata.
+     */
+    publishPipelineMetadata?: boolean;
+    /**
+     * Anonymous users can access the status badge API for all pipelines unless this option is enabled.
+     */
+    statusBadgesArePrivate?: boolean;
+}
+
 export enum ProcessTemplateType {
     /**
      * Indicates a custom template.
@@ -2108,6 +2189,10 @@ export interface PullRequest {
      * Description for the pull request.
      */
     description?: string;
+    /**
+     * Returns if pull request is draft
+     */
+    draft?: boolean;
     /**
      * Unique identifier for the pull request
      */
@@ -2846,6 +2931,10 @@ export interface TimelineRecord {
     percentComplete?: number;
     previousAttempts?: TimelineAttempt[];
     /**
+     * The queue ID of the queue that the operation ran on.
+     */
+    queueId?: number;
+    /**
      * The result.
      */
     result?: TaskResult;
@@ -2926,6 +3015,7 @@ export interface UpdateRetentionSettingModel {
 }
 
 export interface UpdateStageParameters {
+    forceRetryAllJobs?: boolean;
     state?: StageUpdateType;
 }
 
@@ -3168,6 +3258,16 @@ export interface XamlDefinitionReference {
 }
 
 /**
+ * Represents a yaml build.
+ */
+export interface YamlBuild {
+    /**
+     * The yaml used to define the build
+     */
+    yaml?: string;
+}
+
+/**
  * Represents a YAML process.
  */
 export interface YamlProcess extends BuildProcess {
@@ -3303,6 +3403,10 @@ export var TypeInfo = {
             "failed": 8,
             "canceled": 32
         }
+    },
+    BuildRetentionHistory: <any>{
+    },
+    BuildRetentionSample: <any>{
     },
     BuildServer: <any>{
     },
@@ -3919,6 +4023,19 @@ TypeInfo.BuildReference.fields = {
 TypeInfo.BuildRequestValidationResult.fields = {
     result: {
         enumType: TypeInfo.ValidationResult
+    }
+};
+
+TypeInfo.BuildRetentionHistory.fields = {
+    buildRetentionSamples: {
+        isArray: true,
+        typeInfo: TypeInfo.BuildRetentionSample
+    }
+};
+
+TypeInfo.BuildRetentionSample.fields = {
+    sampleTime: {
+        isDate: true,
     }
 };
 
