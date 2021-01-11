@@ -5,7 +5,7 @@ import ifm = require('../interfaces/common/VsoBaseInterfaces');
 import * as resthandlers from 'typed-rest-client/Handlers'; 
 
 export class BasicCredentialHandler extends resthandlers.BasicCredentialHandler implements ifm.IRequestHandler {
-    constructor(username: string, password: string, allowCrossOriginAuthentication?: boolean) {
+    constructor(username: string, password: string, allowCrossOriginAuthentication: boolean = true) {
         super(username, password, allowCrossOriginAuthentication);
     }
 }
