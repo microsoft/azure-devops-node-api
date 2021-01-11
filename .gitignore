@@ -6,7 +6,7 @@ _def
 samples/*.js 
 
 # Tests
-test/**.js
+test/**/*.js
 
 # Logs
 logs
