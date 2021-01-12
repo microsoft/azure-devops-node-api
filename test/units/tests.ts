@@ -299,3 +299,35 @@ describe('WebApi Units', function () {
         assert.equal(myWebApi.isNoProxyHost('https://my-other-tfs-instance.host/myproject'), false);
     });
 });
+
+describe('Auth Handlers Units', function () {
+    it('cross origin authenthication should be allowed by default in BasicCredentialHandler', () => {
+        const basicAuthHandler = WebApi.getBasicHandler('user', 'password');
+        assert(basicAuthHandler['allowCrossOriginAuthentication'] === true);
+    });
+
+    it('cross origin authenthication should be allowed by default in BearerCredentialHandler', () => {
+        const bearerAuthHandler = WebApi.getBearerHandler('0000000000000000000000000000000000000000');
+        assert(bearerAuthHandler['allowCrossOriginAuthentication'] === true);
+    });
+
+    it('cross origin authenthication should be allowed by default in PersonalAccessTokenCredentialHandler', () => {
+        const personalAccessTokenAuthHandler = WebApi.getPersonalAccessTokenHandler('0000000000000000000000000000000000000000');
+        assert(personalAccessTokenAuthHandler['allowCrossOriginAuthentication']  === true);
+    });
+
+    it('cross origin authenthication could be disabled in BasicCredentialHandler', () => {
+        const basicAuthHandler = WebApi.getBasicHandler('user', 'password', false);  
+        assert(basicAuthHandler['allowCrossOriginAuthentication'] === false);
+    });
+
+    it('cross origin authenthication could be disabled in BearerCredentialHandler', () => {
+        const bearerAuthHandler = WebApi.getBearerHandler('0000000000000000000000000000000000000000', false);
+        assert(bearerAuthHandler['allowCrossOriginAuthentication'] === false);
+    });
+
+    it('cross origin authenthication could be disabled in PersonalAccessTokenCredentialHandler', () => {
+        const personalAccessTokenAuthHandler = WebApi.getPersonalAccessTokenHandler('0000000000000000000000000000000000000000', false);
+        assert(personalAccessTokenAuthHandler['allowCrossOriginAuthentication'] === false);
+    });
+});
