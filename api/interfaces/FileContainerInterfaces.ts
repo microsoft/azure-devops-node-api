@@ -13,6 +13,24 @@
 
 
 /**
+ * Compression type for file stored in Blobstore
+ */
+export enum BlobCompressionType {
+    None = 0,
+    GZip = 1,
+}
+
+/**
+ * Represents an reference to a file in Blobstore
+ */
+export interface ContainerItemBlobReference {
+    artifactHash?: string;
+    artifactId?: number;
+    compressionType?: BlobCompressionType;
+    scopeIdentifier?: string;
+}
+
+/**
  * Status of a container item.
  */
 export enum ContainerItemStatus {
@@ -121,6 +139,11 @@ export interface FileContainer {
  */
 export interface FileContainerItem {
     /**
+     * Id for Blobstore reference
+     */
+    artifactId?: number;
+    blobMetadata?: ContainerItemBlobReference;
+    /**
      * Container Id.
      */
     containerId: number;
@@ -189,6 +212,14 @@ export interface FileContainerItem {
 }
 
 export var TypeInfo = {
+    BlobCompressionType: {
+        enumValues: {
+            "none": 0,
+            "gZip": 1
+        }
+    },
+    ContainerItemBlobReference: <any>{
+    },
     ContainerItemStatus: {
         enumValues: {
             "created": 1,
@@ -213,6 +244,12 @@ export var TypeInfo = {
     },
 };
 
+TypeInfo.ContainerItemBlobReference.fields = {
+    compressionType: {
+        enumType: TypeInfo.BlobCompressionType
+    }
+};
+
 TypeInfo.FileContainer.fields = {
     dateCreated: {
         isDate: true,
@@ -223,6 +260,9 @@ TypeInfo.FileContainer.fields = {
 };
 
 TypeInfo.FileContainerItem.fields = {
+    blobMetadata: {
+        typeInfo: TypeInfo.ContainerItemBlobReference
+    },
     dateCreated: {
         isDate: true,
     },

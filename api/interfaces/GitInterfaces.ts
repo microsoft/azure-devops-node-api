@@ -1733,6 +1733,10 @@ export interface GitPullRequestCommentThreadContext {
  */
 export interface GitPullRequestCompletionOptions {
     /**
+     * List of any policy configuration Id's which auto-complete should not wait for. Only applies to optional policies (isBlocking == false). Auto-complete always waits for required policies (isBlocking == true).
+     */
+    autoCompleteIgnoreConfigIds?: number[];
+    /**
      * If true, policies will be explicitly bypassed while the pull request is completed.
      */
     bypassPolicy?: boolean;
@@ -1749,7 +1753,7 @@ export interface GitPullRequestCompletionOptions {
      */
     mergeCommitMessage?: string;
     /**
-     * Specify the strategy used to merge the pull request during completion. If MergeStrategy is not set to any value, a no-FF merge will be created if SquashMerge == false. If MergeStrategy is not set to any value, the pull request commits will be squash if SquashMerge == true. The SquashMerge member is deprecated. It is recommended that you explicitly set MergeStrategy in all cases. If an explicit value is provided for MergeStrategy, the SquashMerge member will be ignored.
+     * Specify the strategy used to merge the pull request during completion. If MergeStrategy is not set to any value, a no-FF merge will be created if SquashMerge == false. If MergeStrategy is not set to any value, the pull request commits will be squashed if SquashMerge == true. The SquashMerge property is deprecated. It is recommended that you explicitly set MergeStrategy in all cases. If an explicit value is provided for MergeStrategy, the SquashMerge property will be ignored.
      */
     mergeStrategy?: GitPullRequestMergeStrategy;
     /**
@@ -1858,6 +1862,10 @@ export interface GitPullRequestIterationChanges {
  * The options which are used when a pull request merge is created.
  */
 export interface GitPullRequestMergeOptions {
+    /**
+     * If true, conflict resolutions applied during the merge will be put in separate commits to preserve authorship info for git blame, etc.
+     */
+    conflictAuthorshipCommits?: boolean;
     detectRenameFalsePositives?: boolean;
     /**
      * If true, rename detection will not be performed during the merge.
@@ -2310,7 +2318,11 @@ export interface GitRepository {
     defaultBranch?: string;
     id?: string;
     /**
-     * True if the repository was created as a fork
+     * True if the repository is disabled. False otherwise.
+     */
+    isDisabled?: boolean;
+    /**
+     * True if the repository was created as a fork.
      */
     isFork?: boolean;
     name?: string;
@@ -2792,6 +2804,10 @@ export interface HistoryEntry<T> {
  * Identity information including a vote on a pull request.
  */
 export interface IdentityRefWithVote extends VSSInterfaces.IdentityRef {
+    /**
+     * Indicates if this reviewer has declined to review this pull request.
+     */
+    hasDeclined?: boolean;
     /**
      * Indicates if this reviewer is flagged for attention on this pull request.
      */

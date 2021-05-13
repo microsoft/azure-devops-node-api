@@ -21,7 +21,7 @@ export interface IFileContainerApiBase extends basem.ClientApiBase {
     createItems(items: VSSInterfaces.VssJsonCollectionWrapperV<FileContainerInterfaces.FileContainerItem[]>, containerId: number, scope?: string): Promise<FileContainerInterfaces.FileContainerItem[]>;
     deleteItem(containerId: number, itemPath: string, scope?: string): Promise<void>;
     getContainers(scope?: string, artifactUris?: string): Promise<FileContainerInterfaces.FileContainer[]>;
-    getItems(containerId: number, scope?: string, itemPath?: string, metadata?: boolean, format?: string, downloadFileName?: string, includeDownloadTickets?: boolean, isShallow?: boolean): Promise<FileContainerInterfaces.FileContainerItem[]>;
+    getItems(containerId: number, scope?: string, itemPath?: string, metadata?: boolean, format?: string, downloadFileName?: string, includeDownloadTickets?: boolean, isShallow?: boolean, ignoreRequestedMediaType?: boolean, includeBlobMetadata?: boolean, saveAbsolutePath?: boolean): Promise<FileContainerInterfaces.FileContainerItem[]>;
 }
 
 export class FileContainerApiBase extends basem.ClientApiBase implements IFileContainerApiBase {
@@ -53,7 +53,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.4",
+                    "6.1-preview.4",
                     "Container",
                     "e4f5c81e-e250-447b-9fef-bd48471bea5e",
                     routeValues,
@@ -107,7 +107,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.4",
+                    "6.1-preview.4",
                     "Container",
                     "e4f5c81e-e250-447b-9fef-bd48471bea5e",
                     routeValues,
@@ -155,7 +155,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.4",
+                    "6.1-preview.4",
                     "Container",
                     "e4f5c81e-e250-447b-9fef-bd48471bea5e",
                     routeValues,
@@ -190,6 +190,9 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
      * @param {string} downloadFileName
      * @param {boolean} includeDownloadTickets
      * @param {boolean} isShallow
+     * @param {boolean} ignoreRequestedMediaType
+     * @param {boolean} includeBlobMetadata
+     * @param {boolean} saveAbsolutePath
      */
     public async getItems(
         containerId: number,
@@ -199,7 +202,10 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
         format?: string,
         downloadFileName?: string,
         includeDownloadTickets?: boolean,
-        isShallow?: boolean
+        isShallow?: boolean,
+        ignoreRequestedMediaType?: boolean,
+        includeBlobMetadata?: boolean,
+        saveAbsolutePath?: boolean
         ): Promise<FileContainerInterfaces.FileContainerItem[]> {
 
         return new Promise<FileContainerInterfaces.FileContainerItem[]>(async (resolve, reject) => {
@@ -215,11 +221,14 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
                 downloadFileName: downloadFileName,
                 includeDownloadTickets: includeDownloadTickets,
                 isShallow: isShallow,
+                ignoreRequestedMediaType: ignoreRequestedMediaType,
+                includeBlobMetadata: includeBlobMetadata,
+                saveAbsolutePath: saveAbsolutePath,
             };
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.4",
+                    "6.1-preview.4",
                     "Container",
                     "e4f5c81e-e250-447b-9fef-bd48471bea5e",
                     routeValues,

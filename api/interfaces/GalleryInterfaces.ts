@@ -242,6 +242,53 @@ export interface CustomerLastContact {
     lastContactDate?: Date;
 }
 
+/**
+ * An entity representing the data required to create a Customer Support Request.
+ */
+export interface CustomerSupportRequest {
+    /**
+     * Display name of extension in concern
+     */
+    displayName?: string;
+    /**
+     * Email of user making the support request
+     */
+    emailId?: string;
+    /**
+     * Extension name
+     */
+    extensionName?: string;
+    /**
+     * Link to the extension details page
+     */
+    extensionURL?: string;
+    /**
+     * User-provided support request message.
+     */
+    message?: string;
+    /**
+     * Publisher name
+     */
+    publisherName?: string;
+    /**
+     * Reason for support request
+     */
+    reason?: string;
+    reCaptchaToken?: string;
+    /**
+     * VSID of the user making the support request
+     */
+    reporterVSID?: string;
+    /**
+     * Review under concern
+     */
+    review?: Review;
+    /**
+     * The UI source through which the request was made
+     */
+    sourceLink?: string;
+}
+
 export enum DraftPatchOperation {
     Publish = 1,
     Cancel = 2,
@@ -426,6 +473,7 @@ export interface ExtensionDraftAsset extends ExtensionFile {
 export interface ExtensionDraftPatch {
     extensionData?: UnpackagedExtensionData;
     operation?: DraftPatchOperation;
+    reCaptchaToken?: string;
 }
 
 /**
@@ -837,6 +885,7 @@ export interface ExtensionVersion {
     flags?: ExtensionVersionFlags;
     lastUpdated?: Date;
     properties?: { key: string; value: string }[];
+    targetPlatform?: string;
     validationResultMessage?: string;
     version?: string;
     versionDescription?: string;
@@ -1056,6 +1105,7 @@ export enum PublishedExtensionFlags {
 
 export interface Publisher extends PublisherBase {
     _links?: any;
+    reCaptchaToken?: string;
 }
 
 /**
@@ -1399,6 +1449,7 @@ export interface QueryFilter {
  * The structure of the question / thread
  */
 export interface Question extends QnAItem {
+    reCaptchaToken?: string;
     /**
      * List of answers in for the question / thread
      */
@@ -1431,6 +1482,7 @@ export interface RatingCountPerRating {
  * The structure of a response
  */
 export interface Response extends QnAItem {
+    reCaptchaToken?: string;
 }
 
 /**
@@ -1503,6 +1555,7 @@ export interface Review {
      * Rating provided by the user
      */
     rating?: number;
+    reCaptchaToken?: string;
     /**
      * Reply, if any, for this review
      */
@@ -1927,6 +1980,8 @@ export var TypeInfo = {
     },
     CustomerLastContact: <any>{
     },
+    CustomerSupportRequest: <any>{
+    },
     DraftPatchOperation: {
         enumValues: {
             "publish": 1,
@@ -2303,6 +2358,12 @@ TypeInfo.Concern.fields = {
 TypeInfo.CustomerLastContact.fields = {
     lastContactDate: {
         isDate: true,
+    }
+};
+
+TypeInfo.CustomerSupportRequest.fields = {
+    review: {
+        typeInfo: TypeInfo.Review
     }
 };
 

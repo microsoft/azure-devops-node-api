@@ -65,10 +65,6 @@ export interface AgentJobRequestMessage extends JobRequestMessage {
     tasks?: TaskInstance[];
 }
 
-export interface AgentMigrationMessage {
-    accessToken?: string;
-}
-
 export interface AgentPoolEvent {
     eventType?: string;
     pool?: TaskAgentPool;
@@ -241,6 +237,18 @@ export interface DemandExists extends Demand {
 }
 
 export interface DemandMinimumVersion extends Demand {
+    source?: DemandSource;
+}
+
+export interface DemandSource {
+    sourceName?: string;
+    sourceType?: DemandSourceType;
+    sourceVersion?: string;
+}
+
+export enum DemandSourceType {
+    Task = 0,
+    Feature = 1,
 }
 
 export interface DependencyBinding {
@@ -540,6 +548,276 @@ export interface DiagnosticLogMetadata {
     phaseName?: string;
     phaseResult?: string;
     poolId?: number;
+}
+
+export interface ElasticAgentPoolResizedEvent {
+    newSize?: number;
+    poolId?: number;
+    poolName?: string;
+    previousSize?: number;
+    resourceId?: string;
+}
+
+export enum ElasticAgentState {
+    None = 0,
+    Enabled = 1,
+    Online = 2,
+    Assigned = 4,
+}
+
+export enum ElasticComputeState {
+    None = 0,
+    Healthy = 1,
+    Creating = 2,
+    Deleting = 3,
+    Failed = 4,
+    Stopped = 5,
+}
+
+/**
+ * Data and settings for an elastic node
+ */
+export interface ElasticNode {
+    /**
+     * Distributed Task's Agent Id
+     */
+    agentId?: number;
+    /**
+     * Summary of the state of the agent
+     */
+    agentState?: ElasticAgentState;
+    /**
+     * Compute Id.  VMSS's InstanceId
+     */
+    computeId?: string;
+    /**
+     * State of the compute host
+     */
+    computeState?: ElasticComputeState;
+    /**
+     * Users can force state changes to specific states (ToReimage, ToDelete, Save)
+     */
+    desiredState?: ElasticNodeState;
+    /**
+     * Unique identifier since the agent and/or VM may be null
+     */
+    id?: number;
+    /**
+     * Computer name. Used to match a scaleset VM with an agent
+     */
+    name?: string;
+    /**
+     * Pool Id that this node belongs to
+     */
+    poolId?: number;
+    /**
+     * Last job RequestId assigned to this agent
+     */
+    requestId?: number;
+    /**
+     * State of the ElasticNode
+     */
+    state?: ElasticNodeState;
+    /**
+     * Last state change. Only updated by SQL.
+     */
+    stateChangedOn?: Date;
+}
+
+/**
+ * Class used for updating an elastic node where only certain members are populated
+ */
+export interface ElasticNodeSettings {
+    /**
+     * State of the ElasticNode
+     */
+    state?: ElasticNodeState;
+}
+
+export enum ElasticNodeState {
+    None = 0,
+    New = 1,
+    CreatingCompute = 2,
+    StartingAgent = 3,
+    Idle = 4,
+    Assigned = 5,
+    Offline = 6,
+    PendingReimage = 7,
+    PendingDelete = 8,
+    Saved = 9,
+    DeletingCompute = 10,
+    Deleted = 11,
+    Lost = 12,
+}
+
+/**
+ * Data and settings for an elastic pool
+ */
+export interface ElasticPool {
+    /**
+     * Set whether agents should be configured to run with interactive UI
+     */
+    agentInteractiveUI?: boolean;
+    /**
+     * Azure string representing to location of the resource
+     */
+    azureId?: string;
+    /**
+     * Number of agents to have ready waiting for jobs
+     */
+    desiredIdle?: number;
+    /**
+     * The desired size of the pool
+     */
+    desiredSize?: number;
+    /**
+     * Maximum number of nodes that will exist in the elastic pool
+     */
+    maxCapacity?: number;
+    /**
+     * Keep nodes in the pool on failure for investigation
+     */
+    maxSavedNodeCount?: number;
+    /**
+     * Timestamp the pool was first detected to be offline
+     */
+    offlineSince?: Date;
+    /**
+     * Operating system type of the nodes in the pool
+     */
+    osType?: OperatingSystemType;
+    /**
+     * Id of the associated TaskAgentPool
+     */
+    poolId?: number;
+    /**
+     * Discard node after each job completes
+     */
+    recycleAfterEachUse?: boolean;
+    /**
+     * Id of the Service Endpoint used to connect to Azure
+     */
+    serviceEndpointId?: string;
+    /**
+     * Scope the Service Endpoint belongs to
+     */
+    serviceEndpointScope?: string;
+    /**
+     * The number of sizing attempts executed while trying to achieve a desired size
+     */
+    sizingAttempts?: number;
+    /**
+     * State of the pool
+     */
+    state?: ElasticPoolState;
+    /**
+     * The minimum time in minutes to keep idle agents alive
+     */
+    timeToLiveMinutes?: number;
+}
+
+/**
+ * Returned result from creating a new elastic pool
+ */
+export interface ElasticPoolCreationResult {
+    /**
+     * Created agent pool
+     */
+    agentPool?: TaskAgentPool;
+    /**
+     * Created agent queue
+     */
+    agentQueue?: TaskAgentQueue;
+    /**
+     * Created elastic pool
+     */
+    elasticPool?: ElasticPool;
+}
+
+/**
+ * Log data for an Elastic Pool
+ */
+export interface ElasticPoolLog {
+    /**
+     * Log Id
+     */
+    id?: number;
+    /**
+     * E.g. error, warning, info
+     */
+    level?: LogLevel;
+    /**
+     * Log contents
+     */
+    message?: string;
+    /**
+     * Operation that triggered the message being logged
+     */
+    operation?: OperationType;
+    /**
+     * Id of the associated TaskAgentPool
+     */
+    poolId?: number;
+    /**
+     * Datetime that the log occurred
+     */
+    timestamp?: Date;
+}
+
+/**
+ * Class used for updating an elastic pool where only certain members are populated
+ */
+export interface ElasticPoolSettings {
+    /**
+     * Set whether agents should be configured to run with interactive UI
+     */
+    agentInteractiveUI?: boolean;
+    /**
+     * Azure string representing to location of the resource
+     */
+    azureId?: string;
+    /**
+     * Number of machines to have ready waiting for jobs
+     */
+    desiredIdle?: number;
+    /**
+     * Maximum number of machines that will exist in the elastic pool
+     */
+    maxCapacity?: number;
+    /**
+     * Keep machines in the pool on failure for investigation
+     */
+    maxSavedNodeCount?: number;
+    /**
+     * Operating system type of the machines in the pool
+     */
+    osType?: OperatingSystemType;
+    /**
+     * Discard machines after each job completes
+     */
+    recycleAfterEachUse?: boolean;
+    /**
+     * Id of the Service Endpoint used to connect to Azure
+     */
+    serviceEndpointId?: string;
+    /**
+     * Scope the Service Endpoint belongs to
+     */
+    serviceEndpointScope?: string;
+    /**
+     * The minimum time in minutes to keep idle agents alive
+     */
+    timeToLiveMinutes?: number;
+}
+
+export enum ElasticPoolState {
+    /**
+     * Online and healthy
+     */
+    Online = 0,
+    Offline = 1,
+    Unhealthy = 2,
+    New = 3,
 }
 
 export interface EndpointAuthorization {
@@ -915,6 +1193,7 @@ export interface JobCancelMessage {
 }
 
 export interface JobCompletedEvent extends JobEvent {
+    agentShuttingDown?: boolean;
     requestId?: number;
     result?: TaskResult;
 }
@@ -947,6 +1226,15 @@ export interface JobEventsConfig extends EventsConfig {
     jobAssigned?: JobEventConfig;
     jobCompleted?: JobEventConfig;
     jobStarted?: JobEventConfig;
+}
+
+export interface JobMetadataEvent extends JobEvent {
+    message?: JobMetadataMessage;
+}
+
+export interface JobMetadataMessage {
+    jobId?: string;
+    postLinesFrequencyMillis?: number;
 }
 
 /**
@@ -1004,6 +1292,12 @@ export interface KubernetesResourcePatchParameters {
      */
     providerType?: string;
     resourceId?: number;
+}
+
+export enum LogLevel {
+    Error = 0,
+    Warning = 1,
+    Info = 2,
 }
 
 export enum MachineGroupActionFilter {
@@ -1080,6 +1374,19 @@ export interface MetricsRow {
      * Metrics in serialized format. Should be deserialized based on the data type provided in header.
      */
     metrics?: string[];
+}
+
+export enum OperatingSystemType {
+    Windows = 0,
+    Linux = 1,
+}
+
+export enum OperationType {
+    ConfigurationJob = 0,
+    SizingJob = 1,
+    IncreaseCapacity = 2,
+    Reimage = 3,
+    DeleteVMs = 4,
 }
 
 /**
@@ -1215,6 +1522,73 @@ export interface ResourceLimit {
     resourceLimitsData?: { [key: string] : string; };
     totalCount?: number;
     totalMinutes?: number;
+}
+
+/**
+ * A request for a resource's exclusive lock
+ */
+export interface ResourceLockRequest {
+    /**
+     * The date/time this request was assigned.
+     */
+    assignTime?: Date;
+    /**
+     * The ID of the check run waiting on this request
+     */
+    checkRunId?: string;
+    /**
+     * The ID of the pipeline that requested this resource
+     */
+    definitionId?: number;
+    /**
+     * The date/time this request was finished.
+     */
+    finishTime?: Date;
+    /**
+     * Attempt of the graph node
+     */
+    nodeAttempt?: number;
+    /**
+     * Name of the graph node (currently stage) requesting this resource
+     */
+    nodeName?: string;
+    /**
+     * Internal ID for the orchestration plan connected with this request.
+     */
+    planId?: string;
+    /**
+     * The ID of the project of the check run and definition exist in
+     */
+    projectId?: string;
+    /**
+     * The date/time this request was queued.
+     */
+    queueTime?: Date;
+    /**
+     * ID of the request.
+     */
+    requestId?: number;
+    /**
+     * The id of the resource
+     */
+    resourceId?: string;
+    /**
+     * The type of the resource
+     */
+    resourceType?: string;
+    /**
+     * The result of this request.
+     */
+    status?: ResourceLockStatus;
+}
+
+export enum ResourceLockStatus {
+    Queued = 0,
+    InUse = 1,
+    Finished = 2,
+    TimedOut = 3,
+    Canceled = 4,
+    Abandoned = 5,
 }
 
 export interface ResourcesHubData {
@@ -1518,7 +1892,13 @@ export interface TaskAgent extends TaskAgentReference {
      * Date on which the last connectivity status change occurred.
      */
     statusChangedOn?: Date;
+    /**
+     * System-defined capabilities supported by this agent's host. Warning: To set capabilities use the PUT method, PUT will completely overwrite existing capabilities.
+     */
     systemCapabilities?: { [key: string] : string; };
+    /**
+     * User-defined capabilities supported by this agent's host. Warning: To set capabilities use the PUT method, PUT will completely overwrite existing capabilities.
+     */
     userCapabilities?: { [key: string] : string; };
 }
 
@@ -1593,9 +1973,7 @@ export interface TaskAgentCloudType {
     name?: string;
 }
 
-export interface TaskAgentDelaySource {
-    delays?: any[];
-    taskAgent?: TaskAgentReference;
+export interface TaskAgentDowngrade extends TaskAgentUpdateReason {
 }
 
 export interface TaskAgentJob {
@@ -1611,7 +1989,6 @@ export interface TaskAgentJob {
  * A job request for an agent.
  */
 export interface TaskAgentJobRequest {
-    agentDelays?: TaskAgentDelaySource[];
     agentSpecification?: any;
     /**
      * The date/time this request was assigned.
@@ -1629,7 +2006,6 @@ export interface TaskAgentJobRequest {
      * A list of demands required to fulfill this request.
      */
     demands?: Demand[];
-    expectedDuration?: any;
     /**
      * The date/time this request was finished.
      */
@@ -1670,6 +2046,7 @@ export interface TaskAgentJobRequest {
      * The ID of the pool this request targets
      */
     poolId?: number;
+    priority?: number;
     /**
      * The ID of the queue this request targets
      */
@@ -1805,6 +2182,10 @@ export interface TaskAgentPool extends TaskAgentPoolReference {
      * Whether or not the pool should autosize itself based on the Agent Cloud Provider settings.
      */
     autoSize?: boolean;
+    /**
+     * Whether or not agents in this pool are allowed to automatically update
+     */
+    autoUpdate?: boolean;
     /**
      * Creator of the pool. The creator of the pool is automatically added into the administrators group for the pool on creation.
      */
@@ -2011,6 +2392,25 @@ export enum TaskAgentPoolMaintenanceScheduleDays {
     All = 127,
 }
 
+/**
+ * Additional settings and descriptors for a TaskAgentPool
+ */
+export enum TaskAgentPoolOptions {
+    None = 0,
+    /**
+     * TaskAgentPool backed by the Elastic pool service
+     */
+    ElasticPool = 1,
+    /**
+     * Set to true if agents are re-imaged after each TaskAgentJobRequest
+     */
+    SingleUseAgents = 2,
+    /**
+     * Set to true if agents are held for investigation after a TaskAgentJobRequest failure
+     */
+    PreserveAgentOnJobFailure = 4,
+}
+
 export interface TaskAgentPoolReference {
     id?: number;
     /**
@@ -2022,6 +2422,10 @@ export interface TaskAgentPoolReference {
      */
     isLegacy?: boolean;
     name?: string;
+    /**
+     * Additional pool settings and details
+     */
+    options?: TaskAgentPoolOptions;
     /**
      * Gets or sets the type of the pool
      */
@@ -2154,6 +2558,11 @@ export interface TaskAgentReference {
     version?: string;
 }
 
+export enum TaskAgentRequestUpdateOptions {
+    None = 0,
+    BumpRequestToTop = 1,
+}
+
 /**
  * Represents a session for performing message exchanges from an agent.
  */
@@ -2251,6 +2660,7 @@ export interface TaskAgentUpdateReason {
 export enum TaskAgentUpdateReasonType {
     Manual = 1,
     MinAgentVersionRequired = 2,
+    Downgrade = 3,
 }
 
 export interface TaskAssignedEvent extends TaskEvent {
@@ -2265,6 +2675,15 @@ export interface TaskAttachment {
     recordId?: string;
     timelineId?: string;
     type?: string;
+}
+
+export enum TaskCommandMode {
+    Any = 0,
+    Restricted = 1,
+}
+
+export interface TaskCommandRestrictions {
+    mode?: TaskCommandMode;
 }
 
 export interface TaskCompletedEvent extends TaskEvent {
@@ -2304,6 +2723,7 @@ export interface TaskDefinition {
     preJobExecution?: { [key: string] : any; };
     preview?: boolean;
     releaseNotes?: string;
+    restrictions?: TaskRestrictions;
     runsOn?: string[];
     satisfies?: string[];
     serverOwned?: boolean;
@@ -2662,7 +3082,6 @@ export interface TaskHubLicenseDetails {
     hostedAgentMinutesFreeCount?: number;
     hostedAgentMinutesUsedCount?: number;
     hostedLicensesArePremium?: boolean;
-    marketplacePurchasedHostedLicenses?: MarketplacePurchasedLicense[];
     msdnUsersCount?: number;
     /**
      * Microsoft-hosted licenses purchased from VSTS directly.
@@ -2743,6 +3162,7 @@ export interface TaskOrchestrationOwner {
 
 export interface TaskOrchestrationPlan extends TaskOrchestrationPlanReference {
     environment?: PlanEnvironment;
+    expandedYaml?: TaskLogReference;
     finishTime?: Date;
     implementation?: TaskOrchestrationContainer;
     initializationLog?: TaskLogReference;
@@ -2833,6 +3253,11 @@ export interface TaskReference {
     version?: string;
 }
 
+export interface TaskRestrictions {
+    commands?: TaskCommandRestrictions;
+    settableVariables?: TaskVariableRestrictions;
+}
+
 export enum TaskResult {
     Succeeded = 0,
     SucceededWithIssues = 1,
@@ -2846,6 +3271,10 @@ export interface TaskSourceDefinition extends DistributedTaskCommonInterfaces.Ta
 }
 
 export interface TaskStartedEvent extends TaskEvent {
+}
+
+export interface TaskVariableRestrictions {
+    allowed?: string[];
 }
 
 export interface TaskVersion {
@@ -3133,6 +3562,16 @@ export var TypeInfo = {
     },
     AzureKeyVaultVariableValue: <any>{
     },
+    DemandMinimumVersion: <any>{
+    },
+    DemandSource: <any>{
+    },
+    DemandSourceType: {
+        enumValues: {
+            "task": 0,
+            "feature": 1
+        }
+    },
     DeploymentGroup: <any>{
     },
     DeploymentGroupActionFilter: {
@@ -3187,6 +3626,61 @@ export var TypeInfo = {
             "lastCompletedRequest": 8
         }
     },
+    ElasticAgentState: {
+        enumValues: {
+            "none": 0,
+            "enabled": 1,
+            "online": 2,
+            "assigned": 4
+        }
+    },
+    ElasticComputeState: {
+        enumValues: {
+            "none": 0,
+            "healthy": 1,
+            "creating": 2,
+            "deleting": 3,
+            "failed": 4,
+            "stopped": 5
+        }
+    },
+    ElasticNode: <any>{
+    },
+    ElasticNodeSettings: <any>{
+    },
+    ElasticNodeState: {
+        enumValues: {
+            "none": 0,
+            "new": 1,
+            "creatingCompute": 2,
+            "startingAgent": 3,
+            "idle": 4,
+            "assigned": 5,
+            "offline": 6,
+            "pendingReimage": 7,
+            "pendingDelete": 8,
+            "saved": 9,
+            "deletingCompute": 10,
+            "deleted": 11,
+            "lost": 12
+        }
+    },
+    ElasticPool: <any>{
+    },
+    ElasticPoolCreationResult: <any>{
+    },
+    ElasticPoolLog: <any>{
+    },
+    ElasticPoolSettings: <any>{
+    },
+    ElasticPoolState: {
+        enumValues: {
+            "online": 0,
+            "offline": 1,
+            "unhealthy": 2,
+            "new": 3
+        }
+    },
     EnvironmentActionFilter: {
         enumValues: {
             "none": 0,
@@ -3236,6 +3730,13 @@ export var TypeInfo = {
     },
     KubernetesResource: <any>{
     },
+    LogLevel: {
+        enumValues: {
+            "error": 0,
+            "warning": 1,
+            "info": 2
+        }
+    },
     MachineGroupActionFilter: {
         enumValues: {
             "none": 0,
@@ -3249,6 +3750,21 @@ export var TypeInfo = {
         enumValues: {
             "variable": 1,
             "regex": 2
+        }
+    },
+    OperatingSystemType: {
+        enumValues: {
+            "windows": 0,
+            "linux": 1
+        }
+    },
+    OperationType: {
+        enumValues: {
+            "configurationJob": 0,
+            "sizingJob": 1,
+            "increaseCapacity": 2,
+            "reimage": 3,
+            "deleteVMs": 4
         }
     },
     PackageMetadata: <any>{
@@ -3267,6 +3783,18 @@ export var TypeInfo = {
             "running": 1,
             "queued": 2,
             "all": 3
+        }
+    },
+    ResourceLockRequest: <any>{
+    },
+    ResourceLockStatus: {
+        enumValues: {
+            "queued": 0,
+            "inUse": 1,
+            "finished": 2,
+            "timedOut": 3,
+            "canceled": 4,
+            "abandoned": 5
         }
     },
     ResourceUsage: <any>{
@@ -3302,7 +3830,7 @@ export var TypeInfo = {
     },
     TaskAgentCloudType: <any>{
     },
-    TaskAgentDelaySource: <any>{
+    TaskAgentDowngrade: <any>{
     },
     TaskAgentJob: <any>{
     },
@@ -3373,6 +3901,14 @@ export var TypeInfo = {
             "all": 127
         }
     },
+    TaskAgentPoolOptions: {
+        enumValues: {
+            "none": 0,
+            "elasticPool": 1,
+            "singleUseAgents": 2,
+            "preserveAgentOnJobFailure": 4
+        }
+    },
     TaskAgentPoolReference: <any>{
     },
     TaskAgentPoolStatus: <any>{
@@ -3396,6 +3932,12 @@ export var TypeInfo = {
     },
     TaskAgentReference: <any>{
     },
+    TaskAgentRequestUpdateOptions: {
+        enumValues: {
+            "none": 0,
+            "bumpRequestToTop": 1
+        }
+    },
     TaskAgentSession: <any>{
     },
     TaskAgentStatus: {
@@ -3418,12 +3960,23 @@ export var TypeInfo = {
     TaskAgentUpdateReasonType: {
         enumValues: {
             "manual": 1,
-            "minAgentVersionRequired": 2
+            "minAgentVersionRequired": 2,
+            "downgrade": 3
         }
     },
     TaskAttachment: <any>{
     },
+    TaskCommandMode: {
+        enumValues: {
+            "any": 0,
+            "restricted": 1
+        }
+    },
+    TaskCommandRestrictions: <any>{
+    },
     TaskCompletedEvent: <any>{
+    },
+    TaskDefinition: <any>{
     },
     TaskDefinitionStatus: {
         enumValues: {
@@ -3485,6 +4038,8 @@ export var TypeInfo = {
     TaskOrchestrationQueuedPlan: <any>{
     },
     TaskOrchestrationQueuedPlanGroup: <any>{
+    },
+    TaskRestrictions: <any>{
     },
     TaskResult: {
         enumValues: {
@@ -3584,6 +4139,18 @@ TypeInfo.AzureKeyVaultVariableValue.fields = {
     }
 };
 
+TypeInfo.DemandMinimumVersion.fields = {
+    source: {
+        typeInfo: TypeInfo.DemandSource
+    }
+};
+
+TypeInfo.DemandSource.fields = {
+    sourceType: {
+        enumType: TypeInfo.DemandSourceType
+    }
+};
+
 TypeInfo.DeploymentGroup.fields = {
     machines: {
         isArray: true,
@@ -3654,6 +4221,72 @@ TypeInfo.DeploymentPoolSummary.fields = {
     },
     resource: {
         typeInfo: TypeInfo.EnvironmentResourceReference
+    }
+};
+
+TypeInfo.ElasticNode.fields = {
+    agentState: {
+        enumType: TypeInfo.ElasticAgentState
+    },
+    computeState: {
+        enumType: TypeInfo.ElasticComputeState
+    },
+    desiredState: {
+        enumType: TypeInfo.ElasticNodeState
+    },
+    state: {
+        enumType: TypeInfo.ElasticNodeState
+    },
+    stateChangedOn: {
+        isDate: true,
+    }
+};
+
+TypeInfo.ElasticNodeSettings.fields = {
+    state: {
+        enumType: TypeInfo.ElasticNodeState
+    }
+};
+
+TypeInfo.ElasticPool.fields = {
+    offlineSince: {
+        isDate: true,
+    },
+    osType: {
+        enumType: TypeInfo.OperatingSystemType
+    },
+    state: {
+        enumType: TypeInfo.ElasticPoolState
+    }
+};
+
+TypeInfo.ElasticPoolCreationResult.fields = {
+    agentPool: {
+        typeInfo: TypeInfo.TaskAgentPool
+    },
+    agentQueue: {
+        typeInfo: TypeInfo.TaskAgentQueue
+    },
+    elasticPool: {
+        typeInfo: TypeInfo.ElasticPool
+    }
+};
+
+TypeInfo.ElasticPoolLog.fields = {
+    level: {
+        enumType: TypeInfo.LogLevel
+    },
+    operation: {
+        enumType: TypeInfo.OperationType
+    },
+    timestamp: {
+        isDate: true,
+    }
+};
+
+TypeInfo.ElasticPoolSettings.fields = {
+    osType: {
+        enumType: TypeInfo.OperatingSystemType
     }
 };
 
@@ -3781,6 +4414,21 @@ TypeInfo.PlanEnvironment.fields = {
     }
 };
 
+TypeInfo.ResourceLockRequest.fields = {
+    assignTime: {
+        isDate: true,
+    },
+    finishTime: {
+        isDate: true,
+    },
+    queueTime: {
+        isDate: true,
+    },
+    status: {
+        enumType: TypeInfo.ResourceLockStatus
+    }
+};
+
 TypeInfo.ResourceUsage.fields = {
     runningRequests: {
         isArray: true,
@@ -3807,6 +4455,9 @@ TypeInfo.SecureFileEvent.fields = {
 TypeInfo.ServerTaskRequestMessage.fields = {
     environment: {
         typeInfo: TypeInfo.JobEnvironment
+    },
+    taskDefinition: {
+        typeInfo: TypeInfo.TaskDefinition
     }
 };
 
@@ -3907,9 +4558,9 @@ TypeInfo.TaskAgentCloudType.fields = {
     }
 };
 
-TypeInfo.TaskAgentDelaySource.fields = {
-    taskAgent: {
-        typeInfo: TypeInfo.TaskAgentReference
+TypeInfo.TaskAgentDowngrade.fields = {
+    code: {
+        enumType: TypeInfo.TaskAgentUpdateReasonType
     }
 };
 
@@ -3921,10 +4572,6 @@ TypeInfo.TaskAgentJob.fields = {
 };
 
 TypeInfo.TaskAgentJobRequest.fields = {
-    agentDelays: {
-        isArray: true,
-        typeInfo: TypeInfo.TaskAgentDelaySource
-    },
     assignTime: {
         isDate: true,
     },
@@ -3973,6 +4620,9 @@ TypeInfo.TaskAgentMinAgentVersionRequiredUpdate.fields = {
 TypeInfo.TaskAgentPool.fields = {
     createdOn: {
         isDate: true,
+    },
+    options: {
+        enumType: TypeInfo.TaskAgentPoolOptions
     },
     poolType: {
         enumType: TypeInfo.TaskAgentPoolType
@@ -4032,12 +4682,18 @@ TypeInfo.TaskAgentPoolMaintenanceSchedule.fields = {
 };
 
 TypeInfo.TaskAgentPoolReference.fields = {
+    options: {
+        enumType: TypeInfo.TaskAgentPoolOptions
+    },
     poolType: {
         enumType: TypeInfo.TaskAgentPoolType
     }
 };
 
 TypeInfo.TaskAgentPoolStatus.fields = {
+    options: {
+        enumType: TypeInfo.TaskAgentPoolOptions
+    },
     poolType: {
         enumType: TypeInfo.TaskAgentPoolType
     }
@@ -4099,9 +4755,21 @@ TypeInfo.TaskAttachment.fields = {
     }
 };
 
+TypeInfo.TaskCommandRestrictions.fields = {
+    mode: {
+        enumType: TypeInfo.TaskCommandMode
+    }
+};
+
 TypeInfo.TaskCompletedEvent.fields = {
     result: {
         enumType: TypeInfo.TaskResult
+    }
+};
+
+TypeInfo.TaskDefinition.fields = {
+    restrictions: {
+        typeInfo: TypeInfo.TaskRestrictions
     }
 };
 
@@ -4111,6 +4779,9 @@ TypeInfo.TaskGroup.fields = {
     },
     modifiedOn: {
         isDate: true,
+    },
+    restrictions: {
+        typeInfo: TypeInfo.TaskRestrictions
     }
 };
 
@@ -4204,6 +4875,12 @@ TypeInfo.TaskOrchestrationQueuedPlanGroup.fields = {
     plans: {
         isArray: true,
         typeInfo: TypeInfo.TaskOrchestrationQueuedPlan
+    }
+};
+
+TypeInfo.TaskRestrictions.fields = {
+    commands: {
+        typeInfo: TypeInfo.TaskCommandRestrictions
     }
 };
 

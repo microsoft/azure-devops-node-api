@@ -401,6 +401,21 @@ export interface CommentVersion extends WorkItemTrackingResource {
     version?: number;
 }
 
+export interface EmailRecipients {
+    /**
+     * Plaintext email addresses.
+     */
+    emailAddresses?: string[];
+    /**
+     * TfIds
+     */
+    tfIds?: string[];
+    /**
+     * Unresolved entity ids
+     */
+    unresolvedEntityIds?: string[];
+}
+
 export interface ExternalDeployment {
     artifactId?: string;
     createdBy?: string;
@@ -606,6 +621,37 @@ export enum LogicalOperation {
     NONE = 0,
     AND = 1,
     OR = 2,
+}
+
+export interface MailMessage {
+    /**
+     * The mail body in HTML format.
+     */
+    body?: string;
+    /**
+     * CC recipients.
+     */
+    cC?: EmailRecipients;
+    /**
+     * The in-reply-to header value
+     */
+    inReplyTo?: string;
+    /**
+     * The Message Id value
+     */
+    messageId?: string;
+    /**
+     * Reply To recipients.
+     */
+    replyTo?: EmailRecipients;
+    /**
+     * The mail subject.
+     */
+    subject?: string;
+    /**
+     * To recipients
+     */
+    to?: EmailRecipients;
 }
 
 /**
@@ -937,6 +983,17 @@ export interface ReportingWorkItemRevisionsFilter {
      * A list of types to filter the results to specific work item types. Omit this parameter to get work item revisions of all work item types.
      */
     types?: string[];
+}
+
+export interface SendMailBody {
+    fields?: string[];
+    ids?: number[];
+    message?: MailMessage;
+    persistenceId?: string;
+    projectId?: string;
+    sortFields?: string[];
+    tempQueryId?: string;
+    wiql?: string;
 }
 
 /**

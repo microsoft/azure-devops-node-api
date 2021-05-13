@@ -244,7 +244,7 @@ export interface Build {
      */
     quality?: string;
     /**
-     * The queue. This is only set if the definition type is Build.
+     * The queue. This is only set if the definition type is Build. WARNING: this field is deprecated and does not corresponds to the jobs queues.
      */
     queue?: AgentPoolQueue;
     /**
@@ -1889,6 +1889,10 @@ export enum FolderQueryOrder {
  */
 export interface Forks {
     /**
+     * Indicates whether a build should allow a full access token or scope it down when building forks of the selected repository.
+     */
+    allowFullAccessToken?: boolean;
+    /**
      * Indicates whether a build should use secrets when building forks of the selected repository.
      */
     allowSecrets?: boolean;
@@ -3017,6 +3021,11 @@ export interface UpdateRetentionSettingModel {
 export interface UpdateStageParameters {
     forceRetryAllJobs?: boolean;
     state?: StageUpdateType;
+}
+
+export interface UpdateTagParameters {
+    tagsToAdd?: string[];
+    tagsToRemove?: string[];
 }
 
 export enum ValidationResult {

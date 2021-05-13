@@ -470,6 +470,21 @@ export interface CloneStatistics {
     totalTestCasesCount?: number;
 }
 
+export interface CloneTestCaseOptions {
+    /**
+     * If set to true, include the attachments
+     */
+    includeAttachments?: boolean;
+    /**
+     * If set to true, include the links
+     */
+    includeLinks?: boolean;
+    /**
+     * Comment on the link that will link the new clone  test case to the original Set null for no comment
+     */
+    relatedLinkComment?: string;
+}
+
 /**
  * Represents the build configuration (platform, flavor) and coverage data for the build
  */
@@ -613,6 +628,10 @@ export enum CoverageSummaryStatus {
      * The summary evaluation is pending
      */
     Pending = 4,
+    /**
+     * Summary evaluation may be ongoing but another merge has been requested.
+     */
+    UpdateRequestQueued = 5,
 }
 
 export interface CreateTestMessageLogEntryRequest {
@@ -871,15 +890,15 @@ export interface JobReference {
  */
 export interface LastResultDetails {
     /**
-     * CompletedDate of LastResult.
+     * Completed date of last result.
      */
     dateCompleted?: Date;
     /**
-     * Duration of LastResult.
+     * Duration of the last result in milliseconds.
      */
     duration?: number;
     /**
-     * RunBy.
+     * The user who executed the last result.
      */
     runBy?: VSSInterfaces.IdentityRef;
 }
@@ -1180,6 +1199,13 @@ export interface NameValuePair {
      * Value
      */
     value?: string;
+}
+
+export interface NewTestResultLoggingSettings {
+    /**
+     * LogNewTests defines whether or not we will record new test cases coming into the system
+     */
+    logNewTests?: boolean;
 }
 
 export enum OperationType {
@@ -1914,7 +1940,7 @@ export interface RunCreateModel {
      */
     startDate?: string;
     /**
-     * The state of the run. Type TestRunState Valid states - Unspecified ,NotStarted, InProgress, Completed, Waiting, Aborted, NeedsInvestigation
+     * The state of the run. Type TestRunState Valid states - NotStarted, InProgress, Waiting
      */
     state?: string;
     /**
@@ -2436,7 +2462,7 @@ export interface TestActionResultModel extends TestResultModelBase {
      */
     stepIdentifier?: string;
     /**
-     * Url of test action result.
+     * Url of test action result. Deprecated in hosted environment.
      */
     url?: string;
 }
@@ -3973,7 +3999,7 @@ export interface TestResultParameterModel {
      */
     stepIdentifier?: string;
     /**
-     * Url of test parameter.
+     * Url of test parameter. Deprecated in hosted environment.
      */
     url?: string;
     /**
@@ -4075,6 +4101,7 @@ export interface TestResultsSettings {
      * IsRequired and EmitDefaultValue are passed as false as if users doesn't pass anything, should not come for serialisation and deserialisation.
      */
     flakySettings?: FlakySettings;
+    newTestResultLoggingSettings?: NewTestResultLoggingSettings;
 }
 
 export enum TestResultsSettingsType {
@@ -4086,6 +4113,10 @@ export enum TestResultsSettingsType {
      * Returns Flaky Test Settings.
      */
     Flaky = 2,
+    /**
+     * Returns whether to log new tests or not
+     */
+    NewTestLogging = 3,
 }
 
 export interface TestResultSummary {
@@ -4102,6 +4133,10 @@ export interface TestResultsUpdateSettings {
      * FlakySettings defines Flaky Settings Data.
      */
     flakySettings?: FlakySettings;
+    /**
+     * NewTestResultLoggingSettings defines the setting for logging new test results
+     */
+    newTestResultLoggingSettings?: NewTestResultLoggingSettings;
 }
 
 export interface TestResultsWithWatermark {
@@ -5182,7 +5217,8 @@ export var TypeInfo = {
             "inProgress": 1,
             "completed": 2,
             "finalized": 3,
-            "pending": 4
+            "pending": 4,
+            "updateRequestQueued": 5
         }
     },
     CreateTestMessageLogEntryRequest: <any>{
@@ -5556,7 +5592,8 @@ export var TypeInfo = {
     TestResultsSettingsType: {
         enumValues: {
             "all": 1,
-            "flaky": 2
+            "flaky": 2,
+            "newTestLogging": 3
         }
     },
     TestResultSummary: <any>{
