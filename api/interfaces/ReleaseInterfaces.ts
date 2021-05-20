@@ -1939,6 +1939,24 @@ export interface MultiConfigInput extends ParallelExecutionInputBase {
 export interface MultiMachineInput extends ParallelExecutionInputBase {
 }
 
+export interface OrgPipelineReleaseSettings {
+    /**
+     * Defines whether user can manage pipeline settings.
+     */
+    hasManagePipelinePoliciesPermission?: boolean;
+    /**
+     * EnforceJobAuthScope setting at organisaion level. If enabled, scope of access for all release pipelines in the organisation reduces to the current project.
+     */
+    orgEnforceJobAuthScope?: boolean;
+}
+
+export interface OrgPipelineReleaseSettingsUpdateParameters {
+    /**
+     * EnforceJobAuthScope setting at organisaion level. If enabled, scope of access for all release pipelines in the organisation reduces to the current project.
+     */
+    orgEnforceJobAuthScope?: boolean;
+}
+
 export interface PackageTrigger extends ReleaseTriggerBase {
     /**
      * Package trigger alias.
@@ -1973,6 +1991,32 @@ export interface PipelineProcess {
 export enum PipelineProcessTypes {
     Designer = 1,
     Yaml = 2,
+}
+
+export interface ProjectPipelineReleaseSettings {
+    /**
+     * EnforceJobAuthScope setting at project level. If enabled, scope of access for all release pipelines reduces to the current project.
+     */
+    enforceJobAuthScope?: boolean;
+    /**
+     * Defines whether user can manage pipeline settings.
+     */
+    hasManageSettingsPermission?: boolean;
+    /**
+     * EnforceJobAuthScope setting at organisaion level. If enabled, scope of access for all release pipelines in the organisation reduces to the current project.
+     */
+    orgEnforceJobAuthScope?: boolean;
+    /**
+     * Defines whether project is public.
+     */
+    publicProject?: boolean;
+}
+
+export interface ProjectPipelineReleaseSettingsUpdateParameters {
+    /**
+     * EnforceJobAuthScope setting at project level. If enabled, scope of access for all release pipelines reduces to the current project.
+     */
+    enforceJobAuthScope?: boolean;
 }
 
 export interface ProjectReference {
@@ -3036,6 +3080,17 @@ export interface ReleaseEnvironmentCompletedEvent {
     status?: string;
     title?: string;
     webAccessUri?: string;
+}
+
+export enum ReleaseEnvironmentExpands {
+    /**
+     * Return top level properties of object.
+     */
+    None = 0,
+    /**
+     * Expand environment with tasks.
+     */
+    Tasks = 1,
 }
 
 export interface ReleaseEnvironmentShallowReference {
@@ -4479,6 +4534,12 @@ export var TypeInfo = {
     ReleaseEnvironment: <any>{
     },
     ReleaseEnvironmentCompletedEvent: <any>{
+    },
+    ReleaseEnvironmentExpands: {
+        enumValues: {
+            "none": 0,
+            "tasks": 1
+        }
     },
     ReleaseEnvironmentStatusUpdatedEvent: <any>{
     },

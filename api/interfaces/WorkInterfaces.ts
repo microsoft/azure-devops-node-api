@@ -342,6 +342,10 @@ export interface CardFieldSettings {
      */
     showAssignedTo?: boolean;
     /**
+     * Flag indicating whether to show child rollup on cards
+     */
+    showChildRollup?: boolean;
+    /**
      * Flag indicating whether to show empty fields on cards
      */
     showEmptyFields?: boolean;
@@ -349,6 +353,10 @@ export interface CardFieldSettings {
      * Flag indicating whether to show ID on cards
      */
     showId?: boolean;
+    /**
+     * Flag indicating whether to show show parent field on cards
+     */
+    showParent?: boolean;
     /**
      * Flag indicating whether to show state field on cards
      */
@@ -434,9 +442,13 @@ export interface DeliveryViewData extends PlanViewData {
      */
     endDate?: Date;
     /**
-     * Max number of teams can be configured for a delivery plan.
+     * Max number of teams that can be configured for a delivery plan
      */
     maxExpandedTeams?: number;
+    /**
+     * Mapping between parent id, title and all the child work item ids
+     */
+    parentItemMaps?: ParentChildWIMap[];
     /**
      * The start date for the delivery view data
      */
@@ -445,6 +457,10 @@ export interface DeliveryViewData extends PlanViewData {
      * All the team data
      */
     teams?: TimelineTeamData[];
+    /**
+     * List of all work item ids that have a violation
+     */
+    workItemViolations?: number[];
 }
 
 /**
@@ -463,6 +479,10 @@ export interface DeliveryViewPropertyCollection {
      * Markers. Will be missing/null if there are no markers.
      */
     markers?: Marker[];
+    /**
+     * Card style settings
+     */
+    styleSettings?: Rule[];
     /**
      * Team backlog mappings
      */
@@ -556,6 +576,15 @@ export interface ITaskboardColumnMapping {
 }
 
 /**
+ * Capacity and teams for all teams in an iteration
+ */
+export interface IterationCapacity {
+    teams?: TeamCapacityTotals[];
+    totalIterationCapacityPerDay?: number;
+    totalIterationDaysOff?: number;
+}
+
+/**
  * Represents work items in an iteration backlog
  */
 export interface IterationWorkItems extends TeamSettingsDataContractBase {
@@ -595,6 +624,7 @@ export interface ParentChildWIMap {
     childWorkItemIds?: number[];
     id?: number;
     title?: string;
+    workItemTypeName?: string;
 }
 
 /**
@@ -906,6 +936,24 @@ export interface TeamBacklogMapping {
 }
 
 /**
+ * Represents team member capacity with totals aggregated
+ */
+export interface TeamCapacity {
+    teamMembers?: TeamMemberCapacityIdentityRef[];
+    totalCapacityPerDay?: number;
+    totalDaysOff?: number;
+}
+
+/**
+ * Team information with total capacity and days off
+ */
+export interface TeamCapacityTotals {
+    teamCapacityPerDay?: number;
+    teamId?: string;
+    teamTotalDaysOff?: number;
+}
+
+/**
  * Represents a single TeamFieldValue
  */
 export interface TeamFieldValue {
@@ -1135,10 +1183,15 @@ export interface TimelineTeamData {
      * The field reference names of the partially paged work items, such as ID, WorkItemType
      */
     partiallyPagedFieldReferenceNames?: string[];
+    partiallyPagedWorkItems?: any[][];
     /**
      * The project id the team belongs team
      */
     projectId?: string;
+    /**
+     * Work item types for which we will collect roll up data on the client side
+     */
+    rollupWorkItemTypes?: string[];
     /**
      * Status for this team.
      */
@@ -1155,6 +1208,10 @@ export interface TimelineTeamData {
      * The team field values
      */
     teamFieldValues?: TeamFieldValue[];
+    /**
+     * Work items associated with the team that are not under any of the team's iterations
+     */
+    workItems?: any[][];
     /**
      * Colors for the work item types.
      */
@@ -1392,6 +1449,8 @@ export var TypeInfo = {
             "allPermissions": 15
         }
     },
+    TeamCapacity: <any>{
+    },
     TeamIterationAttributes: <any>{
     },
     TeamMemberCapacity: <any>{
@@ -1596,6 +1655,13 @@ TypeInfo.PlanMetadata.fields = {
     },
     userPermissions: {
         enumType: TypeInfo.PlanUserPermissions
+    }
+};
+
+TypeInfo.TeamCapacity.fields = {
+    teamMembers: {
+        isArray: true,
+        typeInfo: TypeInfo.TeamMemberCapacityIdentityRef
     }
 };
 

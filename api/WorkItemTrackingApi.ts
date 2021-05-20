@@ -65,6 +65,7 @@ export interface IWorkItemTrackingApi extends basem.ClientApiBase {
     restoreWorkItem(payload: WorkItemTrackingInterfaces.WorkItemDeleteUpdate, id: number, project?: string): Promise<WorkItemTrackingInterfaces.WorkItemDelete>;
     getRevision(id: number, revisionNumber: number, expand?: WorkItemTrackingInterfaces.WorkItemExpand, project?: string): Promise<WorkItemTrackingInterfaces.WorkItem>;
     getRevisions(id: number, top?: number, skip?: number, expand?: WorkItemTrackingInterfaces.WorkItemExpand, project?: string): Promise<WorkItemTrackingInterfaces.WorkItem[]>;
+    sendMail(body: WorkItemTrackingInterfaces.SendMailBody, project?: string): Promise<void>;
     deleteTag(project: string, tagIdOrName: string): Promise<void>;
     getTag(project: string, tagIdOrName: string): Promise<WorkItemTrackingInterfaces.WorkItemTagDefinition>;
     getTags(project: string): Promise<WorkItemTrackingInterfaces.WorkItemTagDefinition[]>;
@@ -136,7 +137,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "def3d688-ddf5-4096-9024-69beea15cdbd",
                     routeValues,
@@ -175,7 +176,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "1bc988f4-c15f-4072-ad35-497c87e3a909",
                     routeValues);
@@ -213,7 +214,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "d60eeb6e-e18c-4478-9e94-a0094e28f41c",
                     routeValues);
@@ -251,7 +252,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "1a31de40-e318-41cd-a6c6-881077df52e3",
                     routeValues);
@@ -294,7 +295,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "a9a9aa7a-8c09-44d3-ad1b-46e855c1e3d3",
                     routeValues);
@@ -353,7 +354,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "wit",
                     "e07b5fa4-1499-494d-a496-64b860fd64ff",
                     routeValues,
@@ -408,7 +409,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "wit",
                     "e07b5fa4-1499-494d-a496-64b860fd64ff",
                     routeValues,
@@ -454,7 +455,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "wit",
                     "e07b5fa4-1499-494d-a496-64b860fd64ff",
                     routeValues,
@@ -503,7 +504,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "a70579d1-f53a-48ee-a5be-7be8659023b9",
                     routeValues,
@@ -551,7 +552,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "a70579d1-f53a-48ee-a5be-7be8659023b9",
                     routeValues,
@@ -601,7 +602,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "5a172953-1b41-49d3-840a-33f79c3ce89f",
                     routeValues);
@@ -654,7 +655,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "5a172953-1b41-49d3-840a-33f79c3ce89f",
                     routeValues,
@@ -708,7 +709,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "5a172953-1b41-49d3-840a-33f79c3ce89f",
                     routeValues,
@@ -758,7 +759,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "5a172953-1b41-49d3-840a-33f79c3ce89f",
                     routeValues);
@@ -817,7 +818,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "e33ca5e0-2349-4285-af3d-d72d86781c35",
                     routeValues,
@@ -864,7 +865,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "wit",
                     "608aac0a-32e1-4493-a863-b9cf4566d257",
                     routeValues);
@@ -911,7 +912,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "wit",
                     "608aac0a-32e1-4493-a863-b9cf4566d257",
                     routeValues);
@@ -967,7 +968,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "wit",
                     "608aac0a-32e1-4493-a863-b9cf4566d257",
                     routeValues,
@@ -1030,7 +1031,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "wit",
                     "608aac0a-32e1-4493-a863-b9cf4566d257",
                     routeValues,
@@ -1090,7 +1091,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "wit",
                     "608aac0a-32e1-4493-a863-b9cf4566d257",
                     routeValues,
@@ -1140,7 +1141,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "wit",
                     "608aac0a-32e1-4493-a863-b9cf4566d257",
                     routeValues);
@@ -1190,7 +1191,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "f6cb3f27-1028-4851-af96-887e570dc21f",
                     routeValues);
@@ -1240,7 +1241,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "f6cb3f27-1028-4851-af96-887e570dc21f",
                     routeValues);
@@ -1287,7 +1288,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "f6cb3f27-1028-4851-af96-887e570dc21f",
                     routeValues);
@@ -1335,7 +1336,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "49e03b34-3be0-42e3-8a5d-e8dfb88ac954",
                     routeValues);
@@ -1380,7 +1381,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "49e03b34-3be0-42e3-8a5d-e8dfb88ac954",
                     routeValues);
@@ -1423,7 +1424,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "b51fd764-e5c2-4b9b-aaf7-3395cf4bdd94",
                     routeValues);
@@ -1467,7 +1468,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "b51fd764-e5c2-4b9b-aaf7-3395cf4bdd94",
                     routeValues);
@@ -1511,7 +1512,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "b51fd764-e5c2-4b9b-aaf7-3395cf4bdd94",
                     routeValues);
@@ -1558,7 +1559,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "b51fd764-e5c2-4b9b-aaf7-3395cf4bdd94",
                     routeValues,
@@ -1605,7 +1606,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "b51fd764-e5c2-4b9b-aaf7-3395cf4bdd94",
                     routeValues);
@@ -1648,7 +1649,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "19801631-d4e5-47e9-8166-0330de0ff1e6",
                     routeValues);
@@ -1700,7 +1701,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "a67d190c-c41f-424b-814d-0e906f659301",
                     routeValues,
@@ -1745,7 +1746,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "a67d190c-c41f-424b-814d-0e906f659301",
                     routeValues);
@@ -1798,7 +1799,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "a67d190c-c41f-424b-814d-0e906f659301",
                     routeValues,
@@ -1855,7 +1856,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "a67d190c-c41f-424b-814d-0e906f659301",
                     routeValues,
@@ -1915,7 +1916,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "a67d190c-c41f-424b-814d-0e906f659301",
                     routeValues,
@@ -1968,7 +1969,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "a67d190c-c41f-424b-814d-0e906f659301",
                     routeValues,
@@ -2012,7 +2013,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "549816f9-09b0-4e75-9e81-01fbfcd07426",
                     routeValues);
@@ -2056,7 +2057,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "b70d8d39-926c-465e-b927-b1bf0e5ca0e0",
                     routeValues);
@@ -2100,7 +2101,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "b70d8d39-926c-465e-b927-b1bf0e5ca0e0",
                     routeValues);
@@ -2150,7 +2151,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "b70d8d39-926c-465e-b927-b1bf0e5ca0e0",
                     routeValues,
@@ -2192,7 +2193,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "b70d8d39-926c-465e-b927-b1bf0e5ca0e0",
                     routeValues);
@@ -2238,7 +2239,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "b70d8d39-926c-465e-b927-b1bf0e5ca0e0",
                     routeValues);
@@ -2291,7 +2292,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "wit",
                     "a00c85a5-80fa-4565-99c3-bcd2181434bb",
                     routeValues,
@@ -2348,7 +2349,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "wit",
                     "a00c85a5-80fa-4565-99c3-bcd2181434bb",
                     routeValues,
@@ -2364,6 +2365,49 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let ret = this.formatResponse(res.result,
                                               null,
                                               true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * RESTful method to send mail for selected/queried work items.
+     * 
+     * @param {WorkItemTrackingInterfaces.SendMailBody} body
+     * @param {string} project - Project ID or project name
+     */
+    public async sendMail(
+        body: WorkItemTrackingInterfaces.SendMailBody,
+        project?: string
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "6.1-preview.1",
+                    "wit",
+                    "12438500-2f84-4fa7-9f1a-c31871b4959d",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.create<void>(url, body, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
 
                 resolve(ret);
                 
@@ -2391,7 +2435,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "bc15bc60-e7a8-43cb-ab01-2106be3983a1",
                     routeValues);
@@ -2433,7 +2477,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "bc15bc60-e7a8-43cb-ab01-2106be3983a1",
                     routeValues);
@@ -2472,7 +2516,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "bc15bc60-e7a8-43cb-ab01-2106be3983a1",
                     routeValues);
@@ -2516,7 +2560,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "bc15bc60-e7a8-43cb-ab01-2106be3983a1",
                     routeValues);
@@ -2567,7 +2611,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "6a90345f-a676-4969-afce-8e163e1d5642",
                     routeValues);
@@ -2622,7 +2666,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "6a90345f-a676-4969-afce-8e163e1d5642",
                     routeValues,
@@ -2675,7 +2719,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "fb10264a-8836-48a0-8033-1b0ccd2748d5",
                     routeValues);
@@ -2727,7 +2771,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "fb10264a-8836-48a0-8033-1b0ccd2748d5",
                     routeValues);
@@ -2781,7 +2825,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "fb10264a-8836-48a0-8033-1b0ccd2748d5",
                     routeValues);
@@ -2828,7 +2872,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "wit",
                     "6570bf97-d02c-4a91-8d93-3abe9895b1a9",
                     routeValues);
@@ -2881,7 +2925,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "wit",
                     "6570bf97-d02c-4a91-8d93-3abe9895b1a9",
                     routeValues,
@@ -2942,7 +2986,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "1a9c53f7-f243-4447-b110-35ef023636e4",
                     routeValues,
@@ -3004,7 +3048,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "a02355f5-5f8a-4671-8e32-369d23aac83d",
                     routeValues,
@@ -3055,7 +3099,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "4e1eb4a5-1970-4228-a682-ec48eb2dca30",
                     routeValues,
@@ -3094,7 +3138,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "4e1eb4a5-1970-4228-a682-ec48eb2dca30",
                     routeValues);
@@ -3144,7 +3188,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "4e1eb4a5-1970-4228-a682-ec48eb2dca30",
                     routeValues,
@@ -3187,7 +3231,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "4e1eb4a5-1970-4228-a682-ec48eb2dca30",
                     routeValues,
@@ -3236,7 +3280,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "wit",
                     "b5b5b6d0-0308-40a1-b3f4-b9bb3c66878f",
                     routeValues,
@@ -3278,7 +3322,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "f5d33bc9-5b49-4a3c-a9bd-f3cd46dd2165",
                     routeValues);
@@ -3316,7 +3360,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "f5d33bc9-5b49-4a3c-a9bd-f3cd46dd2165",
                     routeValues);
@@ -3393,7 +3437,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "f828fe59-dd87-495d-a17c-7a8d6211ca6c",
                     routeValues,
@@ -3449,7 +3493,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "f828fe59-dd87-495d-a17c-7a8d6211ca6c",
                     routeValues,
@@ -3498,7 +3542,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "4a644469-90c5-4fcc-9a9f-be0827d369ec",
                     routeValues,
@@ -3564,7 +3608,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "wit",
                     "62d3d110-0047-428c-ad3c-4fe872c91c74",
                     routeValues,
@@ -3622,7 +3666,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "wit",
                     "62d3d110-0047-428c-ad3c-4fe872c91c74",
                     routeValues,
@@ -3673,7 +3717,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "wit",
                     "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b",
                     routeValues,
@@ -3730,7 +3774,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "wit",
                     "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b",
                     routeValues,
@@ -3793,7 +3837,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "wit",
                     "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b",
                     routeValues,
@@ -3859,7 +3903,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "wit",
                     "72c7ddf8-2cdc-4f60-90cd-ab71c14a399b",
                     routeValues,
@@ -3904,7 +3948,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "908509b6-4248-4475-a1cd-829139ba419f",
                     routeValues);
@@ -3944,7 +3988,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "0b83df8a-3496-4ddb-ba44-63634f4cda61",
                     routeValues);
@@ -3994,7 +4038,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "afae844b-e2f6-44c2-8053-17b3bb936a40",
                     routeValues,
@@ -4036,7 +4080,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "9b9f5734-36c8-415e-ba67-f83b45c31408",
                     routeValues);
@@ -4080,7 +4124,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "9b9f5734-36c8-415e-ba67-f83b45c31408",
                     routeValues);
@@ -4120,7 +4164,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "958fde80-115e-43fb-bd65-749c48057faf",
                     routeValues);
@@ -4160,7 +4204,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "f0f8dc62-3975-48ce-8051-f636b68b52e3",
                     routeValues);
@@ -4204,7 +4248,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "7c8d7a76-4a09-43e8-b5df-bd792f4ac6aa",
                     routeValues);
@@ -4245,7 +4289,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.2",
+                    "6.1-preview.2",
                     "wit",
                     "7c8d7a76-4a09-43e8-b5df-bd792f4ac6aa",
                     routeValues);
@@ -4295,7 +4339,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "wit",
                     "bd293ce5-3d25-4192-8e67-e8092e879efb",
                     routeValues,
@@ -4349,7 +4393,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.3",
+                    "6.1-preview.3",
                     "wit",
                     "bd293ce5-3d25-4192-8e67-e8092e879efb",
                     routeValues,
@@ -4394,7 +4438,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "7c9d7a76-4a09-43e8-b5df-bd792f4ac6aa",
                     routeValues);
@@ -4444,7 +4488,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "8637ac8b-5eb6-4f90-b3f7-4f2ff576a459",
                     routeValues,
@@ -4488,7 +4532,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.0-preview.1",
+                    "6.1-preview.1",
                     "wit",
                     "8637ac8b-5eb6-4f90-b3f7-4f2ff576a459",
                     routeValues);

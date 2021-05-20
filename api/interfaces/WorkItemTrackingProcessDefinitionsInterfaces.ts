@@ -499,6 +499,7 @@ export interface WorkItemStateResultModel {
 export interface WorkItemTypeBehavior {
     behavior?: WorkItemBehaviorReference;
     isDefault?: boolean;
+    isLegacyDefault?: boolean;
     url?: string;
 }
 
@@ -524,11 +525,12 @@ export interface WorkItemTypeFieldModel {
 }
 
 /**
- * New version of WorkItemTypeFieldModel supporting defaultValue as object (such as IdentityRef)
+ * New version of WorkItemTypeFieldModel supporting defaultValue as object (such as IdentityRef) and description
  */
 export interface WorkItemTypeFieldModel2 {
     allowGroups: boolean;
     defaultValue?: any;
+    description?: string;
     name?: string;
     pickList?: PickListMetadataModel;
     readOnly?: boolean;

@@ -45,7 +45,6 @@ export interface IBuildApi extends basem.ClientApiBase {
     deleteDefinition(project: string, definitionId: number): Promise<void>;
     getDefinition(project: string, definitionId: number, revision?: number, minMetricsTime?: Date, propertyFilters?: string[], includeLatestBuilds?: boolean): Promise<BuildInterfaces.BuildDefinition>;
     getDefinitions(project: string, name?: string, repositoryId?: string, repositoryType?: string, queryOrder?: BuildInterfaces.DefinitionQueryOrder, top?: number, continuationToken?: string, minMetricsTime?: Date, definitionIds?: number[], path?: string, builtAfter?: Date, notBuiltAfter?: Date, includeAllProperties?: boolean, includeLatestBuilds?: boolean, taskIdFilter?: string, processType?: number, yamlFilename?: string): Promise<BuildInterfaces.BuildDefinitionReference[]>;
-    getDefinitionYaml(project: string, definitionId: number, dummyValue: string, revision?: number, minMetricsTime?: Date, propertyFilters?: string[], includeLatestBuilds?: boolean): Promise<BuildInterfaces.YamlBuild>;
     restoreDefinition(project: string, definitionId: number, deleted: boolean): Promise<BuildInterfaces.BuildDefinition>;
     updateDefinition(definition: BuildInterfaces.BuildDefinition, project: string, definitionId: number, secretsSourceDefinitionId?: number, secretsSourceDefinitionRevision?: number): Promise<BuildInterfaces.BuildDefinition>;
     getFileContents(project: string, providerName: string, serviceEndpointId?: string, repository?: string, commitOrBranch?: string, path?: string): Promise<NodeJS.ReadableStream>;
@@ -95,10 +94,12 @@ export interface IBuildApi extends basem.ClientApiBase {
     addBuildTags(tags: string[], project: string, buildId: number): Promise<string[]>;
     deleteBuildTag(project: string, buildId: number, tag: string): Promise<string[]>;
     getBuildTags(project: string, buildId: number): Promise<string[]>;
+    updateBuildTags(updateParameters: BuildInterfaces.UpdateTagParameters, project: string, buildId: number): Promise<string[]>;
     addDefinitionTag(project: string, definitionId: number, tag: string): Promise<string[]>;
     addDefinitionTags(tags: string[], project: string, definitionId: number): Promise<string[]>;
     deleteDefinitionTag(project: string, definitionId: number, tag: string): Promise<string[]>;
     getDefinitionTags(project: string, definitionId: number, revision?: number): Promise<string[]>;
+    updateDefinitionTags(updateParameters: BuildInterfaces.UpdateTagParameters, project: string, definitionId: number): Promise<string[]>;
     deleteTag(project: string, tag: string): Promise<string[]>;
     getTags(project: string): Promise<string[]>;
     deleteTemplate(project: string, templateId: string): Promise<void>;
@@ -111,6 +112,7 @@ export interface IBuildApi extends basem.ClientApiBase {
     getBuildWorkItemsRefs(project: string, buildId: number, top?: number): Promise<VSSInterfaces.ResourceRef[]>;
     getBuildWorkItemsRefsFromCommits(commitIds: string[], project: string, buildId: number, top?: number): Promise<VSSInterfaces.ResourceRef[]>;
     getWorkItemsBetweenBuilds(project: string, fromBuildId: number, toBuildId: number, top?: number): Promise<VSSInterfaces.ResourceRef[]>;
+    getDefinitionYaml(project: string, definitionId: number, revision?: number, minMetricsTime?: Date, propertyFilters?: string[], includeLatestBuilds?: boolean): Promise<BuildInterfaces.YamlBuild>;
 }
 
 export class BuildApi extends basem.ClientApiBase implements IBuildApi {
@@ -788,7 +790,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.6",
+                    "6.1-preview.7",
                     "build",
                     "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
                     routeValues);
@@ -838,7 +840,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.6",
+                    "6.1-preview.7",
                     "build",
                     "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
                     routeValues,
@@ -943,7 +945,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.6",
+                    "6.1-preview.7",
                     "build",
                     "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
                     routeValues,
@@ -1002,7 +1004,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.6",
+                    "6.1-preview.7",
                     "build",
                     "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
                     routeValues,
@@ -1055,7 +1057,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.6",
+                    "6.1-preview.7",
                     "build",
                     "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
                     routeValues,
@@ -1099,7 +1101,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.6",
+                    "6.1-preview.7",
                     "build",
                     "0cd358e1-9217-4d94-8269-1c1ee6f93dcf",
                     routeValues);
@@ -1561,70 +1563,6 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let ret = this.formatResponse(res.result,
                                               BuildInterfaces.TypeInfo.BuildDefinitionReference,
                                               true);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * @param {string} project - Project ID or project name
-     * @param {number} definitionId
-     * @param {string} dummyValue
-     * @param {number} revision
-     * @param {Date} minMetricsTime
-     * @param {string[]} propertyFilters
-     * @param {boolean} includeLatestBuilds
-     */
-    public async getDefinitionYaml(
-        project: string,
-        definitionId: number,
-        dummyValue: string,
-        revision?: number,
-        minMetricsTime?: Date,
-        propertyFilters?: string[],
-        includeLatestBuilds?: boolean
-        ): Promise<BuildInterfaces.YamlBuild> {
-        if (dummyValue == null) {
-            throw new TypeError('dummyValue can not be null or undefined');
-        }
-
-        return new Promise<BuildInterfaces.YamlBuild>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                definitionId: definitionId
-            };
-
-            let queryValues: any = {
-                dummyValue: dummyValue,
-                revision: revision,
-                minMetricsTime: minMetricsTime,
-                propertyFilters: propertyFilters && propertyFilters.join(","),
-                includeLatestBuilds: includeLatestBuilds,
-            };
-            
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.7",
-                    "build",
-                    "dbeaf647-6167-421a-bda9-c9327b25e2e6",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<BuildInterfaces.YamlBuild>;
-                res = await this.rest.get<BuildInterfaces.YamlBuild>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
 
                 resolve(ret);
                 
@@ -2139,7 +2077,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
      * 
      * @param {string} project - Project ID or project name
      * @param {string} definition - definition name with optional leading folder path, or the definition id
-     * @param {string} branchName - optional parameter that indicates the specific branch to use
+     * @param {string} branchName - optional parameter that indicates the specific branch to use. If not specified, the default branch is used.
      */
     public async getLatestBuild(
         project: string,
@@ -3772,7 +3710,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
      * 
      * @param {string} project - Project ID or project name
      * @param {string} definition - Either the definition name with optional leading folder path, or the definition id.
-     * @param {string} branchName - Only consider the most recent build for this branch.
+     * @param {string} branchName - Only consider the most recent build for this branch. If not specified, the default branch is used.
      * @param {string} stageName - Use this stage within the pipeline to render the status.
      * @param {string} jobName - Use this job within a stage of the pipeline to render the status.
      * @param {string} configuration - Use this job configuration to render the status
@@ -3852,7 +3790,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "6.1-preview.3",
                     "build",
                     "6e6114b2-8161-44c8-8f6c-c5505782427f",
                     routeValues);
@@ -3898,7 +3836,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "6.1-preview.3",
                     "build",
                     "6e6114b2-8161-44c8-8f6c-c5505782427f",
                     routeValues);
@@ -3924,7 +3862,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Removes a tag from a build.
+     * Removes a tag from a build. NOTE: This API will not work for tags with special characters. To remove tags with special characters, use the PATCH method instead (in 6.0+)
      * 
      * @param {string} project - Project ID or project name
      * @param {number} buildId - The ID of the build.
@@ -3945,7 +3883,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "6.1-preview.3",
                     "build",
                     "6e6114b2-8161-44c8-8f6c-c5505782427f",
                     routeValues);
@@ -3989,7 +3927,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "6.1-preview.3",
                     "build",
                     "6e6114b2-8161-44c8-8f6c-c5505782427f",
                     routeValues);
@@ -4000,6 +3938,52 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Adds/Removes tags from a build.
+     * 
+     * @param {BuildInterfaces.UpdateTagParameters} updateParameters - The tags to add/remove.
+     * @param {string} project - Project ID or project name
+     * @param {number} buildId - The ID of the build.
+     */
+    public async updateBuildTags(
+        updateParameters: BuildInterfaces.UpdateTagParameters,
+        project: string,
+        buildId: number
+        ): Promise<string[]> {
+
+        return new Promise<string[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "6.1-preview.3",
+                    "build",
+                    "6e6114b2-8161-44c8-8f6c-c5505782427f",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<string[]>;
+                res = await this.rest.update<string[]>(url, updateParameters, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
@@ -4036,7 +4020,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "6.1-preview.3",
                     "build",
                     "cb894432-134a-4d31-a839-83beceaace4b",
                     routeValues);
@@ -4082,7 +4066,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "6.1-preview.3",
                     "build",
                     "cb894432-134a-4d31-a839-83beceaace4b",
                     routeValues);
@@ -4108,7 +4092,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     }
 
     /**
-     * Removes a tag from a definition.
+     * Removes a tag from a definition. NOTE: This API will not work for tags with special characters. To remove tags with special characters, use the PATCH method instead (in 6.0+)
      * 
      * @param {string} project - Project ID or project name
      * @param {number} definitionId - The ID of the definition.
@@ -4129,7 +4113,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "6.1-preview.3",
                     "build",
                     "cb894432-134a-4d31-a839-83beceaace4b",
                     routeValues);
@@ -4179,7 +4163,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "6.1-preview.3",
                     "build",
                     "cb894432-134a-4d31-a839-83beceaace4b",
                     routeValues,
@@ -4191,6 +4175,52 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Adds/Removes tags from a definition.
+     * 
+     * @param {BuildInterfaces.UpdateTagParameters} updateParameters - The tags to add/remove.
+     * @param {string} project - Project ID or project name
+     * @param {number} definitionId - The ID of the definition.
+     */
+    public async updateDefinitionTags(
+        updateParameters: BuildInterfaces.UpdateTagParameters,
+        project: string,
+        definitionId: number
+        ): Promise<string[]> {
+
+        return new Promise<string[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "6.1-preview.3",
+                    "build",
+                    "cb894432-134a-4d31-a839-83beceaace4b",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<string[]>;
+                res = await this.rest.update<string[]>(url, updateParameters, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
@@ -4224,7 +4254,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "6.1-preview.3",
                     "build",
                     "d84ac5c6-edc7-43d5-adc9-1b34be5dea09",
                     routeValues);
@@ -4265,7 +4295,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "6.1-preview.3",
                     "build",
                     "d84ac5c6-edc7-43d5-adc9-1b34be5dea09",
                     routeValues);
@@ -4786,6 +4816,66 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let ret = this.formatResponse(res.result,
                                               null,
                                               true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Converts a definition to YAML, optionally at a specific revision.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} definitionId - The ID of the definition.
+     * @param {number} revision - The revision number to retrieve. If this is not specified, the latest version will be returned.
+     * @param {Date} minMetricsTime - If specified, indicates the date from which metrics should be included.
+     * @param {string[]} propertyFilters - A comma-delimited list of properties to include in the results.
+     * @param {boolean} includeLatestBuilds
+     */
+    public async getDefinitionYaml(
+        project: string,
+        definitionId: number,
+        revision?: number,
+        minMetricsTime?: Date,
+        propertyFilters?: string[],
+        includeLatestBuilds?: boolean
+        ): Promise<BuildInterfaces.YamlBuild> {
+
+        return new Promise<BuildInterfaces.YamlBuild>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                definitionId: definitionId
+            };
+
+            let queryValues: any = {
+                revision: revision,
+                minMetricsTime: minMetricsTime,
+                propertyFilters: propertyFilters && propertyFilters.join(","),
+                includeLatestBuilds: includeLatestBuilds,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "6.1-preview.1",
+                    "build",
+                    "7c3df3a1-7e51-4150-8cf7-540347f8697f",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<BuildInterfaces.YamlBuild>;
+                res = await this.rest.get<BuildInterfaces.YamlBuild>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
 
                 resolve(ret);
                 

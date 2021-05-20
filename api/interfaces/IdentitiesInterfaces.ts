@@ -100,10 +100,22 @@ export interface IdentityBase {
      */
     customDisplayName?: string;
     descriptor?: IdentityDescriptor;
+    /**
+     * Identity Identifier. Also called Storage Key, or VSID
+     */
     id?: string;
+    /**
+     * True if the identity has a membership in any Azure Devops group in the organization.
+     */
     isActive?: boolean;
+    /**
+     * True if the identity is a group.
+     */
     isContainer?: boolean;
     masterId?: string;
+    /**
+     * Id of the members of the identity (groups only).
+     */
     memberIds?: string[];
     memberOf?: IdentityDescriptor[];
     members?: IdentityDescriptor[];
@@ -115,6 +127,9 @@ export interface IdentityBase {
     providerDisplayName?: string;
     resourceVersion?: number;
     socialDescriptor?: string;
+    /**
+     * Subject descriptor of a Graph entity.
+     */
     subjectDescriptor?: string;
     uniqueUserId?: number;
 }

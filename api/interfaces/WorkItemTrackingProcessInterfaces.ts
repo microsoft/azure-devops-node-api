@@ -969,6 +969,10 @@ export enum RuleActionType {
      * Hides target field from the form. This is a server side only action.
      */
     HideTargetField = 14,
+    /**
+     * Disallows a field from being set to a specific value.
+     */
+    DisallowValue = 15,
 }
 
 /**
@@ -1251,6 +1255,10 @@ export interface WorkItemTypeBehavior {
      */
     isDefault?: boolean;
     /**
+     * If true the work item type is the default work item type in the parent behavior
+     */
+    isLegacyDefault?: boolean;
+    /**
      * URL of the work item type behavior
      */
     url?: string;
@@ -1388,7 +1396,8 @@ export var TypeInfo = {
             "setValueToEmpty": 11,
             "copyFromServerClock": 12,
             "copyFromServerCurrentUser": 13,
-            "hideTargetField": 14
+            "hideTargetField": 14,
+            "disallowValue": 15
         }
     },
     RuleCondition: <any>{
