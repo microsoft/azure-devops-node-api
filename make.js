@@ -42,8 +42,8 @@ target.build = function() {
 target.units = function() {
     target.build();
 
-    pushd('test');
-    run('npm install ../_build');
+    pushd('_build');
+    run('npm install');
     popd();
 
     console.log("-------Unit Tests-------");
