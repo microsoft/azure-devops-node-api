@@ -16,7 +16,7 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         labels: |
-          "Area: NodeApi"
+          Area: NodeApi
           triage
     - name: "Assign issues with 'Area: ABTT' label to project board"
       uses: srggrs/assign-one-project-github-action@1.2.0
