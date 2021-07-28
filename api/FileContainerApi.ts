@@ -29,6 +29,8 @@ export class FileContainerApi extends FileContainerApiBase.FileContainerApiBase 
         super(baseUrl, handlers, options);
     }
 
+    public static readonly RESOURCE_AREA_ID = "";
+
     /**
      * @param {number} containerId
      * @param {string} scope

@@ -2,7 +2,7 @@
 * ---------------------------------------------------------
 * Copyright(C) Microsoft Corporation. All rights reserved.
 * ---------------------------------------------------------
-* 
+*
 * ---------------------------------------------------------
 * Generated file, DO NOT EDIT
 * ---------------------------------------------------------
@@ -43,6 +43,8 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
         super(baseUrl, handlers, 'node-Profile-api', options);
     }
+
+    public static readonly RESOURCE_AREA_ID = "";
 
     /**
     * @param {string} id
@@ -459,7 +461,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
 
     /**
     * Lookup up country/region based on provided IPv4, null if using the remote IPv4 address.
-    * 
+    *
     * @param {string} ipaddress - IPv4 address to be used for reverse lookup, null if using RemoteIPAddress in request context
     */
     public async getGeoRegion(
@@ -503,7 +505,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
 
     /**
     * Create profile
-    * 
+    *
     * @param {ProfileInterfaces.CreateProfileContext} createProfileContext - Context for profile creation
     * @param {boolean} autoCreate - Create profile automatically
     */
@@ -606,7 +608,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
 
     /**
     * Update profile
-    * 
+    *
     * @param {ProfileInterfaces.Profile} profile - Update profile
     * @param {string} id - Profile ID
     */

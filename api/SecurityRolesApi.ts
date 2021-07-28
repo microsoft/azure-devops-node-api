@@ -2,7 +2,7 @@
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
- * 
+ *
  * ---------------------------------------------------------
  * Generated file, DO NOT EDIT
  * ---------------------------------------------------------
@@ -31,6 +31,8 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
         super(baseUrl, handlers, 'node-SecurityRoles-api', options);
     }
+
+    public static readonly RESOURCE_AREA_ID = "";
 
     /**
      * @param {string} scopeId
