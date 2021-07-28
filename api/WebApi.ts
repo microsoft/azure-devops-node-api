@@ -198,36 +198,31 @@ export class WebApi {
     }
 
     public async getCoreApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<corem.ICoreApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "79134c72-4a58-4b42-976c-04e7115f32bf");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, corem.CoreApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new corem.CoreApi(serverUrl, handlers, this.options);
     }
 
     public async getDashboardApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<dashboardm.IDashboardApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "31c84e0a-3ece-48fd-a29d-100849af99ba");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, dashboardm.DashboardApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new dashboardm.DashboardApi(serverUrl, handlers, this.options);
     }
 
     public async getExtensionManagementApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<extmgmtm.IExtensionManagementApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "6c2b0933-3600-42ae-bf8b-93d4f7e83594");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, extmgmtm.ExtensionManagementApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new extmgmtm.ExtensionManagementApi(serverUrl, handlers, this.options);
     }
 
     public async getFeatureManagementApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<featuremgmtm.IFeatureManagementApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, featuremgmtm.FeatureManagementApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new featuremgmtm.FeatureManagementApi(serverUrl, handlers, this.options);
     }
 
     public async getFileContainerApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<filecontainerm.IFileContainerApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, filecontainerm.FileContainerApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new filecontainerm.FileContainerApi(serverUrl, handlers, this.options);
     }
@@ -255,85 +250,73 @@ export class WebApi {
     }
 
     public async getNotificationApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<notificationm.INotificationApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, notificationm.NotificationApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new notificationm.NotificationApi(serverUrl, handlers, this.options);
     }
 
     public async getPolicyApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<policym.IPolicyApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "fb13a388-40dd-4a04-b530-013a739c72ef");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, policym.PolicyApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new policym.PolicyApi(serverUrl, handlers, this.options);
     }
 
     public async getProfileApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<profilem.IProfileApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "8ccfef3d-2b87-4e99-8ccb-66e343d2daa8");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, profilem.ProfileApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new profilem.ProfileApi(serverUrl, handlers, this.options);
     }
 
     public async getProjectAnalysisApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<projectm.IProjectAnalysisApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "7658fa33-b1bf-4580-990f-fac5896773d3");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, projectm.ProjectAnalysisApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new projectm.ProjectAnalysisApi(serverUrl, handlers, this.options);
     }
 
     public async getSecurityRolesApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<securityrolesm.ISecurityRolesApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, securityrolesm.SecurityRolesApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new securityrolesm.SecurityRolesApi(serverUrl, handlers, this.options);
     }
 
     public async getReleaseApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<releasem.IReleaseApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "efc2f575-36ef-48e9-b672-0c6fb4a48ac5");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, releasem.ReleaseApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new releasem.ReleaseApi(serverUrl, handlers, this.options);
     }
 
     public async getTaskApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<taskm.ITaskApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, taskm.TaskApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new taskm.TaskApi(serverUrl, handlers, this.options);
     }
 
     public async getTaskAgentApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<taskagentm.ITaskAgentApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "a85b8835-c1a1-4aac-ae97-1c3d0ba72dbd");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, taskagentm.TaskAgentApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new taskagentm.TaskAgentApi(serverUrl, handlers, this.options);
     }
 
     public async getTestApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<testm.ITestApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "c2aa639c-3ccc-4740-b3b6-ce2a1e1d984e");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, testm.TestApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new testm.TestApi(serverUrl, handlers, this.options);
     }
 
     public async getTfvcApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<tfvcm.ITfvcApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "8aa40520-446d-40e6-89f6-9c9f9ce44c48");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, tfvcm.TfvcApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new tfvcm.TfvcApi(serverUrl, handlers, this.options);
     }
 
     public async getWikiApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<wikim.IWikiApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "bf7d82a0-8aa5-4613-94ef-6172a5ea01f3");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, wikim.WikiApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new wikim.WikiApi(serverUrl, handlers, this.options);
     }
 
     public async getWorkApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<workm.IWorkApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "1d4f49f9-02b9-4e26-b826-2cdb6195f2a9");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, workm.WorkApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new workm.WorkApi(serverUrl, handlers, this.options);
     }
@@ -345,15 +328,13 @@ export class WebApi {
     }
 
     public async getWorkItemTrackingProcessApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<workitemtrackingprocessm.IWorkItemTrackingProcessApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "5264459e-e5e0-4bd8-b118-0985e68a4ec5");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, workitemtrackingprocessm.WorkItemTrackingProcessApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new workitemtrackingprocessm.WorkItemTrackingProcessApi(serverUrl, handlers, this.options);
     }
 
     public async getWorkItemTrackingProcessDefinitionApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<workitemtrackingprocessdefinitionm.IWorkItemTrackingProcessDefinitionsApi> {
-        // TODO: Load RESOURCE_AREA_ID correctly.
-        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "5264459e-e5e0-4bd8-b118-0985e68a4ec5");
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, workitemtrackingprocessdefinitionm.WorkItemTrackingProcessDefinitionsApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
         return new workitemtrackingprocessdefinitionm.WorkItemTrackingProcessDefinitionsApi(serverUrl, handlers, this.options);
     }
