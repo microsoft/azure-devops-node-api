@@ -39,6 +39,9 @@ let authHandler = azdev.getPersonalAccessTokenHandler(token);
 let connection = new azdev.WebApi(orgUrl, authHandler);    
 ```
 
+> Please note that for some API's (e.g. ProfileApi) can't be hit at the org level, has to be hit at the deployment level,
+so url should be structured like https://**vssps**.dev.azure.com/{yourorgname}
+
 ### Get an instance of a client
 
 ```javascript
