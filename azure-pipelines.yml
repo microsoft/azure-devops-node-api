@@ -12,8 +12,36 @@ steps:
 - script: npm run build
   displayName: npm run build
 
+# test using node 8.x
 - script: npm run units
   displayName: Run unit tests
+
+# test using node 6.x
+- task: NodeTool@0
+  inputs:
+    versionSpec: "6.x"
+  displayName: Install node 6
+
+- script: npm run units
+  displayName: npm run units
+
+# test using node 10.x
+- task: NodeTool@0
+  inputs:
+    versionSpec: "10.x"
+  displayName: Install node 10
+
+- script: npm run units
+  displayName: npm run units
+
+# test using node 14.x
+- task: NodeTool@0
+  inputs:
+    versionSpec: "14.x"
+  displayName: Install node 14
+
+- script: npm run units
+  displayName: npm run units
 
 # For CI runs on master, automatically publish packages
 - bash: |
