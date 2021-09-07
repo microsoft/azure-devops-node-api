@@ -16,15 +16,6 @@ steps:
 - script: npm run units
   displayName: Run unit tests
 
-# test using node 6.x
-- task: NodeTool@0
-  inputs:
-    versionSpec: "6.x"
-  displayName: Install node 6
-
-- script: npm run units
-  displayName: npm run units
-
 # test using node 10.x
 - task: NodeTool@0
   inputs:
