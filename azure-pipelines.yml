@@ -1,7 +1,7 @@
 strategy:
   matrix:
     'Node 6':
-      versionSpec: '6.x'
+      versionSpec: '7.x'
     'Node 8': 
       versionSpec: '8.x'
     'Node 10': 
@@ -18,7 +18,7 @@ steps:
   displayName: Install node
 
 # install dependencies
-- script: npm install --save-dev
+- script: npm install
   displayName: npm install
 
 # build
