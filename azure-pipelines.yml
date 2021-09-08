@@ -18,7 +18,7 @@ steps:
   displayName: Install node
 
 # install dependencies
-- script: npm install
+- script: npm install -g
   displayName: npm install
 
 # build
