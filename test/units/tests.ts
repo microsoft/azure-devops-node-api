@@ -180,7 +180,9 @@ describe('VSOClient Units', function () {
 
         //Assert
         assert.equal(res.apiVersion, '1');
-        assert.equal(res.requestUrl, 'https://dev.azure.com/testTemplate?min=Wed%2C%2019%20Oct%200208%2000%3A00%3A00%20GMT');
+        var node6String = assert.equal(res.requestUrl, 'https://dev.azure.com/testTemplate?min=Wed%2C%2019%20Oct%20%208%2000%3A00%3A00%20GMT');
+        var node8AndUpString = assert.equal(res.requestUrl, 'https://dev.azure.com/testTemplate?min=Wed%2C%2019%20Oct%200208%2000%3A00%3A00%20GMT');
+        assert.notEqual(node6String,node8AndUpString);
     });
 
     it('gets versioning data after an initialization promise', async () => {
