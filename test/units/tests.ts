@@ -6,6 +6,7 @@ import vsom = require('../../_build/VsoClient');
 import WebApi = require('../../_build/WebApi');
 import * as rm from '../../_build/node_modules/typed-rest-client/RestClient';
 import { ApiResourceLocation } from '../../_build/interfaces/common/VsoBaseInterfaces';
+import semver = require('semver');
 
 describe('VSOClient Units', function () {
     let rest: rm.RestClient;
@@ -175,12 +176,13 @@ describe('VSOClient Units', function () {
         });
 
         //Act
-        const queryParams = {min: new Date(Date.UTC(210, 10, 20))};
+        const queryParams = {min: new Date(Date.UTC(208, 9, 19))};
         const res: vsom.ClientVersioningData = await vsoClient.getVersioningData('1', 'testArea5', 'testLocation', {'testKey': 'testValue'}, queryParams);
 
         //Assert
         assert.equal(res.apiVersion, '1');
-        assert.equal(res.requestUrl, 'https://dev.azure.com/testTemplate?min=Wed%2C%2019%20Oct%200208%2000%3A00%3A00%20GMT');
+        var responseString = semver.lt(process.versions.node, '8.0.0') ? 'https://dev.azure.com/testTemplate?min=Wed%2C%2019%20Oct%200208%2000%3A00%3A00%20GMT' : 'https://dev.azure.com/testTemplate?min=Wed%2C%2019%20Oct%20%208%2000%3A00%3A00%20GMT';
+        assert.equal(res.requestUrl, responseString);
     });
 
     it('gets versioning data after an initialization promise', async () => {
