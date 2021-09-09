@@ -1,6 +1,7 @@
 require('shelljs/make');
 var path = require('path');
 var fs = require('fs');
+var semver = require('semver');
 
 var rp = function(relPath) {
     return path.join(__dirname, relPath);
@@ -41,11 +42,19 @@ target.build = function() {
 
 target.units = function() {
     target.build();
+    var nodeVer = process.versions.node;
+    if(semver.lt(nodeVer,'8.0.0')){
+        pushd('_build');
+        run('npm install ../_build');
+        popd();
+    }
+    else{
+        pushd('test');
+        run('npm install ../_build');
+        popd();
+    }
 
-    pushd('test');
-    run('npm install ../_build');
-    popd();
-
+    
     console.log("-------Unit Tests-------");
     run('tsc -p ./test/units');
     run('mocha test/units');

@@ -1,7 +1,7 @@
 strategy:
   matrix:
     'Node 6':
-      versionSpec: '7.x'
+      versionSpec: '6.x'
     'Node 8': 
       versionSpec: '8.x'
     'Node 10': 
