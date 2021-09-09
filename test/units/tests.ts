@@ -175,14 +175,12 @@ describe('VSOClient Units', function () {
         });
 
         //Act
-        const queryParams = {min: new Date(Date.UTC(208, 9, 19))};
+        const queryParams = {min: new Date(Date.UTC(210, 9, 19))};
         const res: vsom.ClientVersioningData = await vsoClient.getVersioningData('1', 'testArea5', 'testLocation', {'testKey': 'testValue'}, queryParams);
 
         //Assert
         assert.equal(res.apiVersion, '1');
-        var node6String = assert.equal(res.requestUrl, 'https://dev.azure.com/testTemplate?min=Wed%2C%2019%20Oct%20%208%2000%3A00%3A00%20GMT');
-        var node8AndUpString = assert.equal(res.requestUrl, 'https://dev.azure.com/testTemplate?min=Wed%2C%2019%20Oct%200208%2000%3A00%3A00%20GMT');
-        assert.notEqual(node6String,node8AndUpString);
+        assert.z(res.requestUrl, 'https://dev.azure.com/testTemplate?min=Wed%2C%2019%20Oct%200208%2000%3A00%3A00%20GMT');
     });
 
     it('gets versioning data after an initialization promise', async () => {
