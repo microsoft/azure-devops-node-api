@@ -175,7 +175,7 @@ describe('VSOClient Units', function () {
         });
 
         //Act
-        const queryParams = {min: new Date(Date.UTC(210, 9, 19))};
+        const queryParams = {min: new Date(Date.UTC(210, 10, 20))};
         const res: vsom.ClientVersioningData = await vsoClient.getVersioningData('1', 'testArea5', 'testLocation', {'testKey': 'testValue'}, queryParams);
 
         //Assert
