@@ -45,16 +45,13 @@ target.units = function() {
     var nodeVer = process.versions.node;
     if(semver.lt(nodeVer,'8.0.0')){
         pushd('_build');
-        run('npm install ../_build');
-        popd();
     }
     else{
         pushd('test');
-        run('npm install ../_build');
-        popd();
     }
+    run('npm install ../_build');
+    popd();
 
-    
     console.log("-------Unit Tests-------");
     run('tsc -p ./test/units');
     run('mocha test/units');
