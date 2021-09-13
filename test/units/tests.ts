@@ -6,6 +6,7 @@ import vsom = require('../../_build/VsoClient');
 import WebApi = require('../../_build/WebApi');
 import * as rm from '../../_build/node_modules/typed-rest-client/RestClient';
 import { ApiResourceLocation } from '../../_build/interfaces/common/VsoBaseInterfaces';
+import semver = require('semver');
 
 describe('VSOClient Units', function () {
     let rest: rm.RestClient;
@@ -180,7 +181,9 @@ describe('VSOClient Units', function () {
 
         //Assert
         assert.equal(res.apiVersion, '1');
-        assert.equal(res.requestUrl, 'https://dev.azure.com/testTemplate?min=Wed%2C%2019%20Oct%200208%2000%3A00%3A00%20GMT');
+        //Use different strings for Node 6 and 8, because of a varied response string
+        var expectedURL = semver.lt(process.versions.node, '8.0.0') ? 'https://dev.azure.com/testTemplate?min=Wed%2C%2019%20Oct%20%20208%2000%3A00%3A00%20GMT' : 'https://dev.azure.com/testTemplate?min=Wed%2C%2019%20Oct%200208%2000%3A00%3A00%20GMT';
+        assert.equal(res.requestUrl, expectedURL);
     });
 
     it('gets versioning data after an initialization promise', async () => {

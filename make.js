@@ -1,6 +1,7 @@
 require('shelljs/make');
 var path = require('path');
 var fs = require('fs');
+var semver = require('semver');
 
 var rp = function(relPath) {
     return path.join(__dirname, relPath);
@@ -41,8 +42,15 @@ target.build = function() {
 
 target.units = function() {
     target.build();
-
-    pushd('test');
+    var nodeVer = process.versions.node;
+    
+    //check for node version, since installation strategy is different for node versions less than 8
+    if(semver.lt(nodeVer,'8.0.0')){
+        pushd('_build');
+    }
+    else{
+        pushd('test');
+    }
     run('npm install ../_build');
     popd();
 

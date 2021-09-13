@@ -1,8 +1,21 @@
+strategy:
+  matrix:
+    'Node 6':
+      versionSpec: '6.x'
+    'Node 8': 
+      versionSpec: '8.x'
+    'Node 10': 
+      versionSpec: '10.x'
+    'Node 12': 
+      versionSpec: '12.x'
+    'Node 14': 
+      versionSpec: '14.x'
+
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: "8.x"
-  displayName: Install node 8
+    versionSpec: $(versionSpec)
+  displayName: Install node
 
 # install dependencies
 - script: npm install
