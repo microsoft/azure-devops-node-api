@@ -43,6 +43,8 @@ target.build = function() {
 target.units = function() {
     target.build();
     var nodeVer = process.versions.node;
+    
+    //check for node version, since installation strategy is different for node versions less than 8
     if(semver.lt(nodeVer,'8.0.0')){
         pushd('_build');
     }
