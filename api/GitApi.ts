@@ -1123,14 +1123,14 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 '$skip': skip,
             };
             if (baseVersionDescriptor) {
-                queryValues.baseVersionType = baseVersionDescriptor.versionType;
-                queryValues.baseVersion = baseVersionDescriptor.version;
-                queryValues.baseVersionOptions = baseVersionDescriptor.versionOptions;
+                queryValues.baseVersionType = baseVersionDescriptor.baseVersionType;
+                queryValues.baseVersion = baseVersionDescriptor.baseVersion;
+                queryValues.baseVersionOptions = baseVersionDescriptor.baseVersionOptions;
             }
             if (targetVersionDescriptor) {
-                queryValues.targetVersionType = targetVersionDescriptor.versionType;
-                queryValues.targetVersion = targetVersionDescriptor.version;
-                queryValues.targetVersionOptions = targetVersionDescriptor.versionOptions;
+                queryValues.targetVersionType = targetVersionDescriptor.targetVersionType;
+                queryValues.targetVersion = targetVersionDescriptor.targetVersion;
+                queryValues.targetVersionOptions = targetVersionDescriptor.targetVersionOptions;
             }
             
             try {
