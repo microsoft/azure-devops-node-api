@@ -757,6 +757,14 @@ export enum ExtensionQueryFilterType {
      * Filter to get extensions shared with particular organization
      */
     OrganizationSharedWith = 21,
+    /**
+     * Filter to get VS IDE extensions by Product Architecture
+     */
+    ProductArchitecture = 22,
+    /**
+     * Filter to get VS Code extensions by target platform.
+     */
+    TargetPlatform = 23,
 }
 
 /**
@@ -917,6 +925,7 @@ export interface FilterCriteria {
 }
 
 export interface InstallationTarget {
+    productArchitecture?: string;
     target?: string;
     targetVersion?: string;
 }
@@ -1105,6 +1114,9 @@ export enum PublishedExtensionFlags {
 
 export interface Publisher extends PublisherBase {
     _links?: any;
+    domain?: string;
+    isDnsTokenVerified?: boolean;
+    isDomainVerified?: boolean;
     reCaptchaToken?: string;
 }
 
@@ -1129,7 +1141,9 @@ export interface PublisherBase {
  */
 export interface PublisherFacts {
     displayName?: string;
+    domain?: string;
     flags?: PublisherFlags;
+    isDomainVerified?: boolean;
     publisherId?: string;
     publisherName?: string;
 }
@@ -1937,6 +1951,12 @@ export interface UserReportedConcern {
     userId?: string;
 }
 
+export enum VSCodeWebExtensionStatisicsType {
+    Install = 1,
+    Update = 2,
+    Uninstall = 3,
+}
+
 export var TypeInfo = {
     AcquisitionAssignmentType: {
         enumValues: {
@@ -2069,7 +2089,9 @@ export var TypeInfo = {
             "publisherName": 18,
             "publisherDisplayName": 19,
             "includeWithPublisherFlags": 20,
-            "organizationSharedWith": 21
+            "organizationSharedWith": 21,
+            "productArchitecture": 22,
+            "targetPlatform": 23
         }
     },
     ExtensionQueryFlags: {
@@ -2312,6 +2334,13 @@ export var TypeInfo = {
     UserExtensionPolicy: <any>{
     },
     UserReportedConcern: <any>{
+    },
+    VSCodeWebExtensionStatisicsType: {
+        enumValues: {
+            "install": 1,
+            "update": 2,
+            "uninstall": 3
+        }
     },
 };
 

@@ -54,7 +54,7 @@ export interface IWorkItemTrackingApi extends basem.ClientApiBase {
     createQuery(postedQuery: WorkItemTrackingInterfaces.QueryHierarchyItem, project: string, query: string, validateWiqlOnly?: boolean): Promise<WorkItemTrackingInterfaces.QueryHierarchyItem>;
     deleteQuery(project: string, query: string): Promise<void>;
     getQueries(project: string, expand?: WorkItemTrackingInterfaces.QueryExpand, depth?: number, includeDeleted?: boolean): Promise<WorkItemTrackingInterfaces.QueryHierarchyItem[]>;
-    getQuery(project: string, query: string, expand?: WorkItemTrackingInterfaces.QueryExpand, depth?: number, includeDeleted?: boolean): Promise<WorkItemTrackingInterfaces.QueryHierarchyItem>;
+    getQuery(project: string, query: string, expand?: WorkItemTrackingInterfaces.QueryExpand, depth?: number, includeDeleted?: boolean, useIsoDateFormat?: boolean): Promise<WorkItemTrackingInterfaces.QueryHierarchyItem>;
     searchQueries(project: string, filter: string, top?: number, expand?: WorkItemTrackingInterfaces.QueryExpand, includeDeleted?: boolean): Promise<WorkItemTrackingInterfaces.QueryHierarchyItemsResult>;
     updateQuery(queryUpdate: WorkItemTrackingInterfaces.QueryHierarchyItem, project: string, query: string, undeleteDescendants?: boolean): Promise<WorkItemTrackingInterfaces.QueryHierarchyItem>;
     getQueriesBatch(queryGetRequest: WorkItemTrackingInterfaces.QueryBatchGetRequest, project: string): Promise<WorkItemTrackingInterfaces.QueryHierarchyItem[]>;
@@ -1833,13 +1833,15 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
      * @param {WorkItemTrackingInterfaces.QueryExpand} expand - Include the query string (wiql), clauses, query result columns, and sort options in the results.
      * @param {number} depth - In the folder of queries, return child queries and folders to this depth.
      * @param {boolean} includeDeleted - Include deleted queries and folders
+     * @param {boolean} useIsoDateFormat - DateTime query clauses will be formatted using a ISO 8601 compliant format
      */
     public async getQuery(
         project: string,
         query: string,
         expand?: WorkItemTrackingInterfaces.QueryExpand,
         depth?: number,
-        includeDeleted?: boolean
+        includeDeleted?: boolean,
+        useIsoDateFormat?: boolean
         ): Promise<WorkItemTrackingInterfaces.QueryHierarchyItem> {
 
         return new Promise<WorkItemTrackingInterfaces.QueryHierarchyItem>(async (resolve, reject) => {
@@ -1852,6 +1854,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 '$expand': expand,
                 '$depth': depth,
                 '$includeDeleted': includeDeleted,
+                '$useIsoDateFormat': useIsoDateFormat,
             };
             
             try {
