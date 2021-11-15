@@ -1,3 +1,6 @@
+pool:
+  vmImage: ubuntu-18.04
+
 strategy:
   matrix:
     'Node 6':
