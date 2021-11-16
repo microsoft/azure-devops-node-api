@@ -1605,6 +1605,10 @@ export interface GitPullRequest {
      */
     forkSource?: GitForkRef;
     /**
+     * Multiple mergebases warning
+     */
+    hasMultipleMergeBases?: boolean;
+    /**
      * Draft / WIP pull request.
      */
     isDraft?: boolean;

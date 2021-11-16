@@ -31,6 +31,7 @@ export interface IBuildApi extends basem.ClientApiBase {
     listBranches(project: string, providerName: string, serviceEndpointId?: string, repository?: string, branchName?: string): Promise<string[]>;
     getBuildBadge(project: string, repoType: string, repoId?: string, branchName?: string): Promise<BuildInterfaces.BuildBadge>;
     getBuildBadgeData(project: string, repoType: string, repoId?: string, branchName?: string): Promise<string>;
+    getRetentionLeasesForBuild(project: string, buildId: number): Promise<BuildInterfaces.RetentionLease[]>;
     deleteBuild(project: string, buildId: number): Promise<void>;
     getBuild(project: string, buildId: number, propertyFilters?: string): Promise<BuildInterfaces.Build>;
     getBuilds(project: string, definitions?: number[], queues?: number[], buildNumber?: string, minTime?: Date, maxTime?: Date, requestedFor?: string, reasonFilter?: BuildInterfaces.BuildReason, statusFilter?: BuildInterfaces.BuildStatus, resultFilter?: BuildInterfaces.BuildResult, tagFilters?: string[], properties?: string[], top?: number, continuationToken?: string, maxBuildsPerDefinition?: number, deletedFilter?: BuildInterfaces.QueryDeletedOption, queryOrder?: BuildInterfaces.BuildQueryOrder, branchName?: string, buildIds?: number[], repositoryId?: string, repositoryType?: string): Promise<BuildInterfaces.Build[]>;
@@ -62,6 +63,7 @@ export interface IBuildApi extends basem.ClientApiBase {
     getRetentionLeasesByMinimalRetentionLeases(project: string, leasesToFetch: BuildInterfaces.MinimalRetentionLease[]): Promise<BuildInterfaces.RetentionLease[]>;
     getRetentionLeasesByOwnerId(project: string, ownerId?: string, definitionId?: number, runId?: number): Promise<BuildInterfaces.RetentionLease[]>;
     getRetentionLeasesByUserId(project: string, userOwnerId: string, definitionId?: number, runId?: number): Promise<BuildInterfaces.RetentionLease[]>;
+    updateRetentionLease(leaseUpdate: BuildInterfaces.RetentionLeaseUpdate, project: string, leaseId: number): Promise<BuildInterfaces.RetentionLease>;
     getBuildLog(project: string, buildId: number, logId: number, startLine?: number, endLine?: number): Promise<NodeJS.ReadableStream>;
     getBuildLogLines(project: string, buildId: number, logId: number, startLine?: number, endLine?: number): Promise<string[]>;
     getBuildLogs(project: string, buildId: number): Promise<BuildInterfaces.BuildLog[]>;
@@ -761,6 +763,50 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let ret = this.formatResponse(res.result,
                                               null,
                                               false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Gets all retention leases that apply to a specific build.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} buildId - The ID of the build.
+     */
+    public async getRetentionLeasesForBuild(
+        project: string,
+        buildId: number
+        ): Promise<BuildInterfaces.RetentionLease[]> {
+
+        return new Promise<BuildInterfaces.RetentionLease[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                buildId: buildId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "6.1-preview.1",
+                    "build",
+                    "3da19a6a-f088-45c4-83ce-2ad3a87be6c4",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<BuildInterfaces.RetentionLease[]>;
+                res = await this.rest.get<BuildInterfaces.RetentionLease[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.RetentionLease,
+                                              true);
 
                 resolve(ret);
                 
@@ -2141,7 +2187,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "6.1-preview.2",
                     "build",
                     "272051e4-9af1-45b5-ae22-8d960a5539d4",
                     routeValues);
@@ -2191,7 +2237,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "6.1-preview.2",
                     "build",
                     "272051e4-9af1-45b5-ae22-8d960a5539d4",
                     routeValues,
@@ -2236,7 +2282,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "6.1-preview.2",
                     "build",
                     "272051e4-9af1-45b5-ae22-8d960a5539d4",
                     routeValues);
@@ -2286,7 +2332,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "6.1-preview.2",
                     "build",
                     "272051e4-9af1-45b5-ae22-8d960a5539d4",
                     routeValues,
@@ -2340,7 +2386,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "6.1-preview.2",
                     "build",
                     "272051e4-9af1-45b5-ae22-8d960a5539d4",
                     routeValues,
@@ -2397,7 +2443,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "6.1-preview.2",
                     "build",
                     "272051e4-9af1-45b5-ae22-8d960a5539d4",
                     routeValues,
@@ -2413,6 +2459,52 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let ret = this.formatResponse(res.result,
                                               BuildInterfaces.TypeInfo.RetentionLease,
                                               true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Updates the duration or pipeline protection status of a retention lease.
+     * 
+     * @param {BuildInterfaces.RetentionLeaseUpdate} leaseUpdate - The new data for the retention lease.
+     * @param {string} project - Project ID or project name
+     * @param {number} leaseId - The ID of the lease to update.
+     */
+    public async updateRetentionLease(
+        leaseUpdate: BuildInterfaces.RetentionLeaseUpdate,
+        project: string,
+        leaseId: number
+        ): Promise<BuildInterfaces.RetentionLease> {
+
+        return new Promise<BuildInterfaces.RetentionLease>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                leaseId: leaseId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "6.1-preview.2",
+                    "build",
+                    "272051e4-9af1-45b5-ae22-8d960a5539d4",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<BuildInterfaces.RetentionLease>;
+                res = await this.rest.update<BuildInterfaces.RetentionLease>(url, leaseUpdate, options);
+
+                let ret = this.formatResponse(res.result,
+                                              BuildInterfaces.TypeInfo.RetentionLease,
+                                              false);
 
                 resolve(ret);
                 

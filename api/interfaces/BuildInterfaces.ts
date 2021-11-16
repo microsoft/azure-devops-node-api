@@ -733,6 +733,10 @@ export interface BuildDefinitionStep {
      */
     refName?: string;
     /**
+     * Number of retries.
+     */
+    retryCountOnTaskFailure?: number;
+    /**
      * The task associated with this step.
      */
     task: TaskDefinitionReference;
@@ -2036,9 +2040,12 @@ export interface MultipleAgentExecutionOptions extends AgentTargetExecutionOptio
     maxConcurrency?: number;
 }
 
+/**
+ * Required information to create a new retention lease.
+ */
 export interface NewRetentionLease {
     /**
-     * The number of days to consider the lease valid.
+     * The number of days to consider the lease valid. A retention lease valid for more than 100 years (36500 days) will display as retaining the build "forever".
      */
     daysValid?: number;
     /**
@@ -2239,6 +2246,7 @@ export interface PullRequestTrigger extends BuildTrigger {
     forks?: Forks;
     isCommentRequiredForPullRequest?: boolean;
     pathFilters?: string[];
+    requireCommentsForNonTeamMemberAndNonContributors?: boolean;
     requireCommentsForNonTeamMembersOnly?: boolean;
     settingsSourceType?: number;
 }
@@ -2366,6 +2374,10 @@ export interface RetentionLease {
      */
     ownerId?: string;
     /**
+     * If set, this lease will also prevent the pipeline from being deleted while the lease is still valid.
+     */
+    protectPipeline?: boolean;
+    /**
      * The pipeline run protected by this lease.
      */
     runId?: number;
@@ -2373,6 +2385,20 @@ export interface RetentionLease {
      * The last day the lease is considered valid.
      */
     validUntil?: Date;
+}
+
+/**
+ * An update to the retention parameters of a retention lease.
+ */
+export interface RetentionLeaseUpdate {
+    /**
+     * The number of days to consider the lease valid. A retention lease valid for more than 100 years (36500 days) will display as retaining the build "forever".
+     */
+    daysValid?: number;
+    /**
+     * If set, this lease will also prevent the pipeline from being deleted while the lease is still valid.
+     */
+    protectPipeline?: boolean;
 }
 
 /**

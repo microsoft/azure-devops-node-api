@@ -13,6 +13,47 @@
 
 
 /**
+ * Copy options of a Dashboard.
+ */
+export interface CopyDashboardOptions {
+    /**
+     * Dashboard Scope. Can be either Project or Project_Team
+     */
+    copyDashboardScope: DashboardScope;
+    /**
+     * Description of the dashboard
+     */
+    description?: string;
+    /**
+     * Name of the dashboard
+     */
+    name?: string;
+    /**
+     * ID of the project. Provided by service at creation time.
+     */
+    projectId: string;
+    /**
+     * Refresh interval of dashboard
+     */
+    refreshInterval?: number;
+    /**
+     * ID of the team. Provided by service at creation time
+     */
+    teamId?: string;
+}
+
+export interface CopyDashboardResponse {
+    /**
+     * Copied Dashboard
+     */
+    copiedDashboard?: Dashboard;
+    /**
+     * Copy Dashboard options
+     */
+    copyDashboardOptions: CopyDashboardOptions;
+}
+
+/**
  * Model of a Dashboard.
  */
 export interface Dashboard {
@@ -356,6 +397,10 @@ export interface WidgetTypesResponse {
 }
 
 export var TypeInfo = {
+    CopyDashboardOptions: <any>{
+    },
+    CopyDashboardResponse: <any>{
+    },
     Dashboard: <any>{
     },
     DashboardGroup: <any>{
@@ -409,6 +454,21 @@ export var TypeInfo = {
     },
     WidgetTypesResponse: <any>{
     },
+};
+
+TypeInfo.CopyDashboardOptions.fields = {
+    copyDashboardScope: {
+        enumType: TypeInfo.DashboardScope
+    }
+};
+
+TypeInfo.CopyDashboardResponse.fields = {
+    copiedDashboard: {
+        typeInfo: TypeInfo.Dashboard
+    },
+    copyDashboardOptions: {
+        typeInfo: TypeInfo.CopyDashboardOptions
+    }
 };
 
 TypeInfo.Dashboard.fields = {

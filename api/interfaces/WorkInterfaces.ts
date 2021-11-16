@@ -458,6 +458,10 @@ export interface DeliveryViewData extends PlanViewData {
      */
     teams?: TimelineTeamData[];
     /**
+     * List of all work item ids that have a dependency but not a violation
+     */
+    workItemDependencies?: number[];
+    /**
      * List of all work item ids that have a violation
      */
     workItemViolations?: number[];
@@ -483,6 +487,10 @@ export interface DeliveryViewPropertyCollection {
      * Card style settings
      */
     styleSettings?: Rule[];
+    /**
+     * tag style settings
+     */
+    tagStyleSettings?: Rule[];
     /**
      * Team backlog mappings
      */
