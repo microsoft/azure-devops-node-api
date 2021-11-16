@@ -42,12 +42,14 @@ export async function run() {
 
         // upload a secure file
         let s = new stream.Readable();
+        let testString: string = 'test file contents';
         s._read = function noop() {};
-        s.push("test file contents");
+        s.push(testString);
         s.push(null);
         let name = `vstsnodeapitest${new Date().getTime()}`;
         console.log("uploading file");
-        let secureFile = await vstsTask.uploadSecureFile(null, s, project, name);
+        const headers = { 'Content-Length': testString.length };
+        let secureFile = await vstsTask.uploadSecureFile(headers, s, project, name);
         console.log(`uploaded secure file ${secureFile.name}`);
 
         // delete it
