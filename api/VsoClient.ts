@@ -184,8 +184,10 @@ export class VsoClient {
         return url.resolve(this.baseUrl, path.join(this.basePath, relativeUrl));
     }
 
+    private _possibleValues: string[] = ['false', '0'];
+
     private queryParamsToStringHelper(queryParams: any, prefix: string): string {
-        if (!queryParams && queryParams != false) {
+        if (!queryParams && !this._possibleValues.some(v => v == queryParams)) {
             return '';
         }
         let queryString: string = '';
