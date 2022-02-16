@@ -185,7 +185,7 @@ export class VsoClient {
     }
 
     private queryParamsToStringHelper(queryParams: any, prefix: string): string {
-        if (!queryParams) {
+        if (!queryParams && queryParams != false) {
             return '';
         }
         let queryString: string = '';
