@@ -172,7 +172,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         tagObject: GitInterfaces.GitAnnotatedTag,
         project: string,
         repositoryId: string
-        ): Promise<GitInterfaces.GitAnnotatedTag> {
+    ): Promise<GitInterfaces.GitAnnotatedTag> {
 
         return new Promise<GitInterfaces.GitAnnotatedTag>(async (resolve, reject) => {
             let routeValues: any = {
@@ -188,18 +188,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitAnnotatedTag>;
                 res = await this.rest.create<GitInterfaces.GitAnnotatedTag>(url, tagObject, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitAnnotatedTag,
-                                              false);
+                    GitInterfaces.TypeInfo.GitAnnotatedTag,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -218,7 +218,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project: string,
         repositoryId: string,
         objectId: string
-        ): Promise<GitInterfaces.GitAnnotatedTag> {
+    ): Promise<GitInterfaces.GitAnnotatedTag> {
 
         return new Promise<GitInterfaces.GitAnnotatedTag>(async (resolve, reject) => {
             let routeValues: any = {
@@ -235,18 +235,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitAnnotatedTag>;
                 res = await this.rest.get<GitInterfaces.GitAnnotatedTag>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitAnnotatedTag,
-                                              false);
+                    GitInterfaces.TypeInfo.GitAnnotatedTag,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -271,7 +271,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         download?: boolean,
         fileName?: string,
         resolveLfs?: boolean
-        ): Promise<GitInterfaces.GitBlobRef> {
+    ): Promise<GitInterfaces.GitBlobRef> {
 
         return new Promise<GitInterfaces.GitBlobRef>(async (resolve, reject) => {
             let routeValues: any = {
@@ -285,7 +285,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 fileName: fileName,
                 resolveLfs: resolveLfs,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -295,18 +295,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitBlobRef>;
                 res = await this.rest.get<GitInterfaces.GitBlobRef>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -331,7 +331,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         download?: boolean,
         fileName?: string,
         resolveLfs?: boolean
-        ): Promise<NodeJS.ReadableStream> {
+    ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -345,7 +345,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 fileName: fileName,
                 resolveLfs: resolveLfs,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -355,7 +355,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                
+
                 let apiVersion: string = verData.apiVersion!;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -379,7 +379,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         project?: string,
         filename?: string
-        ): Promise<NodeJS.ReadableStream> {
+    ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -390,7 +390,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             let queryValues: any = {
                 filename: filename,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -400,7 +400,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                
+
                 let apiVersion: string = verData.apiVersion!;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -428,7 +428,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         download?: boolean,
         fileName?: string,
         resolveLfs?: boolean
-        ): Promise<NodeJS.ReadableStream> {
+    ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -442,7 +442,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 fileName: fileName,
                 resolveLfs: resolveLfs,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -452,7 +452,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                
+
                 let apiVersion: string = verData.apiVersion!;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -476,7 +476,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         name: string,
         project?: string,
         baseVersionDescriptor?: GitInterfaces.GitVersionDescriptor
-        ): Promise<GitInterfaces.GitBranchStats> {
+    ): Promise<GitInterfaces.GitBranchStats> {
         if (name == null) {
             throw new TypeError('name can not be null or undefined');
         }
@@ -491,7 +491,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 name: name,
                 baseVersionDescriptor: baseVersionDescriptor,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -501,18 +501,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitBranchStats>;
                 res = await this.rest.get<GitInterfaces.GitBranchStats>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitBranchStats,
-                                              false);
+                    GitInterfaces.TypeInfo.GitBranchStats,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -531,7 +531,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         project?: string,
         baseVersionDescriptor?: GitInterfaces.GitVersionDescriptor
-        ): Promise<GitInterfaces.GitBranchStats[]> {
+    ): Promise<GitInterfaces.GitBranchStats[]> {
 
         return new Promise<GitInterfaces.GitBranchStats[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -542,7 +542,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             let queryValues: any = {
                 baseVersionDescriptor: baseVersionDescriptor,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -552,18 +552,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitBranchStats[]>;
                 res = await this.rest.get<GitInterfaces.GitBranchStats[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitBranchStats,
-                                              true);
+                    GitInterfaces.TypeInfo.GitBranchStats,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -580,7 +580,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         searchCriteria: GitInterfaces.GitQueryBranchStatsCriteria,
         repositoryId: string,
         project?: string
-        ): Promise<GitInterfaces.GitBranchStats[]> {
+    ): Promise<GitInterfaces.GitBranchStats[]> {
 
         return new Promise<GitInterfaces.GitBranchStats[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -596,18 +596,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitBranchStats[]>;
                 res = await this.rest.create<GitInterfaces.GitBranchStats[]>(url, searchCriteria, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitBranchStats,
-                                              true);
+                    GitInterfaces.TypeInfo.GitBranchStats,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -630,7 +630,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project?: string,
         top?: number,
         skip?: number
-        ): Promise<GitInterfaces.GitCommitChanges> {
+    ): Promise<GitInterfaces.GitCommitChanges> {
 
         return new Promise<GitInterfaces.GitCommitChanges>(async (resolve, reject) => {
             let routeValues: any = {
@@ -643,7 +643,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 top: top,
                 skip: skip,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -653,18 +653,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCommitChanges>;
                 res = await this.rest.get<GitInterfaces.GitCommitChanges>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitCommitChanges,
-                                              false);
+                    GitInterfaces.TypeInfo.GitCommitChanges,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -685,7 +685,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         cherryPickId: number,
         conflictId: number,
         project?: string
-        ): Promise<GitInterfaces.GitConflict> {
+    ): Promise<GitInterfaces.GitConflict> {
 
         return new Promise<GitInterfaces.GitConflict>(async (resolve, reject) => {
             let routeValues: any = {
@@ -703,18 +703,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitConflict>;
                 res = await this.rest.get<GitInterfaces.GitConflict>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitConflict,
-                                              false);
+                    GitInterfaces.TypeInfo.GitConflict,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -743,7 +743,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         excludeResolved?: boolean,
         onlyResolved?: boolean,
         includeObsolete?: boolean
-        ): Promise<GitInterfaces.GitConflict[]> {
+    ): Promise<GitInterfaces.GitConflict[]> {
 
         return new Promise<GitInterfaces.GitConflict[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -759,7 +759,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 onlyResolved: onlyResolved,
                 includeObsolete: includeObsolete,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -769,18 +769,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitConflict[]>;
                 res = await this.rest.get<GitInterfaces.GitConflict[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitConflict,
-                                              true);
+                    GitInterfaces.TypeInfo.GitConflict,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -803,7 +803,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         cherryPickId: number,
         conflictId: number,
         project?: string
-        ): Promise<GitInterfaces.GitConflict> {
+    ): Promise<GitInterfaces.GitConflict> {
 
         return new Promise<GitInterfaces.GitConflict>(async (resolve, reject) => {
             let routeValues: any = {
@@ -821,18 +821,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitConflict>;
                 res = await this.rest.update<GitInterfaces.GitConflict>(url, conflict, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitConflict,
-                                              false);
+                    GitInterfaces.TypeInfo.GitConflict,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -853,7 +853,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         cherryPickId: number,
         project?: string
-        ): Promise<GitInterfaces.GitConflictUpdateResult[]> {
+    ): Promise<GitInterfaces.GitConflictUpdateResult[]> {
 
         return new Promise<GitInterfaces.GitConflictUpdateResult[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -870,18 +870,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitConflictUpdateResult[]>;
                 res = await this.rest.update<GitInterfaces.GitConflictUpdateResult[]>(url, conflictUpdates, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitConflictUpdateResult,
-                                              true);
+                    GitInterfaces.TypeInfo.GitConflictUpdateResult,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -902,7 +902,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         commitId: string,
         project?: string,
         includeLinks?: boolean
-        ): Promise<GitInterfaces.GitCommitRef[]> {
+    ): Promise<GitInterfaces.GitCommitRef[]> {
 
         return new Promise<GitInterfaces.GitCommitRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -914,7 +914,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             let queryValues: any = {
                 includeLinks: includeLinks,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -924,18 +924,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
                 res = await this.rest.get<GitInterfaces.GitCommitRef[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitCommitRef,
-                                              true);
+                    GitInterfaces.TypeInfo.GitCommitRef,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -954,7 +954,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         cherryPickToCreate: GitInterfaces.GitAsyncRefOperationParameters,
         project: string,
         repositoryId: string
-        ): Promise<GitInterfaces.GitCherryPick> {
+    ): Promise<GitInterfaces.GitCherryPick> {
 
         return new Promise<GitInterfaces.GitCherryPick>(async (resolve, reject) => {
             let routeValues: any = {
@@ -970,18 +970,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCherryPick>;
                 res = await this.rest.create<GitInterfaces.GitCherryPick>(url, cherryPickToCreate, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitCherryPick,
-                                              false);
+                    GitInterfaces.TypeInfo.GitCherryPick,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1000,7 +1000,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project: string,
         cherryPickId: number,
         repositoryId: string
-        ): Promise<GitInterfaces.GitCherryPick> {
+    ): Promise<GitInterfaces.GitCherryPick> {
 
         return new Promise<GitInterfaces.GitCherryPick>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1017,18 +1017,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCherryPick>;
                 res = await this.rest.get<GitInterfaces.GitCherryPick>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitCherryPick,
-                                              false);
+                    GitInterfaces.TypeInfo.GitCherryPick,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1047,7 +1047,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project: string,
         repositoryId: string,
         refName: string
-        ): Promise<GitInterfaces.GitCherryPick> {
+    ): Promise<GitInterfaces.GitCherryPick> {
         if (refName == null) {
             throw new TypeError('refName can not be null or undefined');
         }
@@ -1061,7 +1061,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             let queryValues: any = {
                 refName: refName,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -1071,18 +1071,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCherryPick>;
                 res = await this.rest.get<GitInterfaces.GitCherryPick>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitCherryPick,
-                                              false);
+                    GitInterfaces.TypeInfo.GitCherryPick,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1109,7 +1109,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         skip?: number,
         baseVersionDescriptor?: GitInterfaces.GitBaseVersionDescriptor,
         targetVersionDescriptor?: GitInterfaces.GitTargetVersionDescriptor
-        ): Promise<GitInterfaces.GitCommitDiffs> {
+    ): Promise<GitInterfaces.GitCommitDiffs> {
 
         return new Promise<GitInterfaces.GitCommitDiffs>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1123,16 +1123,16 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 '$skip': skip,
             };
             if (baseVersionDescriptor) {
-                queryValues.baseVersionType = baseVersionDescriptor.versionType;
-                queryValues.baseVersion = baseVersionDescriptor.version;
-                queryValues.baseVersionOptions = baseVersionDescriptor.versionOptions;
+                queryValues.baseVersionType = baseVersionDescriptor.baseVersionType;
+                queryValues.baseVersion = baseVersionDescriptor.baseVersion;
+                queryValues.baseVersionOptions = baseVersionDescriptor.baseVersionOptions;
             }
             if (targetVersionDescriptor) {
-                queryValues.targetVersionType = targetVersionDescriptor.versionType;
-                queryValues.targetVersion = targetVersionDescriptor.version;
-                queryValues.targetVersionOptions = targetVersionDescriptor.versionOptions;
+                queryValues.targetVersionType = targetVersionDescriptor.targetVersionType;
+                queryValues.targetVersion = targetVersionDescriptor.targetVersion;
+                queryValues.targetVersionOptions = targetVersionDescriptor.targetVersionOptions;
             }
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -1142,18 +1142,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCommitDiffs>;
                 res = await this.rest.get<GitInterfaces.GitCommitDiffs>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitCommitDiffs,
-                                              false);
+                    GitInterfaces.TypeInfo.GitCommitDiffs,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1174,7 +1174,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         project?: string,
         changeCount?: number
-        ): Promise<GitInterfaces.GitCommit> {
+    ): Promise<GitInterfaces.GitCommit> {
 
         return new Promise<GitInterfaces.GitCommit>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1186,7 +1186,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             let queryValues: any = {
                 changeCount: changeCount,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -1196,18 +1196,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCommit>;
                 res = await this.rest.get<GitInterfaces.GitCommit>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitCommit,
-                                              false);
+                    GitInterfaces.TypeInfo.GitCommit,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1230,7 +1230,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project?: string,
         skip?: number,
         top?: number
-        ): Promise<GitInterfaces.GitCommitRef[]> {
+    ): Promise<GitInterfaces.GitCommitRef[]> {
         if (searchCriteria == null) {
             throw new TypeError('searchCriteria can not be null or undefined');
         }
@@ -1246,7 +1246,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 '$skip': skip,
                 '$top': top,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -1256,18 +1256,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
                 res = await this.rest.get<GitInterfaces.GitCommitRef[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitCommitRef,
-                                              true);
+                    GitInterfaces.TypeInfo.GitCommitRef,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1292,7 +1292,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         top?: number,
         skip?: number,
         includeLinks?: boolean
-        ): Promise<GitInterfaces.GitCommitRef[]> {
+    ): Promise<GitInterfaces.GitCommitRef[]> {
         if (pushId == null) {
             throw new TypeError('pushId can not be null or undefined');
         }
@@ -1309,7 +1309,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 skip: skip,
                 includeLinks: includeLinks,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -1319,18 +1319,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
                 res = await this.rest.get<GitInterfaces.GitCommitRef[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitCommitRef,
-                                              true);
+                    GitInterfaces.TypeInfo.GitCommitRef,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1355,7 +1355,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         skip?: number,
         top?: number,
         includeStatuses?: boolean
-        ): Promise<GitInterfaces.GitCommitRef[]> {
+    ): Promise<GitInterfaces.GitCommitRef[]> {
 
         return new Promise<GitInterfaces.GitCommitRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1368,7 +1368,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 '$top': top,
                 includeStatuses: includeStatuses,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -1378,18 +1378,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
                 res = await this.rest.create<GitInterfaces.GitCommitRef[]>(url, searchCriteria, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitCommitRef,
-                                              true);
+                    GitInterfaces.TypeInfo.GitCommitRef,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1404,7 +1404,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
      */
     public async getDeletedRepositories(
         project: string
-        ): Promise<GitInterfaces.GitDeletedRepository[]> {
+    ): Promise<GitInterfaces.GitDeletedRepository[]> {
 
         return new Promise<GitInterfaces.GitDeletedRepository[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1419,18 +1419,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitDeletedRepository[]>;
                 res = await this.rest.get<GitInterfaces.GitDeletedRepository[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitDeletedRepository,
-                                              true);
+                    GitInterfaces.TypeInfo.GitDeletedRepository,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1449,7 +1449,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         fileDiffsCriteria: GitInterfaces.FileDiffsCriteria,
         project: string,
         repositoryId: string
-        ): Promise<GitInterfaces.FileDiff[]> {
+    ): Promise<GitInterfaces.FileDiff[]> {
 
         return new Promise<GitInterfaces.FileDiff[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1465,18 +1465,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.FileDiff[]>;
                 res = await this.rest.create<GitInterfaces.FileDiff[]>(url, fileDiffsCriteria, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.FileDiff,
-                                              true);
+                    GitInterfaces.TypeInfo.FileDiff,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1497,7 +1497,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         collectionId: string,
         project?: string,
         includeLinks?: boolean
-        ): Promise<GitInterfaces.GitRepositoryRef[]> {
+    ): Promise<GitInterfaces.GitRepositoryRef[]> {
 
         return new Promise<GitInterfaces.GitRepositoryRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1509,7 +1509,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             let queryValues: any = {
                 includeLinks: includeLinks,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -1519,18 +1519,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRepositoryRef[]>;
                 res = await this.rest.get<GitInterfaces.GitRepositoryRef[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitRepositoryRef,
-                                              true);
+                    GitInterfaces.TypeInfo.GitRepositoryRef,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1551,7 +1551,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryNameOrId: string,
         project?: string,
         includeLinks?: boolean
-        ): Promise<GitInterfaces.GitForkSyncRequest> {
+    ): Promise<GitInterfaces.GitForkSyncRequest> {
 
         return new Promise<GitInterfaces.GitForkSyncRequest>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1562,7 +1562,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             let queryValues: any = {
                 includeLinks: includeLinks,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -1572,18 +1572,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitForkSyncRequest>;
                 res = await this.rest.create<GitInterfaces.GitForkSyncRequest>(url, syncParams, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitForkSyncRequest,
-                                              false);
+                    GitInterfaces.TypeInfo.GitForkSyncRequest,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1604,7 +1604,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         forkSyncOperationId: number,
         project?: string,
         includeLinks?: boolean
-        ): Promise<GitInterfaces.GitForkSyncRequest> {
+    ): Promise<GitInterfaces.GitForkSyncRequest> {
 
         return new Promise<GitInterfaces.GitForkSyncRequest>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1616,7 +1616,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             let queryValues: any = {
                 includeLinks: includeLinks,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -1626,18 +1626,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitForkSyncRequest>;
                 res = await this.rest.get<GitInterfaces.GitForkSyncRequest>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitForkSyncRequest,
-                                              false);
+                    GitInterfaces.TypeInfo.GitForkSyncRequest,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1658,7 +1658,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project?: string,
         includeAbandoned?: boolean,
         includeLinks?: boolean
-        ): Promise<GitInterfaces.GitForkSyncRequest[]> {
+    ): Promise<GitInterfaces.GitForkSyncRequest[]> {
 
         return new Promise<GitInterfaces.GitForkSyncRequest[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1670,7 +1670,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 includeAbandoned: includeAbandoned,
                 includeLinks: includeLinks,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -1680,18 +1680,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitForkSyncRequest[]>;
                 res = await this.rest.get<GitInterfaces.GitForkSyncRequest[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitForkSyncRequest,
-                                              true);
+                    GitInterfaces.TypeInfo.GitForkSyncRequest,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1710,7 +1710,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         importRequest: GitInterfaces.GitImportRequest,
         project: string,
         repositoryId: string
-        ): Promise<GitInterfaces.GitImportRequest> {
+    ): Promise<GitInterfaces.GitImportRequest> {
 
         return new Promise<GitInterfaces.GitImportRequest>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1726,18 +1726,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitImportRequest>;
                 res = await this.rest.create<GitInterfaces.GitImportRequest>(url, importRequest, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitImportRequest,
-                                              false);
+                    GitInterfaces.TypeInfo.GitImportRequest,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1756,7 +1756,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project: string,
         repositoryId: string,
         importRequestId: number
-        ): Promise<GitInterfaces.GitImportRequest> {
+    ): Promise<GitInterfaces.GitImportRequest> {
 
         return new Promise<GitInterfaces.GitImportRequest>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1773,18 +1773,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitImportRequest>;
                 res = await this.rest.get<GitInterfaces.GitImportRequest>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitImportRequest,
-                                              false);
+                    GitInterfaces.TypeInfo.GitImportRequest,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1803,7 +1803,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project: string,
         repositoryId: string,
         includeAbandoned?: boolean
-        ): Promise<GitInterfaces.GitImportRequest[]> {
+    ): Promise<GitInterfaces.GitImportRequest[]> {
 
         return new Promise<GitInterfaces.GitImportRequest[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1814,7 +1814,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             let queryValues: any = {
                 includeAbandoned: includeAbandoned,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -1824,18 +1824,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitImportRequest[]>;
                 res = await this.rest.get<GitInterfaces.GitImportRequest[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitImportRequest,
-                                              true);
+                    GitInterfaces.TypeInfo.GitImportRequest,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1856,7 +1856,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project: string,
         repositoryId: string,
         importRequestId: number
-        ): Promise<GitInterfaces.GitImportRequest> {
+    ): Promise<GitInterfaces.GitImportRequest> {
 
         return new Promise<GitInterfaces.GitImportRequest>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1873,18 +1873,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitImportRequest>;
                 res = await this.rest.update<GitInterfaces.GitImportRequest>(url, importRequestToUpdate, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitImportRequest,
-                                              false);
+                    GitInterfaces.TypeInfo.GitImportRequest,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -1921,7 +1921,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         includeContent?: boolean,
         resolveLfs?: boolean,
         sanitize?: boolean
-        ): Promise<GitInterfaces.GitItem> {
+    ): Promise<GitInterfaces.GitItem> {
         if (path == null) {
             throw new TypeError('path can not be null or undefined');
         }
@@ -1944,7 +1944,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 resolveLfs: resolveLfs,
                 sanitize: sanitize,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -1954,18 +1954,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitItem>;
                 res = await this.rest.get<GitInterfaces.GitItem>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitItem,
-                                              false);
+                    GitInterfaces.TypeInfo.GitItem,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2002,7 +2002,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         includeContent?: boolean,
         resolveLfs?: boolean,
         sanitize?: boolean
-        ): Promise<NodeJS.ReadableStream> {
+    ): Promise<NodeJS.ReadableStream> {
         if (path == null) {
             throw new TypeError('path can not be null or undefined');
         }
@@ -2025,7 +2025,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 resolveLfs: resolveLfs,
                 sanitize: sanitize,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -2035,7 +2035,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                
+
                 let apiVersion: string = verData.apiVersion!;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -2069,7 +2069,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         download?: boolean,
         includeLinks?: boolean,
         versionDescriptor?: GitInterfaces.GitVersionDescriptor
-        ): Promise<GitInterfaces.GitItem[]> {
+    ): Promise<GitInterfaces.GitItem[]> {
 
         return new Promise<GitInterfaces.GitItem[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2086,7 +2086,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 includeLinks: includeLinks,
                 versionDescriptor: versionDescriptor,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -2096,18 +2096,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitItem[]>;
                 res = await this.rest.get<GitInterfaces.GitItem[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitItem,
-                                              true);
+                    GitInterfaces.TypeInfo.GitItem,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2144,7 +2144,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         includeContent?: boolean,
         resolveLfs?: boolean,
         sanitize?: boolean
-        ): Promise<NodeJS.ReadableStream> {
+    ): Promise<NodeJS.ReadableStream> {
         if (path == null) {
             throw new TypeError('path can not be null or undefined');
         }
@@ -2167,7 +2167,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 resolveLfs: resolveLfs,
                 sanitize: sanitize,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -2177,7 +2177,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                
+
                 let apiVersion: string = verData.apiVersion!;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -2217,7 +2217,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         includeContent?: boolean,
         resolveLfs?: boolean,
         sanitize?: boolean
-        ): Promise<NodeJS.ReadableStream> {
+    ): Promise<NodeJS.ReadableStream> {
         if (path == null) {
             throw new TypeError('path can not be null or undefined');
         }
@@ -2240,7 +2240,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 resolveLfs: resolveLfs,
                 sanitize: sanitize,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -2250,7 +2250,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                
+
                 let apiVersion: string = verData.apiVersion!;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -2272,7 +2272,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         requestData: GitInterfaces.GitItemRequestData,
         repositoryId: string,
         project?: string
-        ): Promise<GitInterfaces.GitItem[][]> {
+    ): Promise<GitInterfaces.GitItem[][]> {
 
         return new Promise<GitInterfaces.GitItem[][]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2288,18 +2288,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitItem[][]>;
                 res = await this.rest.create<GitInterfaces.GitItem[][]>(url, requestData, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitItem,
-                                              true);
+                    GitInterfaces.TypeInfo.GitItem,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2324,7 +2324,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project?: string,
         otherCollectionId?: string,
         otherRepositoryId?: string
-        ): Promise<GitInterfaces.GitCommitRef[]> {
+    ): Promise<GitInterfaces.GitCommitRef[]> {
         if (otherCommitId == null) {
             throw new TypeError('otherCommitId can not be null or undefined');
         }
@@ -2341,7 +2341,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 otherCollectionId: otherCollectionId,
                 otherRepositoryId: otherRepositoryId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -2351,18 +2351,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
                 res = await this.rest.get<GitInterfaces.GitCommitRef[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitCommitRef,
-                                              true);
+                    GitInterfaces.TypeInfo.GitCommitRef,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2383,7 +2383,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project: string,
         repositoryNameOrId: string,
         includeLinks?: boolean
-        ): Promise<GitInterfaces.GitMerge> {
+    ): Promise<GitInterfaces.GitMerge> {
 
         return new Promise<GitInterfaces.GitMerge>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2394,7 +2394,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             let queryValues: any = {
                 includeLinks: includeLinks,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -2404,18 +2404,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitMerge>;
                 res = await this.rest.create<GitInterfaces.GitMerge>(url, mergeParameters, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitMerge,
-                                              false);
+                    GitInterfaces.TypeInfo.GitMerge,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2436,7 +2436,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryNameOrId: string,
         mergeOperationId: number,
         includeLinks?: boolean
-        ): Promise<GitInterfaces.GitMerge> {
+    ): Promise<GitInterfaces.GitMerge> {
 
         return new Promise<GitInterfaces.GitMerge>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2448,7 +2448,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             let queryValues: any = {
                 includeLinks: includeLinks,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -2458,18 +2458,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitMerge>;
                 res = await this.rest.get<GitInterfaces.GitMerge>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitMerge,
-                                              false);
+                    GitInterfaces.TypeInfo.GitMerge,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2493,7 +2493,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project?: string
-        ): Promise<GitInterfaces.Attachment> {
+    ): Promise<GitInterfaces.Attachment> {
 
         return new Promise<GitInterfaces.Attachment>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2514,17 +2514,17 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                
+
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                                                                                verData.apiVersion);
+                    verData.apiVersion);
                 options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<GitInterfaces.Attachment>;
                 res = await this.rest.uploadStream<GitInterfaces.Attachment>("POST", url, contentStream, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.Attachment,
-                                              false);
+                    GitInterfaces.TypeInfo.Attachment,
+                    false);
 
                 resolve(ret);
             }
@@ -2547,7 +2547,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2565,18 +2565,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2597,7 +2597,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project?: string
-        ): Promise<NodeJS.ReadableStream> {
+    ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2615,7 +2615,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                
+
                 let apiVersion: string = verData.apiVersion!;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -2637,7 +2637,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project?: string
-        ): Promise<GitInterfaces.Attachment[]> {
+    ): Promise<GitInterfaces.Attachment[]> {
 
         return new Promise<GitInterfaces.Attachment[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2654,18 +2654,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.Attachment[]>;
                 res = await this.rest.get<GitInterfaces.Attachment[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.Attachment,
-                                              true);
+                    GitInterfaces.TypeInfo.Attachment,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2686,7 +2686,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project?: string
-        ): Promise<NodeJS.ReadableStream> {
+    ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2704,7 +2704,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                
+
                 let apiVersion: string = verData.apiVersion!;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -2730,7 +2730,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         threadId: number,
         commentId: number,
         project?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2749,18 +2749,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, null, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2783,7 +2783,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         threadId: number,
         commentId: number,
         project?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2802,18 +2802,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2836,7 +2836,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         threadId: number,
         commentId: number,
         project?: string
-        ): Promise<VSSInterfaces.IdentityRef[]> {
+    ): Promise<VSSInterfaces.IdentityRef[]> {
 
         return new Promise<VSSInterfaces.IdentityRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2855,18 +2855,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<VSSInterfaces.IdentityRef[]>;
                 res = await this.rest.get<VSSInterfaces.IdentityRef[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2891,7 +2891,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project?: string,
         top?: number,
         skip?: number
-        ): Promise<GitInterfaces.GitCommitRef[]> {
+    ): Promise<GitInterfaces.GitCommitRef[]> {
 
         return new Promise<GitInterfaces.GitCommitRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2905,7 +2905,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 top: top,
                 skip: skip,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -2915,18 +2915,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
                 res = await this.rest.get<GitInterfaces.GitCommitRef[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitCommitRef,
-                                              true);
+                    GitInterfaces.TypeInfo.GitCommitRef,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2945,7 +2945,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project?: string
-        ): Promise<GitInterfaces.GitCommitRef[]> {
+    ): Promise<GitInterfaces.GitCommitRef[]> {
 
         return new Promise<GitInterfaces.GitCommitRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2962,18 +2962,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
                 res = await this.rest.get<GitInterfaces.GitCommitRef[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitCommitRef,
-                                              true);
+                    GitInterfaces.TypeInfo.GitCommitRef,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -2994,7 +2994,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         pullRequestId: number,
         conflictId: number,
         project?: string
-        ): Promise<GitInterfaces.GitConflict> {
+    ): Promise<GitInterfaces.GitConflict> {
 
         return new Promise<GitInterfaces.GitConflict>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3012,18 +3012,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitConflict>;
                 res = await this.rest.get<GitInterfaces.GitConflict>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitConflict,
-                                              false);
+                    GitInterfaces.TypeInfo.GitConflict,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3052,7 +3052,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         includeObsolete?: boolean,
         excludeResolved?: boolean,
         onlyResolved?: boolean
-        ): Promise<GitInterfaces.GitConflict[]> {
+    ): Promise<GitInterfaces.GitConflict[]> {
 
         return new Promise<GitInterfaces.GitConflict[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3068,7 +3068,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 excludeResolved: excludeResolved,
                 onlyResolved: onlyResolved,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -3078,18 +3078,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitConflict[]>;
                 res = await this.rest.get<GitInterfaces.GitConflict[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitConflict,
-                                              true);
+                    GitInterfaces.TypeInfo.GitConflict,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3112,7 +3112,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         pullRequestId: number,
         conflictId: number,
         project?: string
-        ): Promise<GitInterfaces.GitConflict> {
+    ): Promise<GitInterfaces.GitConflict> {
 
         return new Promise<GitInterfaces.GitConflict>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3130,18 +3130,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitConflict>;
                 res = await this.rest.update<GitInterfaces.GitConflict>(url, conflict, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitConflict,
-                                              false);
+                    GitInterfaces.TypeInfo.GitConflict,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3162,7 +3162,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project?: string
-        ): Promise<GitInterfaces.GitConflictUpdateResult[]> {
+    ): Promise<GitInterfaces.GitConflictUpdateResult[]> {
 
         return new Promise<GitInterfaces.GitConflictUpdateResult[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3179,18 +3179,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitConflictUpdateResult[]>;
                 res = await this.rest.update<GitInterfaces.GitConflictUpdateResult[]>(url, conflictUpdates, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitConflictUpdateResult,
-                                              true);
+                    GitInterfaces.TypeInfo.GitConflictUpdateResult,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3217,7 +3217,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         top?: number,
         skip?: number,
         compareTo?: number
-        ): Promise<GitInterfaces.GitPullRequestIterationChanges> {
+    ): Promise<GitInterfaces.GitPullRequestIterationChanges> {
 
         return new Promise<GitInterfaces.GitPullRequestIterationChanges>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3232,7 +3232,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 '$skip': skip,
                 '$compareTo': compareTo,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -3242,18 +3242,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestIterationChanges>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestIterationChanges>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPullRequestIterationChanges,
-                                              false);
+                    GitInterfaces.TypeInfo.GitPullRequestIterationChanges,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3274,7 +3274,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         pullRequestId: number,
         iterationId: number,
         project?: string
-        ): Promise<GitInterfaces.GitPullRequestIteration> {
+    ): Promise<GitInterfaces.GitPullRequestIteration> {
 
         return new Promise<GitInterfaces.GitPullRequestIteration>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3292,18 +3292,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestIteration>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestIteration>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPullRequestIteration,
-                                              false);
+                    GitInterfaces.TypeInfo.GitPullRequestIteration,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3324,7 +3324,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         pullRequestId: number,
         project?: string,
         includeCommits?: boolean
-        ): Promise<GitInterfaces.GitPullRequestIteration[]> {
+    ): Promise<GitInterfaces.GitPullRequestIteration[]> {
 
         return new Promise<GitInterfaces.GitPullRequestIteration[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3336,7 +3336,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             let queryValues: any = {
                 includeCommits: includeCommits,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -3346,18 +3346,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestIteration[]>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestIteration[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPullRequestIteration,
-                                              true);
+                    GitInterfaces.TypeInfo.GitPullRequestIteration,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3380,7 +3380,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         pullRequestId: number,
         iterationId: number,
         project?: string
-        ): Promise<GitInterfaces.GitPullRequestStatus> {
+    ): Promise<GitInterfaces.GitPullRequestStatus> {
 
         return new Promise<GitInterfaces.GitPullRequestStatus>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3398,18 +3398,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus>;
                 res = await this.rest.create<GitInterfaces.GitPullRequestStatus>(url, status, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPullRequestStatus,
-                                              false);
+                    GitInterfaces.TypeInfo.GitPullRequestStatus,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3432,7 +3432,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         iterationId: number,
         statusId: number,
         project?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3451,18 +3451,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3485,7 +3485,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         iterationId: number,
         statusId: number,
         project?: string
-        ): Promise<GitInterfaces.GitPullRequestStatus> {
+    ): Promise<GitInterfaces.GitPullRequestStatus> {
 
         return new Promise<GitInterfaces.GitPullRequestStatus>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3504,18 +3504,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestStatus>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPullRequestStatus,
-                                              false);
+                    GitInterfaces.TypeInfo.GitPullRequestStatus,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3536,7 +3536,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         pullRequestId: number,
         iterationId: number,
         project?: string
-        ): Promise<GitInterfaces.GitPullRequestStatus[]> {
+    ): Promise<GitInterfaces.GitPullRequestStatus[]> {
 
         return new Promise<GitInterfaces.GitPullRequestStatus[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3554,18 +3554,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus[]>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestStatus[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPullRequestStatus,
-                                              true);
+                    GitInterfaces.TypeInfo.GitPullRequestStatus,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3589,7 +3589,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         pullRequestId: number,
         iterationId: number,
         project?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3610,19 +3610,19 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, patchDocument, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3645,7 +3645,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         pullRequestId: number,
         project?: string,
         projectId?: string
-        ): Promise<TfsCoreInterfaces.WebApiTagDefinition> {
+    ): Promise<TfsCoreInterfaces.WebApiTagDefinition> {
 
         return new Promise<TfsCoreInterfaces.WebApiTagDefinition>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3657,7 +3657,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             let queryValues: any = {
                 projectId: projectId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -3667,18 +3667,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TfsCoreInterfaces.WebApiTagDefinition>;
                 res = await this.rest.create<TfsCoreInterfaces.WebApiTagDefinition>(url, label, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3701,7 +3701,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         labelIdOrName: string,
         project?: string,
         projectId?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3714,7 +3714,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             let queryValues: any = {
                 projectId: projectId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -3724,18 +3724,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3758,7 +3758,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         labelIdOrName: string,
         project?: string,
         projectId?: string
-        ): Promise<TfsCoreInterfaces.WebApiTagDefinition> {
+    ): Promise<TfsCoreInterfaces.WebApiTagDefinition> {
 
         return new Promise<TfsCoreInterfaces.WebApiTagDefinition>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3771,7 +3771,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             let queryValues: any = {
                 projectId: projectId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -3781,18 +3781,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TfsCoreInterfaces.WebApiTagDefinition>;
                 res = await this.rest.get<TfsCoreInterfaces.WebApiTagDefinition>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3813,7 +3813,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         pullRequestId: number,
         project?: string,
         projectId?: string
-        ): Promise<TfsCoreInterfaces.WebApiTagDefinition[]> {
+    ): Promise<TfsCoreInterfaces.WebApiTagDefinition[]> {
 
         return new Promise<TfsCoreInterfaces.WebApiTagDefinition[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3825,7 +3825,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             let queryValues: any = {
                 projectId: projectId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -3835,18 +3835,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<TfsCoreInterfaces.WebApiTagDefinition[]>;
                 res = await this.rest.get<TfsCoreInterfaces.WebApiTagDefinition[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3865,7 +3865,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project?: string
-        ): Promise<any> {
+    ): Promise<any> {
 
         return new Promise<any>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3882,18 +3882,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<any>;
                 res = await this.rest.get<any>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3915,7 +3915,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project?: string
-        ): Promise<any> {
+    ): Promise<any> {
 
         return new Promise<any>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3935,19 +3935,19 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<any>;
                 res = await this.rest.update<any>(url, patchDocument, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -3966,7 +3966,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         queries: GitInterfaces.GitPullRequestQuery,
         repositoryId: string,
         project?: string
-        ): Promise<GitInterfaces.GitPullRequestQuery> {
+    ): Promise<GitInterfaces.GitPullRequestQuery> {
 
         return new Promise<GitInterfaces.GitPullRequestQuery>(async (resolve, reject) => {
             let routeValues: any = {
@@ -3982,18 +3982,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestQuery>;
                 res = await this.rest.create<GitInterfaces.GitPullRequestQuery>(url, queries, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPullRequestQuery,
-                                              false);
+                    GitInterfaces.TypeInfo.GitPullRequestQuery,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4016,7 +4016,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         pullRequestId: number,
         reviewerId: string,
         project?: string
-        ): Promise<GitInterfaces.IdentityRefWithVote> {
+    ): Promise<GitInterfaces.IdentityRefWithVote> {
 
         return new Promise<GitInterfaces.IdentityRefWithVote>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4034,18 +4034,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote>;
                 res = await this.rest.replace<GitInterfaces.IdentityRefWithVote>(url, reviewer, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4066,7 +4066,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project?: string
-        ): Promise<GitInterfaces.IdentityRefWithVote[]> {
+    ): Promise<GitInterfaces.IdentityRefWithVote[]> {
 
         return new Promise<GitInterfaces.IdentityRefWithVote[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4083,18 +4083,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote[]>;
                 res = await this.rest.create<GitInterfaces.IdentityRefWithVote[]>(url, reviewers, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4115,7 +4115,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project?: string
-        ): Promise<GitInterfaces.IdentityRefWithVote> {
+    ): Promise<GitInterfaces.IdentityRefWithVote> {
 
         return new Promise<GitInterfaces.IdentityRefWithVote>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4132,18 +4132,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote>;
                 res = await this.rest.replace<GitInterfaces.IdentityRefWithVote>(url, reviewer, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4164,7 +4164,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         pullRequestId: number,
         reviewerId: string,
         project?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4182,18 +4182,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4214,7 +4214,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         pullRequestId: number,
         reviewerId: string,
         project?: string
-        ): Promise<GitInterfaces.IdentityRefWithVote> {
+    ): Promise<GitInterfaces.IdentityRefWithVote> {
 
         return new Promise<GitInterfaces.IdentityRefWithVote>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4232,18 +4232,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote>;
                 res = await this.rest.get<GitInterfaces.IdentityRefWithVote>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4262,7 +4262,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project?: string
-        ): Promise<GitInterfaces.IdentityRefWithVote[]> {
+    ): Promise<GitInterfaces.IdentityRefWithVote[]> {
 
         return new Promise<GitInterfaces.IdentityRefWithVote[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4279,18 +4279,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote[]>;
                 res = await this.rest.get<GitInterfaces.IdentityRefWithVote[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4313,7 +4313,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         pullRequestId: number,
         reviewerId: string,
         project?: string
-        ): Promise<GitInterfaces.IdentityRefWithVote> {
+    ): Promise<GitInterfaces.IdentityRefWithVote> {
 
         return new Promise<GitInterfaces.IdentityRefWithVote>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4331,18 +4331,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote>;
                 res = await this.rest.update<GitInterfaces.IdentityRefWithVote>(url, reviewer, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4363,7 +4363,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4380,18 +4380,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, patchVotes, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4408,7 +4408,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     public async getPullRequestById(
         pullRequestId: number,
         project?: string
-        ): Promise<GitInterfaces.GitPullRequest> {
+    ): Promise<GitInterfaces.GitPullRequest> {
 
         return new Promise<GitInterfaces.GitPullRequest>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4424,18 +4424,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest>;
                 res = await this.rest.get<GitInterfaces.GitPullRequest>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPullRequest,
-                                              false);
+                    GitInterfaces.TypeInfo.GitPullRequest,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4458,7 +4458,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         maxCommentLength?: number,
         skip?: number,
         top?: number
-        ): Promise<GitInterfaces.GitPullRequest[]> {
+    ): Promise<GitInterfaces.GitPullRequest[]> {
         if (searchCriteria == null) {
             throw new TypeError('searchCriteria can not be null or undefined');
         }
@@ -4474,7 +4474,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 '$skip': skip,
                 '$top': top,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -4484,18 +4484,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest[]>;
                 res = await this.rest.get<GitInterfaces.GitPullRequest[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPullRequest,
-                                              true);
+                    GitInterfaces.TypeInfo.GitPullRequest,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4516,7 +4516,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         project?: string,
         supportsIterations?: boolean
-        ): Promise<GitInterfaces.GitPullRequest> {
+    ): Promise<GitInterfaces.GitPullRequest> {
 
         return new Promise<GitInterfaces.GitPullRequest>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4527,7 +4527,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             let queryValues: any = {
                 supportsIterations: supportsIterations,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -4537,18 +4537,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest>;
                 res = await this.rest.create<GitInterfaces.GitPullRequest>(url, gitPullRequestToCreate, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPullRequest,
-                                              false);
+                    GitInterfaces.TypeInfo.GitPullRequest,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4577,7 +4577,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         top?: number,
         includeCommits?: boolean,
         includeWorkItemRefs?: boolean
-        ): Promise<GitInterfaces.GitPullRequest> {
+    ): Promise<GitInterfaces.GitPullRequest> {
 
         return new Promise<GitInterfaces.GitPullRequest>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4593,7 +4593,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 includeCommits: includeCommits,
                 includeWorkItemRefs: includeWorkItemRefs,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -4603,18 +4603,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest>;
                 res = await this.rest.get<GitInterfaces.GitPullRequest>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPullRequest,
-                                              false);
+                    GitInterfaces.TypeInfo.GitPullRequest,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4639,7 +4639,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         maxCommentLength?: number,
         skip?: number,
         top?: number
-        ): Promise<GitInterfaces.GitPullRequest[]> {
+    ): Promise<GitInterfaces.GitPullRequest[]> {
         if (searchCriteria == null) {
             throw new TypeError('searchCriteria can not be null or undefined');
         }
@@ -4656,7 +4656,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 '$skip': skip,
                 '$top': top,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -4666,18 +4666,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest[]>;
                 res = await this.rest.get<GitInterfaces.GitPullRequest[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPullRequest,
-                                              true);
+                    GitInterfaces.TypeInfo.GitPullRequest,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4698,7 +4698,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project?: string
-        ): Promise<GitInterfaces.GitPullRequest> {
+    ): Promise<GitInterfaces.GitPullRequest> {
 
         return new Promise<GitInterfaces.GitPullRequest>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4715,18 +4715,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest>;
                 res = await this.rest.update<GitInterfaces.GitPullRequest>(url, gitPullRequestToUpdate, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPullRequest,
-                                              false);
+                    GitInterfaces.TypeInfo.GitPullRequest,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4747,7 +4747,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4764,18 +4764,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, userMessage, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4796,7 +4796,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project?: string
-        ): Promise<GitInterfaces.GitPullRequestStatus> {
+    ): Promise<GitInterfaces.GitPullRequestStatus> {
 
         return new Promise<GitInterfaces.GitPullRequestStatus>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4813,18 +4813,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus>;
                 res = await this.rest.create<GitInterfaces.GitPullRequestStatus>(url, status, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPullRequestStatus,
-                                              false);
+                    GitInterfaces.TypeInfo.GitPullRequestStatus,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4845,7 +4845,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         pullRequestId: number,
         statusId: number,
         project?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4863,18 +4863,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4895,7 +4895,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         pullRequestId: number,
         statusId: number,
         project?: string
-        ): Promise<GitInterfaces.GitPullRequestStatus> {
+    ): Promise<GitInterfaces.GitPullRequestStatus> {
 
         return new Promise<GitInterfaces.GitPullRequestStatus>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4913,18 +4913,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestStatus>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPullRequestStatus,
-                                              false);
+                    GitInterfaces.TypeInfo.GitPullRequestStatus,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4943,7 +4943,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project?: string
-        ): Promise<GitInterfaces.GitPullRequestStatus[]> {
+    ): Promise<GitInterfaces.GitPullRequestStatus[]> {
 
         return new Promise<GitInterfaces.GitPullRequestStatus[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -4960,18 +4960,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus[]>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestStatus[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPullRequestStatus,
-                                              true);
+                    GitInterfaces.TypeInfo.GitPullRequestStatus,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -4993,7 +4993,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5013,19 +5013,19 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
                 options.additionalHeaders = customHeaders;
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, patchDocument, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -5048,7 +5048,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         pullRequestId: number,
         threadId: number,
         project?: string
-        ): Promise<GitInterfaces.Comment> {
+    ): Promise<GitInterfaces.Comment> {
 
         return new Promise<GitInterfaces.Comment>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5066,18 +5066,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.Comment>;
                 res = await this.rest.create<GitInterfaces.Comment>(url, comment, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.Comment,
-                                              false);
+                    GitInterfaces.TypeInfo.Comment,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -5100,7 +5100,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         threadId: number,
         commentId: number,
         project?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5119,18 +5119,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -5153,7 +5153,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         threadId: number,
         commentId: number,
         project?: string
-        ): Promise<GitInterfaces.Comment> {
+    ): Promise<GitInterfaces.Comment> {
 
         return new Promise<GitInterfaces.Comment>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5172,18 +5172,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.Comment>;
                 res = await this.rest.get<GitInterfaces.Comment>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.Comment,
-                                              false);
+                    GitInterfaces.TypeInfo.Comment,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -5204,7 +5204,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         pullRequestId: number,
         threadId: number,
         project?: string
-        ): Promise<GitInterfaces.Comment[]> {
+    ): Promise<GitInterfaces.Comment[]> {
 
         return new Promise<GitInterfaces.Comment[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5222,18 +5222,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.Comment[]>;
                 res = await this.rest.get<GitInterfaces.Comment[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.Comment,
-                                              true);
+                    GitInterfaces.TypeInfo.Comment,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -5258,7 +5258,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         threadId: number,
         commentId: number,
         project?: string
-        ): Promise<GitInterfaces.Comment> {
+    ): Promise<GitInterfaces.Comment> {
 
         return new Promise<GitInterfaces.Comment>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5277,18 +5277,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.Comment>;
                 res = await this.rest.update<GitInterfaces.Comment>(url, comment, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.Comment,
-                                              false);
+                    GitInterfaces.TypeInfo.Comment,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -5309,7 +5309,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project?: string
-        ): Promise<GitInterfaces.GitPullRequestCommentThread> {
+    ): Promise<GitInterfaces.GitPullRequestCommentThread> {
 
         return new Promise<GitInterfaces.GitPullRequestCommentThread>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5326,18 +5326,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestCommentThread>;
                 res = await this.rest.create<GitInterfaces.GitPullRequestCommentThread>(url, commentThread, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPullRequestCommentThread,
-                                              false);
+                    GitInterfaces.TypeInfo.GitPullRequestCommentThread,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -5362,7 +5362,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project?: string,
         iteration?: number,
         baseIteration?: number
-        ): Promise<GitInterfaces.GitPullRequestCommentThread> {
+    ): Promise<GitInterfaces.GitPullRequestCommentThread> {
 
         return new Promise<GitInterfaces.GitPullRequestCommentThread>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5376,7 +5376,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 '$iteration': iteration,
                 '$baseIteration': baseIteration,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -5386,18 +5386,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestCommentThread>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestCommentThread>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPullRequestCommentThread,
-                                              false);
+                    GitInterfaces.TypeInfo.GitPullRequestCommentThread,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -5420,7 +5420,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project?: string,
         iteration?: number,
         baseIteration?: number
-        ): Promise<GitInterfaces.GitPullRequestCommentThread[]> {
+    ): Promise<GitInterfaces.GitPullRequestCommentThread[]> {
 
         return new Promise<GitInterfaces.GitPullRequestCommentThread[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5433,7 +5433,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 '$iteration': iteration,
                 '$baseIteration': baseIteration,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -5443,18 +5443,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestCommentThread[]>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestCommentThread[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPullRequestCommentThread,
-                                              true);
+                    GitInterfaces.TypeInfo.GitPullRequestCommentThread,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -5477,7 +5477,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         pullRequestId: number,
         threadId: number,
         project?: string
-        ): Promise<GitInterfaces.GitPullRequestCommentThread> {
+    ): Promise<GitInterfaces.GitPullRequestCommentThread> {
 
         return new Promise<GitInterfaces.GitPullRequestCommentThread>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5495,18 +5495,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestCommentThread>;
                 res = await this.rest.update<GitInterfaces.GitPullRequestCommentThread>(url, commentThread, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPullRequestCommentThread,
-                                              false);
+                    GitInterfaces.TypeInfo.GitPullRequestCommentThread,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -5525,7 +5525,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project?: string
-        ): Promise<VSSInterfaces.ResourceRef[]> {
+    ): Promise<VSSInterfaces.ResourceRef[]> {
 
         return new Promise<VSSInterfaces.ResourceRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5542,18 +5542,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<VSSInterfaces.ResourceRef[]>;
                 res = await this.rest.get<VSSInterfaces.ResourceRef[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -5572,7 +5572,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         push: GitInterfaces.GitPush,
         repositoryId: string,
         project?: string
-        ): Promise<GitInterfaces.GitPush> {
+    ): Promise<GitInterfaces.GitPush> {
 
         return new Promise<GitInterfaces.GitPush>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5588,18 +5588,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPush>;
                 res = await this.rest.create<GitInterfaces.GitPush>(url, push, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPush,
-                                              false);
+                    GitInterfaces.TypeInfo.GitPush,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -5622,7 +5622,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project?: string,
         includeCommits?: number,
         includeRefUpdates?: boolean
-        ): Promise<GitInterfaces.GitPush> {
+    ): Promise<GitInterfaces.GitPush> {
 
         return new Promise<GitInterfaces.GitPush>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5635,7 +5635,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 includeCommits: includeCommits,
                 includeRefUpdates: includeRefUpdates,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.2",
@@ -5645,18 +5645,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPush>;
                 res = await this.rest.get<GitInterfaces.GitPush>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPush,
-                                              false);
+                    GitInterfaces.TypeInfo.GitPush,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -5679,7 +5679,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         skip?: number,
         top?: number,
         searchCriteria?: GitInterfaces.GitPushSearchCriteria
-        ): Promise<GitInterfaces.GitPush[]> {
+    ): Promise<GitInterfaces.GitPush[]> {
 
         return new Promise<GitInterfaces.GitPush[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5692,7 +5692,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 '$top': top,
                 searchCriteria: searchCriteria,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.2",
@@ -5702,18 +5702,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitPush[]>;
                 res = await this.rest.get<GitInterfaces.GitPush[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitPush,
-                                              true);
+                    GitInterfaces.TypeInfo.GitPush,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -5730,7 +5730,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     public async deleteRepositoryFromRecycleBin(
         project: string,
         repositoryId: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5746,18 +5746,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -5772,7 +5772,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
      */
     public async getRecycleBinRepositories(
         project: string
-        ): Promise<GitInterfaces.GitDeletedRepository[]> {
+    ): Promise<GitInterfaces.GitDeletedRepository[]> {
 
         return new Promise<GitInterfaces.GitDeletedRepository[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5787,18 +5787,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitDeletedRepository[]>;
                 res = await this.rest.get<GitInterfaces.GitDeletedRepository[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitDeletedRepository,
-                                              true);
+                    GitInterfaces.TypeInfo.GitDeletedRepository,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -5817,7 +5817,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryDetails: GitInterfaces.GitRecycleBinRepositoryDetails,
         project: string,
         repositoryId: string
-        ): Promise<GitInterfaces.GitRepository> {
+    ): Promise<GitInterfaces.GitRepository> {
 
         return new Promise<GitInterfaces.GitRepository>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5833,18 +5833,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRepository>;
                 res = await this.rest.update<GitInterfaces.GitRepository>(url, repositoryDetails, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitRepository,
-                                              false);
+                    GitInterfaces.TypeInfo.GitRepository,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -5875,7 +5875,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         latestStatusesOnly?: boolean,
         peelTags?: boolean,
         filterContains?: string
-        ): Promise<GitInterfaces.GitRef[]> {
+    ): Promise<GitInterfaces.GitRef[]> {
 
         return new Promise<GitInterfaces.GitRef[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -5892,7 +5892,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 peelTags: peelTags,
                 filterContains: filterContains,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -5902,18 +5902,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRef[]>;
                 res = await this.rest.get<GitInterfaces.GitRef[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitRef,
-                                              true);
+                    GitInterfaces.TypeInfo.GitRef,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -5936,7 +5936,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         filter: string,
         project?: string,
         projectId?: string
-        ): Promise<GitInterfaces.GitRef> {
+    ): Promise<GitInterfaces.GitRef> {
         if (filter == null) {
             throw new TypeError('filter can not be null or undefined');
         }
@@ -5951,7 +5951,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 filter: filter,
                 projectId: projectId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -5961,18 +5961,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRef>;
                 res = await this.rest.update<GitInterfaces.GitRef>(url, newRefInfo, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitRef,
-                                              false);
+                    GitInterfaces.TypeInfo.GitRef,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -5993,7 +5993,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         project?: string,
         projectId?: string
-        ): Promise<GitInterfaces.GitRefUpdateResult[]> {
+    ): Promise<GitInterfaces.GitRefUpdateResult[]> {
 
         return new Promise<GitInterfaces.GitRefUpdateResult[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6004,7 +6004,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             let queryValues: any = {
                 projectId: projectId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -6014,18 +6014,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRefUpdateResult[]>;
                 res = await this.rest.create<GitInterfaces.GitRefUpdateResult[]>(url, refUpdates, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitRefUpdateResult,
-                                              true);
+                    GitInterfaces.TypeInfo.GitRefUpdateResult,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -6042,7 +6042,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     public async createFavorite(
         favorite: GitInterfaces.GitRefFavorite,
         project: string
-        ): Promise<GitInterfaces.GitRefFavorite> {
+    ): Promise<GitInterfaces.GitRefFavorite> {
 
         return new Promise<GitInterfaces.GitRefFavorite>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6057,18 +6057,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRefFavorite>;
                 res = await this.rest.create<GitInterfaces.GitRefFavorite>(url, favorite, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitRefFavorite,
-                                              false);
+                    GitInterfaces.TypeInfo.GitRefFavorite,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -6085,7 +6085,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     public async deleteRefFavorite(
         project: string,
         favoriteId: number
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6101,18 +6101,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -6129,7 +6129,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     public async getRefFavorite(
         project: string,
         favoriteId: number
-        ): Promise<GitInterfaces.GitRefFavorite> {
+    ): Promise<GitInterfaces.GitRefFavorite> {
 
         return new Promise<GitInterfaces.GitRefFavorite>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6145,18 +6145,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRefFavorite>;
                 res = await this.rest.get<GitInterfaces.GitRefFavorite>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitRefFavorite,
-                                              false);
+                    GitInterfaces.TypeInfo.GitRefFavorite,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -6175,7 +6175,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project: string,
         repositoryId?: string,
         identityId?: string
-        ): Promise<GitInterfaces.GitRefFavorite[]> {
+    ): Promise<GitInterfaces.GitRefFavorite[]> {
 
         return new Promise<GitInterfaces.GitRefFavorite[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6186,7 +6186,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 repositoryId: repositoryId,
                 identityId: identityId,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -6196,18 +6196,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRefFavorite[]>;
                 res = await this.rest.get<GitInterfaces.GitRefFavorite[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitRefFavorite,
-                                              true);
+                    GitInterfaces.TypeInfo.GitRefFavorite,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -6226,7 +6226,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         gitRepositoryToCreate: GitInterfaces.GitRepositoryCreateOptions,
         project?: string,
         sourceRef?: string
-        ): Promise<GitInterfaces.GitRepository> {
+    ): Promise<GitInterfaces.GitRepository> {
 
         return new Promise<GitInterfaces.GitRepository>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6236,7 +6236,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             let queryValues: any = {
                 sourceRef: sourceRef,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -6246,18 +6246,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRepository>;
                 res = await this.rest.create<GitInterfaces.GitRepository>(url, gitRepositoryToCreate, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitRepository,
-                                              false);
+                    GitInterfaces.TypeInfo.GitRepository,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -6274,7 +6274,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     public async deleteRepository(
         repositoryId: string,
         project?: string
-        ): Promise<void> {
+    ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6290,18 +6290,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
+                    null,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -6322,7 +6322,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         includeLinks?: boolean,
         includeAllUrls?: boolean,
         includeHidden?: boolean
-        ): Promise<GitInterfaces.GitRepository[]> {
+    ): Promise<GitInterfaces.GitRepository[]> {
 
         return new Promise<GitInterfaces.GitRepository[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6334,7 +6334,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 includeAllUrls: includeAllUrls,
                 includeHidden: includeHidden,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -6344,18 +6344,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRepository[]>;
                 res = await this.rest.get<GitInterfaces.GitRepository[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitRepository,
-                                              true);
+                    GitInterfaces.TypeInfo.GitRepository,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -6372,7 +6372,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     public async getRepository(
         repositoryId: string,
         project?: string
-        ): Promise<GitInterfaces.GitRepository> {
+    ): Promise<GitInterfaces.GitRepository> {
 
         return new Promise<GitInterfaces.GitRepository>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6388,18 +6388,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRepository>;
                 res = await this.rest.get<GitInterfaces.GitRepository>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitRepository,
-                                              false);
+                    GitInterfaces.TypeInfo.GitRepository,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -6418,7 +6418,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         includeParent: boolean,
         project?: string
-        ): Promise<GitInterfaces.GitRepository> {
+    ): Promise<GitInterfaces.GitRepository> {
         if (includeParent == null) {
             throw new TypeError('includeParent can not be null or undefined');
         }
@@ -6432,7 +6432,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             let queryValues: any = {
                 includeParent: includeParent,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -6442,18 +6442,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRepository>;
                 res = await this.rest.get<GitInterfaces.GitRepository>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitRepository,
-                                              false);
+                    GitInterfaces.TypeInfo.GitRepository,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -6472,7 +6472,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         newRepositoryInfo: GitInterfaces.GitRepository,
         repositoryId: string,
         project?: string
-        ): Promise<GitInterfaces.GitRepository> {
+    ): Promise<GitInterfaces.GitRepository> {
 
         return new Promise<GitInterfaces.GitRepository>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6488,18 +6488,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRepository>;
                 res = await this.rest.update<GitInterfaces.GitRepository>(url, newRepositoryInfo, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitRepository,
-                                              false);
+                    GitInterfaces.TypeInfo.GitRepository,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -6520,7 +6520,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         revertId: number,
         conflictId: number,
         project?: string
-        ): Promise<GitInterfaces.GitConflict> {
+    ): Promise<GitInterfaces.GitConflict> {
 
         return new Promise<GitInterfaces.GitConflict>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6538,18 +6538,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitConflict>;
                 res = await this.rest.get<GitInterfaces.GitConflict>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitConflict,
-                                              false);
+                    GitInterfaces.TypeInfo.GitConflict,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -6578,7 +6578,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         excludeResolved?: boolean,
         onlyResolved?: boolean,
         includeObsolete?: boolean
-        ): Promise<GitInterfaces.GitConflict[]> {
+    ): Promise<GitInterfaces.GitConflict[]> {
 
         return new Promise<GitInterfaces.GitConflict[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6594,7 +6594,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 onlyResolved: onlyResolved,
                 includeObsolete: includeObsolete,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -6604,18 +6604,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitConflict[]>;
                 res = await this.rest.get<GitInterfaces.GitConflict[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitConflict,
-                                              true);
+                    GitInterfaces.TypeInfo.GitConflict,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -6638,7 +6638,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         revertId: number,
         conflictId: number,
         project?: string
-        ): Promise<GitInterfaces.GitConflict> {
+    ): Promise<GitInterfaces.GitConflict> {
 
         return new Promise<GitInterfaces.GitConflict>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6656,18 +6656,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitConflict>;
                 res = await this.rest.update<GitInterfaces.GitConflict>(url, conflict, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitConflict,
-                                              false);
+                    GitInterfaces.TypeInfo.GitConflict,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -6688,7 +6688,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         revertId: number,
         project?: string
-        ): Promise<GitInterfaces.GitConflictUpdateResult[]> {
+    ): Promise<GitInterfaces.GitConflictUpdateResult[]> {
 
         return new Promise<GitInterfaces.GitConflictUpdateResult[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6705,18 +6705,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitConflictUpdateResult[]>;
                 res = await this.rest.update<GitInterfaces.GitConflictUpdateResult[]>(url, conflictUpdates, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitConflictUpdateResult,
-                                              true);
+                    GitInterfaces.TypeInfo.GitConflictUpdateResult,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -6735,7 +6735,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         revertToCreate: GitInterfaces.GitAsyncRefOperationParameters,
         project: string,
         repositoryId: string
-        ): Promise<GitInterfaces.GitRevert> {
+    ): Promise<GitInterfaces.GitRevert> {
 
         return new Promise<GitInterfaces.GitRevert>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6751,18 +6751,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRevert>;
                 res = await this.rest.create<GitInterfaces.GitRevert>(url, revertToCreate, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitRevert,
-                                              false);
+                    GitInterfaces.TypeInfo.GitRevert,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -6781,7 +6781,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project: string,
         revertId: number,
         repositoryId: string
-        ): Promise<GitInterfaces.GitRevert> {
+    ): Promise<GitInterfaces.GitRevert> {
 
         return new Promise<GitInterfaces.GitRevert>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6798,18 +6798,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRevert>;
                 res = await this.rest.get<GitInterfaces.GitRevert>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitRevert,
-                                              false);
+                    GitInterfaces.TypeInfo.GitRevert,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -6828,7 +6828,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         project: string,
         repositoryId: string,
         refName: string
-        ): Promise<GitInterfaces.GitRevert> {
+    ): Promise<GitInterfaces.GitRevert> {
         if (refName == null) {
             throw new TypeError('refName can not be null or undefined');
         }
@@ -6842,7 +6842,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             let queryValues: any = {
                 refName: refName,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -6852,18 +6852,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitRevert>;
                 res = await this.rest.get<GitInterfaces.GitRevert>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitRevert,
-                                              false);
+                    GitInterfaces.TypeInfo.GitRevert,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -6884,7 +6884,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         commitId: string,
         repositoryId: string,
         project?: string
-        ): Promise<GitInterfaces.GitStatus> {
+    ): Promise<GitInterfaces.GitStatus> {
 
         return new Promise<GitInterfaces.GitStatus>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6901,18 +6901,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitStatus>;
                 res = await this.rest.create<GitInterfaces.GitStatus>(url, gitCommitStatusToCreate, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitStatus,
-                                              false);
+                    GitInterfaces.TypeInfo.GitStatus,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -6937,7 +6937,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         top?: number,
         skip?: number,
         latestOnly?: boolean
-        ): Promise<GitInterfaces.GitStatus[]> {
+    ): Promise<GitInterfaces.GitStatus[]> {
 
         return new Promise<GitInterfaces.GitStatus[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -6951,7 +6951,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 skip: skip,
                 latestOnly: latestOnly,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -6961,18 +6961,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitStatus[]>;
                 res = await this.rest.get<GitInterfaces.GitStatus[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitStatus,
-                                              true);
+                    GitInterfaces.TypeInfo.GitStatus,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -6989,7 +6989,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     public async getSuggestions(
         repositoryId: string,
         project?: string
-        ): Promise<GitInterfaces.GitSuggestion[]> {
+    ): Promise<GitInterfaces.GitSuggestion[]> {
 
         return new Promise<GitInterfaces.GitSuggestion[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -7005,18 +7005,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitSuggestion[]>;
                 res = await this.rest.get<GitInterfaces.GitSuggestion[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
-                                              true);
+                    null,
+                    true);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -7041,7 +7041,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         projectId?: string,
         recursive?: boolean,
         fileName?: string
-        ): Promise<GitInterfaces.GitTreeRef> {
+    ): Promise<GitInterfaces.GitTreeRef> {
 
         return new Promise<GitInterfaces.GitTreeRef>(async (resolve, reject) => {
             let routeValues: any = {
@@ -7055,7 +7055,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 recursive: recursive,
                 fileName: fileName,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -7065,18 +7065,18 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                    verData.apiVersion);
 
                 let res: restm.IRestResponse<GitInterfaces.GitTreeRef>;
                 res = await this.rest.get<GitInterfaces.GitTreeRef>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              GitInterfaces.TypeInfo.GitTreeRef,
-                                              false);
+                    GitInterfaces.TypeInfo.GitTreeRef,
+                    false);
 
                 resolve(ret);
-                
+
             }
             catch (err) {
                 reject(err);
@@ -7101,7 +7101,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         projectId?: string,
         recursive?: boolean,
         fileName?: string
-        ): Promise<NodeJS.ReadableStream> {
+    ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -7115,7 +7115,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 recursive: recursive,
                 fileName: fileName,
             };
-            
+
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "6.1-preview.1",
@@ -7125,7 +7125,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                
+
                 let apiVersion: string = verData.apiVersion!;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);

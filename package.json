@@ -1,5 +1,5 @@
 {
-    "name": "azure-devops-node-api",
+    "name": "@rodiaza/azure-devops-node-api",
     "description": "Node client for Azure DevOps and TFS REST APIs",
     "version": "11.1.1",
     "main": "./WebApi.js",
@@ -12,9 +12,12 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/Microsoft/azure-devops-node-api"
+        "url": "https://github.com/rodiaza/azure-devops-node-api"
     },
-    "author": "Microsoft Corporation",
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/rodiaza"
+    },
+    "author": "Rodrigo Diaz",
     "contributors": [
         "Bryan MacFarlane <bryanmac@microsoft.com>",
         "Daniel McCormick<daniel.mccormick@microsoft.com>",
